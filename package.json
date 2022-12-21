@@ -1,9 +1,12 @@
 {
-  "name": "demo-repo",
-  "version": "0.2.0",
+  "name": "@awc/adaptive-web-components",
+  "version": "0.0.1",
   "description": "A sample package.json",
   "dependencies": {
-    "@primer/css": "17.0.1"
+    "@microsoft/adaptive-ui": "1.0.0-alpha.23",
+    "@microsoft/fast-element": "2.0.0-beta.19",
+    "@microsoft/fast-foundation": "3.0.0-alpha.23",
+    "@microsoft/web-utilities": "6.0.0"
   },
   "license": "MIT"
 }
