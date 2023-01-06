@@ -8,15 +8,16 @@ import { template } from "./toolbar.template.js";
  *
  * @remarks
  * HTML Element: \<adaptive-toolbar\>
- * 
+ *
  * @public
  */
-export const definition = (ds: DesignSystem) => FASTToolbar.compose({
-    name: `${ds.prefix}-toolbar`,
-    registry: ds.registry,
-    styles,
-    template,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
-});
+export const definition = (ds: DesignSystem) =>
+    FASTToolbar.compose({
+        name: `${ds.prefix}-toolbar`,
+        registry: ds.registry,
+        styles,
+        template,
+        shadowOptions: {
+            delegatesFocus: true,
+        },
+    });
