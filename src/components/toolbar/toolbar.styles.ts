@@ -1,6 +1,9 @@
 import { designUnit, focusStrokeWidth, neutralStrokeFocus } from "@microsoft/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
+/**
+ * Default Adaptive UI Toolbar styles.
+ */
 export const styles: ElementStyles = css`
     :host([hidden]) {
         display: none;

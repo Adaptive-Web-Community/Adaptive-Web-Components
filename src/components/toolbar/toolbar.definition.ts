@@ -4,7 +4,7 @@ import { styles } from "./toolbar.styles.js";
 import { template } from "./toolbar.template.js";
 
 /**
- * The Toolbar Custom Element. Implements {@link @microsoft/fast-foundation#FASTToolbar}, {@link @microsoft/fast-foundation#toolbarTemplate}
+ * The Toolbar Custom Element. Implements {@link @microsoft/fast-foundation#FASTToolbar}.
  *
  * @remarks
  * HTML Element: \<adaptive-toolbar\>
