@@ -1,0 +1,58 @@
+{
+  "name": "@adaptive-web/adaptive-web-components",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "sideEffects": false,
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "repository": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components"
+  },
+  "description": "Standards based, framework agnostic web components built using FAST.",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist storybook-static",
+    "build": "tsc -p ./tsconfig.build.json",
+    "start": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "dependencies": {
+    "@microsoft/adaptive-ui": "1.0.0-alpha.23",
+    "@microsoft/fast-element": "2.0.0-beta.19",
+    "@microsoft/fast-foundation": "3.0.0-alpha.23",
+    "@microsoft/fast-web-utilities": "6.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@storybook/addon-actions": "^6.5.15",
+    "@storybook/addon-essentials": "^6.5.15",
+    "@storybook/addon-links": "^6.5.15",
+    "@storybook/builder-webpack5": "^6.5.15",
+    "@storybook/csf": "0.0.2--canary.0899bb7.0",
+    "@storybook/manager-webpack5": "^6.5.15",
+    "@storybook/web-components": "^6.5.15",
+    "@types/node": "^16.0.0",
+    "@types/react": "^16.14.0",
+    "babel-loader": "^8.3.0",
+    "lit-html": "^2.5.0",
+    "resolve-typescript-plugin": "^1.2.0",
+    "rimraf": "^3.0.2",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^7.0.2",
+    "typescript": "^4.7.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7"
+  },
+  "exports": {
+    "./toolbar/define": {
+      "types": "./dist/dts/components/toolbar/define.d.ts",
+      "default": "./dist/esm/components/toolbar/define.js"
+    }
+  }
+}
