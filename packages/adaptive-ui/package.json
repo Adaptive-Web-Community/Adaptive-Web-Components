@@ -5,14 +5,17 @@
     "type": "module",
     "sideEffects": false,
     "license": "MIT",
-    "author": "Adaptive Web Community (https://github.com/adaptive-web-community)",
+    "author": {
+        "name": "Adaptive Web Community",
+        "url": "https://github.com/adaptive-web-community"
+    },
     "bugs": {
         "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
     },
     "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/adaptive-web-community/adaptive-web-components.git",
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
         "directory": "packages/adaptive-ui"
     },
     "scripts": {

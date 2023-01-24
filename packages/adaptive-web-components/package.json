@@ -9,13 +9,19 @@
         "name": "Adaptive Web Community",
         "url": "https://github.com/adaptive-web-community"
     },
+    "bugs": {
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+    },
+    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
     "repository": {
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components"
+        "type": "git",
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+        "directory": "packages/adaptive-web-components"
     },
     "scripts": {
-        "clean": "rimraf dist storybook-static",
         "build": "tsc -p ./tsconfig.build.json",
         "build:storybook": "build-storybook",
+        "clean": "rimraf dist storybook-static",
         "start": "start-storybook -p 6006"
     },
     "dependencies": {
