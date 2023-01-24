@@ -1,6 +1,8 @@
 {
     "name": "@adaptive-web/adaptive-web-community",
+    "description": "Standards based, framework agnostic web components built using FAST.",
     "type": "module",
+    "license": "MIT",
     "author": {
         "name": "Adaptive Web Community",
         "url": "https://github.com/adaptive-web-community"
@@ -8,13 +10,12 @@
     "repository": {
         "url": "https://github.com/adaptive-web-community/adaptive-web-components"
     },
-    "description": "Standards based, framework agnostic web components built using FAST.",
-    "license": "MIT",
     "scripts": {
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present"
     },
     "workspaces": [
+        "packages/adaptive-ui",
         "packages/adaptive-web-components"
     ],
     "engines": {
