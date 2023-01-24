@@ -1,4 +1,4 @@
-import { designUnit, focusStrokeWidth, neutralStrokeFocus } from "@microsoft/adaptive-ui";
+import { designUnit, focusStrokeWidth, neutralStrokeFocus } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
