@@ -1,19 +1,23 @@
 import { html } from "@microsoft/fast-element";
 import type { FASTToolbar } from "@microsoft/fast-foundation";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { Meta, renderComponent, StoryArgs } from "../../utilities/storybook-helpers.js";
+import { renderComponent } from "../../utilities/storybook-helpers.js";
+import type { Meta, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const componentTemplate = html<StoryArgs<FASTToolbar>>`
-    <adaptive-toolbar orientation="${(x) => x.orientation}">${(x) => x.content}</adaptive-toolbar>
+    <adaptive-toolbar
+        orientation="${(x) => x.orientation}"
+    >
+        ${(x) => x.content}
+    </adaptive-toolbar>
 `;
 
 export default {
     title: "Components/Toolbar",
     args: {
         content: html`
-            <button>Button</button>
-            <button slot="end">End Slot Button</button>
             <button slot="start">Start Slot Button</button>
+            <button>Button</button>
             <select>
                 <option>Option 1</option>
                 <option>Second option</option>
@@ -32,6 +36,7 @@ export default {
                 Checkbox 3
             </label>
             <input type="text" name="text" id="text-input" />
+            <button slot="end">End Slot Button</button>
         `,
         orientation: Orientation.horizontal,
     },

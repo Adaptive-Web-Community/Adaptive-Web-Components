@@ -4,7 +4,7 @@ import { styles } from "./toolbar.styles.js";
 import { template } from "./toolbar.template.js";
 
 /**
- * The Toolbar Custom Element. Implements {@link @microsoft/fast-foundation#FASTToolbar}.
+ * The Toolbar custom element definition. Implements {@link @microsoft/fast-foundation#FASTToolbar}.
  *
  * @remarks
  * HTML Element: \<adaptive-toolbar\>
@@ -15,8 +15,8 @@ export const definition = (ds: DesignSystem) =>
     FASTToolbar.compose({
         name: `${ds.prefix}-toolbar`,
         registry: ds.registry,
+        template: template(ds),
         styles,
-        template,
         shadowOptions: {
             delegatesFocus: true,
         },
