@@ -54,9 +54,61 @@
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
         },
+        "./anchor/define": {
+            "types": "./dist/dts/components/anchor/define.d.ts",
+            "default": "./dist/esm/components/anchor/define.js"
+        },
+        "./anchored-region/define": {
+            "types": "./dist/dts/components/anchored-region/define.d.ts",
+            "default": "./dist/esm/components/anchored-region/define.js"
+        },
+        "./badge/define": {
+            "types": "./dist/dts/components/badge/define.d.ts",
+            "default": "./dist/esm/components/badge/define.js"
+        },
+        "./button/define": {
+            "types": "./dist/dts/components/button/define.d.ts",
+            "default": "./dist/esm/components/button/define.js"
+        },
+        "./card/define": {
+            "types": "./dist/dts/components/card/define.d.ts",
+            "default": "./dist/esm/components/card/define.js"
+        },
+        "./data-grid/define": {
+            "types": "./dist/dts/components/data-grid/define.d.ts",
+            "default": "./dist/esm/components/data-grid/define.js"
+        },
+        "./data-grid-cell/define": {
+            "types": "./dist/dts/components/data-grid-cell/define.d.ts",
+            "default": "./dist/esm/components/data-grid-cell/define.js"
+        },
+        "./data-grid-row/define": {
+            "types": "./dist/dts/components/data-grid-row/define.d.ts",
+            "default": "./dist/esm/components/data-grid-row/define.js"
+        },
+        "./dialog/define": {
+            "types": "./dist/dts/components/dialog/define.d.ts",
+            "default": "./dist/esm/components/dialog/define.js"
+        },
+        "./divider/define": {
+            "types": "./dist/dts/components/divider/define.d.ts",
+            "default": "./dist/esm/components/divider/define.js"
+        },
+        "./text-area/define": {
+            "types": "./dist/dts/components/text-area/define.d.ts",
+            "default": "./dist/esm/components/text-area/define.js"
+        },
+        "./text-field/define": {
+            "types": "./dist/dts/components/text-field/define.d.ts",
+            "default": "./dist/esm/components/text-field/define.js"
+        },
         "./toolbar/define": {
             "types": "./dist/dts/components/toolbar/define.d.ts",
             "default": "./dist/esm/components/toolbar/define.js"
+        },
+        "./tooltip/define": {
+            "types": "./dist/dts/components/tooltip/define.d.ts",
+            "default": "./dist/esm/components/tooltip/define.js"
         }
     }
 }

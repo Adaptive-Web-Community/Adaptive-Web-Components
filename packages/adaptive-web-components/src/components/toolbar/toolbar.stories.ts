@@ -4,18 +4,18 @@ import { Orientation } from "@microsoft/fast-web-utilities";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, StoryArgs } from "../../utilities/storybook-helpers.js";
 
-const componentTemplate = html<StoryArgs<FASTToolbar>>`
+const storyTemplate = html<StoryArgs<FASTToolbar>>`
     <adaptive-toolbar
         orientation="${(x) => x.orientation}"
     >
-        ${(x) => x.content}
+        ${(x) => x.storyContent}
     </adaptive-toolbar>
 `;
 
 export default {
     title: "Components/Toolbar",
     args: {
-        content: html`
+        storyContent: html`
             <button slot="start">Start Slot Button</button>
             <button>Button</button>
             <select>
@@ -38,12 +38,11 @@ export default {
             <input type="text" name="text" id="text-input" />
             <button slot="end">End Slot Button</button>
         `,
-        orientation: Orientation.horizontal,
     },
     argTypes: {
-        content: { table: { disable: true } },
-        orientation: { options: Object.values(Orientation), control: "radio" },
+        storyContent: { table: { disable: true } },
+        orientation: { control: "radio", options: Object.values(Orientation) },
     },
 } as Meta<FASTToolbar>;
 
-export const Toolbar = renderComponent(componentTemplate).bind({});
+export const Toolbar = renderComponent(storyTemplate).bind({});
