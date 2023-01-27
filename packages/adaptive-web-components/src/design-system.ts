@@ -1,3 +1,5 @@
+import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
+
 /**
  * Represents metadata configuration for a custom element.
  *
@@ -16,6 +18,11 @@ export interface DesignSystem {
      * If not provided, defaults to the global registry.
      */
     readonly registry?: CustomElementRegistry;
+
+    /**
+     * A map of static resources that are referenced by the components.
+     */
+    readonly statics: Map<string, StaticallyComposableHTML>;
 }
 
 /**
@@ -23,4 +30,5 @@ export interface DesignSystem {
  */
 export const DefaultDesignSystem = Object.freeze({
     prefix: "adaptive",
+    statics: new Map(),
 } as DesignSystem);
