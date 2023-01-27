@@ -25,6 +25,13 @@ module.exports = {
         };
         config.module.rules = [
             {
+                test: /\.svg$/,
+                loader: "svg-inline-loader",
+                options: {
+                    removeSVGTagAttrs: false,
+                },
+            },
+            {
                 test: /\.ts$/,
                 loader: "ts-loader",
                 sideEffects: true,
