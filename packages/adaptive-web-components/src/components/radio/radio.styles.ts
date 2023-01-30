@@ -29,6 +29,10 @@ export const templateStyles: ElementStyles = css`
         user-select: none;
     }
 
+    :host(:focus-visible) {
+        outline: none;
+    }
+
     .control {
         display: flex;
         align-items: center;

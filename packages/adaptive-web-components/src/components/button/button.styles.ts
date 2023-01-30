@@ -38,8 +38,8 @@ export const templateStyles: ElementStyles = css`
         border: 0;
     }
 
-    ::slotted([name="start"]),
-    ::slotted([name="end"]) {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
     }
 

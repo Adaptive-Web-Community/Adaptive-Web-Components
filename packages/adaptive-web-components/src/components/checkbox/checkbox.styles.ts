@@ -30,6 +30,10 @@ export const templateStyles: ElementStyles = css`
         user-select: none;
     }
 
+    :host(:focus-visible) {
+        outline: none;
+    }
+
     .control {
         display: flex;
         align-items: center;
@@ -39,13 +43,9 @@ export const templateStyles: ElementStyles = css`
 
     slot[name="checked-indicator"] *,
     slot[name="indeterminate-indicator"] * {
-        pointer-events: none;
-    }
-
-    slot[name="checked-indicator"] *,
-    slot[name="indeterminate-indicator"] * {
         /*opacity: 0;*/
         display: none;
+        pointer-events: none;
     }
 
     :host([aria-checked="true"]) slot[name="checked-indicator"] *,
