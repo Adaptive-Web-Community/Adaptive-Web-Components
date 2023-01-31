@@ -38,12 +38,12 @@ export const Tooltip: Story<FASTTooltip> = renderComponent(html<StoryArgs<FASTTo
 
 export const TooltipPlacements: Story<FASTTooltip> = renderComponent(
     html<StoryArgs<FASTTooltip>>`
-        <fast-card
+        <adaptive-card
             id="${(x) => x.anchor}"
             style="height: 50%; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 50%;"
         >
             ${repeat((x) => x.storyItems, storyTemplate)}
-        </fast-card>
+        </adaptive-card>
     `
 ).bind({});
 TooltipPlacements.args = {

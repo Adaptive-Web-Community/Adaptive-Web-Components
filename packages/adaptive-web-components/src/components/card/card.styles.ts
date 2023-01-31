@@ -18,8 +18,6 @@ export const templateStyles: ElementStyles = css`
 
     :host {
         display: block;
-        contain: content;
-        content-visibility: auto;
     }
 `;
 

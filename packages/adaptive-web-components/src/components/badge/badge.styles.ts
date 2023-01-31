@@ -2,7 +2,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     controlCornerRadius,
     designUnit,
-    neutralFillRest,
+    neutralFillSecondaryRest,
     neutralForegroundRest,
     strokeWidth,
     typeRampMinus1,
@@ -35,7 +35,7 @@ export const aestheticStyles: ElementStyles = css`
         padding:
             calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
             calc((${designUnit} - ${strokeWidth}) * 1px);
-        background: ${neutralFillRest};
+        background: ${neutralFillSecondaryRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
     }
