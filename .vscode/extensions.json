@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "bierner.github-markdown-preview",
+        "bierner.jsdoc-markdown-highlighting",
+        "dbaeumer.vscode-eslint",
+        "ghmcadams.lintlens",
+        "ms-fast.fast-tagged-templates",
+        "sidneys1.gitconfig"
+    ]
+}

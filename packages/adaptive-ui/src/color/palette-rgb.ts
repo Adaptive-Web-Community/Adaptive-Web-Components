@@ -58,7 +58,11 @@ class HighResolutionPaletteRGB extends BasePalette<SwatchRGB> {
     static from(source: SwatchRGB): HighResolutionPaletteRGB {
         const swatches: SwatchRGB[] = [];
 
-        const labSource = rgbToLAB(ColorRGBA64.fromObject(source)!.roundToPrecision(4));
+        const rgb = ColorRGBA64.fromObject(source);
+        if (rgb === null) {
+            throw new Error("Unable to create Color from Swatch.");
+        }
+        const labSource = rgbToLAB(rgb.roundToPrecision(4));
         const lab0 = labToRGB(new ColorLAB(0, labSource.a, labSource.b)).clamp().roundToPrecision(4);
         const lab50 = labToRGB(new ColorLAB(50, labSource.a, labSource.b)).clamp().roundToPrecision(4);
         const lab100 = labToRGB(new ColorLAB(100, labSource.a, labSource.b)).clamp().roundToPrecision(4);
@@ -266,7 +270,17 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
      * @returns The PaletteRGB with Swatches based on `source`
      */
     static from(source: SwatchRGB | string, options?: Partial<PaletteRGBOptions>): PaletteRGB {
-        const swatch = source instanceof SwatchRGB ? source : SwatchRGB.from(parseColorHexRGB(source)!);
+        let swatch;
+        if (source instanceof SwatchRGB) {
+            swatch = source;
+        } else {
+            const rgb = parseColorHexRGB(source);
+            if (rgb === null) {
+                throw new Error(`Unable to parse Color as hex string: ${source}`);
+            }
+            swatch = SwatchRGB.from(rgb);
+        }
+
         const opts =
             options === void 0 || null ? defaultPaletteRGBOptions : { ...defaultPaletteRGBOptions, ...options };
 

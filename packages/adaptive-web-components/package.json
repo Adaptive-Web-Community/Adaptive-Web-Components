@@ -22,6 +22,8 @@
         "build": "tsc -p ./tsconfig.build.json",
         "build:storybook": "build-storybook",
         "clean": "rimraf dist storybook-static",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
         "start": "start-storybook -p 6006"
     },
     "dependencies": {

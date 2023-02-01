@@ -17,15 +17,15 @@ export function binarySearch<T>(
     // if it does check the previous values
     return searchCondition(valuesToSearch[middleIndex])
         ? binarySearch(
-              valuesToSearch,
-              searchCondition,
-              startIndex,
-              middleIndex // include this index because it passed the search condition
-          )
+            valuesToSearch,
+            searchCondition,
+            startIndex,
+            middleIndex // include this index because it passed the search condition
+        )
         : binarySearch(
-              valuesToSearch,
-              searchCondition,
-              middleIndex + 1, // exclude this index because it failed the search condition
-              endIndex
-          );
+            valuesToSearch,
+            searchCondition,
+            middleIndex + 1, // exclude this index because it failed the search condition
+            endIndex
+        );
 }

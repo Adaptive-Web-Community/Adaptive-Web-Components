@@ -33,7 +33,8 @@ export function blackOrWhiteByContrastSet(
 
     const restForeground = defaultRule(restReference);
     const hoverForeground = defaultRule(hoverReference);
-    // Active does not have contrast requirements, so if rest and hover use the same color, use that for active even if it would not have passed the contrast check.
+    // Active does not have contrast requirements, so if rest and hover use the same color, use that for active
+    // even if it would not have passed the contrast check.
     const activeForeground =
         restForeground.relativeLuminance === hoverForeground.relativeLuminance
             ? restForeground
