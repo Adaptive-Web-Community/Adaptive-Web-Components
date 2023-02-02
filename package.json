@@ -13,7 +13,7 @@
     "scripts": {
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
-        "eslint": "npm run eslint --workspaces --if-present"
+        "lint": "npm run lint --workspaces --if-present"
     },
     "workspaces": [
         "packages/adaptive-ui",
