@@ -111,6 +111,10 @@
         "./tooltip/define": {
             "types": "./dist/dts/components/tooltip/define.d.ts",
             "default": "./dist/esm/components/tooltip/define.js"
+        },
+        "./stack/define": {
+            "types": "./dist/dts/layouts/stack/define.d.ts",
+            "default": "./dist/esm/layouts/stack/define.js"
         }
     }
 }

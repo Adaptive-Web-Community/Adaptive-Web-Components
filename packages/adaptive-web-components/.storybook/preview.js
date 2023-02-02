@@ -1,5 +1,6 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 
+// Components
 import "../src/components/accordion/define";
 import "../src/components/accordion-item/define";
 import "../src/components/anchor/define";
@@ -34,5 +35,7 @@ import "../src/components/text-area/define";
 import "../src/components/text-field/define";
 import "../src/components/toolbar/define";
 import "../src/components/tooltip/define";
+// Layouts
+import "../src/layouts/stack/define";
 
 DesignToken.registerDefaultStyleTarget();
