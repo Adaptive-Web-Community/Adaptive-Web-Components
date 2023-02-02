@@ -26,9 +26,9 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        height: var(--card-height, 100%);
-        width: var(--card-width, 100%);
         box-sizing: border-box;
+        height: 100%;
+        width: 100%;
         background: ${fillColor};
         color: ${neutralForegroundRest};
         border-radius: calc(${layerCornerRadius} * 1px);

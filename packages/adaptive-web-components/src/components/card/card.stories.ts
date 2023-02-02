@@ -1,4 +1,4 @@
-import { css, html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { FASTCard } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
@@ -22,8 +22,8 @@ export const CardWithCustomDimensions = renderComponent(storyTemplate).bind({});
 CardWithCustomDimensions.decorators = [
     (Story: () => FASTCard) => {
         const renderedStory = Story() as FASTCard;
-        renderedStory.style.setProperty("--card-height", "400px");
-        renderedStory.style.setProperty("--card-width", "500px");
+        renderedStory.style.setProperty("height", "400px");
+        renderedStory.style.setProperty("width", "500px");
         renderedStory.style.setProperty("padding", "20px");
         return renderedStory;
     },
@@ -38,17 +38,11 @@ CardWithControls.args = {
 CardWithControls.decorators = [
     (Story: () => FASTCard) => {
         const renderedStory = Story() as FASTCard;
-        const style = css`
-            :host {
-                --card-height: 400px;
-                --card-width: 500px;
-                display: flex;
-                flex-direction: column;
-                padding: 20px;
-            }
-        `;
-
-        renderedStory.$fastController.addStyles(style);
+        renderedStory.style.setProperty("height", "400px");
+        renderedStory.style.setProperty("width", "500px");
+        renderedStory.style.setProperty("display", "flex");
+        renderedStory.style.setProperty("flex-direction", "column");
+        renderedStory.style.setProperty("padding", "20px");
         return renderedStory;
     },
 ];
