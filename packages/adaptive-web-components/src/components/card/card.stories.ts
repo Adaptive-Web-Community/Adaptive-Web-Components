@@ -3,7 +3,7 @@ import type { FASTCard } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
-const storyTemplate = html<StoryArgs<FASTCard>>`
+export const storyTemplate = html<StoryArgs<FASTCard>>`
     <adaptive-card>
         ${(x) => x.storyContent}
     </adaptive-card>
@@ -11,8 +11,12 @@ const storyTemplate = html<StoryArgs<FASTCard>>`
 
 export default {
     title: "Components/Card",
+    excludeStories: ["storyTemplate"],
     args: {
         storyContent: "Pick a card",
+    },
+    argTypes: {
+        storyContent: { table: { disable: true } },
     },
 } as Meta<FASTCard>;
 

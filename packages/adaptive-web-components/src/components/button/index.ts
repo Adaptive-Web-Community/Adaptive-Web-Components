@@ -5,3 +5,4 @@ export {
     styles as ButtonStyles,
 } from "./button.styles.js";
 export { template as ButtonTemplate } from "./button.template.js";
+export { AdaptiveButton } from "./button.js";
