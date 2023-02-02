@@ -1,8 +1,8 @@
 import { html } from "@microsoft/fast-element";
+import { AnchorTarget } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { AdaptiveAnchor } from "./anchor.js";
-import { AnchorTarget } from "@microsoft/fast-foundation";
 
 export const storyTemplate = html<StoryArgs<AdaptiveAnchor>>`
     <adaptive-anchor

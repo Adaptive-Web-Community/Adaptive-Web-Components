@@ -21,6 +21,8 @@
     "scripts": {
         "build": "tsc -p ./tsconfig.json",
         "clean": "rimraf dist",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
         "test": "npm run build && npm run unit-tests",
         "unit-tests": "mocha",
         "unit-tests:watch": "mocha --watch"

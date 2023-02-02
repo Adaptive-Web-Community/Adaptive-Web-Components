@@ -1,4 +1,4 @@
-import { html, repeat, when } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import { ComboboxAutocomplete, FASTCombobox } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";

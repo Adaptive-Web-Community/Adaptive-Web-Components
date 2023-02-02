@@ -210,7 +210,7 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
 
         const closest = this.swatches.reduce((previous, next) =>
             Math.abs(next.relativeLuminance - reference.relativeLuminance) <
-            Math.abs(previous.relativeLuminance - reference.relativeLuminance)
+                Math.abs(previous.relativeLuminance - reference.relativeLuminance)
                 ? next
                 : previous
         );

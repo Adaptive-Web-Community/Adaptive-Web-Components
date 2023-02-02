@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
+import { FASTNumberField } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import { FASTNumberField } from "@microsoft/fast-foundation";
 
 const storyTemplate = html<StoryArgs<FASTNumberField>>`
     <adaptive-number-field
