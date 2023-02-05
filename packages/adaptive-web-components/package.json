@@ -94,6 +94,10 @@
             "types": "./dist/dts/components/button/define.d.ts",
             "default": "./dist/esm/components/button/define.js"
         },
+        "./calendar/define": {
+            "types": "./dist/dts/components/calendar/define.d.ts",
+            "default": "./dist/esm/components/calendar/define.js"
+        },
         "./card/define": {
             "types": "./dist/dts/components/card/define.d.ts",
             "default": "./dist/esm/components/card/define.js"
@@ -134,6 +138,10 @@
             "types": "./dist/dts/components/flipper/define.d.ts",
             "default": "./dist/esm/components/flipper/define.js"
         },
+        "./horizontal-scroll/define": {
+            "types": "./dist/dts/components/horizontal-scroll/define.d.ts",
+            "default": "./dist/esm/components/horizontal-scroll/define.js"
+        },
         "./listbox/define": {
             "types": "./dist/dts/components/listbox/define.d.ts",
             "default": "./dist/esm/components/listbox/define.js"
@@ -142,9 +150,45 @@
             "types": "./dist/dts/components/listbox-option/define.d.ts",
             "default": "./dist/esm/components/listbox-option/define.js"
         },
+        "./menu/define": {
+            "types": "./dist/dts/components/menu/define.d.ts",
+            "default": "./dist/esm/components/menu/define.js"
+        },
+        "./menu-item/define": {
+            "types": "./dist/dts/components/menu-item/define.d.ts",
+            "default": "./dist/esm/components/menu-item/define.js"
+        },
         "./number-field/define": {
             "types": "./dist/dts/components/number-field/define.d.ts",
             "default": "./dist/esm/components/number-field/define.js"
+        },
+        "./picker/define": {
+            "types": "./dist/dts/components/picker/define.d.ts",
+            "default": "./dist/esm/components/picker/define.js"
+        },
+        "./picker-list/define": {
+            "types": "./dist/dts/components/picker-list/define.d.ts",
+            "default": "./dist/esm/components/picker-list/define.js"
+        },
+        "./picker-list-item/define": {
+            "types": "./dist/dts/components/picker-list-item/define.d.ts",
+            "default": "./dist/esm/components/picker-list-item/define.js"
+        },
+        "./picker-menu/define": {
+            "types": "./dist/dts/components/picker-menu/define.d.ts",
+            "default": "./dist/esm/components/picker-menu/define.js"
+        },
+        "./picker-menu-option/define": {
+            "types": "./dist/dts/components/picker-menu-option/define.d.ts",
+            "default": "./dist/esm/components/picker-menu-option/define.js"
+        },
+        "./progress/define": {
+            "types": "./dist/dts/components/progress/define.d.ts",
+            "default": "./dist/esm/components/progress/define.js"
+        },
+        "./progress-ring/define": {
+            "types": "./dist/dts/components/progress-ring/define.d.ts",
+            "default": "./dist/esm/components/progress-ring/define.js"
         },
         "./radio/define": {
             "types": "./dist/dts/components/radio/define.d.ts",
@@ -161,6 +205,18 @@
         "./select/define": {
             "types": "./dist/dts/components/select/define.d.ts",
             "default": "./dist/esm/components/select/define.js"
+        },
+        "./skeleton/define": {
+            "types": "./dist/dts/components/skeleton/define.d.ts",
+            "default": "./dist/esm/components/skeleton/define.js"
+        },
+        "./slider/define": {
+            "types": "./dist/dts/components/slider/define.d.ts",
+            "default": "./dist/esm/components/slider/define.js"
+        },
+        "./slider-label/define": {
+            "types": "./dist/dts/components/slider-label/define.d.ts",
+            "default": "./dist/esm/components/slider-label/define.js"
         },
         "./switch/define": {
             "types": "./dist/dts/components/switch/define.d.ts",
@@ -193,6 +249,14 @@
         "./tooltip/define": {
             "types": "./dist/dts/components/tooltip/define.d.ts",
             "default": "./dist/esm/components/tooltip/define.js"
+        },
+        "./tree-item/define": {
+            "types": "./dist/dts/components/tree-item/define.d.ts",
+            "default": "./dist/esm/components/tree-item/define.js"
+        },
+        "./tree-view/define": {
+            "types": "./dist/dts/components/tree-view/define.d.ts",
+            "default": "./dist/esm/components/tree-view/define.js"
         }
     }
 }
