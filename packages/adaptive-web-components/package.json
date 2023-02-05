@@ -58,6 +58,14 @@
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
         },
+        "./accordion/define": {
+            "types": "./dist/dts/components/accordion/define.d.ts",
+            "default": "./dist/esm/components/accordion/define.js"
+        },
+        "./accordion-item/define": {
+            "types": "./dist/dts/components/accordion-item/define.d.ts",
+            "default": "./dist/esm/components/accordion-item/define.js"
+        },
         "./anchor/define": {
             "types": "./dist/dts/components/anchor/define.d.ts",
             "default": "./dist/esm/components/anchor/define.js"
@@ -66,9 +74,21 @@
             "types": "./dist/dts/components/anchored-region/define.d.ts",
             "default": "./dist/esm/components/anchored-region/define.js"
         },
+        "./avatar/define": {
+            "types": "./dist/dts/components/avatar/define.d.ts",
+            "default": "./dist/esm/components/avatar/define.js"
+        },
         "./badge/define": {
             "types": "./dist/dts/components/badge/define.d.ts",
             "default": "./dist/esm/components/badge/define.js"
+        },
+        "./breadcrumb/define": {
+            "types": "./dist/dts/components/breadcrumb/define.d.ts",
+            "default": "./dist/esm/components/breadcrumb/define.js"
+        },
+        "./breadcrumb-item/define": {
+            "types": "./dist/dts/components/breadcrumb-item/define.d.ts",
+            "default": "./dist/esm/components/breadcrumb-item/define.js"
         },
         "./button/define": {
             "types": "./dist/dts/components/button/define.d.ts",
@@ -77,6 +97,14 @@
         "./card/define": {
             "types": "./dist/dts/components/card/define.d.ts",
             "default": "./dist/esm/components/card/define.js"
+        },
+        "./checkbox/define": {
+            "types": "./dist/dts/components/checkbox/define.d.ts",
+            "default": "./dist/esm/components/checkbox/define.js"
+        },
+        "./combobox/define": {
+            "types": "./dist/dts/components/combobox/define.d.ts",
+            "default": "./dist/esm/components/combobox/define.js"
         },
         "./data-grid/define": {
             "types": "./dist/dts/components/data-grid/define.d.ts",
@@ -94,9 +122,61 @@
             "types": "./dist/dts/components/dialog/define.d.ts",
             "default": "./dist/esm/components/dialog/define.js"
         },
+        "./disclosure/define": {
+            "types": "./dist/dts/components/disclosure/define.d.ts",
+            "default": "./dist/esm/components/disclosure/define.js"
+        },
         "./divider/define": {
             "types": "./dist/dts/components/divider/define.d.ts",
             "default": "./dist/esm/components/divider/define.js"
+        },
+        "./flipper/define": {
+            "types": "./dist/dts/components/flipper/define.d.ts",
+            "default": "./dist/esm/components/flipper/define.js"
+        },
+        "./listbox/define": {
+            "types": "./dist/dts/components/listbox/define.d.ts",
+            "default": "./dist/esm/components/listbox/define.js"
+        },
+        "./listbox-option/define": {
+            "types": "./dist/dts/components/listbox-option/define.d.ts",
+            "default": "./dist/esm/components/listbox-option/define.js"
+        },
+        "./number-field/define": {
+            "types": "./dist/dts/components/number-field/define.d.ts",
+            "default": "./dist/esm/components/number-field/define.js"
+        },
+        "./radio/define": {
+            "types": "./dist/dts/components/radio/define.d.ts",
+            "default": "./dist/esm/components/radio/define.js"
+        },
+        "./radio-group/define": {
+            "types": "./dist/dts/components/radio-group/define.d.ts",
+            "default": "./dist/esm/components/radio-group/define.js"
+        },
+        "./search/define": {
+            "types": "./dist/dts/components/search/define.d.ts",
+            "default": "./dist/esm/components/search/define.js"
+        },
+        "./select/define": {
+            "types": "./dist/dts/components/select/define.d.ts",
+            "default": "./dist/esm/components/select/define.js"
+        },
+        "./switch/define": {
+            "types": "./dist/dts/components/switch/define.d.ts",
+            "default": "./dist/esm/components/switch/define.js"
+        },
+        "./tab/define": {
+            "types": "./dist/dts/components/tab/define.d.ts",
+            "default": "./dist/esm/components/tab/define.js"
+        },
+        "./tab-panel/define": {
+            "types": "./dist/dts/components/tab-panel/define.d.ts",
+            "default": "./dist/esm/components/tab-panel/define.js"
+        },
+        "./tabs/define": {
+            "types": "./dist/dts/components/tabs/define.d.ts",
+            "default": "./dist/esm/components/tabs/define.js"
         },
         "./text-area/define": {
             "types": "./dist/dts/components/text-area/define.d.ts",
