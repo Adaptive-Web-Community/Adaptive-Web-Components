@@ -22,6 +22,7 @@
         "build": "tsc -p ./tsconfig.build.json",
         "build:storybook": "build-storybook",
         "clean": "rimraf dist storybook-static",
+        "cem:analyze": "cem analyze --config ./cem.config.mjs",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "start": "start-storybook -p 6006"
@@ -35,6 +36,8 @@
     },
     "devDependencies": {
         "@babel/core": "^7.20.12",
+        "@custom-elements-manifest/analyzer": "^0.6.8",
+        "@custom-elements-manifest/to-markdown": "^0.1.0",
         "@storybook/addon-actions": "^6.5.15",
         "@storybook/addon-essentials": "^6.5.15",
         "@storybook/addon-links": "^6.5.15",
@@ -53,7 +56,10 @@
         "ts-loader": "^7.0.2",
         "typescript": "^4.7.0"
     },
+    "customElements": "dist/custom-elements.json",
     "exports": {
+        "./custom-elements.json": "./dist/custom-elements.json",
+        "./package.json": "./package.json",
         ".": {
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
