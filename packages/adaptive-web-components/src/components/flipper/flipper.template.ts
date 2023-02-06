@@ -3,12 +3,12 @@ import { FASTFlipper, flipperTemplate } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the accordion item expanded icon.
+ * Key for {@link DesignSystem} `statics` registration for the flipper next icon.
  */
 export const FlipperNextKey: string = "flipper-next";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the accordion item collapsed icon.
+ * Key for {@link DesignSystem} `statics` registration for the flipper previous icon.
  */
 export const FlipperPreviousKey: string = "flipper-previous";
 
@@ -18,6 +18,6 @@ export const FlipperPreviousKey: string = "flipper-previous";
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTFlipper> =
     (ds: DesignSystem) =>
         flipperTemplate({
-            next: ds.statics.get(FlipperPreviousKey),
-            previous: ds.statics.get(FlipperNextKey),
+            next: ds.statics.get(FlipperNextKey),
+            previous: ds.statics.get(FlipperPreviousKey),
         });

@@ -4,7 +4,7 @@ import { Orientation } from "@microsoft/fast-web-utilities";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
-const storyTemplate = html<StoryArgs<FASTDivider>>`
+export const storyTemplate = html<StoryArgs<FASTDivider>>`
     <adaptive-divider
         orientation="${(x) => x.orientation}"
         role="${(x) => x.role}"
@@ -14,6 +14,7 @@ const storyTemplate = html<StoryArgs<FASTDivider>>`
 
 export default {
     title: "Components/Divider",
+    excludeStories: ["storyTemplate"],
     args: {
         orientation: Orientation.horizontal,
         role: DividerRole.separator,

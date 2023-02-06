@@ -65,11 +65,11 @@ export const aestheticStyles: ElementStyles = css`
         ${typeRampBase}
     }
 
-    :host(:enabled:hover) {
+    :host(:not([disabled]):hover) {
         background: ${neutralFillStealthHover};
     }
 
-    :host(:enabled:active) {
+    :host(:not([disabled]):active) {
         background: ${neutralFillStealthActive};
     }
 
@@ -82,12 +82,12 @@ export const aestheticStyles: ElementStyles = css`
         color: ${foregroundOnAccentRest};
     }
 
-    :host([aria-selected="true"]:enabled:hover) {
+    :host([aria-selected="true"]:not([disabled]):hover) {
         background: ${accentFillHover};
         color: ${foregroundOnAccentHover};
     }
 
-    :host([aria-selected="true"]:enabled:active) {
+    :host([aria-selected="true"]:not([disabled]):active) {
         background: ${accentFillActive};
         color: ${foregroundOnAccentActive};
     }
