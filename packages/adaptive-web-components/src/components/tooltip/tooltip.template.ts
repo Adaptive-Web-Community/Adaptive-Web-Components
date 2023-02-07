@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTTooltip, tooltipTemplate } from "@microsoft/fast-foundation";
-import { DesignSystem } from "src/design-system.js";
+import { DesignSystem } from "../../design-system.js";
 
 /**
  * Default Tooltip template, {@link @microsoft/fast-foundation#tooltipTemplate}.
