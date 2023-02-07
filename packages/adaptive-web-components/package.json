@@ -19,7 +19,9 @@
         "directory": "packages/adaptive-web-components"
     },
     "scripts": {
-        "build": "tsc -p ./tsconfig.build.json",
+        "build:tsc": "tsc -p ./tsconfig.build.json",
+        "build:bundle": "vite build",
+        "build": "npm run build:bundle && npm run build:tsc && npm run cem:analyze",
         "build:storybook": "build-storybook",
         "clean": "rimraf dist storybook-static",
         "cem:analyze": "cem analyze --config ./cem.config.mjs",
@@ -32,7 +34,8 @@
         "@fluentui/svg-icons": "^1.1.192",
         "@microsoft/fast-element": "2.0.0-beta.20",
         "@microsoft/fast-foundation": "3.0.0-alpha.24",
-        "@microsoft/fast-web-utilities": "6.0.0"
+        "@microsoft/fast-web-utilities": "6.0.0",
+        "vite": "^4.1.1"
     },
     "devDependencies": {
         "@babel/core": "^7.20.12",
