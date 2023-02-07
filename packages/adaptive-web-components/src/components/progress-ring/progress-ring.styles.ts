@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { accentForegroundRest, designUnit, neutralFillSecondaryRest } from "@adaptive-web/adaptive-ui";
+import { accentForegroundRest, neutralFillSecondaryRest } from "@adaptive-web/adaptive-ui";
 import { heightNumber } from "../../styles/index.js";
 
 /**
