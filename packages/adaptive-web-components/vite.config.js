@@ -5,11 +5,9 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: resolve(__dirname, "./src/index.ts"),
-			fileName: "adaptive-web-components.min.js",
+			fileName: "adaptive-web-components.min",
 			formats: ["es"],
 		},
-		minify: "esbuild",
 		sourcemap: "inline",
-		outDir: "./dist",
 	},
 });
