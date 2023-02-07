@@ -19,7 +19,9 @@
         "directory": "packages/adaptive-web-components"
     },
     "scripts": {
-        "build": "tsc -p ./tsconfig.build.json",
+        "build:tsc": "tsc -p ./tsconfig.build.json",
+        "build:bundle": "vite build",
+        "build": "npm run build:bundle && npm run build:tsc && npm run cem:analyze",
         "build:storybook": "build-storybook",
         "clean": "rimraf dist storybook-static",
         "cem:analyze": "cem analyze --config ./cem.config.mjs",
@@ -54,7 +56,8 @@
         "source-map-loader": "^0.2.4",
         "svg-inline-loader": "^0.8.2",
         "ts-loader": "^7.0.2",
-        "typescript": "^4.7.0"
+        "typescript": "^4.7.0",
+        "vite": "^4.1.1"
     },
     "customElements": "dist/custom-elements.json",
     "exports": {

@@ -1,11 +1,10 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "baseUrl": ".",
         "importHelpers": true,
         "lib": ["DOM"],
         "declarationDir": "dist/dts",
         "outDir": "dist/esm"
     },
-    "include": ["src"]
+    "include": ["./src"]
 }
