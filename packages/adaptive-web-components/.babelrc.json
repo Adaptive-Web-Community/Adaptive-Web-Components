@@ -1,0 +1,16 @@
+// https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#babel-mode-v7-exclusively
+{
+    "sourceType": "unambiguous",
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "chrome": 100
+                }
+            }
+        ],
+        "@babel/preset-typescript"
+    ],
+    "plugins": []
+}
