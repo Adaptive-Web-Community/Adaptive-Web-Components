@@ -1,7 +1,7 @@
 {
     "name": "@adaptive-web/adaptive-ui-explorer",
     "version": "0.0.1",
-    "description": "A playground for Adaptive UI",
+    "description": "Discover a new look and feel with Adaptive UI",
     "type": "module",
     "private": true,
     "license": "MIT",
@@ -23,7 +23,8 @@
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "start": "vite --open"
+        "start": "vite --open",
+        "test": "npm run lint && npm run build"
     },
     "dependencies": {
         "@adaptive-web/adaptive-ui": "^0.0.1",

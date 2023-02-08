@@ -27,7 +27,8 @@
         "cem:analyze": "cem analyze --config ./cem.config.mjs",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "start": "start-storybook -p 6006"
+        "start": "start-storybook -p 6006",
+        "test": "npm run lint && npm run build:tsc"
     },
     "dependencies": {
         "@adaptive-web/adaptive-ui": "^0.0.1",
