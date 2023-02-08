@@ -1,9 +1,9 @@
 {
-    "name": "@adaptive-web/adaptive-ui",
+    "name": "@adaptive-web/adaptive-ui-explorer",
     "version": "0.0.1",
-    "description": "A collection of design utilities supporting basic styling and Adaptive UI",
+    "description": "Discover a new look and feel with Adaptive UI",
     "type": "module",
-    "sideEffects": false,
+    "private": true,
     "license": "MIT",
     "author": {
         "name": "Adaptive Web Community",
@@ -16,33 +16,25 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
-        "directory": "packages/adaptive-ui"
+        "directory": "packages/adaptive-ui-explorer"
     },
     "scripts": {
-        "build": "tsc -p ./tsconfig.json",
+        "build": "tsc && vite build",
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "test": "npm run lint && npm run build && npm run unit-tests",
-        "unit-tests": "mocha",
-        "unit-tests:watch": "mocha --watch"
+        "start": "vite --open",
+        "test": "npm run lint && npm run build"
     },
     "dependencies": {
+        "@adaptive-web/adaptive-ui": "^0.0.1",
         "@microsoft/fast-colors": "^5.3.1",
+        "@microsoft/fast-element": "2.0.0-beta.20",
         "@microsoft/fast-foundation": "3.0.0-alpha.24"
     },
     "devDependencies": {
-        "@types/chai": "^4.3.4",
-        "@types/mocha": "^10.0.1",
-        "chai": "^4.3.7",
-        "mocha": "^10.2.0",
         "rimraf": "^3.0.2",
-        "typescript": "^4.7.0"
-    },
-    "exports": {
-        ".": {
-            "types": "./dist/dts/index.d.ts",
-            "default": "./dist/esm/index.js"
-        }
+        "typescript": "^4.7.0",
+        "vite": "^4.1.1"
     }
 }

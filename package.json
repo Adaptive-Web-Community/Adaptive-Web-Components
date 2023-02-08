@@ -13,11 +13,11 @@
     "scripts": {
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
-        "lint": "npm run lint --workspaces --if-present"
+        "lint": "npm run lint --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present"
     },
     "workspaces": [
-        "packages/adaptive-ui",
-        "packages/adaptive-web-components"
+        "./packages/*"
     ],
     "engines": {
         "node": ">=18.12.0",
