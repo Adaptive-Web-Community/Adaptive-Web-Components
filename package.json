@@ -17,7 +17,9 @@
         "test": "npm run test --workspaces --if-present"
     },
     "workspaces": [
-        "./packages/*"
+        "./packages/adaptive-ui",
+        "./packages/adaptive-web-components",
+        "./packages/adaptive-ui-explorer"
     ],
     "engines": {
         "node": ">=18.12.0",
