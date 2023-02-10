@@ -1,0 +1,34 @@
+{
+    "name": "@adaptive-web/example-use-adaptive-components",
+    "version": "0.0.1",
+    "description": "A simple example of using adaptive web components",
+    "type": "module",
+    "private": true,
+    "license": "MIT",
+    "author": {
+        "name": "Adaptive Web Community",
+        "url": "https://github.com/adaptive-web-community"
+    },
+    "bugs": {
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+    },
+    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+        "directory": "examples/use-adaptive-components"
+    },
+    "scripts": {
+        "build": "tsc && vite build",
+        "clean": "rimraf dist",
+        "start": "vite --open"
+    },
+    "dependencies": {
+        "@adaptive-web/adaptive-web-components": "^0.0.1"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2",
+        "typescript": "^4.7.0",
+        "vite": "^4.1.1"
+    }
+}

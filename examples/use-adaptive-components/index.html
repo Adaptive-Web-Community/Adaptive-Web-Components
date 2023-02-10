@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AWC - Using Adaptive Components</title>
+    <style>
+        html {
+            padding: 20px;
+            background-color: var(--fill-color);
+            font-family: sans-serif;
+        }
+        adaptive-card {
+            height: 500px;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+    </style>
+    <script type="module" src="/src/index.ts"></script>
+</head>
+
+<body>
+    <adaptive-card id="card">
+        <span>This is a Card with a few slotted components. These work with any frameworks
+        like native platform elements including &lt;button&gt; or &lt;input&gt;.</span>
+        <adaptive-avatar>AC</adaptive-avatar>
+        <adaptive-button onclick="javascript:console.log('Button click')">Button</adaptive-button>
+        <adaptive-text-field placeholder="Enter a value" onchange="javascript:console.log('Text field change', event.target.value);">Text field</adaptive-text-field>
+        <span>Text field is not imported by default so it won't load. Check index.ts.</span>
+        <adaptive-switch id="darkMode">Dark mode</adaptive-switch>
+        <adaptive-radio-group id="accentColor" value="CB25DA" orientation="vertical">
+            <label slot="label">Color</label>
+            <adaptive-radio value="CB25DA">Purple</adaptive-radio>
+            <adaptive-radio value="31BB25">Green</adaptive-radio>
+            <adaptive-radio value="2585BB">Blue</adaptive-radio>
+        </adaptive-radio-group>
+    </adaptive-card>
+</body>
+
+</html>
