@@ -1,5 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { Palette } from "../color/palette.js";
+import { Palette, PaletteDirectionValue } from "../color/palette.js";
 import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch } from "../color/swatch.js";
@@ -35,7 +35,7 @@ export interface LayerRecipe {
  */
 export const LayerBaseLuminance = Object.freeze({
     LightMode: 0.95,
-    DarkMode: 0.13,
+    DarkMode: 0.15,
 } as const);
 
 /**
@@ -63,7 +63,7 @@ export const layerFillBaseLuminance = createNonCss<number>("layer-fill-base-lumi
  * The offset between "Fixed" layers, or from the container for "Interactive" rest state.
  *
  * @remarks
- * Should be a positive value so "Minus" recipes are darker and "Plus" recipes are lighter.
+ * Typically a negative value so "Minus" recipes are darker and "Plus" recipes are lighter.
  *
  * @public
  */
@@ -105,7 +105,8 @@ export const layerFillFixedRecipe = createNonCss<LayerRecipe>("layer-fill-fixed-
         deltaSwatch(
             resolve(layerPalette),
             luminanceSwatch(resolve(layerFillBaseLuminance)),
-            resolve(layerFillDelta) * index
+            resolve(layerFillDelta) * index,
+            PaletteDirectionValue.darker
         ),
 });
 
@@ -215,7 +216,8 @@ export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>("
             resolve(layerFillDelta),
             resolve(layerFillHoverDelta),
             resolve(layerFillActiveDelta),
-            resolve(layerFillFocusDelta)
+            resolve(layerFillFocusDelta),
+            PaletteDirectionValue.darker
         ),
 });
 

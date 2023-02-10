@@ -20,6 +20,7 @@
     },
     "scripts": {
         "build": "tsc -p ./tsconfig.json",
+        "build:watch": "tsc -p ./tsconfig.json --watch",
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",

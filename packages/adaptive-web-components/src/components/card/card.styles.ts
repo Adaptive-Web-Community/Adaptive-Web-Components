@@ -2,8 +2,10 @@ import {
     elevationCardFocus,
     elevationCardHover,
     elevationCardRest,
-    fillColor,
     layerCornerRadius,
+    layerFillInteractiveActive,
+    layerFillInteractiveHover,
+    layerFillInteractiveRest,
     neutralForegroundRest,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -29,17 +31,19 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: 100%;
         width: 100%;
-        background: ${fillColor};
+        background: ${layerFillInteractiveRest};
         color: ${neutralForegroundRest};
         border-radius: calc(${layerCornerRadius} * 1px);
         box-shadow: ${elevationCardRest}
     }
 
     :host(:hover) {
+        background: ${layerFillInteractiveHover};
         box-shadow: ${elevationCardHover}
     }
 
     :host(:focus-within) {
+        background: ${layerFillInteractiveActive};
         box-shadow: ${elevationCardFocus}
     }
 `;
