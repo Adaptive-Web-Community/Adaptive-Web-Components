@@ -60,31 +60,31 @@ export const layerPalette = createNonCss<Palette>("layer-palette").withDefault(n
 export const layerFillBaseLuminance = createNonCss<number>("layer-fill-base-luminance").withDefault(LayerBaseLuminance.LightMode);
 
 /**
- * The offset between "Fixed" layers, or from the container for "Interactive" rest state.
+ * The offset between "Fixed" layers, or from the container for "Interactive" rest state, {@link layerFillInteractiveRest}.
  *
  * @remarks
- * Typically a negative value so "Minus" recipes are darker and "Plus" recipes are lighter.
+ * A negative value causes "Minus" recipes to go darker and "Plus" recipes to go lighter. A positive value causes the reverse.
  *
  * @public
  */
 export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(-3);
 
 /**
- * The offset from the container for hover state.
+ * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
  *
  * @public
  */
 export const layerFillHoverDelta = createNonCss<number>("layer-fill-hover-delta").withDefault(-4);
 
 /**
- * The offset from the container for active state.
+ * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
  *
  * @public
  */
 export const layerFillActiveDelta = createNonCss<number>("layer-fill-active-delta").withDefault(-2);
 
 /**
- * The offset from the container for focus state.
+ * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
  *
  * @public
  */
@@ -94,9 +94,11 @@ export const layerFillFocusDelta = createNonCss<number>("layer-fill-focus-delta"
  * The "Fixed" layers represent background fills commonly used to define app structure.
  *
  * @remarks
- * Generally the primary section is {@link layerFillFixedBase} and underlying sections like navigation
- * or header are logically *beneath* using {@link layerFillFixedMinus1}, etc. Layers above the "Base" like
- * flyouts or dialogs should use {@link layerFillFixedPlus1}, etc.
+ * The primary content is {@link layerFillFixedBase}.
+ * Underlying sections like navigation or header are logically *beneath* using {@link layerFillFixedMinus1}, etc.
+ * Layers above the "Base" like flyouts or dialogs use {@link layerFillFixedPlus1}, etc.
+ *
+ * See {@link layerFillDelta}.
  *
  * @public
  */
@@ -111,7 +113,10 @@ export const layerFillFixedRecipe = createNonCss<LayerRecipe>("layer-fill-fixed-
 });
 
 /**
- * Design token for the fill of the "Base" layer.
+ * The fill of the "Base" or primary content layer.
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -121,7 +126,10 @@ export const layerFillFixedBase = create<Swatch>("layer-fill-fixed-base").withDe
 );
 
 /**
- * Design token for the fill of the layer 1 level beneath "Base".
+ * The fill of the layer 1 level beneath "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -131,7 +139,10 @@ export const layerFillFixedMinus1 = create<Swatch>("layer-fill-fixed-minus-1").w
 );
 
 /**
- * Design token for the fill of the layer 2 levels beneath "Base".
+ * The fill of the layer 2 levels beneath "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -141,7 +152,10 @@ export const layerFillFixedMinus2 = create<Swatch>("layer-fill-fixed-minus-2").w
 );
 
 /**
- * Design token for the fill of the layer 3 levels beneath "Base".
+ * The fill of the layer 3 levels beneath "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -151,7 +165,10 @@ export const layerFillFixedMinus3 = create<Swatch>("layer-fill-fixed-minus-3").w
 );
 
 /**
- * Design token for the fill of the layer 4 levels beneath "Base".
+ * The fill of the layer 4 levels beneath "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -161,7 +178,10 @@ export const layerFillFixedMinus4 = create<Swatch>("layer-fill-fixed-minus-4").w
 );
 
 /**
- * Design token for the fill of the layer 1 level above "Base".
+ * The fill of the layer 1 level above "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -171,7 +191,10 @@ export const layerFillFixedPlus1 = create<Swatch>("layer-fill-fixed-plus-1").wit
 );
 
 /**
- * Design token for the fill of the layer 2 levels above "Base".
+ * The fill of the layer 2 levels above "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -181,7 +204,10 @@ export const layerFillFixedPlus2 = create<Swatch>("layer-fill-fixed-plus-2").wit
 );
 
 /**
- * Design token for the fill of the layer 3 levels above "Base".
+ * The fill of the layer 3 levels above "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -191,7 +217,10 @@ export const layerFillFixedPlus3 = create<Swatch>("layer-fill-fixed-plus-3").wit
 );
 
 /**
- * Design token for the fill of the layer 4 levels above "Base".
+ * The fill of the layer 4 levels above "Base".
+ *
+ * @remarks
+ * See {@link layerFillFixedRecipe}.
  *
  * @public
  */
@@ -201,7 +230,7 @@ export const layerFillFixedPlus4 = create<Swatch>("layer-fill-fixed-plus-4").wit
 );
 
 /**
- * The recipe for a layer relative to its context (as opposed to base luminance).
+ * The recipe for a layer relative to its context (as opposed to {@link layerFillBaseLuminance}).
  *
  * @remarks
  * Useful for a `Card` or other container that's interactive.
@@ -222,7 +251,10 @@ export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>("
 });
 
 /**
- * Design token for the fill of an interactive layer at rest.
+ * The fill of an interactive layer at rest.
+ *
+ * @remarks
+ * See {@link layerFillDelta}.
  *
  * @public
  */
@@ -232,7 +264,10 @@ export const layerFillInteractiveRest = create<Swatch>("layer-fill-interactive-r
 );
 
 /**
- * Design token for the fill of an interactive layer while hovered.
+ * The fill of an interactive layer while hovered.
+ *
+ * @remarks
+ * See {@link layerFillHoverDelta}.
  *
  * @public
  */
@@ -242,7 +277,10 @@ export const layerFillInteractiveHover = create<Swatch>("layer-fill-interactive-
 );
 
 /**
- * Design token for the fill of an interactive layer while pressed.
+ * The fill of an interactive layer while pressed.
+ *
+ * @remarks
+ * See {@link layerFillActiveDelta}.
  *
  * @public
  */
@@ -252,7 +290,10 @@ export const layerFillInteractiveActive = create<Swatch>("layer-fill-interactive
 );
 
 /**
- * Design token for the fill of an interactive layer while focused.
+ * The fill of an interactive layer while focused.
+ *
+ * @remarks
+ * See {@link layerFillFocusDelta}.
  *
  * @public
  */

@@ -19,11 +19,11 @@
         "directory": "packages/adaptive-ui"
     },
     "scripts": {
-        "build": "tsc -p ./tsconfig.json",
-        "build:watch": "tsc -p ./tsconfig.json --watch",
+        "build": "tsc",
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
+        "start": "tsc --watch",
         "test": "npm run lint && npm run build && npm run unit-tests",
         "unit-tests": "mocha",
         "unit-tests:watch": "mocha --watch"
