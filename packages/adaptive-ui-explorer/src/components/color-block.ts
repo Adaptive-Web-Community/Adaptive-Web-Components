@@ -483,7 +483,7 @@ const styles = css`
         text-align: center;
         position: relative;
         transition: opacity 0.1s linear;
-        height: 100%;
+        height: max-content;
         min-height: 100%;
         background-color: ${fillColor};
         color: ${neutralForegroundRest};
