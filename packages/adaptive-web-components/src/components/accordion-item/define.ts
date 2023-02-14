@@ -11,4 +11,4 @@ if (!DefaultDesignSystem.statics.has(AccordionItemExpandedIconKey)) {
     DefaultDesignSystem.statics.set(AccordionItemExpandedIconKey, chevronUpIcon)
 }
 
-definition(DefaultDesignSystem).define();
+definition().define();
