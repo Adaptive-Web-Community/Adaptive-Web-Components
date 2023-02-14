@@ -33,8 +33,8 @@
     "dependencies": {
         "@adaptive-web/adaptive-ui": "^0.0.1",
         "@fluentui/svg-icons": "^1.1.192",
-        "@microsoft/fast-element": "2.0.0-beta.20",
-        "@microsoft/fast-foundation": "3.0.0-alpha.24",
+        "@microsoft/fast-element": "2.0.0-beta.21",
+        "@microsoft/fast-foundation": "3.0.0-alpha.25",
         "@microsoft/fast-web-utilities": "6.0.0"
     },
     "devDependencies": {

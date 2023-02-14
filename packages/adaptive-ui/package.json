@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "@microsoft/fast-colors": "^5.3.1",
-        "@microsoft/fast-foundation": "3.0.0-alpha.24"
+        "@microsoft/fast-foundation": "3.0.0-alpha.25"
     },
     "devDependencies": {
         "@types/chai": "^4.3.4",
