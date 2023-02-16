@@ -30,7 +30,13 @@ Add the components:
 npm install "@adaptive-web/adaptive-web-components"
 ```
 
-Import the components you want to use:
+Import and use everything:
+```ts
+import AWC from "@adaptive-web/adaptive-web-components"
+AWC.withPrefix("super").defineAllComponents();
+```
+
+Import the specific components you want to use:
 
 ```ts
 import "@adaptive-web/adaptive-web-components/button/define";
