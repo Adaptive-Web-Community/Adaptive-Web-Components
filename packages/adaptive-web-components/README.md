@@ -2,7 +2,7 @@
 
 > Note this is an alpha release. The components are functional and performant and safe to use. They are however based on the beta release of FAST Element.
 
-> While we are committed to following semver for this project, it's important to note that while we move through alpha and beta, minor version numbers can and will most likely include breaking changes until we hit 1.0.0. After 1.0.0, we will be align with semver2.0.
+> While we are committed to following semver for this project, it's important to note that while we move through alpha and beta, minor version numbers can and will most likely include breaking changes until we hit 1.0.0. After 1.0.0, we will be aligned with semver2.0.
 
 We currently recommend consuming them with as few adjustments as possible because many common issues will be made much easier, including building your own customized design system.
 
