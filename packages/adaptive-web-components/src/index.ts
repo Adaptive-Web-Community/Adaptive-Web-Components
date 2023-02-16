@@ -3,8 +3,9 @@ import type { DesignSystem, PartialDesignSystem } from "./design-system.js";
 import { configureDesignSystem, DefaultDesignSystem } from "./design-system.js";
 import { AllComponents } from "./custom-elements.js";
 
-export type { DesignSystem } from "./design-system.js";
+export * from "./design-system.js";
 export * from "./components/index.js";
+export { AllComponents } from "./custom-elements.js";
 
 export interface AdaptiveDesignSystem {
 	designSystem: DesignSystem;
