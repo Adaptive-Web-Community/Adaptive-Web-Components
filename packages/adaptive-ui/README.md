@@ -7,7 +7,7 @@ This started as a core feature of [FAST](https://fast.design) and is incorporate
 ## Installation
 
 ```shell
-npm install --save @adaptive-web/adaptive-ui
+npm install @adaptive-web/adaptive-ui
 ```
 
 
@@ -37,14 +37,12 @@ neutralBaseColor.withDefault("#73818C");
 
 See more about the [adaptive color system](./src/color/README.md).
 
-## Road map
+## Next Steps
+
+The fixed design tokens (`neutralFillRest`) will evolve into a more configurable definition aligning with industry standards in design tokens. Styling will be inverted, applying styling options to components rather than components getting values from known tokens.
 
 The layer system for setting content area background colors and improved handling of light and dark mode is evolving and will be added soon.
 
 The latest version of adaptive density, currently in RFC and PR, will come here soon as well.
 
 The color system is being updated to support opacity in colors, which will enable at least the neutral palette to overlay images or background blur effects like in Windows 11.
-
-### Further afield
-
-The fixed design tokens will evolve into a more configurable definition aligning with industry standards in design tokens.
