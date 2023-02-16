@@ -26,9 +26,33 @@ export interface DesignSystem {
 }
 
 /**
+ * Represents partial metadata configuration for a custom element.
+ * 
+ * @public
+ */
+export type PartialDesignSystem = Partial<DesignSystem>;
+
+/**
  * The default {@link DesignSystem} configuration.
  */
-export const DefaultDesignSystem = Object.freeze({
+export const DefaultDesignSystem: DesignSystem = Object.freeze({
     prefix: "adaptive",
     statics: new Map(),
-} as DesignSystem);
+});
+
+/**
+ * 
+ * @remarks
+ * Configures a custom design system by extending {@link DefaultDesignSystem}
+ * 
+ * @param options - {@link DesignSystem} property overrides
+ */
+export function configureDesignSystem(
+    options: PartialDesignSystem = {},
+    designSystem: PartialDesignSystem = DefaultDesignSystem
+): DesignSystem {
+    return Object.freeze({
+        ...designSystem,
+        ...options
+    }) as DesignSystem;
+}
