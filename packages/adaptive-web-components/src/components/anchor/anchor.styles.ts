@@ -1,26 +1,30 @@
 import {
+    attributeInteractive,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralForegroundRest,
+    neutralStrokeActive,
+    neutralStrokeFocus,
+    neutralStrokeHover,
+    neutralStrokeRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
-import { css, ElementStyles } from "@microsoft/fast-element";
+import type { StyleModuleEvaluateParameters } from "@adaptive-web/adaptive-ui";
+import { css } from "@microsoft/fast-element";
+import type { ComposableStyles, ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-flex;
     }
@@ -53,7 +57,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
-        border-radius: calc(${controlCornerRadius} * 1px);
         ${typeRampBase}
     }
 
@@ -61,8 +64,7 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid transparent;
         gap: 10px;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
-        border-radius: inherit;
-        background-color: ${neutralFillRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
         color: ${neutralForegroundRest};
         fill: currentcolor;
     }
@@ -72,24 +74,33 @@ export const aestheticStyles: ElementStyles = css`
         line-height: 0;
     }
 
-    :host([href]:hover) .control {
-        background-color: ${neutralFillHover};
-    }
-
-    :host([href]:active) .control {
-        background-color: ${neutralFillActive};
-    }
-
     .control:focus-visible {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 `;
 
-/**
- * Default Adaptive UI Anchor styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
+const moduleParams: StyleModuleEvaluateParameters = {
+    part: "control",
+    interactivitySelector: "[href]",
+    nonInteractivitySelector: ":not([href])",
+};
 
-    ${aestheticStyles}
-`;
+/**
+ * Visual styles composed by modules.
+ */
+export const moduleStyles: ComposableStyles[] = [
+    attributeInteractive(
+        "background-color",
+        neutralFillRest,
+        neutralFillHover,
+        neutralFillActive,
+        neutralFillFocus
+    )(moduleParams),
+    attributeInteractive(
+        "border-color",
+        neutralStrokeRest,
+        neutralStrokeHover,
+        neutralStrokeActive,
+        neutralStrokeFocus
+    )(moduleParams),
+];

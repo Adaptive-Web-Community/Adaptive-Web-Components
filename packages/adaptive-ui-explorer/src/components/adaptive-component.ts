@@ -1,5 +1,6 @@
-import { Swatch } from "@adaptive-web/adaptive-ui";
+import { ModuleStyles, Swatch } from "@adaptive-web/adaptive-ui";
 import {
+    attr,
     css,
     customElement,
     ElementViewTemplate,
@@ -28,7 +29,9 @@ function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
                 --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS()};
             "
         >
-            <slot></slot>
+            <span class="content" part="content">
+                <slot></slot>
+            </span>
         </template>
     `;
 }
@@ -71,12 +74,19 @@ const styles = css`
     }
 `;
 
+const testModularStyles = ModuleStyles.get("app-adaptive-component") || [];
+console.log("Loading app-adaptive-component", testModularStyles);
+
 @customElement({
     name: "app-adaptive-component",
     template: template(),
-    styles,
+    styles: [styles, ...testModularStyles],
 })
 export class AdaptiveComponent extends FASTElement {
+    // Temp for testing attribute selection
+    @attr({attribute: "layer", mode: "boolean"})
+    public layer: boolean;
+    
     @observable
     public fillRest?: CSSDesignToken<Swatch>;
 

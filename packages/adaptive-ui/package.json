@@ -19,8 +19,9 @@
         "directory": "packages/adaptive-ui"
     },
     "scripts": {
-        "build": "tsc -p ./tsconfig.json",
+        "build": "tsc",
         "clean": "rimraf dist",
+        "dev": "tsc --watch",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "test": "npm run lint && npm run build && npm run unit-tests",
@@ -28,6 +29,7 @@
         "unit-tests:watch": "mocha --watch"
     },
     "dependencies": {
+        "@cobalt-ui/core": "^0.7.4",
         "@microsoft/fast-colors": "^5.3.1",
         "@microsoft/fast-foundation": "3.0.0-alpha.25"
     },
