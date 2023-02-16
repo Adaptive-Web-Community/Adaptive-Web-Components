@@ -1,0 +1,49 @@
+{
+    "$name": "Token Test",
+    "$description": "The top part can be whatever tokens needed following the DTCG spec plus extensions and custom types.",
+    "cornerRadius": {
+        "$type": "dimension",
+        "$description": "Corner radius values",
+        "control": {
+            "$description": "Corner radius for controls",
+            "$value": "4px",
+            "$extensions": {
+                "mode": {
+                    "hover": "8px",
+                    "active": "0px"
+                }
+            }
+        },
+        "layer": {
+            "$description": "Corner radius for layers",
+            "$value": "8px"
+        }
+    },
+    "_styles": {
+        "$description": "This section applies tokens above to components, following the allowed formats.",
+        "app-adaptive-component": {
+            "$description": "Test component styles",
+            "border-radius": {
+                "$value": "{cornerRadius.control}"
+            },
+            "[layer]": {
+                "border-radius": {
+                    "$value": "{cornerRadius.layer}"
+                }
+            },
+            "content": {
+                "color": {
+                    "$type": "color",
+                    "$value": "#00FF00"
+                },
+                ":hover": {
+                    "$description": "NOTE: This is not the best example, but tests part conditions.",
+                    "color": {
+                        "$type": "color",
+                        "$value": "#FF0000"
+                    }
+                }
+            }
+        }
+    }
+}

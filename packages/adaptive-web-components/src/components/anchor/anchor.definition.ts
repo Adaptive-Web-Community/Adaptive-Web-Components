@@ -1,6 +1,7 @@
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { DesignSystem } from "../../design-system.js";
 import { AdaptiveAnchor } from "./anchor.js";
-import { styles } from "./anchor.styles.js";
+import { aestheticStyles, moduleStyles, templateStyles } from "./anchor.styles.js";
 import { template } from "./anchor.template.js";
 
 /**
@@ -16,7 +17,12 @@ export const definition = (ds: DesignSystem) =>
         name: `${ds.prefix}-anchor`,
         registry: ds.registry,
         template: template(ds),
-        styles,
+        styles: [
+            componentBaseStyles,
+            templateStyles,
+            aestheticStyles,
+            ...moduleStyles
+        ],
         shadowOptions: {
             delegatesFocus: true,
         },

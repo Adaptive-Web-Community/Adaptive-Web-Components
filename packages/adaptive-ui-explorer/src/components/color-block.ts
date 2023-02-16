@@ -118,6 +118,7 @@ const backplateComponents = html<ColorBlock>`
 
         <div class="example">
             <app-adaptive-component
+                layer
                 :fillRest="${x => neutralFillRest}"
                 :fillHover="${x => neutralFillHover}"
                 :fillActive="${x => neutralFillActive}"
