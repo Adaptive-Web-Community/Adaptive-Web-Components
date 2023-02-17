@@ -38,12 +38,6 @@ import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components"
 AWC.defineComponents(AllComponents);
 ```
 
-Import the specific components you want to use:
-
-```ts
-import "@adaptive-web/adaptive-web-components/button/define";
-```
-
 Author html with imported components:
 
 ```html

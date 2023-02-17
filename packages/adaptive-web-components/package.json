@@ -20,6 +20,7 @@
     },
     "main": "./dist/adaptive-web-components.min.js",
     "module": "./dist/esm/index.js",
+    "types": "./dist/dts/index.d.ts",
     "scripts": {
         "build:tsc": "tsc -p ./tsconfig.build.json",
         "build:bundle": "vite build",

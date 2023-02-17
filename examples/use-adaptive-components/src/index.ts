@@ -1,10 +1,7 @@
 // All components that are used in html must be defined.
-import "@adaptive-web/adaptive-web-components/avatar/define";
-import "@adaptive-web/adaptive-web-components/button/define";
-import "@adaptive-web/adaptive-web-components/card/define";
-import "@adaptive-web/adaptive-web-components/radio/define";
-import "@adaptive-web/adaptive-web-components/radio-group/define";
-import "@adaptive-web/adaptive-web-components/switch/define";
+import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components";
+
+AWC.defineComponents(AllComponents);
 // Uncomment to define the `adaptive-text-field` element.
 // import "@adaptive-web/adaptive-web-components/text-field/define";
 
