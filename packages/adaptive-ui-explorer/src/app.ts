@@ -215,7 +215,7 @@ export class App extends FASTElement implements AppAttributes {
     public connectedCallback() {
         super.connectedCallback();
         this.neutralColor = "#808080";
-        this.accentColor = "#0078d4";
+        this.accentColor = "#F26C0D";
     }
 
     public designSystemElement: FASTElement;
