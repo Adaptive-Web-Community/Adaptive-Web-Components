@@ -12,4 +12,12 @@ export interface AdaptiveDesignSystem {
 	defineAllComponents(registry?: CustomElementRegistry): void;
 }
 
+/**
+ * The default DesignSystem.
+ * 
+ * @remarks
+ * Can be used to quickly define and use the adaptive web components.
+ * 
+ * @beta
+ */
 export default DefaultDesignSystem;

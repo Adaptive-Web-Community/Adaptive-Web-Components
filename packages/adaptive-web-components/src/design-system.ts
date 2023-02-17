@@ -2,31 +2,6 @@ import { FASTElementDefinition } from '@microsoft/fast-element';
 import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 
 /**
- * Represents metadata configuration for a custom element.
- *
- * @beta
- */
-export interface DesignSystem {
-    /**
-     * The prefix for custom elements.
-     */
-    readonly prefix: string;
-
-    /**
-     * The registry to register components in by default.
-     *
-     * @remarks
-     * If not provided, defaults to the global registry.
-     */
-    readonly registry?: CustomElementRegistry;
-
-    /**
-     * A map of static resources that are referenced by the components.
-     */
-    readonly statics: Map<string, StaticallyComposableHTML>;
-}
-
-/**
  * Represents partial metadata configuration for a custom element.
  * 
  * @beta
@@ -34,6 +9,8 @@ export interface DesignSystem {
 export type PartialDesignSystem = Partial<DesignSystem>;
 
 /**
+ * Represents metadata configuration for a custom element.
+ * 
  * @beta
  */
 export class DesignSystem implements DesignSystem {
@@ -43,11 +20,28 @@ export class DesignSystem implements DesignSystem {
         private _statics: Map<string, StaticallyComposableHTML> = new Map()
     ) {}
 
+    public get prefix() {
+        return this._prefix;
+    }
+
+    public get registry() {
+        return this._registry;
+    }
+
+    public get statics() {
+        return this._statics;
+    }
+
+    /**
+     * Overrides DesignSystem properties.
+     * 
+     * @beta
+     */
     public configure(options: PartialDesignSystem): this {
         this._prefix = options.prefix ?? this._prefix;
         this._registry = options.registry ?? this._registry;
         this._statics = options.statics ?? this._statics;
-        
+
         return this;
     }
 
