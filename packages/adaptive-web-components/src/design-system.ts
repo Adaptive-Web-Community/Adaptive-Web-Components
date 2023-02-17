@@ -13,7 +13,7 @@ export type PartialDesignSystem = Partial<DesignSystem>;
  * 
  * @beta
  */
-export class DesignSystem implements DesignSystem {
+export class DesignSystem {
     constructor(
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
