@@ -26,7 +26,7 @@ export const neutralPalette = createNonCss<Palette>("neutral-palette").withDefau
 );
 
 /** @public */
-export const accentBaseColor = create<string>("accent-base-color").withDefault("#ACCE5C");
+export const accentBaseColor = create<string>("accent-base-color").withDefault("#88CC00");
 
 /** @public */
 export const accentBaseSwatch = createNonCss<Swatch>("accent-base-swatch").withDefault(
