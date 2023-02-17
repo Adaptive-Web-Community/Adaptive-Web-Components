@@ -1,9 +1,26 @@
 // All components that are used in html must be defined.
-import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components";
+import AWC, {
+    AvatarDefinition,
+    ButtonDefinition,
+    CardDefinition,
+    RadioDefinition,
+    RadioGroupDefinition,
+    SwitchDefinition,
+} from "@adaptive-web/adaptive-web-components";
+AWC.defineComponents({
+    AvatarDefinition,
+    ButtonDefinition,
+    CardDefinition,
+    RadioDefinition,
+    RadioGroupDefinition,
+    SwitchDefinition
+});
 
-AWC.defineComponents(AllComponents);
 // Uncomment to define the `adaptive-text-field` element.
-// import "@adaptive-web/adaptive-web-components/text-field/define";
+// import { TextFieldDefinition } from "@adaptive-web/adaptive-web-components";
+// AWC.defineComponents({
+//     TextFieldDefinition
+// });
 
 import { accentBaseColor, fillColor, LayerBaseLuminance, layerFillBaseLuminance, layerFillFixedBase } from "@adaptive-web/adaptive-ui";
 import { DesignToken, FASTRadioGroup, FASTSwitch } from "@microsoft/fast-foundation";
