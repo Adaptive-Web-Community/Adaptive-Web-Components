@@ -1,4 +1,5 @@
 import {
+    accentForegroundRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
@@ -154,8 +155,8 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .track-start {
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        background: var(--accent-foreground-rest);
+        border-radius: calc(${controlCornerRadius} * 1px);
+        background: ${accentForegroundRest};
     }
 
     .track {

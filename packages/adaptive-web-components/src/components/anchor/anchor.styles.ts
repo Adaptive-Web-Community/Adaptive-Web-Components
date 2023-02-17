@@ -3,9 +3,9 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillActive,
-    neutralFillHover,
-    neutralFillRest,
+    neutralFillSecondaryActive,
+    neutralFillSecondaryHover,
+    neutralFillSecondaryRest,
     neutralForegroundRest,
     strokeWidth,
     typeRampBase,
@@ -62,7 +62,7 @@ export const aestheticStyles: ElementStyles = css`
         gap: 10px;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         border-radius: inherit;
-        background-color: ${neutralFillRest};
+        background-color: ${neutralFillSecondaryRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
     }
@@ -73,11 +73,11 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([href]:hover) .control {
-        background-color: ${neutralFillHover};
+        background-color: ${neutralFillSecondaryHover};
     }
 
     :host([href]:active) .control {
-        background-color: ${neutralFillActive};
+        background-color: ${neutralFillSecondaryActive};
     }
 
     .control:focus-visible {

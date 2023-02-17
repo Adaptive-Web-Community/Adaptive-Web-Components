@@ -99,7 +99,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([expanded]) .region {
-        display: block;
+        display: flex;
     }
 
     :host([disabled]) .button::before {

@@ -44,7 +44,6 @@ export default {
             Updates.enqueue(() => {
                 renderedStory.$fastController.addStyles(css`
                     ::slotted(adaptive-card) {
-                        color: var(--neutral-foreground-rest);
                         height: 200px;
                         width: 120px;
                     }

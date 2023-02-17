@@ -1,7 +1,11 @@
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -84,6 +88,8 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid ${neutralStrokeStrongRest};
         border-radius: 50%;
         background: ${neutralFillInputRest};
+        color: ${neutralForegroundRest};
+        fill: currentcolor;
     }
 
     :host(:enabled:hover) .control {
@@ -100,14 +106,26 @@ export const aestheticStyles: ElementStyles = css`
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
+    :host([aria-checked="true"]) .control {
+        background: ${accentFillRest};
+        border-color: transparent;
+        color: ${foregroundOnAccentRest};
+    }
+
+    :host([aria-checked="true"]:not(.disabled):hover) .control {
+        background: ${accentFillHover};
+        border-color: transparent;
+    }
+
+    :host([aria-checked="true"]:not(.disabled):active) .control {
+        background: ${accentFillActive};
+        border-color: transparent;
+    }
+
     .label {
         padding-inline-start: calc(${designUnit} * 2px + 2px);
         color: ${neutralForegroundRest};
         ${typeRampBase}
-    }
-
-    slot[name="checked-indicator"] * {
-        fill: ${neutralForegroundRest};
     }
 
     :host([disabled]) {

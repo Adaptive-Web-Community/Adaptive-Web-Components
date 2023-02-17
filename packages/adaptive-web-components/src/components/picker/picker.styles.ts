@@ -9,13 +9,12 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host {
-        display: block;
+        display: inline-flex;
     }
 
     .region {
         display: flex;
         z-index: 1000;
-        overflow: auto;
     }
 
     .loaded {

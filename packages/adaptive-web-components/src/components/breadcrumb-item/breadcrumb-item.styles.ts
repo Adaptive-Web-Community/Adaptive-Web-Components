@@ -105,7 +105,6 @@ export const aestheticStyles: ElementStyles = css`
 
     :host(:not([href])),
     :host([aria-current]) .control {
-        font-weight: 600;
         color: ${neutralForegroundRest} !important;
         fill: currentcolor;
     }

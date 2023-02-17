@@ -7,9 +7,9 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralForegroundRest,
-    neutralStrokeInputActive,
-    neutralStrokeInputHover,
-    neutralStrokeInputRest,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -27,9 +27,15 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: flex;
         flex-wrap: wrap;
+        outline: none;
+        user-select: none;
     }
 
     ::slotted([role="combobox"]) {
+        box-sizing: border-box;
+        min-width: 250px;
+        width: auto;
+        border: none;
         outline: none;
         user-select: none;
     }
@@ -44,32 +50,32 @@ export const aestheticStyles: ElementStyles = css`
         min-height: calc(${heightNumber} * 1px);
         column-gap: calc(${designUnit} * 1px);
         row-gap: calc(${designUnit} * 1px);
-    }
-
-    ::slotted([role="combobox"]) {
-        /* box-sizing: border-box; */
-        /* width: auto; */
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeInputRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         background: ${neutralFillInputRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
-        padding: 0 calc(${designUnit} * 2px + 1px);
+        padding: calc(${designUnit} * 1px) calc(${designUnit} * 2px);
         ${typeRampBase}
     }
 
-    ::slotted([role="combobox"]:hover) {
-        border-color: ${neutralStrokeInputHover};
+    :host(:not([disabled]):hover) {
+        border-color: ${neutralStrokeHover};
         background: ${neutralFillInputHover};
     }
 
-    ::slotted([role="combobox"]:active) {
-        border-color: ${neutralStrokeInputActive};
+    :host(:not([disabled]):active) {
+        border-color: ${neutralStrokeActive};
         background: ${neutralFillInputActive};
     }
 
-    ::slotted([role="combobox"]:focus-within) {
+    :host(:not([disabled]):focus-within) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+    }
+
+    ::slotted([role="combobox"]) {
+        height: calc(${heightNumber} * 1px);
+        padding: 0 calc(${designUnit} * 2px + 1px);
     }
 `;
 
