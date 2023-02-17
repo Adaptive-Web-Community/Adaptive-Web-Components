@@ -34,8 +34,8 @@ npm install "@adaptive-web/adaptive-web-components"
 
 Import and use everything:
 ```ts
-import AWC from "@adaptive-web/adaptive-web-components"
-AWC.withPrefix("super").defineAllComponents();
+import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components"
+AWC.defineComponents(AllComponents);
 ```
 
 Import the specific components you want to use:
