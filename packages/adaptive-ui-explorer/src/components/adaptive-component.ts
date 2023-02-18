@@ -14,18 +14,18 @@ function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
         <template
             tabindex="0"
             style="
-                --ac-fill-rest: ${x => x.fillRest?.createCSS()};
-                --ac-fill-hover: ${x => x.fillHover?.createCSS()};
-                --ac-fill-active: ${x => x.fillActive?.createCSS()};
-                --ac-fill-focus: ${x => x.fillFocus?.createCSS()};
-                --ac-stroke-rest: ${x => x.strokeRest?.createCSS()};
-                --ac-stroke-hover: ${x => x.strokeHover?.createCSS()};
-                --ac-stroke-active: ${x => x.strokeActive?.createCSS()};
-                --ac-stroke-focus: ${x => x.strokeFocus?.createCSS()};
-                --ac-foreground-rest: ${x => x.foregroundRest?.createCSS()};
-                --ac-foreground-hover: ${x => x.foregroundHover?.createCSS()};
-                --ac-foreground-active: ${x => x.foregroundActive?.createCSS()};
-                --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS()};
+                --ac-fill-rest: ${x => x.fillRest?.createCSS() || "transparent"};
+                --ac-fill-hover: ${x => x.fillHover?.createCSS() || "transparent"};
+                --ac-fill-active: ${x => x.fillActive?.createCSS() || "transparent"};
+                --ac-fill-focus: ${x => x.fillFocus?.createCSS() || "transparent"};
+                --ac-stroke-rest: ${x => x.strokeRest?.createCSS() || "transparent"};
+                --ac-stroke-hover: ${x => x.strokeHover?.createCSS() || "transparent"};
+                --ac-stroke-active: ${x => x.strokeActive?.createCSS() || "transparent"};
+                --ac-stroke-focus: ${x => x.strokeFocus?.createCSS() || "transparent"};
+                --ac-foreground-rest: ${x => x.foregroundRest?.createCSS() || "transparent"};
+                --ac-foreground-hover: ${x => x.foregroundHover?.createCSS() || "transparent"};
+                --ac-foreground-active: ${x => x.foregroundActive?.createCSS() || "transparent"};
+                --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS() || "transparent"};
             "
         >
             <slot></slot>

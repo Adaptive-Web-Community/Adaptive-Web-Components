@@ -1,8 +1,12 @@
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -84,6 +88,8 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid ${neutralStrokeStrongRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         background: ${neutralFillInputRest};
+        color: ${neutralForegroundRest};
+        fill: currentcolor;
     }
 
     :host(:enabled:hover) .control {
@@ -100,15 +106,29 @@ export const aestheticStyles: ElementStyles = css`
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
+    :host([aria-checked="true"]) .control,
+    :host([aria-checked="mixed"]) .control {
+        background: ${accentFillRest};
+        border-color: transparent;
+        color: ${foregroundOnAccentRest};
+    }
+
+    :host([aria-checked="true"]:not(.disabled):hover) .control,
+    :host([aria-checked="mixed"]:not(.disabled):hover) .control {
+        background: ${accentFillHover};
+        border-color: transparent;
+    }
+
+    :host([aria-checked="true"]:not(.disabled):active) .control,
+    :host([aria-checked="mixed"]:not(.disabled):active) .control {
+        background: ${accentFillActive};
+        border-color: transparent;
+    }
+
     .label {
         padding-inline-start: calc(${designUnit} * 2px + 2px);
         color: ${neutralForegroundRest};
         ${typeRampBase}
-    }
-
-    slot[name="checked-indicator"] *,
-    slot[name="indeterminate-indicator"] * {
-        fill: ${neutralForegroundRest};
     }
 
     :host([disabled]) {

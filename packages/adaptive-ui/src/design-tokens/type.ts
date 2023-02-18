@@ -19,24 +19,14 @@ export const StandardFontWeight = {
 } as const;
 
 /** @public */
-export const bodyFont = create<string>("body-font").withDefault('"Segoe UI Variable", "Segoe UI", sans-serif');
+export const bodyFont = create<string>("body-font").withDefault('Arial, Helvetica, sans-serif');
 
 /** @public */
 export const fontWeight = create<number>("font-weight").withDefault(StandardFontWeight.Normal);
 
 function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenResolver) => string {
     return (resolve: DesignTokenResolver): string => {
-        const size = resolve(sizeToken);
-        const weight = resolve(fontWeight);
-        if (size.endsWith("px")) {
-            const px = Number.parseFloat(size.replace("px", ""));
-            if (px <= 12) {
-                return `"wght" ${weight}, "opsz" 8`;
-            } else if (px > 24) {
-                return `"wght" ${weight}, "opsz" 36`;
-            }
-        }
-        return `"wght" ${weight}, "opsz" 10.5`;
+        return "";
     };
 }
 

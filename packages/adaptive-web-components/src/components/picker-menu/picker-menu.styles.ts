@@ -1,4 +1,4 @@
-import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui";
+import { designUnit, elevationFlyout, layerCornerRadius, layerFillFixedPlus1, strokeWidth } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -32,9 +32,9 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        border: calc(var(--stroke-width) * 1px) solid transparent;
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        padding: calc(var(--design-unit) * 1px) 0;
+        border: calc(${strokeWidth} * 1px) solid transparent;
+        border-radius: calc(${layerCornerRadius} * 1px);
+        padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
     }

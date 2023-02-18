@@ -41,7 +41,11 @@ export default {
     },
 } as Meta<FASTPicker>;
 
-export const Picker: Story<FASTPicker> = renderComponent(storyTemplate).bind({});
+export const Picker: Story<FASTPicker> = renderComponent(html<StoryArgs<FASTPicker>>`
+    <div style="height: 300px;">
+        ${storyTemplate}
+    </div>
+`).bind({});
 Picker.args = {
     label: "Fruit picker",
     loadingText: "Loading",

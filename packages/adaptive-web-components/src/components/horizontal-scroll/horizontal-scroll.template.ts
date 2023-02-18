@@ -46,7 +46,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<FASTHorizontalS
                     </div>
                     ${when((x) => x.view !== "mobile",
                         html<FASTHorizontalScroll>`
-                            <div class="scroll scroll-previous" part="scroll-previous" ${ref("previousFlipperContainer")}>
+                            <div class="scroll-previous" part="scroll-previous" ${ref("previousFlipperContainer")}>
                                 <slot name="previous-flipper">
                                     ${staticallyCompose(
                                         options.previousFlipper ??
@@ -61,7 +61,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<FASTHorizontalS
                                     )}
                                 </slot>
                             </div>
-                            <div class="scroll scroll-next" part="scroll-next" ${ref("nextFlipperContainer")}>
+                            <div class="scroll-next" part="scroll-next" ${ref("nextFlipperContainer")}>
                                 <slot name="next-flipper">
                                     ${staticallyCompose(
                                         options.nextFlipper ??

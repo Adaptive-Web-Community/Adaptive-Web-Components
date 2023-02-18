@@ -4,7 +4,7 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillRecipe,
+    neutralFillSecondaryRecipe,
     neutralFillSecondaryRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -28,7 +28,7 @@ const expandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collaps
 
 const selectedExpandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collapse-selected-hover").withDefault(
     (resolve: DesignTokenResolver) => {
-        const baseRecipe = resolve(neutralFillRecipe);
+        const baseRecipe = resolve(neutralFillSecondaryRecipe);
         const buttonRecipe = resolve(neutralFillStealthRecipe);
         return buttonRecipe.evaluate(resolve, baseRecipe.evaluate(resolve).rest).hover;
     }
@@ -98,6 +98,10 @@ export const templateStyles: ElementStyles = css`
         --tree-item-nested-width: var(--tree-item-nested-width-slotted, 0px);
     }
 
+    :host(:focus-visible) {
+        outline: none;
+    }
+
     :host([disabled]) .control {
         cursor: not-allowed;
     }
@@ -133,6 +137,7 @@ export const aestheticStyles: ElementStyles = css`
 
     :host(:focus-visible) .control {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline-offset: calc(${focusStrokeWidth} * -1px);
     }
 
     .expand-collapse-button {
@@ -159,6 +164,7 @@ export const aestheticStyles: ElementStyles = css`
         display: block;
         position: absolute;
         top: calc((${heightNumber} / 4) * 1px);
+        left: calc(${focusStrokeWidth} * 1px);
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
         border-radius: calc(${controlCornerRadius} * 1px);

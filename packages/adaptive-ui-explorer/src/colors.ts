@@ -5,7 +5,7 @@ export enum AccentColor {
     blue = "#0078D4",
     green = "#107C10",
     purple = "#5C2D91",
-    orange = "#D83B01",
+    orange = "#F26C0D",
     yellow = "#F2C812",
 }
 
@@ -21,5 +21,5 @@ export const neutralColors: string[] = [
     "#D83B01",
 ];
 
-export const defaultAccentColor: string = AccentColor.blue;
+export const defaultAccentColor: string = AccentColor.orange;
 export const defaultNeutralColor: string = neutralColors[0];

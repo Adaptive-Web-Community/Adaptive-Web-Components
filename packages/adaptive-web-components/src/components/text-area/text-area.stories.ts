@@ -22,7 +22,7 @@ const storyTemplate = html<StoryArgs<FASTTextArea>>`
         size="${(x) => x.size}"
         value="${(x) => x.value}"
     >
-        ${(x) => x.label}
+        ${(x) => x.storyContent}
     </adaptive-text-area>
 `;
 

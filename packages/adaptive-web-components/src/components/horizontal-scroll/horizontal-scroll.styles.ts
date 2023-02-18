@@ -65,7 +65,8 @@ export const actionsStyles = css`
         overflow-x: hidden !important;
     }
 
-    .scroll {
+    .scroll-next,
+    .scroll-previous {
         position: absolute;
         display: flex;
         align-items: center;
@@ -74,7 +75,8 @@ export const actionsStyles = css`
         user-select: none;
     }
 
-    .scroll.disabled {
+    .scroll-next.disabled,
+    .scroll-previous.disabled {
         display: none;
     }
 

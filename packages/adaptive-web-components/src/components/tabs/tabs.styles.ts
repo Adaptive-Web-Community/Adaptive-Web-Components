@@ -33,11 +33,6 @@ export const templateStyles: ElementStyles = css`
         align-self: center;
     }
 
-    .active-indicator {
-        grid-row: 2;
-        grid-column: 1;
-    }
-
     .tabpanel {
         position: relative;
         grid-row: 2;
@@ -71,12 +66,6 @@ export const templateStyles: ElementStyles = css`
     :host([orientation="vertical"]) ::slotted([slot="end"]) {
         grid-row: 3;
     }
-
-    :host([orientation="vertical"]) .activeIndicator {
-        align-self: center;
-        grid-column: 1;
-        grid-row: 1;
-    }
 `;
 
 /**
@@ -88,13 +77,29 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .active-indicator {
-        justify-self: center;
-        width: 20px;
-        height: 3px;
         border-radius: calc(${controlCornerRadius} * 1px);
         background: ${accentFillRest};
     }
 
+    :host([orientation="horizontal"]) .active-indicator {
+        width: 20px;
+        height: 3px;
+        justify-self: center;
+    }
+
+    :host([orientation="vertical"]) .active-indicator {
+        height: 14px;
+        width: 3px;
+        align-self: center;
+    }
+
+    .activeIndicatorTransition {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    :host([orientation="vertical"]) .activeIndicatorTransition {
+        transition: transform 0.2s linear;
+    }
 `;
 
 /**

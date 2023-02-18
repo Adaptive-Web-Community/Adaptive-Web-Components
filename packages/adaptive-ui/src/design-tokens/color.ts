@@ -37,7 +37,7 @@ export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").with
 // Accent Fill
 
 /** @public */
-export const accentFillMinContrast = createNonCss<number>("accent-fill-min-contrast").withDefault(5.5);
+export const accentFillMinContrast = createNonCss<number>("accent-fill-min-contrast").withDefault(4.5);
 
 /** @public */
 export const accentFillRestDelta = createNonCss<number>("accent-fill-rest-delta").withDefault(0);
