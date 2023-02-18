@@ -18,9 +18,9 @@
         "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
         "directory": "packages/adaptive-web-components"
     },
-    "main": "./dist/adaptive-web-components.min.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/dts/index.d.ts",
+    "main": "dist/esm/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/dts/index.d.ts",
     "scripts": {
         "build:tsc": "tsc -p ./tsconfig.build.json",
         "build:bundle": "vite build",
