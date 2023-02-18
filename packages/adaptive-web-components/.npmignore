@@ -1,0 +1,30 @@
+# Tests
+dist/dts/__test__/
+dist/esm/__test__/
+*.spec.*
+coverage/
+
+# Source files
+src/
+
+# config files
+.eslintignore
+.eslintrc.cjs
+.eslintrc.json
+.mocharc.json
+.prettierignore
+api-extractor.json
+karma.conf.js
+rollup.config.js
+tsconfig.json
+tsconfig.build.json
+vite.config.js
+cem.config.mjs
+cem.plugins.mjs
+
+# cache
+.rollupcache
+temp
+
+# storybook
+.storybook/**
