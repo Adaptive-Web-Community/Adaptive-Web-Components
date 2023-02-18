@@ -1,7 +1,5 @@
-import { FASTAccordion } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./accordion.styles.js";
-import { template } from "./accordion.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeAccordion } from "./accordion.compose.js";
 
 /**
  * The Accordion custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordion}.
@@ -11,10 +9,4 @@ import { template } from "./accordion.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTAccordion.compose({
-        name: `${ds.prefix}-accordion`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const AdaptiveAccordion = composeAccordion(DefaultDesignSystem);

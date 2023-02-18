@@ -1,6 +1,6 @@
 {
     "name": "@adaptive-web/adaptive-web-components",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Standards based, framework agnostic web components built using FAST.",
     "type": "module",
     "sideEffects": false,
@@ -40,6 +40,9 @@
         "@microsoft/fast-foundation": "3.0.0-alpha.25",
         "@microsoft/fast-web-utilities": "6.0.0"
     },
+    "peerDependencies": {
+        "@microsoft/fast-foundation": "3.0.0-alpha.25"
+    },
     "devDependencies": {
         "@babel/core": "^7.20.12",
         "@custom-elements-manifest/analyzer": "^0.6.8",
@@ -70,6 +73,18 @@
         ".": {
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
+        },
+        "./all-components": {
+            "types": "./dist/dts/custom-elements.d.ts",
+            "default": "./dist/esm/custom-elements.js"
+        },
+        "./accordion": {
+            "types": "./dist/dts/components/accordion/accordion.definition.d.ts",
+            "default": "./dist/esm/components/accordion/accordion.definition.js"
+        },
+        "./accordion-item": {
+            "types": "./dist/dts/components/accordion-item/accordion-item.definition.d.ts",
+            "default": "./dist/esm/components/accordion-item/accordion-item.definition.js"
         }
     }
 }

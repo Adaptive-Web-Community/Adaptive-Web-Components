@@ -2,7 +2,6 @@ import { DefaultDesignSystem } from "./design-system.js";
 
 export * from "./design-system.js";
 export * from "./components/index.js";
-export { AllComponents } from "./custom-elements.js";
 
 /**
  * The default DesignSystem.

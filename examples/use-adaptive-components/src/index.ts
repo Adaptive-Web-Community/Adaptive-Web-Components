@@ -17,6 +17,10 @@ AWC.defineComponents({
     SwitchDefinition,
     // TextFieldDefinition // Uncomment to define the `adaptive-text-field` element.
 });
+import { AdaptiveAccordion } from "@adaptive-web/adaptive-web-components/accordion";
+import { AdaptiveAccordionItem } from '@adaptive-web/adaptive-web-components/accordion-item';
+
+AWC.defineComponents({AdaptiveAccordion, AdaptiveAccordionItem});
 
 import { accentBaseColor, fillColor, LayerBaseLuminance, layerFillBaseLuminance, layerFillFixedBase } from "@adaptive-web/adaptive-ui";
 import { DesignToken, FASTRadioGroup, FASTSwitch } from "@microsoft/fast-foundation";

@@ -24,7 +24,7 @@
         "start": "vite --open"
     },
     "dependencies": {
-        "@adaptive-web/adaptive-web-components": "^0.0.1"
+        "@adaptive-web/adaptive-web-components": "0.1.0"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
