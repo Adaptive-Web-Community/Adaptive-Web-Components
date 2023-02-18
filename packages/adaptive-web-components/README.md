@@ -1,6 +1,8 @@
 # Adaptive Web Components
 
-Note this is an alpha release. The components are functional and performant and safe to use. They are however based on the beta release of FAST Element.
+> Note this is an alpha release. The components are functional and performant and safe to use. They are however based on the beta release of FAST Element.
+
+> While we are committed to following semver for this project, it's important to note that while we move through alpha and beta, minor version numbers can and will likely include breaking changes until we hit 1.0.0. After 1.0.0, we will be aligned with semver2.0.
 
 We currently recommend consuming them with as few adjustments as possible because many common issues will be made much easier, including building your own customized design system.
 
@@ -30,10 +32,10 @@ Add the components:
 npm install "@adaptive-web/adaptive-web-components"
 ```
 
-Import the components you want to use:
-
+Import and use everything:
 ```ts
-import "@adaptive-web/adaptive-web-components/button/define";
+import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components"
+AWC.defineComponents(AllComponents);
 ```
 
 Author html with imported components:
