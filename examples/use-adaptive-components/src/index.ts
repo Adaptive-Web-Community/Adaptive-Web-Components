@@ -6,6 +6,7 @@ import AWC, {
     RadioDefinition,
     RadioGroupDefinition,
     SwitchDefinition,
+    TextFieldDefinition
 } from "@adaptive-web/adaptive-web-components";
 AWC.defineComponents({
     AvatarDefinition,
@@ -13,14 +14,9 @@ AWC.defineComponents({
     CardDefinition,
     RadioDefinition,
     RadioGroupDefinition,
-    SwitchDefinition
+    SwitchDefinition,
+    // TextFieldDefinition // Uncomment to define the `adaptive-text-field` element.
 });
-
-// Uncomment to define the `adaptive-text-field` element.
-// import { TextFieldDefinition } from "@adaptive-web/adaptive-web-components";
-// AWC.defineComponents({
-//     TextFieldDefinition
-// });
 
 import { accentBaseColor, fillColor, LayerBaseLuminance, layerFillBaseLuminance, layerFillFixedBase } from "@adaptive-web/adaptive-ui";
 import { DesignToken, FASTRadioGroup, FASTSwitch } from "@microsoft/fast-foundation";
