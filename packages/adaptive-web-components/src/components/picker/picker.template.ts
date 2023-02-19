@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTPicker, pickerTemplate } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
-import { AnchoredRegionDefinition } from "../anchored-region/index.js";
+import { composeAnchoredRegion } from "../anchored-region/index.js";
 import { PickerListDefinition } from "../picker-list/index.js";
 import { PickerListItemDefinition } from "../picker-list-item/index.js";
 import { PickerMenuDefinition } from "../picker-menu/index.js";
@@ -14,7 +14,7 @@ import { ProgressRingDefinition } from "../progress-ring/index.js";
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTPicker> =
     (ds: DesignSystem) =>
         pickerTemplate({
-            anchoredRegion: AnchoredRegionDefinition(ds),
+            anchoredRegion: composeAnchoredRegion(ds),
             pickerList: PickerListDefinition(ds),
             pickerListItem: PickerListItemDefinition(ds),
             pickerMenu:  PickerMenuDefinition(ds),

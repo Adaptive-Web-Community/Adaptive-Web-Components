@@ -4,7 +4,7 @@ import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 import { BreadcrumbItemSeparatorKey } from "./breadcrumb-item.template.js";
 
 if (!DefaultDesignSystem.statics.has(BreadcrumbItemSeparatorKey)) {
-    DefaultDesignSystem.statics.set(BreadcrumbItemSeparatorKey, await fetch(chevronRightIcon).then(x => x.text()));
+    DefaultDesignSystem.statics.set(BreadcrumbItemSeparatorKey, chevronRightIcon);
 }
 
 /**

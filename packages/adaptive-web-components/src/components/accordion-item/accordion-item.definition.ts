@@ -5,10 +5,10 @@ import { composeAccordionItem } from "./accordion-item.compose.js";
 import { AccordionItemCollapsedIconKey, AccordionItemExpandedIconKey } from "./accordion-item.template.js";
 
 if (!DefaultDesignSystem.statics.has(AccordionItemCollapsedIconKey)) {
-    DefaultDesignSystem.statics.set(AccordionItemCollapsedIconKey, await fetch(chevronDownIcon).then(x => x.text()))
+    DefaultDesignSystem.statics.set(AccordionItemCollapsedIconKey, chevronDownIcon)
 }
 if (!DefaultDesignSystem.statics.has(AccordionItemExpandedIconKey)) {
-    DefaultDesignSystem.statics.set(AccordionItemExpandedIconKey, await fetch(chevronUpIcon).then(x => x.text()))
+    DefaultDesignSystem.statics.set(AccordionItemExpandedIconKey, chevronUpIcon)
 }
 
 /**

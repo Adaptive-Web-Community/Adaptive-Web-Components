@@ -1,4 +1,4 @@
-export { definition as ButtonDefinition } from "./button.definition.js";
+export { composeButton } from "./button.compose.js";
 export {
     templateStyles as ButtonTemplateStyles,
     aestheticStyles as ButtonAestheticStyles,

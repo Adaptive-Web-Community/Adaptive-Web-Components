@@ -1,4 +1,4 @@
-import { FASTElementDefinition } from '@microsoft/fast-element';
+import { ElementViewTemplate, FASTElement, FASTElementDefinition, PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 
 /**
@@ -78,3 +78,34 @@ export class DesignSystem {
  * The default {@link DesignSystem} configuration.
  */
 export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
+
+/**
+ * Configuration options for an element definition.
+ * 
+ * @public
+ */
+export interface PartialAdaptiveDefinition extends Omit<PartialFASTElementDefinition, "registry" | "template"> {
+    readonly template?: ((ds: DesignSystem) => ElementViewTemplate);
+}
+
+/**
+ * Helper for creating element definitions using the {@link DefaultDesignSystem} or a custom {@link DesignSystem}
+ * 
+ * @public
+ */
+export function createAdaptiveDefinition<T extends typeof FASTElement>(
+    ctor: T,
+    options: PartialAdaptiveDefinition,
+    designSystem: DesignSystem = DefaultDesignSystem
+): (ds?: DesignSystem) => FASTElementDefinition {
+
+    return (ds: DesignSystem = designSystem) => ctor.compose({
+        name: `${ds.prefix}-${options.name}`,
+        template: options?.template?.(ds),
+        styles: options.styles,
+        attributes: options.attributes,
+        elementOptions: options.elementOptions,
+        shadowOptions: options.shadowOptions,
+        registry: ds.registry,
+    });
+}
