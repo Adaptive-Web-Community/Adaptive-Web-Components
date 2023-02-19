@@ -1,4 +1,4 @@
-export { definition as BadgeDefinition } from "./badge.definition.js";
+export { composeBadge } from "./badge.compose.js";
 export {
     templateStyles as BadgeTemplateStyles,
     aestheticStyles as BadgeAestheticStyles,

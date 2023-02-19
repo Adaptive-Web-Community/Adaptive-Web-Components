@@ -1,6 +1,7 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 
-import AWC, { AllComponents } from "../src/index";
+import AWC from "../src/index";
+import { AllComponents } from "../src/custom-elements";
 
 DesignToken.registerDefaultStyleTarget();
 

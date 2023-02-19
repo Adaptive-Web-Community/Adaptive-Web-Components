@@ -9,4 +9,4 @@ import { composeAccordion } from "./accordion.compose.js";
  *
  * @public
  */
-export const AdaptiveAccordion = composeAccordion(DefaultDesignSystem);
+export const accordionDefinition = composeAccordion(DefaultDesignSystem);

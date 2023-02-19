@@ -3,15 +3,7 @@ import { AdaptiveButton } from "./button.js";
 import { styles } from "./button.styles.js";
 import { template } from "./button.template.js";
 
-/**
- * The Button custom element definition. Implements {@link AdaptiveButton}.
- *
- * @remarks
- * HTML Element: \<adaptive-button\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
+export const composeButton = (ds: DesignSystem) =>
     AdaptiveButton.compose({
         name: `${ds.prefix}-button`,
         registry: ds.registry,

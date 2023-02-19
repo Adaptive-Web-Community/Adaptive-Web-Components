@@ -1,4 +1,4 @@
-export { definition as AnchoredRegionDefinition } from "./anchored-region.definition.js";
+export { composeAnchoredRegion } from "./anchored-region.compose.js";
 export {
     templateStyles as AnchoredRegionTemplateStyles,
     aestheticStyles as AnchoredRegionAestheticStyles,

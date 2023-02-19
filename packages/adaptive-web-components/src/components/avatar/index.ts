@@ -1,4 +1,4 @@
-export { definition as AvatarDefinition } from "./avatar.definition.js";
+export { composeAvatar } from "./avatar.compose.js";
 export {
     templateStyles as AvatarTemplateStyles,
     aestheticStyles as AvatarAestheticStyles,

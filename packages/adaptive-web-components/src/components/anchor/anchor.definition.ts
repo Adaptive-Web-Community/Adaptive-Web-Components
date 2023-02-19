@@ -1,7 +1,5 @@
-import type { DesignSystem } from "../../design-system.js";
-import { AdaptiveAnchor } from "./anchor.js";
-import { styles } from "./anchor.styles.js";
-import { template } from "./anchor.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeAnchor } from "./anchor.compose.js";
 
 /**
  * The Anchor custom element definition. Implements {@link AdaptiveAnchor}.
@@ -11,13 +9,4 @@ import { template } from "./anchor.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveAnchor.compose({
-        name: `${ds.prefix}-anchor`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const anchorDefinition = composeAnchor(DefaultDesignSystem);

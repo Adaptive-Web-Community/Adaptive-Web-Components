@@ -1,23 +1,18 @@
-import { FASTBreadcrumbItem } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./breadcrumb-item.styles.js";
-import { template } from "./breadcrumb-item.template.js";
+import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
+import { BreadcrumbItemSeparatorKey } from "./breadcrumb-item.template.js";
+
+if (!DefaultDesignSystem.statics.has(BreadcrumbItemSeparatorKey)) {
+    DefaultDesignSystem.statics.set(BreadcrumbItemSeparatorKey, await fetch(chevronRightIcon).then(x => x.text()));
+}
 
 /**
- * The Breadcrumb Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumbItem}.
+ * The Breadcrumb custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumb}.
  *
  * @remarks
- * HTML Element: \<adaptive-breadcrumb-item\>
+ * HTML Element: \<adaptive-breadcrumb\>
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTBreadcrumbItem.compose({
-        name: `${ds.prefix}-breadcrumb-item`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const breadcrumbItemDefinition = composeBreadcrumbItem(DefaultDesignSystem);

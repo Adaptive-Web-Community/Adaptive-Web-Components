@@ -17,7 +17,7 @@ export class DesignSystem {
     constructor(
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
-        private _statics: Map<string, StaticallyComposableHTML> = new Map()
+        private _statics: Map<string, StaticallyComposableHTML> = new Map(),
     ) {}
 
     public get prefix() {

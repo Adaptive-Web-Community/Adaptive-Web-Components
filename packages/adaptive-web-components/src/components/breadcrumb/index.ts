@@ -1,4 +1,4 @@
-export { definition as BreadcrumbDefinition } from "./breadcrumb.definition.js";
+export { composeBreadcrumb } from "./breadcrumb.compose.js";
 export {
     templateStyles as BreadcrumbTemplateStyles,
     aestheticStyles as BreadcrumbAestheticStyles,
