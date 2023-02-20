@@ -1,13 +1,19 @@
 import { FASTAccordion } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from "@microsoft/fast-element";
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./accordion.styles.js";
 import { template } from "./accordion.template.js";
 
+export function composeAccordion(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTAccordion>
+): FASTElementDefinition {
 
-export const composeAccordion = (ds: DesignSystem) =>
-    FASTAccordion.compose({
+    return FASTAccordion.compose({
         name: `${ds.prefix}-accordion`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

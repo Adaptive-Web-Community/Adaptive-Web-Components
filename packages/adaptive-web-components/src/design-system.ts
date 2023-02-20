@@ -2,9 +2,7 @@ import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import type {
     ElementStyles,
     ElementViewTemplate,
-    FASTElement,
     FASTElementDefinition,
-    PartialFASTElementDefinition,
     ShadowRootOptions
 } from '@microsoft/fast-element';
 
@@ -91,9 +89,10 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
  * 
  * @public
  */
-export type ComposeOptions<TSource, TParent> = {
+export type ComposeOptions<TSource = any, TParent = any, TStatics = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, TParent>;
     styles?: ElementStyles | ElementStyles[];
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
+    statics?: Map<TStatics, StaticallyComposableHTML>;
 }

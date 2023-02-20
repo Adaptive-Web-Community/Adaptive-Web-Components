@@ -49,7 +49,7 @@ export default [
 			{
 				file: manifest.main,
 				format: "cjs",
-			}
+			},
 		],
 	}
 ]
