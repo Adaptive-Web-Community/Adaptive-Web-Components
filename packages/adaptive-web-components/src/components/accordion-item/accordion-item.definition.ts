@@ -2,14 +2,7 @@ import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.s
 import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordionItem } from "./accordion-item.compose.js";
-import { AccordionItemCollapsedIconKey, AccordionItemExpandedIconKey } from "./accordion-item.template.js";
-
-if (!DefaultDesignSystem.statics.has(AccordionItemCollapsedIconKey)) {
-    DefaultDesignSystem.statics.set(AccordionItemCollapsedIconKey, chevronDownIcon)
-}
-if (!DefaultDesignSystem.statics.has(AccordionItemExpandedIconKey)) {
-    DefaultDesignSystem.statics.set(AccordionItemExpandedIconKey, chevronUpIcon)
-}
+import { AccordionItemIconKeys } from './accordion-item.template.js';
 
 /**
  * The Accordion Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordionItem}.
@@ -19,4 +12,12 @@ if (!DefaultDesignSystem.statics.has(AccordionItemExpandedIconKey)) {
  *
  * @public
  */
-export const accordionItemDefinition = composeAccordionItem(DefaultDesignSystem);
+export const accordionItemDefinition = composeAccordionItem(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [AccordionItemIconKeys.collapsed]: chevronDownIcon,
+            [AccordionItemIconKeys.expanded]: chevronUpIcon
+        }
+    }
+);

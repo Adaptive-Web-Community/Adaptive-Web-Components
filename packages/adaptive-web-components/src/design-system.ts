@@ -14,6 +14,11 @@ import type {
 export type PartialDesignSystem = Partial<DesignSystem>;
 
 /**
+ * @beta
+ */
+export type ElementStatics = Map<string, StaticallyComposableHTML>;
+
+/**
  * Represents metadata configuration for a custom element.
  * 
  * @beta
@@ -22,7 +27,7 @@ export class DesignSystem {
     constructor(
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
-        private _statics: Map<string, StaticallyComposableHTML> = new Map(),
+        private _statics: ElementStatics = new Map(),
     ) {}
 
     public get prefix() {
@@ -89,10 +94,10 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
  * 
  * @public
  */
-export type ComposeOptions<TSource = any, TParent = any, TStatics = any> = {
+export type ComposeOptions<TStatics extends string, TSource = any, TParent = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, TParent>;
     styles?: ElementStyles | ElementStyles[];
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
-    statics?: Map<TStatics, StaticallyComposableHTML>;
+    statics?: Record<TStatics, StaticallyComposableHTML>;
 }
