@@ -90,12 +90,12 @@ export class DesignSystem {
 export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 
 /**
- * Configuration options for an element definition.
+ * Configuration options for composing an element definition.
  * 
- * @public
+ * @internal
  */
-export type ComposeOptions<TStatics extends string, TSource = any, TParent = any> = {
-    template?: (ds: DesignSystem) => ElementViewTemplate<TSource, TParent>;
+export type ComposeOptions<TSource, TStatics extends string = any> = {
+    template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
     styles?: ElementStyles | ElementStyles[];
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;

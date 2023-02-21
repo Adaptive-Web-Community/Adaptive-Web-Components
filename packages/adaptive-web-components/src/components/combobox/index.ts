@@ -1,4 +1,4 @@
-export { definition as ComboboxDefinition } from "./combobox.definition.js";
+export { composeCombobox } from "./combobox.compose.js";
 export {
     templateStyles as ComboboxTemplateStyles,
     aestheticStyles as ComboboxAestheticStyles,

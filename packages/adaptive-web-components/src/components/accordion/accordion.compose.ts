@@ -13,6 +13,7 @@ export function composeAccordion(
         name: `${ds.prefix}-accordion`,
         template: options?.template?.(ds) ?? template(ds),
         styles: options?.styles ?? styles,
+        registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions
     });

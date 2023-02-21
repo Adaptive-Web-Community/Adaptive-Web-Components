@@ -1,4 +1,4 @@
-export { definition as CheckboxDefinition } from "./checkbox.definition.js";
+export { composeCheckbox } from "./checkbox.compose.js";
 export {
     templateStyles as CheckboxTemplateStyles,
     aestheticStyles as CheckboxAestheticStyles,

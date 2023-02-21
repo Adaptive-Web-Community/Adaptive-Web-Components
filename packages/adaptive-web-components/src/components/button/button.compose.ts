@@ -1,15 +1,19 @@
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from "@microsoft/fast-element";
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveButton } from "./button.js";
 import { styles } from "./button.styles.js";
 import { template } from "./button.template.js";
 
-export const composeButton = (ds: DesignSystem) =>
-    AdaptiveButton.compose({
+export function composeButton(
+    ds: DesignSystem,
+    options?: ComposeOptions<AdaptiveButton>
+): FASTElementDefinition {
+    return AdaptiveButton.compose({
         name: `${ds.prefix}-button`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

@@ -1,15 +1,15 @@
-import { FASTBreadcrumb } from "@microsoft/fast-foundation";
+import { FASTCalendar } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./breadcrumb.styles.js";
-import { template } from "./breadcrumb.template.js";
+import { styles } from "./calendar.styles.js";
+import { template } from "./calendar.template.js";
 
-export function composeBreadcrumb(
+export function composeCalendar(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTBreadcrumb>
+    options?: ComposeOptions<FASTCalendar>
 ): FASTElementDefinition {
-    return FASTBreadcrumb.compose({
-        name: `${ds.prefix}-breadcrumb`,
+    return FASTCalendar.compose({
+        name: `${ds.prefix}-calendar`,
         template: options?.template?.(ds) ?? template(ds),
         styles: options?.styles ?? styles,
         registry: ds.registry,

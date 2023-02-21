@@ -9,4 +9,11 @@ import { composeButton } from "./button.compose.js";
  *
  * @public
  */
-export const buttonDefinition = composeButton(DefaultDesignSystem);
+export const buttonDefinition = composeButton(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);

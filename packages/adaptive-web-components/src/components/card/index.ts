@@ -1,4 +1,4 @@
-export { definition as CardDefinition } from "./card.definition.js";
+export { composeCard } from "./card.compose.js";
 export {
     templateStyles as CardTemplateStyles,
     aestheticStyles as CardAestheticStyles,

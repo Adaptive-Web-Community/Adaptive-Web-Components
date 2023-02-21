@@ -1,7 +1,7 @@
-import { FASTCombobox } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./combobox.styles.js";
-import { template } from "./combobox.template.js";
+import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeCombobox } from "./combobox.compose.js";
+import { ComboboxIconKeys } from "./combobox.template.js";
 
 /**
  * The Combobox custom element definition. Implements {@link @microsoft/fast-foundation#FASTCombobox}.
@@ -11,13 +11,14 @@ import { template } from "./combobox.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTCombobox.compose({
-        name: `${ds.prefix}-combobox`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
+export const comboboxDefinition = composeCombobox(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [ComboboxIconKeys.indicator]: chevronDownIcon
         },
-    });
+        shadowOptions: {
+            delegatesFocus: true
+        }
+    }
+);

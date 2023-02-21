@@ -6,7 +6,7 @@ import { AccordionItemIconKeys, template } from "./accordion-item.template.js";
 
 export function composeAccordionItem(
     ds: DesignSystem,
-    options?: ComposeOptions<AccordionItemIconKeys, FASTAccordionItem>
+    options?: ComposeOptions<FASTAccordionItem, AccordionItemIconKeys>
 ): FASTElementDefinition {
     if (options?.statics) {
         if (!ds.statics.has(AccordionItemIconKeys.collapsed)) {
@@ -28,6 +28,7 @@ export function composeAccordionItem(
         name: `${ds.prefix}-accordion-item`,
         template: options?.template?.(ds) ?? template(ds),
         styles: options?.styles ?? styles,
+        registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions
     });

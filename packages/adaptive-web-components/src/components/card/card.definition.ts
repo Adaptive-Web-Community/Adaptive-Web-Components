@@ -1,7 +1,5 @@
-import { FASTCard } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./card.styles.js";
-import { template } from "./card.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeCard } from "./card.compose.js";
 
 /**
  * The Card custom element definition. Implements {@link @microsoft/fast-foundation#FASTCard}.
@@ -11,10 +9,4 @@ import { template } from "./card.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTCard.compose({
-        name: `${ds.prefix}-card`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const cardDefinition = composeCard(DefaultDesignSystem);

@@ -1,3 +1,4 @@
+import { FASTAnchor } from '@microsoft/fast-foundation';
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAnchor } from "./anchor.compose.js";
 
@@ -9,4 +10,11 @@ import { composeAnchor } from "./anchor.compose.js";
  *
  * @public
  */
-export const anchorDefinition = composeAnchor(DefaultDesignSystem);
+export const anchorDefinition = composeAnchor(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);
