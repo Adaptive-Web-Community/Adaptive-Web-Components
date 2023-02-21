@@ -27,8 +27,8 @@
         "@adaptive-web/adaptive-web-components": "0.1.0"
     },
     "devDependencies": {
+        "vite-plugin-svgo": "^1.2.0",
         "rimraf": "^3.0.2",
-        "rollup-plugin-svgo": "^2.0.0",
         "typescript": "^4.7.0",
         "vite": "^4.1.1"
     }

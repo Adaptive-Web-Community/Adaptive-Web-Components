@@ -1,10 +1,6 @@
 import { defineConfig } from "vite";
-import svgo from 'rollup-plugin-svgo'
+import svg from 'vite-plugin-svgo'
 
 export default defineConfig({
-	build: {
-		rollupOptions: {
-			plugins: [svgo()]
-		}
-	}
+	plugins: [svg()]
 })
