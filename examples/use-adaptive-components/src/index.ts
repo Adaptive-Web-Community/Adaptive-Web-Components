@@ -1,22 +1,20 @@
 // All components that are used in html must be defined.
-import {
-    AvatarDefinition,
-    ButtonDefinition,
-    CardDefinition,
-    DefaultDesignSystem,
-    RadioDefinition,
-    RadioGroupDefinition,
-    SwitchDefinition,
-    TextFieldDefinition
-} from "@adaptive-web/adaptive-web-components";
+import { DefaultDesignSystem } from '@adaptive-web/adaptive-web-components';
+import { avatarDefinition } from "@adaptive-web/adaptive-web-components/avatar";
+import { buttonDefinition } from "@adaptive-web/adaptive-web-components/button";
+import { cardDefinition } from "@adaptive-web/adaptive-web-components/card";
+import { radioDefinition } from "@adaptive-web/adaptive-web-components/radio";
+import { radioGroupDefinition } from "@adaptive-web/adaptive-web-components/radio-group";
+import { switchDefinition } from "@adaptive-web/adaptive-web-components/switch";
+import { textFieldDefinition } from "@adaptive-web/adaptive-web-components/text-field";
 DefaultDesignSystem.defineComponents({
-    AvatarDefinition,
-    ButtonDefinition,
-    CardDefinition,
-    RadioDefinition,
-    RadioGroupDefinition,
-    SwitchDefinition,
-    TextFieldDefinition // Uncomment to define the `adaptive-text-field` element.
+    avatarDefinition,
+    buttonDefinition,
+    cardDefinition,
+    radioDefinition,
+    radioGroupDefinition,
+    switchDefinition,
+    // textFieldDefinition // Uncomment to define the `adaptive-text-field` element.
 });
 
 import { accentBaseColor, fillColor, LayerBaseLuminance, layerFillBaseLuminance, layerFillFixedBase } from "@adaptive-web/adaptive-ui";

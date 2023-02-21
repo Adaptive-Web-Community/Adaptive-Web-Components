@@ -31,7 +31,7 @@ import { pickerMenuDefinition } from './components/picker-menu/picker-menu.defin
 import { pickerMenuOptionDefinition } from './components/picker-menu-option/picker-menu-options.definition.js';
 import { progressDefinition } from './components/progress/progress.definition.js';
 import { progressRingDefinition } from './components/progress-ring/progress-ring.definition.js';
-import { radioDefinition } from './components/radio/radio-definition.js';
+import { radioDefinition } from './components/radio/radio.definition.js';
 import { radioGroupDefinition } from './components/radio-group/radio-group.definition.js';
 import { searchDefinition } from './components/search/search.definition.js';
 import { selectDefinition } from './components/select/select.definition.js';
