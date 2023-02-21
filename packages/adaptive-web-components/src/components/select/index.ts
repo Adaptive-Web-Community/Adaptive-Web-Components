@@ -1,4 +1,4 @@
-export { definition as SelectDefinition } from "./select.definition.js";
+export { composeSelect } from "./select.compose.js";
 export {
     templateStyles as SelectTemplateStyles,
     aestheticStyles as SelectAestheticStyles,

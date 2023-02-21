@@ -1,4 +1,4 @@
-export { definition as DividerDefinition } from "./divider.definition.js";
+export { composeDivider } from "./divider.compose.js";
 export {
     templateStyles as DividerTemplateStyles,
     aestheticStyles as DividerAestheticStyles,

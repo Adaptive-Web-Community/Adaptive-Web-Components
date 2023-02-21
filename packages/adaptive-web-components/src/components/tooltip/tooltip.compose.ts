@@ -1,20 +1,19 @@
 import { FASTTooltip } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./tooltip.styles.js";
 import { template } from "./tooltip.template.js";
 
-/**
- * The Tooltip custom element definition. Implements {@link @microsoft/fast-foundation#FASTTooltip}.
- *
- * @remarks
- * HTML Element: \<adaptive-tooltip\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTTooltip.compose({
+export function composeTooltip(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTTooltip>
+): FASTElementDefinition {
+    return FASTTooltip.compose({
         name: `${ds.prefix}-tooltip`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

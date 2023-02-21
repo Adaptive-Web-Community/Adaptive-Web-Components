@@ -1,20 +1,35 @@
 import { FASTFlipper } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./flipper.styles.js";
-import { template } from "./flipper.template.js";
+import { FlipperIconKeys, template } from "./flipper.template.js";
 
-/**
- * The Flipper custom element definition. Implements {@link @microsoft/fast-foundation#FASTFlipper}.
- *
- * @remarks
- * HTML Element: \<adaptive-flipper\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTFlipper.compose({
+export function composeFlipper(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTFlipper, FlipperIconKeys>
+): FASTElementDefinition {
+    if (options?.statics) {
+        if (!ds.statics.has(FlipperIconKeys.previous)) {
+            ds.statics.set(
+                FlipperIconKeys.previous,
+                options.statics[FlipperIconKeys.previous]
+            );
+        }
+
+        if (!ds.statics.has(FlipperIconKeys.next)) {
+            ds.statics.set(
+                FlipperIconKeys.next,
+                options.statics[FlipperIconKeys.next]
+            );
+        }
+    }
+
+    return FASTFlipper.compose({
         name: `${ds.prefix}-flipper`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

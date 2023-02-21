@@ -1,20 +1,28 @@
 import { FASTTreeItem } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./tree-item.styles.js";
-import { template } from "./tree-item.template.js";
+import { template, TreeItemIconKeys } from "./tree-item.template.js";
 
-/**
- * The tree item custom element definition. Implements {@link @microsoft/fast-foundation#FASTTreeItem}.
- *
- * @remarks
- * HTML Element: \<adaptive-tree-item\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTTreeItem.compose({
+export function composeTreeItem(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTTreeItem, TreeItemIconKeys>
+): FASTElementDefinition {
+    if (options?.statics) {
+        if (!ds.statics.has(TreeItemIconKeys.expandCollapse)) {
+            ds.statics.set(
+                TreeItemIconKeys.expandCollapse,
+                options.statics[TreeItemIconKeys.expandCollapse]
+            );
+        }
+    }
+
+    return FASTTreeItem.compose({
         name: `${ds.prefix}-tree-item`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

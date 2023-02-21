@@ -1,23 +1,19 @@
 import { FASTTextField } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./text-field.styles.js";
 import { template } from "./text-field.template.js";
 
-/**
- * The Text Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextField}.
- *
- * @remarks
- * HTML Element: \<adaptive-text-field\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTTextField.compose({
+export function composeTextField(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTTextField>
+): FASTElementDefinition {
+    return FASTTextField.compose({
         name: `${ds.prefix}-text-field`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

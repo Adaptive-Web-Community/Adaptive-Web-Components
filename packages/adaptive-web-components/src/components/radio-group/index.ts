@@ -1,4 +1,4 @@
-export { definition as RadioGroupDefinition } from "./radio-group.definition.js";
+export { composeRadioGroup } from "./radio-group.compose.js";
 export {
     templateStyles as RadioGroupTemplateStyles,
     aestheticStyles as RadioGroupAestheticStyles,

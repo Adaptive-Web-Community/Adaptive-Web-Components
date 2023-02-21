@@ -1,4 +1,4 @@
-export { definition as PickerListDefinition } from "./picker-list.definition.js";
+export { composePickerList } from "./picker-list.compose.js";
 export {
     templateStyles as PickerListTemplateStyles,
     aestheticStyles as PickerListAestheticStyles,

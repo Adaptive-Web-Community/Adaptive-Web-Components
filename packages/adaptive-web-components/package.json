@@ -90,9 +90,197 @@
             "types": "./dist/dts/components/accordion/accordion.definition.d.ts",
             "default": "./dist/esm/components/accordion/accordion.definition.js"
         },
-        "./accordion-item": {
-            "types": "./dist/dts/components/accordion-item/accordion-item.definition.d.ts",
-            "default": "./dist/esm/components/accordion-item/accordion-item.definition.js"
+        "./anchor": {
+            "types": "./dist/dts/components/anchor/anchor.definition.d.ts",
+            "default": "./dist/esm/components/anchor/anchor.definition.js"
+        },
+        "./anchored-region": {
+            "types": "./dist/dts/components/anchored-region/anchored-region.definition.d.ts",
+            "default": "./dist/esm/components/anchored-region/anchored-region.definition.js"
+        },
+        "./avatar": {
+            "types": "./dist/dts/components/avatar/avatar.definition.d.ts",
+            "default": "./dist/esm/components/avatar/avatar.definition.js"
+        },
+        "./badge": {
+            "types": "./dist/dts/components/badge/badge.definition.d.ts",
+            "default": "./dist/esm/components/badge/badge.definition.js"
+        },
+        "./breadcrumb": {
+            "types": "./dist/dts/components/breadcrumb/breadcrumb.definition.d.ts",
+            "default": "./dist/esm/components/breadcrumb/breadcrumb.definition.js"
+        },
+        "./breadcrumb-item": {
+            "types": "./dist/dts/components/breadcrumb-item/breadcrumb-item.definition.d.ts",
+            "default": "./dist/esm/components/breadcrumb-item/breadcrumb-item.definition.js"
+        },
+        "./button": {
+            "types": "./dist/dts/components/button/button.definition.d.ts",
+            "default": "./dist/esm/components/button/button.definition.js"
+        },
+        "./calendar": {
+            "types": "./dist/dts/components/calendar/calendar.definition.d.ts",
+            "default": "./dist/esm/components/calendar/calendar.definition.js"
+        },
+        "./card": {
+            "types": "./dist/dts/components/card/card.definition.d.ts",
+            "default": "./dist/esm/components/card/card.definition.js"
+        },
+        "./checkbox": {
+            "types": "./dist/dts/components/checkbox/checkbox.definition.d.ts",
+            "default": "./dist/esm/components/checkbox/checkbox.definition.js"
+        },
+        "./combobox": {
+            "types": "./dist/dts/components/combobox/combobox.definition.d.ts",
+            "default": "./dist/esm/components/combobox/combobox.definition.js"
+        },
+        "./data-grid": {
+            "types": "./dist/dts/components/data-grid/data-grid.definition.d.ts",
+            "default": "./dist/esm/components/data-grid/data-grid.definition.js"
+        },
+        "./data-grid-cell": {
+            "types": "./dist/dts/components/data-grid-cell/data-grid-cell.definition.d.ts",
+            "default": "./dist/esm/components/data-grid-cell/data-grid-cell.definition.js"
+        },
+        "./data-grid-row": {
+            "types": "./dist/dts/components/data-grid-row/data-grid-row.definition.d.ts",
+            "default": "./dist/esm/components/data-grid-row/data-grid-row.definition.js"
+        },
+        "./dialog": {
+            "types": "./dist/dts/components/dialog/dialog.definition.d.ts",
+            "default": "./dist/esm/components/dialog/dialog.definition.js"
+        },
+        "./disclosure": {
+            "types": "./dist/dts/components/disclosure/disclosure.definition.d.ts",
+            "default": "./dist/esm/components/disclosure/disclosure.definition.js"
+        },
+        "./divider": {
+            "types": "./dist/dts/components/divider/divider.definition.d.ts",
+            "default": "./dist/esm/components/divider/divider.definition.js"
+        },
+        "./flipper": {
+            "types": "./dist/dts/components/flipper/flipper.definition.d.ts",
+            "default": "./dist/esm/components/flipper/flipper.definition.js"
+        },
+        "./horizontal-scroll": {
+            "types": "./dist/dts/components/horizontal-scroll/horizontal-scroll.definition.d.ts",
+            "default": "./dist/esm/components/horizontal-scroll/horizontal-scroll.definition.js"
+        },
+        "./listbox": {
+            "types": "./dist/dts/components/listbox/listbox.definition.d.ts",
+            "default": "./dist/esm/components/listbox/listbox.definition.js"
+        },
+        "./listbox-option": {
+            "types": "./dist/dts/components/listbox-option/listbox-option.definition.d.ts",
+            "default": "./dist/esm/components/listbox-option/listbox-option.definition.js"
+        },
+        "./menu": {
+            "types": "./dist/dts/components/menu/menu.definition.d.ts",
+            "default": "./dist/esm/components/menu/menu.definition.js"
+        },
+        "./menu-item": {
+            "types": "./dist/dts/components/menu-item/menu-item.definition.d.ts",
+            "default": "./dist/esm/components/menu-item/menu-item.definition.js"
+        },
+        "./number-field": {
+            "types": "./dist/dts/components/number-field/number-field.definition.d.ts",
+            "default": "./dist/esm/components/number-field/number-field.definition.js"
+        },
+        "./picker": {
+            "types": "./dist/dts/components/picker/picker.definition.d.ts",
+            "default": "./dist/esm/components/picker/picker.definition.js"
+        },
+        "./picker-list": {
+            "types": "./dist/dts/components/picker-list/picker-list.definition.d.ts",
+            "default": "./dist/esm/components/picker-list/picker-list.definition.js"
+        },
+        "./picker-list-item": {
+            "types": "./dist/dts/components/picker-list-item/picker-list-item.definition.d.ts",
+            "default": "./dist/esm/components/picker-list-item/picker-list-item.definition.js"
+        },
+        "./picker-menu": {
+            "types": "./dist/dts/components/picker-menu/picker-menu.definition.d.ts",
+            "default": "./dist/esm/components/picker-menu/picker-menu.definition.js"
+        },
+        "./picker-menu-option": {
+            "types": "./dist/dts/components/picker-menu-option/picker-menu-option.definition.d.ts",
+            "default": "./dist/esm/components/picker-menu-option/picker-menu-option.definition.js"
+        },
+        "./progress": {
+            "types": "./dist/dts/components/progress/progress.definition.d.ts",
+            "default": "./dist/esm/components/progress/progress.definition.js"
+        },
+        "./progress-ring": {
+            "types": "./dist/dts/components/progress-ring/progress-ring.definition.d.ts",
+            "default": "./dist/esm/components/progress-ring/progress-ring.definition.js"
+        },
+        "./radio": {
+            "types": "./dist/dts/components/radio/radio.definition.d.ts",
+            "default": "./dist/esm/components/radio/radio.definition.js"
+        },
+        "./radio-group": {
+            "types": "./dist/dts/components/radio-group/radio-group.definition.d.ts",
+            "default": "./dist/esm/components/radio-group/radio-group.definition.js"
+        },
+        "./search": {
+            "types": "./dist/dts/components/search/search.definition.d.ts",
+            "default": "./dist/esm/components/search/search.definition.js"
+        },
+        "./select": {
+            "types": "./dist/dts/components/select/select.definition.d.ts",
+            "default": "./dist/esm/components/select/select.definition.js"
+        },
+        "./skeleton": {
+            "types": "./dist/dts/components/skeleton/skeleton.definition.d.ts",
+            "default": "./dist/esm/components/skeleton/skeleton.definition.js"
+        },
+        "./slider": {
+            "types": "./dist/dts/components/slider/slider.definition.d.ts",
+            "default": "./dist/esm/components/slider/slider.definition.js"
+        },
+        "./slider-label": {
+            "types": "./dist/dts/components/slider-label/slider-label.definition.d.ts",
+            "default": "./dist/esm/components/slider-label/slider-label.definition.js"
+        },
+        "./switch": {
+            "types": "./dist/dts/components/switch/switch.definition.d.ts",
+            "default": "./dist/esm/components/switch/switch.definition.js"
+        },
+        "./tab": {
+            "types": "./dist/dts/components/tab/tab.definition.d.ts",
+            "default": "./dist/esm/components/tab/tab.definition.js"
+        },
+        "./tab-panel": {
+            "types": "./dist/dts/components/tab-panel/tab-panel.definition.d.ts",
+            "default": "./dist/esm/components/tab-panel/tab-panel.definition.js"
+        },
+        "./tabs": {
+            "types": "./dist/dts/components/tabs/tabs.definition.d.ts",
+            "default": "./dist/esm/components/tabs/tabs.definition.js"
+        },
+        "./text-area": {
+            "types": "./dist/dts/components/text-area/text-area.definition.d.ts",
+            "default": "./dist/esm/components/text-area/text-area.definition.js"
+        },
+        "./text-field": {
+            "types": "./dist/dts/components/text-field/text-field.definition.d.ts",
+            "default": "./dist/esm/components/text-field/text-field.definition.js"
+        },
+        "./toolbar": {
+            "types": "./dist/dts/components/toolbar/toolbar.definition.d.ts",
+            "default": "./dist/esm/components/toolbar/toolbar.definition.js"
+        },
+        "./tooltip": {
+            "types": "./dist/dts/components/tooltip/tooltip.definition.d.ts",
+            "default": "./dist/esm/components/tooltip/tooltip.definition.js"
+        },
+        "./tree-item": {
+            "types": "./dist/dts/components/tree-item/tree-item.definition.d.ts",
+            "default": "./dist/esm/components/tree-item/tree-item.definition.js"
+        },
+        "./tree-view": {
+            "types": "./dist/dts/components/tree-view/tree-view.definition.d.ts",
+            "default": "./dist/esm/components/tree-view/tree-view.definition.js"
         }
     }
 }

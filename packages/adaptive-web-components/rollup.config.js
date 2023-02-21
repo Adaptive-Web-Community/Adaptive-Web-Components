@@ -46,10 +46,17 @@ export default [
 				format: "esm",
 				plugins: [terser()]
 			},
+		],
+	},
+	{
+		plugins,
+		input: "dist/esm/index.js",
+		output: [
 			{
 				file: manifest.main,
 				format: "cjs",
-			},
-		],
+				plugins: [terser()]
+			}
+		]
 	}
 ]

@@ -1,20 +1,19 @@
 import { FASTProgressRing } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./progress-ring.styles.js";
 import { template } from "./progress-ring.template.js";
 
-/**
- * The Progress Ring custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgressRing}.
- *
- * @remarks
- * HTML Element: \<adaptive-progress-ring\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTProgressRing.compose({
+export function composeProgressRing(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTProgressRing>
+): FASTElementDefinition {
+    return FASTProgressRing.compose({
         name: `${ds.prefix}-progress-ring`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

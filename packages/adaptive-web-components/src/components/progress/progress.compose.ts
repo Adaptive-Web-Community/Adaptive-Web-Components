@@ -1,20 +1,19 @@
 import { FASTProgress } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./progress.styles.js";
 import { template } from "./progress.template.js";
 
-/**
- * The Progress custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgress}.
- *
- * @remarks
- * HTML Element: \<adaptive-progress\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTProgress.compose({
+export function composeProgress(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTProgress>
+): FASTElementDefinition {
+    return FASTProgress.compose({
         name: `${ds.prefix}-progress`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

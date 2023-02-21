@@ -1,20 +1,19 @@
 import { FASTListboxOption } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./listbox-option.styles.js";
 import { template } from "./listbox-option.template.js";
 
-/**
- * The option custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxOption}.
- *
- * @remarks
- * HTML Element: \<adaptive-option\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTListboxOption.compose({
+export function composeListboxOption(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTListboxOption>
+): FASTElementDefinition {
+    return FASTListboxOption.compose({
         name: `${ds.prefix}-option`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

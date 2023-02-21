@@ -1,20 +1,19 @@
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenu } from "./menu.js";
 import { styles } from "./menu.styles.js";
 import { template } from "./menu.template.js";
 
-/**
- * The Menu custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenu}.
- *
- * @remarks
- * HTML Element: \<adaptive-menu\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveMenu.compose({
+export function composeMenu(
+    ds: DesignSystem,
+    options?: ComposeOptions<AdaptiveMenu>
+): FASTElementDefinition {
+    return AdaptiveMenu.compose({
         name: `${ds.prefix}-menu`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

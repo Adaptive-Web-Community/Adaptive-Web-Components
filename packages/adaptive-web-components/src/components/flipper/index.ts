@@ -1,4 +1,4 @@
-export { definition as FlipperDefinition } from "./flipper.definition.js";
+export { composeFlipper } from "./flipper.compose.js";
 export {
     templateStyles as FlipperTemplateStyles,
     aestheticStyles as FlipperAestheticStyles,

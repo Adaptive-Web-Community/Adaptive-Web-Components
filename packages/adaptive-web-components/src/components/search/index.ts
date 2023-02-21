@@ -1,4 +1,4 @@
-export { definition as SearchDefinition } from "./search.definition.js";
+export { composeSearch } from "./search.compose.js";
 export {
     templateStyles as SearchTemplateStyles,
     aestheticStyles as SearchAestheticStyles,

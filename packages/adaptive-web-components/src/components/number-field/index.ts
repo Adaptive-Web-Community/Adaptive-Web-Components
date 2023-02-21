@@ -1,4 +1,4 @@
-export { definition as NumberFieldDefinition } from "./number-field.definition.js";
+export { composeNumberField } from "./number-field.compose.js";
 export {
     templateStyles as NumberFieldTemplateStyles,
     aestheticStyles as NumberFieldAestheticStyles,

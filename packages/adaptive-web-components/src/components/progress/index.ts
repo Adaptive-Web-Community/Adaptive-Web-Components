@@ -1,4 +1,4 @@
-export { definition as ProgressDefinition } from "./progress.definition.js";
+export { composeProgress } from "./progress.compose.js";
 export {
     templateStyles as ProgressTemplateStyles,
     aestheticStyles as ProgressAestheticStyles,

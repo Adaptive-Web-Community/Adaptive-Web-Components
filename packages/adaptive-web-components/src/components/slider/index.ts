@@ -1,4 +1,4 @@
-export { definition as SliderDefinition } from "./slider.definition.js";
+export { composeSlider } from "./slider.compose.js";
 export {
     templateStyles as SliderTemplateStyles,
     aestheticStyles as SliderAestheticStyles,

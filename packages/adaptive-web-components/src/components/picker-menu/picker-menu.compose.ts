@@ -1,20 +1,19 @@
 import { FASTPickerMenu } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./picker-menu.styles.js";
 import { template } from "./picker-menu.template.js";
 
-/**
- * The Picker Menu custom element definition. Implements {@link @microsoft/fast-foundation#FASTPickerMenu}.
- *
- * @remarks
- * HTML Element: \<adaptive-picker-menu\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTPickerMenu.compose({
+export function composePickerMenu(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTPickerMenu>
+): FASTElementDefinition {
+    return FASTPickerMenu.compose({
         name: `${ds.prefix}-picker-menu`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

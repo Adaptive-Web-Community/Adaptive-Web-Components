@@ -10,7 +10,7 @@ import {
     TemplateElementDependency,
 } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
-import { FlipperDefinition } from "../index.js";
+import { composeFlipper } from "../flipper/index.js";
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 
@@ -26,7 +26,7 @@ export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTHorizontalScroll> =
     (ds: DesignSystem) => {
         const options: HorizontalScrollOptions = {
-            flipper: FlipperDefinition(ds),
+            flipper: composeFlipper(ds),
         };
 
         const flipperTag = html.partial(tagFor(options.flipper));

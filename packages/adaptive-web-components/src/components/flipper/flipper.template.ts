@@ -1,16 +1,17 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTFlipper, flipperTemplate } from "@microsoft/fast-foundation";
+import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the flipper next icon.
+ * Keys for {@link DesignSystem} `statics` registration for the flipper next and previous icons.
  */
-export const FlipperNextKey: string = "flipper-next";
+export const FlipperIconKeys = {
+    previous: "flipper-previous",
+    next: "flipper-next"
+} as const;
 
-/**
- * Key for {@link DesignSystem} `statics` registration for the flipper previous icon.
- */
-export const FlipperPreviousKey: string = "flipper-previous";
+export type FlipperIconKeys = ValuesOf<typeof FlipperIconKeys>;
 
 /**
  * Default Flipper template, {@link @microsoft/fast-foundation#flipperTemplate}.
@@ -18,6 +19,6 @@ export const FlipperPreviousKey: string = "flipper-previous";
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTFlipper> =
     (ds: DesignSystem) =>
         flipperTemplate({
-            next: ds.statics.get(FlipperNextKey),
-            previous: ds.statics.get(FlipperPreviousKey),
+            previous: ds.statics.get(FlipperIconKeys.previous),
+            next: ds.statics.get(FlipperIconKeys.next),
         });

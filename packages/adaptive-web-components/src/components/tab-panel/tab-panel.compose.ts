@@ -1,20 +1,19 @@
 import { FASTTabPanel } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./tab-panel.styles.js";
 import { template } from "./tab-panel.template.js";
 
-/**
- * The Tab Panel custom element definition. Implements {@link @microsoft/fast-foundation#FASTTabPanel}.
- *
- * @remarks
- * HTML Element: \<adaptive-tab-panel\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTTabPanel.compose({
+export function composeTabPanel(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTTabPanel>
+): FASTElementDefinition {
+    return FASTTabPanel.compose({
         name: `${ds.prefix}-tab-panel`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

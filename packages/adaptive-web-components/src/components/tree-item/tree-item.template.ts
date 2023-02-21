@@ -1,12 +1,16 @@
 import { children, elements, ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, staticallyCompose, TreeItemOptions } from "@microsoft/fast-foundation";
-import type { FASTTreeItem } from "@microsoft/fast-foundation";
+import type { FASTTreeItem, ValuesOf } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the tree item expand collapse icon.
+ * Keys for {@link DesignSystem} `statics` registration for the tree item icons.
  */
-export const TreeItemExpandCollapseIconKey: string = "tree-item-expand-collapse-icon";
+export const TreeItemIconKeys = {
+    expandCollapse: "tree-item-expand-collapse-icon"
+} as const;
+
+export type TreeItemIconKeys = ValuesOf<typeof TreeItemIconKeys>;
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 
@@ -15,9 +19,8 @@ export const TreeItemExpandCollapseIconKey: string = "tree-item-expand-collapse-
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTTreeItem> =
     (ds: DesignSystem) => {
-        // treeItemTemplate(
         const options: TreeItemOptions = {
-            expandCollapseGlyph: ds.statics.get(TreeItemExpandCollapseIconKey),
+            expandCollapseGlyph: ds.statics.get(TreeItemIconKeys.expandCollapse),
         };
 
         return html<FASTTreeItem>`

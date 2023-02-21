@@ -1,4 +1,4 @@
-export { definition as DisclosureDefinition } from "./disclosure.definition.js";
+export { composeDisclosure } from "./disclosure.compose.js";
 export {
     templateStyles as DisclosureTemplateStyles,
     aestheticStyles as DisclosureAestheticStyles,

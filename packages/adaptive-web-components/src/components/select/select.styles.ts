@@ -114,11 +114,6 @@ export const aestheticStyles: ElementStyles = css`
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
-    /* ideally the option can take care of itself
-    :host(:focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-    } */
-
     .control {
         box-sizing: border-box;
         min-height: 100%;

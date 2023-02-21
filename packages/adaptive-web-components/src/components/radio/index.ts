@@ -1,4 +1,4 @@
-export { definition as RadioDefinition } from "./radio.definition.js";
+export { composeRadio } from "./radio.compose.js";
 export {
     templateStyles as RadioTemplateStyles,
     aestheticStyles as RadioAestheticStyles,

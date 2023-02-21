@@ -1,20 +1,19 @@
 import { FASTDialog } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./dialog.styles.js";
 import { template } from "./dialog.template.js";
 
-/**
- * The Dialog custom element definition. Implements {@link @microsoft/fast-foundation#FASTDialog}.
- *
- * @remarks
- * HTML Element: \<adaptive-dialog\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTDialog.compose({
+export function composeDialog(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTDialog>
+): FASTElementDefinition {
+    return FASTDialog.compose({
         name: `${ds.prefix}-dialog`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

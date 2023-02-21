@@ -1,4 +1,4 @@
-export { definition as ListboxOptionDefinition } from "./listbox-option.definition.js";
+export { composeListboxOption } from "./listbox-option.compose.js";
 export {
     templateStyles as ListboxOptionTemplateStyles,
     aestheticStyles as ListboxOptionAestheticStyles,

@@ -1,4 +1,4 @@
-export { definition as TooltipDefinition } from "./tooltip.definition.js";
+export { composeTooltip } from "./tooltip.compose.js";
 export {
     templateStyles as TooltipTemplateStyles,
     aestheticStyles as TooltipAestheticStyles,

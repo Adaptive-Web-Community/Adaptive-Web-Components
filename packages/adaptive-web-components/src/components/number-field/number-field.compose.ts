@@ -1,23 +1,35 @@
 import { FASTNumberField } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./number-field.styles.js";
-import { template } from "./number-field.template.js";
+import { NumberFieldIconKeys, template } from "./number-field.template.js";
 
-/**
- * The Number Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTNumberField}.
- *
- * @remarks
- * HTML Element: \<adaptive-number-field\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTNumberField.compose({
+export function composeNumberField(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTNumberField, NumberFieldIconKeys>
+): FASTElementDefinition {
+    if (options?.statics) {
+        if (!ds.statics.has(NumberFieldIconKeys.stepDown)) {
+            ds.statics.set(
+                NumberFieldIconKeys.stepDown,
+                options.statics[NumberFieldIconKeys.stepDown]
+            );
+        }
+
+        if (!ds.statics.has(NumberFieldIconKeys.stepUp)) {
+            ds.statics.set(
+                NumberFieldIconKeys.stepUp,
+                options.statics[NumberFieldIconKeys.stepUp]
+            );
+        }
+    }
+
+    return FASTNumberField.compose({
         name: `${ds.prefix}-number-field`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

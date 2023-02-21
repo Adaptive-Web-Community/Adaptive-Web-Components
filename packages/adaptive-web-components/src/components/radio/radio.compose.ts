@@ -1,20 +1,28 @@
 import { FASTRadio } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./radio.styles.js";
-import { template } from "./radio.template.js";
+import { RadioIconKeys, template } from "./radio.template.js";
 
-/**
- * The Radio custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadio}.
- *
- * @remarks
- * HTML Element: \<adaptive-radio\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTRadio.compose({
+export function composeRadio(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTRadio, RadioIconKeys>
+): FASTElementDefinition {
+    if (options?.statics) {
+        if (!ds.statics.has(RadioIconKeys.checked)) {
+            ds.statics.set(
+                RadioIconKeys.checked,
+                options.statics[RadioIconKeys.checked]
+            );
+        }
+    }
+
+    return FASTRadio.compose({
         name: `${ds.prefix}-radio`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

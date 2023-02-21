@@ -7,22 +7,19 @@ import {
      startSlotTemplate, 
      staticallyCompose,
 } from "@microsoft/fast-foundation";
+import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the menu item checkbox indicator.
+ * Keys for {@link DesignSystem} `statics` registration for the menu item indicators.
  */
-export const MenuItemCheckboxIndicatorKey: string = "menu-item-checkbox-indicator";
+export const MenuItemIconKeys = {
+    checkbox: "menu-item-checkbox-indicator",
+    radio: "menu-item-radio-indicator",
+    submenu: "menu-item-submenu-item"
+} as const;
 
-/**
- * Key for {@link DesignSystem} `statics` registration for the menu item radio indicator.
- */
-export const MenuItemRadioIndicatorKey: string = "menu-item-radio-indicator";
-
-/**
- * Key for {@link DesignSystem} `statics` registration for the menu item submenu icon.
- */
-export const MenuItemSubmenuIconKey: string = "menu-item-submenu-icon";
+export type MenuItemIconKeys = ValuesOf<typeof MenuItemIconKeys>;
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 
@@ -31,11 +28,10 @@ export const MenuItemSubmenuIconKey: string = "menu-item-submenu-icon";
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTMenuItem> =
     (ds: DesignSystem) => {
-        // menuItemTemplate(
         const options: MenuItemOptions = {
-            checkboxIndicator: ds.statics.get(MenuItemCheckboxIndicatorKey),
-            radioIndicator: ds.statics.get(MenuItemRadioIndicatorKey),
-            expandCollapseGlyph: ds.statics.get(MenuItemSubmenuIconKey),
+            checkboxIndicator: ds.statics.get(MenuItemIconKeys.checkbox),
+            radioIndicator: ds.statics.get(MenuItemIconKeys.radio),
+            expandCollapseGlyph: ds.statics.get(MenuItemIconKeys.submenu),
         }
 
         const templateCache: Map<MenuItemRole, ViewTemplate> = new Map();

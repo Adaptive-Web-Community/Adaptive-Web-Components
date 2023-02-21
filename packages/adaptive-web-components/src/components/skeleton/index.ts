@@ -1,4 +1,4 @@
-export { definition as SkeletonDefinition } from "./skeleton.definition.js";
+export { composeSkeleton } from "./skeleton.compose.js";
 export {
     templateStyles as SkeletonTemplateStyles,
     aestheticStyles as SkeletonAestheticStyles,

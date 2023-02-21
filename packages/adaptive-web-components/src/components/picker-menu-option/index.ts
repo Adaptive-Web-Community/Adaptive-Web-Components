@@ -1,4 +1,4 @@
-export { definition as PickerMenuOptionDefinition } from "./picker-menu-option.definition.js";
+export { composePickerMenuOption } from "./picker-menu-option.compose.js";
 export {
     templateStyles as PickerMenuOptionTemplateStyles,
     aestheticStyles as PickerMenuOptionAestheticStyles,

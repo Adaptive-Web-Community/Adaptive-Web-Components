@@ -1,4 +1,4 @@
-export { definition as DialogDefinition } from "./dialog.definition.js";
+export { composeDialog } from "./dialog.compose.js";
 export {
     templateStyles as DialogTemplateStyles,
     aestheticStyles as DialogAestheticStyles,

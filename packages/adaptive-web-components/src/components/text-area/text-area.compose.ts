@@ -1,23 +1,19 @@
 import { FASTTextArea } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./text-area.styles.js";
 import { template } from "./text-area.template.js";
 
-/**
- * The Text Area custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextArea}.
- *
- * @remarks
- * HTML Element: \<adaptive-text-area\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTTextArea.compose({
+export function composeTextArea(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTTextArea>
+): FASTElementDefinition {
+    return FASTTextArea.compose({
         name: `${ds.prefix}-text-area`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

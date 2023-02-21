@@ -1,20 +1,19 @@
 import { FASTDataGrid } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./data-grid.styles.js";
 import { template } from "./data-grid.template.js";
 
-/**
- * The Data Grid custom element definition. Implements {@link @microsoft/fast-foundation#FASTDataGrid}.
- *
- * @remarks
- * HTML Element: \<adaptive-data-grid\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    FASTDataGrid.compose({
+export function composeDataGrid(
+    ds: DesignSystem,
+    options?: ComposeOptions<FASTDataGrid>
+): FASTElementDefinition {
+    return FASTDataGrid.compose({
         name: `${ds.prefix}-data-grid`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

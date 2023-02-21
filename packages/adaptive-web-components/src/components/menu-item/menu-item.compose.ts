@@ -1,20 +1,42 @@
-import type { DesignSystem } from "../../design-system.js";
+import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenuItem } from "./menu-item.js";
 import { styles } from "./menu-item.styles.js";
-import { template } from "./menu-item.template.js";
+import { MenuItemIconKeys, template } from "./menu-item.template.js";
 
-/**
- * The Menu Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenuItem}.
- *
- * @remarks
- * HTML Element: \<adaptive-menu-item\>
- *
- * @public
- */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveMenuItem.compose({
+export function composeMenuItem(
+    ds: DesignSystem,
+    options?: ComposeOptions<AdaptiveMenuItem, MenuItemIconKeys>
+): FASTElementDefinition {
+    if (options?.statics) {
+        if (!ds.statics.has(MenuItemIconKeys.checkbox)) {
+            ds.statics.set(
+                MenuItemIconKeys.checkbox,
+                options.statics[MenuItemIconKeys.checkbox]
+            );
+        }
+
+        if (!ds.statics.has(MenuItemIconKeys.radio)) {
+            ds.statics.set(
+                MenuItemIconKeys.radio,
+                options.statics[MenuItemIconKeys.radio]
+            );
+        }
+
+        if (!ds.statics.has(MenuItemIconKeys.submenu)) {
+            ds.statics.set(
+                MenuItemIconKeys.submenu,
+                options.statics[MenuItemIconKeys.submenu]
+            );
+        }
+    }
+
+    return AdaptiveMenuItem.compose({
         name: `${ds.prefix}-menu-item`,
+        template: options?.template?.(ds) ?? template(ds),
+        styles: options?.styles ?? styles,
         registry: ds.registry,
-        template: template(ds),
-        styles,
+        elementOptions: options?.elementOptions,
+        shadowOptions: options?.shadowOptions
     });
+}

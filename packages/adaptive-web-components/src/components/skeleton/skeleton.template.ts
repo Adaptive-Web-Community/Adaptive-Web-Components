@@ -22,5 +22,3 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSkeleton> =
             )}
             <slot></slot>
         `;
-
-        // skeletonTemplate();
