@@ -1,0 +1,34 @@
+# Approval for at least one *code owner* is required all packages.
+
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more *code owners*.
+# The last matching pattern has the most precendence.
+
+# These *code owners* will be the default owners for everything in the repository.
+* @awentzel @bheston @KingOfTac @EisenbergEffect
+
+# File type specific owners
+# Markdown specific files
+*.md @awentzel @bheston @falkicon @EisenbergEffect
+/docs/ @awentzel @bheston @falkicon @EisenbergEffect
+
+# GitHub management
+.github/ @awentzel @EisenbergEffect
+.github/workflows/ @awentzel @EisenbergEffect
+
+# Build scripts
+*.yml @awentzel @EisenbergEffect
+build/ @awentzel @EisenbergEffect
+
+# Package specific owners
+# Examples
+/examples/ @bheston @KingOfTac
+
+# Tooling
+
+# Utilities
+
+# Web components
+/packages/adaptive-ui/ @EisenbergEffect @bheston
+/packages/adaptive-ui-explorer/ @EisenbergEffect @bheston
+/packages/adaptive-web-components/ @EisenbergEffect @bheston @KingOfTac
