@@ -34,9 +34,22 @@ npm install "@adaptive-web/adaptive-web-components"
 
 Import and use everything:
 ```ts
-import AWC, { AllComponents } from "@adaptive-web/adaptive-web-components"
-AWC.defineComponents(AllComponents);
+import { AdaptiveDesignSystem } "@adaptive-web/adaptive-web-components";
+import { AllComponents } from "@adaptive-web/adaptive-web-components/all-components";
+AdaptiveDesignSystem.defineComponents(AllComponents);
 ```
+
+Import via CDN link on a script tag:
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@adaptive-web/adaptive-web-components/dist/adaptive-web-components.min.js"></script>
+    </head>
+    <!-- ... -->
+</html>
+```
+
 
 Author html with imported components:
 
