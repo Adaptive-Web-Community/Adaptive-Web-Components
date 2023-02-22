@@ -1,16 +1,17 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTNumberField, numberFieldTemplate } from "@microsoft/fast-foundation";
+import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Key for {@link DesignSystem} `statics` registration for the number field step down icon.
+ * Keys for {@link DesignSystem} `statics` registration for the number field.
  */
-export const NumberFieldStepDownIconKey: string = "number-field-step-down-icon";
+export const NumberFieldStatics = {
+    stepDown: "number-field-step-down-icon",
+    stepUp: "number-field-step-up-icon"
+} as const;
 
-/**
- * Key for {@link DesignSystem} `statics` registration for the number field step up icon.
- */
-export const NumberFieldStepUpIconKey: string = "number-field-step-up-icon";
+export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 
 /**
  * Default Number Field template, {@link @microsoft/fast-foundation#numberFieldTemplate}.
@@ -18,6 +19,6 @@ export const NumberFieldStepUpIconKey: string = "number-field-step-up-icon";
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTNumberField> =
     (ds: DesignSystem) =>
         numberFieldTemplate({
-            stepDownGlyph: ds.statics.get(NumberFieldStepDownIconKey),
-            stepUpGlyph: ds.statics.get(NumberFieldStepUpIconKey),
+            stepDownGlyph: ds.statics.get(NumberFieldStatics.stepDown),
+            stepUpGlyph: ds.statics.get(NumberFieldStatics.stepUp),
         });

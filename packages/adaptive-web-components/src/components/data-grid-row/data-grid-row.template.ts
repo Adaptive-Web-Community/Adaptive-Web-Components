@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { dataGridRowTemplate, FASTDataGridRow } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
-import { DataGridCellDefinition } from "../data-grid-cell/index.js";
+import { composeDataGridCell } from "../data-grid-cell/index.js";
 
 /**
  * Default Data Grid Row template, {@link @microsoft/fast-foundation#dataGridRowTemplate}.
@@ -9,5 +9,5 @@ import { DataGridCellDefinition } from "../data-grid-cell/index.js";
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTDataGridRow> =
     (ds: DesignSystem) =>
         dataGridRowTemplate({
-            dataGridCell: DataGridCellDefinition(ds),
+            dataGridCell: composeDataGridCell(ds)
         });

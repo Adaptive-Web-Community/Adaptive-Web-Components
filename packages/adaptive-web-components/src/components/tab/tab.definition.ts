@@ -1,7 +1,5 @@
-import { FASTTab } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./tab.styles.js";
-import { template } from "./tab.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeTab } from "./tab.compose.js";
 
 /**
  * The Tab custom element definition. Implements {@link @microsoft/fast-foundation#FASTTab}.
@@ -11,10 +9,4 @@ import { template } from "./tab.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTTab.compose({
-        name: `${ds.prefix}-tab`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const tabDefinition = composeTab(DefaultDesignSystem);

@@ -1,5 +1,35 @@
-import { FASTElementDefinition } from '@microsoft/fast-element';
-import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
+import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
+import type {
+    ElementStyles,
+    ElementViewTemplate,
+    FASTElementDefinition,
+    ShadowRootOptions
+} from '@microsoft/fast-element';
+
+import type {
+    AccordionItemStatics,
+    BreadcrumbItemStatics,
+    CheckboxStatics,
+    ComboboxStatics,
+    FlipperStatics,
+    MenuItemStatics,
+    NumberFieldStatics,
+    RadioStatics,
+    SelectStatics,
+    TreeItemStatics
+} from "./components/index.js";
+
+type ComponentStatics =
+    AccordionItemStatics
+    | BreadcrumbItemStatics
+    | CheckboxStatics
+    | ComboboxStatics
+    | FlipperStatics
+    | MenuItemStatics
+    | NumberFieldStatics
+    | RadioStatics
+    | SelectStatics
+    | TreeItemStatics;
 
 /**
  * Represents partial metadata configuration for a custom element.
@@ -7,6 +37,11 @@ import { StaticallyComposableHTML } from "@microsoft/fast-foundation";
  * @beta
  */
 export type PartialDesignSystem = Partial<DesignSystem>;
+
+/**
+ * @beta
+ */
+export type ElementStaticMap = Map<ComponentStatics, StaticallyComposableHTML>;
 
 /**
  * Represents metadata configuration for a custom element.
@@ -17,7 +52,7 @@ export class DesignSystem {
     constructor(
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
-        private _statics: Map<string, StaticallyComposableHTML> = new Map()
+        private _statics: ElementStaticMap = new Map(),
     ) {}
 
     public get prefix() {
@@ -78,3 +113,16 @@ export class DesignSystem {
  * The default {@link DesignSystem} configuration.
  */
 export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
+
+/**
+ * Configuration options for composing an element definition.
+ * 
+ * @internal
+ */
+export type ComposeOptions<TSource, TStatics extends string = any> = {
+    template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
+    styles?: ElementStyles | ElementStyles[];
+    shadowOptions?: Partial<ShadowRootOptions>;
+    elementOptions?: ElementDefinitionOptions;
+    statics?: Record<TStatics, StaticallyComposableHTML>;
+}

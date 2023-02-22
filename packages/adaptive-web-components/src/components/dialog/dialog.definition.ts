@@ -1,7 +1,5 @@
-import { FASTDialog } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./dialog.styles.js";
-import { template } from "./dialog.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeDialog } from "./dialog.compose.js";
 
 /**
  * The Dialog custom element definition. Implements {@link @microsoft/fast-foundation#FASTDialog}.
@@ -11,10 +9,4 @@ import { template } from "./dialog.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTDialog.compose({
-        name: `${ds.prefix}-dialog`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const dialogDefinition = composeDialog(DefaultDesignSystem);

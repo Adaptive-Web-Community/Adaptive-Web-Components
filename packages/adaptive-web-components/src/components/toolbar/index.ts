@@ -1,4 +1,4 @@
-export { definition as ToolbarDefinition } from "./toolbar.definition.js";
+export { composeToolbar } from "./toolbar.compose.js";
 export {
     templateStyles as ToolbarTemplateStyles,
     aestheticStyles as ToolbarAestheticStyles,

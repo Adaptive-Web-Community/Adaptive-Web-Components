@@ -1,7 +1,9 @@
-import type { DesignSystem } from "../../design-system.js";
-import { AdaptiveMenuItem } from "./menu-item.js";
-import { styles } from "./menu-item.styles.js";
-import { template } from "./menu-item.template.js";
+import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
+import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
+import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeMenuItem } from "./menu-item.compose.js";
+import { MenuItemStatics } from "./menu-item.template.js";
 
 /**
  * The Menu Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenuItem}.
@@ -11,10 +13,13 @@ import { template } from "./menu-item.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveMenuItem.compose({
-        name: `${ds.prefix}-menu-item`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const menuItemDefinition = composeMenuItem(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [MenuItemStatics.checkbox]: checkmarkIcon,
+            [MenuItemStatics.radio]: circleIcon,
+            [MenuItemStatics.submenu]: chevronRightIcon
+        }
+    }
+);

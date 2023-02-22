@@ -1,4 +1,4 @@
-export { definition as SwitchDefinition } from "./switch.definition.js";
+export { composeSwitch } from "./switch.compose.js";
 export {
     templateStyles as SwitchTemplateStyles,
     aestheticStyles as SwitchAestheticStyles,

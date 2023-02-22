@@ -1,4 +1,4 @@
-export { definition as TabDefinition } from "./tab.definition.js";
+export { composeTab } from "./tab.compose.js";
 export {
     templateStyles as TabTemplateStyles,
     aestheticStyles as TabAestheticStyles,

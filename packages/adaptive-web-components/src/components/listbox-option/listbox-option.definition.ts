@@ -1,7 +1,5 @@
-import { FASTListboxOption } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./listbox-option.styles.js";
-import { template } from "./listbox-option.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeListboxOption } from "./listbox-option.compose.js";
 
 /**
  * The option custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxOption}.
@@ -11,10 +9,4 @@ import { template } from "./listbox-option.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTListboxOption.compose({
-        name: `${ds.prefix}-option`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const listboxOptionDefinition = composeListboxOption(DefaultDesignSystem);

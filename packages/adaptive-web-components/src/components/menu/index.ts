@@ -1,4 +1,4 @@
-export { definition as MenuDefinition } from "./menu.definition.js";
+export { composeMenu } from "./menu.compose.js";
 export {
     templateStyles as MenuTemplateStyles,
     aestheticStyles as MenuAestheticStyles,

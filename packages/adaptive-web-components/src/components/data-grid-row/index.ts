@@ -1,4 +1,4 @@
-export { definition as DataGridRowDefinition } from "./data-grid-row.definition.js";
+export { composeDataGridRow } from "./data-grid-row.compose.js";
 export {
     templateStyles as DataGridRowTemplateStyles,
     aestheticStyles as DataGridRowAestheticStyles,

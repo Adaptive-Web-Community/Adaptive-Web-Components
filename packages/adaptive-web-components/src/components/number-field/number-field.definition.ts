@@ -1,7 +1,8 @@
-import { FASTNumberField } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./number-field.styles.js";
-import { template } from "./number-field.template.js";
+import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeNumberField } from "./number-field.compose.js";
+import { NumberFieldStatics } from "./number-field.template.js";
 
 /**
  * The Number Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTNumberField}.
@@ -11,13 +12,15 @@ import { template } from "./number-field.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTNumberField.compose({
-        name: `${ds.prefix}-number-field`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
+export const numberFieldDefinition = composeNumberField(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [NumberFieldStatics.stepDown]: chevronDownIcon,
+            [NumberFieldStatics.stepUp]: chevronUpIcon
         },
-    });
+        shadowOptions: {
+            delegatesFocus: true
+        }
+    }
+);

@@ -1,7 +1,5 @@
-import { FASTTextArea } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./text-area.styles.js";
-import { template } from "./text-area.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeTextArea } from "./text-area.compose.js";
 
 /**
  * The Text Area custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextArea}.
@@ -11,13 +9,11 @@ import { template } from "./text-area.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTTextArea.compose({
-        name: `${ds.prefix}-text-area`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const textAreaDefinition = composeTextArea(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);

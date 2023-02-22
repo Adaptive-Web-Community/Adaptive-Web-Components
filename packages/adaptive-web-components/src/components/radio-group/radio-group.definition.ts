@@ -1,7 +1,5 @@
-import { FASTRadioGroup } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./radio-group.styles.js";
-import { template } from "./radio-group.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeRadioGroup } from "./radio-group.compose.js";
 
 /**
  * The Radio Group custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadioGroup}.
@@ -11,10 +9,4 @@ import { template } from "./radio-group.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTRadioGroup.compose({
-        name: `${ds.prefix}-radio-group`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const radioGroupDefinition = composeRadioGroup(DefaultDesignSystem);

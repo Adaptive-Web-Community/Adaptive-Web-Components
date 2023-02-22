@@ -1,4 +1,4 @@
-export { definition as ProgressRingDefinition } from "./progress-ring.definition.js";
+export { composeProgressRing } from "./progress-ring.compose.js";
 export {
     templateStyles as ProgressRingTemplateStyles,
     aestheticStyles as ProgressRingAestheticStyles,

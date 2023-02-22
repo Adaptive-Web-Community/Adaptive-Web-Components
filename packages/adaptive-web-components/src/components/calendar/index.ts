@@ -1,4 +1,4 @@
-export { definition as CalendarDefinition } from "./calendar.definition.js";
+export { composeCalendar} from "./calendar.compose.js";
 export {
     templateStyles as CalendarTemplateStyles,
     aestheticStyles as CalendarAestheticStyles,

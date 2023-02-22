@@ -1,4 +1,4 @@
-export { definition as TextAreaDefinition } from "./text-area.definition.js";
+export { composeTextArea } from "./text-area.compose.js";
 export {
     templateStyles as TextAreaTemplateStyles,
     aestheticStyles as TextAreaAestheticStyles,

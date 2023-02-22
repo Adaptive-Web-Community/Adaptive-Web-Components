@@ -1,7 +1,5 @@
-import { FASTCalendar } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./calendar.styles.js";
-import { template } from "./calendar.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeCalendar } from "./calendar.compose.js";
 
 /**
  * The Calendar custom element definition. Implements {@link @microsoft/fast-foundation#FASTCalendar}.
@@ -11,10 +9,4 @@ import { template } from "./calendar.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTCalendar.compose({
-        name: `${ds.prefix}-calendar`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const calendarDefinition = composeCalendar(DefaultDesignSystem);

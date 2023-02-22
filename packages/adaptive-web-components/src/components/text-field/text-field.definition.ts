@@ -1,7 +1,5 @@
-import { FASTTextField } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./text-field.styles.js";
-import { template } from "./text-field.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeTextField } from "./text-field.compose.js";
 
 /**
  * The Text Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextField}.
@@ -11,13 +9,11 @@ import { template } from "./text-field.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTTextField.compose({
-        name: `${ds.prefix}-text-field`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const textFieldDefinition = composeTextField(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);

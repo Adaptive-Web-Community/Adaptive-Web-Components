@@ -1,4 +1,4 @@
-export { definition as TextFieldDefinition } from "./text-field.definition.js";
+export { composeTextField } from "./text-field.compose.js";
 export {
     templateStyles as TextFieldTemplateStyles,
     aestheticStyles as TextFieldAestheticStyles,

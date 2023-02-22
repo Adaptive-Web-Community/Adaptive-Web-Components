@@ -1,4 +1,4 @@
-export { definition as TreeViewDefinition } from "./tree-view.definition.js";
+export { composeTreeView } from "./tree-view.compose.js";
 export {
     templateStyles as TreeViewTemplateStyles,
     aestheticStyles as TreeViewAestheticStyles,

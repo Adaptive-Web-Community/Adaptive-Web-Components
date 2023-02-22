@@ -1,7 +1,5 @@
-import { FASTPicker } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./picker.styles.js";
-import { template } from "./picker.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composePicker } from "./picker.compose.js";
 
 /**
  * The Picker custom element definition. Implements {@link @microsoft/fast-foundation#FASTPicker}.
@@ -11,10 +9,4 @@ import { template } from "./picker.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTPicker.compose({
-        name: `${ds.prefix}-picker`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const pickerDefinition = composePicker(DefaultDesignSystem);

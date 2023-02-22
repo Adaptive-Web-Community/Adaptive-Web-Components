@@ -1,4 +1,4 @@
-export { definition as TabPanelDefinition } from "./tab-panel.definition.js";
+export { composeTabPanel } from "./tab-panel.compose.js";
 export {
     templateStyles as TabPanelTemplateStyles,
     aestheticStyles as TabPanelAestheticStyles,

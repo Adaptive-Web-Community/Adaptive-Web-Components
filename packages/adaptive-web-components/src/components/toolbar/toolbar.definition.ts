@@ -1,7 +1,5 @@
-import { FASTToolbar } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./toolbar.styles.js";
-import { template } from "./toolbar.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeToolbar } from "./toolbar.compose.js";
 
 /**
  * The Toolbar custom element definition. Implements {@link @microsoft/fast-foundation#FASTToolbar}.
@@ -11,13 +9,11 @@ import { template } from "./toolbar.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTToolbar.compose({
-        name: `${ds.prefix}-toolbar`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const toolbarDefinition = composeToolbar(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);

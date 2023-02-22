@@ -1,7 +1,5 @@
-import { FASTDisclosure } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./disclosure.styles.js";
-import { template } from "./disclosure.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeDisclosure } from "./disclosure.compose.js";
 
 /**
  * The Disclosure custom element definition. Implements {@link @microsoft/fast-foundation#FASTDisclosure}.
@@ -11,10 +9,4 @@ import { template } from "./disclosure.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTDisclosure.compose({
-        name: `${ds.prefix}-disclosure`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const disclosureDefinition = composeDisclosure(DefaultDesignSystem);

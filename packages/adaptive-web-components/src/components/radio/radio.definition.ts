@@ -1,7 +1,7 @@
-import { FASTRadio } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./radio.styles.js";
-import { template } from "./radio.template.js";
+import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeRadio } from "./radio.compose.js";
+import { RadioStatics } from "./radio.template.js";
 
 /**
  * The Radio custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadio}.
@@ -11,10 +11,11 @@ import { template } from "./radio.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTRadio.compose({
-        name: `${ds.prefix}-radio`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const radioDefinition = composeRadio(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [RadioStatics.checked]: circleIcon
+        }
+    }
+);

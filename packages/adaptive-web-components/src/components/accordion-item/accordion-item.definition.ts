@@ -1,7 +1,8 @@
-import { FASTAccordionItem } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./accordion-item.styles.js";
-import { template } from "./accordion-item.template.js";
+import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeAccordionItem } from "./accordion-item.compose.js";
+import { AccordionItemStatics } from './accordion-item.template.js';
 
 /**
  * The Accordion Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordionItem}.
@@ -11,10 +12,12 @@ import { template } from "./accordion-item.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTAccordionItem.compose({
-        name: `${ds.prefix}-accordion-item`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const accordionItemDefinition = composeAccordionItem(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [AccordionItemStatics.collapsed]: chevronDownIcon,
+            [AccordionItemStatics.expanded]: chevronUpIcon
+        }
+    }
+);

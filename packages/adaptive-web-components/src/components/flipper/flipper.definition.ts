@@ -1,7 +1,8 @@
-import { FASTFlipper } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./flipper.styles.js";
-import { template } from "./flipper.template.js";
+import chevronLeftIcon from "@fluentui/svg-icons/icons/chevron_left_16_regular.svg";
+import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_16_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeFlipper } from "./flipper.compose.js";
+import { FlipperStatics } from "./flipper.template.js";
 
 /**
  * The Flipper custom element definition. Implements {@link @microsoft/fast-foundation#FASTFlipper}.
@@ -11,10 +12,12 @@ import { template } from "./flipper.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTFlipper.compose({
-        name: `${ds.prefix}-flipper`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const flipperDefinition = composeFlipper(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [FlipperStatics.previous]: chevronLeftIcon,
+            [FlipperStatics.next]: chevronRightIcon
+        }
+    }
+);

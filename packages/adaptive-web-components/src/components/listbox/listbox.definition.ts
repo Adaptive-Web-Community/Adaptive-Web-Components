@@ -1,7 +1,5 @@
-import { FASTListboxElement } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./listbox.styles.js";
-import { template } from "./listbox.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeListbox } from "./listbox.compose.js";
 
 /**
  * The Listbox custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxElement}.
@@ -11,10 +9,4 @@ import { template } from "./listbox.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTListboxElement.compose({
-        name: `${ds.prefix}-listbox`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const listboxDefinition = composeListbox(DefaultDesignSystem);

@@ -1,7 +1,5 @@
-import { FASTSwitch } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./switch.styles.js";
-import { template } from "./switch.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeSwitch } from "./switch.compose.js";
 
 /**
  * The Switch custom element definition. Implements {@link @microsoft/fast-foundation#FASTSwitch}.
@@ -11,10 +9,4 @@ import { template } from "./switch.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTSwitch.compose({
-        name: `${ds.prefix}-switch`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const switchDefinition = composeSwitch(DefaultDesignSystem);

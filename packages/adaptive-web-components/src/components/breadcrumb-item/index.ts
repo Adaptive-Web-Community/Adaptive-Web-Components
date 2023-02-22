@@ -1,6 +1,6 @@
-export { definition as BreadcrumbItemDefinition } from "./breadcrumb-item.definition.js";
+export { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 export {
     templateStyles as BreadcrumbItemTemplateStyles,
     aestheticStyles as BreadcrumbItemAestheticStyles,
 } from "./breadcrumb-item.styles.js";
-export { template as BreadcrumbItemTemplate } from "./breadcrumb-item.template.js";
+export { template as BreadcrumbItemTemplate, BreadcrumbItemStatics } from "./breadcrumb-item.template.js";

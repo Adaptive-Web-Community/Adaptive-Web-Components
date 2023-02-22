@@ -1,4 +1,4 @@
-export { definition as AccordionDefinition } from "./accordion.definition.js";
+export { composeAccordion } from "./accordion.compose.js";
 export {
     templateStyles as AccordionTemplateStyles,
     aestheticStyles as AccordionAestheticStyles,

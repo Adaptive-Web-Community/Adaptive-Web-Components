@@ -1,7 +1,7 @@
-import { FASTTreeItem } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./tree-item.styles.js";
-import { template } from "./tree-item.template.js";
+import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeTreeItem } from "./tree-item.compose.js";
+import { TreeItemStatics } from "./tree-item.template.js";
 
 /**
  * The tree item custom element definition. Implements {@link @microsoft/fast-foundation#FASTTreeItem}.
@@ -11,10 +11,11 @@ import { template } from "./tree-item.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTTreeItem.compose({
-        name: `${ds.prefix}-tree-item`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const treeItemDefinition = composeTreeItem(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [TreeItemStatics.expandCollapse]: chevronRightIcon
+        }
+    }
+);

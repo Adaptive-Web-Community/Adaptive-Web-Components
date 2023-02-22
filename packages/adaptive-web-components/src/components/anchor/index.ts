@@ -1,4 +1,4 @@
-export { definition as AnchorDefinition } from "./anchor.definition.js";
+export { composeAnchor } from "./anchor.compose.js";
 export {
     templateStyles as AnchorTemplateStyles,
     aestheticStyles as AnchorAestheticStyles,

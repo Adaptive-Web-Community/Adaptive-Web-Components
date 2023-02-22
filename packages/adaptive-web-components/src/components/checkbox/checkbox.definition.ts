@@ -1,7 +1,8 @@
-import { FASTCheckbox } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./checkbox.styles.js";
-import { template } from "./checkbox.template.js";
+import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
+import subtractIcon from "@fluentui/svg-icons/icons/subtract_16_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeCheckbox } from './checkbox.compose.js';
+import { CheckboxStatics } from "./checkbox.template.js";
 
 /**
  * The Checkbox custom element definition. Implements {@link @microsoft/fast-foundation#FASTCheckbox}.
@@ -11,10 +12,12 @@ import { template } from "./checkbox.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTCheckbox.compose({
-        name: `${ds.prefix}-checkbox`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const checkboxDefinition = composeCheckbox(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [CheckboxStatics.checked]: checkmarkIcon,
+            [CheckboxStatics.indeterminate]: subtractIcon
+        }
+    }
+);

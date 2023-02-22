@@ -1,7 +1,5 @@
-import { FASTBreadcrumb } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./breadcrumb.styles.js";
-import { template } from "./breadcrumb.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeBreadcrumb } from "./breadcrumb.compose.js";
 
 /**
  * The Breadcrumb custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumb}.
@@ -11,10 +9,4 @@ import { template } from "./breadcrumb.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTBreadcrumb.compose({
-        name: `${ds.prefix}-breadcrumb`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const breadcrumbDefinition = composeBreadcrumb(DefaultDesignSystem);

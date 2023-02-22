@@ -1,7 +1,5 @@
-import { FASTBadge } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./badge.styles.js";
-import { template } from "./badge.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeBadge } from "./badge.compose.js";
 
 /**
  * The Badge custom element definition. Implements {@link @microsoft/fast-foundation#FASTBadge}.
@@ -11,10 +9,4 @@ import { template } from "./badge.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTBadge.compose({
-        name: `${ds.prefix}-badge`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const badgeDefinition = composeBadge(DefaultDesignSystem);

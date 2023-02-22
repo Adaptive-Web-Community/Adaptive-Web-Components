@@ -1,7 +1,5 @@
-import { FASTProgressRing } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./progress-ring.styles.js";
-import { template } from "./progress-ring.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeProgressRing } from "./progress-ring.compose.js";
 
 /**
  * The Progress Ring custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgressRing}.
@@ -11,10 +9,4 @@ import { template } from "./progress-ring.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTProgressRing.compose({
-        name: `${ds.prefix}-progress-ring`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const progressRingDefinition = composeProgressRing(DefaultDesignSystem);

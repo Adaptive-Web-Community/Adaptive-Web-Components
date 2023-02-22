@@ -1,7 +1,9 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { calendarTemplate, calendarTitleTemplate, FASTCalendar } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
-import { DataGridCellDefinition, DataGridDefinition, DataGridRowDefinition } from "../index.js";
+import { composeDataGridCell } from "../data-grid-cell/index.js";
+import { composeDataGridRow } from "../data-grid-row/index.js";
+import { composeDataGrid } from "../data-grid/index.js";
 
 /**
  * Default Calendar template, {@link @microsoft/fast-foundation#calendarTemplate}.
@@ -9,8 +11,8 @@ import { DataGridCellDefinition, DataGridDefinition, DataGridRowDefinition } fro
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCalendar> =
     (ds: DesignSystem) =>
         calendarTemplate({
-            dataGridCell: DataGridCellDefinition(ds),
-            dataGridRow: DataGridRowDefinition(ds),
-            dataGrid: DataGridDefinition(ds),
+            dataGridCell: composeDataGridCell(ds),
+            dataGridRow: composeDataGridRow(ds),
+            dataGrid: composeDataGrid(ds),
             title: calendarTitleTemplate(),
         });

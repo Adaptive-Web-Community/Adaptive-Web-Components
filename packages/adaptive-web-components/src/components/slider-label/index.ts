@@ -1,4 +1,4 @@
-export { definition as SliderLabelDefinition } from "./slider-label.definition.js";
+export { composeSliderLabel } from "./slider-label.compose.js";
 export {
     templateStyles as SliderLabelTemplateStyles,
     aestheticStyles as SliderLabelAestheticStyles,

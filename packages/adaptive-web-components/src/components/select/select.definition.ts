@@ -1,7 +1,7 @@
-import type { DesignSystem } from "../../design-system.js";
-import { AdaptiveSelect } from "./select.js";
-import { styles } from "./select.styles.js";
-import { template } from "./select.template.js";
+import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeSelect } from "./select.compose.js";
+import { SelectStatics } from "./select.template.js";
 
 /**
  * The select custom element definition. Implements {@link @microsoft/fast-foundation#FASTSelect}.
@@ -11,10 +11,11 @@ import { template } from "./select.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveSelect.compose({
-        name: `${ds.prefix}-select`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const selectDefinition = composeSelect(
+    DefaultDesignSystem,
+    {
+        statics: {
+            [SelectStatics.indicator]: chevronDownIcon
+        }
+    }
+);

@@ -1,7 +1,5 @@
-import { FASTSliderLabel } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./slider-label.styles.js";
-import { template } from "./slider-label.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeSliderLabel } from "./slider-label.compose.js";
 
 /**
  * The Slider Label custom element definition. Implements {@link "@microsoft/fast-foundation#FASTSliderLabel}.
@@ -11,10 +9,4 @@ import { template } from "./slider-label.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTSliderLabel.compose({
-        name: `${ds.prefix}-slider-label`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const sliderLabelDefinition = composeSliderLabel(DefaultDesignSystem);

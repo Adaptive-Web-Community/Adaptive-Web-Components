@@ -1,4 +1,4 @@
-export { definition as DataGridCellDefinition } from "./data-grid-cell.definition.js";
+export { composeDataGridCell } from "./data-grid-cell.compose.js";
 export {
     templateStyles as DataGridCellTemplateStyles,
     aestheticStyles as DataGridCellAestheticStyles,

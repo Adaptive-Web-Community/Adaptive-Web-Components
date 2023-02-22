@@ -1,7 +1,5 @@
-import { FASTSearch } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./search.styles.js";
-import { template } from "./search.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeSearch } from "./search.compose.js";
 
 /**
  * The Search Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTSearch}.
@@ -11,13 +9,11 @@ import { template } from "./search.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTSearch.compose({
-        name: `${ds.prefix}-search`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-        shadowOptions: {
-            delegatesFocus: true,
-        },
-    });
+export const searchDefinition = composeSearch(
+	DefaultDesignSystem,
+	{
+		shadowOptions: {
+			delegatesFocus: true
+		}
+	}
+);

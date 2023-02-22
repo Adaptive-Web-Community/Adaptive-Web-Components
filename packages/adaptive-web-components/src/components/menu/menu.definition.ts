@@ -1,7 +1,5 @@
-import type { DesignSystem } from "../../design-system.js";
-import { AdaptiveMenu } from "./menu.js";
-import { styles } from "./menu.styles.js";
-import { template } from "./menu.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeMenu } from "./menu.compose.js";
 
 /**
  * The Menu custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenu}.
@@ -11,10 +9,4 @@ import { template } from "./menu.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    AdaptiveMenu.compose({
-        name: `${ds.prefix}-menu`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const menuDefinition = composeMenu(DefaultDesignSystem);

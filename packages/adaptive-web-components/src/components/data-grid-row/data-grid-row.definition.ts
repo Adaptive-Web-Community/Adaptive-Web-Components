@@ -1,7 +1,5 @@
-import { FASTDataGridRow } from "@microsoft/fast-foundation";
-import type { DesignSystem } from "../../design-system.js";
-import { styles } from "./data-grid-row.styles.js";
-import { template } from "./data-grid-row.template.js";
+import { DefaultDesignSystem } from "../../design-system.js";
+import { composeDataGridRow } from "./data-grid-row.compose.js";
 
 /**
  * The Data Grid Cell custom element definition. Implements {@link @microsoft/fast-foundation#FASTDataGridRow}.
@@ -11,10 +9,4 @@ import { template } from "./data-grid-row.template.js";
  *
  * @public
  */
-export const definition = (ds: DesignSystem) =>
-    FASTDataGridRow.compose({
-        name: `${ds.prefix}-data-grid-row`,
-        registry: ds.registry,
-        template: template(ds),
-        styles,
-    });
+export const dataGridRowDefinition = composeDataGridRow(DefaultDesignSystem);

@@ -1,4 +1,4 @@
-export { definition as HorizontalScrollDefinition } from "./horizontal-scroll.definition.js";
+export { composeHorizontalScroll } from "./horizontal-scroll.compose.js";
 export {
     templateStyles as HorizontalScrollTemplateStyles,
     aestheticStyles as HorizontalScrollAestheticStyles,
