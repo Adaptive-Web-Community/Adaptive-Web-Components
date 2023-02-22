@@ -1,6 +1,6 @@
 export { composeAccordion } from "./accordion.compose.js";
 export {
-    templateStyles as AccordionTemplateStyles,
-    aestheticStyles as AccordionAestheticStyles,
+    templateStyles as accordionTemplateStyles,
+    aestheticStyles as accordionAestheticStyles,
 } from "./accordion.styles.js";
-export { template as AccordionTemplate } from "./accordion.template.js";
+export { template as accordionTemplate } from "./accordion.template.js";

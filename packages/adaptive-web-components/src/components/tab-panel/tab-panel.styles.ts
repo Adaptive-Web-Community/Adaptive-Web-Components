@@ -6,10 +6,6 @@ import { density } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: block;
     }
@@ -24,13 +20,4 @@ export const aestheticStyles: ElementStyles = css`
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         ${typeRampBase}
     }
-`;
-
-/**
- * Default Adaptive UI Tab Panel styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

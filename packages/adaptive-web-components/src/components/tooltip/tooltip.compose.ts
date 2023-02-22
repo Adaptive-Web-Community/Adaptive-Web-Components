@@ -1,8 +1,11 @@
 import { FASTTooltip } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./tooltip.styles.js";
+import { aestheticStyles, templateStyles } from "./tooltip.styles.js";
 import { template } from "./tooltip.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeTooltip(
     ds: DesignSystem,

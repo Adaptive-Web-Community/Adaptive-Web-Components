@@ -12,10 +12,6 @@ import {
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-block;
     }
@@ -39,13 +35,4 @@ export const aestheticStyles: ElementStyles = css`
         color: ${neutralForegroundRest};
         fill: currentcolor;
     }
-`;
-
-/**
- * Default Adaptive UI Badge styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

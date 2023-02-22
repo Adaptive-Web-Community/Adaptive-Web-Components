@@ -1,8 +1,11 @@
 import { FASTTextField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./text-field.styles.js";
+import { aestheticStyles, templateStyles } from "./text-field.styles.js";
 import { template } from "./text-field.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeTextField(
     ds: DesignSystem,

@@ -1,8 +1,11 @@
 import { FASTBadge } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./badge.styles.js";
+import { aestheticStyles, templateStyles } from "./badge.styles.js";
 import { template } from "./badge.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeBadge(
     ds: DesignSystem,

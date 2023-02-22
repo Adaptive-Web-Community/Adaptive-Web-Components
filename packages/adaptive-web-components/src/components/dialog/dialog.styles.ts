@@ -5,10 +5,6 @@ import { elevationDialog, fillColor, layerCornerRadius, strokeWidth } from "@ada
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         align-items: center;
@@ -59,13 +55,4 @@ export const aestheticStyles: ElementStyles = css`
         background: ${fillColor};
         box-shadow: ${elevationDialog};
     }
-`;
-
-/**
- * Default Adaptive UI Dialog styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

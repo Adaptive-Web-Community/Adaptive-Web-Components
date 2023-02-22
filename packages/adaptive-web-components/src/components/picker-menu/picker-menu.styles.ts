@@ -5,10 +5,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         box-sizing: border-box;
         width: 100%;
@@ -38,13 +34,4 @@ export const aestheticStyles: ElementStyles = css`
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
     }
-`;
-
-/**
- * Default Adaptive UI Picker Menu styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

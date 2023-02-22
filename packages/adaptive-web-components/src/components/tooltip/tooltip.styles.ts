@@ -13,10 +13,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         visibility: hidden;
     }
@@ -62,13 +58,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([show="true"][visible]) {
         transition: none;
     }
-`;
-
-/**
- * Default Adaptive UI Tooltip styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

@@ -1,8 +1,11 @@
 import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveButton } from "./button.js";
-import { styles } from "./button.styles.js";
+import { aestheticStyles, templateStyles } from "./button.styles.js";
 import { template } from "./button.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeButton(
     ds: DesignSystem,

@@ -1,6 +1,6 @@
 export { composeRadioGroup } from "./radio-group.compose.js";
 export {
-    templateStyles as RadioGroupTemplateStyles,
-    aestheticStyles as RadioGroupAestheticStyles,
+    templateStyles as radioGroupTemplateStyles,
+    aestheticStyles as radioGroupAestheticStyles,
 } from "./radio-group.styles.js";
-export { template as RadioGroupTemplate } from "./radio-group.template.js";
+export { template as radioGroupTemplate } from "./radio-group.template.js";

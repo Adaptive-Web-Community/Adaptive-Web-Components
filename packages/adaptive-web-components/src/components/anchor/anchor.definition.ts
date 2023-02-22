@@ -1,4 +1,3 @@
-import { FASTAnchor } from '@microsoft/fast-foundation';
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAnchor } from "./anchor.compose.js";
 

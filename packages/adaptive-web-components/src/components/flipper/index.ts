@@ -1,6 +1,6 @@
 export { composeFlipper } from "./flipper.compose.js";
 export {
-    templateStyles as FlipperTemplateStyles,
-    aestheticStyles as FlipperAestheticStyles,
+    templateStyles as flipperTemplateStyles,
+    aestheticStyles as flipperAestheticStyles,
 } from "./flipper.styles.js";
-export { template as FlipperTemplate, FlipperStatics } from "./flipper.template.js";
+export { template as flipperTemplate, FlipperStatics } from "./flipper.template.js";

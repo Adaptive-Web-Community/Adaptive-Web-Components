@@ -1,6 +1,6 @@
 export { composeSearch } from "./search.compose.js";
 export {
-    templateStyles as SearchTemplateStyles,
-    aestheticStyles as SearchAestheticStyles,
+    templateStyles as searchTemplateStyles,
+    aestheticStyles as searchAestheticStyles,
 } from "./search.styles.js";
-export { template as SearchTemplate } from "./search.template.js";
+export { template as searchTemplate } from "./search.template.js";

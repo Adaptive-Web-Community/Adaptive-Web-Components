@@ -13,10 +13,6 @@ import {
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         overflow: hidden;
     }
@@ -43,13 +39,4 @@ export const aestheticStyles: ElementStyles = css`
     :host(:focus-visible) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
-`;
-
-/**
- * Default Adaptive UI Data Grid Cell styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

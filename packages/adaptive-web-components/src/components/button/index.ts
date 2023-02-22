@@ -1,7 +1,7 @@
 export { composeButton } from "./button.compose.js";
 export {
-    templateStyles as ButtonTemplateStyles,
-    aestheticStyles as ButtonAestheticStyles,
+    templateStyles as buttonTemplateStyles,
+    aestheticStyles as buttonAestheticStyles,
 } from "./button.styles.js";
-export { template as ButtonTemplate } from "./button.template.js";
+export { template as buttonTemplate } from "./button.template.js";
 export { AdaptiveButton } from "./button.js";

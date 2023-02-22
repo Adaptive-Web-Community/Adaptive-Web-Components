@@ -38,10 +38,6 @@ const selectedExpandCollapseHover = DesignToken.create<Swatch>("tree-item-expand
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         position: relative;
         display: block;
@@ -174,13 +170,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([disabled]) .control {
         opacity: 0.3;
     }
-`;
-
-/**
- * Default Adaptive UI Tree Item styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

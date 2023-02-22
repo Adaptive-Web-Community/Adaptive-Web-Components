@@ -1,6 +1,6 @@
 export { composeTooltip } from "./tooltip.compose.js";
 export {
-    templateStyles as TooltipTemplateStyles,
-    aestheticStyles as TooltipAestheticStyles,
+    templateStyles as tooltipTemplateStyles,
+    aestheticStyles as tooltipAestheticStyles,
 } from "./tooltip.styles.js";
-export { template as TooltipTemplate } from "./tooltip.template.js";
+export { template as tooltipTemplate } from "./tooltip.template.js";

@@ -23,10 +23,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-flex;
         align-items: center;
@@ -131,13 +127,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([disabled]) {
         opacity: 0.3;
     }
-`;
-
-/**
- * Default Adaptive UI Radio styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

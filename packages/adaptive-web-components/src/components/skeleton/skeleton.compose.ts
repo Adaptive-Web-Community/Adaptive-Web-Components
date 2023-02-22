@@ -1,8 +1,11 @@
 import { FASTSkeleton } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./skeleton.styles.js";
+import { aestheticStyles, templateStyles } from "./skeleton.styles.js";
 import { template } from "./skeleton.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeSkeleton(
     ds: DesignSystem,

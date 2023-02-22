@@ -1,6 +1,6 @@
 export { composePickerMenu } from "./picker-menu.compose.js";
 export {
-    templateStyles as PickerMenuTemplateStyles,
-    aestheticStyles as PickerMenuAestheticStyles,
+    templateStyles as pickerMenuTemplateStyles,
+    aestheticStyles as pickerMenuAestheticStyles,
 } from "./picker-menu.styles.js";
-export { template as PickerMenuTemplate } from "./picker-menu.template.js";
+export { template as pickerMenuTemplate } from "./picker-menu.template.js";

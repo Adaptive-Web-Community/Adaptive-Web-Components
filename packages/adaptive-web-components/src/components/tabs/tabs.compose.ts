@@ -1,8 +1,11 @@
 import { FASTTabs } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./tabs.styles.js";
+import { aestheticStyles, templateStyles } from "./tabs.styles.js";
 import { template } from "./tabs.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeTabs(
     ds: DesignSystem,

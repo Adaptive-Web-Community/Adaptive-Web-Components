@@ -4,10 +4,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         position: relative;
         display: block;
@@ -42,15 +38,6 @@ export const aestheticStyles: ElementStyles = css`
     .content {
         gap: 8px;
     }
-`;
-
-/**
- * Default Adaptive UI Horizontal Scroll styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;
 
 /**

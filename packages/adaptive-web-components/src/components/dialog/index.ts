@@ -1,6 +1,6 @@
 export { composeDialog } from "./dialog.compose.js";
 export {
-    templateStyles as DialogTemplateStyles,
-    aestheticStyles as DialogAestheticStyles,
+    templateStyles as dialogTemplateStyles,
+    aestheticStyles as dialogAestheticStyles,
 } from "./dialog.styles.js";
-export { template as DialogTemplate } from "./dialog.template.js";
+export { template as dialogTemplate } from "./dialog.template.js";

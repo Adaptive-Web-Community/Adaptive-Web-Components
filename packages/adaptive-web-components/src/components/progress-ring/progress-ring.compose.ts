@@ -1,8 +1,11 @@
 import { FASTProgressRing } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./progress-ring.styles.js";
+import { aestheticStyles, templateStyles } from "./progress-ring.styles.js";
 import { template } from "./progress-ring.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeProgressRing(
     ds: DesignSystem,

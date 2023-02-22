@@ -1,6 +1,6 @@
 export { composeRadio } from "./radio.compose.js";
 export {
-    templateStyles as RadioTemplateStyles,
-    aestheticStyles as RadioAestheticStyles,
+    templateStyles as radioTemplateStyles,
+    aestheticStyles as radioAestheticStyles,
 } from "./radio.styles.js";
-export { template as RadioTemplate, RadioStatics } from "./radio.template.js";
+export { template as radioTemplate, RadioStatics } from "./radio.template.js";

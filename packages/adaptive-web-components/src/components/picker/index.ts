@@ -1,6 +1,6 @@
 export { composePicker } from "./picker.compose.js";
 export {
-    templateStyles as PickerTemplateStyles,
-    aestheticStyles as PickerAestheticStyles,
+    templateStyles as pickerTemplateStyles,
+    aestheticStyles as pickerAestheticStyles,
 } from "./picker.styles.js";
-export { template as PickerTemplate } from "./picker.template.js";
+export { template as pickerTemplate } from "./picker.template.js";

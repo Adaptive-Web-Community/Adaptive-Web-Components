@@ -1,6 +1,6 @@
 export { composeSelect } from "./select.compose.js";
 export {
-    templateStyles as SelectTemplateStyles,
-    aestheticStyles as SelectAestheticStyles,
+    templateStyles as selectTemplateStyles,
+    aestheticStyles as selectAestheticStyles,
 } from "./select.styles.js";
-export { template as SelectTemplate, SelectStatics } from "./select.template.js";
+export { template as selectTemplate, SelectStatics } from "./select.template.js";

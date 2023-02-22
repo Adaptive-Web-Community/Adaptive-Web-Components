@@ -5,10 +5,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: block;
     }
@@ -28,13 +24,4 @@ export const aestheticStyles: ElementStyles = css`
         height: 100%;
         border-left: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
-`;
-
-/**
- * Default Adaptive UI Divider styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;
