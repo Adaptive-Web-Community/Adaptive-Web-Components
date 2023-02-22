@@ -23,10 +23,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-flex;
         align-items: center;
@@ -100,13 +96,4 @@ export const aestheticStyles: ElementStyles = css`
     ::slotted([slot="end"]) {
         display: flex;
     }
-`;
-
-/**
- * Default Adaptive UI Listbox Option styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

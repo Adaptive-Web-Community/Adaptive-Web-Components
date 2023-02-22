@@ -9,10 +9,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: grid;
         grid-template-columns: auto 1fr auto;
@@ -100,13 +96,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([orientation="vertical"]) .activeIndicatorTransition {
         transition: transform 0.2s linear;
     }
-`;
-
-/**
- * Default Adaptive UI Tabs styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

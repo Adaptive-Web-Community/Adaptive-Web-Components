@@ -1,6 +1,6 @@
 export { composeCard } from "./card.compose.js";
 export {
-    templateStyles as CardTemplateStyles,
-    aestheticStyles as CardAestheticStyles,
+    templateStyles as cardTemplateStyles,
+    aestheticStyles as cardAestheticStyles,
 } from "./card.styles.js";
-export { template as CardTemplate } from "./card.template.js";
+export { template as cardTemplate } from "./card.template.js";

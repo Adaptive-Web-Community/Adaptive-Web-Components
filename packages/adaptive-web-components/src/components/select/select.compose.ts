@@ -1,8 +1,11 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveSelect } from "./select.js";
-import { styles } from "./select.styles.js";
+import { aestheticStyles, templateStyles } from "./select.styles.js";
 import { SelectStatics, template } from "./select.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeSelect(
     ds: DesignSystem,

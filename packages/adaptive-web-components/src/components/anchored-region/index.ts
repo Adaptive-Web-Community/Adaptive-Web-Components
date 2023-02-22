@@ -1,6 +1,6 @@
 export { composeAnchoredRegion } from "./anchored-region.compose.js";
 export {
-    templateStyles as AnchoredRegionTemplateStyles,
-    aestheticStyles as AnchoredRegionAestheticStyles,
+    templateStyles as anchoredRegionTemplateStyles,
+    aestheticStyles as anchoredRegionAestheticStyles,
 } from "./anchored-region.styles.js";
-export { template as AnchoredRegionTemplate } from "./anchored-region.template.js";
+export { template as anchoredRegionTemplate } from "./anchored-region.template.js";

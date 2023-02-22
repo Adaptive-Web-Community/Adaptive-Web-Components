@@ -4,10 +4,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
     }
@@ -34,13 +30,4 @@ export const aestheticStyles: ElementStyles = css`
     .positioning-region {
         gap: 8px;
     }
-`;
-
-/**
- * Default Adaptive UI Radio Group styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

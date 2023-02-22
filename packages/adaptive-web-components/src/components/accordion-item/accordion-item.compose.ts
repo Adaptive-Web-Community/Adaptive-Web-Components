@@ -1,8 +1,11 @@
 import { FASTAccordionItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./accordion-item.styles.js";
+import { aestheticStyles, templateStyles } from "./accordion-item.styles.js";
 import { AccordionItemStatics, template } from "./accordion-item.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeAccordionItem(
     ds: DesignSystem,

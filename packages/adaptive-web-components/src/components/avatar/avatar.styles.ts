@@ -6,10 +6,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         position: relative;
         display: flex;
@@ -62,13 +58,4 @@ export const aestheticStyles: ElementStyles = css`
         bottom: 0;
         right: 0;
     }
-`;
-
-/**
- * Default Adaptive UI Card styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

@@ -17,10 +17,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         align-items: center;
@@ -59,13 +55,4 @@ export const aestheticStyles: ElementStyles = css`
     :host(:focus-visible) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
-`;
-
-/**
- * Default Adaptive UI Picker List Item styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

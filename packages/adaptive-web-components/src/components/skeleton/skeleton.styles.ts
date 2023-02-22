@@ -5,10 +5,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         position: relative;
         display: block;
@@ -85,13 +81,4 @@ export const aestheticStyles: ElementStyles = css`
             transform: translateX(100%);
         }
     }
-`;
-
-/**
- * Default Adaptive UI Skeleton styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

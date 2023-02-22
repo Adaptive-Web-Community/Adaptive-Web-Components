@@ -5,10 +5,6 @@ import { accentForegroundRest, designUnit, neutralFillSecondaryRest } from "@ada
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         position: relative;
         display: flex;
@@ -81,13 +77,4 @@ export const aestheticStyles: ElementStyles = css`
             transform: translateX(300%);
         }
     }
-`;
-
-/**
- * Default Adaptive UI Progress styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

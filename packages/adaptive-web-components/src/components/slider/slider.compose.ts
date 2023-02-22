@@ -1,8 +1,11 @@
 import { FASTSlider } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./slider.styles.js";
+import { aestheticStyles, templateStyles } from "./slider.styles.js";
 import { template } from "./slider.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeSlider(
     ds: DesignSystem,

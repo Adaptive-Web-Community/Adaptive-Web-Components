@@ -1,6 +1,6 @@
 export { composeCombobox } from "./combobox.compose.js";
 export {
-    templateStyles as ComboboxTemplateStyles,
-    aestheticStyles as ComboboxAestheticStyles,
+    templateStyles as comboboxTemplateStyles,
+    aestheticStyles as comboboxAestheticStyles,
 } from "./combobox.styles.js";
-export { template as ComboboxTemplate, ComboboxStatics } from "./combobox.template.js";
+export { template as comboboxTemplate, ComboboxStatics } from "./combobox.template.js";

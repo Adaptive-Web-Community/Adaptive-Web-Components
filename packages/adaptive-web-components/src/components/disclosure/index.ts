@@ -1,6 +1,6 @@
 export { composeDisclosure } from "./disclosure.compose.js";
 export {
-    templateStyles as DisclosureTemplateStyles,
-    aestheticStyles as DisclosureAestheticStyles,
+    templateStyles as disclosureTemplateStyles,
+    aestheticStyles as disclosureAestheticStyles,
 } from "./disclosure.styles.js";
-export { template as DisclosureTemplate } from "./disclosure.template.js";
+export { template as disclosureTemplate } from "./disclosure.template.js";

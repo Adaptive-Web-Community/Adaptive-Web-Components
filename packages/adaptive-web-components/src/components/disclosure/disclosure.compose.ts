@@ -1,8 +1,11 @@
 import { FASTDisclosure } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./disclosure.styles.js";
+import { aestheticStyles, templateStyles } from "./disclosure.styles.js";
 import { template } from "./disclosure.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeDisclosure(
     ds: DesignSystem,

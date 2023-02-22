@@ -19,10 +19,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         align-items: center;
@@ -66,13 +62,4 @@ export const aestheticStyles: ElementStyles = css`
         background: ${accentFillRest};
         color: ${foregroundOnAccentRest};
     }
-`;
-
-/**
- * Default Adaptive UI Picker Menu Option styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

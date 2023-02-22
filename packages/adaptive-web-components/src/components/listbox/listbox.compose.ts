@@ -1,8 +1,11 @@
 import { FASTListboxElement } from "@microsoft/fast-foundation";
 import { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./listbox.styles.js";
+import { aestheticStyles, templateStyles } from "./listbox.styles.js";
 import { template } from "./listbox.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeListbox(
     ds: DesignSystem,

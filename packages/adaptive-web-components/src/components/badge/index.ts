@@ -1,6 +1,6 @@
 export { composeBadge } from "./badge.compose.js";
 export {
-    templateStyles as BadgeTemplateStyles,
-    aestheticStyles as BadgeAestheticStyles,
+    templateStyles as badgeTemplateStyles,
+    aestheticStyles as badgeAestheticStyles,
 } from "./badge.styles.js";
-export { template as BadgeTemplate } from "./badge.template.js";
+export { template as badgeTemplate } from "./badge.template.js";

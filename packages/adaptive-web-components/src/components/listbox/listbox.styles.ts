@@ -13,10 +13,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-flex;
         flex-direction: column;
@@ -38,13 +34,4 @@ export const aestheticStyles: ElementStyles = css`
     :host(:not([disabled]):focus-within) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
-`;
-
-/**
- * Default Adaptive UI Listbox styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

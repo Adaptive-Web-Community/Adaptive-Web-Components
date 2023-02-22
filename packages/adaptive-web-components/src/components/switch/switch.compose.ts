@@ -1,8 +1,11 @@
 import { FASTSwitch } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./switch.styles.js";
+import { aestheticStyles, templateStyles } from "./switch.styles.js";
 import { template } from "./switch.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeSwitch(
     ds: DesignSystem,

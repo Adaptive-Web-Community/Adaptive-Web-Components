@@ -1,8 +1,11 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenuItem } from "./menu-item.js";
-import { styles } from "./menu-item.styles.js";
+import { aestheticStyles, templateStyles } from "./menu-item.styles.js";
 import { MenuItemStatics, template } from "./menu-item.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeMenuItem(
     ds: DesignSystem,

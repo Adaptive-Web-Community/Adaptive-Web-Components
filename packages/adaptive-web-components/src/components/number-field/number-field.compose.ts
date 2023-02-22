@@ -1,8 +1,11 @@
 import { FASTNumberField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./number-field.styles.js";
+import { aestheticStyles, templateStyles } from "./number-field.styles.js";
 import { NumberFieldStatics, template } from "./number-field.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeNumberField(
     ds: DesignSystem,

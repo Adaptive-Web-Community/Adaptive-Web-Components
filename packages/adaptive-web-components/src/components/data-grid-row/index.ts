@@ -1,6 +1,6 @@
 export { composeDataGridRow } from "./data-grid-row.compose.js";
 export {
-    templateStyles as DataGridRowTemplateStyles,
-    aestheticStyles as DataGridRowAestheticStyles,
+    templateStyles as dataGridRowTemplateStyles,
+    aestheticStyles as dataGridRowAestheticStyles,
 } from "./data-grid-row.styles.js";
-export { template as DataGridRowTemplate } from "./data-grid-row.template.js";
+export { template as dataGridRowTemplate } from "./data-grid-row.template.js";

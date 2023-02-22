@@ -1,8 +1,11 @@
 import { FASTPickerList } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { styles } from "./picker-list.styles.js";
+import { aestheticStyles, templateStyles } from "./picker-list.styles.js";
 import { template } from "./picker-list.template.js";
+
+const styles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composePickerList(
     ds: DesignSystem,

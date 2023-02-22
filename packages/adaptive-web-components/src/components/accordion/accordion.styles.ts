@@ -5,10 +5,6 @@ import { neutralForegroundRest, neutralStrokeDividerRest, strokeWidth, typeRampB
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         flex-direction: column;
@@ -24,13 +20,4 @@ export const aestheticStyles: ElementStyles = css`
         color: ${neutralForegroundRest};
         ${typeRampBase}
     }
-`;
-
-/**
- * Default Adaptive UI Accordion styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

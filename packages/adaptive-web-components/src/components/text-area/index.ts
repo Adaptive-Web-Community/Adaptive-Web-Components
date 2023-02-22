@@ -1,6 +1,6 @@
 export { composeTextArea } from "./text-area.compose.js";
 export {
-    templateStyles as TextAreaTemplateStyles,
-    aestheticStyles as TextAreaAestheticStyles,
+    templateStyles as textAreaTemplateStyles,
+    aestheticStyles as textAreaAestheticStyles,
 } from "./text-area.styles.js";
-export { template as TextAreaTemplate } from "./text-area.template.js";
+export { template as textAreaTemplate } from "./text-area.template.js";

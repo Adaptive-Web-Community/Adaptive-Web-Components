@@ -6,10 +6,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host([orientation="horizontal"]) {
         align-self: start;
         grid-row: 2;
@@ -76,13 +72,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([disabled]) {
         opacity: 0.3;
     }
-`;
-
-/**
- * Default Adaptive UI Slider Content styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

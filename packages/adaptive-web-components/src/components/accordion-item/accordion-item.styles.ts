@@ -17,10 +17,6 @@ import { density, heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         flex-direction: column;
@@ -148,13 +144,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([disabled]) {
         opacity: 0.3;
     }
-`;
-
-/**
- * Default Adaptive UI Accordion Item styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

@@ -5,10 +5,6 @@ import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "@adaptiv
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: grid;
         box-sizing: border-box;
@@ -33,13 +29,4 @@ export const aestheticStyles: ElementStyles = css`
     :host([cell-type="sticky-header"]) {
         background: ${neutralFillRest};
     }
-`;
-
-/**
- * Default Adaptive UI Data Grid Row styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

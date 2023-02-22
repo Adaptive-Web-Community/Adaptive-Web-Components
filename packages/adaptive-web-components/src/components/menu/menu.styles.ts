@@ -11,10 +11,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: block;
     }
@@ -45,13 +41,4 @@ export const aestheticStyles: ElementStyles = css`
     ::slotted(adaptive-divider) {
         margin: 4px 0;
     }
-`;
-
-/**
- * Default Adaptive UI Menu styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

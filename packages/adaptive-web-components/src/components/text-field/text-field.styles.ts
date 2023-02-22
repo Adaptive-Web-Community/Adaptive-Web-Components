@@ -18,10 +18,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: inline-block;
         user-select: none;
@@ -107,13 +103,4 @@ export const aestheticStyles: ElementStyles = css`
     .control:focus-visible {
         outline: none;
     }
-`;
-
-/**
- * Default Adaptive UI Text Field styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;

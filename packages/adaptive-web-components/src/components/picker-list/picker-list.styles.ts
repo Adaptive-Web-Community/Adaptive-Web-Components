@@ -20,10 +20,6 @@ import { heightNumber } from "../../styles/index.js";
  * Basic layout styling associated with the anatomy of the template.
  */
 export const templateStyles: ElementStyles = css`
-    :host([hidden]) {
-        display: none;
-    }
-
     :host {
         display: flex;
         flex-wrap: wrap;
@@ -77,13 +73,4 @@ export const aestheticStyles: ElementStyles = css`
         height: calc(${heightNumber} * 1px);
         padding: 0 calc(${designUnit} * 2px + 1px);
     }
-`;
-
-/**
- * Default Adaptive UI Picker List Item styles.
- */
-export const styles: ElementStyles = css`
-    ${templateStyles}
-
-    ${aestheticStyles}
 `;
