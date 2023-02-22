@@ -4,13 +4,13 @@ import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Keys for {@link DesignSystem} `statics` registration for the radio icons.
+ * Keys for {@link DesignSystem} `statics` registration for the radio.
  */
-export const RadioIconKeys = {
+export const RadioStatics = {
     checked: "radio-checked-indicator"
 } as const;
 
-export type RadioIconKeys = ValuesOf<typeof RadioIconKeys>;
+export type RadioStatics = ValuesOf<typeof RadioStatics>;
 
 /**
  * Default Radio template, {@link @microsoft/fast-foundation#radioTemplate}.
@@ -18,5 +18,5 @@ export type RadioIconKeys = ValuesOf<typeof RadioIconKeys>;
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTRadio> =
     (ds: DesignSystem) =>
         radioTemplate({
-            checkedIndicator: ds.statics.get(RadioIconKeys.checked),
+            checkedIndicator: ds.statics.get(RadioStatics.checked),
         });

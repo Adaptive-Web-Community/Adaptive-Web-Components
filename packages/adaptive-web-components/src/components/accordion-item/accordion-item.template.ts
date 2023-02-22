@@ -8,12 +8,12 @@ import { DesignSystem } from "../../design-system.js";
  * 
  * @beta
  */
-export const AccordionItemIconKeys = {
+export const AccordionItemStatics = {
     collapsed: "accordion-item-collapsed-icon",
     expanded: "accordion-item-expanded-icon"
 } as const;
 
-export type AccordionItemIconKeys = ValuesOf<typeof AccordionItemIconKeys>;
+export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
 /**
  * Default Accordion Item template, {@link @microsoft/fast-foundation#accordionItemTemplate}.
@@ -21,6 +21,6 @@ export type AccordionItemIconKeys = ValuesOf<typeof AccordionItemIconKeys>;
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAccordionItem> =
     (ds: DesignSystem) =>
         accordionItemTemplate({
-            collapsedIcon: ds.statics.get(AccordionItemIconKeys.collapsed),
-            expandedIcon: ds.statics.get(AccordionItemIconKeys.expanded),
+            collapsedIcon: ds.statics.get(AccordionItemStatics.collapsed),
+            expandedIcon: ds.statics.get(AccordionItemStatics.expanded),
         });

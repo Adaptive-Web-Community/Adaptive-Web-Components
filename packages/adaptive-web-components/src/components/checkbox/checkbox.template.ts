@@ -4,14 +4,14 @@ import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Keys for {@link DesignSystem} `statics` registration for the checkbox indicator.
+ * Keys for {@link DesignSystem} `statics` registration for the checkbox.
  */
-export const CheckboxIconKeys = {
+export const CheckboxStatics = {
     checked: "checkbox-checked-indicator",
     indeterminate: "checkbox-indeterminate-indicator"
 } as const;
 
-export type CheckboxIconKeys = ValuesOf<typeof CheckboxIconKeys>;
+export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 
 /**
  * Default Checkbox template, {@link @microsoft/fast-foundation#checkboxTemplate}.
@@ -19,7 +19,7 @@ export type CheckboxIconKeys = ValuesOf<typeof CheckboxIconKeys>;
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCheckbox> =
     (ds: DesignSystem) => {
         return checkboxTemplate({
-            checkedIndicator: ds.statics.get(CheckboxIconKeys.checked),
-            indeterminateIndicator: ds.statics.get(CheckboxIconKeys.indeterminate),
+            checkedIndicator: ds.statics.get(CheckboxStatics.checked),
+            indeterminateIndicator: ds.statics.get(CheckboxStatics.indeterminate),
         });
     }

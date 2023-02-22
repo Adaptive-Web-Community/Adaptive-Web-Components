@@ -2,17 +2,17 @@ import { FASTRadio } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./radio.styles.js";
-import { RadioIconKeys, template } from "./radio.template.js";
+import { RadioStatics, template } from "./radio.template.js";
 
 export function composeRadio(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTRadio, RadioIconKeys>
+    options?: ComposeOptions<FASTRadio, RadioStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(RadioIconKeys.checked)) {
+        if (!ds.statics.has(RadioStatics.checked)) {
             ds.statics.set(
-                RadioIconKeys.checked,
-                options.statics[RadioIconKeys.checked]
+                RadioStatics.checked,
+                options.statics[RadioStatics.checked]
             );
         }
     }

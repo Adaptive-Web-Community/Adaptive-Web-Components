@@ -2,7 +2,7 @@ import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.s
 import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeNumberField } from "./number-field.compose.js";
-import { NumberFieldIconKeys } from "./number-field.template.js";
+import { NumberFieldStatics } from "./number-field.template.js";
 
 /**
  * The Number Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTNumberField}.
@@ -16,8 +16,8 @@ export const numberFieldDefinition = composeNumberField(
     DefaultDesignSystem,
     {
         statics: {
-            [NumberFieldIconKeys.stepDown]: chevronDownIcon,
-            [NumberFieldIconKeys.stepUp]: chevronUpIcon
+            [NumberFieldStatics.stepDown]: chevronDownIcon,
+            [NumberFieldStatics.stepUp]: chevronUpIcon
         },
         shadowOptions: {
             delegatesFocus: true

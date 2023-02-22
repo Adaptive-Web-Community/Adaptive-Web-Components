@@ -11,15 +11,15 @@ import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Keys for {@link DesignSystem} `statics` registration for the menu item indicators.
+ * Keys for {@link DesignSystem} `statics` registration for the menu item.
  */
-export const MenuItemIconKeys = {
+export const MenuItemStatics = {
     checkbox: "menu-item-checkbox-indicator",
     radio: "menu-item-radio-indicator",
     submenu: "menu-item-submenu-item"
 } as const;
 
-export type MenuItemIconKeys = ValuesOf<typeof MenuItemIconKeys>;
+export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 
@@ -29,9 +29,9 @@ export type MenuItemIconKeys = ValuesOf<typeof MenuItemIconKeys>;
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTMenuItem> =
     (ds: DesignSystem) => {
         const options: MenuItemOptions = {
-            checkboxIndicator: ds.statics.get(MenuItemIconKeys.checkbox),
-            radioIndicator: ds.statics.get(MenuItemIconKeys.radio),
-            expandCollapseGlyph: ds.statics.get(MenuItemIconKeys.submenu),
+            checkboxIndicator: ds.statics.get(MenuItemStatics.checkbox),
+            radioIndicator: ds.statics.get(MenuItemStatics.radio),
+            expandCollapseGlyph: ds.statics.get(MenuItemStatics.submenu),
         }
 
         const templateCache: Map<MenuItemRole, ViewTemplate> = new Map();

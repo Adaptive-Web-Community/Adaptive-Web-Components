@@ -2,24 +2,24 @@ import { FASTFlipper } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./flipper.styles.js";
-import { FlipperIconKeys, template } from "./flipper.template.js";
+import { FlipperStatics, template } from "./flipper.template.js";
 
 export function composeFlipper(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTFlipper, FlipperIconKeys>
+    options?: ComposeOptions<FASTFlipper, FlipperStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(FlipperIconKeys.previous)) {
+        if (!ds.statics.has(FlipperStatics.previous)) {
             ds.statics.set(
-                FlipperIconKeys.previous,
-                options.statics[FlipperIconKeys.previous]
+                FlipperStatics.previous,
+                options.statics[FlipperStatics.previous]
             );
         }
 
-        if (!ds.statics.has(FlipperIconKeys.next)) {
+        if (!ds.statics.has(FlipperStatics.next)) {
             ds.statics.set(
-                FlipperIconKeys.next,
-                options.statics[FlipperIconKeys.next]
+                FlipperStatics.next,
+                options.statics[FlipperStatics.next]
             );
         }
     }

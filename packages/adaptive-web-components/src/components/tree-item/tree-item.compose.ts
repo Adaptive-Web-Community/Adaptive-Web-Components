@@ -2,17 +2,17 @@ import { FASTTreeItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./tree-item.styles.js";
-import { template, TreeItemIconKeys } from "./tree-item.template.js";
+import { template, TreeItemStatics } from "./tree-item.template.js";
 
 export function composeTreeItem(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTTreeItem, TreeItemIconKeys>
+    options?: ComposeOptions<FASTTreeItem, TreeItemStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(TreeItemIconKeys.expandCollapse)) {
+        if (!ds.statics.has(TreeItemStatics.expandCollapse)) {
             ds.statics.set(
-                TreeItemIconKeys.expandCollapse,
-                options.statics[TreeItemIconKeys.expandCollapse]
+                TreeItemStatics.expandCollapse,
+                options.statics[TreeItemStatics.expandCollapse]
             );
         }
     }

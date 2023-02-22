@@ -2,17 +2,17 @@ import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveSelect } from "./select.js";
 import { styles } from "./select.styles.js";
-import { SelectIconKeys, template } from "./select.template.js";
+import { SelectStatics, template } from "./select.template.js";
 
 export function composeSelect(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveSelect, SelectIconKeys>
+    options?: ComposeOptions<AdaptiveSelect, SelectStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(SelectIconKeys.indicator)) {
+        if (!ds.statics.has(SelectStatics.indicator)) {
             ds.statics.set(
-                SelectIconKeys.indicator,
-                options.statics[SelectIconKeys.indicator]
+                SelectStatics.indicator,
+                options.statics[SelectStatics.indicator]
             );
         }
     }

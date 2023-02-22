@@ -2,17 +2,17 @@ import { FASTCombobox } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./combobox.styles.js";
-import { ComboboxIconKeys, template } from "./combobox.template.js";
+import { ComboboxStatics, template } from "./combobox.template.js";
 
 export function composeCombobox(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTCombobox, ComboboxIconKeys>
+    options?: ComposeOptions<FASTCombobox, ComboboxStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(ComboboxIconKeys.indicator)) {
+        if (!ds.statics.has(ComboboxStatics.indicator)) {
             ds.statics.set(
-                ComboboxIconKeys.indicator,
-                options.statics[ComboboxIconKeys.indicator]
+                ComboboxStatics.indicator,
+                options.statics[ComboboxStatics.indicator]
             );
         }
     }

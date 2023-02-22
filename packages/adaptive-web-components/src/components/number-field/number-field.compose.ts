@@ -2,24 +2,24 @@ import { FASTNumberField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./number-field.styles.js";
-import { NumberFieldIconKeys, template } from "./number-field.template.js";
+import { NumberFieldStatics, template } from "./number-field.template.js";
 
 export function composeNumberField(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTNumberField, NumberFieldIconKeys>
+    options?: ComposeOptions<FASTNumberField, NumberFieldStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(NumberFieldIconKeys.stepDown)) {
+        if (!ds.statics.has(NumberFieldStatics.stepDown)) {
             ds.statics.set(
-                NumberFieldIconKeys.stepDown,
-                options.statics[NumberFieldIconKeys.stepDown]
+                NumberFieldStatics.stepDown,
+                options.statics[NumberFieldStatics.stepDown]
             );
         }
 
-        if (!ds.statics.has(NumberFieldIconKeys.stepUp)) {
+        if (!ds.statics.has(NumberFieldStatics.stepUp)) {
             ds.statics.set(
-                NumberFieldIconKeys.stepUp,
-                options.statics[NumberFieldIconKeys.stepUp]
+                NumberFieldStatics.stepUp,
+                options.statics[NumberFieldStatics.stepUp]
             );
         }
     }

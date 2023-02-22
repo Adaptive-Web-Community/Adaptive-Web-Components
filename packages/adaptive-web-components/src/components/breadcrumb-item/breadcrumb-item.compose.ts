@@ -2,17 +2,17 @@ import { FASTBreadcrumbItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./breadcrumb-item.styles.js";
-import { BreadcrumbItemIconKeys, template } from "./breadcrumb-item.template.js";
+import { BreadcrumbItemStatics, template } from "./breadcrumb-item.template.js";
 
 export function composeBreadcrumbItem(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTBreadcrumbItem, BreadcrumbItemIconKeys>
+    options?: ComposeOptions<FASTBreadcrumbItem, BreadcrumbItemStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(BreadcrumbItemIconKeys.separator)) {
+        if (!ds.statics.has(BreadcrumbItemStatics.separator)) {
             ds.statics.set(
-                BreadcrumbItemIconKeys.separator,
-                options.statics[BreadcrumbItemIconKeys.separator]
+                BreadcrumbItemStatics.separator,
+                options.statics[BreadcrumbItemStatics.separator]
             );
         }
     }

@@ -4,13 +4,13 @@ import type { ValuesOf } from '@microsoft/fast-foundation';
 import { DesignSystem } from "../../design-system.js";
 
 /**
- * Keys for {@link DesignSystem} `statics` registration for the combobox indicator.
+ * Keys for {@link DesignSystem} `statics` registration for the combobox.
  */
-export const ComboboxIconKeys = {
+export const ComboboxStatics = {
     indicator: "combobox-indicator"
 } as const;
 
-export type ComboboxIconKeys = ValuesOf<typeof ComboboxIconKeys>;
+export type ComboboxStatics = ValuesOf<typeof ComboboxStatics>;
 
 /**
  * Default Combobox template, {@link @microsoft/fast-foundation#comboboxTemplate}.
@@ -18,5 +18,5 @@ export type ComboboxIconKeys = ValuesOf<typeof ComboboxIconKeys>;
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCombobox> =
     (ds: DesignSystem) =>
         comboboxTemplate({
-            indicator: ds.statics.get(ComboboxIconKeys.indicator),
+            indicator: ds.statics.get(ComboboxStatics.indicator),
         });

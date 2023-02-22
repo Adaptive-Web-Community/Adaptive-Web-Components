@@ -2,24 +2,24 @@ import { FASTAccordionItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { styles } from "./accordion-item.styles.js";
-import { AccordionItemIconKeys, template } from "./accordion-item.template.js";
+import { AccordionItemStatics, template } from "./accordion-item.template.js";
 
 export function composeAccordionItem(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTAccordionItem, AccordionItemIconKeys>
+    options?: ComposeOptions<FASTAccordionItem, AccordionItemStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(AccordionItemIconKeys.collapsed)) {
+        if (!ds.statics.has(AccordionItemStatics.collapsed)) {
             ds.statics.set(
-                AccordionItemIconKeys.collapsed,
-                options.statics[AccordionItemIconKeys.collapsed]
+                AccordionItemStatics.collapsed,
+                options.statics[AccordionItemStatics.collapsed]
             );
         }
 
-        if (!ds.statics.has(AccordionItemIconKeys.expanded)) {
+        if (!ds.statics.has(AccordionItemStatics.expanded)) {
             ds.statics.set(
-                AccordionItemIconKeys.expanded,
-                options.statics[AccordionItemIconKeys.expanded]
+                AccordionItemStatics.expanded,
+                options.statics[AccordionItemStatics.expanded]
             );
         }
     }

@@ -2,31 +2,31 @@ import type { FASTElementDefinition } from '@microsoft/fast-element';
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenuItem } from "./menu-item.js";
 import { styles } from "./menu-item.styles.js";
-import { MenuItemIconKeys, template } from "./menu-item.template.js";
+import { MenuItemStatics, template } from "./menu-item.template.js";
 
 export function composeMenuItem(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveMenuItem, MenuItemIconKeys>
+    options?: ComposeOptions<AdaptiveMenuItem, MenuItemStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
-        if (!ds.statics.has(MenuItemIconKeys.checkbox)) {
+        if (!ds.statics.has(MenuItemStatics.checkbox)) {
             ds.statics.set(
-                MenuItemIconKeys.checkbox,
-                options.statics[MenuItemIconKeys.checkbox]
+                MenuItemStatics.checkbox,
+                options.statics[MenuItemStatics.checkbox]
             );
         }
 
-        if (!ds.statics.has(MenuItemIconKeys.radio)) {
+        if (!ds.statics.has(MenuItemStatics.radio)) {
             ds.statics.set(
-                MenuItemIconKeys.radio,
-                options.statics[MenuItemIconKeys.radio]
+                MenuItemStatics.radio,
+                options.statics[MenuItemStatics.radio]
             );
         }
 
-        if (!ds.statics.has(MenuItemIconKeys.submenu)) {
+        if (!ds.statics.has(MenuItemStatics.submenu)) {
             ds.statics.set(
-                MenuItemIconKeys.submenu,
-                options.statics[MenuItemIconKeys.submenu]
+                MenuItemStatics.submenu,
+                options.statics[MenuItemStatics.submenu]
             );
         }
     }

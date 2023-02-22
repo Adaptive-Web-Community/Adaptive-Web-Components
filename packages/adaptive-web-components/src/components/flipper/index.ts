@@ -3,4 +3,4 @@ export {
     templateStyles as FlipperTemplateStyles,
     aestheticStyles as FlipperAestheticStyles,
 } from "./flipper.styles.js";
-export { template as FlipperTemplate } from "./flipper.template.js";
+export { template as FlipperTemplate, FlipperStatics } from "./flipper.template.js";

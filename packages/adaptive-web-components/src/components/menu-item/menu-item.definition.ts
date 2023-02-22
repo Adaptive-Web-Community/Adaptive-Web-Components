@@ -3,7 +3,7 @@ import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular
 import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenuItem } from "./menu-item.compose.js";
-import { MenuItemIconKeys } from "./menu-item.template.js";
+import { MenuItemStatics } from "./menu-item.template.js";
 
 /**
  * The Menu Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenuItem}.
@@ -17,9 +17,9 @@ export const menuItemDefinition = composeMenuItem(
     DefaultDesignSystem,
     {
         statics: {
-            [MenuItemIconKeys.checkbox]: checkmarkIcon,
-            [MenuItemIconKeys.radio]: circleIcon,
-            [MenuItemIconKeys.submenu]: chevronRightIcon
+            [MenuItemStatics.checkbox]: checkmarkIcon,
+            [MenuItemStatics.radio]: circleIcon,
+            [MenuItemStatics.submenu]: chevronRightIcon
         }
     }
 );
