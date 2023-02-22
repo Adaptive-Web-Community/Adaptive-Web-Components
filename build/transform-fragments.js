@@ -23,10 +23,6 @@ export function transformHTMLFragment(data) {
 * @returns string
 */
 export function transformCSSFragment(data) {
-    if (/\/\*(?![\s\S]*\*\/)[\s\S]*/g.test(data)) {
-        throw new Error("Unterminated comment found in CSS tagged template literal");
-    }
-
     return data.replace(
         /(?:\s*\/\*(?:[\s\S])+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g,
         "$1"

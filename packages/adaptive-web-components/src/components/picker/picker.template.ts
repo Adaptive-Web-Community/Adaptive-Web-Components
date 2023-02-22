@@ -2,7 +2,7 @@ import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTPicker, pickerTemplate } from "@microsoft/fast-foundation";
 import { DesignSystem } from "../../design-system.js";
 import { composeAnchoredRegion } from "../anchored-region/index.js";
-import { composePickerList } from '../picker-list/index.js';
+import { composePickerList } from "../picker-list/index.js";
 import { composePickerMenu } from '../picker-menu/index.js';
 import { composePickerListItem } from '../picker-list-item/index.js';
 import { composePickerMenuOption } from '../picker-menu-option/index.js';
