@@ -45,6 +45,7 @@ import { tabsDefinition } from './components/tabs/tabs.definition.js';
 import { textAreaDefinition } from './components/text-area/text-area.definition.js';
 import { textFieldDefinition } from './components/text-field/text-field.definition.js';
 import { toolbarDefinition } from './components/toolbar/toolbar.definition.js';
+import { tooltipDefinition } from './components/tooltip/tooltip.definition.js';
 import { treeItemDefinition } from './components/tree-item/tree-item.definition.js';
 import { treeViewDefinition } from './components/tree-view/tree-view.definition.js';
 
@@ -96,6 +97,7 @@ export const AllComponents = {
 	textAreaDefinition,
 	textFieldDefinition,
 	toolbarDefinition,
+	tooltipDefinition,
 	treeItemDefinition,
 	treeViewDefinition
 };
