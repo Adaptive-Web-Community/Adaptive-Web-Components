@@ -50,6 +50,38 @@ Storybook will automatically open in a browser window at `localhost:6006`.
 
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
 
+#### Change Files
+
+Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `npm run change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
+
+:::note
+When working across feature branches, you'll need to target the branch using the following command: `npm run change --branch origin/{branch-name}`.
+:::
+
+**Example: Generated change file:**
+```json
+{
+  "type": "minor",
+  "comment": "add fancy new feature for awc",
+  "packageName": "@adaptive-web/adaptive-web-components",
+  "email": "name@example.com",
+  "dependentChangeType": "minor",
+  "date": "2021-03-01T19:10:06.323Z"
+}
+```
+
+Running `npm run change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes that do not affect the published package(s), please use "none" when selecting the change type*.
+
+More information on the change process and change types can be found on the [Beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
+
+:::note
+If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generating separate change files to ensure accurate generation of changelogs and versioning of packages.
+:::
+
+:::note
+If you are finding that your changes are either breaking changes or require multiple pull requests, open a [discussion](https://github.com/adaptive-web/adaptive-web-components/discussions) to discuss this.
+:::
+
 ### Merging a pull request
 
 If you are merging a pull request, be sure to use the pull request title as the commit title. The title should follow the [conventional commit guidelines](https://www.conventionalcommits.org/). It is recommended that if you are merging in pull requests regularly that you add a browser extension that will auto-correct the title for you. A few that should do this are [Refined GitHub](https://github.com/sindresorhus/refined-github) and [Squashed Merge Message](https://github.com/zachwhaley/squashed-merge-message).
