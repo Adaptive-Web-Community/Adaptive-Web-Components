@@ -11,6 +11,12 @@
         "url": "https://github.com/adaptive-web-community/adaptive-web-components"
     },
     "scripts": {
+        "bump": "beachball bump",
+        "change": "beachball change",
+        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+        "check": "beachball check",
+        "publish": "beachball publish",
+        "publish-ci": "beachball publish -y --access public",
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
@@ -27,6 +33,7 @@
         "npm": ">=8.19.2"
     },
     "devDependencies": {
-        "@microsoft/eslint-config-fast-dna": "^2.1.0"
+        "@microsoft/eslint-config-fast-dna": "^2.1.0",
+        "beachball": "^2.31.11"
     }
 }
