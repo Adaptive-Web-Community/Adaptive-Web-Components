@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "moduleResolution": "node16",
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "strict": false
+    }
+}
