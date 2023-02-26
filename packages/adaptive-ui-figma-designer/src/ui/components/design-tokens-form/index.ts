@@ -25,14 +25,14 @@ const template = html<DesignTokensForm>`
                         @change="${(x, c) =>
                             c.parent.changeHandler(x, c.event as CustomEvent)}"
                     ></designer-design-token-field>
-                    <plugin-button
+                    <adaptive-button
                         appearance="stealth"
                         aria-label="Remove design token"
                         title="Remove design token"
                         @click="${(x, c) => c.parent.detachHandler(x)}"
                     >
                         ${SubtractIcon}
-                    </plugin-button>
+                    </adaptive-button>
                     ${when(
                         x => x.multipleValues,
                         html<UIDesignTokenValue>`

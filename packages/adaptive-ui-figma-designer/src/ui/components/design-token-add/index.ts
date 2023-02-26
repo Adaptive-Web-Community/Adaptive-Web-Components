@@ -32,14 +32,14 @@ const template = html<DesignTokenAdd>`
             :designToken=${x => x.selectedDesignToken}
             ${ref("field")}
         ></designer-design-token-field>
-        <plugin-button
+        <adaptive-button
             appearance="stealth"
             aria-label="Add"
             title="Add"
             @click="${(x, c) => x.addHandler()}"
         >
             ${CheckmarkIcon}
-        </plugin-button>
+        </adaptive-button>
     </div>
     ${when(
         x => x.showMessageTemporary,

@@ -34,14 +34,14 @@ const assignedTokensTemplate = (
                         >
                             ${(x) => x.name}
                         </designer-token-glyph>
-                        <span> ${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)} </span>
-                        <plugin-button
+                        <span>${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}</span>
+                        <adaptive-button
                             appearance="stealth"
                             aria-label="Detach"
                             @click=${(x, c) => c.parent.controller.removeRecipe(x)}
                         >
                             Detach
-                        </plugin-button>
+                        </adaptive-button>
                     </div>
                 `
             )}
@@ -90,30 +90,30 @@ const footerTemplate = html<App>`
             ${(x) => x.selectedNodes?.map((node) => `${node.type}`).join(" | ") || "No selection"}
         </p>
         <div class="buttons">
-            <plugin-button
+            <adaptive-button
                 appearance="accent"
                 aria-label=${syncLabel}
                 style="display: ${(x) => (x.controller.autoRefresh ? "none" : "")};"
                 @click=${(x) => x.controller.refreshSelectedNodes()}
             >
                 Sync
-            </plugin-button>
-            <plugin-button
+            </adaptive-button>
+            <adaptive-button
                 appearance="stealth"
                 aria-label=${revertLabel}
                 @click=${(x) => x.controller.resetNodes()}
             >
                 Reset
-            </plugin-button>
+            </adaptive-button>
         </div>
     </footer>
 `;
 
 const template = html<App>`
-    <plugin-tabs activeid="recipes">
-        <plugin-tab id="recipes">Recipes</plugin-tab>
-        <plugin-tab id="tokens">Design Tokens</plugin-tab>
-        <plugin-tab-panel id="recipesPanel">
+    <adaptive-tabs activeid="recipes">
+        <adaptive-tab id="recipes">Recipes</adaptive-tab>
+        <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
+        <adaptive-tab-panel id="recipesPanel">
             <div style="overflow-y: overlay;">
                 ${when(
                     (x) => x.supportsColor,
@@ -212,8 +212,8 @@ const template = html<App>`
                     `
                 )}
             </div>
-        </plugin-tab-panel>
-        <plugin-tab-panel id="tokensPanel">
+        </adaptive-tab-panel>
+        <adaptive-tab-panel id="tokensPanel">
             ${when(
                 (x) => x.supportsDesignSystem,
                 html<App>`
@@ -227,7 +227,7 @@ const template = html<App>`
                                         (c.event as CustomEvent).detail.value
                                     )}
                             ></designer-design-token-add>
-                            <plugin-divider></plugin-divider>
+                            <adaptive-divider></adaptive-divider>
                         </div>
                         <div style="overflow-y: overlay;">
                             <designer-design-tokens-form
@@ -244,8 +244,8 @@ const template = html<App>`
                 `
             )}
             ${when((x) => !x.supportsDesignSystem, html` <div>Selected layers don't support design tokens</div> `)}
-        </plugin-tab-panel>
-    </plugin-tabs>
+        </adaptive-tab-panel>
+    </adaptive-tabs>
     ${(x) => footerTemplate}
 `;
 
@@ -256,37 +256,37 @@ const styles = css`
         height: 100%;
     }
 
-    plugin-tabs::part(tablist) {
+    adaptive-tabs::part(tablist) {
         border-bottom: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-divider-rest);
     }
 
-    plugin-tab-panel {
+    adaptive-tab-panel {
         height: calc(556px - 40px);
         overflow-y: overlay;
         padding: 0 8px;
     }
 
-    plugin-tab-panel::-webkit-scrollbar {
+    adaptive-tab-panel::-webkit-scrollbar {
         width: 8px;
         background-color: transparent;
     }
 
-    plugin-tab-panel::-webkit-scrollbar-track {
+    adaptive-tab-panel::-webkit-scrollbar-track {
         margin: 1px;
         background-color: transparent;
     }
 
-    plugin-tab-panel::-webkit-scrollbar-thumb {
+    adaptive-tab-panel::-webkit-scrollbar-thumb {
         border: 2px solid #fff;
         border-radius: 4px;
         background-color: rgba(0, 0, 0, 0);
     }
 
-    plugin-tab-panel:hover::-webkit-scrollbar-thumb {
+    adaptive-tab-panel:hover::-webkit-scrollbar-thumb {
         background-color: rgba(0, 0, 0, 0.13);
     }
 
-    plugin-tab-panel::-webkit-scrollbar-thumb:window-inactive {
+    adaptive-tab-panel::-webkit-scrollbar-thumb:window-inactive {
         background: rgba(0, 0, 0, 0.13);
     }
 
