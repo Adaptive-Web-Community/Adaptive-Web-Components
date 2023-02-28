@@ -4,11 +4,11 @@ import type { DesignTokenType } from "../core/model.js";
 /**
  * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
  */
-export interface PluginUISerializableNodeData {
+export interface SerializableNodeData {
     id: string;
     type: string;
     supports: Array<DesignTokenType>;
-    children: PluginUISerializableNodeData[];
+    children: SerializableNodeData[];
     inheritedDesignTokens: string;
     componentDesignTokens?: string;
     designTokens: string;
@@ -19,15 +19,22 @@ export interface PluginUISerializableNodeData {
 }
 
 /**
+ * Serializable version of the Figma selected node state.
+ */
+export interface SerializableUIState {
+    selectedNodes: SerializableNodeData[];
+}
+
+/**
  * Converts node data from the UI to serializable format.
  * @param nodes Node data in the UI format.
  * @returns Node data in the serializable format.
  */
 export function serializeUINodes(
     nodes: PluginUINodeData[]
-): PluginUISerializableNodeData[] {
+): SerializableNodeData[] {
     const serializedNodes = nodes.map(
-        (node): PluginUISerializableNodeData => {
+        (node): SerializableNodeData => {
             return {
                 id: node.id,
                 type: node.type,
@@ -53,7 +60,7 @@ export function serializeUINodes(
  * @returns Node data in the UI format.
  */
 export function deserializeUINodes(
-    nodes: PluginUISerializableNodeData[]
+    nodes: SerializableNodeData[]
 ): PluginUINodeData[] {
     const deserializedNodes = nodes.map(
         (node): PluginUINodeData => {

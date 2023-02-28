@@ -1,4 +1,4 @@
-import { PluginUISerializableNodeData } from "../core/serialization.js";
+import { SerializableUIState } from "../core/serialization.js";
 import { FigmaController } from "./controller.js";
 
 const controller = new FigmaController();
@@ -30,6 +30,9 @@ function notifyProcessing(callback: () => void) {
     }, 0);
 }
 
+/**
+ * Handle selection changing in Figma.
+ */
 function handleSelection() {
     const nodes: readonly BaseNode[] = figma.currentPage.selection.length
         ? figma.currentPage.selection
@@ -58,11 +61,9 @@ function debounceSelection() {
 
 figma.on("selectionchange", debounceSelection);
 
-figma.ui.onmessage = (nodes: PluginUISerializableNodeData[]): void => {
+figma.ui.onmessage = (message: SerializableUIState): void => {
     notifyProcessing(() => {
-        controller.handleMessage({
-            selectedNodes: nodes
-        });
+        controller.handleMessage(message);
     });
 };
 

@@ -5,7 +5,7 @@ import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { deserializeUINodes, PluginUISerializableNodeData, serializeUINodes } from "../core/serialization.js";
+import { deserializeUINodes, SerializableUIState, serializeUINodes } from "../core/serialization.js";
 import { App } from "./app.js";
 
 AdaptiveDesignSystem.defineComponents({
@@ -25,14 +25,18 @@ window.onload = () => {
 
     // Send a message from the UI to the Controller 
     app.addEventListener("dispatch", (e: Event): void => {
+        const message: SerializableUIState = {
+            selectedNodes: serializeUINodes((e as CustomEvent).detail)
+        }
         parent.postMessage({
-            pluginMessage: serializeUINodes((e as CustomEvent).detail)
+            pluginMessage: message
         }, "*");
     });
 
     // Update UI from Controller's message
     window.onmessage = (e: MessageEvent): void => {
-        const nodes = e.data.pluginMessage.selectedNodes as Array<PluginUISerializableNodeData>;
+        const message: SerializableUIState = e.data.pluginMessage;
+        const nodes = message.selectedNodes;
         const deserializedNodes = deserializeUINodes(nodes);
         app.selectedNodes = deserializedNodes;
     };

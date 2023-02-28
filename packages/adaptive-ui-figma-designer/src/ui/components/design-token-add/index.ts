@@ -9,6 +9,7 @@ import {
     repeat,
     when,
 } from "@microsoft/fast-element";
+import { staticallyCompose } from "@microsoft/fast-foundation";
 import CheckmarkIcon from "../../assets/checkmark.svg";
 import { DesignTokenDefinition } from "../../../core/registry/design-token-registry.js";
 import { DesignTokenField } from "../design-token-field/index.js";
@@ -38,7 +39,7 @@ const template = html<DesignTokenAdd>`
             title="Add"
             @click="${(x, c) => x.addHandler()}"
         >
-            ${CheckmarkIcon}
+            ${staticallyCompose(CheckmarkIcon)}
         </adaptive-button>
     </div>
     ${when(

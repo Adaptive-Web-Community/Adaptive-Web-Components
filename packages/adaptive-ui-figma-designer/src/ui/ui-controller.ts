@@ -316,11 +316,21 @@ export class UIController {
                 // TODO figure out a better way to handle storage data types
                 const color = parseColorHexRGB((value as unknown) as string);
                 if (color) {
+                    // TODO fix this logic
                     // console.log("    setting DesignToken value (color)", token.name, value);
-                    token.setValueFor(
-                        nodeElement,
-                        (SwatchRGB.from(color) as unknown) as DesignTokenValue<T>
-                    );
+                    if (token.name.indexOf("base-color") > -1) {
+                        // console.log("      raw value");
+                        token.setValueFor(
+                            nodeElement,
+                            value as DesignTokenValue<T>
+                        );
+                    } else {
+                        // console.log("      color object");
+                        token.setValueFor(
+                            nodeElement,
+                            (SwatchRGB.from(color) as unknown) as DesignTokenValue<T>
+                        );
+                    }
                 } else {
                     const num = Number.parseFloat((value as unknown) as string);
                     if (!Number.isNaN(num)) {
@@ -338,7 +348,7 @@ export class UIController {
                 token.deleteValueFor(nodeElement);
             }
         } catch (e) {
-            // console.warn("    token error", e);
+            console.warn("    token error", e);
             // Ignore, token not found
         }
     }

@@ -7,6 +7,7 @@ import {
     repeat,
     when,
 } from "@microsoft/fast-element";
+import { staticallyCompose } from "@microsoft/fast-foundation";
 import SubtractIcon from "../../assets/subtract.svg";
 import type { UIDesignTokenValue } from "../../ui-controller.js";
 import { DesignTokenField } from "../design-token-field/index.js";
@@ -31,7 +32,7 @@ const template = html<DesignTokensForm>`
                         title="Remove design token"
                         @click="${(x, c) => c.parent.detachHandler(x)}"
                     >
-                        ${SubtractIcon}
+                        ${staticallyCompose(SubtractIcon)}
                     </adaptive-button>
                     ${when(
                         x => x.multipleValues,

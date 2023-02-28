@@ -364,53 +364,53 @@ const styles = css`
 })
 export class App extends FASTElement {
     @observable
-    readonly controller: UIController;
+    public readonly controller: UIController;
 
     @observable
-    supportsColor: boolean;
+    public supportsColor: boolean = true;
 
     @observable
-    supportsStrokeWidth: boolean;
+    public supportsStrokeWidth: boolean;
 
     @observable
-    supportsCornerRadius: boolean;
+    public supportsCornerRadius: boolean;
 
     @observable
-    supportsText: boolean;
+    public supportsText: boolean;
 
     @observable
-    layerRecipes: DesignTokenDefinition[] | null;
+    public layerRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    backgroundRecipes: DesignTokenDefinition[] | null;
+    public backgroundRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    foregroundRecipes: DesignTokenDefinition[] | null;
+    public foregroundRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    strokeRecipes: DesignTokenDefinition[] | null;
+    public strokeRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    strokeWidthRecipes: DesignTokenDefinition[] | null;
+    public strokeWidthRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    cornerRadiusRecipes: DesignTokenDefinition[] | null;
+    public cornerRadiusRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    textRecipes: DesignTokenDefinition[] | null;
+    public textRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    supportsDesignSystem: boolean;
+    public supportsDesignSystem: boolean;
 
     @observable
-    appliedDesignTokens: UIDesignTokenValue[] | null;
+    public appliedDesignTokens: UIDesignTokenValue[] | null;
 
     @observable
-    availableDesignTokens: DesignTokenDefinition[] | null;
+    public availableDesignTokens: DesignTokenDefinition[] | null;
 
     @observable
-    selectedNodes: PluginUINodeData[] | null;
-    selectedNodesChanged(prev: PluginUINodeData[], next: PluginUINodeData[]) {
+    public selectedNodes: PluginUINodeData[] | null;
+    protected selectedNodesChanged(prev: PluginUINodeData[] | null, next: PluginUINodeData[] | null) {
         this.controller.setSelectedNodes(next);
 
         this.supportsColor =

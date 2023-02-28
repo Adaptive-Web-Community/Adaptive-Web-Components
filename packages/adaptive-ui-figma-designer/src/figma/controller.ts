@@ -1,10 +1,6 @@
 import { Controller, PluginUIState } from "../core/controller.js";
-import { deserializeUINodes, PluginUISerializableNodeData, serializeUINodes } from "../core/serialization.js";
+import { deserializeUINodes, SerializableUIState, serializeUINodes } from "../core/serialization.js";
 import { FigmaPluginNode } from "./node.js";
-
-interface SerializableUIState {
-    selectedNodes: PluginUISerializableNodeData[];
-}
 
 export class FigmaController extends Controller {
     public getNode(id: string): FigmaPluginNode | null {
