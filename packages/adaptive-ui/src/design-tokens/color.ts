@@ -65,28 +65,33 @@ export const accentFillRecipe = createNonCss<InteractiveColorRecipe>("accent-fil
         ),
 });
 
+const accentFillRecipeValue = createNonCss<InteractiveSwatchSet>("accent-fill-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(accentFillRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const accentFillRest = create<Swatch>("accent-fill-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipe).evaluate(resolve).rest
+        resolve(accentFillRecipeValue).rest
 );
 
 /** @public */
 export const accentFillHover = create<Swatch>("accent-fill-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipe).evaluate(resolve).hover
+        resolve(accentFillRecipeValue).hover
 );
 
 /** @public */
 export const accentFillActive = create<Swatch>("accent-fill-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipe).evaluate(resolve).active
+        resolve(accentFillRecipeValue).active
 );
 
 /** @public */
 export const accentFillFocus = create<Swatch>("accent-fill-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipe).evaluate(resolve).focus
+        resolve(accentFillRecipeValue).focus
 );
 
 // Foreground On Accent
@@ -105,28 +110,33 @@ export const foregroundOnAccentRecipe = createNonCss<InteractiveColorRecipe>("fo
 }
 );
 
+const foregroundOnAccentRecipeValue = createNonCss<InteractiveSwatchSet>("foreground-on-accent-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(foregroundOnAccentRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const foregroundOnAccentRest = create<Swatch>("foreground-on-accent-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipe).evaluate(resolve).rest
+        resolve(foregroundOnAccentRecipeValue).rest
 );
 
 /** @public */
 export const foregroundOnAccentHover = create<Swatch>("foreground-on-accent-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipe).evaluate(resolve).hover
+        resolve(foregroundOnAccentRecipeValue).hover
 );
 
 /** @public */
 export const foregroundOnAccentActive = create<Swatch>("foreground-on-accent-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipe).evaluate(resolve).active
+        resolve(foregroundOnAccentRecipeValue).active
 );
 
 /** @public */
 export const foregroundOnAccentFocus = create<Swatch>("foreground-on-accent-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipe).evaluate(resolve).focus
+        resolve(foregroundOnAccentRecipeValue).focus
 );
 
 // Accent Foreground
@@ -162,28 +172,33 @@ export const accentForegroundRecipe = createNonCss<InteractiveColorRecipe>("acce
         ),
 });
 
+const accentForegroundRecipeValue = createNonCss<InteractiveSwatchSet>("accent-foreground-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(accentForegroundRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const accentForegroundRest = create<Swatch>("accent-foreground-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipe).evaluate(resolve).rest
+        resolve(accentForegroundRecipeValue).rest
 );
 
 /** @public */
 export const accentForegroundHover = create<Swatch>("accent-foreground-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipe).evaluate(resolve).hover
+        resolve(accentForegroundRecipeValue).hover
 );
 
 /** @public */
 export const accentForegroundActive = create<Swatch>("accent-foreground-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipe).evaluate(resolve).active
+        resolve(accentForegroundRecipeValue).active
 );
 
 /** @public */
 export const accentForegroundFocus = create<Swatch>("accent-foreground-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipe).evaluate(resolve).focus
+        resolve(accentForegroundRecipeValue).focus
 );
 
 // Neutral Foreground
@@ -221,28 +236,33 @@ export const neutralForegroundRecipe = createNonCss<InteractiveColorRecipe>("neu
         ),
 });
 
+const neutralForegroundRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-foreground-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralForegroundRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralForegroundRest = create<Swatch>("neutral-foreground-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipe).evaluate(resolve).rest
+        resolve(neutralForegroundRecipeValue).rest
 );
 
 /** @public */
 export const neutralForegroundHover = create<Swatch>("neutral-foreground-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipe).evaluate(resolve).hover
+        resolve(neutralForegroundRecipeValue).hover
 );
 
 /** @public */
 export const neutralForegroundActive = create<Swatch>("neutral-foreground-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipe).evaluate(resolve).active
+        resolve(neutralForegroundRecipeValue).active
 );
 
 /** @public */
 export const neutralForegroundFocus = create<Swatch>("neutral-foreground-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipe).evaluate(resolve).focus
+        resolve(neutralForegroundRecipeValue).focus
 );
 
 // Neutral Foreground Hint
@@ -294,28 +314,33 @@ export const neutralFillRecipe = createNonCss<InteractiveColorRecipe>("neutral-f
         ),
 });
 
+const neutralFillRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralFillRest = create<Swatch>("neutral-fill-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipe).evaluate(resolve).rest
+        resolve(neutralFillRecipeValue).rest
 );
 
 /** @public */
 export const neutralFillHover = create<Swatch>("neutral-fill-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipe).evaluate(resolve).hover
+        resolve(neutralFillRecipeValue).hover
 );
 
 /** @public */
 export const neutralFillActive = create<Swatch>("neutral-fill-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipe).evaluate(resolve).active
+        resolve(neutralFillRecipeValue).active
 );
 
 /** @public */
 export const neutralFillFocus = create<Swatch>("neutral-fill-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipe).evaluate(resolve).focus
+        resolve(neutralFillRecipeValue).focus
 );
 
 // Neutral Fill Input
@@ -349,28 +374,33 @@ export const neutralFillInputRecipe = createNonCss<InteractiveColorRecipe>("neut
         ),
 });
 
+const neutralFillInputRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-input-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillInputRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralFillInputRest = create<Swatch>("neutral-fill-input-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipe).evaluate(resolve).rest
+        resolve(neutralFillInputRecipeValue).rest
 );
 
 /** @public */
 export const neutralFillInputHover = create<Swatch>("neutral-fill-input-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipe).evaluate(resolve).hover
+        resolve(neutralFillInputRecipeValue).hover
 );
 
 /** @public */
 export const neutralFillInputActive = create<Swatch>("neutral-fill-input-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipe).evaluate(resolve).active
+        resolve(neutralFillInputRecipeValue).active
 );
 
 /** @public */
 export const neutralFillInputFocus = create<Swatch>("neutral-fill-input-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipe).evaluate(resolve).focus
+        resolve(neutralFillInputRecipeValue).focus
 );
 
 // Neutral Fill Secondary
@@ -404,28 +434,33 @@ export const neutralFillSecondaryRecipe = createNonCss<InteractiveColorRecipe>("
         ),
 });
 
+const neutralFillSecondaryRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-secondary-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillSecondaryRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralFillSecondaryRest = create<Swatch>("neutral-fill-secondary-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipe).evaluate(resolve).rest
+        resolve(neutralFillSecondaryRecipeValue).rest
 );
 
 /** @public */
 export const neutralFillSecondaryHover = create<Swatch>("neutral-fill-secondary-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipe).evaluate(resolve).hover
+        resolve(neutralFillSecondaryRecipeValue).hover
 );
 
 /** @public */
 export const neutralFillSecondaryActive = create<Swatch>("neutral-fill-secondary-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipe).evaluate(resolve).active
+        resolve(neutralFillSecondaryRecipeValue).active
 );
 
 /** @public */
 export const neutralFillSecondaryFocus = create<Swatch>("neutral-fill-secondary-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipe).evaluate(resolve).focus
+        resolve(neutralFillSecondaryRecipeValue).focus
 );
 
 // Neutral Fill Stealth
@@ -460,28 +495,33 @@ export const neutralFillStealthRecipe = createNonCss<InteractiveColorRecipe>("ne
 }
 );
 
+const neutralFillStealthRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-stealth-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillStealthRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralFillStealthRest = create<Swatch>("neutral-fill-stealth-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipe).evaluate(resolve).rest
+        resolve(neutralFillStealthRecipeValue).rest
 );
 
 /** @public */
 export const neutralFillStealthHover = create<Swatch>("neutral-fill-stealth-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipe).evaluate(resolve).hover
+        resolve(neutralFillStealthRecipeValue).hover
 );
 
 /** @public */
 export const neutralFillStealthActive = create<Swatch>("neutral-fill-stealth-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipe).evaluate(resolve).active
+        resolve(neutralFillStealthRecipeValue).active
 );
 
 /** @public */
 export const neutralFillStealthFocus = create<Swatch>("neutral-fill-stealth-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipe).evaluate(resolve).focus
+        resolve(neutralFillStealthRecipeValue).focus
 );
 
 // Neutral Fill Strong
@@ -519,28 +559,33 @@ export const neutralFillStrongRecipe = createNonCss<InteractiveColorRecipe>("neu
         ),
 });
 
+const neutralFillStrongRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-strong-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralFillStrongRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralFillStrongRest = create<Swatch>("neutral-fill-strong-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipe).evaluate(resolve).rest
+        resolve(neutralFillStrongRecipeValue).rest
 );
 
 /** @public */
 export const neutralFillStrongHover = create<Swatch>("neutral-fill-strong-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipe).evaluate(resolve).hover
+        resolve(neutralFillStrongRecipeValue).hover
 );
 
 /** @public */
 export const neutralFillStrongActive = create<Swatch>("neutral-fill-strong-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipe).evaluate(resolve).active
+        resolve(neutralFillStrongRecipeValue).active
 );
 
 /** @public */
 export const neutralFillStrongFocus = create<Swatch>("neutral-fill-strong-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipe).evaluate(resolve).focus
+        resolve(neutralFillStrongRecipeValue).focus
 );
 
 // Neutral Stroke
@@ -574,28 +619,33 @@ export const neutralStrokeRecipe = createNonCss<InteractiveColorRecipe>("neutral
         ),
 });
 
+const neutralStrokeRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralStrokeRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralStrokeRest = create<Swatch>("neutral-stroke-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipe).evaluate(resolve).rest
+        resolve(neutralStrokeRecipeValue).rest
 );
 
 /** @public */
 export const neutralStrokeHover = create<Swatch>("neutral-stroke-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipe).evaluate(resolve).hover
+        resolve(neutralStrokeRecipeValue).hover
 );
 
 /** @public */
 export const neutralStrokeActive = create<Swatch>("neutral-stroke-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipe).evaluate(resolve).active
+        resolve(neutralStrokeRecipeValue).active
 );
 
 /** @public */
 export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipe).evaluate(resolve).focus
+        resolve(neutralStrokeRecipeValue).focus
 );
 
 // Neutral Stroke Divider
@@ -655,28 +705,33 @@ export const neutralStrokeInputRecipe = createNonCss<InteractiveColorRecipe>("ne
 }
 );
 
+const neutralStrokeInputRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-input-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralStrokeInputRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralStrokeInputRest = create<Swatch>("neutral-stroke-input-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipe).evaluate(resolve).rest
+        resolve(neutralStrokeInputRecipeValue).rest
 );
 
 /** @public */
 export const neutralStrokeInputHover = create<Swatch>("neutral-stroke-input-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipe).evaluate(resolve).hover
+        resolve(neutralStrokeInputRecipeValue).hover
 );
 
 /** @public */
 export const neutralStrokeInputActive = create<Swatch>("neutral-stroke-input-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipe).evaluate(resolve).active
+        resolve(neutralStrokeInputRecipeValue).active
 );
 
 /** @public */
 export const neutralStrokeInputFocus = create<Swatch>("neutral-stroke-input-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipe).evaluate(resolve).focus
+        resolve(neutralStrokeInputRecipeValue).focus
 );
 
 // Neutral Stroke Strong
@@ -714,28 +769,33 @@ export const neutralStrokeStrongRecipe = createNonCss<InteractiveColorRecipe>("n
         ),
 });
 
+const neutralStrokeStrongRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-strong-recipe-value").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(neutralStrokeStrongRecipe).evaluate(resolve)
+);
+
 /** @public */
 export const neutralStrokeStrongRest = create<Swatch>("neutral-stroke-strong-rest").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipe).evaluate(resolve).rest
+        resolve(neutralStrokeStrongRecipeValue).rest
 );
 
 /** @public */
 export const neutralStrokeStrongHover = create<Swatch>("neutral-stroke-strong-hover").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipe).evaluate(resolve).hover
+        resolve(neutralStrokeStrongRecipeValue).hover
 );
 
 /** @public */
 export const neutralStrokeStrongActive = create<Swatch>("neutral-stroke-strong-active").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipe).evaluate(resolve).active
+        resolve(neutralStrokeStrongRecipeValue).active
 );
 
 /** @public */
 export const neutralStrokeStrongFocus = create<Swatch>("neutral-stroke-strong-focus").withDefault(
     (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipe).evaluate(resolve).focus
+        resolve(neutralStrokeStrongRecipeValue).focus
 );
 
 // Focus Stroke Outer
