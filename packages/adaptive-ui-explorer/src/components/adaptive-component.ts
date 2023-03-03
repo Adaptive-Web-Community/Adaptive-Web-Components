@@ -15,17 +15,17 @@ function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
             tabindex="0"
             style="
                 --ac-fill-rest: ${x => x.fillRest?.createCSS() || "transparent"};
-                --ac-fill-hover: ${x => x.fillHover?.createCSS() || "transparent"};
-                --ac-fill-active: ${x => x.fillActive?.createCSS() || "transparent"};
-                --ac-fill-focus: ${x => x.fillFocus?.createCSS() || "transparent"};
+                --ac-fill-hover: ${x => x.fillHover?.createCSS() || x.fillRest?.createCSS() || "transparent"};
+                --ac-fill-active: ${x => x.fillActive?.createCSS() || x.fillRest?.createCSS() || "transparent"};
+                --ac-fill-focus: ${x => x.fillFocus?.createCSS() || x.fillRest?.createCSS() || "transparent"};
                 --ac-stroke-rest: ${x => x.strokeRest?.createCSS() || "transparent"};
-                --ac-stroke-hover: ${x => x.strokeHover?.createCSS() || "transparent"};
-                --ac-stroke-active: ${x => x.strokeActive?.createCSS() || "transparent"};
-                --ac-stroke-focus: ${x => x.strokeFocus?.createCSS() || "transparent"};
+                --ac-stroke-hover: ${x => x.strokeHover?.createCSS() || x.strokeRest?.createCSS() || "transparent"};
+                --ac-stroke-active: ${x => x.strokeActive?.createCSS() || x.strokeRest?.createCSS() || "transparent"};
+                --ac-stroke-focus: ${x => x.strokeFocus?.createCSS() || x.strokeRest?.createCSS() || "transparent"};
                 --ac-foreground-rest: ${x => x.foregroundRest?.createCSS() || "transparent"};
-                --ac-foreground-hover: ${x => x.foregroundHover?.createCSS() || "transparent"};
-                --ac-foreground-active: ${x => x.foregroundActive?.createCSS() || "transparent"};
-                --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS() || "transparent"};
+                --ac-foreground-hover: ${x => x.foregroundHover?.createCSS() || x.foregroundRest?.createCSS() || "transparent"};
+                --ac-foreground-active: ${x => x.foregroundActive?.createCSS() || x.foregroundRest?.createCSS() || "transparent"};
+                --ac-foreground-focus: ${x => x.foregroundFocus?.createCSS() || x.foregroundRest?.createCSS() || "transparent"};
             "
         >
             <slot></slot>

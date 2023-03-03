@@ -33,6 +33,8 @@ import "./components/control-pane/index.js";
 import "./components/layer-background/index.js";
 import "./components/palette-gradient/palette-gradient.js";
 
+DesignToken.registerDefaultStyleTarget();
+
 const colorBlockTemplate = html<App>`
     ${repeat(
         (x) => x.backgrounds,
