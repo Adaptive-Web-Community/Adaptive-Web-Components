@@ -20,6 +20,7 @@
     },
     "scripts": {
         "build": "tsc && vite build",
+        "build:preview": "npm run build -- --minify false && vite preview --open",
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
