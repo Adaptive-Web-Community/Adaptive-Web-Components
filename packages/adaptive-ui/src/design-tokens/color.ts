@@ -1,4 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import type { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
 import { blackOrWhiteByContrast, interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/index.js";
 import { ColorRecipe, InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
@@ -10,6 +11,49 @@ import { Swatch } from "../color/swatch.js";
 import { _white } from "../color/utilities/color-constants.js";
 import { create, createNonCss } from "./create.js";
 import { accentPalette, neutralPalette } from "./palette.js";
+
+function createDelta(name: string, state: keyof InteractiveSwatchSet, value: number): DesignToken<number> {
+    return createNonCss<number>(`${name}-${state}-delta`).withDefault(value);
+}
+
+function createMinContrast(name: string, value: number) {
+    return createNonCss<number>(`${name}-min-contrast`).withDefault(value);
+}
+
+function createRecipe(name: string, value: (resolve: DesignTokenResolver, reference?: Swatch) => Swatch): DesignToken<ColorRecipe> {
+    return createNonCss<ColorRecipe>(`${name}-recipe`).withDefault({
+        evaluate: value
+    });
+}
+
+function createRecipeInteractive(
+    name: string, value: (resolve: DesignTokenResolver, reference?: Swatch) => InteractiveSwatchSet
+): DesignToken<InteractiveColorRecipe> {
+    return createNonCss<InteractiveColorRecipe>(`${name}-recipe`).withDefault({
+        evaluate: value
+    });
+}
+
+function createSet(recipeToken: DesignToken<InteractiveColorRecipe>): DesignToken<InteractiveSwatchSet> {
+    return createNonCss<InteractiveSwatchSet>(`${recipeToken.name}-value`).withDefault(
+        (resolve: DesignTokenResolver) =>
+            resolve(recipeToken).evaluate(resolve)
+    );
+}
+
+function createStateToken(valueToken: DesignToken<InteractiveSwatchSet>, state: keyof InteractiveSwatchSet): CSSDesignToken<Swatch> {
+    return create<Swatch>(`${valueToken.name.replace("-recipe-value", "")}-${state}`).withDefault(
+        (resolve: DesignTokenResolver) =>
+            resolve(valueToken)[state]
+    );
+}
+
+function createRecipeToken(recipeToken: DesignToken<ColorRecipe>): CSSDesignToken<Swatch> {
+    return create<Swatch>(`${recipeToken.name.replace("-recipe-value", "")}`).withDefault(
+        (resolve: DesignTokenResolver) =>
+            resolve(recipeToken).evaluate(resolve)
+    );
+}
 
 /**
  * Convenience values for WCAG contrast requirements.
@@ -36,24 +80,26 @@ export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").with
 
 // Accent Fill
 
-/** @public */
-export const accentFillMinContrast = createNonCss<number>("accent-fill-min-contrast").withDefault(4.5);
+const accentFillName = "accent-fill";
 
 /** @public */
-export const accentFillRestDelta = createNonCss<number>("accent-fill-rest-delta").withDefault(0);
+export const accentFillMinContrast = createMinContrast(accentFillName, 4.5);
 
 /** @public */
-export const accentFillHoverDelta = createNonCss<number>("accent-fill-hover-delta").withDefault(-2);
+export const accentFillRestDelta = createDelta(accentFillName, "rest", 0);
 
 /** @public */
-export const accentFillActiveDelta = createNonCss<number>("accent-fill-active-delta").withDefault(-5);
+export const accentFillHoverDelta = createDelta(accentFillName, "hover", -2);
 
 /** @public */
-export const accentFillFocusDelta = createNonCss<number>("accent-fill-focus-delta").withDefault(0);
+export const accentFillActiveDelta = createDelta(accentFillName, "active", -5);
 
 /** @public */
-export const accentFillRecipe = createNonCss<InteractiveColorRecipe>("accent-fill-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const accentFillFocusDelta = createDelta(accentFillName, "focus", 0);
+
+/** @public */
+export const accentFillRecipe = createRecipeInteractive(accentFillName,
+    (resolve: DesignTokenResolver, reference?: Swatch) =>
         contrastAndDeltaSwatchSet(
             resolve(accentPalette),
             reference || resolve(fillColor),
@@ -62,43 +108,30 @@ export const accentFillRecipe = createNonCss<InteractiveColorRecipe>("accent-fil
             resolve(accentFillHoverDelta),
             resolve(accentFillActiveDelta),
             resolve(accentFillFocusDelta)
-        ),
-});
-
-const accentFillRecipeValue = createNonCss<InteractiveSwatchSet>("accent-fill-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipe).evaluate(resolve)
+        )
 );
+
+const accentFillSet = createSet(accentFillRecipe);
 
 /** @public */
-export const accentFillRest = create<Swatch>("accent-fill-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipeValue).rest
-);
+export const accentFillRest = createStateToken(accentFillSet, "rest");
 
 /** @public */
-export const accentFillHover = create<Swatch>("accent-fill-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipeValue).hover
-);
+export const accentFillHover = createStateToken(accentFillSet, "hover");
 
 /** @public */
-export const accentFillActive = create<Swatch>("accent-fill-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipeValue).active
-);
+export const accentFillActive = createStateToken(accentFillSet, "active");
 
 /** @public */
-export const accentFillFocus = create<Swatch>("accent-fill-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentFillRecipeValue).focus
-);
+export const accentFillFocus = createStateToken(accentFillSet, "focus");
 
 // Foreground On Accent
 
+const foregroundOnAccentName = "foreground-on-accent";
+
 /** @public */
-export const foregroundOnAccentRecipe = createNonCss<InteractiveColorRecipe>("foreground-on-accent-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver): InteractiveSwatchSet =>
+export const foregroundOnAccentRecipe = createRecipeInteractive(foregroundOnAccentName,
+    (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
             resolve(accentFillRest),
             resolve(accentFillHover),
@@ -106,61 +139,45 @@ export const foregroundOnAccentRecipe = createNonCss<InteractiveColorRecipe>("fo
             resolve(accentFillFocus),
             ContrastTarget.NormalText,
             false
-        ),
-}
+        )
 );
 
-const foregroundOnAccentRecipeValue = createNonCss<InteractiveSwatchSet>("foreground-on-accent-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipe).evaluate(resolve)
-);
+const foregroundOnAccentSet = createSet(foregroundOnAccentRecipe);
 
 /** @public */
-export const foregroundOnAccentRest = create<Swatch>("foreground-on-accent-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipeValue).rest
-);
+export const foregroundOnAccentRest = createStateToken(foregroundOnAccentSet, "rest");
 
 /** @public */
-export const foregroundOnAccentHover = create<Swatch>("foreground-on-accent-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipeValue).hover
-);
+export const foregroundOnAccentHover = createStateToken(foregroundOnAccentSet, "hover");
 
 /** @public */
-export const foregroundOnAccentActive = create<Swatch>("foreground-on-accent-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipeValue).active
-);
+export const foregroundOnAccentActive = createStateToken(foregroundOnAccentSet, "active");
 
 /** @public */
-export const foregroundOnAccentFocus = create<Swatch>("foreground-on-accent-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(foregroundOnAccentRecipeValue).focus
-);
+export const foregroundOnAccentFocus = createStateToken(foregroundOnAccentSet, "focus");
 
 // Accent Foreground
 
-/** @public */
-export const accentForegroundMinContrast = createNonCss<number>("accent-foreground-min-contrast").withDefault(
-    ContrastTarget.NormalText
-);
+const accentForegroundName = "accent-foreground";
 
 /** @public */
-export const accentForegroundRestDelta = createNonCss<number>("accent-foreground-rest-delta").withDefault(0);
+export const accentForegroundMinContrast = createMinContrast(accentForegroundName, ContrastTarget.NormalText);
 
 /** @public */
-export const accentForegroundHoverDelta = createNonCss<number>("accent-foreground-hover-delta").withDefault(3);
+export const accentForegroundRestDelta = createDelta(accentForegroundName, "rest", 0);
 
 /** @public */
-export const accentForegroundActiveDelta = createNonCss<number>("accent-foreground-active-delta").withDefault(-8);
+export const accentForegroundHoverDelta = createDelta(accentForegroundName, "hover", 3);
 
 /** @public */
-export const accentForegroundFocusDelta = createNonCss<number>("accent-foreground-focus-delta").withDefault(0);
+export const accentForegroundActiveDelta = createDelta(accentForegroundName, "active", -8);
 
 /** @public */
-export const accentForegroundRecipe = createNonCss<InteractiveColorRecipe>("accent-foreground-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const accentForegroundFocusDelta = createDelta(accentForegroundName, "focus", 0);
+
+/** @public */
+export const accentForegroundRecipe = createRecipeInteractive(accentForegroundName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         contrastAndDeltaSwatchSet(
             resolve(accentPalette),
             reference || resolve(fillColor),
@@ -169,58 +186,45 @@ export const accentForegroundRecipe = createNonCss<InteractiveColorRecipe>("acce
             resolve(accentForegroundHoverDelta),
             resolve(accentForegroundActiveDelta),
             resolve(accentForegroundFocusDelta)
-        ),
-});
-
-const accentForegroundRecipeValue = createNonCss<InteractiveSwatchSet>("accent-foreground-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipe).evaluate(resolve)
+        )
 );
+
+const accentForegroundSet = createSet(accentForegroundRecipe);
 
 /** @public */
-export const accentForegroundRest = create<Swatch>("accent-foreground-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipeValue).rest
-);
+export const accentForegroundRest = createStateToken(accentForegroundSet, "rest");
 
 /** @public */
-export const accentForegroundHover = create<Swatch>("accent-foreground-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipeValue).hover
-);
+export const accentForegroundHover = createStateToken(accentForegroundSet, "hover");
 
 /** @public */
-export const accentForegroundActive = create<Swatch>("accent-foreground-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipeValue).active
-);
+export const accentForegroundActive = createStateToken(accentForegroundSet, "active");
 
 /** @public */
-export const accentForegroundFocus = create<Swatch>("accent-foreground-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(accentForegroundRecipeValue).focus
-);
+export const accentForegroundFocus = createStateToken(accentForegroundSet, "focus");
 
 // Neutral Foreground
 
-/** @public */
-export const neutralForegroundMinContrast = createNonCss<number>("neutral-foreground-min-contrast").withDefault(16);
+const neutralForegroundName = "neutral-foreground";
 
 /** @public */
-export const neutralForegroundRestDelta = createNonCss<number>("neutral-foreground-rest-delta").withDefault(0);
+export const neutralForegroundMinContrast = createMinContrast(neutralForegroundName, 16);
 
 /** @public */
-export const neutralForegroundHoverDelta = createNonCss<number>("neutral-foreground-hover-delta").withDefault(-19);
+export const neutralForegroundRestDelta = createDelta(neutralForegroundName, "rest", 0);
 
 /** @public */
-export const neutralForegroundActiveDelta = createNonCss<number>("neutral-foreground-active-delta").withDefault(-30);
+export const neutralForegroundHoverDelta = createDelta(neutralForegroundName, "hover", -19);
 
 /** @public */
-export const neutralForegroundFocusDelta = createNonCss<number>("neutral-foreground-focus-delta").withDefault(0);
+export const neutralForegroundActiveDelta = createDelta(neutralForegroundName, "active", -30);
 
 /** @public */
-export const neutralForegroundRecipe = createNonCss<InteractiveColorRecipe>("neutral-foreground-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralForegroundFocusDelta = createDelta(neutralForegroundName, "focus", 0);
+
+/** @public */
+export const neutralForegroundRecipe = createRecipeInteractive(neutralForegroundName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             contrastAndDeltaSwatchSet(
                 resolve(neutralPalette),
@@ -233,73 +237,59 @@ export const neutralForegroundRecipe = createNonCss<InteractiveColorRecipe>("neu
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralForegroundRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-foreground-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipe).evaluate(resolve)
+        )
 );
+
+const neutralForegroundSet = createSet(neutralForegroundRecipe);
 
 /** @public */
-export const neutralForegroundRest = create<Swatch>("neutral-foreground-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipeValue).rest
-);
+export const neutralForegroundRest = createStateToken(neutralForegroundSet, "rest");
 
 /** @public */
-export const neutralForegroundHover = create<Swatch>("neutral-foreground-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipeValue).hover
-);
+export const neutralForegroundHover = createStateToken(neutralForegroundSet, "hover");
 
 /** @public */
-export const neutralForegroundActive = create<Swatch>("neutral-foreground-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipeValue).active
-);
+export const neutralForegroundActive = createStateToken(neutralForegroundSet, "active");
 
 /** @public */
-export const neutralForegroundFocus = create<Swatch>("neutral-foreground-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundRecipeValue).focus
-);
+export const neutralForegroundFocus = createStateToken(neutralForegroundSet, "focus");
 
 // Neutral Foreground Hint
 
+const neutralForegroundHintName = "neutral-foreground-hint";
+
 /** @public */
-export const neutralForegroundHintRecipe = createNonCss<ColorRecipe>("neutral-foreground-hint-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
+export const neutralForegroundHintRecipe = createRecipe(neutralForegroundHintName,
+    (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
         swatchAsOverlay(
             contrastSwatch(resolve(neutralPalette), reference || resolve(fillColor), ContrastTarget.NormalText),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
+        )
+);
 
 /** @public */
-export const neutralForegroundHint = create<Swatch>("neutral-foreground-hint").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralForegroundHintRecipe).evaluate(resolve)
-);
+export const neutralForegroundHint = createRecipeToken(neutralForegroundHintRecipe)
 
 // Neutral Fill
 
-/** @public */
-export const neutralFillRestDelta = createNonCss<number>("neutral-fill-rest-delta").withDefault(-1);
+const neutralFillName = "neutral-fill";
 
 /** @public */
-export const neutralFillHoverDelta = createNonCss<number>("neutral-fill-hover-delta").withDefault(1);
+export const neutralFillRestDelta = createDelta(neutralFillName, "rest", -1);
 
 /** @public */
-export const neutralFillActiveDelta = createNonCss<number>("neutral-fill-active-delta").withDefault(0);
+export const neutralFillHoverDelta = createDelta(neutralFillName, "hover", 1);
 
 /** @public */
-export const neutralFillFocusDelta = createNonCss<number>("neutral-fill-focus-delta").withDefault(0);
+export const neutralFillActiveDelta = createDelta(neutralFillName, "active", 0);
 
 /** @public */
-export const neutralFillRecipe = createNonCss<InteractiveColorRecipe>("neutral-fill-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralFillFocusDelta = createDelta(neutralFillName, "focus", 0);
+
+/** @public */
+export const neutralFillRecipe = createRecipeInteractive(neutralFillName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -311,55 +301,42 @@ export const neutralFillRecipe = createNonCss<InteractiveColorRecipe>("neutral-f
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralFillRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipe).evaluate(resolve)
+        )
 );
+
+const neutralFillSet = createSet(neutralFillRecipe);
 
 /** @public */
-export const neutralFillRest = create<Swatch>("neutral-fill-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipeValue).rest
-);
+export const neutralFillRest = createStateToken(neutralFillSet, "rest");
 
 /** @public */
-export const neutralFillHover = create<Swatch>("neutral-fill-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipeValue).hover
-);
+export const neutralFillHover = createStateToken(neutralFillSet, "hover");
 
 /** @public */
-export const neutralFillActive = create<Swatch>("neutral-fill-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipeValue).active
-);
+export const neutralFillActive = createStateToken(neutralFillSet, "active");
 
 /** @public */
-export const neutralFillFocus = create<Swatch>("neutral-fill-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillRecipeValue).focus
-);
+export const neutralFillFocus = createStateToken(neutralFillSet, "focus");
 
 // Neutral Fill Input
 
-/** @public */
-export const neutralFillInputRestDelta = createNonCss<number>("neutral-fill-input-rest-delta").withDefault(-1);
+const neutralFillInputName = "neutral-fill-input";
 
 /** @public */
-export const neutralFillInputHoverDelta = createNonCss<number>("neutral-fill-input-hover-delta").withDefault(1);
+export const neutralFillInputRestDelta = createDelta(neutralFillInputName, "rest", -1);
 
 /** @public */
-export const neutralFillInputActiveDelta = createNonCss<number>("neutral-fill-input-active-delta").withDefault(-2);
+export const neutralFillInputHoverDelta = createDelta(neutralFillInputName, "hover", 1);
 
 /** @public */
-export const neutralFillInputFocusDelta = createNonCss<number>("neutral-fill-input-focus-delta").withDefault(-2);
+export const neutralFillInputActiveDelta = createDelta(neutralFillInputName, "active", -2);
 
 /** @public */
-export const neutralFillInputRecipe = createNonCss<InteractiveColorRecipe>("neutral-fill-input-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralFillInputFocusDelta = createDelta(neutralFillInputName, "focus", -2);
+
+/** @public */
+export const neutralFillInputRecipe = createRecipeInteractive(neutralFillInputName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -371,55 +348,42 @@ export const neutralFillInputRecipe = createNonCss<InteractiveColorRecipe>("neut
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralFillInputRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-input-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipe).evaluate(resolve)
+        )
 );
+
+const neutralFillInputSet = createSet(neutralFillInputRecipe);
 
 /** @public */
-export const neutralFillInputRest = create<Swatch>("neutral-fill-input-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipeValue).rest
-);
+export const neutralFillInputRest = createStateToken(neutralFillInputSet, "rest");
 
 /** @public */
-export const neutralFillInputHover = create<Swatch>("neutral-fill-input-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipeValue).hover
-);
+export const neutralFillInputHover = createStateToken(neutralFillInputSet, "hover");
 
 /** @public */
-export const neutralFillInputActive = create<Swatch>("neutral-fill-input-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipeValue).active
-);
+export const neutralFillInputActive = createStateToken(neutralFillInputSet, "active");
 
 /** @public */
-export const neutralFillInputFocus = create<Swatch>("neutral-fill-input-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillInputRecipeValue).focus
-);
+export const neutralFillInputFocus = createStateToken(neutralFillInputSet, "focus");
 
 // Neutral Fill Secondary
 
-/** @public */
-export const neutralFillSecondaryRestDelta = createNonCss<number>("neutral-fill-secondary-rest-delta").withDefault(3);
+const neutralFillSecondaryName = "neutral-fill-secondary";
 
 /** @public */
-export const neutralFillSecondaryHoverDelta = createNonCss<number>("neutral-fill-secondary-hover-delta").withDefault(2);
+export const neutralFillSecondaryRestDelta = createDelta(neutralFillSecondaryName, "rest", 3);
 
 /** @public */
-export const neutralFillSecondaryActiveDelta = createNonCss<number>("neutral-fill-secondary-active-delta").withDefault(1);
+export const neutralFillSecondaryHoverDelta = createDelta(neutralFillSecondaryName, "hover", 2);
 
 /** @public */
-export const neutralFillSecondaryFocusDelta = createNonCss<number>("neutral-fill-secondary-focus-delta").withDefault(3);
+export const neutralFillSecondaryActiveDelta = createDelta(neutralFillSecondaryName, "active", 1);
 
 /** @public */
-export const neutralFillSecondaryRecipe = createNonCss<InteractiveColorRecipe>("neutral-fill-secondary-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralFillSecondaryFocusDelta = createDelta(neutralFillSecondaryName, "focus", 3);
+
+/** @public */
+export const neutralFillSecondaryRecipe = createRecipeInteractive(neutralFillSecondaryName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -431,55 +395,42 @@ export const neutralFillSecondaryRecipe = createNonCss<InteractiveColorRecipe>("
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralFillSecondaryRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-secondary-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipe).evaluate(resolve)
+        )
 );
+
+const neutralFillSecondarySet = createSet(neutralFillSecondaryRecipe);
 
 /** @public */
-export const neutralFillSecondaryRest = create<Swatch>("neutral-fill-secondary-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipeValue).rest
-);
+export const neutralFillSecondaryRest = createStateToken(neutralFillSecondarySet, "rest");
 
 /** @public */
-export const neutralFillSecondaryHover = create<Swatch>("neutral-fill-secondary-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipeValue).hover
-);
+export const neutralFillSecondaryHover = createStateToken(neutralFillSecondarySet, "hover");
 
 /** @public */
-export const neutralFillSecondaryActive = create<Swatch>("neutral-fill-secondary-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipeValue).active
-);
+export const neutralFillSecondaryActive = createStateToken(neutralFillSecondarySet, "active");
 
 /** @public */
-export const neutralFillSecondaryFocus = create<Swatch>("neutral-fill-secondary-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillSecondaryRecipeValue).focus
-);
+export const neutralFillSecondaryFocus = createStateToken(neutralFillSecondarySet, "focus");
 
 // Neutral Fill Stealth
 
-/** @public */
-export const neutralFillStealthRestDelta = createNonCss<number>("neutral-fill-stealth-rest-delta").withDefault(0);
+const neutralFillStealthName = "neutral-fill-stealth";
 
 /** @public */
-export const neutralFillStealthHoverDelta = createNonCss<number>("neutral-fill-stealth-hover-delta").withDefault(3);
+export const neutralFillStealthRestDelta = createDelta(neutralFillStealthName, "rest", 0);
 
 /** @public */
-export const neutralFillStealthActiveDelta = createNonCss<number>("neutral-fill-stealth-active-delta").withDefault(2);
+export const neutralFillStealthHoverDelta = createDelta(neutralFillStealthName, "hover", 3);
 
 /** @public */
-export const neutralFillStealthFocusDelta = createNonCss<number>("neutral-fill-stealth-focus-delta").withDefault(0);
+export const neutralFillStealthActiveDelta = createDelta(neutralFillStealthName, "active", 2);
 
 /** @public */
-export const neutralFillStealthRecipe = createNonCss<InteractiveColorRecipe>("neutral-fill-stealth-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralFillStealthFocusDelta = createDelta(neutralFillStealthName, "focus", 0);
+
+/** @public */
+export const neutralFillStealthRecipe = createRecipeInteractive(neutralFillStealthName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -491,59 +442,45 @@ export const neutralFillStealthRecipe = createNonCss<InteractiveColorRecipe>("ne
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-}
+        )
 );
 
-const neutralFillStealthRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-stealth-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipe).evaluate(resolve)
-);
+const neutralFillStealthSet = createSet(neutralFillStealthRecipe);
 
 /** @public */
-export const neutralFillStealthRest = create<Swatch>("neutral-fill-stealth-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipeValue).rest
-);
+export const neutralFillStealthRest = createStateToken(neutralFillStealthSet, "rest");
 
 /** @public */
-export const neutralFillStealthHover = create<Swatch>("neutral-fill-stealth-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipeValue).hover
-);
+export const neutralFillStealthHover = createStateToken(neutralFillStealthSet, "hover");
 
 /** @public */
-export const neutralFillStealthActive = create<Swatch>("neutral-fill-stealth-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipeValue).active
-);
+export const neutralFillStealthActive = createStateToken(neutralFillStealthSet, "active");
 
 /** @public */
-export const neutralFillStealthFocus = create<Swatch>("neutral-fill-stealth-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStealthRecipeValue).focus
-);
+export const neutralFillStealthFocus = createStateToken(neutralFillStealthSet, "focus");
 
 // Neutral Fill Strong
 
-/** @public */
-export const neutralFillStrongMinContrast = createNonCss<number>("neutral-fill-strong-min-contrast").withDefault(3);
+const neutralFillStrongName = "neutral-fill-strong";
 
 /** @public */
-export const neutralFillStrongRestDelta = createNonCss<number>("neutral-fill-strong-rest-delta").withDefault(0);
+export const neutralFillStrongMinContrast = createMinContrast(neutralFillStrongName, 3);
 
 /** @public */
-export const neutralFillStrongHoverDelta = createNonCss<number>("neutral-fill-strong-hover-delta").withDefault(8);
+export const neutralFillStrongRestDelta = createDelta(neutralFillStrongName, "rest", 0);
 
 /** @public */
-export const neutralFillStrongActiveDelta = createNonCss<number>("neutral-fill-strong-active-delta").withDefault(-5);
+export const neutralFillStrongHoverDelta = createDelta(neutralFillStrongName, "hover", 8);
 
 /** @public */
-export const neutralFillStrongFocusDelta = createNonCss<number>("neutral-fill-strong-focus-delta").withDefault(0);
+export const neutralFillStrongActiveDelta = createDelta(neutralFillStrongName, "active", -5);
 
 /** @public */
-export const neutralFillStrongRecipe = createNonCss<InteractiveColorRecipe>("neutral-fill-strong-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralFillStrongFocusDelta = createDelta(neutralFillStrongName, "focus", 0);
+
+/** @public */
+export const neutralFillStrongRecipe = createRecipeInteractive(neutralFillStrongName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             contrastAndDeltaSwatchSet(
                 resolve(neutralPalette),
@@ -556,55 +493,42 @@ export const neutralFillStrongRecipe = createNonCss<InteractiveColorRecipe>("neu
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralFillStrongRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-fill-strong-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipe).evaluate(resolve)
+        )
 );
+
+const neutralFillStrongSet = createSet(neutralFillStrongRecipe);
 
 /** @public */
-export const neutralFillStrongRest = create<Swatch>("neutral-fill-strong-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipeValue).rest
-);
+export const neutralFillStrongRest = createStateToken(neutralFillStrongSet, "rest");
 
 /** @public */
-export const neutralFillStrongHover = create<Swatch>("neutral-fill-strong-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipeValue).hover
-);
+export const neutralFillStrongHover = createStateToken(neutralFillStrongSet, "hover");
 
 /** @public */
-export const neutralFillStrongActive = create<Swatch>("neutral-fill-strong-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipeValue).active
-);
+export const neutralFillStrongActive = createStateToken(neutralFillStrongSet, "active");
 
 /** @public */
-export const neutralFillStrongFocus = create<Swatch>("neutral-fill-strong-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralFillStrongRecipeValue).focus
-);
+export const neutralFillStrongFocus = createStateToken(neutralFillStrongSet, "focus");
 
 // Neutral Stroke
 
-/** @public */
-export const neutralStrokeRestDelta = createNonCss<number>("neutral-stroke-rest-delta").withDefault(8);
+const neutralStrokeName = "neutral-stroke";
 
 /** @public */
-export const neutralStrokeHoverDelta = createNonCss<number>("neutral-stroke-hover-delta").withDefault(12);
+export const neutralStrokeRestDelta = createDelta(neutralStrokeName, "rest", 8);
 
 /** @public */
-export const neutralStrokeActiveDelta = createNonCss<number>("neutral-stroke-active-delta").withDefault(6);
+export const neutralStrokeHoverDelta = createDelta(neutralStrokeName, "hover", 12);
 
 /** @public */
-export const neutralStrokeFocusDelta = createNonCss<number>("neutral-stroke-focus-delta").withDefault(8);
+export const neutralStrokeActiveDelta = createDelta(neutralStrokeName, "active", 6);
 
 /** @public */
-export const neutralStrokeRecipe = createNonCss<InteractiveColorRecipe>("neutral-stroke-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralStrokeFocusDelta = createDelta(neutralStrokeName, "focus", 8);
+
+/** @public */
+export const neutralStrokeRecipe = createRecipeInteractive(neutralStrokeName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -616,46 +540,33 @@ export const neutralStrokeRecipe = createNonCss<InteractiveColorRecipe>("neutral
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralStrokeRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipe).evaluate(resolve)
+        )
 );
+
+const neutralStrokeSet = createSet(neutralStrokeRecipe);
 
 /** @public */
-export const neutralStrokeRest = create<Swatch>("neutral-stroke-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipeValue).rest
-);
+export const neutralStrokeRest = createStateToken(neutralStrokeSet, "rest");
 
 /** @public */
-export const neutralStrokeHover = create<Swatch>("neutral-stroke-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipeValue).hover
-);
+export const neutralStrokeHover = createStateToken(neutralStrokeSet, "hover");
 
 /** @public */
-export const neutralStrokeActive = create<Swatch>("neutral-stroke-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipeValue).active
-);
+export const neutralStrokeActive = createStateToken(neutralStrokeSet, "active");
 
 /** @public */
-export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeRecipeValue).focus
-);
+export const neutralStrokeFocus = createStateToken(neutralStrokeSet, "focus");
 
 // Neutral Stroke Divider
 
-/** @public */
-export const neutralStrokeDividerRestDelta = createNonCss<number>("neutral-stroke-divider-rest-delta").withDefault(4);
+const neutralStrokeDividerName = "neutral-stroke-divider";
 
 /** @public */
-export const neutralStrokeDividerRecipe = createNonCss<ColorRecipe>("neutral-stroke-divider-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
+export const neutralStrokeDividerRestDelta = createDelta(neutralStrokeDividerName, "rest", 4);
+
+/** @public */
+export const neutralStrokeDividerRecipe = createRecipe(neutralStrokeDividerName,
+    (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
         swatchAsOverlay(
             deltaSwatch(
                 resolve(neutralPalette),
@@ -664,32 +575,31 @@ export const neutralStrokeDividerRecipe = createNonCss<ColorRecipe>("neutral-str
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
+        )
+);
 
 /** @public */
-export const neutralStrokeDividerRest = create<Swatch>("neutral-stroke-divider-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeDividerRecipe).evaluate(resolve)
-);
+export const neutralStrokeDividerRest = createRecipeToken(neutralStrokeDividerRecipe);
 
 // Neutral Stroke Input
 
-/** @public */
-export const neutralStrokeInputRestDelta = createNonCss<number>("neutral-stroke-input-rest-delta").withDefault(3);
+const neutralStrokeInputName = "neutral-stroke-input";
 
 /** @public */
-export const neutralStrokeInputHoverDelta = createNonCss<number>("neutral-stroke-input-hover-delta").withDefault(5);
+export const neutralStrokeInputRestDelta = createDelta(neutralStrokeInputName, "rest", 3);
 
 /** @public */
-export const neutralStrokeInputActiveDelta = createNonCss<number>("neutral-stroke-input-active-delta").withDefault(5);
+export const neutralStrokeInputHoverDelta = createDelta(neutralStrokeInputName, "hover", 5);
 
 /** @public */
-export const neutralStrokeInputFocusDelta = createNonCss<number>("neutral-stroke-input-focus-delta").withDefault(5);
+export const neutralStrokeInputActiveDelta = createDelta(neutralStrokeInputName, "active", 5);
 
 /** @public */
-export const neutralStrokeInputRecipe = createNonCss<InteractiveColorRecipe>("neutral-stroke-input-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralStrokeInputFocusDelta = createDelta(neutralStrokeInputName, "focus", 5);
+
+/** @public */
+export const neutralStrokeInputRecipe = createRecipeInteractive(neutralStrokeInputName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
@@ -701,59 +611,45 @@ export const neutralStrokeInputRecipe = createNonCss<InteractiveColorRecipe>("ne
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-}
+        )
 );
 
-const neutralStrokeInputRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-input-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipe).evaluate(resolve)
-);
+const neutralStrokeInputSet = createSet(neutralStrokeInputRecipe);
 
 /** @public */
-export const neutralStrokeInputRest = create<Swatch>("neutral-stroke-input-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipeValue).rest
-);
+export const neutralStrokeInputRest = createStateToken(neutralStrokeInputSet, "rest");
 
 /** @public */
-export const neutralStrokeInputHover = create<Swatch>("neutral-stroke-input-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipeValue).hover
-);
+export const neutralStrokeInputHover = createStateToken(neutralStrokeInputSet, "hover");
 
 /** @public */
-export const neutralStrokeInputActive = create<Swatch>("neutral-stroke-input-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipeValue).active
-);
+export const neutralStrokeInputActive = createStateToken(neutralStrokeInputSet, "active");
 
 /** @public */
-export const neutralStrokeInputFocus = create<Swatch>("neutral-stroke-input-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeInputRecipeValue).focus
-);
+export const neutralStrokeInputFocus = createStateToken(neutralStrokeInputSet, "focus");
 
 // Neutral Stroke Strong
 
-/** @public */
-export const neutralStrokeStrongMinContrast = createNonCss<number>("neutral-stroke-strong-min-contrast").withDefault(5.5);
+const neutralStrokeStrongName = "neutral-stroke-strong";
 
 /** @public */
-export const neutralStrokeStrongRestDelta = createNonCss<number>("neutral-stroke-strong-rest-delta").withDefault(0);
+export const neutralStrokeStrongMinContrast = createMinContrast(neutralStrokeStrongName, 5.5);
 
 /** @public */
-export const neutralStrokeStrongHoverDelta = createNonCss<number>("neutral-stroke-strong-hover-delta").withDefault(0);
+export const neutralStrokeStrongRestDelta = createDelta(neutralStrokeStrongName, "rest", 0);
 
 /** @public */
-export const neutralStrokeStrongActiveDelta = createNonCss<number>("neutral-stroke-strong-active-delta").withDefault(0);
+export const neutralStrokeStrongHoverDelta = createDelta(neutralStrokeStrongName, "hover", 0);
 
 /** @public */
-export const neutralStrokeStrongFocusDelta = createNonCss<number>("neutral-stroke-strong-focus-delta").withDefault(0);
+export const neutralStrokeStrongActiveDelta = createDelta(neutralStrokeStrongName, "active", 0);
 
 /** @public */
-export const neutralStrokeStrongRecipe = createNonCss<InteractiveColorRecipe>("neutral-stroke-strong-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+export const neutralStrokeStrongFocusDelta = createDelta(neutralStrokeStrongName, "focus", 0);
+
+/** @public */
+export const neutralStrokeStrongRecipe = createRecipeInteractive(neutralStrokeStrongName,
+    (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             contrastAndDeltaSwatchSet(
                 resolve(neutralPalette),
@@ -766,62 +662,45 @@ export const neutralStrokeStrongRecipe = createNonCss<InteractiveColorRecipe>("n
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        ),
-});
-
-const neutralStrokeStrongRecipeValue = createNonCss<InteractiveSwatchSet>("neutral-stroke-strong-recipe-value").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipe).evaluate(resolve)
+        )
 );
+
+const neutralStrokeStrongSet = createSet(neutralStrokeStrongRecipe);
 
 /** @public */
-export const neutralStrokeStrongRest = create<Swatch>("neutral-stroke-strong-rest").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipeValue).rest
-);
+export const neutralStrokeStrongRest = createStateToken(neutralStrokeStrongSet, "rest");
 
 /** @public */
-export const neutralStrokeStrongHover = create<Swatch>("neutral-stroke-strong-hover").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipeValue).hover
-);
+export const neutralStrokeStrongHover = createStateToken(neutralStrokeStrongSet, "hover");
 
 /** @public */
-export const neutralStrokeStrongActive = create<Swatch>("neutral-stroke-strong-active").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipeValue).active
-);
+export const neutralStrokeStrongActive = createStateToken(neutralStrokeStrongSet, "active");
 
 /** @public */
-export const neutralStrokeStrongFocus = create<Swatch>("neutral-stroke-strong-focus").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(neutralStrokeStrongRecipeValue).focus
-);
+export const neutralStrokeStrongFocus = createStateToken(neutralStrokeStrongSet, "focus");
 
 // Focus Stroke Outer
 
-/** @public */
-export const focusStrokeOuterRecipe = createNonCss<ColorRecipe>("focus-stroke-outer-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver): Swatch =>
-        blackOrWhiteByContrast(resolve(fillColor), ContrastTarget.NormalText, true),
-});
+const focusStrokeOuterName = "focus-stroke-outer";
 
 /** @public */
-export const focusStrokeOuter = create<Swatch>("focus-stroke-outer").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(focusStrokeOuterRecipe).evaluate(resolve)
+export const focusStrokeOuterRecipe = createRecipe(focusStrokeOuterName,
+    (resolve: DesignTokenResolver): Swatch =>
+        blackOrWhiteByContrast(resolve(fillColor), ContrastTarget.NormalText, true)
 );
+
+/** @public */
+export const focusStrokeOuter = createRecipeToken(focusStrokeOuterRecipe);
 
 // Focus Stroke Inner
 
-/** @public */
-export const focusStrokeInnerRecipe = createNonCss<ColorRecipe>("focus-stroke-inner-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver): Swatch =>
-        blackOrWhiteByContrast(resolve(focusStrokeOuter), ContrastTarget.NormalText, false),
-});
+const focusStrokeInnerName = "focus-stroke-inner";
 
 /** @public */
-export const focusStrokeInner = create<Swatch>("focus-stroke-inner").withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(focusStrokeInnerRecipe).evaluate(resolve)
+export const focusStrokeInnerRecipe = createRecipe(focusStrokeInnerName,
+    (resolve: DesignTokenResolver): Swatch =>
+        blackOrWhiteByContrast(resolve(focusStrokeOuter), ContrastTarget.NormalText, false)
 );
+
+/** @public */
+export const focusStrokeInner = createRecipeToken(focusStrokeInnerRecipe);
