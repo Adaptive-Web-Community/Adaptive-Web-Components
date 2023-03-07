@@ -283,7 +283,9 @@ const textComponents = html<ColorBlock>`
         ></app-swatch>
 
         <div class="example">
-            <app-adaptive-component :foregroundRest="${x => neutralForegroundHint}">
+            <app-adaptive-component
+                :foregroundRest="${x => neutralForegroundHint}"
+            >
                 Hint
             </app-adaptive-component>
         </div>
@@ -321,13 +323,6 @@ const textComponents = html<ColorBlock>`
             recipe-name="accentForegroundActive"
             :fillRecipe="${x => fillColor}"
             :foregroundRecipe="${x => accentForegroundActive}"
-        ></app-swatch>
-        <app-swatch
-            type="outline"
-            recipe-name="focusStrokeOuter"
-            :fillRecipe="${x => fillColor}"
-            :foregroundRecipe="${x => focusStrokeOuter}"
-            :outlineRecipe="${x => focusStrokeOuter}"
         ></app-swatch>
     </template>
 `;
@@ -443,7 +438,9 @@ const formComponents = html<ColorBlock>`
         ></app-swatch>
 
         <div class="example">
-            <app-adaptive-component :strokeRest="${x => neutralStrokeDividerRest}">
+            <app-adaptive-component
+                :strokeRest="${x => neutralStrokeDividerRest}"
+            >
                 Divider
             </app-adaptive-component>
         </div>

@@ -24,7 +24,7 @@
         "clean": "rimraf dist",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "start": "vite --open",
+        "start": "vite --force --open",
         "test": "npm run lint && npm run build"
     },
     "dependencies": {
