@@ -15,7 +15,7 @@
         "change": "beachball change",
         "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'yarn change' to generate a change file\"",
         "check": "beachball check",
-        "publish": "beachball publish",
+        "publish": "beachball publish --access public --no-push",
         "publish-ci": "beachball publish -y --access public",
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",

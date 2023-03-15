@@ -1,55 +1,55 @@
 {
-    "name": "@adaptive-web/adaptive-ui",
-    "version": "0.0.2",
-    "description": "A collection of design utilities supporting basic styling and Adaptive UI",
-    "type": "module",
-    "sideEffects": false,
-    "license": "MIT",
-    "author": {
-        "name": "Adaptive Web Community",
-        "url": "https://github.com/adaptive-web-community"
-    },
-    "bugs": {
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
-    },
-    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
-        "directory": "packages/adaptive-ui"
-    },
-    "main": "dist/esm/index.js",
-    "module": "dist/esm/index.js",
-    "types": "dist/dts/index.d.ts",
-    "scripts": {
-        "build": "tsc",
-        "clean": "rimraf dist",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        "start": "tsc --watch",
-        "test": "npm run lint && npm run build && npm run unit-tests",
-        "unit-tests": "mocha",
-        "unit-tests:watch": "mocha --watch",
-        "doc": "api-extractor run --local",
-        "postbuild": "npm run doc"
-    },
-    "dependencies": {
-        "@microsoft/fast-colors": "^5.3.1",
-        "@microsoft/fast-foundation": "3.0.0-alpha.26"
-    },
-    "devDependencies": {
-        "@microsoft/api-extractor": "^7.34.4",
-        "@types/chai": "^4.3.4",
-        "@types/mocha": "^10.0.1",
-        "chai": "^4.3.7",
-        "mocha": "^10.2.0",
-        "rimraf": "^3.0.2",
-        "typescript": "^4.7.0"
-    },
-    "exports": {
-        ".": {
-            "types": "./dist/dts/index.d.ts",
-            "default": "./dist/esm/index.js"
-        }
+  "name": "@adaptive-web/adaptive-ui",
+  "version": "0.0.3",
+  "description": "A collection of design utilities supporting basic styling and Adaptive UI",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+    "directory": "packages/adaptive-ui"
+  },
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "start": "tsc --watch",
+    "test": "npm run lint && npm run build && npm run unit-tests",
+    "unit-tests": "mocha",
+    "unit-tests:watch": "mocha --watch",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc"
+  },
+  "dependencies": {
+    "@microsoft/fast-colors": "^5.3.1",
+    "@microsoft/fast-foundation": "3.0.0-alpha.26"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.34.4",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
     }
+  }
 }

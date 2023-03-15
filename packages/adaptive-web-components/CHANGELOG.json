@@ -1,0 +1,28 @@
+{
+  "name": "@adaptive-web/adaptive-web-components",
+  "entries": [
+    {
+      "date": "Wed, 15 Mar 2023 23:46:48 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "none": [
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "8f53f679b6d70310122a08ddc6d5d4e73af8296f",
+            "comment": "add beachball and api-extractor"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.0.3",
+            "commit": "d6b7c7dd02142cad321be2dda74d193bfd2dea1f"
+          }
+        ]
+      }
+    }
+  ]
+}
