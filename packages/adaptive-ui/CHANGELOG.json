@@ -1,0 +1,28 @@
+{
+  "name": "@adaptive-web/adaptive-ui",
+  "entries": [
+    {
+      "date": "Wed, 15 Mar 2023 23:42:31 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.0.3",
+      "version": "0.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "713bf34a6d32cabc0fb9f76effe353233fe20e44",
+            "comment": "Fix black or white foreground recipe Minor Adaptive UI Explorer fixes"
+          }
+        ],
+        "none": [
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "8f53f679b6d70310122a08ddc6d5d4e73af8296f",
+            "comment": "add beachball and api-extractor"
+          }
+        ]
+      }
+    }
+  ]
+}

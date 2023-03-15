@@ -1,41 +1,41 @@
 {
-    "name": "@adaptive-web/adaptive-ui-explorer",
-    "version": "0.0.1",
-    "description": "Discover a new look and feel with Adaptive UI",
-    "type": "module",
-    "private": true,
-    "license": "MIT",
-    "author": {
-        "name": "Adaptive Web Community",
-        "url": "https://github.com/adaptive-web-community"
-    },
-    "bugs": {
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
-    },
-    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
-        "directory": "packages/adaptive-ui-explorer"
-    },
-    "scripts": {
-        "build": "tsc && vite build",
-        "build:preview": "npm run build -- --minify false && vite preview --open",
-        "clean": "rimraf dist",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        "start": "vite --force --open",
-        "test": "npm run lint && npm run build"
-    },
-    "dependencies": {
-        "@adaptive-web/adaptive-ui": "0.0.2",
-        "@microsoft/fast-colors": "^5.3.1",
-        "@microsoft/fast-element": "2.0.0-beta.22",
-        "@microsoft/fast-foundation": "3.0.0-alpha.26"
-    },
-    "devDependencies": {
-        "rimraf": "^3.0.2",
-        "typescript": "^4.7.0",
-        "vite": "^4.1.1"
-    }
+  "name": "@adaptive-web/adaptive-ui-explorer",
+  "version": "0.0.1",
+  "description": "Discover a new look and feel with Adaptive UI",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+    "directory": "packages/adaptive-ui-explorer"
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "build:preview": "npm run build -- --minify false && vite preview --open",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "start": "vite --force --open",
+    "test": "npm run lint && npm run build"
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "0.0.3",
+    "@microsoft/fast-colors": "^5.3.1",
+    "@microsoft/fast-element": "2.0.0-beta.22",
+    "@microsoft/fast-foundation": "3.0.0-alpha.26"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.0",
+    "vite": "^4.1.1"
+  }
 }

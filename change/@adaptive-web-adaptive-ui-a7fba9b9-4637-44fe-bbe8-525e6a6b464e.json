@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix black or white foreground recipe Minor Adaptive UI Explorer fixes",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
