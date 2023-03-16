@@ -111,8 +111,8 @@ export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference:
 export const bodyFont: CSSDesignToken<string>;
 
 // @public
-export interface ColorRecipe {
-    evaluate(resolver: DesignTokenResolver, reference?: Swatch): Swatch;
+export interface ColorRecipe<T = Swatch> {
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): T;
 }
 
 // @public
@@ -205,13 +205,13 @@ export const fillColor: CSSDesignToken<Swatch>;
 export const focusStrokeInner: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeInnerRecipe: DesignToken<ColorRecipe>;
+export const focusStrokeInnerRecipe: DesignToken<ColorRecipe<Swatch>>;
 
 // @public (undocumented)
 export const focusStrokeOuter: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeOuterRecipe: DesignToken<ColorRecipe>;
+export const focusStrokeOuterRecipe: DesignToken<ColorRecipe<Swatch>>;
 
 // @public (undocumented)
 export const focusStrokeWidth: CSSDesignToken<number>;
@@ -238,8 +238,7 @@ export const foregroundOnAccentRest: CSSDesignToken<Swatch>;
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
 
 // @public
-export interface InteractiveColorRecipe {
-    evaluate(resolver: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet;
+export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet> {
 }
 
 // @public
@@ -499,7 +498,7 @@ export const neutralForegroundFocusDelta: DesignToken<number>;
 export const neutralForegroundHint: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralForegroundHintRecipe: DesignToken<ColorRecipe>;
+export const neutralForegroundHintRecipe: DesignToken<ColorRecipe<Swatch>>;
 
 // @public (undocumented)
 export const neutralForegroundHover: CSSDesignToken<Swatch>;
@@ -529,7 +528,7 @@ export const neutralStrokeActive: CSSDesignToken<Swatch>;
 export const neutralStrokeActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeDividerRecipe: DesignToken<ColorRecipe>;
+export const neutralStrokeDividerRecipe: DesignToken<ColorRecipe<Swatch>>;
 
 // @public (undocumented)
 export const neutralStrokeDividerRest: CSSDesignToken<Swatch>;

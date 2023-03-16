@@ -6,14 +6,14 @@ import { Swatch } from "./swatch.js";
  *
  * @public
  */
-export interface ColorRecipe {
+export interface ColorRecipe<T = Swatch> {
     /**
-     * Evaluate a single color value.
+     * Evaluate a color recipe.
      *
      * @param resolver - A function that resolves design tokens
      * @param reference - The reference color, implementation defaults to `fillColor`, but sometimes overridden for nested color recipes
      */
-    evaluate(resolver: DesignTokenResolver, reference?: Swatch): Swatch;
+    evaluate(resolver: DesignTokenResolver, reference?: Swatch): T;
 }
 
 /**
@@ -21,15 +21,7 @@ export interface ColorRecipe {
  *
  * @public
  */
-export interface InteractiveColorRecipe {
-    /**
-     * Evaluate an interactive color set.
-     *
-     * @param resolver - A function that resolves design tokens
-     * @param reference - The reference color, implementation defaults to `fillColor`, but sometimes overridden for nested color recipes
-     */
-    evaluate(resolver: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet;
-}
+export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet> {}
 
 /**
  * A set of {@link Swatch}es to use for an interactive control's states.
