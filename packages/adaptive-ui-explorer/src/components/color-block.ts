@@ -26,9 +26,6 @@ import {
     neutralFillStealthFocus,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralFillStrongActive,
-    neutralFillStrongHover,
-    neutralFillStrongRest,
     neutralForegroundActive,
     neutralForegroundFocus,
     neutralForegroundHint,
@@ -407,20 +404,20 @@ const formComponents = html<ColorBlock>`
         ></app-swatch>
         <app-swatch
             type="fill"
-            recipe-name="neutralFillStrongRest"
-            :fillRecipe="${x => neutralFillStrongRest}"
+            recipe-name="neutralFillInputRest"
+            :fillRecipe="${x => neutralFillInputRest}"
             :foregroundRecipe="${x => neutralForegroundRest}"
         ></app-swatch>
         <app-swatch
             type="fill"
-            recipe-name="neutralFillStrongHover"
-            :fillRecipe="${x => neutralFillStrongHover}"
+            recipe-name="neutralFillInputHover"
+            :fillRecipe="${x => neutralFillInputHover}"
             :foregroundRecipe="${x => neutralForegroundRest}"
         ></app-swatch>
         <app-swatch
             type="fill"
-            recipe-name="neutralFillStrongActive"
-            :fillRecipe="${x => neutralFillStrongActive}"
+            recipe-name="neutralFillInputActive"
+            :fillRecipe="${x => neutralFillInputActive}"
             :foregroundRecipe="${x => neutralForegroundRest}"
         ></app-swatch>
         <app-swatch
@@ -431,10 +428,24 @@ const formComponents = html<ColorBlock>`
         ></app-swatch>
         <app-swatch
             type="outline"
-            recipe-name="focusStrokeOuter"
+            recipe-name="neutralStrokeStrongRest"
             :fillRecipe="${x => fillColor}"
-            :foregroundRecipe="${x => focusStrokeOuter}"
-            :outlineRecipe="${x => focusStrokeOuter}"
+            :foregroundRecipe="${x => neutralForegroundRest}"
+            :outlineRecipe="${x => neutralStrokeStrongRest}"
+        ></app-swatch>
+        <app-swatch
+            type="outline"
+            recipe-name="neutralStrokeStrongHover"
+            :fillRecipe="${x => fillColor}"
+            :foregroundRecipe="${x => neutralForegroundRest}"
+            :outlineRecipe="${x => neutralStrokeStrongHover}"
+        ></app-swatch>
+        <app-swatch
+            type="outline"
+            recipe-name="neutralStrokeStrongActive"
+            :fillRecipe="${x => fillColor}"
+            :foregroundRecipe="${x => neutralForegroundRest}"
+            :outlineRecipe="${x => neutralStrokeStrongActive}"
         ></app-swatch>
 
         <div class="example">

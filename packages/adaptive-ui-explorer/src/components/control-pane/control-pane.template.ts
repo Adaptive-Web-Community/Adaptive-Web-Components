@@ -1,3 +1,4 @@
+import { WcagContrastLevel } from "@adaptive-web/adaptive-ui";
 import { ElementViewTemplate, html, repeat } from "@microsoft/fast-element";
 import { ComponentType } from "../../component-type.js";
 import { ControlPane } from "./control-pane.js";
@@ -60,6 +61,26 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                     x.updateFormValue("accentColor", c.eventTarget<HTMLInputElement>().value);
                 }}"
             />
+        </div>
+        <div class="radio-group">
+            <label>WCAG Contrast Level</label>
+            ${repeat(
+                (x) => Object.keys(WcagContrastLevel),
+                html<string, T>`
+                    <label>
+                        <input
+                            type="radio"
+                            name="wcagContrastLevel"
+                            value="${(x) => x}"
+                            ?checked="${(x, c) => c.parent.wcagContrastLevel === x}"
+                            @change="${(x, c) => {
+                                c.parent.updateFormValue("wcagContrastLevel", c.eventTarget<HTMLInputElement>().value);
+                            }}"
+                        />
+                        <span>${(x) => x.toUpperCase()}</span>
+                    </label>
+                `
+            )}
         </div>
     `;
 }

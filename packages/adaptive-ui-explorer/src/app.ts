@@ -14,6 +14,7 @@ import {
     Palette,
     Swatch,
     SwatchRGB,
+    wcagContrastLevel,
 } from "@adaptive-web/adaptive-ui";
 import {
     attr,
@@ -296,6 +297,12 @@ export class App extends FASTElement implements AppAttributes {
 
     public controlPaneHandler(e: CustomEvent) {
         const detail: { field: string; value: any } = e.detail;
-        (this as any)[detail.field] = detail.value;
+        if (detail.field === "wcagContrastLevel") {
+            if (this.$fastController.isConnected) {
+                wcagContrastLevel.setValueFor(this.canvas, detail.value);
+            }
+        } else {
+            (this as any)[detail.field] = detail.value;
+        }
     }
 }
