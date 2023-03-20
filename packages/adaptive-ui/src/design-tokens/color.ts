@@ -1,5 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import type { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
+import type { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { blackOrWhiteByContrast, interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/index.js";
 import { ColorRecipe, InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
@@ -16,7 +16,7 @@ function createDelta(name: string, state: keyof InteractiveSwatchSet, value: num
     return createNonCss<number>(`${name}-${state}-delta`).withDefault(value);
 }
 
-function createMinContrast(name: string, value: number) {
+function createMinContrast(name: string, value: number | DesignToken<number>) {
     return createNonCss<number>(`${name}-min-contrast`).withDefault(value);
 }
 
@@ -59,6 +59,7 @@ function createRecipeToken(recipeToken: DesignToken<ColorRecipe>): CSSDesignToke
  * Convenience values for WCAG contrast requirements.
  *
  * @public
+ * @deprecated Use `minContrastPerceivable` or `minContrastReadable` tokens instead
  */
 export const ContrastTarget = Object.freeze({
     /**
@@ -72,58 +73,116 @@ export const ContrastTarget = Object.freeze({
     LargeText: 3,
 } as const);
 
+/**
+ * WCAG Contrast Level (AA or AAA)
+ * 
+ * @public
+ */
+export const WcagContrastLevel = {
+    aa: "aa",
+    aaa: "aaa"
+} as const;
+
+/** @public */
+export type WcagContrastLevel = ValuesOf<typeof WcagContrastLevel>;
+
+/** @public */
+export const wcagContrastLevel = createNonCss<WcagContrastLevel>("wcag-contrast-level").withDefault("aa");
+
+/** @public */
+export const minContrastPerceivable = createNonCss<number>("min-contrast-perceivable").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(wcagContrastLevel) === "aa" ? 3 : 4.5
+);
+
+/** @public */
+export const minContrastReadable = createNonCss<number>("min-contrast-readable").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(wcagContrastLevel) === "aa" ? 4.5 : 7
+);
+
 /** @public */
 export const fillColor = create<Swatch>("fill-color").withDefault(_white);
 
 /** @public */
 export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").withDefault(false);
 
-// Accent Fill
+// Accent Fill Readable (previously just "Accent Fill")
 
-const accentFillName = "accent-fill";
-
-/** @public */
-export const accentFillMinContrast = createMinContrast(accentFillName, 4.5);
+const accentFillReadableName = "accent-fill-readable";
 
 /** @public */
-export const accentFillRestDelta = createDelta(accentFillName, "rest", 0);
+export const accentFillReadableMinContrast = createMinContrast(accentFillReadableName, minContrastReadable);
 
 /** @public */
-export const accentFillHoverDelta = createDelta(accentFillName, "hover", -2);
+export const accentFillReadableRestDelta = createDelta(accentFillReadableName, "rest", 0);
 
 /** @public */
-export const accentFillActiveDelta = createDelta(accentFillName, "active", -5);
+export const accentFillReadableHoverDelta = createDelta(accentFillReadableName, "hover", -2);
 
 /** @public */
-export const accentFillFocusDelta = createDelta(accentFillName, "focus", 0);
+export const accentFillReadableActiveDelta = createDelta(accentFillReadableName, "active", -5);
 
 /** @public */
-export const accentFillRecipe = createRecipeInteractive(accentFillName,
+export const accentFillReadableFocusDelta = createDelta(accentFillReadableName, "focus", 0);
+
+/** @public */
+export const accentFillReadableRecipe = createRecipeInteractive(accentFillReadableName,
     (resolve: DesignTokenResolver, reference?: Swatch) =>
         contrastAndDeltaSwatchSet(
             resolve(accentPalette),
             reference || resolve(fillColor),
-            resolve(accentFillMinContrast),
-            resolve(accentFillRestDelta),
-            resolve(accentFillHoverDelta),
-            resolve(accentFillActiveDelta),
-            resolve(accentFillFocusDelta)
+            resolve(accentFillReadableMinContrast),
+            resolve(accentFillReadableRestDelta),
+            resolve(accentFillReadableHoverDelta),
+            resolve(accentFillReadableActiveDelta),
+            resolve(accentFillReadableFocusDelta)
         )
 );
 
-const accentFillSet = createSet(accentFillRecipe);
+const accentFillReadableSet = createSet(accentFillReadableRecipe);
 
 /** @public */
-export const accentFillRest = createStateToken(accentFillSet, "rest");
+export const accentFillReadableRest = createStateToken(accentFillReadableSet, "rest");
 
 /** @public */
-export const accentFillHover = createStateToken(accentFillSet, "hover");
+export const accentFillReadableHover = createStateToken(accentFillReadableSet, "hover");
 
 /** @public */
-export const accentFillActive = createStateToken(accentFillSet, "active");
+export const accentFillReadableActive = createStateToken(accentFillReadableSet, "active");
 
 /** @public */
-export const accentFillFocus = createStateToken(accentFillSet, "focus");
+export const accentFillReadableFocus = createStateToken(accentFillReadableSet, "focus");
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillMinContrast = accentFillReadableMinContrast;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillRestDelta = accentFillReadableRestDelta;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillHoverDelta = accentFillReadableHoverDelta;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillActiveDelta = accentFillReadableActiveDelta;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillFocusDelta = accentFillReadableFocusDelta;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillRecipe = accentFillReadableRecipe;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillRest = accentFillReadableRest;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillHover = accentFillReadableHover;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillActive = accentFillReadableActive;
+
+/** @public @deprecated use "Readable" instead */
+export const accentFillFocus = accentFillReadableFocus;
 
 // Foreground On Accent
 
@@ -133,11 +192,11 @@ const foregroundOnAccentName = "foreground-on-accent";
 export const foregroundOnAccentRecipe = createRecipeInteractive(foregroundOnAccentName,
     (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
-            resolve(accentFillRest),
-            resolve(accentFillHover),
-            resolve(accentFillActive),
-            resolve(accentFillFocus),
-            ContrastTarget.NormalText,
+            resolve(accentFillReadableRest),
+            resolve(accentFillReadableHover),
+            resolve(accentFillReadableActive),
+            resolve(accentFillReadableFocus),
+            resolve(minContrastReadable),
             false
         )
 );
@@ -161,7 +220,7 @@ export const foregroundOnAccentFocus = createStateToken(foregroundOnAccentSet, "
 const accentForegroundName = "accent-foreground";
 
 /** @public */
-export const accentForegroundMinContrast = createMinContrast(accentForegroundName, ContrastTarget.NormalText);
+export const accentForegroundMinContrast = createMinContrast(accentForegroundName, minContrastReadable);
 
 /** @public */
 export const accentForegroundRestDelta = createDelta(accentForegroundName, "rest", 0);
@@ -254,87 +313,120 @@ export const neutralForegroundActive = createStateToken(neutralForegroundSet, "a
 /** @public */
 export const neutralForegroundFocus = createStateToken(neutralForegroundSet, "focus");
 
-// Neutral Foreground Hint
+// Neutral Stroke Readable (previously "Foreground Hint")
 
-const neutralForegroundHintName = "neutral-foreground-hint";
+const neutralStrokeReadableName = "neutral-stroke-readable";
 
 /** @public */
-export const neutralForegroundHintRecipe = createRecipe(neutralForegroundHintName,
+export const neutralStrokeReadableRecipe = createRecipe(neutralStrokeReadableName,
     (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
         swatchAsOverlay(
-            contrastSwatch(resolve(neutralPalette), reference || resolve(fillColor), ContrastTarget.NormalText),
+            contrastSwatch(resolve(neutralPalette), reference || resolve(fillColor), resolve(minContrastReadable)),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
 
 /** @public */
-export const neutralForegroundHint = createRecipeToken(neutralForegroundHintRecipe)
+export const neutralStrokeReadableRest = createRecipeToken(neutralStrokeReadableRecipe)
 
-// Neutral Fill
+/** @public @deprecated Use "Stroke Readable" instead */
+export const neutralForegroundHintRecipe = neutralStrokeReadableRecipe;
 
-const neutralFillName = "neutral-fill";
+/** @public @deprecated Use "Stroke Readable" instead */
+export const neutralForegroundHint = neutralStrokeReadableRest;
 
-/** @public */
-export const neutralFillRestDelta = createDelta(neutralFillName, "rest", -1);
+// Neutral Fill Subtle (previously just "Neutral Fill")
 
-/** @public */
-export const neutralFillHoverDelta = createDelta(neutralFillName, "hover", 1);
-
-/** @public */
-export const neutralFillActiveDelta = createDelta(neutralFillName, "active", 0);
+const neutralFillSubtleName = "neutral-fill";
 
 /** @public */
-export const neutralFillFocusDelta = createDelta(neutralFillName, "focus", 0);
+export const neutralFillSubtleRestDelta = createDelta(neutralFillSubtleName, "rest", -1);
 
 /** @public */
-export const neutralFillRecipe = createRecipeInteractive(neutralFillName,
+export const neutralFillSubtleHoverDelta = createDelta(neutralFillSubtleName, "hover", 1);
+
+/** @public */
+export const neutralFillSubtleActiveDelta = createDelta(neutralFillSubtleName, "active", 0);
+
+/** @public */
+export const neutralFillSubtleFocusDelta = createDelta(neutralFillSubtleName, "focus", 0);
+
+/** @public */
+export const neutralFillSubtleRecipe = createRecipeInteractive(neutralFillSubtleName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
                 reference || resolve(fillColor),
-                resolve(neutralFillRestDelta),
-                resolve(neutralFillHoverDelta),
-                resolve(neutralFillActiveDelta),
-                resolve(neutralFillFocusDelta)
+                resolve(neutralFillSubtleRestDelta),
+                resolve(neutralFillSubtleHoverDelta),
+                resolve(neutralFillSubtleActiveDelta),
+                resolve(neutralFillSubtleFocusDelta)
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
 
-const neutralFillSet = createSet(neutralFillRecipe);
+const neutralFillSubtleSet = createSet(neutralFillSubtleRecipe);
 
 /** @public */
-export const neutralFillRest = createStateToken(neutralFillSet, "rest");
+export const neutralFillSubtleRest = createStateToken(neutralFillSubtleSet, "rest");
 
 /** @public */
-export const neutralFillHover = createStateToken(neutralFillSet, "hover");
+export const neutralFillSubtleHover = createStateToken(neutralFillSubtleSet, "hover");
 
 /** @public */
-export const neutralFillActive = createStateToken(neutralFillSet, "active");
+export const neutralFillSubtleActive = createStateToken(neutralFillSubtleSet, "active");
 
 /** @public */
-export const neutralFillFocus = createStateToken(neutralFillSet, "focus");
+export const neutralFillSubtleFocus = createStateToken(neutralFillSubtleSet, "focus");
 
-// Neutral Fill Input
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillRestDelta = neutralFillSubtleRestDelta;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillHoverDelta = neutralFillSubtleHoverDelta;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillActiveDelta = neutralFillSubtleActiveDelta;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillFocusDelta = neutralFillSubtleFocusDelta;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillRecipe = neutralFillSubtleRecipe;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillRest = neutralFillSubtleRest;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillHover = neutralFillSubtleHover;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillActive = neutralFillSubtleActive;
+
+/** @public @deprecated use "Subtle" instead */
+export const neutralFillFocus = neutralFillSubtleFocus;
+
+// Neutral Fill Input (deprecated)
 
 const neutralFillInputName = "neutral-fill-input";
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRestDelta = createDelta(neutralFillInputName, "rest", -1);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputHoverDelta = createDelta(neutralFillInputName, "hover", 1);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputActiveDelta = createDelta(neutralFillInputName, "active", -2);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputFocusDelta = createDelta(neutralFillInputName, "focus", -2);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRecipe = createRecipeInteractive(neutralFillInputName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
@@ -351,37 +443,38 @@ export const neutralFillInputRecipe = createRecipeInteractive(neutralFillInputNa
         )
 );
 
+/** @deprecated */
 const neutralFillInputSet = createSet(neutralFillInputRecipe);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRest = createStateToken(neutralFillInputSet, "rest");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputHover = createStateToken(neutralFillInputSet, "hover");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputActive = createStateToken(neutralFillInputSet, "active");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputFocus = createStateToken(neutralFillInputSet, "focus");
 
-// Neutral Fill Secondary
+// Neutral Fill Secondary (deprecated)
 
 const neutralFillSecondaryName = "neutral-fill-secondary";
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryRestDelta = createDelta(neutralFillSecondaryName, "rest", 3);
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryHoverDelta = createDelta(neutralFillSecondaryName, "hover", 2);
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryActiveDelta = createDelta(neutralFillSecondaryName, "active", 1);
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryFocusDelta = createDelta(neutralFillSecondaryName, "focus", 3);
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryRecipe = createRecipeInteractive(neutralFillSecondaryName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
@@ -398,18 +491,19 @@ export const neutralFillSecondaryRecipe = createRecipeInteractive(neutralFillSec
         )
 );
 
+/** @deprecated */
 const neutralFillSecondarySet = createSet(neutralFillSecondaryRecipe);
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryRest = createStateToken(neutralFillSecondarySet, "rest");
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryHover = createStateToken(neutralFillSecondarySet, "hover");
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryActive = createStateToken(neutralFillSecondarySet, "active");
 
-/** @public */
+/** @public @deprecated Use "Subtle" or "Perceivable" instead */
 export const neutralFillSecondaryFocus = createStateToken(neutralFillSecondarySet, "focus");
 
 // Neutral Fill Stealth
@@ -459,112 +553,169 @@ export const neutralFillStealthActive = createStateToken(neutralFillStealthSet, 
 /** @public */
 export const neutralFillStealthFocus = createStateToken(neutralFillStealthSet, "focus");
 
-// Neutral Fill Strong
+// Neutral Fill Perceivable (previously "Strong")
 
-const neutralFillStrongName = "neutral-fill-strong";
-
-/** @public */
-export const neutralFillStrongMinContrast = createMinContrast(neutralFillStrongName, 3);
+const neutralFillPerceivableName = "neutral-fill-perceivable";
 
 /** @public */
-export const neutralFillStrongRestDelta = createDelta(neutralFillStrongName, "rest", 0);
+export const neutralFillPerceivableMinContrast = createMinContrast(neutralFillPerceivableName, minContrastPerceivable);
 
 /** @public */
-export const neutralFillStrongHoverDelta = createDelta(neutralFillStrongName, "hover", 8);
+export const neutralFillPerceivableRestDelta = createDelta(neutralFillPerceivableName, "rest", 0);
 
 /** @public */
-export const neutralFillStrongActiveDelta = createDelta(neutralFillStrongName, "active", -5);
+export const neutralFillPerceivableHoverDelta = createDelta(neutralFillPerceivableName, "hover", 8);
 
 /** @public */
-export const neutralFillStrongFocusDelta = createDelta(neutralFillStrongName, "focus", 0);
+export const neutralFillPerceivableActiveDelta = createDelta(neutralFillPerceivableName, "active", -5);
 
 /** @public */
-export const neutralFillStrongRecipe = createRecipeInteractive(neutralFillStrongName,
+export const neutralFillPerceivableFocusDelta = createDelta(neutralFillPerceivableName, "focus", 0);
+
+/** @public */
+export const neutralFillPerceivableRecipe = createRecipeInteractive(neutralFillPerceivableName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             contrastAndDeltaSwatchSet(
                 resolve(neutralPalette),
                 reference || resolve(fillColor),
-                resolve(neutralFillStrongMinContrast),
-                resolve(neutralFillStrongRestDelta),
-                resolve(neutralFillStrongHoverDelta),
-                resolve(neutralFillStrongActiveDelta),
-                resolve(neutralFillStrongFocusDelta)
+                resolve(neutralFillPerceivableMinContrast),
+                resolve(neutralFillPerceivableRestDelta),
+                resolve(neutralFillPerceivableHoverDelta),
+                resolve(neutralFillPerceivableActiveDelta),
+                resolve(neutralFillPerceivableFocusDelta)
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
 
-const neutralFillStrongSet = createSet(neutralFillStrongRecipe);
+const neutralFillPerceivableSet = createSet(neutralFillPerceivableRecipe);
 
 /** @public */
-export const neutralFillStrongRest = createStateToken(neutralFillStrongSet, "rest");
+export const neutralFillPerceivableRest = createStateToken(neutralFillPerceivableSet, "rest");
 
 /** @public */
-export const neutralFillStrongHover = createStateToken(neutralFillStrongSet, "hover");
+export const neutralFillPerceivableHover = createStateToken(neutralFillPerceivableSet, "hover");
 
 /** @public */
-export const neutralFillStrongActive = createStateToken(neutralFillStrongSet, "active");
+export const neutralFillPerceivableActive = createStateToken(neutralFillPerceivableSet, "active");
 
 /** @public */
-export const neutralFillStrongFocus = createStateToken(neutralFillStrongSet, "focus");
+export const neutralFillPerceivableFocus = createStateToken(neutralFillPerceivableSet, "focus");
 
-// Neutral Stroke
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongMinContrast = neutralFillPerceivableMinContrast;
 
-const neutralStrokeName = "neutral-stroke";
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongRestDelta = neutralFillPerceivableRestDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongHoverDelta = neutralFillPerceivableHoverDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongActiveDelta = neutralFillPerceivableActiveDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongFocusDelta = neutralFillPerceivableFocusDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongRecipe = neutralFillPerceivableRecipe;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongRest = neutralFillPerceivableRest;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongHover = neutralFillPerceivableHover;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongActive = neutralFillPerceivableActive;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralFillStrongFocus = neutralFillPerceivableFocus;
+
+// Neutral Stroke Subtle (previously just "Neutral Stroke")
+
+const neutralStrokeSubtleName = "neutral-stroke-subtle";
 
 /** @public */
-export const neutralStrokeRestDelta = createDelta(neutralStrokeName, "rest", 8);
+export const neutralStrokeSubtleRestDelta = createDelta(neutralStrokeSubtleName, "rest", 8);
 
 /** @public */
-export const neutralStrokeHoverDelta = createDelta(neutralStrokeName, "hover", 12);
+export const neutralStrokeSubtleHoverDelta = createDelta(neutralStrokeSubtleName, "hover", 12);
 
 /** @public */
-export const neutralStrokeActiveDelta = createDelta(neutralStrokeName, "active", 6);
+export const neutralStrokeSubtleActiveDelta = createDelta(neutralStrokeSubtleName, "active", 6);
 
 /** @public */
-export const neutralStrokeFocusDelta = createDelta(neutralStrokeName, "focus", 8);
+export const neutralStrokeSubtleFocusDelta = createDelta(neutralStrokeSubtleName, "focus", 8);
 
 /** @public */
-export const neutralStrokeRecipe = createRecipeInteractive(neutralStrokeName,
+export const neutralStrokeSubtleRecipe = createRecipeInteractive(neutralStrokeSubtleName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
                 reference || resolve(fillColor),
-                resolve(neutralStrokeRestDelta),
-                resolve(neutralStrokeHoverDelta),
-                resolve(neutralStrokeActiveDelta),
-                resolve(neutralStrokeFocusDelta)
+                resolve(neutralStrokeSubtleRestDelta),
+                resolve(neutralStrokeSubtleHoverDelta),
+                resolve(neutralStrokeSubtleActiveDelta),
+                resolve(neutralStrokeSubtleFocusDelta)
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
 
-const neutralStrokeSet = createSet(neutralStrokeRecipe);
+const neutralStrokeSubtleSet = createSet(neutralStrokeSubtleRecipe);
 
 /** @public */
-export const neutralStrokeRest = createStateToken(neutralStrokeSet, "rest");
+export const neutralStrokeSubtleRest = createStateToken(neutralStrokeSubtleSet, "rest");
 
 /** @public */
-export const neutralStrokeHover = createStateToken(neutralStrokeSet, "hover");
+export const neutralStrokeSubtleHover = createStateToken(neutralStrokeSubtleSet, "hover");
 
 /** @public */
-export const neutralStrokeActive = createStateToken(neutralStrokeSet, "active");
+export const neutralStrokeSubtleActive = createStateToken(neutralStrokeSubtleSet, "active");
 
 /** @public */
-export const neutralStrokeFocus = createStateToken(neutralStrokeSet, "focus");
+export const neutralStrokeSubtleFocus = createStateToken(neutralStrokeSubtleSet, "focus");
 
-// Neutral Stroke Divider
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeRestDelta = neutralStrokeSubtleRestDelta;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeHoverDelta = neutralStrokeSubtleHoverDelta;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeActiveDelta = neutralStrokeSubtleActiveDelta;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeFocusDelta = neutralStrokeSubtleFocusDelta;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeRecipe = neutralStrokeSubtleRecipe;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeRest = neutralStrokeSubtleRest;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeHover = neutralStrokeSubtleHover;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeActive = neutralStrokeSubtleActive;
+
+/** @public @deprecated Use "Subtle" instead */
+export const neutralStrokeFocus = neutralStrokeSubtleFocus;
+
+// Neutral Stroke Divider (deprecated)
 
 const neutralStrokeDividerName = "neutral-stroke-divider";
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeDividerRestDelta = createDelta(neutralStrokeDividerName, "rest", 4);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeDividerRecipe = createRecipe(neutralStrokeDividerName,
     (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
         swatchAsOverlay(
@@ -578,26 +729,26 @@ export const neutralStrokeDividerRecipe = createRecipe(neutralStrokeDividerName,
         )
 );
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeDividerRest = createRecipeToken(neutralStrokeDividerRecipe);
 
-// Neutral Stroke Input
+// Neutral Stroke Input (deprecated)
 
 const neutralStrokeInputName = "neutral-stroke-input";
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRestDelta = createDelta(neutralStrokeInputName, "rest", 3);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputHoverDelta = createDelta(neutralStrokeInputName, "hover", 5);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputActiveDelta = createDelta(neutralStrokeInputName, "active", 5);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputFocusDelta = createDelta(neutralStrokeInputName, "focus", 5);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRecipe = createRecipeInteractive(neutralStrokeInputName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
@@ -614,70 +765,101 @@ export const neutralStrokeInputRecipe = createRecipeInteractive(neutralStrokeInp
         )
 );
 
+/** @deprecated */
 const neutralStrokeInputSet = createSet(neutralStrokeInputRecipe);
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRest = createStateToken(neutralStrokeInputSet, "rest");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputHover = createStateToken(neutralStrokeInputSet, "hover");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputActive = createStateToken(neutralStrokeInputSet, "active");
 
-/** @public */
+/** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputFocus = createStateToken(neutralStrokeInputSet, "focus");
 
-// Neutral Stroke Strong
+// Neutral Stroke Perceivable (previously "Strong")
 
-const neutralStrokeStrongName = "neutral-stroke-strong";
-
-/** @public */
-export const neutralStrokeStrongMinContrast = createMinContrast(neutralStrokeStrongName, 5.5);
+const neutralStrokePerceivableName = "neutral-stroke-perceivable";
 
 /** @public */
-export const neutralStrokeStrongRestDelta = createDelta(neutralStrokeStrongName, "rest", 0);
+export const neutralStrokePerceivableMinContrast = createMinContrast(neutralStrokePerceivableName, minContrastPerceivable);
 
 /** @public */
-export const neutralStrokeStrongHoverDelta = createDelta(neutralStrokeStrongName, "hover", 0);
+export const neutralStrokePerceivableRestDelta = createDelta(neutralStrokePerceivableName, "rest", 0);
 
 /** @public */
-export const neutralStrokeStrongActiveDelta = createDelta(neutralStrokeStrongName, "active", 0);
+export const neutralStrokePerceivableHoverDelta = createDelta(neutralStrokePerceivableName, "hover", 0);
 
 /** @public */
-export const neutralStrokeStrongFocusDelta = createDelta(neutralStrokeStrongName, "focus", 0);
+export const neutralStrokePerceivableActiveDelta = createDelta(neutralStrokePerceivableName, "active", 0);
 
 /** @public */
-export const neutralStrokeStrongRecipe = createRecipeInteractive(neutralStrokeStrongName,
+export const neutralStrokePerceivableFocusDelta = createDelta(neutralStrokePerceivableName, "focus", 0);
+
+/** @public */
+export const neutralStrokePerceivableRecipe = createRecipeInteractive(neutralStrokePerceivableName,
     (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
         interactiveSwatchSetAsOverlay(
             contrastAndDeltaSwatchSet(
                 resolve(neutralPalette),
                 reference || resolve(fillColor),
-                resolve(neutralStrokeStrongMinContrast),
-                resolve(neutralStrokeStrongRestDelta),
-                resolve(neutralStrokeStrongHoverDelta),
-                resolve(neutralStrokeStrongActiveDelta),
-                resolve(neutralStrokeStrongFocusDelta)
+                resolve(neutralStrokePerceivableMinContrast),
+                resolve(neutralStrokePerceivableRestDelta),
+                resolve(neutralStrokePerceivableHoverDelta),
+                resolve(neutralStrokePerceivableActiveDelta),
+                resolve(neutralStrokePerceivableFocusDelta)
             ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
 
-const neutralStrokeStrongSet = createSet(neutralStrokeStrongRecipe);
+const neutralStrokePerceivableSet = createSet(neutralStrokePerceivableRecipe);
 
 /** @public */
-export const neutralStrokeStrongRest = createStateToken(neutralStrokeStrongSet, "rest");
+export const neutralStrokePerceivableRest = createStateToken(neutralStrokePerceivableSet, "rest");
 
 /** @public */
-export const neutralStrokeStrongHover = createStateToken(neutralStrokeStrongSet, "hover");
+export const neutralStrokePerceivableHover = createStateToken(neutralStrokePerceivableSet, "hover");
 
 /** @public */
-export const neutralStrokeStrongActive = createStateToken(neutralStrokeStrongSet, "active");
+export const neutralStrokePerceivableActive = createStateToken(neutralStrokePerceivableSet, "active");
 
 /** @public */
-export const neutralStrokeStrongFocus = createStateToken(neutralStrokeStrongSet, "focus");
+export const neutralStrokePerceivableFocus = createStateToken(neutralStrokePerceivableSet, "focus");
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongMinContrast = neutralStrokePerceivableMinContrast;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongRestDelta = neutralStrokePerceivableRestDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongHoverDelta = neutralStrokePerceivableHoverDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongActiveDelta = neutralStrokePerceivableActiveDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongFocusDelta = neutralStrokePerceivableFocusDelta;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongRecipe = neutralStrokePerceivableRecipe;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongRest = neutralStrokePerceivableRest;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongHover = neutralStrokePerceivableHover;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongActive = neutralStrokePerceivableActive;
+
+/** @public @deprecated Use "Perceivable instead of "Strong" */
+export const neutralStrokeStrongFocus = neutralStrokePerceivableFocus;
 
 // Focus Stroke Outer
 
@@ -686,7 +868,7 @@ const focusStrokeOuterName = "focus-stroke-outer";
 /** @public */
 export const focusStrokeOuterRecipe = createRecipe(focusStrokeOuterName,
     (resolve: DesignTokenResolver): Swatch =>
-        blackOrWhiteByContrast(resolve(fillColor), ContrastTarget.NormalText, true)
+        blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
 );
 
 /** @public */
@@ -699,7 +881,7 @@ const focusStrokeInnerName = "focus-stroke-inner";
 /** @public */
 export const focusStrokeInnerRecipe = createRecipe(focusStrokeInnerName,
     (resolve: DesignTokenResolver): Swatch =>
-        blackOrWhiteByContrast(resolve(focusStrokeOuter), ContrastTarget.NormalText, false)
+        blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
 );
 
 /** @public */

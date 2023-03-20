@@ -1,3 +1,4 @@
+import type { WcagContrastLevel } from "@adaptive-web/adaptive-ui";
 import { FASTElement, observable } from "@microsoft/fast-element";
 
 export class ControlPane extends FASTElement {
@@ -12,6 +13,9 @@ export class ControlPane extends FASTElement {
 
     @observable
     public showOnlyLayerBackgrounds: boolean = true;
+
+    @observable
+    public wcagContrastLevel: WcagContrastLevel = "aa";
 
     public updateFormValue(field: string, value: any) {
         this.$emit("formvaluechange", { field: field, value: value });

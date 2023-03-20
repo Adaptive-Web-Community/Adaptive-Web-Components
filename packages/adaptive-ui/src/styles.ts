@@ -1,6 +1,7 @@
 /**
  * Recommended base styles for a component.
  * 
+ * @public
  * @remarks
  * Adds support for `[hidden]` custom elements.
  */
