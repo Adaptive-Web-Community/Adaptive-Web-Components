@@ -1,9 +1,9 @@
 import {
     controlCornerRadius,
     elevationTooltip,
-    neutralFillRest,
+    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeRest,
+    neutralStrokeSubtleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -36,9 +36,9 @@ export const aestheticStyles: ElementStyles = css`
         height: fit-content;
         width: fit-content;
         padding: 4px 12px;
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillRest};
+        background: ${neutralFillSubtleRest};
         color: ${neutralForegroundRest};
         ${typeRampBase}
         white-space: nowrap;

@@ -1,7 +1,7 @@
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
+    accentFillReadableActive,
+    accentFillReadableHover,
+    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
@@ -74,17 +74,17 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([aria-selected="true"]) {
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
     }
 
     :host([aria-selected="true"]:not([disabled]):hover) {
-        background: ${accentFillHover};
+        background: ${accentFillReadableHover};
         color: ${foregroundOnAccentHover};
     }
 
     :host([aria-selected="true"]:not([disabled]):active) {
-        background: ${accentFillActive};
+        background: ${accentFillReadableActive};
         color: ${foregroundOnAccentActive};
     }
 

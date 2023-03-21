@@ -5,13 +5,13 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     layerFillFixedPlus1,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    neutralFillSubtleActive,
+    neutralFillSubtleHover,
+    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    neutralStrokeSubtleActive,
+    neutralStrokeSubtleHover,
+    neutralStrokeSubtleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -89,22 +89,22 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: 250px;
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillInputRest};
+        background: ${neutralFillSubtleRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
     }
 
     :host(:not([disabled]):hover) {
-        border-color: ${neutralStrokeHover};
-        background: ${neutralFillInputHover};
+        border-color: ${neutralStrokeSubtleHover};
+        background: ${neutralFillSubtleHover};
     }
 
     :host(:not([disabled]):active) {
-        border-color: ${neutralStrokeActive};
-        background: ${neutralFillInputActive};
+        border-color: ${neutralStrokeSubtleActive};
+        background: ${neutralFillSubtleActive};
     }
 
     :host(:focus-visible) {

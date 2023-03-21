@@ -6,8 +6,8 @@ import {
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForegroundHint,
     neutralForegroundRest,
+    neutralStrokeReadableRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -159,7 +159,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     ::slotted([slot="end"]:not(svg)) {
-        color: ${neutralForegroundHint};
+        color: ${neutralStrokeReadableRest};
     }
 
     :host([disabled]) {

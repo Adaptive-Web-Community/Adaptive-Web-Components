@@ -5,9 +5,9 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    neutralStrokePerceivableRest,
+    neutralStrokeSubtleActive,
+    neutralStrokeSubtleHover,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -136,12 +136,12 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .thumb:hover {
-        border-color: ${neutralStrokeHover};
+        border-color: ${neutralStrokeSubtleHover};
         background: ${neutralForegroundRest};
     }
 
     .thumb:active {
-        border-color: ${neutralStrokeActive};
+        border-color: ${neutralStrokeSubtleActive};
         background: ${neutralForegroundRest};
     }
 
@@ -156,7 +156,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .track {
-        background: ${neutralStrokeRest};
+        background: ${neutralStrokePerceivableRest};
     }
 
     :host([disabled]) {

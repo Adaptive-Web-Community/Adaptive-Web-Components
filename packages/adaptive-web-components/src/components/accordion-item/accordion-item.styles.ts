@@ -1,13 +1,13 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentFillRest,
+    accentFillReadableRest,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeDividerRest,
+    neutralStrokeSubtleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -108,7 +108,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
+        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
         ${typeRampBase}
     }
 
@@ -134,7 +134,7 @@ export const aestheticStyles: ElementStyles = css`
     .icon {
         height: calc(${heightNumber} * 1px);
         width: calc(${heightNumber} * 1px);
-        fill: ${accentFillRest};
+        fill: ${accentFillReadableRest};
     }
 
     .region {

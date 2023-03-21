@@ -1,4 +1,4 @@
-import { designUnit, neutralStrokeRest, typeRampMinus1 } from "@adaptive-web/adaptive-ui";
+import { designUnit, neutralStrokeSubtleRest, typeRampMinus1 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 
@@ -52,7 +52,7 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
         height: calc(${heightNumber} * 0.25 * 1px);
         width: calc((${designUnit} / 2) * 1px);
-        background: ${neutralStrokeRest};
+        background: ${neutralStrokeSubtleRest};
     }
 
     :host([orientation="vertical"]) .mark {

@@ -1,4 +1,4 @@
-import { controlCornerRadius, neutralFillSecondaryHover, neutralFillSecondaryRest } from "@adaptive-web/adaptive-ui";
+import { controlCornerRadius, neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -55,14 +55,14 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host {
-        background-color: ${neutralFillSecondaryRest};
+        background-color: ${neutralFillSubtleRest};
     }
 
     .shimmer {
         background-image: linear-gradient(
             90deg,
             transparent 0%,
-            ${neutralFillSecondaryHover} 50%,
+            ${neutralFillSubtleHover} 50%,
             transparent 100%
         );
         background-size: 0px 0px / 90% 100%;
