@@ -1,5 +1,5 @@
 import {
-    accentFillRest,
+    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
@@ -59,7 +59,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([aria-selected="true"]) {
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
     }
 `;

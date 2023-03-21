@@ -1,11 +1,11 @@
 import {
-    accentFillRest,
+    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     fillColor,
     foregroundOnAccentRest,
-    neutralForegroundHint,
     neutralForegroundRest,
+    neutralStrokeReadableRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -84,7 +84,7 @@ export const aestheticStyles: ElementStyles = css`
 
     .inactive .date,
     .inactive.disabled::before {
-        color: ${neutralForegroundHint};
+        color: ${neutralStrokeReadableRest};
     }
 
     .disabled::before {
@@ -100,8 +100,8 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .selected {
-        color: ${accentFillRest};
-        border: 1px solid ${accentFillRest};
+        color: ${accentFillReadableRest};
+        border: 1px solid ${accentFillReadableRest};
         background: ${fillColor};
     }
 
@@ -119,7 +119,7 @@ export const aestheticStyles: ElementStyles = css`
 
     .today .date {
         color: ${foregroundOnAccentRest};
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
         border-radius: 50%;
         position: relative;
     }

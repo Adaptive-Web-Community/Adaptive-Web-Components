@@ -1,4 +1,4 @@
-import { focusStrokeWidth, neutralForegroundRest, neutralStrokeFocus } from "@adaptive-web/adaptive-ui";
+import { focusStrokeOuter, focusStrokeWidth, neutralForegroundRest } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -44,7 +44,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${neutralStrokeFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
     .positioning-region {

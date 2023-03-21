@@ -5,9 +5,9 @@ import {
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    neutralStrokeSubtleActive,
+    neutralStrokeSubtleHover,
+    neutralStrokeSubtleRest,
     strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -45,7 +45,7 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         width: calc(${heightNumber} * 1px);
         height: calc(${heightNumber} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
         border-radius: 50%;
         background: ${neutralFillStealthRest};
         color: ${neutralForegroundRest};
@@ -53,12 +53,12 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:hover) {
-        border-color: ${neutralStrokeHover};
+        border-color: ${neutralStrokeSubtleHover};
         background: ${neutralFillStealthHover};
     }
 
     :host(:active) {
-        border-color: ${neutralStrokeActive};
+        border-color: ${neutralStrokeSubtleActive};
         background: ${neutralFillStealthActive};
     }
 

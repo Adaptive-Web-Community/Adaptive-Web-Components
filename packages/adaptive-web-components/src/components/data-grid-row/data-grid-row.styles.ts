@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "@adaptive-web/adaptive-ui";
+import { neutralFillSubtleRest, neutralStrokeSubtleRest, strokeWidth } from "@adaptive-web/adaptive-ui";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -23,10 +23,10 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         padding: 1px 0;
-        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
+        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
     }
 
     :host([cell-type="sticky-header"]) {
-        background: ${neutralFillRest};
+        background: ${neutralFillSubtleRest};
     }
 `;

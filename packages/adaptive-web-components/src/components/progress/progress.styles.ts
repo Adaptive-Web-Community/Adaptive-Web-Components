@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { accentForegroundRest, designUnit, neutralFillSecondaryRest } from "@adaptive-web/adaptive-ui";
+import { accentForegroundRest, designUnit, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -41,7 +41,7 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         height: calc(${designUnit} * 1px);
         border-radius: calc(${designUnit} * 1px);
-        background-color: ${neutralFillSecondaryRest};
+        background-color: ${neutralFillSubtleRest};
     }
 
     .determinate {

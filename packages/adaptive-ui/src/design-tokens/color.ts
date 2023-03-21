@@ -321,7 +321,11 @@ const neutralStrokeReadableName = "neutral-stroke-readable";
 export const neutralStrokeReadableRecipe = createRecipe(neutralStrokeReadableName,
     (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
         swatchAsOverlay(
-            contrastSwatch(resolve(neutralPalette), reference || resolve(fillColor), resolve(minContrastReadable)),
+            contrastSwatch(
+                resolve(neutralPalette),
+                reference || resolve(fillColor),
+                resolve(minContrastReadable)
+            ),
             reference || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
@@ -338,10 +342,10 @@ export const neutralForegroundHint = neutralStrokeReadableRest;
 
 // Neutral Fill Subtle (previously just "Neutral Fill")
 
-const neutralFillSubtleName = "neutral-fill";
+const neutralFillSubtleName = "neutral-fill-subtle";
 
 /** @public */
-export const neutralFillSubtleRestDelta = createDelta(neutralFillSubtleName, "rest", -1);
+export const neutralFillSubtleRestDelta = createDelta(neutralFillSubtleName, "rest", 2);
 
 /** @public */
 export const neutralFillSubtleHoverDelta = createDelta(neutralFillSubtleName, "hover", 1);

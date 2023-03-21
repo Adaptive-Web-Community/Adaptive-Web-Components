@@ -1,5 +1,5 @@
 import {
-    accentFillRest,
+    accentFillReadableRest,
     controlCornerRadius,
     neutralForegroundRest,
 } from "@adaptive-web/adaptive-ui";
@@ -74,7 +74,7 @@ export const aestheticStyles: ElementStyles = css`
 
     .active-indicator {
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
     }
 
     :host([orientation="horizontal"]) .active-indicator {

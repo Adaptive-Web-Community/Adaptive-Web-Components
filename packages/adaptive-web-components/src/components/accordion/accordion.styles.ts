@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { neutralForegroundRest, neutralStrokeDividerRest, strokeWidth, typeRampBase } from "@adaptive-web/adaptive-ui";
+import { neutralForegroundRest, neutralStrokeSubtleRest, strokeWidth, typeRampBase } from "@adaptive-web/adaptive-ui";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -16,7 +16,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
+        border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
         color: ${neutralForegroundRest};
         ${typeRampBase}
     }

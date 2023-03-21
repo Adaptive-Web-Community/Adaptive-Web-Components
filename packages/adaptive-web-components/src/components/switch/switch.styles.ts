@@ -1,7 +1,7 @@
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
+    accentFillReadableActive,
+    accentFillReadableHover,
+    accentFillReadableRest,
     designUnit,
     fillColor,
     focusStrokeOuter,
@@ -9,13 +9,13 @@ import {
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    neutralFillSubtleActive,
+    neutralFillSubtleHover,
+    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeStrongActive,
-    neutralStrokeStrongHover,
-    neutralStrokeStrongRest,
+    neutralStrokePerceivableActive,
+    neutralStrokePerceivableHover,
+    neutralStrokePerceivableRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -74,20 +74,20 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeStrongRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokePerceivableRest};
         border-radius: calc(${heightNumber} * 1px);
         padding: 4px;
-        background: ${neutralFillInputRest};
+        background: ${neutralFillSubtleRest};
     }
 
     :host(:enabled:hover) .switch {
-        border-color: ${neutralStrokeStrongHover};
-        background: ${neutralFillInputHover};
+        border-color: ${neutralStrokePerceivableHover};
+        background: ${neutralFillSubtleHover};
     }
 
     :host(:enabled:active) .switch {
-        border-color: ${neutralStrokeStrongActive};
-        background: ${neutralFillInputActive};
+        border-color: ${neutralStrokePerceivableActive};
+        background: ${neutralFillSubtleActive};
     }
 
     :host(:focus-visible) .switch {
@@ -109,11 +109,11 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([aria-checked="true"]) .switch {
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
     }
 
     :host([aria-checked="true"]:enabled:hover) .switch {
-        background: ${accentFillHover};
+        background: ${accentFillReadableHover};
     }
 
     :host([aria-checked="true"]:enabled:hover) .thumb {
@@ -121,7 +121,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([aria-checked="true"]:enabled:active) .switch {
-        background: ${accentFillActive};
+        background: ${accentFillReadableActive};
     }
 
     :host([aria-checked="true"]:enabled:active) .thumb {

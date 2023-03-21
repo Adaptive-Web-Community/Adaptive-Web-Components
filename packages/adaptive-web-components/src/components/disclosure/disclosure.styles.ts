@@ -1,7 +1,7 @@
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
+    accentFillReadableActive,
+    accentFillReadableHover,
+    accentFillReadableRest,
     controlCornerRadius,
     foregroundOnAccentActive,
     foregroundOnAccentHover,
@@ -49,7 +49,7 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     .invoker {
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
         fill: currentcolor;
         padding: 12px;
@@ -57,12 +57,12 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .invoker:hover {
-        background: ${accentFillHover};
+        background: ${accentFillReadableHover};
         color: ${foregroundOnAccentHover};
     }
 
     .invoker:active {
-        background: ${accentFillActive};
+        background: ${accentFillReadableActive};
         color: ${foregroundOnAccentActive};
     }
 `;

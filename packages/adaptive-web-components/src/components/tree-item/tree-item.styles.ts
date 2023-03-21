@@ -4,12 +4,12 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillSecondaryRecipe,
-    neutralFillSecondaryRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRecipe,
     neutralFillStealthRest,
+    neutralFillSubtleRecipe,
+    neutralFillSubtleRest,
     neutralForegroundRest,
     strokeWidth,
     Swatch,
@@ -28,7 +28,7 @@ const expandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collaps
 
 const selectedExpandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collapse-selected-hover").withDefault(
     (resolve: DesignTokenResolver) => {
-        const baseRecipe = resolve(neutralFillSecondaryRecipe);
+        const baseRecipe = resolve(neutralFillSubtleRecipe);
         const buttonRecipe = resolve(neutralFillStealthRecipe);
         return buttonRecipe.evaluate(resolve, baseRecipe.evaluate(resolve).rest).hover;
     }
@@ -148,7 +148,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([selected]) .control {
-        background: ${neutralFillSecondaryRest};
+        background: ${neutralFillSubtleRest};
     }
 
     :host([selected]) .expand-collapse-button:hover {

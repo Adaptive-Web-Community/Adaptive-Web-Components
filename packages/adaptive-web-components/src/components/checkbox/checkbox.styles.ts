@@ -1,19 +1,19 @@
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
+    accentFillReadableActive,
+    accentFillReadableHover,
+    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    neutralFillSubtleActive,
+    neutralFillSubtleHover,
+    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeStrongActive,
-    neutralStrokeStrongHover,
-    neutralStrokeStrongRest,
+    neutralStrokePerceivableActive,
+    neutralStrokePerceivableHover,
+    neutralStrokePerceivableRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -81,21 +81,21 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeStrongRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokePerceivableRest};
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillInputRest};
+        background: ${neutralFillSubtleRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:enabled:hover) .control {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeStrongHover};
+        background: ${neutralFillSubtleHover};
+        border-color: ${neutralStrokePerceivableHover};
     }
 
     :host(:enabled:active) .control {
-        background: ${neutralFillInputActive};
-        border-color: ${neutralStrokeStrongActive};
+        background: ${neutralFillSubtleActive};
+        border-color: ${neutralStrokePerceivableActive};
     }
 
     :host(:focus-visible) .control {
@@ -104,20 +104,20 @@ export const aestheticStyles: ElementStyles = css`
 
     :host([aria-checked="true"]) .control,
     :host([aria-checked="mixed"]) .control {
-        background: ${accentFillRest};
+        background: ${accentFillReadableRest};
         border-color: transparent;
         color: ${foregroundOnAccentRest};
     }
 
     :host([aria-checked="true"]:not(.disabled):hover) .control,
     :host([aria-checked="mixed"]:not(.disabled):hover) .control {
-        background: ${accentFillHover};
+        background: ${accentFillReadableHover};
         border-color: transparent;
     }
 
     :host([aria-checked="true"]:not(.disabled):active) .control,
     :host([aria-checked="mixed"]:not(.disabled):active) .control {
-        background: ${accentFillActive};
+        background: ${accentFillReadableActive};
         border-color: transparent;
     }
 

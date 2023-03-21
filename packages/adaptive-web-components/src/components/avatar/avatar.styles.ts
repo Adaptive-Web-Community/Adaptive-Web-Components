@@ -1,4 +1,4 @@
-import { accentFillRest, foregroundOnAccentRest, typeRampBase } from "@adaptive-web/adaptive-ui";
+import { accentFillReadableRest, foregroundOnAccentRest, typeRampBase } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 
@@ -49,7 +49,7 @@ export const aestheticStyles: ElementStyles = css`
     .backplate {
         border-radius: 100%;
         min-width: 100%;
-        background-color: ${accentFillRest};
+        background-color: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
         fill: currentcolor;
     }

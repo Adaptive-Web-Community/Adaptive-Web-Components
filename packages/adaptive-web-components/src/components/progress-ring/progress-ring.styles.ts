@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { accentForegroundRest, neutralFillSecondaryRest } from "@adaptive-web/adaptive-ui";
+import { accentForegroundRest, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
 import { heightNumber } from "../../styles/index.js";
 
 /**
@@ -30,7 +30,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .background {
-        stroke: ${neutralFillSecondaryRest};
+        stroke: ${neutralFillSubtleRest};
         fill: none;
         stroke-width: 2px;
     }
