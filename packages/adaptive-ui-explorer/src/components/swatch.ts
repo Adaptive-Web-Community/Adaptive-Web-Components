@@ -44,10 +44,6 @@ const styles = css`
         justify-items: start;
     }
 
-    :host([type="foreground"]) .icon {
-        border: 1px solid black;
-    }
-
     :host([type="foreground"]) .icon::before {
         font-size: 13px;
         content: "A";
@@ -167,42 +163,26 @@ export class AppSwatch extends FASTElement {
             : "";
     }
 
-    private formatBackgroundContrast(
+    private formatContrastMessage(
         a?: DesignToken<Swatch>,
         b?: DesignToken<Swatch>
     ): string {
-        return `BG contrast: ${this.formatContrast(a, b)} : 1`;
-    }
-
-    private formatForegroundContrast(
-        a?: DesignToken<Swatch>,
-        b?: DesignToken<Swatch>
-    ): string {
-        return `Text contrast: ${this.formatContrast(a, b)} : 1`;
+        return `Contrast: ${this.formatContrast(a, b)} : 1`;
     }
 
     private updateContrastMessage(): void {
-        const backgroundContrastMessage: string = this.formatBackgroundContrast(
+        const contrastMessage: string = this.formatContrastMessage(
             this.type === SwatchType.foreground
                 ? this.foregroundRecipe
                 : this.type === SwatchType.outline
                 ? this.outlineRecipe
                 : this.fillRecipe,
-            this.type === SwatchType.foreground || this.type === SwatchType.outline
+            this.type === SwatchType.foreground
                 ? this.fillRecipe
                 : fillColor
         );
 
-        this.contrastMessage =
-            this.type === SwatchType.fill
-                ? backgroundContrastMessage.concat(
-                      "\n",
-                      this.formatForegroundContrast(
-                          this.fillRecipe,
-                          this.foregroundRecipe
-                      )
-                  )
-                : backgroundContrastMessage;
+        this.contrastMessage = contrastMessage;
     }
 
     private updateColorValue(): void {

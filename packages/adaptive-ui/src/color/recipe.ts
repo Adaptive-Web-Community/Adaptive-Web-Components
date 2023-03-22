@@ -1,4 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { InteractiveSet } from "../types.js";
 import { Swatch } from "./swatch.js";
 
 /**
@@ -28,24 +29,4 @@ export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet
  *
  * @public
  */
-export interface InteractiveSwatchSet {
-    /**
-     * The Swatch to apply to the rest state.
-     */
-    rest: Swatch;
-
-    /**
-     * The Swatch to apply to the hover state.
-     */
-    hover: Swatch;
-
-    /**
-     * The Swatch to apply to the active state.
-     */
-    active: Swatch;
-
-    /**
-     * The Swatch to apply to the focus state.
-     */
-    focus: Swatch;
-}
+export interface InteractiveSwatchSet extends InteractiveSet<Swatch> {}

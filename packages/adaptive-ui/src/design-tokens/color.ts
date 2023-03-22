@@ -795,10 +795,10 @@ export const neutralStrokePerceivableMinContrast = createMinContrast(neutralStro
 export const neutralStrokePerceivableRestDelta = createDelta(neutralStrokePerceivableName, "rest", 0);
 
 /** @public */
-export const neutralStrokePerceivableHoverDelta = createDelta(neutralStrokePerceivableName, "hover", 0);
+export const neutralStrokePerceivableHoverDelta = createDelta(neutralStrokePerceivableName, "hover", 8);
 
 /** @public */
-export const neutralStrokePerceivableActiveDelta = createDelta(neutralStrokePerceivableName, "active", 0);
+export const neutralStrokePerceivableActiveDelta = createDelta(neutralStrokePerceivableName, "active", -4);
 
 /** @public */
 export const neutralStrokePerceivableFocusDelta = createDelta(neutralStrokePerceivableName, "focus", 0);
