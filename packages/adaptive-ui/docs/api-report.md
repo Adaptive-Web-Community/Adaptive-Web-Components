@@ -9,6 +9,7 @@ import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
+import type { ElementStyles } from '@microsoft/fast-element';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public (undocumented)
@@ -22,6 +23,9 @@ export const accentFillActive: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const accentFillActiveDelta: DesignToken<number>;
+
+// @public
+export const accentFillControlStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const accentFillFocus: CSSDesignToken<Swatch>;
@@ -55,6 +59,9 @@ export const accentFillReadableHover: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillReadableHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const accentFillReadableInteractiveSet: InteractiveTokenSet<Swatch>;
 
 // @public (undocumented)
 export const accentFillReadableMinContrast: DesignToken<number>;
@@ -96,7 +103,13 @@ export const accentForegroundHover: CSSDesignToken<Swatch>;
 export const accentForegroundHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const accentForegroundInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const accentForegroundMinContrast: DesignToken<number>;
+
+// @public
+export const accentForegroundReadableStyles: Styles;
 
 // @public (undocumented)
 export const accentForegroundRecipe: DesignToken<InteractiveColorRecipe>;
@@ -232,6 +245,9 @@ export const elevationTooltipSize: DesignToken<number>;
 // @public (undocumented)
 export const fillColor: CSSDesignToken<Swatch>;
 
+// @public
+export type FocusSelector = "focus" | "focus-visible" | "focus-within";
+
 // @public (undocumented)
 export const focusStrokeInner: CSSDesignToken<Swatch>;
 
@@ -260,6 +276,9 @@ export const foregroundOnAccentFocus: CSSDesignToken<Swatch>;
 export const foregroundOnAccentHover: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
+export const foregroundOnAccentInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const foregroundOnAccentRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
@@ -273,15 +292,23 @@ export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet
 }
 
 // @public
-export interface InteractiveSwatchSet {
-    active: Swatch;
-    focus: Swatch;
-    hover: Swatch;
-    rest: Swatch;
+export interface InteractiveSet<T> {
+    active: T;
+    focus: T;
+    hover: T;
+    rest: T;
+}
+
+// @public
+export interface InteractiveSwatchSet extends InteractiveSet<Swatch> {
 }
 
 // @public
 export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, reference: Swatch, asOverlay: boolean): InteractiveSwatchSet;
+
+// @public
+export interface InteractiveTokenSet<T> extends InteractiveSet<CSSDesignToken<T>> {
+}
 
 // @public
 export function isDark(color: RelativeLuminance): boolean;
@@ -366,6 +393,11 @@ export interface LayerRecipe {
 // @public
 export function luminanceSwatch(luminance: number): Swatch;
 
+// Warning: (ae-incompatible-release-tags) The symbol "makeSelector" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
+//
+// @public
+export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string;
+
 // @public (undocumented)
 export const minContrastPerceivable: DesignToken<number>;
 
@@ -386,6 +418,9 @@ export const neutralFillActive: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillActiveDelta: DesignToken<number>;
+
+// @public
+export const neutralFillControlStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const neutralFillFocus: CSSDesignToken<Swatch>;
@@ -443,6 +478,9 @@ export const neutralFillPerceivableHover: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillPerceivableHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillPerceivableInteractiveSet: InteractiveTokenSet<Swatch>;
 
 // @public (undocumented)
 export const neutralFillPerceivableMinContrast: DesignToken<number>;
@@ -511,6 +549,9 @@ export const neutralFillStealthHover: CSSDesignToken<Swatch>;
 export const neutralFillStealthHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralFillStealthInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const neutralFillStealthRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
@@ -568,6 +609,9 @@ export const neutralFillSubtleHover: CSSDesignToken<Swatch>;
 export const neutralFillSubtleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralFillSubtleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const neutralFillSubtleRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
@@ -601,7 +645,13 @@ export const neutralForegroundHover: CSSDesignToken<Swatch>;
 export const neutralForegroundHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralForegroundInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const neutralForegroundMinContrast: DesignToken<number>;
+
+// @public
+export const neutralForegroundReadableStyles: Styles;
 
 // @public (undocumented)
 export const neutralForegroundRecipe: DesignToken<InteractiveColorRecipe>;
@@ -612,8 +662,20 @@ export const neutralForegroundRest: CSSDesignToken<Swatch>;
 // @public (undocumented)
 export const neutralForegroundRestDelta: DesignToken<number>;
 
+// @public
+export const neutralForegroundStrongStyles: Styles;
+
+// @public
+export const neutralOutlineControlStyles: Styles;
+
 // @public (undocumented)
 export const neutralPalette: DesignToken<Palette<Swatch>>;
+
+// @public
+export const neutralPerceivableControlStyles: Styles;
+
+// @public
+export const neutralStealthControlStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const neutralStrokeActive: CSSDesignToken<Swatch>;
@@ -686,6 +748,9 @@ export const neutralStrokePerceivableHover: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokePerceivableHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokePerceivableInteractiveSet: InteractiveTokenSet<Swatch>;
 
 // @public (undocumented)
 export const neutralStrokePerceivableMinContrast: DesignToken<number>;
@@ -763,6 +828,9 @@ export const neutralStrokeSubtleHover: CSSDesignToken<Swatch>;
 export const neutralStrokeSubtleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const neutralStrokeSubtleRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
@@ -810,6 +878,11 @@ export interface RelativeLuminance {
     readonly relativeLuminance: number;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "renderElementStyles" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
+//
+// @public
+export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[];
+
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
 
@@ -826,8 +899,28 @@ export const StandardFontWeight: {
     readonly Black: 900;
 };
 
+// @public
+export type StateSelector = "hover" | "active" | FocusSelector;
+
 // @public (undocumented)
 export const strokeWidth: CSSDesignToken<number>;
+
+// @beta
+export interface StyleModuleEvaluateParameters {
+    // (undocumented)
+    hostCondition?: string;
+    // (undocumented)
+    interactivitySelector?: string;
+    // (undocumented)
+    nonInteractivitySelector?: string;
+    // (undocumented)
+    part?: string;
+    // (undocumented)
+    partCondition?: string;
+}
+
+// @public
+export type Styles = Record<string, CSSDesignToken<any> | InteractiveTokenSet<any> | string>;
 
 // @public
 export interface Swatch extends RelativeLuminance {

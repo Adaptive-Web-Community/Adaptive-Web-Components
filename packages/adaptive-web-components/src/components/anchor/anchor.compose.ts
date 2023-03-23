@@ -2,10 +2,10 @@ import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import type { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveAnchor } from "./anchor.js";
-import { aestheticStyles, templateStyles } from "./anchor.styles.js";
+import { aestheticStyles, moduleStyles, templateStyles } from "./anchor.styles.js";
 import { template } from "./anchor.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const styles = [componentBaseStyles, templateStyles, aestheticStyles, ...moduleStyles];
 
 export function composeAnchor(
     ds: DesignSystem,
