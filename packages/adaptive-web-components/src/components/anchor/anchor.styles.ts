@@ -5,8 +5,8 @@ import {
     focusStrokeWidth,
     neutralFillControlStyles,
     neutralForegroundRest,
+    renderElementStyles,
     strokeWidth,
-    stylesToElementStyles,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import type { StyleModuleEvaluateParameters } from "@adaptive-web/adaptive-ui";
@@ -80,5 +80,7 @@ const moduleParams: StyleModuleEvaluateParameters = {
 
 /**
  * Visual styles composed by modules.
+ * 
+ * @internal
  */
-export const moduleStyles = stylesToElementStyles(neutralFillControlStyles, moduleParams);
+export const moduleStyles = renderElementStyles(neutralFillControlStyles, moduleParams);

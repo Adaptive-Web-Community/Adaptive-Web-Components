@@ -878,6 +878,11 @@ export interface RelativeLuminance {
     readonly relativeLuminance: number;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "renderElementStyles" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
+//
+// @public
+export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[];
+
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
 
@@ -916,11 +921,6 @@ export interface StyleModuleEvaluateParameters {
 
 // @public
 export type Styles = Record<string, CSSDesignToken<any> | InteractiveTokenSet<any> | string>;
-
-// Warning: (ae-incompatible-release-tags) The symbol "stylesToElementStyles" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
-//
-// @public
-export function stylesToElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[];
 
 // @public
 export interface Swatch extends RelativeLuminance {

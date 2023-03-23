@@ -70,6 +70,6 @@ function createElementStyles(modules: StyleModuleEvaluate[], params: StyleModule
  *
  * @public
  */
-export function stylesToElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[] {
+export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[] {
     return createElementStyles(createElementStyleModules(styles), params);
 }

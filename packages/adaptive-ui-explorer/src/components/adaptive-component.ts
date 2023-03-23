@@ -1,4 +1,4 @@
-import { stylesToElementStyles } from "@adaptive-web/adaptive-ui";
+import { renderElementStyles } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
 import {
     css,
@@ -54,7 +54,7 @@ export class AdaptiveComponent extends FASTElement {
         // if (prev) {
         //     prev.forEach((s) => this.$fastController.removeStyles(s));
         // }
-        const elementStyles = stylesToElementStyles(next, params);
+        const elementStyles = renderElementStyles(next, params);
         elementStyles.forEach((s) => this.$fastController.addStyles(s));
     }
 }
