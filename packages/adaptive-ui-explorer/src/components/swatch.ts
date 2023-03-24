@@ -24,7 +24,7 @@ function template<T extends AppSwatch>(): ElementViewTemplate<T> {
             style="${x => x.iconStyle}"
             title="${x => x.contrastMessage}"
         ></div>
-        <code class="recipe-name">${x => x.recipeName}</code>
+        <code class="recipe-name" title="${x => x.recipeName}">${x => x.recipeName}</code>
         <code class="hex-code">${x => x.colorValue}</code>
     `;
 }
@@ -63,6 +63,11 @@ const styles = css`
     .recipe-name {
         grid-column: 2;
         grid-row: 1;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        text-align: start;
     }
 
     .hex-code {
