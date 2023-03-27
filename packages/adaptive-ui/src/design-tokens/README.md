@@ -14,15 +14,15 @@ Most color tokens come as an interactive set for rest, hover, active, and focus 
 
 Color tokens are named for semantic use cases:
 
+#### Safety
+
+A special use case that can be thought of as a placeholder for increased contrast scenarios. Primarily intended for a stroke that's transparent until someone prefers increased contrast.
+
 #### Stealth
 
 Has no color at rest, typically a subtle color on hover or active.
 
 Has no accessibility configuration relative to its context.
-
-#### Safety
-
-A special use case that can be thought of as a placeholder for increased contrast scenarios. Primarily intended for a stroke that's transparent until someone prefers increased contrast.
 
 #### Subtle
 
@@ -54,7 +54,7 @@ Color tokens based on the above usage behaviors are split by intended applicatio
 
 Fills are intended to cover large areas. Because of the large coverage area, it takes less of a change for hover or active state to notice.
 
-#### Stroke (and temporarily Foreground)
+#### Stroke
 
 Strokes are intended for lines, icons, or text. Because of the smaller coverage area, it takes more of a change for hover or active states to notice.
 
@@ -65,16 +65,12 @@ The combinations of recipes currently implemented:
 |                    | Safety | Stealth | Subtle | Perceivable (3:1) | Readable (4.5:1) | Strong |
 | ------------------ | ------ | ------- | ------ | ----------------- | ---------------- | ------ |
 | Neutral fill       | -      | ✓       | ✓      | ✓                | o                | -      |
-| Neutral stroke     | o      | o       | ✓      | ✓                | *                | *      |
-| Neutral foreground | -      | -       | -      | -                 | ✓ *              | ✓ *    |
+| Neutral stroke     | o      | o       | ✓      | ✓                | ✓                | ✓      |
 | Accent fill        | -      | o       | o      | o                 | ✓                | -      |
-| Accent stroke      | o      | o       | o      | o                 | *                | -      |
-| Accent foreground  | -      | -       | -      | -                 | ✓ *              | -      |
+| Accent stroke      | o      | o       | o      | o                 | ✓                | -      |
 
 ✓ = implemented
 
 o = coming soon
 
 \- = not applicable
-
-\* "Foreground" recipes will be migrating to "Stroke"

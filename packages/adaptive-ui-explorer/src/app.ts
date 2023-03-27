@@ -7,7 +7,6 @@ import {
     layerFillFixedMinus1,
     layerFillFixedMinus2,
     layerFillFixedMinus3,
-    layerFillFixedMinus4,
     layerFillFixedPlus1,
     neutralBaseColor,
     neutralPalette,
@@ -251,7 +250,6 @@ export class App extends FASTElement implements AppAttributes {
         [layerFillFixedMinus1, "-1"],
         [layerFillFixedMinus2, "-2"],
         [layerFillFixedMinus3, "-3"],
-        [layerFillFixedMinus4, "-4"],
     ];
 
     private resolveLayerRecipes = (luminance: number): SwatchInfo[] => {

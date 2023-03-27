@@ -1,19 +1,21 @@
+import { CSSDesignToken, DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
+import { InteractiveColorRecipe } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
-import type { InteractiveTokenSet, Styles } from "../types.js";
+import type { InteractiveSet, InteractiveTokenSet, Styles } from "../types.js";
 import {
     accentFillReadableActive,
     accentFillReadableFocus,
     accentFillReadableHover,
     accentFillReadableRest,
-    accentForegroundActive,
-    accentForegroundFocus,
-    accentForegroundHover,
-    accentForegroundRest,
+    accentStrokeReadableActive,
+    accentStrokeReadableFocus,
+    accentStrokeReadableHover,
+    accentStrokeReadableRest,
     fillColor,
-    foregroundOnAccentActive,
-    foregroundOnAccentFocus,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
+    foregroundOnAccentFillReadableActive,
+    foregroundOnAccentFillReadableFocus,
+    foregroundOnAccentFillReadableHover,
+    foregroundOnAccentFillReadableRest,
     neutralFillPerceivableActive,
     neutralFillPerceivableFocus,
     neutralFillPerceivableHover,
@@ -26,20 +28,47 @@ import {
     neutralFillSubtleFocus,
     neutralFillSubtleHover,
     neutralFillSubtleRest,
-    neutralForegroundActive,
-    neutralForegroundFocus,
-    neutralForegroundHover,
-    neutralForegroundRest,
     neutralStrokePerceivableActive,
     neutralStrokePerceivableFocus,
     neutralStrokePerceivableHover,
     neutralStrokePerceivableRest,
     neutralStrokeReadableRest,
+    neutralStrokeStrongActive,
+    neutralStrokeStrongFocus,
+    neutralStrokeStrongHover,
+    neutralStrokeStrongRecipe,
+    neutralStrokeStrongRest,
     neutralStrokeSubtleActive,
     neutralStrokeSubtleFocus,
     neutralStrokeSubtleHover,
     neutralStrokeSubtleRest,
 } from "./color.js";
+
+function createForegroundSet(
+    foregroundRecipe: DesignToken<InteractiveColorRecipe>,
+    foregroundState: keyof InteractiveSet<any>,
+    background: InteractiveTokenSet<Swatch>,
+): InteractiveTokenSet<Swatch> {
+    const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}-${foregroundState}`;
+    const backgroundBaseName = background.rest.name.replace("-rest", "");
+    const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
+
+    function createState(
+        state: keyof InteractiveSet<any>,
+    ): CSSDesignToken<Swatch> {
+        return DesignToken.create<Swatch>(`${setName}-${state}`).withDefault(
+            (resolve: DesignTokenResolver) =>
+                resolve(foregroundRecipe).evaluate(resolve, resolve(background[state]))[foregroundState]
+        );
+    }
+
+    return {
+        rest: createState("rest"),
+        hover: createState("hover"),
+        active: createState("active"),
+        focus: createState("focus")
+    };
+}
 
 /**
  * @public
@@ -54,21 +83,21 @@ export const accentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
 /**
  * @public
  */
-export const foregroundOnAccentInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: foregroundOnAccentRest,
-    hover: foregroundOnAccentHover,
-    active: foregroundOnAccentActive,
-    focus: foregroundOnAccentFocus,
+export const foregroundOnAccentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+    rest: foregroundOnAccentFillReadableRest,
+    hover: foregroundOnAccentFillReadableHover,
+    active: foregroundOnAccentFillReadableActive,
+    focus: foregroundOnAccentFillReadableFocus,
 };
 
 /**
  * @public
  */
-export const accentForegroundInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: accentForegroundRest,
-    hover: accentForegroundHover,
-    active: accentForegroundActive,
-    focus: accentForegroundFocus,
+export const accentStrokeReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+    rest: accentStrokeReadableRest,
+    hover: accentStrokeReadableHover,
+    active: accentStrokeReadableActive,
+    focus: accentStrokeReadableFocus,
 };
 
 /**
@@ -104,11 +133,11 @@ export const neutralFillPerceivableInteractiveSet: InteractiveTokenSet<Swatch> =
 /**
  * @public
  */
-export const neutralForegroundInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralForegroundRest,
-    hover: neutralForegroundHover,
-    active: neutralForegroundActive,
-    focus: neutralForegroundFocus,
+export const neutralStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch> = {
+    rest: neutralStrokeStrongRest,
+    hover: neutralStrokeStrongHover,
+    active: neutralStrokeStrongActive,
+    focus: neutralStrokeStrongFocus,
 };
 
 /**
@@ -139,7 +168,7 @@ export const neutralStrokePerceivableInteractiveSet: InteractiveTokenSet<Swatch>
 export const accentFillControlStyles: Styles = {
     "background-color": accentFillReadableInteractiveSet,
     "border-color": "transparent",
-    "color": foregroundOnAccentInteractiveSet,
+    "color": foregroundOnAccentFillReadableInteractiveSet,
 };
 
 /**
@@ -150,18 +179,29 @@ export const accentFillControlStyles: Styles = {
 export const neutralFillControlStyles: Styles = {
     "background-color": neutralFillSubtleInteractiveSet,
     "border-color": neutralStrokeSubtleInteractiveSet,
-    "color": neutralForegroundRest,
+    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
 };
 
 /**
- * Convenience style module for a neutral control with accessibility requirements, like a checkbox.
+ * Convenience style module for a neutral control with accessibility requirements applied to the border, like an unselected checkbox.
  *
  * @public
  */
-export const neutralPerceivableControlStyles: Styles = {
+export const neutralOutlinePerceivableControlStyles: Styles = {
     "background-color": neutralFillSubtleInteractiveSet,
     "border-color": neutralStrokePerceivableInteractiveSet,
-    "color": neutralForegroundRest,
+    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
+};
+
+/**
+ * Convenience style module for a neutral control with accessibility requirements applied to the fill, like a selected checkbox.
+ *
+ * @public
+ */
+export const neutralFillPerceivableControlStyles: Styles = {
+    "background-color": neutralFillPerceivableInteractiveSet,
+    "border-color": "transparent",
+    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillPerceivableInteractiveSet),
 };
 
 /**
@@ -172,7 +212,7 @@ export const neutralPerceivableControlStyles: Styles = {
 export const neutralOutlineControlStyles: Styles = {
     "background-color": fillColor,
     "border-color": neutralStrokePerceivableInteractiveSet,
-    "color": neutralForegroundRest,
+    "color": neutralStrokeStrongRest,
 };
 
 /**
@@ -183,7 +223,7 @@ export const neutralOutlineControlStyles: Styles = {
 export const neutralStealthControlStyles: Styles = {
     "background-color": neutralFillStealthInteractiveSet,
     "border-color": "transparent",
-    "color": neutralForegroundRest,
+    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillStealthInteractiveSet),
 };
 
 /**
@@ -193,7 +233,7 @@ export const neutralStealthControlStyles: Styles = {
  */
 export const accentForegroundReadableStyles: Styles = {
     "border-color": "transparent",
-    "color": accentForegroundInteractiveSet,
+    "color": accentStrokeReadableInteractiveSet,
 };
 
 /**
@@ -213,5 +253,5 @@ export const neutralForegroundReadableStyles: Styles = {
  */
 export const neutralForegroundStrongStyles: Styles = {
     "border-color": "transparent",
-    "color": neutralForegroundInteractiveSet,
+    "color": neutralStrokeStrongInteractiveSet,
 };
