@@ -67,21 +67,21 @@ export const layerFillBaseLuminance = createNonCss<number>("layer-fill-base-lumi
  *
  * @public
  */
-export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(-3);
+export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(-2);
 
 /**
  * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
  *
  * @public
  */
-export const layerFillHoverDelta = createNonCss<number>("layer-fill-hover-delta").withDefault(-4);
+export const layerFillHoverDelta = createNonCss<number>("layer-fill-hover-delta").withDefault(-3);
 
 /**
  * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
  *
  * @public
  */
-export const layerFillActiveDelta = createNonCss<number>("layer-fill-active-delta").withDefault(-2);
+export const layerFillActiveDelta = createNonCss<number>("layer-fill-active-delta").withDefault(-1);
 
 /**
  * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.

@@ -3,10 +3,11 @@ import {
     accentForegroundReadableStyles,
     fillColor,
     neutralFillControlStyles,
+    neutralFillPerceivableControlStyles,
     neutralForegroundReadableStyles,
     neutralForegroundStrongStyles,
     neutralOutlineControlStyles,
-    neutralPerceivableControlStyles,
+    neutralOutlinePerceivableControlStyles,
     neutralStealthControlStyles,
     neutralStrokeReadableRest,
     neutralStrokeSubtleRest,
@@ -65,8 +66,12 @@ const formComponents = html<ColorBlock>`
         Text field
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralPerceivableControlStyles}">
-        Checkbox
+    <app-style-example :styles="${x => neutralOutlinePerceivableControlStyles}">
+        Checkbox (unchecked)
+    </app-style-example>
+
+    <app-style-example :styles="${x => neutralFillPerceivableControlStyles}">
+        Checkbox (checked)
     </app-style-example>
 
     <app-style-example :styles="${{"color": neutralStrokeSubtleRest}}">
