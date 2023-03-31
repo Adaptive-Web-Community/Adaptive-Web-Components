@@ -13,7 +13,7 @@
     "scripts": {
         "bump": "beachball bump",
         "change": "beachball change",
-        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'npm run change' to generate a change file\"",
         "check": "beachball check",
         "publish": "beachball publish --access public --no-push",
         "publish-ci": "beachball publish -y --access public",
