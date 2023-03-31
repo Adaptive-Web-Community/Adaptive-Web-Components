@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "moduleResolution": "nodenext",
+        "outDir": "dist/esm"
+    },
+    "include": ["src"]
+}
