@@ -344,6 +344,12 @@ export interface InteractiveTokenSet<T> extends InteractiveSet<CSSDesignToken<T>
 }
 
 // @public
+export interface InteractivityDefinition {
+    interactivitySelector?: string;
+    nonInteractivitySelector?: string;
+}
+
+// @public
 export function isDark(color: RelativeLuminance): boolean;
 
 // @public
@@ -426,8 +432,6 @@ export interface LayerRecipe {
 // @public
 export function luminanceSwatch(luminance: number): Swatch;
 
-// Warning: (ae-incompatible-release-tags) The symbol "makeSelector" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
-//
 // @public
 export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string;
 
@@ -926,8 +930,6 @@ export interface RelativeLuminance {
     readonly relativeLuminance: number;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "renderElementStyles" is marked as @public, but its signature references "StyleModuleEvaluateParameters" which is marked as @beta
-//
 // @public
 export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[];
 
@@ -953,17 +955,13 @@ export type StateSelector = "hover" | "active" | FocusSelector;
 // @public (undocumented)
 export const strokeWidth: CSSDesignToken<number>;
 
-// @beta
-export interface StyleModuleEvaluateParameters {
-    // (undocumented)
+// @public
+export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
+
+// @public
+export interface StyleModuleTarget {
     hostCondition?: string;
-    // (undocumented)
-    interactivitySelector?: string;
-    // (undocumented)
-    nonInteractivitySelector?: string;
-    // (undocumented)
     part?: string;
-    // (undocumented)
     partCondition?: string;
 }
 

@@ -17,18 +17,50 @@ export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 export type StateSelector = "hover" | "active" | FocusSelector;
 
 /**
- * Parameters provided when rendering style modules.
+ * Parameters used to apply style modules to components.
  *
- * @remarks This may be split into `host` and `part` needs.
- * @beta
+ * @public
  */
-export interface StyleModuleEvaluateParameters {
+export interface StyleModuleTarget {
+    /**
+     * The condition to match at the host element level.
+     */
     hostCondition?: string;
+
+    /**
+     * The component part name to apply this style module.
+     */
     part?: string;
+
+    /**
+     * The condition to match at the part element level.
+     */
     partCondition?: string;
+}
+
+/**
+ * Parameters provided by a component to inform style modules of its interactivity configuration.
+ *
+ * @public
+ */
+export interface InteractivityDefinition {
+    /**
+     * The selector indicating the component or element is interactive, like `:not([disabled])`.
+     */
     interactivitySelector?: string;
+
+    /**
+     * The selector indicating the component or element is not interactive, like `[disabled]`.
+     */
     nonInteractivitySelector?: string;
 }
+
+/**
+ * Parameters used to evaluate style modules for a component.
+ *
+ * @public
+ */
+export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
 
 /**
  * The style property, like background color or border thickness.

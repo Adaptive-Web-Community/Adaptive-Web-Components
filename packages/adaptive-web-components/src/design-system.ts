@@ -1,11 +1,13 @@
-import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import type {
+    ComposableStyles,
     ElementStyles,
     ElementViewTemplate,
     FASTElementDefinition,
     ShadowRootOptions
 } from '@microsoft/fast-element';
-
+import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
+import { renderElementStyles } from "@adaptive-web/adaptive-ui";
+import type { InteractivityDefinition, StyleModuleEvaluateParameters, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
@@ -107,6 +109,36 @@ export class DesignSystem {
             }
         }
     }
+
+    /**
+     * Assembles the collection of intended styles, evaluating and injecting modular styling if provided.
+     *
+     * @param defaultStyles - The default collection of styles to use if not overridden by `options.styles`.
+     * @param interactivity - The interactivity selectors for the component.
+     * @param options - The component options, using `styles` and `styleModules`.
+     * @returns The collection of desired styles.
+     * 
+     * @beta
+     */
+    public static assembleStyles(
+        defaultStyles: ComposableStyles[], interactivity: InteractivityDefinition, options?: ComposeOptions<any>
+    ): ComposableStyles[] {
+        const componentStyles: ComposableStyles[] = options?.styles ? 
+            (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
+            defaultStyles;
+
+        if (options?.styleModules) {
+            for (const [target, styles] of options.styleModules) {
+                const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
+                const renderedStyles = renderElementStyles(styles, params);
+                for (const s of renderedStyles) {
+                    componentStyles.push(s);
+                }
+            }
+        }
+
+        return componentStyles;
+    }
 }
 
 /**
@@ -122,6 +154,7 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 export type ComposeOptions<TSource, TStatics extends string = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
     styles?: ElementStyles | ElementStyles[];
+    styleModules?: Iterable<readonly [StyleModuleTarget, Styles]>;
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
     statics?: Record<TStatics, StaticallyComposableHTML>;

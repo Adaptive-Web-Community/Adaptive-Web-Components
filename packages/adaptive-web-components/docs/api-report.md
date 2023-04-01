@@ -4,6 +4,7 @@
 
 ```ts
 
+import type { ComposableStyles } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTAccordion } from '@microsoft/fast-foundation';
@@ -58,8 +59,11 @@ import { FASTTooltip } from '@microsoft/fast-foundation';
 import { FASTTreeItem } from '@microsoft/fast-foundation';
 import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
+import type { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
 import type { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
+import type { StyleModuleTarget } from '@adaptive-web/adaptive-ui';
+import type { Styles } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -565,6 +569,7 @@ export const dataGridTemplateStyles: ElementStyles;
 export class DesignSystem {
     // Warning: (ae-forgotten-export) The symbol "ElementStaticMap" needs to be exported by the entry point index.d.ts
     constructor(_prefix: string, _registry?: CustomElementRegistry, _statics?: ElementStaticMap);
+    static assembleStyles(defaultStyles: ComposableStyles[], interactivity: InteractivityDefinition, options?: ComposeOptions<any>): ComposableStyles[];
     // Warning: (ae-forgotten-export) The symbol "PartialDesignSystem" needs to be exported by the entry point index.d.ts
     configure(options: PartialDesignSystem): this;
     defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>): void;
