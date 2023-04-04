@@ -4,7 +4,7 @@
         "baseUrl": ".",
         "importHelpers": true,
         "types": ["mocha"],
-        "lib": ["DOM", "ES2015"],
+        "lib": ["DOM", "ES2020"],
         "declarationDir": "dist/dts",
         "outDir": "dist/esm"
     },

@@ -33,10 +33,3 @@ export interface InteractiveSet<T> {
  * @public
  */
 export interface InteractiveTokenSet<T> extends InteractiveSet<CSSDesignToken<T>> {}
-
-/**
- * A style definition, where the key is the css property and the value is the token.
- *
- * @public
- */
-export type Styles = Record<string, CSSDesignToken<any> | InteractiveTokenSet<any> | string>;

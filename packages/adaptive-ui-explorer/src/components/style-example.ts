@@ -1,4 +1,4 @@
-import { fillColor, InteractiveTokenSet, Styles, Swatch } from "@adaptive-web/adaptive-ui";
+import { fillColor, InteractiveTokenSet, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { SwatchType } from "./swatch.js";
@@ -66,7 +66,7 @@ export class StyleExample extends FASTElement {
         let backgroundActive = fillColor;
         let backgroundFocus = fillColor;
 
-        const backgroundValue = (this.styles || {})["background-color"];
+        const backgroundValue = (this.styles || {})[StyleProperty.backgroundFill];
         if (backgroundValue) {
             if (typeof backgroundValue === "string") {
                 // ignore for now
@@ -106,7 +106,7 @@ export class StyleExample extends FASTElement {
             }
         }
 
-        const colorValue = (this.styles || {})["color"];
+        const colorValue = (this.styles || {})[StyleProperty.foregroundFill];
         if (colorValue) {
             if (typeof colorValue === "string") {
                 // ignore for now
@@ -146,7 +146,7 @@ export class StyleExample extends FASTElement {
             }
         }
 
-        const borderValue = (this.styles || {})["border-color"];
+        const borderValue = (this.styles || {})[StyleProperty.borderFill];
         if (borderValue) {
             if (typeof borderValue === "string") {
                 // ignore for now

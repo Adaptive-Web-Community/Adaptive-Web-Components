@@ -968,7 +968,32 @@ export interface StyleModuleEvaluateParameters {
 }
 
 // @public
-export type Styles = Record<string, CSSDesignToken<any> | InteractiveTokenSet<any> | string>;
+export const StyleProperty: {
+    readonly backgroundFill: "backgroundFill";
+    readonly foregroundFill: "foregroundFill";
+    readonly borderFill: "borderFill";
+    readonly borderThickness: "borderThickness";
+    readonly borderStyle: "borderStyle";
+    readonly cornerRadius: "cornerRadius";
+    readonly fontFamily: "fontFamily";
+    readonly fontSize: "fontSize";
+    readonly fontWeight: "fontWeight";
+    readonly fontStyle: "fontStyle";
+    readonly letterSpacing: "letterSpacing";
+    readonly lineHeight: "lineHeight";
+    readonly padding: "padding";
+    readonly gap: "gap";
+    readonly height: "height";
+    readonly width: "width";
+    readonly layoutDirection: "layoutDirection";
+    readonly opacity: "opacity";
+};
+
+// @public
+export type StyleProperty = ValuesOf<typeof StyleProperty>;
+
+// @public
+export type Styles = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenSet<any> | CSSDirective | string>>;
 
 // @public
 export interface Swatch extends RelativeLuminance {
