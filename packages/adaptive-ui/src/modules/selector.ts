@@ -16,12 +16,14 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
         // Use any base host condition like `[appearance='accent']`.
         let hostCondition = params.hostCondition || "";
 
-        // Add any interactive condition like `:not([disabled])`.
-        hostCondition += (params.interactivitySelector || "");
+        if (state) {
+            // Add any interactive condition like `:not([disabled])`.
+            hostCondition += (params.interactivitySelector || "");
 
-        // If this is not targeting a part, apply the state at the `:host`.
-        if (!params.part && state) {
-            hostCondition += ":" + state;
+            // If this is not targeting a part, apply the state at the `:host`.
+            if (!params.part) {
+                hostCondition += ":" + state;
+            }
         }
 
         if (hostCondition !== "") {

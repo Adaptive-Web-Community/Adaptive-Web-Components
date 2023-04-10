@@ -1,7 +1,8 @@
 import { CSSDesignToken, DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
-import type { InteractiveSet, InteractiveTokenSet, Styles } from "../types.js";
+import type { Styles } from "../modules/types.js";
+import type { InteractiveSet, InteractiveTokenSet } from "../types.js";
 import {
     accentFillReadableActive,
     accentFillReadableFocus,
@@ -166,9 +167,9 @@ export const neutralStrokePerceivableInteractiveSet: InteractiveTokenSet<Swatch>
  * @public
  */
 export const accentFillControlStyles: Styles = {
-    "background-color": accentFillReadableInteractiveSet,
-    "border-color": "transparent",
-    "color": foregroundOnAccentFillReadableInteractiveSet,
+    backgroundFill: accentFillReadableInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: foregroundOnAccentFillReadableInteractiveSet,
 };
 
 /**
@@ -177,9 +178,9 @@ export const accentFillControlStyles: Styles = {
  * @public
  */
 export const neutralFillControlStyles: Styles = {
-    "background-color": neutralFillSubtleInteractiveSet,
-    "border-color": neutralStrokeSubtleInteractiveSet,
-    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
+    backgroundFill: neutralFillSubtleInteractiveSet,
+    borderFill: neutralStrokeSubtleInteractiveSet,
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
 };
 
 /**
@@ -188,9 +189,9 @@ export const neutralFillControlStyles: Styles = {
  * @public
  */
 export const neutralOutlinePerceivableControlStyles: Styles = {
-    "background-color": neutralFillSubtleInteractiveSet,
-    "border-color": neutralStrokePerceivableInteractiveSet,
-    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
+    backgroundFill: neutralFillSubtleInteractiveSet,
+    borderFill: neutralStrokePerceivableInteractiveSet,
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
 };
 
 /**
@@ -199,9 +200,9 @@ export const neutralOutlinePerceivableControlStyles: Styles = {
  * @public
  */
 export const neutralFillPerceivableControlStyles: Styles = {
-    "background-color": neutralFillPerceivableInteractiveSet,
-    "border-color": "transparent",
-    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillPerceivableInteractiveSet),
+    backgroundFill: neutralFillPerceivableInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillPerceivableInteractiveSet),
 };
 
 /**
@@ -210,9 +211,9 @@ export const neutralFillPerceivableControlStyles: Styles = {
  * @public
  */
 export const neutralOutlineControlStyles: Styles = {
-    "background-color": fillColor,
-    "border-color": neutralStrokePerceivableInteractiveSet,
-    "color": neutralStrokeStrongRest,
+    backgroundFill: fillColor,
+    borderFill: neutralStrokePerceivableInteractiveSet,
+    foregroundFill: neutralStrokeStrongRest,
 };
 
 /**
@@ -221,9 +222,9 @@ export const neutralOutlineControlStyles: Styles = {
  * @public
  */
 export const neutralStealthControlStyles: Styles = {
-    "background-color": neutralFillStealthInteractiveSet,
-    "border-color": "transparent",
-    "color": createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillStealthInteractiveSet),
+    backgroundFill: neutralFillStealthInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillStealthInteractiveSet),
 };
 
 /**
@@ -232,8 +233,8 @@ export const neutralStealthControlStyles: Styles = {
  * @public
  */
 export const accentForegroundReadableStyles: Styles = {
-    "border-color": "transparent",
-    "color": accentStrokeReadableInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: accentStrokeReadableInteractiveSet,
 };
 
 /**
@@ -242,8 +243,8 @@ export const accentForegroundReadableStyles: Styles = {
  * @public
  */
 export const neutralForegroundReadableStyles: Styles = {
-    "border-color": "transparent",
-    "color": neutralStrokeReadableRest,
+    borderFill: "transparent",
+    foregroundFill: neutralStrokeReadableRest,
 };
 
 /**
@@ -252,6 +253,6 @@ export const neutralForegroundReadableStyles: Styles = {
  * @public
  */
 export const neutralForegroundStrongStyles: Styles = {
-    "border-color": "transparent",
-    "color": neutralStrokeStrongInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: neutralStrokeStrongInteractiveSet,
 };

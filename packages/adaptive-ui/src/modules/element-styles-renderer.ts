@@ -1,13 +1,22 @@
 import { css } from "@microsoft/fast-element";
-import type { ElementStyles } from "@microsoft/fast-element";
+import type { CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import type { InteractiveTokenSet, Styles } from "../types.js";
+import type { StyleProperty, Styles } from "../modules/types.js";
+import type { InteractiveTokenSet } from "../types.js";
 import { makeSelector } from "./selector.js";
 import type { FocusSelector, StyleModuleEvaluateParameters } from "./types.js";
+import { stylePropertyToCssProperty } from "./css.js";
 
 type StyleModuleEvaluate = (params: StyleModuleEvaluateParameters) => ElementStyles;
 
-function property<T = string>(
+function cssPartial(
+    value: CSSDirective,
+): StyleModuleEvaluate {
+    return (params: StyleModuleEvaluateParameters): ElementStyles =>
+        css`${makeSelector(params)} { ${value} }`;
+}
+
+function propertySingle<T = string>(
     property: string,
     value: string | CSSDesignToken<T>,
 ): StyleModuleEvaluate {
@@ -41,17 +50,16 @@ function propertyInteractive<T = string>(
 }
 
 function createElementStyleModules(styles: Styles): StyleModuleEvaluate[] {
-    const modules: StyleModuleEvaluate[] = [];
-    for (const key in styles) {
-        const value = styles[key];
+    const modules: StyleModuleEvaluate[] = Object.entries(styles).map(([key, value]) => {
+        const property = stylePropertyToCssProperty(key as StyleProperty);
         if (typeof value === "string" || value instanceof CSSDesignToken) {
-            const ev = property(key, value as CSSDesignToken<any>);
-            modules.push(ev);
+            return propertySingle(property, value);
+        } else if (value && typeof (value as any).createCSS === "function") {
+            return cssPartial(value as CSSDirective);
         } else {
-            const ev = propertyInteractive(key, value as InteractiveTokenSet<any>);
-            modules.push(ev);
+            return propertyInteractive(property, value as InteractiveTokenSet<any>);
         }
-    }
+    });
     return modules;
 }
 
