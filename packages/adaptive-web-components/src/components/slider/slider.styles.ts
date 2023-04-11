@@ -66,7 +66,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([orientation="vertical"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-translate) * 1px)) translateY(calc(var(--thumb-size) * 0.5px));
+        transform: translateX(calc(var(--thumb-translate) * 1px)) translateY(calc(var(--thumb-size) * -0.5px));
     }
 
     .thumb {
@@ -85,7 +85,7 @@ export const templateStyles: ElementStyles = css`
 
     :host([orientation="vertical"]) .track-start {
         width: 100%;
-        top: 0;
+        bottom: 0;
     }
 
     .track {

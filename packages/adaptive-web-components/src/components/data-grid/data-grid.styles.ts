@@ -9,6 +9,10 @@ export const templateStyles: ElementStyles = css`
         position: relative;
         flex-direction: column;
     }
+
+    :host([selection-mode="multi-row"]) {
+        user-select: none;
+    }
 `;
 
 /**

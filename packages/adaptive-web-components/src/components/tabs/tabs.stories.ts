@@ -8,7 +8,6 @@ import { storyTemplate as tabPanelStoryTemplate } from "../tab-panel/tab-panel.s
 const storyTemplate = html<StoryArgs<FASTTabs>>`
     <adaptive-tabs
         activeId="${(x) => x.activeId}"
-        ?hide-active-indicator="${(x) => x.hideActiveIndicator}"
         orientation="${(x) => x.orientation}"
     >
         ${x => x.storyContent}
@@ -22,13 +21,11 @@ export default {
             ${repeat((x) => x.storyItems.tabs, tabStoryTemplate)}
             ${repeat((x) => x.storyItems.tabPanels, tabPanelStoryTemplate)}
         `,
-        hideActiveIndicator: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         activeid: { control: "text" },
-        hideActiveIndicator: { control: "boolean" },
         orientation: { control: "radio", options: Object.values(TabsOrientation) },
     },
 } as Meta<FASTTabs>;

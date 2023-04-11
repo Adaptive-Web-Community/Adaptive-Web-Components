@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { FASTDataGrid, GenerateHeaderOptions } from "@microsoft/fast-foundation";
+import { DataGridSelectionBehavior, DataGridSelectionMode, FASTDataGrid, GenerateHeaderOptions } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
@@ -21,11 +21,15 @@ function newDataSet(rowCount: number): any[] {
 
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <adaptive-data-grid
+        disable-click-select="${(x) => x.disableClickSelect}"
         generate-header="${(x) => x.generateHeader}"
         grid-template-columns="${(x) => x.gridTemplateColumns}"
+        initial-row-selection="${(x) => x.initialRowSelection}"
         no-tabbing="${(x) => x.noTabbing}"
         page-size="${(x) => x.pageSize}"
         :rowsData="${(x) => x.rowsData}"
+        selection-behavior="${(x) => x.selectionBehavior}"
+        selection-mode="${(x) => x.selectionMode}"
     ></adaptive-data-grid>
 `;
 
@@ -35,10 +39,14 @@ export default {
         rowsData: newDataSet(20),
     },
     argTypes: {
+        disableClickSelect: { control: "boolean" },
         generateHeader: { control: "radio", options: Object.values(GenerateHeaderOptions) },
         gridTemplateColumns: { control: "text" },
+        initialRowSelection: { control: "text" },
         noTabbing: { control: "boolean" },
         pageSize: { control: "number" },
+        selectionBehavior: { control: "select", options: Object.values(DataGridSelectionBehavior) },
+        selectionMode: { control: "select", options: Object.values(DataGridSelectionMode) },
     },
 } as Meta<FASTDataGrid>;
 
