@@ -1,5 +1,13 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { neutralFillSubtleRest, neutralStrokeSubtleRest, strokeWidth } from "@adaptive-web/adaptive-ui";
+import {
+    accentStrokeReadableRest,
+    controlCornerRadius,
+    focusStrokeWidth,
+    neutralFillSubtleRest,
+    neutralStrokeSubtleRest,
+    strokeWidth,
+} from "@adaptive-web/adaptive-ui";
+import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -28,5 +36,17 @@ export const aestheticStyles: ElementStyles = css`
 
     :host([cell-type="sticky-header"]) {
         background: ${neutralFillSubtleRest};
+    }
+
+    :host([aria-selected="true"])::after {
+        content: "";
+        display: block;
+        position: absolute;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        background: ${accentStrokeReadableRest};
+        align-self: center;
+        left: calc(${focusStrokeWidth} * 1px);
+        width: 3px;
+        height: calc((${heightNumber} / 2) * 1px);
     }
 `;

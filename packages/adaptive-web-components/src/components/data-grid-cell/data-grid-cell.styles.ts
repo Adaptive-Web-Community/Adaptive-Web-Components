@@ -32,7 +32,8 @@ export const aestheticStyles: ElementStyles = css`
         white-space: nowrap;
     }
 
-    :host([cell-type="column-header"]) {
+    :host([cell-type="columnheader"]),
+    :host([cell-type="rowheader"]) {
         font-weight: 600;
     }
 

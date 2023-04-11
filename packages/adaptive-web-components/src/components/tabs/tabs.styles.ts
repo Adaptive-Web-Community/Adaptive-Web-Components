@@ -1,9 +1,11 @@
 import {
-    accentFillReadableRest,
+    accentStrokeReadableRest,
     controlCornerRadius,
+    focusStrokeWidth,
     neutralForegroundRest,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -72,28 +74,23 @@ export const aestheticStyles: ElementStyles = css`
         color: ${neutralForegroundRest};
     }
 
-    .active-indicator {
+    ::slotted([role="tab"][aria-selected="true"])::after {
+        content: "";
+        display: block;
+        position: absolute;
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${accentFillReadableRest};
+        background: ${accentStrokeReadableRest};
     }
 
-    :host([orientation="horizontal"]) .active-indicator {
+    :host([orientation="horizontal"]) ::slotted([role="tab"][aria-selected="true"])::after {
+        bottom: calc(${focusStrokeWidth} * 1px);
         width: 20px;
         height: 3px;
-        justify-self: center;
     }
 
-    :host([orientation="vertical"]) .active-indicator {
-        height: 14px;
+    :host([orientation="vertical"]) ::slotted([role="tab"][aria-selected="true"])::after {
+        left: calc(${focusStrokeWidth} * 1px);
         width: 3px;
-        align-self: center;
-    }
-
-    .activeIndicatorTransition {
-        transition: transform 0.2s ease-in-out;
-    }
-
-    :host([orientation="vertical"]) .activeIndicatorTransition {
-        transition: transform 0.2s linear;
+        height: calc((${heightNumber} / 2) * 1px);
     }
 `;
