@@ -1,19 +1,9 @@
 import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentRest,
-    neutralFillSubtleActive,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokePerceivableActive,
-    neutralStrokePerceivableHover,
-    neutralStrokePerceivableRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -81,44 +71,13 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokePerceivableRest};
+        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillSubtleRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
-    }
-
-    :host(:enabled:hover) .control {
-        background: ${neutralFillSubtleHover};
-        border-color: ${neutralStrokePerceivableHover};
-    }
-
-    :host(:enabled:active) .control {
-        background: ${neutralFillSubtleActive};
-        border-color: ${neutralStrokePerceivableActive};
     }
 
     :host(:focus-visible) .control {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-    }
-
-    :host([aria-checked="true"]) .control,
-    :host([aria-checked="mixed"]) .control {
-        background: ${accentFillReadableRest};
-        border-color: transparent;
-        color: ${foregroundOnAccentRest};
-    }
-
-    :host([aria-checked="true"]:not(.disabled):hover) .control,
-    :host([aria-checked="mixed"]:not(.disabled):hover) .control {
-        background: ${accentFillReadableHover};
-        border-color: transparent;
-    }
-
-    :host([aria-checked="true"]:not(.disabled):active) .control,
-    :host([aria-checked="mixed"]:not(.disabled):active) .control {
-        background: ${accentFillReadableActive};
-        border-color: transparent;
     }
 
     .label {

@@ -1,11 +1,11 @@
 import { FASTCheckbox } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import type { ComposableStyles, FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./checkbox.styles.js";
-import { CheckboxStatics, template } from "./checkbox.template.js";
+import { CheckboxAnatomy, CheckboxStatics, template } from "./checkbox.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeCheckbox(
     ds: DesignSystem,
@@ -27,10 +27,12 @@ export function composeCheckbox(
         }
     }
 
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy.interactivity, options);
+
     return FASTCheckbox.compose({
         name: `${ds.prefix}-checkbox`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions
