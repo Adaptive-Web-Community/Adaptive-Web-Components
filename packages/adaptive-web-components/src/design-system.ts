@@ -121,7 +121,7 @@ export class DesignSystem {
      * @beta
      */
     public static assembleStyles(
-        defaultStyles: ComposableStyles[], interactivity: InteractivityDefinition, options?: ComposeOptions<any>
+        defaultStyles: ComposableStyles[], interactivity?: InteractivityDefinition, options?: ComposeOptions<any>
     ): ComposableStyles[] {
         const componentStyles: ComposableStyles[] = options?.styles ? 
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :

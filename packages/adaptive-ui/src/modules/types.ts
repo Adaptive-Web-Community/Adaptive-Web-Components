@@ -17,6 +17,31 @@ export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 export type StateSelector = "hover" | "active" | FocusSelector;
 
 /**
+ * Type of the `conditions` for component {@link ComponentAnatomy}.
+ *
+ * @public
+ */
+export type ComponentConditions = Record<string, string>;
+
+/**
+ * Type of the `parts` for component {@link ComponentAnatomy}.
+ *
+ * @public
+ */
+export type ComponentParts = Record<string, string>;
+
+/**
+ * Structure describing component anatomy for modular styling.
+ *
+ * @public
+ */
+export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
+    interactivity?: InteractivityDefinition;
+    conditions: TConditions;
+    parts: TParts;
+}
+
+/**
  * Parameters used to apply style modules to components.
  *
  * @public

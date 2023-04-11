@@ -3,7 +3,7 @@ import type { ComposableStyles, FASTElementDefinition } from "@microsoft/fast-el
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./checkbox.styles.js";
-import { CheckboxInteractivity, CheckboxStatics, template } from "./checkbox.template.js";
+import { CheckboxAnatomy, CheckboxStatics, template } from "./checkbox.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -27,7 +27,7 @@ export function composeCheckbox(
         }
     }
 
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, CheckboxInteractivity, options);
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy.interactivity, options);
 
     return FASTCheckbox.compose({
         name: `${ds.prefix}-checkbox`,

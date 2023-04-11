@@ -569,7 +569,7 @@ export const dataGridTemplateStyles: ElementStyles;
 export class DesignSystem {
     // Warning: (ae-forgotten-export) The symbol "ElementStaticMap" needs to be exported by the entry point index.d.ts
     constructor(_prefix: string, _registry?: CustomElementRegistry, _statics?: ElementStaticMap);
-    static assembleStyles(defaultStyles: ComposableStyles[], interactivity: InteractivityDefinition, options?: ComposeOptions<any>): ComposableStyles[];
+    static assembleStyles(defaultStyles: ComposableStyles[], interactivity?: InteractivityDefinition, options?: ComposeOptions<any>): ComposableStyles[];
     // Warning: (ae-forgotten-export) The symbol "PartialDesignSystem" needs to be exported by the entry point index.d.ts
     configure(options: PartialDesignSystem): this;
     defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>): void;

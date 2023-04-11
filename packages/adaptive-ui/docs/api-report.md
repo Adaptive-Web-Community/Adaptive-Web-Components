@@ -178,7 +178,23 @@ export interface ColorRecipe<T = Swatch> {
 }
 
 // @public
+export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
+    // (undocumented)
+    conditions: TConditions;
+    // (undocumented)
+    interactivity?: InteractivityDefinition;
+    // (undocumented)
+    parts: TParts;
+}
+
+// @public
 export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n";
+
+// @public
+export type ComponentConditions = Record<string, string>;
+
+// @public
+export type ComponentParts = Record<string, string>;
 
 // @public
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
