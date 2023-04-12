@@ -30,9 +30,9 @@ Has a subtle color at rest, typically with a slight increase or decrease on hove
 
 Has no accessibility configuration relative to its context.
 
-#### Perceivable
+#### Discernible
 
-Considered to be perceivable from a contrast perspective. Intended for use as a component bounding outline or for large text.
+Considered to be discernible from a contrast perspective. Intended for use as a component bounding outline or for large text.
 
 Meets accessibility requirements for 3:1 contrast relative to its context in AA mode. Increases to 4.5:1 in AAA mode.
 
@@ -62,7 +62,7 @@ Strokes are intended for lines, icons, or text. Because of the smaller coverage 
 
 The combinations of recipes currently implemented:
 
-|                    | Safety | Stealth | Subtle | Perceivable (3:1) | Readable (4.5:1) | Strong |
+|                    | Safety | Stealth | Subtle | Discernible (3:1) | Readable (4.5:1) | Strong |
 | ------------------ | ------ | ------- | ------ | ----------------- | ---------------- | ------ |
 | Neutral fill       | -      | ✓       | ✓      | ✓                | o                | -      |
 | Neutral stroke     | o      | o       | ✓      | ✓                | ✓                | ✓      |

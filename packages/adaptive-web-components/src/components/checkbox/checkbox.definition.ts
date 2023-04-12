@@ -1,4 +1,4 @@
-import { accentFillControlStyles, neutralOutlinePerceivableControlStyles } from "@adaptive-web/adaptive-ui";
+import { accentFillControlStyles, neutralOutlineDiscernibleControlStyles } from "@adaptive-web/adaptive-ui";
 import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
 import subtractIcon from "@fluentui/svg-icons/icons/subtract_16_regular.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
@@ -25,7 +25,7 @@ export const checkboxDefinition = composeCheckbox(
                 {
                     part: CheckboxAnatomy.parts.control,
                 },
-                neutralOutlinePerceivableControlStyles
+                neutralOutlineDiscernibleControlStyles
             ],
             [
                 {
