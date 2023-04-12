@@ -10,9 +10,9 @@ import {
     neutralFillSubtleHover,
     neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokePerceivableActive,
-    neutralStrokePerceivableHover,
-    neutralStrokePerceivableRest,
+    neutralStrokeDiscernibleActive,
+    neutralStrokeDiscernibleHover,
+    neutralStrokeDiscernibleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -81,7 +81,7 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokePerceivableRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeDiscernibleRest};
         border-radius: 50%;
         background: ${neutralFillSubtleRest};
         color: ${neutralForegroundRest};
@@ -90,12 +90,12 @@ export const aestheticStyles: ElementStyles = css`
 
     :host(:enabled:hover) .control {
         background: ${neutralFillSubtleHover};
-        border-color: ${neutralStrokePerceivableHover};
+        border-color: ${neutralStrokeDiscernibleHover};
     }
 
     :host(:enabled:active) .control {
         background: ${neutralFillSubtleActive};
-        border-color: ${neutralStrokePerceivableActive};
+        border-color: ${neutralStrokeDiscernibleActive};
     }
 
     :host(:focus-visible) .control {

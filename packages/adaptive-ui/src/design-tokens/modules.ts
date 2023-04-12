@@ -17,10 +17,10 @@ import {
     foregroundOnAccentFillReadableFocus,
     foregroundOnAccentFillReadableHover,
     foregroundOnAccentFillReadableRest,
-    neutralFillPerceivableActive,
-    neutralFillPerceivableFocus,
-    neutralFillPerceivableHover,
-    neutralFillPerceivableRest,
+    neutralFillDiscernibleActive,
+    neutralFillDiscernibleFocus,
+    neutralFillDiscernibleHover,
+    neutralFillDiscernibleRest,
     neutralFillStealthActive,
     neutralFillStealthFocus,
     neutralFillStealthHover,
@@ -29,10 +29,10 @@ import {
     neutralFillSubtleFocus,
     neutralFillSubtleHover,
     neutralFillSubtleRest,
-    neutralStrokePerceivableActive,
-    neutralStrokePerceivableFocus,
-    neutralStrokePerceivableHover,
-    neutralStrokePerceivableRest,
+    neutralStrokeDiscernibleActive,
+    neutralStrokeDiscernibleFocus,
+    neutralStrokeDiscernibleHover,
+    neutralStrokeDiscernibleRest,
     neutralStrokeReadableRest,
     neutralStrokeStrongActive,
     neutralStrokeStrongFocus,
@@ -124,11 +124,11 @@ export const neutralFillSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
 /**
  * @public
  */
-export const neutralFillPerceivableInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralFillPerceivableRest,
-    hover: neutralFillPerceivableHover,
-    active: neutralFillPerceivableActive,
-    focus: neutralFillPerceivableFocus,
+export const neutralFillDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+    rest: neutralFillDiscernibleRest,
+    hover: neutralFillDiscernibleHover,
+    active: neutralFillDiscernibleActive,
+    focus: neutralFillDiscernibleFocus,
 };
 
 /**
@@ -154,11 +154,11 @@ export const neutralStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
 /**
  * @public
  */
-export const neutralStrokePerceivableInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralStrokePerceivableRest,
-    hover: neutralStrokePerceivableHover,
-    active: neutralStrokePerceivableActive,
-    focus: neutralStrokePerceivableFocus,
+export const neutralStrokeDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+    rest: neutralStrokeDiscernibleRest,
+    hover: neutralStrokeDiscernibleHover,
+    active: neutralStrokeDiscernibleActive,
+    focus: neutralStrokeDiscernibleFocus,
 };
 
 /**
@@ -188,9 +188,9 @@ export const neutralFillControlStyles: Styles = {
  *
  * @public
  */
-export const neutralOutlinePerceivableControlStyles: Styles = {
+export const neutralOutlineDiscernibleControlStyles: Styles = {
     backgroundFill: neutralFillSubtleInteractiveSet,
-    borderFill: neutralStrokePerceivableInteractiveSet,
+    borderFill: neutralStrokeDiscernibleInteractiveSet,
     foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillSubtleInteractiveSet),
 };
 
@@ -199,10 +199,10 @@ export const neutralOutlinePerceivableControlStyles: Styles = {
  *
  * @public
  */
-export const neutralFillPerceivableControlStyles: Styles = {
-    backgroundFill: neutralFillPerceivableInteractiveSet,
+export const neutralFillDiscernibleControlStyles: Styles = {
+    backgroundFill: neutralFillDiscernibleInteractiveSet,
     borderFill: "transparent",
-    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillPerceivableInteractiveSet),
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillDiscernibleInteractiveSet),
 };
 
 /**
@@ -212,7 +212,7 @@ export const neutralFillPerceivableControlStyles: Styles = {
  */
 export const neutralOutlineControlStyles: Styles = {
     backgroundFill: fillColor,
-    borderFill: neutralStrokePerceivableInteractiveSet,
+    borderFill: neutralStrokeDiscernibleInteractiveSet,
     foregroundFill: neutralStrokeStrongRest,
 };
 

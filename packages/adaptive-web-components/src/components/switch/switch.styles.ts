@@ -13,9 +13,9 @@ import {
     neutralFillSubtleHover,
     neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokePerceivableActive,
-    neutralStrokePerceivableHover,
-    neutralStrokePerceivableRest,
+    neutralStrokeDiscernibleActive,
+    neutralStrokeDiscernibleHover,
+    neutralStrokeDiscernibleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -74,19 +74,19 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokePerceivableRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeDiscernibleRest};
         border-radius: calc(${heightNumber} * 1px);
         padding: 4px;
         background: ${neutralFillSubtleRest};
     }
 
     :host(:enabled:hover) .switch {
-        border-color: ${neutralStrokePerceivableHover};
+        border-color: ${neutralStrokeDiscernibleHover};
         background: ${neutralFillSubtleHover};
     }
 
     :host(:enabled:active) .switch {
-        border-color: ${neutralStrokePerceivableActive};
+        border-color: ${neutralStrokeDiscernibleActive};
         background: ${neutralFillSubtleActive};
     }
 

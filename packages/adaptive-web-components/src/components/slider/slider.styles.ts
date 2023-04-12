@@ -5,7 +5,7 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralForegroundRest,
-    neutralStrokePerceivableRest,
+    neutralStrokeDiscernibleRest,
     neutralStrokeSubtleActive,
     neutralStrokeSubtleHover,
 } from "@adaptive-web/adaptive-ui";
@@ -156,7 +156,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .track {
-        background: ${neutralStrokePerceivableRest};
+        background: ${neutralStrokeDiscernibleRest};
     }
 
     :host([disabled]) {
