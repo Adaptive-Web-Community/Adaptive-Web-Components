@@ -4,45 +4,19 @@ import { Swatch } from "../color/swatch.js";
 import type { Styles } from "../modules/types.js";
 import type { InteractiveSet, InteractiveTokenSet } from "../types.js";
 import {
-    accentFillReadableActive,
-    accentFillReadableFocus,
-    accentFillReadableHover,
-    accentFillReadableRest,
-    accentStrokeReadableActive,
-    accentStrokeReadableFocus,
-    accentStrokeReadableHover,
-    accentStrokeReadableRest,
+    accentFillReadableInteractiveSet,
+    accentStrokeReadableInteractiveSet,
     fillColor,
-    foregroundOnAccentFillReadableActive,
-    foregroundOnAccentFillReadableFocus,
-    foregroundOnAccentFillReadableHover,
-    foregroundOnAccentFillReadableRest,
-    neutralFillDiscernibleActive,
-    neutralFillDiscernibleFocus,
-    neutralFillDiscernibleHover,
-    neutralFillDiscernibleRest,
-    neutralFillStealthActive,
-    neutralFillStealthFocus,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralFillSubtleActive,
-    neutralFillSubtleFocus,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
-    neutralStrokeDiscernibleActive,
-    neutralStrokeDiscernibleFocus,
-    neutralStrokeDiscernibleHover,
-    neutralStrokeDiscernibleRest,
+    foregroundOnAccentFillReadableInteractiveSet,
+    neutralFillDiscernibleInteractiveSet,
+    neutralFillStealthInteractiveSet,
+    neutralFillSubtleInteractiveSet,
+    neutralStrokeDiscernibleInteractiveSet,
     neutralStrokeReadableRest,
-    neutralStrokeStrongActive,
-    neutralStrokeStrongFocus,
-    neutralStrokeStrongHover,
+    neutralStrokeStrongInteractiveSet,
     neutralStrokeStrongRecipe,
     neutralStrokeStrongRest,
-    neutralStrokeSubtleActive,
-    neutralStrokeSubtleFocus,
-    neutralStrokeSubtleHover,
-    neutralStrokeSubtleRest,
+    neutralStrokeSubtleInteractiveSet,
 } from "./color.js";
 
 function createForegroundSet(
@@ -72,96 +46,6 @@ function createForegroundSet(
 }
 
 /**
- * @public
- */
-export const accentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: accentFillReadableRest,
-    hover: accentFillReadableHover,
-    active: accentFillReadableActive,
-    focus: accentFillReadableFocus,
-};
-
-/**
- * @public
- */
-export const foregroundOnAccentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: foregroundOnAccentFillReadableRest,
-    hover: foregroundOnAccentFillReadableHover,
-    active: foregroundOnAccentFillReadableActive,
-    focus: foregroundOnAccentFillReadableFocus,
-};
-
-/**
- * @public
- */
-export const accentStrokeReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: accentStrokeReadableRest,
-    hover: accentStrokeReadableHover,
-    active: accentStrokeReadableActive,
-    focus: accentStrokeReadableFocus,
-};
-
-/**
- * @public
- */
-export const neutralFillStealthInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralFillStealthRest,
-    hover: neutralFillStealthHover,
-    active: neutralFillStealthActive,
-    focus: neutralFillStealthFocus,
-};
-
-/**
- * @public
- */
-export const neutralFillSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralFillSubtleRest,
-    hover: neutralFillSubtleHover,
-    active: neutralFillSubtleActive,
-    focus: neutralFillSubtleFocus,
-};
-
-/**
- * @public
- */
-export const neutralFillDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralFillDiscernibleRest,
-    hover: neutralFillDiscernibleHover,
-    active: neutralFillDiscernibleActive,
-    focus: neutralFillDiscernibleFocus,
-};
-
-/**
- * @public
- */
-export const neutralStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralStrokeStrongRest,
-    hover: neutralStrokeStrongHover,
-    active: neutralStrokeStrongActive,
-    focus: neutralStrokeStrongFocus,
-};
-
-/**
- * @public
- */
-export const neutralStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralStrokeSubtleRest,
-    hover: neutralStrokeSubtleHover,
-    active: neutralStrokeSubtleActive,
-    focus: neutralStrokeSubtleFocus,
-};
-
-/**
- * @public
- */
-export const neutralStrokeDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
-    rest: neutralStrokeDiscernibleRest,
-    hover: neutralStrokeDiscernibleHover,
-    active: neutralStrokeDiscernibleActive,
-    focus: neutralStrokeDiscernibleFocus,
-};
-
-/**
  * Convenience style module for an accent-filled control.
  *
  * @public
@@ -170,6 +54,28 @@ export const accentFillControlStyles: Styles = {
     backgroundFill: accentFillReadableInteractiveSet,
     borderFill: "transparent",
     foregroundFill: foregroundOnAccentFillReadableInteractiveSet,
+};
+
+/**
+ * Convenience style module for a neutral stealth control.
+ *
+ * @public
+ */
+export const neutralStealthControlStyles: Styles = {
+    backgroundFill: neutralFillStealthInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillStealthInteractiveSet),
+};
+
+/**
+ * Convenience style module for a neutral control with accessibility requirements applied to the fill, like a selected checkbox.
+ *
+ * @public
+ */
+export const neutralFillDiscernibleControlStyles: Styles = {
+    backgroundFill: neutralFillDiscernibleInteractiveSet,
+    borderFill: "transparent",
+    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillDiscernibleInteractiveSet),
 };
 
 /**
@@ -195,17 +101,6 @@ export const neutralOutlineDiscernibleControlStyles: Styles = {
 };
 
 /**
- * Convenience style module for a neutral control with accessibility requirements applied to the fill, like a selected checkbox.
- *
- * @public
- */
-export const neutralFillDiscernibleControlStyles: Styles = {
-    backgroundFill: neutralFillDiscernibleInteractiveSet,
-    borderFill: "transparent",
-    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillDiscernibleInteractiveSet),
-};
-
-/**
  * Convenience style module for a neutral-outlined control.
  *
  * @public
@@ -214,17 +109,6 @@ export const neutralOutlineControlStyles: Styles = {
     backgroundFill: fillColor,
     borderFill: neutralStrokeDiscernibleInteractiveSet,
     foregroundFill: neutralStrokeStrongRest,
-};
-
-/**
- * Convenience style module for a neutral stealth control.
- *
- * @public
- */
-export const neutralStealthControlStyles: Styles = {
-    backgroundFill: neutralFillStealthInteractiveSet,
-    borderFill: "transparent",
-    foregroundFill: createForegroundSet(neutralStrokeStrongRecipe, "rest", neutralFillStealthInteractiveSet),
 };
 
 /**

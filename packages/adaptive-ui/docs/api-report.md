@@ -827,6 +827,9 @@ export const neutralStrokeReadableHover: CSSDesignToken<Swatch>;
 export const neutralStrokeReadableHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralStrokeReadableInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
 export const neutralStrokeReadableRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
