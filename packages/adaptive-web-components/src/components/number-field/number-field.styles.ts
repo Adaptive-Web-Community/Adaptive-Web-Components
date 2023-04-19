@@ -30,7 +30,7 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    .label__hidden {
+    .label.label__hidden {
         display: none;
         visibility: hidden;
     }
