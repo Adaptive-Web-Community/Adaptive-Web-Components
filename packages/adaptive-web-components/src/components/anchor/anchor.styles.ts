@@ -3,8 +3,7 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillControlStyles,
-    neutralForegroundRest,
+    neutralFillSubtleControlStyles,
     renderElementStyles,
     strokeWidth,
     typeRampBase,
@@ -58,7 +57,6 @@ export const aestheticStyles: ElementStyles = css`
         gap: 10px;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         border-radius: calc(${controlCornerRadius} * 1px);
-        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
@@ -83,4 +81,4 @@ const moduleParams: StyleModuleEvaluateParameters = {
  * 
  * @internal
  */
-export const moduleStyles = renderElementStyles(neutralFillControlStyles, moduleParams);
+export const moduleStyles = renderElementStyles(neutralFillSubtleControlStyles, moduleParams);

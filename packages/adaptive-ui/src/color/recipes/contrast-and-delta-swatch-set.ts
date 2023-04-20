@@ -1,6 +1,6 @@
 import { Palette, PaletteDirection, PaletteDirectionValue, resolvePaletteDirection } from "../palette.js";
 import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch } from "../swatch.js";
+import { Swatch, SwatchRGB } from "../swatch.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /**
@@ -21,6 +21,7 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  * @param activeDelta - The active state offset from the base color
  * @param focusDelta - The focus state offset from the base color
  * @param direction - The direction the deltas move on the `palette`, defaults to {@link directionByIsDark} based on `reference`
+ * @param zeroAsTransparent - Treat a zero offset as transparent, defaults to true
  * @returns The interactive set of Swatches
  *
  * @public
@@ -33,11 +34,13 @@ export function contrastAndDeltaSwatchSet(
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number,
-    direction: PaletteDirection = directionByIsDark(reference)
+    direction: PaletteDirection = directionByIsDark(reference),
+    zeroAsTransparent: boolean = true,
 ): InteractiveSwatchSet {
     const dir = resolvePaletteDirection(direction);
 
-    const accessibleSwatch = palette.colorContrast(reference, minContrast);
+    const referenceIndex = palette.closestIndexOf(reference);
+    const accessibleSwatch = palette.colorContrast(reference, minContrast, referenceIndex);
 
     const accessibleIndex1 = palette.closestIndexOf(accessibleSwatch);
     const accessibleIndex2 = accessibleIndex1 + dir * Math.abs(restDelta - hoverDelta);
@@ -55,10 +58,19 @@ export function contrastAndDeltaSwatchSet(
         hoverIndex = accessibleIndex1;
     }
 
+    function getSwatch(index: number): Swatch {
+        const swatch = palette.get(index) as SwatchRGB;
+        if (zeroAsTransparent === true && index === referenceIndex) {
+            return SwatchRGB.asOverlay(swatch, swatch);
+        } else {
+            return swatch;
+        }
+    }
+
     return {
-        rest: palette.get(restIndex),
-        hover: palette.get(hoverIndex),
-        active: palette.get(restIndex + dir * activeDelta),
-        focus: palette.get(restIndex + dir * focusDelta),
+        rest: getSwatch(restIndex),
+        hover: getSwatch(hoverIndex),
+        active: getSwatch(restIndex + dir * activeDelta),
+        focus: getSwatch(restIndex + dir * focusDelta),
     };
 }

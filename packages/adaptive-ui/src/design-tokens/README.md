@@ -1,12 +1,14 @@
 # Design Tokens
 
-This directory defines a specific set of design tokens that are generally useful for building components and experiences. Token values can be updated to reflect your visual design. We've found you can get a long way with these foundational tokens, but they don't provide for every possible visual design you might have.
+This directory defines a specific set of design tokens that are generally useful for building components and experiences. Token values can be updated to reflect your visual design.
+
+We've found you can get a long way with these foundational tokens. If you have a design that necessitates more control, you can easily create your own tokens and sets. Extending the foundation will speed your adoption.
 
 These predefined tokens exist both because they are a good foundation, as well as they have already been published and are in use by consuming design systems. This package is evolving to provide more control in defining your complete token needs.
 
 ## Color
 
-Color has specific requirements for accessibility. The updated color token model is designed to provide the flexibility you need in crafting your visual design, while ensuring that design will always meet contrast requirements. As a bonus, it adds automatic support for increased contrast preferences.
+Color has specific requirements for accessibility. This color token model is designed to provide the flexibility you need in crafting your visual design, while ensuring that design will always meet contrast requirements. This includes bonuses like automatic support for dark mode and increased contrast preferences.
 
 Most color tokens come as an interactive set for rest, hover, active, and focus states.
 
@@ -38,13 +40,13 @@ Meets accessibility requirements for 3:1 contrast relative to its context in AA 
 
 #### Readable
 
-Considered to be readable from a contrast perspective. Safe for use on small text, though probably reads more like "hint" or "placeholder" text.
+Considered to be readable from a contrast perspective. Safe for use on small text. With a low saturation palette (neutral) this will read as "hint" or "placeholder" text.
 
 Meets accessibility requirements for 4.5:1 contrast relative to its context in AA mode. Increases to 7:1 in AAA mode.
 
 #### Strong
 
-Considered to be readable from a contrast perspective. Intended for use on small text, with more contrast than "Readable".
+Considered to be readable from a contrast perspective. Intended for use on small or body text, having more contrast than "Readable", and tends to appear as "black".
 
 ### Application
 
@@ -64,13 +66,11 @@ The combinations of recipes currently implemented:
 
 |                    | Safety | Stealth | Subtle | Discernible (3:1) | Readable (4.5:1) | Strong |
 | ------------------ | ------ | ------- | ------ | ----------------- | ---------------- | ------ |
-| Neutral fill       | -      | ✓       | ✓      | ✓                | o                | -      |
-| Neutral stroke     | o      | o       | ✓      | ✓                | ✓                | ✓      |
-| Accent fill        | -      | o       | o      | o                 | ✓                | -      |
-| Accent stroke      | o      | o       | o      | o                 | ✓                | -      |
+| Neutral fill       | -      | ✓       | ✓      | ✓                | ✓                | -      |
+| Neutral stroke     | ✓      | ✓       | ✓      | ✓                | ✓                | ✓      |
+| Accent fill        | -      | ✓       | ✓      | ✓                 | ✓                | -      |
+| Accent stroke      | ✓      | ✓       | ✓      | ✓                 | ✓                | ✓      |
 
 ✓ = implemented
-
-o = coming soon
 
 \- = not applicable

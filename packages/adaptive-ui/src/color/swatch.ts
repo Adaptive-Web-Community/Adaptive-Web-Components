@@ -82,7 +82,7 @@ export class SwatchRGB implements Swatch {
      * @returns The color value in string format
      */
     toColorString() {
-        return this.color.a < 1 ? this.color.toStringWebRGBA() : this.color.toStringHexRGB();
+        return this.color.a === 0 ? "transparent" : this.color.a < 1 ? this.color.toStringWebRGBA() : this.color.toStringHexRGB();
     }
 
     /**

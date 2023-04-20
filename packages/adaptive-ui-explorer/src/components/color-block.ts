@@ -1,16 +1,21 @@
 import {
-    accentFillControlStyles,
-    accentForegroundReadableStyles,
+    accentFillDiscernibleControlStyles,
+    accentFillReadableControlStyles,
+    accentFillStealthControlStyles,
+    accentFillSubtleControlStyles,
+    accentForegroundReadableControlStyles,
+    accentOutlineDiscernibleControlStyles,
     fillColor,
-    neutralFillControlStyles,
+    neutralDividerDiscernibleElementStyles,
+    neutralDividerSubtleElementStyles,
     neutralFillDiscernibleControlStyles,
-    neutralForegroundReadableStyles,
-    neutralForegroundStrongStyles,
-    neutralOutlineControlStyles,
+    neutralFillReadableControlStyles,
+    neutralFillStealthControlStyles,
+    neutralFillSubtleControlStyles,
+    neutralForegroundReadableElementStyles,
+    neutralForegroundStrongElementStyles,
     neutralOutlineDiscernibleControlStyles,
-    neutralStealthControlStyles,
     neutralStrokeReadableRest,
-    neutralStrokeSubtleRest,
     SwatchRGB,
 } from "@adaptive-web/adaptive-ui";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
@@ -30,52 +35,68 @@ import "./style-example.js";
 import "./swatch.js";
 
 const backplateComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => accentFillControlStyles}">
-        Accent fill
+    <app-style-example :styles="${x => accentFillReadableControlStyles}">
+        Accent readable
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralFillControlStyles}">
-        Neutral fill
+    <app-style-example :styles="${x => accentFillStealthControlStyles}">
+        Accent stealth
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralOutlineControlStyles}">
-        Neutral outline
+    <app-style-example :styles="${x => accentFillSubtleControlStyles}">
+        Accent subtle
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralStealthControlStyles}">
+    <app-style-example :styles="${x => neutralFillReadableControlStyles}">
+        Neutral readable
+    </app-style-example>
+
+    <app-style-example :styles="${x => neutralFillStealthControlStyles}">
         Neutral stealth
+    </app-style-example>
+
+    <app-style-example :styles="${x => neutralFillSubtleControlStyles}">
+        Neutral subtle
     </app-style-example>
 `;
 
 const textComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => neutralForegroundStrongStyles}">
-        Neutral
+    <app-style-example :styles="${x => accentForegroundReadableControlStyles}">
+        Accent control
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralForegroundReadableStyles}">
-        Hint / placeholder
+    <app-style-example :styles="${x => neutralForegroundStrongElementStyles}">
+        Neutral element
     </app-style-example>
 
-    <app-style-example :styles="${x => accentForegroundReadableStyles}">
-        Accent
+    <app-style-example :styles="${x => neutralForegroundReadableElementStyles}">
+        Hint / placeholder element
     </app-style-example>
 `;
 
 const formComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => neutralFillControlStyles}">
-        Text field
+    <app-style-example :styles="${x => accentOutlineDiscernibleControlStyles}">
+        Accent outline
+    </app-style-example>
+
+    <app-style-example :styles="${x => accentFillDiscernibleControlStyles}">
+        Accent discernible
     </app-style-example>
 
     <app-style-example :styles="${x => neutralOutlineDiscernibleControlStyles}">
-        Checkbox (unchecked)
+        Neutral outline
     </app-style-example>
 
     <app-style-example :styles="${x => neutralFillDiscernibleControlStyles}">
-        Checkbox (checked)
+        Neutral discernible
     </app-style-example>
 
-    <app-style-example :styles="${{"color": neutralStrokeSubtleRest}}">
-        Divider
+    <app-style-example :styles="${x => neutralDividerSubtleElementStyles}">
+        Divider subtle
+    </app-style-example>
+
+    <app-style-example :styles="${x => neutralDividerDiscernibleElementStyles}">
+        Divider discernible
     </app-style-example>
 `;
 
