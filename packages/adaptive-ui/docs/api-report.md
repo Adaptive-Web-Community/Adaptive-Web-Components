@@ -24,8 +24,26 @@ export const accentFillActive: CSSDesignToken<Swatch>;
 // @public @deprecated (undocumented)
 export const accentFillActiveDelta: DesignToken<number>;
 
+// @public (undocumented)
+export const accentFillDiscernibleActive: CSSDesignToken<Swatch>;
+
 // @public
-export const accentFillControlStyles: Styles;
+export const accentFillDiscernibleControlStyles: Styles;
+
+// @public (undocumented)
+export const accentFillDiscernibleFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillDiscernibleHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillDiscernibleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentFillDiscernibleRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentFillDiscernibleRest: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const accentFillFocus: CSSDesignToken<Swatch>;
@@ -42,19 +60,22 @@ export const accentFillHoverDelta: DesignToken<number>;
 // @public (undocumented)
 export const accentFillReadableActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentFillReadableActiveDelta: DesignToken<number>;
+
+// @public
+export const accentFillReadableControlStyles: Styles;
 
 // @public (undocumented)
 export const accentFillReadableFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentFillReadableFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const accentFillReadableHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentFillReadableHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -66,7 +87,7 @@ export const accentFillReadableRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const accentFillReadableRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentFillReadableRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -77,6 +98,48 @@ export const accentFillRest: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const accentFillRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const accentFillStealthActive: CSSDesignToken<Swatch>;
+
+// @public
+export const accentFillStealthControlStyles: Styles;
+
+// @public (undocumented)
+export const accentFillStealthFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillStealthHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillStealthInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentFillStealthRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentFillStealthRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillSubtleActive: CSSDesignToken<Swatch>;
+
+// @public
+export const accentFillSubtleControlStyles: Styles;
+
+// @public (undocumented)
+export const accentFillSubtleFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillSubtleHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentFillSubtleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentFillSubtleRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentFillSubtleRest: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const accentForegroundActive: CSSDesignToken<Swatch>;
@@ -97,7 +160,7 @@ export const accentForegroundHover: CSSDesignToken<Swatch>;
 export const accentForegroundHoverDelta: DesignToken<number>;
 
 // @public
-export const accentForegroundReadableStyles: Styles;
+export const accentForegroundReadableControlStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const accentForegroundRecipe: DesignToken<InteractiveColorRecipe>;
@@ -108,25 +171,46 @@ export const accentForegroundRest: CSSDesignToken<Swatch>;
 // @public @deprecated (undocumented)
 export const accentForegroundRestDelta: DesignToken<number>;
 
+// @public
+export const accentOutlineDiscernibleControlStyles: Styles;
+
 // @public (undocumented)
 export const accentPalette: DesignToken<Palette<Swatch>>;
 
 // @public (undocumented)
-export const accentStrokeReadableActive: CSSDesignToken<Swatch>;
+export const accentStrokeDiscernibleActive: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
+export const accentStrokeDiscernibleFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeDiscernibleHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeDiscernibleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeDiscernibleRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentStrokeDiscernibleRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeReadableActive: CSSDesignToken<Swatch>;
+
+// @public @deprecated (undocumented)
 export const accentStrokeReadableActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const accentStrokeReadableFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentStrokeReadableFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const accentStrokeReadableHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentStrokeReadableHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -138,8 +222,80 @@ export const accentStrokeReadableRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const accentStrokeReadableRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const accentStrokeReadableRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const accentStrokeSafetyActive: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSafetyFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSafetyHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSafetyInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSafetyRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentStrokeSafetyRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStealthActive: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStealthFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStealthHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStealthInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStealthRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentStrokeStealthRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStrongActive: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStrongFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStrongHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeStrongRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentStrokeStrongRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSubtleActive: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSubtleFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSubtleHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const accentStrokeSubtleRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const accentStrokeSubtleRest: CSSDesignToken<Swatch>;
 
 // @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
@@ -169,12 +325,23 @@ export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference:
     focus: Swatch;
 };
 
+// @public
+export const blackOrWhiteDiscernibleRecipe: DesignToken<InteractiveColorRecipeBySet>;
+
+// @public
+export const blackOrWhiteReadableRecipe: DesignToken<InteractiveColorRecipeBySet>;
+
 // @public (undocumented)
 export const bodyFont: CSSDesignToken<string>;
 
 // @public
 export interface ColorRecipe<T = Swatch> {
     evaluate(resolver: DesignTokenResolver, reference?: Swatch): T;
+}
+
+// @public
+export interface ColorRecipeBySet<T = InteractiveSwatchSet> {
+    evaluate(resolver: DesignTokenResolver, reference: InteractiveSwatchSet): T;
 }
 
 // @public
@@ -200,7 +367,7 @@ export type ComponentParts = Record<string, string>;
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
 
 // @public
-export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
+export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
@@ -218,7 +385,7 @@ export const controlCornerRadius: CSSDesignToken<number>;
 export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, direction?: PaletteDirection): Swatch;
 
 // @public
-export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
+export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public (undocumented)
 export const designUnit: CSSDesignToken<number>;
@@ -279,6 +446,54 @@ export const elevationTooltipSize: DesignToken<number>;
 // @public (undocumented)
 export const fillColor: CSSDesignToken<Swatch>;
 
+// @public (undocumented)
+export const fillDiscernibleActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillDiscernibleFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillDiscernibleHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillDiscernibleRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillReadableActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillReadableFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillReadableHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillReadableRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillStealthActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillStealthFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillStealthHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillStealthRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillSubtleActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillSubtleFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillSubtleHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const fillSubtleRestDelta: DesignToken<number>;
+
 // @public
 export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 
@@ -303,22 +518,22 @@ export const fontWeight: CSSDesignToken<number>;
 // @public @deprecated (undocumented)
 export const foregroundOnAccentActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableInteractiveSet: InteractiveTokenSet<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableRecipe: DesignToken<InteractiveColorRecipe>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const foregroundOnAccentFillReadableRest: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
@@ -338,6 +553,10 @@ export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, mi
 
 // @public
 export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet> {
+}
+
+// @public
+export interface InteractiveColorRecipeBySet extends ColorRecipeBySet {
 }
 
 // @public
@@ -458,6 +677,12 @@ export const minContrastDiscernible: DesignToken<number>;
 export const minContrastReadable: DesignToken<number>;
 
 // @public (undocumented)
+export const minContrastSafety: DesignToken<number>;
+
+// @public (undocumented)
+export const minContrastSubtle: DesignToken<number>;
+
+// @public (undocumented)
 export const neutralAsOverlay: DesignToken<boolean>;
 
 // @public (undocumented)
@@ -466,19 +691,22 @@ export const neutralBaseColor: CSSDesignToken<string>;
 // @public (undocumented)
 export const neutralBaseSwatch: DesignToken<Swatch>;
 
+// @public
+export const neutralDividerDiscernibleElementStyles: Styles;
+
+// @public
+export const neutralDividerSubtleElementStyles: Styles;
+
 // @public @deprecated (undocumented)
 export const neutralFillActive: CSSDesignToken<Swatch>;
 
 // @public @deprecated (undocumented)
 export const neutralFillActiveDelta: DesignToken<number>;
 
-// @public
-export const neutralFillControlStyles: Styles;
-
 // @public (undocumented)
 export const neutralFillDiscernibleActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillDiscernibleActiveDelta: DesignToken<number>;
 
 // @public
@@ -487,13 +715,13 @@ export const neutralFillDiscernibleControlStyles: Styles;
 // @public (undocumented)
 export const neutralFillDiscernibleFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillDiscernibleFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillDiscernibleHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillDiscernibleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -505,7 +733,7 @@ export const neutralFillDiscernibleRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralFillDiscernibleRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillDiscernibleRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -547,6 +775,27 @@ export const neutralFillInputRest: CSSDesignToken<Swatch>;
 // @public @deprecated (undocumented)
 export const neutralFillInputRestDelta: DesignToken<number>;
 
+// @public (undocumented)
+export const neutralFillReadableActive: CSSDesignToken<Swatch>;
+
+// @public
+export const neutralFillReadableControlStyles: Styles;
+
+// @public (undocumented)
+export const neutralFillReadableFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralFillReadableHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralFillReadableInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const neutralFillReadableRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralFillReadableRest: CSSDesignToken<Swatch>;
+
 // @public @deprecated (undocumented)
 export const neutralFillRecipe: DesignToken<InteractiveColorRecipe>;
 
@@ -586,19 +835,22 @@ export const neutralFillSecondaryRestDelta: DesignToken<number>;
 // @public (undocumented)
 export const neutralFillStealthActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillStealthActiveDelta: DesignToken<number>;
+
+// @public
+export const neutralFillStealthControlStyles: Styles;
 
 // @public (undocumented)
 export const neutralFillStealthFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillStealthFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillStealthHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillStealthHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -610,7 +862,7 @@ export const neutralFillStealthRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralFillStealthRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillStealthRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -643,19 +895,22 @@ export const neutralFillStrongRestDelta: DesignToken<number>;
 // @public (undocumented)
 export const neutralFillSubtleActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillSubtleActiveDelta: DesignToken<number>;
+
+// @public
+export const neutralFillSubtleControlStyles: Styles;
 
 // @public (undocumented)
 export const neutralFillSubtleFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillSubtleFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralFillSubtleHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillSubtleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -667,7 +922,7 @@ export const neutralFillSubtleRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralFillSubtleRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralFillSubtleRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -698,7 +953,7 @@ export const neutralForegroundHoverDelta: DesignToken<number>;
 export const neutralForegroundMinContrast: DesignToken<number>;
 
 // @public
-export const neutralForegroundReadableStyles: Styles;
+export const neutralForegroundReadableElementStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const neutralForegroundRecipe: DesignToken<InteractiveColorRecipe>;
@@ -710,19 +965,13 @@ export const neutralForegroundRest: CSSDesignToken<Swatch>;
 export const neutralForegroundRestDelta: DesignToken<number>;
 
 // @public
-export const neutralForegroundStrongStyles: Styles;
-
-// @public
-export const neutralOutlineControlStyles: Styles;
+export const neutralForegroundStrongElementStyles: Styles;
 
 // @public
 export const neutralOutlineDiscernibleControlStyles: Styles;
 
 // @public (undocumented)
 export const neutralPalette: DesignToken<Palette<Swatch>>;
-
-// @public
-export const neutralStealthControlStyles: Styles;
 
 // @public @deprecated (undocumented)
 export const neutralStrokeActive: CSSDesignToken<Swatch>;
@@ -733,19 +982,19 @@ export const neutralStrokeActiveDelta: DesignToken<number>;
 // @public (undocumented)
 export const neutralStrokeDiscernibleActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeDiscernibleActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeDiscernibleFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeDiscernibleFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeDiscernibleHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeDiscernibleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -757,7 +1006,7 @@ export const neutralStrokeDiscernibleRecipe: DesignToken<InteractiveColorRecipe>
 // @public (undocumented)
 export const neutralStrokeDiscernibleRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeDiscernibleRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -811,19 +1060,19 @@ export const neutralStrokeInputRestDelta: DesignToken<number>;
 // @public (undocumented)
 export const neutralStrokeReadableActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeReadableActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeReadableFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeReadableFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeReadableHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeReadableHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -835,7 +1084,7 @@ export const neutralStrokeReadableRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralStrokeReadableRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeReadableRestDelta: DesignToken<number>;
 
 // @public @deprecated (undocumented)
@@ -848,27 +1097,63 @@ export const neutralStrokeRest: CSSDesignToken<Swatch>;
 export const neutralStrokeRestDelta: DesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeStrongActive: CSSDesignToken<Swatch>;
+export const neutralStrokeSafetyActive: CSSDesignToken<Swatch>;
 
 // @public (undocumented)
+export const neutralStrokeSafetyFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeSafetyHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeSafetyInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeSafetyRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeSafetyRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStealthActive: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStealthFocus: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStealthHover: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStealthInteractiveSet: InteractiveTokenSet<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStealthRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeStealthRest: CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeStrongActive: CSSDesignToken<Swatch>;
+
+// @public @deprecated (undocumented)
 export const neutralStrokeStrongActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeStrongFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeStrongFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeStrongHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeStrongHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeStrongMinContrast: DesignToken<number>;
 
 // @public (undocumented)
@@ -877,25 +1162,25 @@ export const neutralStrokeStrongRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralStrokeStrongRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeStrongRestDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeSubtleActive: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeSubtleActiveDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeSubtleFocus: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeSubtleFocusDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeSubtleHover: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeSubtleHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
@@ -907,7 +1192,7 @@ export const neutralStrokeSubtleRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const neutralStrokeSubtleRest: CSSDesignToken<Swatch>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const neutralStrokeSubtleRestDelta: DesignToken<number>;
 
 // @public
@@ -970,6 +1255,81 @@ export const StandardFontWeight: {
 
 // @public
 export type StateSelector = "hover" | "active" | FocusSelector;
+
+// @public (undocumented)
+export const strokeDiscernibleActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeDiscernibleFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeDiscernibleHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeDiscernibleRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeReadableActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeReadableFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeReadableHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeReadableRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSafetyActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSafetyFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSafetyHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSafetyRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStealthActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStealthFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStealthHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStealthRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStrongActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStrongFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStrongHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStrongMinContrast: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeStrongRestDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSubtleActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSubtleFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSubtleHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const strokeSubtleRestDelta: DesignToken<number>;
 
 // @public (undocumented)
 export const strokeWidth: CSSDesignToken<number>;
