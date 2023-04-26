@@ -30,6 +30,36 @@ import {
     neutralStrokeSubtleRest,
 } from "./color.js";
 import { createNonCss } from "./create.js";
+import {
+    bodyFont,
+    typeRampBaseFontSize,
+    typeRampBaseFontVariations,
+    typeRampBaseLineHeight,
+    typeRampMinus1FontSize,
+    typeRampMinus1FontVariations,
+    typeRampMinus1LineHeight,
+    typeRampMinus2FontSize,
+    typeRampMinus2FontVariations,
+    typeRampMinus2LineHeight,
+    typeRampPlus1FontSize,
+    typeRampPlus1FontVariations,
+    typeRampPlus1LineHeight,
+    typeRampPlus2FontSize,
+    typeRampPlus2FontVariations,
+    typeRampPlus2LineHeight,
+    typeRampPlus3FontSize,
+    typeRampPlus3FontVariations,
+    typeRampPlus3LineHeight,
+    typeRampPlus4FontSize,
+    typeRampPlus4FontVariations,
+    typeRampPlus4LineHeight,
+    typeRampPlus5FontSize,
+    typeRampPlus5FontVariations,
+    typeRampPlus5LineHeight,
+    typeRampPlus6FontSize,
+    typeRampPlus6FontVariations,
+    typeRampPlus6LineHeight,
+} from "./type.js";
 
 /**
  * Creates a set of foreground tokens applied over the background tokens.
@@ -349,31 +379,174 @@ export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromPropert
 });
 
 /**
+ * Convenience style module combining all font values for the `base` type ramp.
+ *
  * @public
  */
-export const actionStyles: Styles = Styles.fromAlias(neutralFillSubtleControlStyles);
+export const typeRampBaseStyles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampBaseFontSize,
+    lineHeight: typeRampBaseLineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampBaseFontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `minus 1` type ramp.
+ *
+ * @public
+ */
+export const typeRampMinus1Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampMinus1FontSize,
+    lineHeight: typeRampMinus1LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampMinus1FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `minus 2` type ramp.
+ *
+ * @public
+ */
+export const typeRampMinus2Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampMinus2FontSize,
+    lineHeight: typeRampMinus2LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampMinus2FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 1` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus1Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus1FontSize,
+    lineHeight: typeRampPlus1LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus1FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 2` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus2Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus2FontSize,
+    lineHeight: typeRampPlus2LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus2FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 3` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus3Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus3FontSize,
+    lineHeight: typeRampPlus3LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus3FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 4` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus4Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus4FontSize,
+    lineHeight: typeRampPlus4LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus4FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 5` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus5Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus5FontSize,
+    lineHeight: typeRampPlus5LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus5FontVariations,
+});
+
+/**
+ * Convenience style module combining all font values for the `plus 6` type ramp.
+ *
+ * @public
+ */
+export const typeRampPlus6Styles: Styles = Styles.fromProperties({
+    fontFamily: bodyFont,
+    fontSize: typeRampPlus6FontSize,
+    lineHeight: typeRampPlus6LineHeight,
+    fontWeight: "initial",
+    fontVariationSettings: typeRampPlus6FontVariations,
+});
 
 /**
  * @public
  */
-export const inputStyles: Styles = Styles.fromAlias(neutralOutlineDiscernibleControlStyles);
+export const actionStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralFillSubtleControlStyles
+);
 
 /**
  * @public
  */
-export const selectableSelectedStyles: Styles = Styles.fromAlias(accentFillReadableControlStyles);
+export const inputStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralOutlineDiscernibleControlStyles
+);
 
 /**
  * @public
  */
-export const selectableUnselectedStyles: Styles = Styles.fromAlias(neutralOutlineDiscernibleControlStyles);
+export const selectableSelectedStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    accentFillReadableControlStyles
+);
 
 /**
  * @public
  */
-export const itemStyles: Styles = Styles.fromAlias(neutralFillStealthControlStyles);
+export const selectableUnselectedStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralOutlineDiscernibleControlStyles
+);
 
 /**
  * @public
  */
-export const plainTextStyles: Styles = Styles.fromAlias(neutralForegroundStrongElementStyles);
+export const itemStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralFillStealthControlStyles
+);
+
+/**
+ * @public
+ */
+export const plainTextStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralForegroundStrongElementStyles
+);
+
+/**
+ * @public
+ */
+export const labelTextStyles: Styles = Styles.compose(
+    typeRampBaseStyles,
+    neutralForegroundStrongElementStyles
+);

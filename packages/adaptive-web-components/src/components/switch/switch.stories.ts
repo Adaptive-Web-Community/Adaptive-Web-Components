@@ -18,6 +18,7 @@ const storyTemplate = html<StoryArgs<FASTSwitch>>`
 export default {
     title: "Components/Switch",
     args: {
+        storyContent: "Switch",
         checked: false,
         disabled: false,
         readOnly: false,

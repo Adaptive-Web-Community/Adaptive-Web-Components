@@ -1,4 +1,4 @@
-import { designUnit, neutralStrokeSubtleRest, typeRampMinus1 } from "@adaptive-web/adaptive-ui";
+import { designUnit, neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 
@@ -64,10 +64,6 @@ export const templateStyles: ElementStyles = css`
  * Visual styles including Adaptive UI tokens.
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        ${typeRampMinus1}
-    }
-
     .mark {
         background: ${neutralStrokeSubtleRest};
     }

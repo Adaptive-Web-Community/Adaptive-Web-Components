@@ -4,7 +4,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -26,6 +25,7 @@ export const templateStyles: ElementStyles = css`
         border: none;
         outline: none;
         user-select: none;
+        font: inherit;
     }
 `;
 
@@ -42,7 +42,6 @@ export const aestheticStyles: ElementStyles = css`
         border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
         padding: calc(${designUnit} * 1px) calc(${designUnit} * 2px);
-        ${typeRampBase}
     }
 
     :host(:not([disabled]):focus-within) {

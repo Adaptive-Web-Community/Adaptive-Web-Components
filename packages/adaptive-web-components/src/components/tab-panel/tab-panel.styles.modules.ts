@@ -1,4 +1,5 @@
 import {
+    plainTextStyles,
     StyleModules,
 } from "@adaptive-web/adaptive-ui";
 
@@ -8,4 +9,9 @@ import {
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        plainTextStyles
+    ],
 ];

@@ -1,4 +1,5 @@
 import {
+    labelTextStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles,
     StyleModules,
@@ -11,6 +12,12 @@ import { SwitchAnatomy } from "./switch.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+            part: SwitchAnatomy.parts.label,
+        },
+        labelTextStyles
+    ],
     [
         {
             part: SwitchAnatomy.parts.switch,

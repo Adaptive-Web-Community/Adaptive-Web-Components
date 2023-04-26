@@ -3,7 +3,6 @@ import {
     focusStrokeWidth,
     neutralForegroundRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { heightNumber } from "../../styles/index.js";
 
@@ -46,7 +45,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         min-width: calc(${heightNumber} * 1px);
-        ${typeRampBase}
     }
 
     .listitem {

@@ -30,7 +30,10 @@ import {
     typeRampPlus6LineHeight,
 } from "../design-tokens/type.js";
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampBase = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampBaseFontSize};
@@ -39,7 +42,10 @@ export const typeRampBase = css.partial`
     font-variation-settings: ${typeRampBaseFontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampMinus1 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampMinus1FontSize};
@@ -48,7 +54,10 @@ export const typeRampMinus1 = css.partial`
     font-variation-settings: ${typeRampMinus1FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampMinus2 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampMinus2FontSize};
@@ -57,7 +66,10 @@ export const typeRampMinus2 = css.partial`
     font-variation-settings: ${typeRampMinus2FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus1 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus1FontSize};
@@ -66,7 +78,10 @@ export const typeRampPlus1 = css.partial`
     font-variation-settings: ${typeRampPlus1FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus2 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus2FontSize};
@@ -75,7 +90,10 @@ export const typeRampPlus2 = css.partial`
     font-variation-settings: ${typeRampPlus2FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus3 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus3FontSize};
@@ -84,7 +102,10 @@ export const typeRampPlus3 = css.partial`
     font-variation-settings: ${typeRampPlus3FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus4 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus4FontSize};
@@ -93,7 +114,10 @@ export const typeRampPlus4 = css.partial`
     font-variation-settings: ${typeRampPlus4FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus5 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus5FontSize};
@@ -102,7 +126,10 @@ export const typeRampPlus5 = css.partial`
     font-variation-settings: ${typeRampPlus5FontVariations};
 `;
 
-/** @public */
+/**
+ * @public
+ * @deprecated Use style modules instead.
+ */
 export const typeRampPlus6 = css.partial`
     font-family: ${bodyFont};
     font-size: ${typeRampPlus6FontSize};

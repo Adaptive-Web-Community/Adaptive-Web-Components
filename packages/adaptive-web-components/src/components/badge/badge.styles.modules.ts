@@ -1,6 +1,7 @@
 import {
     neutralFillReadableControlStyles,
     StyleModules,
+    typeRampMinus1Styles,
 } from "@adaptive-web/adaptive-ui";
 import { BadgeAnatomy } from "./badge.template.js";
 
@@ -10,6 +11,11 @@ import { BadgeAnatomy } from "./badge.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        typeRampMinus1Styles
+    ],
     [
         {
             part: BadgeAnatomy.parts.control,

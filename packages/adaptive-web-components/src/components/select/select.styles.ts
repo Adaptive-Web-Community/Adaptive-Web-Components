@@ -6,7 +6,6 @@ import {
     focusStrokeWidth,
     layerFillFixedPlus1,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -85,7 +84,6 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
-        ${typeRampBase}
     }
 
     :host(:focus-visible) {

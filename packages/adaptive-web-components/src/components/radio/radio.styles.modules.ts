@@ -1,4 +1,5 @@
 import {
+    labelTextStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles,
     StyleModules,
@@ -11,6 +12,12 @@ import { RadioAnatomy } from "./radio.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+            part: RadioAnatomy.parts.label,
+        },
+        labelTextStyles
+    ],
     [
         {
             part: RadioAnatomy.parts.control,

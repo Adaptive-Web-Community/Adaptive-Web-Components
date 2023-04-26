@@ -29,6 +29,8 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "font-weight";
         case StyleProperty.fontStyle:
             return "font-style";
+        case StyleProperty.fontVariationSettings:
+            return "font-variation-settings";
         case StyleProperty.letterSpacing:
             return "letter-spacing";
         case StyleProperty.lineHeight:

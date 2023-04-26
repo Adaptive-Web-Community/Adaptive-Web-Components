@@ -1,4 +1,3 @@
-import { typeRampBase } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 
@@ -43,7 +42,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         max-width: calc(${heightNumber} * 1px);
-        ${typeRampBase}
     }
 
     .backplate {

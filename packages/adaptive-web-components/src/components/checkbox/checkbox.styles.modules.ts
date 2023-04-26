@@ -1,4 +1,5 @@
 import {
+    labelTextStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles,
     StyleModules,
@@ -11,6 +12,12 @@ import { CheckboxAnatomy } from "./checkbox.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+            part: CheckboxAnatomy.parts.label,
+        },
+        labelTextStyles
+    ],
     [
         {
             part: CheckboxAnatomy.parts.control,

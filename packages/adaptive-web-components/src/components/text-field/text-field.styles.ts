@@ -4,7 +4,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -25,6 +24,7 @@ export const templateStyles: ElementStyles = css`
 
     .control {
         -webkit-appearance: none;
+        font: inherit;
     }
 
     .label.label__hidden {
@@ -54,7 +54,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        ${typeRampBase}
         fill: currentcolor;
     }
 
@@ -84,7 +83,6 @@ export const aestheticStyles: ElementStyles = css`
         border: none;
         background: transparent;
         color: inherit;
-        font-family: inherit;
     }
 
     .control:focus-visible {

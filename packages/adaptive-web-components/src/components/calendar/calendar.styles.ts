@@ -4,10 +4,8 @@ import {
     designUnit,
     fillColor,
     foregroundOnAccentRest,
-    neutralForegroundRest,
     neutralStrokeReadableRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
@@ -42,9 +40,7 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit} * 1px);
         --calendar-gap: 2px;
-        color: ${neutralForegroundRest};
         fill: currentcolor;
-        ${typeRampBase}
     }
 
     .title {

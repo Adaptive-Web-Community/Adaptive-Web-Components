@@ -4,7 +4,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
@@ -25,6 +24,7 @@ export const templateStyles: ElementStyles = css`
         align-items: center;
         white-space: nowrap;
         outline: none;
+        font: inherit;
         text-decoration: none;
     }
 
@@ -46,7 +46,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
-        ${typeRampBase}
     }
 
     .control {

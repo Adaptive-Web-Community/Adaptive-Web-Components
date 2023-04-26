@@ -126,6 +126,7 @@ export const StyleProperty = {
     fontSize: "fontSize",
     fontWeight: "fontWeight",
     fontStyle: "fontStyle",
+    fontVariationSettings: "fontVariationSettings",
     letterSpacing: "letterSpacing",
     lineHeight: "lineHeight",
     padding: "padding",

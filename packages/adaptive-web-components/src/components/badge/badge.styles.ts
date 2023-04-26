@@ -3,7 +3,6 @@ import {
     controlCornerRadius,
     designUnit,
     strokeWidth,
-    typeRampMinus1,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -19,10 +18,6 @@ export const templateStyles: ElementStyles = css`
  * Visual styles including Adaptive UI tokens.
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        ${typeRampMinus1}
-    }
-
     .control {
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
