@@ -52,7 +52,6 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
         height: calc(${heightNumber} * 0.25 * 1px);
         width: calc((${designUnit} / 2) * 1px);
-        background: ${neutralStrokeSubtleRest};
     }
 
     :host([orientation="vertical"]) .mark {
@@ -67,6 +66,10 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         ${typeRampMinus1}
+    }
+
+    .mark {
+        background: ${neutralStrokeSubtleRest};
     }
 
     :host([disabled]) {

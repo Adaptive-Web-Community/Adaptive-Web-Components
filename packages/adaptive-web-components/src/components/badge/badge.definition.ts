@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBadge } from "./badge.compose.js";
+import { styleModules } from "./badge.styles.modules.js";
 
 /**
  * The Badge custom element definition. Implements {@link @microsoft/fast-foundation#FASTBadge}.
@@ -9,4 +10,9 @@ import { composeBadge } from "./badge.compose.js";
  *
  * @public
  */
-export const badgeDefinition = composeBadge(DefaultDesignSystem);
+export const badgeDefinition = composeBadge(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

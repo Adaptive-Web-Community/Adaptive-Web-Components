@@ -3,6 +3,7 @@ import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordionItem } from "./accordion-item.compose.js";
 import { AccordionItemStatics } from './accordion-item.template.js';
+import { styleModules } from "./accordion-item.styles.modules.js";
 
 /**
  * The Accordion Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordionItem}.
@@ -18,6 +19,7 @@ export const accordionItemDefinition = composeAccordionItem(
         statics: {
             [AccordionItemStatics.collapsed]: chevronDownIcon,
             [AccordionItemStatics.expanded]: chevronUpIcon
-        }
+        },
+        styleModules,
     }
 );

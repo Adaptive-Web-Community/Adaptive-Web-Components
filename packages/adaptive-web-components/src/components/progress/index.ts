@@ -3,4 +3,7 @@ export {
     templateStyles as progressTemplateStyles,
     aestheticStyles as progressAestheticStyles,
 } from "./progress.styles.js";
-export { template as progressTemplate } from "./progress.template.js";
+export {
+    styleModules as progressStyleModules,
+} from "./progress.styles.modules.js";
+export { template as progressTemplate, ProgressAnatomy, ProgressConditions, ProgressParts } from "./progress.template.js";

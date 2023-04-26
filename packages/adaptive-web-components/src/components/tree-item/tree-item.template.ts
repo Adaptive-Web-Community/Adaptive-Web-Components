@@ -1,6 +1,7 @@
 import { children, elements, ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, staticallyCompose, TreeItemOptions } from "@microsoft/fast-foundation";
 import type { FASTTreeItem, ValuesOf } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -11,6 +12,23 @@ export const TreeItemStatics = {
 } as const;
 
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
+
+export const TreeItemConditions = {
+    selected: "[aria-selected='true']",
+};
+
+export const TreeItemParts = {
+    control: "control",
+    expandCollapseButton: "expand-collapse-button",
+    content: "content",
+    items: "items",
+};
+
+export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof TreeItemParts> = {
+    interactivity: Interactivity.disabledAttribute,
+    conditions: TreeItemConditions,
+    parts: TreeItemParts,
+};
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 

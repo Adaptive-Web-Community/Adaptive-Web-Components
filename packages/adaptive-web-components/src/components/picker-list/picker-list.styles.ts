@@ -3,13 +3,6 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillSubtleActive,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
-    neutralForegroundRest,
-    neutralStrokeSubtleActive,
-    neutralStrokeSubtleHover,
-    neutralStrokeSubtleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -46,23 +39,11 @@ export const aestheticStyles: ElementStyles = css`
         min-height: calc(${heightNumber} * 1px);
         column-gap: calc(${designUnit} * 1px);
         row-gap: calc(${designUnit} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
+        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillSubtleRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         padding: calc(${designUnit} * 1px) calc(${designUnit} * 2px);
         ${typeRampBase}
-    }
-
-    :host(:not([disabled]):hover) {
-        border-color: ${neutralStrokeSubtleHover};
-        background: ${neutralFillSubtleHover};
-    }
-
-    :host(:not([disabled]):active) {
-        border-color: ${neutralStrokeSubtleActive};
-        background: ${neutralFillSubtleActive};
     }
 
     :host(:not([disabled]):focus-within) {

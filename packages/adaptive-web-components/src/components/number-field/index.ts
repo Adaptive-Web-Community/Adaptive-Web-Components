@@ -3,4 +3,13 @@ export {
     templateStyles as numberFieldTemplateStyles,
     aestheticStyles as numberFieldAestheticStyles,
 } from "./number-field.styles.js";
-export { template as numberFieldTemplate, NumberFieldStatics } from "./number-field.template.js";
+export {
+    styleModules as numberFieldStyleModules,
+} from "./number-field.styles.modules.js";
+export {
+    template as numberFieldTemplate,
+    NumberFieldAnatomy,
+    NumberFieldConditions,
+    NumberFieldParts,
+    NumberFieldStatics
+} from "./number-field.template.js";

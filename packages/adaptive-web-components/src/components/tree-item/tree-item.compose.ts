@@ -1,11 +1,11 @@
 import { FASTTreeItem } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./tree-item.styles.js";
-import { template, TreeItemStatics } from "./tree-item.template.js";
+import { template, TreeItemAnatomy, TreeItemStatics } from "./tree-item.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeTreeItem(
     ds: DesignSystem,
@@ -19,6 +19,8 @@ export function composeTreeItem(
             );
         }
     }
+
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, TreeItemAnatomy.interactivity, options);
 
     return FASTTreeItem.compose({
         name: `${ds.prefix}-tree-item`,

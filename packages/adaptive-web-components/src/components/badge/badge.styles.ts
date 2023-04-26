@@ -2,8 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     controlCornerRadius,
     designUnit,
-    neutralFillSubtleRest,
-    neutralForegroundRest,
     strokeWidth,
     typeRampMinus1,
 } from "@adaptive-web/adaptive-ui";
@@ -31,8 +29,6 @@ export const aestheticStyles: ElementStyles = css`
         padding:
             calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
             calc((${designUnit} - ${strokeWidth}) * 1px);
-        background: ${neutralFillSubtleRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 `;

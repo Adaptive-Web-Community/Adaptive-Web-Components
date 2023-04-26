@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTextArea } from "./text-area.compose.js";
+import { styleModules } from "./text-area.styles.modules.js";
 
 /**
  * The Text Area custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextArea}.
@@ -12,6 +13,7 @@ import { composeTextArea } from "./text-area.compose.js";
 export const textAreaDefinition = composeTextArea(
 	DefaultDesignSystem,
 	{
+		styleModules,
 		shadowOptions: {
 			delegatesFocus: true
 		}

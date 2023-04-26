@@ -1,12 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentFillReadableRest,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralForegroundActive,
-    neutralForegroundHover,
-    neutralForegroundRest,
     neutralStrokeSubtleRest,
     strokeWidth,
     typeRampBase,
@@ -115,16 +111,7 @@ export const aestheticStyles: ElementStyles = css`
     .button {
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         height: calc(${heightNumber} * 1px);
-        color: ${neutralForegroundRest};
         font-family: inherit;
-    }
-
-    :host(:not([disabled])) .button:hover {
-        color: ${neutralForegroundHover};
-    }
-
-    :host(:not([disabled])) .button:active {
-        color: ${neutralForegroundActive};
     }
 
     :host(:not([disabled])) .button:focus-visible::before {
@@ -134,7 +121,7 @@ export const aestheticStyles: ElementStyles = css`
     .icon {
         height: calc(${heightNumber} * 1px);
         width: calc(${heightNumber} * 1px);
-        fill: ${accentFillReadableRest};
+        fill: currentcolor;
     }
 
     .region {

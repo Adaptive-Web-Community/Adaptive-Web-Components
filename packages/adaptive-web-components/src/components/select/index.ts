@@ -3,4 +3,7 @@ export {
     templateStyles as selectTemplateStyles,
     aestheticStyles as selectAestheticStyles,
 } from "./select.styles.js";
-export { template as selectTemplate, SelectStatics } from "./select.template.js";
+export {
+    styleModules as selectStyleModules,
+} from "./select.styles.modules.js";
+export { template as selectTemplate, SelectAnatomy, SelectConditions, SelectParts, SelectStatics } from "./select.template.js";

@@ -3,9 +3,6 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralForegroundActive,
-    neutralForegroundHover,
-    neutralForegroundRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -39,17 +36,8 @@ export const aestheticStyles: ElementStyles = css`
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
-    }
-
-    :host(:not([disabled]):hover) {
-        color: ${neutralForegroundHover};
-    }
-
-    :host(:not([disabled]):active) {
-        color: ${neutralForegroundActive};
     }
 
     :host(:focus-visible) {

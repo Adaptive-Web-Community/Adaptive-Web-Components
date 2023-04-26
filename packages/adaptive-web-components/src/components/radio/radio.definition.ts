@@ -2,6 +2,7 @@ import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeRadio } from "./radio.compose.js";
 import { RadioStatics } from "./radio.template.js";
+import { styleModules } from "./radio.styles.modules.js";
 
 /**
  * The Radio custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadio}.
@@ -16,6 +17,7 @@ export const radioDefinition = composeRadio(
     {
         statics: {
             [RadioStatics.checked]: circleIcon
-        }
+        },
+        styleModules,
     }
 );

@@ -2,6 +2,7 @@ import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.s
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCombobox } from "./combobox.compose.js";
 import { ComboboxStatics } from "./combobox.template.js";
+import { styleModules } from "./combobox.styles.modules.js";
 
 /**
  * The Combobox custom element definition. Implements {@link @microsoft/fast-foundation#FASTCombobox}.
@@ -17,6 +18,7 @@ export const comboboxDefinition = composeCombobox(
         statics: {
             [ComboboxStatics.indicator]: chevronDownIcon
         },
+        styleModules,
         shadowOptions: {
             delegatesFocus: true
         }

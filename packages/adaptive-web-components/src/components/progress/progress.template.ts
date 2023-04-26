@@ -1,6 +1,22 @@
 import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { FASTProgress, StaticallyComposableHTML, staticallyCompose } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+
+export const ProgressConditions = {
+};
+
+export const ProgressParts = {
+    indicator: "indicator",
+    determinate: "determinate",
+    indeterminate: "indeterminate",
+};
+
+export const ProgressAnatomy: ComponentAnatomy<typeof ProgressConditions, typeof ProgressParts> = {
+    interactivity: Interactivity.never,
+    conditions: ProgressConditions,
+    parts: ProgressParts,
+};
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 

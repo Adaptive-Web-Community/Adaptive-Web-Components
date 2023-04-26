@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSearch } from "./search.compose.js";
+import { styleModules } from "./search.styles.modules.js";
 
 /**
  * The Search Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTSearch}.
@@ -12,6 +13,7 @@ import { composeSearch } from "./search.compose.js";
 export const searchDefinition = composeSearch(
 	DefaultDesignSystem,
 	{
+		styleModules,
 		shadowOptions: {
 			delegatesFocus: true
 		}

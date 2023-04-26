@@ -1,13 +1,6 @@
 import {
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralForegroundRest,
-    neutralStrokeSubtleActive,
-    neutralStrokeSubtleHover,
-    neutralStrokeSubtleRest,
     strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -45,21 +38,9 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         width: calc(${heightNumber} * 1px);
         height: calc(${heightNumber} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
+        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: 50%;
-        background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
-    }
-
-    :host(:hover) {
-        border-color: ${neutralStrokeSubtleHover};
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(:active) {
-        border-color: ${neutralStrokeSubtleActive};
-        background: ${neutralFillStealthActive};
     }
 
     :host(:focus-visible) {

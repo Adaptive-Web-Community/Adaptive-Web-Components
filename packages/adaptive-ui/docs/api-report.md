@@ -297,6 +297,9 @@ export const accentStrokeSubtleRecipe: DesignToken<InteractiveColorRecipe>;
 // @public (undocumented)
 export const accentStrokeSubtleRest: CSSDesignToken<Swatch>;
 
+// @public (undocumented)
+export const actionStyles: Styles;
+
 // @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
     constructor(source: T, swatches: ReadonlyArray<T>);
@@ -380,6 +383,9 @@ export const ContrastTarget: Readonly<{
 
 // @public (undocumented)
 export const controlCornerRadius: CSSDesignToken<number>;
+
+// @public
+export const createForegroundSet: (foregroundRecipe: DesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenSet<Swatch>) => InteractiveTokenSet<Swatch>;
 
 // @public
 export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, direction?: PaletteDirection): Swatch;
@@ -551,6 +557,9 @@ export const foregroundOnAccentRest: CSSDesignToken<Swatch>;
 // @public
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
 
+// @public (undocumented)
+export const inputStyles: Styles;
+
 // @public
 export interface InteractiveColorRecipe extends ColorRecipe<InteractiveSwatchSet> {
 }
@@ -579,6 +588,14 @@ export interface InteractiveTokenSet<T> extends InteractiveSet<CSSDesignToken<T>
 }
 
 // @public
+export const Interactivity: {
+    readonly disabledAttribute: InteractivityDefinition;
+    readonly hrefAttribute: InteractivityDefinition;
+    readonly always: InteractivityDefinition;
+    readonly never: InteractivityDefinition;
+};
+
+// @public
 export interface InteractivityDefinition {
     interactivitySelector?: string;
     nonInteractivitySelector?: string;
@@ -586,6 +603,9 @@ export interface InteractivityDefinition {
 
 // @public
 export function isDark(color: RelativeLuminance): boolean;
+
+// @public (undocumented)
+export const itemStyles: Styles;
 
 // @public
 export const LayerBaseLuminance: Readonly<{
@@ -1229,6 +1249,9 @@ export interface PaletteRGBOptions {
     stepContrastRamp: number;
 }
 
+// @public (undocumented)
+export const plainTextStyles: Styles;
+
 // @public
 export interface RelativeLuminance {
     readonly relativeLuminance: number;
@@ -1239,6 +1262,12 @@ export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateP
 
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
+
+// @public (undocumented)
+export const selectableSelectedStyles: Styles;
+
+// @public (undocumented)
+export const selectableUnselectedStyles: Styles;
 
 // @public
 export const StandardFontWeight: {
@@ -1337,12 +1366,18 @@ export const strokeWidth: CSSDesignToken<number>;
 // @public
 export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
 
+// @public (undocumented)
+export type StyleModules = Iterable<readonly [StyleModuleTarget, Styles]>;
+
 // @public
 export interface StyleModuleTarget {
     hostCondition?: string;
     part?: string;
     partCondition?: string;
 }
+
+// @public
+export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenSet<any> | CSSDirective | string>>;
 
 // @public
 export const StyleProperty: {
@@ -1370,7 +1405,17 @@ export const StyleProperty: {
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
 // @public
-export type Styles = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenSet<any> | CSSDirective | string>>;
+export class Styles {
+    // (undocumented)
+    get alias(): Styles;
+    set alias(alias: Styles);
+    // (undocumented)
+    static fromAlias(styles: Styles): Styles;
+    // (undocumented)
+    static fromProperties(properties: StyleProperties): Styles;
+    // (undocumented)
+    get properties(): StyleProperties;
+}
 
 // @public
 export interface Swatch extends RelativeLuminance {

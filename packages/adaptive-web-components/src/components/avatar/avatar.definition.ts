@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAvatar } from "./avatar.compose.js";
+import { styleModules } from "./avatar.styles.modules.js";
 
 /**
  * The Avatar custom element definition. Implements {@link @microsoft/fast-foundation#FASTAvatar}.
@@ -9,4 +10,9 @@ import { composeAvatar } from "./avatar.compose.js";
  *
  * @public
  */
-export const avatarDefinition = composeAvatar(DefaultDesignSystem);
+export const avatarDefinition = composeAvatar(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

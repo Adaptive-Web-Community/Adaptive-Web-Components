@@ -4,10 +4,6 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillSubtleActive,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
-    neutralForegroundRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -64,9 +60,7 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid transparent;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         border-radius: inherit;
-        background-color: ${neutralFillSubtleRest};
         white-space: nowrap;
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         font-family: inherit;
     }
@@ -74,14 +68,6 @@ export const aestheticStyles: ElementStyles = css`
     .control.icon-only {
         padding: 0;
         line-height: 0;
-    }
-
-    :host(:not([disabled]):hover) .control {
-        background-color: ${neutralFillSubtleHover};
-    }
-
-    :host(:not([disabled]):active) .control {
-        background-color: ${neutralFillSubtleActive};
     }
 
     .control:focus-visible {
