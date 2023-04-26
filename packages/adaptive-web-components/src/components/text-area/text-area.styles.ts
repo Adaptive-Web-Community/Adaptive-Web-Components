@@ -26,7 +26,7 @@ export const templateStyles: ElementStyles = css`
         /* position: relative; */
     }
 
-    .label__hidden {
+    .label.label__hidden {
         display: none;
         visibility: hidden;
     }

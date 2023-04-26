@@ -32,7 +32,7 @@ export const templateStyles: ElementStyles = css`
         -webkit-appearance: none;
     }
 
-    .label__hidden {
+    .label.label__hidden {
         display: none;
         visibility: hidden;
     }

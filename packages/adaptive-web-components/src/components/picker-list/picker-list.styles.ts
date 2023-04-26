@@ -29,7 +29,6 @@ export const templateStyles: ElementStyles = css`
 
     ::slotted([role="combobox"]) {
         box-sizing: border-box;
-        min-width: 250px;
         width: auto;
         border: none;
         outline: none;

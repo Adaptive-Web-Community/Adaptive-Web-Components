@@ -63,7 +63,7 @@ export const templateStyles: ElementStyles = css`
         opacity: 0;
     }
 
-    .label__hidden {
+    .label.label__hidden {
         display: none;
         visibility: hidden;
     }
