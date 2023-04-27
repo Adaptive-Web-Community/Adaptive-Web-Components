@@ -3,4 +3,7 @@ export {
     templateStyles as dataGridRowTemplateStyles,
     aestheticStyles as dataGridRowAestheticStyles,
 } from "./data-grid-row.styles.js";
-export { template as dataGridRowTemplate } from "./data-grid-row.template.js";
+export {
+    styleModules as dataGridRowStyleModules,
+} from "./data-grid-row.styles.modules.js";
+export { template as dataGridRowTemplate, DataGridRowAnatomy, DataGridRowConditions, DataGridRowParts } from "./data-grid-row.template.js";

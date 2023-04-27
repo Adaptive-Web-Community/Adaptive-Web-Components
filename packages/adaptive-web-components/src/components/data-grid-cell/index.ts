@@ -3,4 +3,12 @@ export {
     templateStyles as dataGridCellTemplateStyles,
     aestheticStyles as dataGridCellAestheticStyles,
 } from "./data-grid-cell.styles.js";
-export { template as dataGridCellTemplate } from "./data-grid-cell.template.js";
+export {
+    styleModules as dataGridCellStyleModules,
+} from "./data-grid-cell.styles.modules.js";
+export {
+    template as dataGridCellTemplate,
+    DataGridCellAnatomy,
+    DataGridCellConditions,
+    DataGridCellParts
+} from "./data-grid-cell.template.js";

@@ -3,4 +3,7 @@ export {
     templateStyles as toolbarTemplateStyles,
     aestheticStyles as toolbarAestheticStyles,
 } from "./toolbar.styles.js";
-export { template as toolbarTemplate } from "./toolbar.template.js";
+export {
+    styleModules as toolbarStyleModules,
+} from "./toolbar.styles.modules.js";
+export { template as toolbarTemplate, ToolbarAnatomy, ToolbarConditions, ToolbarParts } from "./toolbar.template.js";

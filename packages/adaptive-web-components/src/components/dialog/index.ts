@@ -3,4 +3,7 @@ export {
     templateStyles as dialogTemplateStyles,
     aestheticStyles as dialogAestheticStyles,
 } from "./dialog.styles.js";
-export { template as dialogTemplate } from "./dialog.template.js";
+export {
+    styleModules as dialogStyleModules,
+} from "./dialog.styles.modules.js";
+export { template as dialogTemplate, DialogAnatomy, DialogConditions, DialogParts } from "./dialog.template.js";

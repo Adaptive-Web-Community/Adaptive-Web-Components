@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSlider } from "./slider.compose.js";
+import { styleModules } from "./slider.styles.modules.js";
 
 /**
  * The Slider custom element definition. Implements {@link @microsoft/fast-foundation#FASTSlider}.
@@ -9,4 +10,9 @@ import { composeSlider } from "./slider.compose.js";
  *
  * @public
  */
-export const sliderDefinition = composeSlider(DefaultDesignSystem);
+export const sliderDefinition = composeSlider(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

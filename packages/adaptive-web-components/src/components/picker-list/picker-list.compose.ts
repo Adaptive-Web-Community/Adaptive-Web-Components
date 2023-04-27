@@ -16,7 +16,7 @@ export function composePickerList(
     return FASTPickerList.compose({
         name: `${ds.prefix}-picker-list`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

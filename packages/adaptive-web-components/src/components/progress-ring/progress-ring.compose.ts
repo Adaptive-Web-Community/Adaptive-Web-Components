@@ -16,7 +16,7 @@ export function composeProgressRing(
     return FASTProgressRing.compose({
         name: `${ds.prefix}-progress-ring`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

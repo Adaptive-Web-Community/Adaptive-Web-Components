@@ -1,7 +1,20 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { dataGridTemplate, FASTDataGrid } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { composeDataGridRow } from '../data-grid-row/index.js';
+
+export const DataGridConditions = {
+};
+
+export const DataGridParts = {
+};
+
+export const DataGridAnatomy: ComponentAnatomy<typeof DataGridConditions, typeof DataGridParts> = {
+    interactivity: Interactivity.never,
+    conditions: DataGridConditions,
+    parts: DataGridParts,
+};
 
 /**
  * Default Data Grid template, {@link @microsoft/fast-foundation#dataGridTemplate}.

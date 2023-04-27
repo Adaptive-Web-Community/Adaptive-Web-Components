@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composePickerMenu } from "./picker-menu.compose.js";
+import { styleModules } from "./picker-menu.styles.modules.js";
 
 /**
  * The Picker Menu custom element definition. Implements {@link @microsoft/fast-foundation#FASTPickerMenu}.
@@ -9,4 +10,9 @@ import { composePickerMenu } from "./picker-menu.compose.js";
  *
  * @public
  */
-export const pickerMenuDefinition = composePickerMenu(DefaultDesignSystem);
+export const pickerMenuDefinition = composePickerMenu(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

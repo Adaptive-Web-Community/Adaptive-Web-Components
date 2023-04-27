@@ -182,6 +182,20 @@ export const AnchorConditions: {
 // @public
 export const anchoredRegionAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const AnchoredRegionAnatomy: ComponentAnatomy<typeof AnchoredRegionConditions, typeof AnchoredRegionParts>;
+
+// @public (undocumented)
+export const AnchoredRegionConditions: {
+    loaded: string;
+};
+
+// @public (undocumented)
+export const AnchoredRegionParts: {};
+
+// @public
+export const anchoredRegionStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -260,6 +274,12 @@ export const badgeTemplateStyles: ElementStyles;
 // @public
 export const breadcrumbAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, typeof BreadcrumbParts>;
+
+// @public (undocumented)
+export const BreadcrumbConditions: {};
+
 // @public
 export const breadcrumbItemAestheticStyles: ElementStyles;
 
@@ -295,6 +315,14 @@ export const breadcrumbItemTemplate: (ds: DesignSystem) => ElementViewTemplate<F
 
 // @public
 export const breadcrumbItemTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export const BreadcrumbParts: {
+    list: string;
+};
+
+// @public
+export const breadcrumbStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -335,6 +363,29 @@ export const buttonTemplateStyles: ElementStyles;
 // @public
 export const calendarAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const CalendarAnatomy: ComponentAnatomy<typeof CalendarConditions, typeof CalendarParts>;
+
+// @public (undocumented)
+export const CalendarConditions: {};
+
+// @public (undocumented)
+export const CalendarParts: {
+    title: string;
+    month: string;
+    year: string;
+    days: string;
+    week: string;
+    weekDay: string;
+    weekDays: string;
+    day: string;
+    date: string;
+    today: string;
+};
+
+// @public
+export const calendarStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -345,6 +396,18 @@ export const calendarTemplateStyles: ElementStyles;
 
 // @public
 export const cardAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const CardAnatomy: ComponentAnatomy<typeof CardConditions, typeof CardParts>;
+
+// @public (undocumented)
+export const CardConditions: {};
+
+// @public (undocumented)
+export const CardParts: {};
+
+// @public
+export const cardStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -683,8 +746,27 @@ export function composeTreeView(ds: DesignSystem, options?: ComposeOptions<FASTT
 // @public
 export const dataGridAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const DataGridAnatomy: ComponentAnatomy<typeof DataGridConditions, typeof DataGridParts>;
+
 // @public
 export const dataGridCellAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions, typeof DataGridCellParts>;
+
+// @public (undocumented)
+export const DataGridCellConditions: {
+    cellTypeDefault: string;
+    cellTypeColumnHeader: string;
+    cellTypeRowHeader: string;
+};
+
+// @public (undocumented)
+export const DataGridCellParts: {};
+
+// @public
+export const dataGridCellStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -694,8 +776,31 @@ export const dataGridCellTemplate: (ds: DesignSystem) => ElementViewTemplate<FAS
 // @public
 export const dataGridCellTemplateStyles: ElementStyles;
 
+// @public (undocumented)
+export const DataGridConditions: {};
+
+// @public (undocumented)
+export const DataGridParts: {};
+
 // @public
 export const dataGridRowAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const DataGridRowAnatomy: ComponentAnatomy<typeof DataGridRowConditions, typeof DataGridRowParts>;
+
+// @public (undocumented)
+export const DataGridRowConditions: {
+    rowTypeDefault: string;
+    rowTypeHeader: string;
+    rowTypeStickyHeader: string;
+    selected: string;
+};
+
+// @public (undocumented)
+export const DataGridRowParts: {};
+
+// @public
+export const dataGridRowStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -704,6 +809,9 @@ export const dataGridRowTemplate: (ds: DesignSystem) => ElementViewTemplate<FAST
 
 // @public
 export const dataGridRowTemplateStyles: ElementStyles;
+
+// @public
+export const dataGridStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -733,6 +841,22 @@ export class DesignSystem {
 // @public
 export const dialogAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const DialogAnatomy: ComponentAnatomy<typeof DialogConditions, typeof DialogParts>;
+
+// @public (undocumented)
+export const DialogConditions: {};
+
+// @public (undocumented)
+export const DialogParts: {
+    positioningRegion: string;
+    overlay: string;
+    control: string;
+};
+
+// @public
+export const dialogStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -754,7 +878,6 @@ export const DisclosureConditions: {
 
 // @public (undocumented)
 export const DisclosureParts: {
-    disclosure: string;
     invoker: string;
 };
 
@@ -772,6 +895,21 @@ export const disclosureTemplateStyles: ElementStyles;
 // @public
 export const dividerAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const DividerAnatomy: ComponentAnatomy<typeof DividerConditions, typeof DividerParts>;
+
+// @public (undocumented)
+export const DividerConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
+// @public (undocumented)
+export const DividerParts: {};
+
+// @public
+export const dividerStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -783,6 +921,21 @@ export const dividerTemplateStyles: ElementStyles;
 // @public
 export const flipperAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const FlipperAnatomy: ComponentAnatomy<typeof FlipperConditions, typeof FlipperParts>;
+
+// @public (undocumented)
+export const FlipperConditions: {
+    next: string;
+    previous: string;
+};
+
+// @public (undocumented)
+export const FlipperParts: {
+    next: string;
+    previous: string;
+};
+
 // @public
 export const FlipperStatics: {
     readonly next: "flipper-next";
@@ -791,6 +944,9 @@ export const FlipperStatics: {
 
 // @public (undocumented)
 export type FlipperStatics = ValuesOf<typeof FlipperStatics>;
+
+// @public
+export const flipperStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -803,6 +959,26 @@ export const flipperTemplateStyles: ElementStyles;
 // @public
 export const horizontalScrollAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const HorizontalScrollAnatomy: ComponentAnatomy<typeof HorizontalScrollConditions, typeof HorizontalScrollParts>;
+
+// @public (undocumented)
+export const HorizontalScrollConditions: {};
+
+// @public (undocumented)
+export const HorizontalScrollParts: {
+    scrollArea: string;
+    scrollView: string;
+    content: string;
+    scrollPrevious: string;
+    previousFlipper: string;
+    scrollNext: string;
+    nextFlipper: string;
+};
+
+// @public
+export const horizontalScrollStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -813,6 +989,12 @@ export const horizontalScrollTemplateStyles: ElementStyles;
 
 // @public
 export const listboxAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const ListboxAnatomy: ComponentAnatomy<typeof ListboxConditions, typeof ListboxParts>;
+
+// @public (undocumented)
+export const ListboxConditions: {};
 
 // @public
 export const listboxOptionAestheticStyles: ElementStyles;
@@ -842,6 +1024,12 @@ export const listboxOptionTemplate: (ds: DesignSystem) => ElementViewTemplate<FA
 // @public
 export const listboxOptionTemplateStyles: ElementStyles;
 
+// @public (undocumented)
+export const ListboxParts: {};
+
+// @public
+export const listboxStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -852,6 +1040,14 @@ export const listboxTemplateStyles: ElementStyles;
 
 // @public
 export const menuAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const MenuAnatomy: ComponentAnatomy<typeof MenuConditions, typeof MenuParts>;
+
+// @public (undocumented)
+export const MenuConditions: {
+    submenu: string;
+};
 
 // @public
 export const menuItemAestheticStyles: ElementStyles;
@@ -890,6 +1086,12 @@ export const menuItemTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTMen
 
 // @public
 export const menuItemTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export const MenuParts: {};
+
+// @public
+export const menuStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -941,8 +1143,20 @@ export const numberFieldTemplateStyles: ElementStyles;
 // @public
 export const pickerAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof PickerParts>;
+
+// @public (undocumented)
+export const PickerConditions: {};
+
 // @public
 export const pickerListAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const PickerListAnatomy: ComponentAnatomy<typeof PickerListConditions, typeof PickerListParts>;
+
+// @public (undocumented)
+export const PickerListConditions: {};
 
 // @public
 export const pickerListItemAestheticStyles: ElementStyles;
@@ -967,6 +1181,12 @@ export const pickerListItemTemplate: (ds: DesignSystem) => ElementViewTemplate<F
 // @public
 export const pickerListItemTemplateStyles: ElementStyles;
 
+// @public (undocumented)
+export const PickerListParts: {};
+
+// @public
+export const pickerListStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -977,6 +1197,12 @@ export const pickerListTemplateStyles: ElementStyles;
 
 // @public
 export const pickerMenuAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const PickerMenuAnatomy: ComponentAnatomy<typeof PickerMenuConditions, typeof PickerMenuParts>;
+
+// @public (undocumented)
+export const PickerMenuConditions: {};
 
 // @public
 export const pickerMenuOptionAestheticStyles: ElementStyles;
@@ -1001,6 +1227,17 @@ export const pickerMenuOptionTemplate: (ds: DesignSystem) => ElementViewTemplate
 // @public
 export const pickerMenuOptionTemplateStyles: ElementStyles;
 
+// @public (undocumented)
+export const PickerMenuParts: {
+    optionsDisplay: string;
+    headerRegion: string;
+    footerRegion: string;
+    suggestionsAvailableAlert: string;
+};
+
+// @public
+export const pickerMenuStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -1008,6 +1245,17 @@ export const pickerMenuTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTP
 
 // @public
 export const pickerMenuTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export const PickerParts: {
+    region: string;
+    noOptionsDisplay: string;
+    loadingDisplay: string;
+    loadingProgress: string;
+};
+
+// @public
+export const pickerStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1084,6 +1332,23 @@ export const RadioConditions: {
 
 // @public
 export const radioGroupAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, typeof RadioGroupParts>;
+
+// @public (undocumented)
+export const RadioGroupConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
+// @public (undocumented)
+export const RadioGroupParts: {
+    positioningRegion: string;
+};
+
+// @public
+export const radioGroupStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1185,6 +1450,21 @@ export const selectTemplateStyles: ElementStyles;
 // @public
 export const skeletonAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const SkeletonAnatomy: ComponentAnatomy<typeof SkeletonConditions, typeof SkeletonParts>;
+
+// @public (undocumented)
+export const SkeletonConditions: {
+    rectangle: string;
+    circle: string;
+};
+
+// @public (undocumented)
+export const SkeletonParts: {};
+
+// @public
+export const skeletonStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -1196,8 +1476,36 @@ export const skeletonTemplateStyles: ElementStyles;
 // @public
 export const sliderAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof SliderParts>;
+
+// @public (undocumented)
+export const SliderConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
 // @public
 export const sliderLabelAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, typeof SliderLabelParts>;
+
+// @public (undocumented)
+export const SliderLabelConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
+// @public (undocumented)
+export const SliderLabelParts: {
+    container: string;
+    mark: string;
+    content: string;
+};
+
+// @public
+export const sliderLabelStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1206,6 +1514,18 @@ export const sliderLabelTemplate: (ds: DesignSystem) => ElementViewTemplate<FAST
 
 // @public
 export const sliderLabelTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export const SliderParts: {
+    positioningRegion: string;
+    track: string;
+    trackStart: string;
+    thumbContainer: string;
+    thumb: string;
+};
+
+// @public
+export const sliderStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1256,6 +1576,18 @@ export const TabConditions: {};
 // @public
 export const tabPanelAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const TabPanelAnatomy: ComponentAnatomy<typeof TabPanelConditions, typeof TabPanelParts>;
+
+// @public (undocumented)
+export const TabPanelConditions: {};
+
+// @public (undocumented)
+export const TabPanelParts: {};
+
+// @public
+export const tabPanelStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -1269,6 +1601,24 @@ export const TabParts: {};
 
 // @public
 export const tabsAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const TabsAnatomy: ComponentAnatomy<typeof TabsConditions, typeof TabsParts>;
+
+// @public (undocumented)
+export const TabsConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
+// @public (undocumented)
+export const TabsParts: {
+    tablist: string;
+    tabpanel: string;
+};
+
+// @public
+export const tabsStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1345,6 +1695,23 @@ export const textFieldTemplateStyles: ElementStyles;
 // @public
 export const toolbarAestheticStyles: ElementStyles;
 
+// @public (undocumented)
+export const ToolbarAnatomy: ComponentAnatomy<typeof ToolbarConditions, typeof ToolbarParts>;
+
+// @public (undocumented)
+export const ToolbarConditions: {
+    horizontal: string;
+    vertical: string;
+};
+
+// @public (undocumented)
+export const ToolbarParts: {
+    positioningRegion: string;
+};
+
+// @public
+export const toolbarStyleModules: StyleModules;
+
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public
@@ -1355,6 +1722,21 @@ export const toolbarTemplateStyles: ElementStyles;
 
 // @public
 export const tooltipAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const TooltipAnatomy: ComponentAnatomy<typeof TooltipConditions, typeof TooltipParts>;
+
+// @public (undocumented)
+export const TooltipConditions: {
+    show: string;
+    visible: string;
+};
+
+// @public (undocumented)
+export const TooltipParts: {};
+
+// @public
+export const tooltipStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1404,6 +1786,18 @@ export const treeItemTemplateStyles: ElementStyles;
 
 // @public
 export const treeViewAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const TreeViewAnatomy: ComponentAnatomy<typeof TreeViewConditions, typeof TreeViewParts>;
+
+// @public (undocumented)
+export const TreeViewConditions: {};
+
+// @public (undocumented)
+export const TreeViewParts: {};
+
+// @public
+export const treeViewStyleModules: StyleModules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //

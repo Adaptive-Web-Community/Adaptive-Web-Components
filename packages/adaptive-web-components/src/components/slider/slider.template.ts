@@ -1,7 +1,27 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
 // import { sliderTemplate } from "@microsoft/fast-foundation";
 import { FASTSlider, staticallyCompose } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+
+export const SliderConditions = {
+    horizontal: "[orientation='horizontal']",
+    vertical: "[orientation='vertical']",
+};
+
+export const SliderParts = {
+    positioningRegion: "positioning-region",
+    track: "track",
+    trackStart: "track-start",
+    thumbContainer: "thumb-container",
+    thumb: "thumb",
+};
+
+export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof SliderParts> = {
+    interactivity: Interactivity.never,
+    conditions: SliderConditions,
+    parts: SliderParts,
+};
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 

@@ -3,4 +3,7 @@ export {
     templateStyles as pickerListTemplateStyles,
     aestheticStyles as pickerListAestheticStyles,
 } from "./picker-list.styles.js";
-export { template as pickerListTemplate } from "./picker-list.template.js";
+export {
+    styleModules as pickerListStyleModules,
+} from "./picker-list.styles.modules.js";
+export { template as pickerListTemplate, PickerListAnatomy, PickerListConditions, PickerListParts } from "./picker-list.template.js";

@@ -3,4 +3,7 @@ export {
     templateStyles as calendarTemplateStyles,
     aestheticStyles as calendarAestheticStyles,
 } from "./calendar.styles.js";
-export { template as calendarTemplate } from "./calendar.template.js";
+export {
+    styleModules as calendarStyleModules,
+} from "./calendar.styles.modules.js";
+export { template as calendarTemplate, CalendarAnatomy, CalendarConditions, CalendarParts } from "./calendar.template.js";

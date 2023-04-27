@@ -3,4 +3,7 @@ export {
     templateStyles as treeViewTemplateStyles,
     aestheticStyles as treeViewAestheticStyles,
 } from "./tree-view.styles.js";
-export { template as treeViewTemplate } from "./tree-view.template.js";
+export {
+    styleModules as treeViewStyleModules,
+} from "./tree-view.styles.modules.js";
+export { template as treeViewTemplate, TreeViewAnatomy, TreeViewConditions, TreeViewParts } from "./tree-view.template.js";
