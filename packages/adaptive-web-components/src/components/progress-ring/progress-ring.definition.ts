@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeProgressRing } from "./progress-ring.compose.js";
+import { styleModules } from "./progress-ring.styles.modules.js";
 
 /**
  * The Progress Ring custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgressRing}.
@@ -9,4 +10,9 @@ import { composeProgressRing } from "./progress-ring.compose.js";
  *
  * @public
  */
-export const progressRingDefinition = composeProgressRing(DefaultDesignSystem);
+export const progressRingDefinition = composeProgressRing(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

@@ -1,11 +1,11 @@
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveSelect } from "./select.js";
 import { aestheticStyles, templateStyles } from "./select.styles.js";
-import { SelectStatics, template } from "./select.template.js";
+import { SelectAnatomy, SelectStatics, template } from "./select.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeSelect(
     ds: DesignSystem,
@@ -19,6 +19,8 @@ export function composeSelect(
             );
         }
     }
+
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, SelectAnatomy.interactivity, options);
 
     return AdaptiveSelect.compose({
         name: `${ds.prefix}-select`,

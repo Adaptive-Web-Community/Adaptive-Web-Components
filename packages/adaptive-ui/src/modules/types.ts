@@ -1,6 +1,5 @@
-import type { CSSDirective } from "@microsoft/fast-element";
-import type { CSSDesignToken, ValuesOf } from "@microsoft/fast-foundation";
-import { InteractiveTokenSet } from "../types.js";
+import type { ValuesOf } from "@microsoft/fast-foundation";
+import { Styles } from "./styles.js";
 
 /**
  * Selectors for focus state.
@@ -81,6 +80,30 @@ export interface InteractivityDefinition {
 }
 
 /**
+ * Common patterns for {@link InteractivityDefinition}.
+ *
+ * @public
+ */
+export const Interactivity = {
+    disabledAttribute: { 
+        interactivitySelector: ":not([disabled])",
+        nonInteractivitySelector: "[disabled]",
+    } as InteractivityDefinition,
+    hrefAttribute:  { 
+        interactivitySelector: "[href]",
+        nonInteractivitySelector: ":not([href])",
+    } as InteractivityDefinition,
+    always: { 
+        interactivitySelector: "",
+        nonInteractivitySelector: "",
+    } as InteractivityDefinition,
+    never: { 
+        interactivitySelector: undefined,
+        nonInteractivitySelector: undefined,
+    } as InteractivityDefinition,
+} as const;
+
+/**
  * Parameters used to evaluate style modules for a component.
  *
  * @public
@@ -121,8 +144,6 @@ export const StyleProperty = {
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
 /**
- * A style definition, where the key is the {@link (StyleProperty:type)} or a custom key and the value is the token or final value.
- *
  * @public
  */
-export type Styles = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenSet<any> | CSSDirective | string>>;
+export type StyleModules = Iterable<readonly [StyleModuleTarget, Styles]>;

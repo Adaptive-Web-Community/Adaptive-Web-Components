@@ -4,9 +4,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralForegroundRest,
     neutralStrokeReadableRest,
     strokeWidth,
     typeRampBase,
@@ -139,17 +136,10 @@ export const aestheticStyles: ElementStyles = css`
         border-radius: calc(${controlCornerRadius} * 1px);
         padding: 0 12px;
         grid-column-gap: 8px;
-        background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
     }
 
-    :host(:not([disabled]):hover) {
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(:not([disabled]):active),
     :host([aria-expanded="true"]) {
         background: ${neutralFillStealthActive};
     }

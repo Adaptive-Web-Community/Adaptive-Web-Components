@@ -1,8 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentForegroundActive,
-    accentForegroundHover,
-    accentForegroundRest,
     focusStrokeWidth,
     neutralForegroundRest,
     strokeWidth,
@@ -59,16 +56,7 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         box-sizing: border-box;
         text-decoration: none;
-        color: ${accentForegroundRest};
         fill: currentcolor;
-    }
-
-    .control:hover {
-        color: ${accentForegroundHover};
-    }
-
-    .control:active {
-        color: ${accentForegroundActive};
     }
 
     .control .content {
@@ -84,18 +72,10 @@ export const aestheticStyles: ElementStyles = css`
         right: 0;
         top: calc(1em + 4px);
         width: 100%;
-    }
-
-    .control:hover .content::before {
-        background: ${accentForegroundHover};
-    }
-
-    .control:active .content::before {
-        background: ${accentForegroundActive};
+        background: currentcolor;
     }
 
     .control:focus-visible .content::before {
-        background: ${neutralForegroundRest};
         height: calc(${focusStrokeWidth} * 1px);
     }
 
@@ -106,7 +86,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .separator {
-        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 `;

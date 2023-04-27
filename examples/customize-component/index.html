@@ -11,20 +11,29 @@
             background-color: var(--fill-color);
             font-family: sans-serif;
         }
-        adaptive-card {
-            height: 500px;
-            width: 400px;
+        body {
             display: flex;
             flex-direction: column;
             gap: 20px;
             padding: 20px;
         }
     </style>
+    <script type="module" src="/src/init-ds.ts"></script>
     <script type="module" src="/src/index.ts"></script>
 </head>
 
 <body>
-    
+    <p>These components have the 'selected' state style overridden:</p>
+    <adaptive-checkbox>Check me</adaptive-checkbox>
+    <adaptive-switch>Switch me</adaptive-switch>
+    <adaptive-radio-group value="Apples">
+        <label slot="label">Fruits</label>
+        <adaptive-radio value="Apples">Apples</adaptive-radio>
+        <adaptive-radio value="Bananas">Bananas</adaptive-radio>
+        <adaptive-radio value="Blueberries">Blueberries</adaptive-radio>
+    </adaptive-radio-group>
+    <p>This checkbox has completely custom styles:</p>
+    <my-checkbox>Custom checkbox</my-checkbox>
 </body>
 
 </html>

@@ -8,6 +8,7 @@ import {
      staticallyCompose,
 } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -20,6 +21,21 @@ export const MenuItemStatics = {
 } as const;
 
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
+
+export const MenuItemConditions = {
+    checked: "[aria-checked='true']",
+};
+
+export const MenuItemParts = {
+    content: "content",
+    submenuIcon: "submenu-icon",
+};
+
+export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof MenuItemParts> = {
+    interactivity: Interactivity.disabledAttribute,
+    conditions: MenuItemConditions,
+    parts: MenuItemParts,
+};
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 

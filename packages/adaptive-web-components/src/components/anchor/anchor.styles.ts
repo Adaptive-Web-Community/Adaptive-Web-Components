@@ -3,12 +3,9 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillSubtleControlStyles,
-    renderElementStyles,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
-import type { StyleModuleEvaluateParameters } from "@adaptive-web/adaptive-ui";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
@@ -69,16 +66,3 @@ export const aestheticStyles: ElementStyles = css`
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 `;
-
-const moduleParams: StyleModuleEvaluateParameters = {
-    part: "control",
-    interactivitySelector: "[href]",
-    nonInteractivitySelector: ":not([href])",
-};
-
-/**
- * Visual styles composed by modules.
- * 
- * @internal
- */
-export const moduleStyles = renderElementStyles(neutralFillSubtleControlStyles, moduleParams);

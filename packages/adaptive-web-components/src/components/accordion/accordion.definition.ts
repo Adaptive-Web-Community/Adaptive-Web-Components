@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordion } from "./accordion.compose.js";
+import { styleModules } from "./accordion.styles.modules.js";
 
 /**
  * The Accordion custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordion}.
@@ -9,4 +10,9 @@ import { composeAccordion } from "./accordion.compose.js";
  *
  * @public
  */
-export const accordionDefinition = composeAccordion(DefaultDesignSystem);
+export const accordionDefinition = composeAccordion(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

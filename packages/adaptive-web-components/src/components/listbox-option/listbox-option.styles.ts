@@ -1,18 +1,8 @@
 import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralForegroundRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -55,37 +45,12 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
         padding: 0 calc(${designUnit} * 2.25px);
-        background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
     }
 
-    :host(:not([disabled]):hover) {
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(:not([disabled]):active) {
-        background: ${neutralFillStealthActive};
-    }
-
     :host(:focus-visible) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-    }
-
-    :host([aria-selected="true"]) {
-        background: ${accentFillReadableRest};
-        color: ${foregroundOnAccentRest};
-    }
-
-    :host([aria-selected="true"]:not([disabled]):hover) {
-        background: ${accentFillReadableHover};
-        color: ${foregroundOnAccentHover};
-    }
-
-    :host([aria-selected="true"]:not([disabled]):active) {
-        background: ${accentFillReadableActive};
-        color: ${foregroundOnAccentActive};
     }
 
     :host([disabled]) {

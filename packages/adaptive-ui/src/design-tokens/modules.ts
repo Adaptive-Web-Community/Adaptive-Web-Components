@@ -1,8 +1,8 @@
 import { CSSDesignToken, DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
-import type { Styles } from "../modules/types.js";
 import type { InteractiveSet, InteractiveTokenSet } from "../types.js";
+import { StyleProperties, Styles } from "../modules/styles.js";
 import {
     accentFillDiscernibleInteractiveSet,
     accentFillReadableInteractiveSet,
@@ -12,6 +12,7 @@ import {
     accentStrokeReadableInteractiveSet,
     accentStrokeReadableRecipe,
     accentStrokeSafetyInteractiveSet,
+    accentStrokeSubtleInteractiveSet,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     neutralFillDiscernibleInteractiveSet,
@@ -25,15 +26,26 @@ import {
     neutralStrokeStrongInteractiveSet,
     neutralStrokeStrongRecipe,
     neutralStrokeStrongRest,
+    neutralStrokeSubtleInteractiveSet,
     neutralStrokeSubtleRest,
 } from "./color.js";
 import { createNonCss } from "./create.js";
 
-function createForegroundSet(
+/**
+ * Creates a set of foreground tokens applied over the background tokens.
+ *
+ * @param foregroundRecipe - The recipe for the foreground
+ * @param foregroundState - The state from the foreground recipe, typically "rest"
+ * @param background - The recipe for the background
+ * @returns A token set representing the foreground over the background.
+ * 
+ * @public
+ */
+export const createForegroundSet = (
     foregroundRecipe: DesignToken<InteractiveColorRecipe>,
     foregroundState: keyof InteractiveSet<any>,
     background: InteractiveTokenSet<Swatch>,
-): InteractiveTokenSet<Swatch> {
+): InteractiveTokenSet<Swatch> => {
     const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}-${foregroundState}`;
     const backgroundBaseName = background.rest.name.replace("-rest", "");
     const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
@@ -93,7 +105,10 @@ function createForegroundSetBySet(
     };
 }
 
-function backgroundAndForeground(background: InteractiveTokenSet<Swatch>, foregroundRecipe: DesignToken<InteractiveColorRecipe>): Styles {
+function backgroundAndForeground(
+    background: InteractiveTokenSet<Swatch>,
+    foregroundRecipe: DesignToken<InteractiveColorRecipe>
+): StyleProperties {
     return {
         backgroundFill: background,
         foregroundFill: createForegroundSet(foregroundRecipe, "rest",  background),
@@ -103,7 +118,7 @@ function backgroundAndForeground(background: InteractiveTokenSet<Swatch>, foregr
 function backgroundAndForegroundBySet(
     background: InteractiveTokenSet<Swatch>,
     foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>
-): Styles {
+): StyleProperties {
     return {
         backgroundFill: background,
         foregroundFill: createForegroundSetBySet(foregroundRecipe,  background),
@@ -120,10 +135,10 @@ function backgroundAndForegroundBySet(
  *
  * @public
  */
-export const accentFillStealthControlStyles: Styles = {
+export const accentFillStealthControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForeground(accentFillStealthInteractiveSet, accentStrokeReadableRecipe),
     borderFill: accentStrokeSafetyInteractiveSet,
-};
+});
 
 /**
  * Convenience style module for an accent-filled subtle control (interactive).
@@ -135,10 +150,10 @@ export const accentFillStealthControlStyles: Styles = {
  *
  * @public
  */
-export const accentFillSubtleControlStyles: Styles = {
+export const accentFillSubtleControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForeground(accentFillSubtleInteractiveSet, accentStrokeReadableRecipe),
-    borderFill: accentStrokeSafetyInteractiveSet,
-};
+    borderFill: accentStrokeSubtleInteractiveSet,
+});
 
 /**
  * Convenience style module for an accent-filled discernible control (interactive).
@@ -150,10 +165,10 @@ export const accentFillSubtleControlStyles: Styles = {
  *
  * @public
  */
-export const accentFillDiscernibleControlStyles: Styles = {
+export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForegroundBySet(accentFillDiscernibleInteractiveSet, blackOrWhiteDiscernibleRecipe),
     borderFill: "transparent", // TODO Remove "transparent" borders, this is a hack for the Explorer app.
-};
+});
 
 /**
  * Convenience style module for an accent-filled readable control (interactive).
@@ -165,10 +180,10 @@ export const accentFillDiscernibleControlStyles: Styles = {
  *
  * @public
  */
-export const accentFillReadableControlStyles: Styles = {
+export const accentFillReadableControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForegroundBySet(accentFillReadableInteractiveSet, blackOrWhiteReadableRecipe),
     borderFill: "transparent",
-};
+});
 
 /**
  * Convenience style module for an accent-outlined discernible control (interactive).
@@ -180,10 +195,10 @@ export const accentFillReadableControlStyles: Styles = {
  *
  * @public
  */
-export const accentOutlineDiscernibleControlStyles: Styles = {
+export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperties({
     borderFill: accentStrokeDiscernibleInteractiveSet,
     foregroundFill: accentStrokeReadableInteractiveSet,
-};
+});
 
 /**
  * Convenience style module for an accent-colored text or icon control (interactive).
@@ -195,10 +210,10 @@ export const accentOutlineDiscernibleControlStyles: Styles = {
  *
  * @public
  */
-export const accentForegroundReadableControlStyles: Styles = {
+export const accentForegroundReadableControlStyles: Styles = Styles.fromProperties({
     borderFill: "transparent",
     foregroundFill: accentStrokeReadableInteractiveSet,
-};
+});
 
 /**
  * Convenience style module for a neutral-filled stealth control (interactive).
@@ -210,10 +225,10 @@ export const accentForegroundReadableControlStyles: Styles = {
  *
  * @public
  */
-export const neutralFillStealthControlStyles: Styles = {
+export const neutralFillStealthControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForeground(neutralFillStealthInteractiveSet, neutralStrokeStrongRecipe),
     borderFill: neutralStrokeSafetyInteractiveSet,
-};
+});
 
 /**
  * Convenience style module for a neutral-filled subtle control (interactive).
@@ -225,10 +240,10 @@ export const neutralFillStealthControlStyles: Styles = {
  *
  * @public
  */
-export const neutralFillSubtleControlStyles: Styles = {
+export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForeground(neutralFillSubtleInteractiveSet, neutralStrokeStrongRecipe),
-    borderFill: neutralStrokeSafetyInteractiveSet,
-};
+    borderFill: neutralStrokeSubtleInteractiveSet,
+});
 
 /**
  * Convenience style module for a neutral-filled discernible control (interactive).
@@ -240,10 +255,10 @@ export const neutralFillSubtleControlStyles: Styles = {
  *
  * @public
  */
-export const neutralFillDiscernibleControlStyles: Styles = {
+export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForegroundBySet(neutralFillDiscernibleInteractiveSet, blackOrWhiteDiscernibleRecipe),
     borderFill: "transparent",
-};
+});
 
 /**
  * Convenience style module for a neutral-filled readable control (interactive).
@@ -255,10 +270,10 @@ export const neutralFillDiscernibleControlStyles: Styles = {
  *
  * @public
  */
-export const neutralFillReadableControlStyles: Styles = {
+export const neutralFillReadableControlStyles: Styles = Styles.fromProperties({
     ...backgroundAndForeground(neutralFillReadableInteractiveSet, neutralStrokeStrongRecipe),
     borderFill: "transparent",
-};
+});
 
 /**
  * Convenience style module for a neutral-outlined discernible control (interactive).
@@ -270,10 +285,10 @@ export const neutralFillReadableControlStyles: Styles = {
  *
  * @public
  */
-export const neutralOutlineDiscernibleControlStyles: Styles = {
+export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties({
     borderFill: neutralStrokeDiscernibleInteractiveSet,
     foregroundFill: neutralStrokeStrongInteractiveSet,
-};
+});
 
 /**
  * Convenience style module for neutral-colored hint or placeholder text or icons (not interactive).
@@ -285,10 +300,10 @@ export const neutralOutlineDiscernibleControlStyles: Styles = {
  *
  * @public
  */
-export const neutralForegroundReadableElementStyles: Styles = {
+export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties({
     borderFill: "transparent",
     foregroundFill: neutralStrokeReadableRest,
-};
+});
 
 /**
  * Convenience style module for neutral-colored regular text or icons (not interactive).
@@ -300,10 +315,10 @@ export const neutralForegroundReadableElementStyles: Styles = {
  *
  * @public
  */
-export const neutralForegroundStrongElementStyles: Styles = {
+export const neutralForegroundStrongElementStyles: Styles = Styles.fromProperties({
     borderFill: "transparent",
     foregroundFill: neutralStrokeStrongRest,
-};
+});
 
 /**
  * Convenience style module for neutral-colored divider for presentation role.
@@ -315,9 +330,9 @@ export const neutralForegroundStrongElementStyles: Styles = {
  *
  * @public
  */
-export const neutralDividerSubtleElementStyles: Styles = {
+export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties({
     foregroundFill: neutralStrokeSubtleRest,
-};
+});
 
 /**
  * Convenience style module for neutral-colored divider for separator role.
@@ -329,6 +344,36 @@ export const neutralDividerSubtleElementStyles: Styles = {
  *
  * @public
  */
-export const neutralDividerDiscernibleElementStyles: Styles = {
+export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromProperties({
     foregroundFill: neutralStrokeDiscernibleRest,
-};
+});
+
+/**
+ * @public
+ */
+export const actionStyles: Styles = Styles.fromAlias(neutralFillSubtleControlStyles);
+
+/**
+ * @public
+ */
+export const inputStyles: Styles = Styles.fromAlias(neutralOutlineDiscernibleControlStyles);
+
+/**
+ * @public
+ */
+export const selectableSelectedStyles: Styles = Styles.fromAlias(accentFillReadableControlStyles);
+
+/**
+ * @public
+ */
+export const selectableUnselectedStyles: Styles = Styles.fromAlias(neutralOutlineDiscernibleControlStyles);
+
+/**
+ * @public
+ */
+export const itemStyles: Styles = Styles.fromAlias(neutralFillStealthControlStyles);
+
+/**
+ * @public
+ */
+export const plainTextStyles: Styles = Styles.fromAlias(neutralForegroundStrongElementStyles);

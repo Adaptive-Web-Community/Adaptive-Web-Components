@@ -3,4 +3,12 @@ export {
     templateStyles as pickerMenuOptionTemplateStyles,
     aestheticStyles as pickerMenuOptionAestheticStyles,
 } from "./picker-menu-option.styles.js";
-export { template as pickerMenuOptionTemplate } from "./picker-menu-option.template.js";
+export {
+    styleModules as pickerMenuOptionStyleModules,
+} from "./picker-menu-option.styles.modules.js";
+export {
+    template as pickerMenuOptionTemplate,
+    PickerMenuOptionAnatomy,
+    PickerMenuOptionConditions,
+    PickerMenuOptionParts
+} from "./picker-menu-option.template.js";

@@ -6,8 +6,8 @@ import type {
     ShadowRootOptions
 } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
-import { renderElementStyles } from "@adaptive-web/adaptive-ui";
-import type { InteractivityDefinition, StyleModuleEvaluateParameters, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
+import { renderElementStyles, Styles } from "@adaptive-web/adaptive-ui";
+import type { InteractivityDefinition, StyleModuleEvaluateParameters, StyleModuleTarget } from "@adaptive-web/adaptive-ui";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,

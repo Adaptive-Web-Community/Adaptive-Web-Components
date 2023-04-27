@@ -2,6 +2,7 @@ import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.s
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSelect } from "./select.compose.js";
 import { SelectStatics } from "./select.template.js";
+import { styleModules } from "./select.styles.modules.js";
 
 /**
  * The select custom element definition. Implements {@link @microsoft/fast-foundation#FASTSelect}.
@@ -16,6 +17,7 @@ export const selectDefinition = composeSelect(
     {
         statics: {
             [SelectStatics.indicator]: chevronDownIcon
-        }
+        },
+        styleModules,
     }
 );

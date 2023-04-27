@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { accentForegroundRest, designUnit, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
+import { designUnit } from "@adaptive-web/adaptive-ui";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -10,6 +10,10 @@ export const templateStyles: ElementStyles = css`
         display: flex;
         align-items: center;
         contain: content;
+    }
+
+    .indicator {
+        width: 100%;
     }
 
     .determinate {
@@ -41,12 +45,10 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         height: calc(${designUnit} * 1px);
         border-radius: calc(${designUnit} * 1px);
-        background-color: ${neutralFillSubtleRest};
     }
 
     .determinate {
         border-radius: calc(${designUnit} * 1px);
-        background-color: ${accentForegroundRest};
         transition: all 0.2s ease-in-out;
     }
 
@@ -56,7 +58,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .indeterminate .indicator {
         animation: indeterminate 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        background-color: ${accentForegroundRest};
         border-radius: calc(${designUnit} * 1px);
     }
 

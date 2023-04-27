@@ -28,7 +28,7 @@ import { pickerDefinition } from './components/picker/picker.definition.js';
 import { pickerListDefinition } from './components/picker-list/picker-list.definition.js';
 import { pickerListItemDefinition } from './components/picker-list-item/picker-list-item.definition.js';
 import { pickerMenuDefinition } from './components/picker-menu/picker-menu.definition.js';
-import { pickerMenuOptionDefinition } from './components/picker-menu-option/picker-menu-options.definition.js';
+import { pickerMenuOptionDefinition } from './components/picker-menu-option/picker-menu-option.definition.js';
 import { progressDefinition } from './components/progress/progress.definition.js';
 import { progressRingDefinition } from './components/progress-ring/progress-ring.definition.js';
 import { radioDefinition } from './components/radio/radio.definition.js';

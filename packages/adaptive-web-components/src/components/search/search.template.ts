@@ -1,6 +1,23 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTSearch, searchTemplate } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+
+export const SearchConditions = {
+};
+
+export const SearchParts = {
+    label: "label",
+    root: "root",
+    control: "control",
+    clearButton: "clear-button",
+};
+
+export const SearchAnatomy: ComponentAnatomy<typeof SearchConditions, typeof SearchParts> = {
+    interactivity: Interactivity.disabledAttribute,
+    conditions: SearchConditions,
+    parts: SearchParts,
+};
 
 /**
  * Default Search Field template, {@link @microsoft/fast-foundation#searchTemplate}.

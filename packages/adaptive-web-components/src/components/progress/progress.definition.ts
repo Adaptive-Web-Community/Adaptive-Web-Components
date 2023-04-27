@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeProgress } from "./progress.compose.js";
+import { styleModules } from "./progress.styles.modules.js";
 
 /**
  * The Progress custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgress}.
@@ -9,4 +10,9 @@ import { composeProgress } from "./progress.compose.js";
  *
  * @public
  */
-export const progressDefinition = composeProgress(DefaultDesignSystem);
+export const progressDefinition = composeProgress(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

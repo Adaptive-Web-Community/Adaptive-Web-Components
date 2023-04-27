@@ -1,11 +1,11 @@
 import { FASTFlipper } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./flipper.styles.js";
-import { FlipperStatics, template } from "./flipper.template.js";
+import { FlipperAnatomy, FlipperStatics, template } from "./flipper.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeFlipper(
     ds: DesignSystem,
@@ -27,10 +27,12 @@ export function composeFlipper(
         }
     }
 
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, FlipperAnatomy.interactivity, options);
+
     return FASTFlipper.compose({
         name: `${ds.prefix}-flipper`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

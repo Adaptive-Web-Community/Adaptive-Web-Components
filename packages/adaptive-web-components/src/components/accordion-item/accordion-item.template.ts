@@ -1,6 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { accordionItemTemplate, FASTAccordionItem } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -14,6 +15,24 @@ export const AccordionItemStatics = {
 } as const;
 
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
+
+export const AccordionItemConditions = {
+    expanded: "[expanded]",
+};
+
+export const AccordionItemParts = {
+    heading: "heading",
+    button: "button",
+    headingContent: "heading-content",
+    icon: "icon",
+    region: "region",
+};
+
+export const AccordionItemAnatomy: ComponentAnatomy<typeof AccordionItemConditions, typeof AccordionItemParts> = {
+    interactivity: Interactivity.disabledAttribute,
+    conditions: AccordionItemConditions,
+    parts: AccordionItemParts,
+};
 
 /**
  * Default Accordion Item template, {@link @microsoft/fast-foundation#accordionItemTemplate}.

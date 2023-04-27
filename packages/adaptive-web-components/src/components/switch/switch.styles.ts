@@ -1,21 +1,9 @@
 import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
     designUnit,
     fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillSubtleActive,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeDiscernibleActive,
-    neutralStrokeDiscernibleHover,
-    neutralStrokeDiscernibleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -74,20 +62,9 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeDiscernibleRest};
+        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${heightNumber} * 1px);
         padding: 4px;
-        background: ${neutralFillSubtleRest};
-    }
-
-    :host(:enabled:hover) .switch {
-        border-color: ${neutralStrokeDiscernibleHover};
-        background: ${neutralFillSubtleHover};
-    }
-
-    :host(:enabled:active) .switch {
-        border-color: ${neutralStrokeDiscernibleActive};
-        background: ${neutralFillSubtleActive};
     }
 
     :host(:focus-visible) .switch {
@@ -99,33 +76,10 @@ export const aestheticStyles: ElementStyles = css`
         height: calc((${heightNumber} - (${designUnit} * 5.5)) * 1px);
         width: calc((${heightNumber} - (${designUnit} * 5.5)) * 1px);
         top: calc(${designUnit} * 1px);
-        background: ${neutralForegroundRest};
+        background: currentcolor;
+        fill: currentcolor;
         border-radius: 50%;
         transition: all 0.2s ease-in-out;
-    }
-
-    :host([aria-checked="true"]) .thumb {
-        background: ${foregroundOnAccentRest};
-    }
-
-    :host([aria-checked="true"]) .switch {
-        background: ${accentFillReadableRest};
-    }
-
-    :host([aria-checked="true"]:enabled:hover) .switch {
-        background: ${accentFillReadableHover};
-    }
-
-    :host([aria-checked="true"]:enabled:hover) .thumb {
-        background: ${foregroundOnAccentHover};
-    }
-
-    :host([aria-checked="true"]:enabled:active) .switch {
-        background: ${accentFillReadableActive};
-    }
-
-    :host([aria-checked="true"]:enabled:active) .thumb {
-        background: ${foregroundOnAccentActive};
     }
 
     :host([aria-checked="true"]:enabled:focus-visible) .switch {

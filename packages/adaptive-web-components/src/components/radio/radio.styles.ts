@@ -1,18 +1,8 @@
 import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentRest,
-    neutralFillSubtleActive,
-    neutralFillSubtleHover,
-    neutralFillSubtleRest,
     neutralForegroundRest,
-    neutralStrokeDiscernibleActive,
-    neutralStrokeDiscernibleHover,
-    neutralStrokeDiscernibleRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -81,41 +71,13 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeDiscernibleRest};
+        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: 50%;
-        background: ${neutralFillSubtleRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
-    }
-
-    :host(:enabled:hover) .control {
-        background: ${neutralFillSubtleHover};
-        border-color: ${neutralStrokeDiscernibleHover};
-    }
-
-    :host(:enabled:active) .control {
-        background: ${neutralFillSubtleActive};
-        border-color: ${neutralStrokeDiscernibleActive};
     }
 
     :host(:focus-visible) .control {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-    }
-
-    :host([aria-checked="true"]) .control {
-        background: ${accentFillReadableRest};
-        border-color: transparent;
-        color: ${foregroundOnAccentRest};
-    }
-
-    :host([aria-checked="true"]:not(.disabled):hover) .control {
-        background: ${accentFillReadableHover};
-        border-color: transparent;
-    }
-
-    :host([aria-checked="true"]:not(.disabled):active) .control {
-        background: ${accentFillReadableActive};
-        border-color: transparent;
     }
 
     .label {

@@ -1,11 +1,11 @@
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenuItem } from "./menu-item.js";
 import { aestheticStyles, templateStyles } from "./menu-item.styles.js";
-import { MenuItemStatics, template } from "./menu-item.template.js";
+import { MenuItemAnatomy, MenuItemStatics, template } from "./menu-item.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeMenuItem(
     ds: DesignSystem,
@@ -34,10 +34,12 @@ export function composeMenuItem(
         }
     }
 
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy.interactivity, options);
+
     return AdaptiveMenuItem.compose({
         name: `${ds.prefix}-menu-item`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

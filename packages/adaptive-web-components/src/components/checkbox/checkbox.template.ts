@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { checkboxTemplate, FASTCheckbox } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import type { ComponentAnatomy } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -25,10 +25,7 @@ export const CheckboxParts = {
 };
 
 export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof CheckboxParts> = {
-    interactivity: { 
-        interactivitySelector: ":not([disabled])",
-        nonInteractivitySelector: "[disabled]",
-    },
+    interactivity: Interactivity.disabledAttribute,
     conditions: CheckboxConditions,
     parts: CheckboxParts,
 };

@@ -3,10 +3,6 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralForegroundRest,
     strokeWidth,
     typeRampBase,
 } from "@adaptive-web/adaptive-ui";
@@ -37,19 +33,9 @@ export const aestheticStyles: ElementStyles = css`
         height: calc(${heightNumber} * 1px);
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${neutralFillStealthRest};
         padding: 0 calc(${designUnit} * 1px);
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
-    }
-
-    :host(:hover) {
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(:active) {
-        background: ${neutralFillStealthActive};
     }
 
     :host(:focus-visible) {

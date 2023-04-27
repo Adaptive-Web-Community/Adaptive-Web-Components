@@ -3,4 +3,7 @@ export {
     templateStyles as searchTemplateStyles,
     aestheticStyles as searchAestheticStyles,
 } from "./search.styles.js";
-export { template as searchTemplate } from "./search.template.js";
+export {
+    styleModules as searchStyleModules,
+} from "./search.styles.modules.js";
+export { template as searchTemplate, SearchAnatomy, SearchConditions, SearchParts } from "./search.template.js";

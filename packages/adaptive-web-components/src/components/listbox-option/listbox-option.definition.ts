@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeListboxOption } from "./listbox-option.compose.js";
+import { styleModules } from "./listbox-option.styles.modules.js";
 
 /**
  * The option custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxOption}.
@@ -9,4 +10,9 @@ import { composeListboxOption } from "./listbox-option.compose.js";
  *
  * @public
  */
-export const listboxOptionDefinition = composeListboxOption(DefaultDesignSystem);
+export const listboxOptionDefinition = composeListboxOption(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

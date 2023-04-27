@@ -3,4 +3,7 @@ export {
     templateStyles as textAreaTemplateStyles,
     aestheticStyles as textAreaAestheticStyles,
 } from "./text-area.styles.js";
-export { template as textAreaTemplate } from "./text-area.template.js";
+export {
+    styleModules as textAreaStyleModules,
+} from "./text-area.styles.modules.js";
+export { template as textAreaTemplate, TextAreaAnatomy, TextAreaConditions, TextAreaParts } from "./text-area.template.js";

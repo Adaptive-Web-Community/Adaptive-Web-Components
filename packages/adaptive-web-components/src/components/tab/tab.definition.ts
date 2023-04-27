@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTab } from "./tab.compose.js";
+import { styleModules } from "./tab.styles.modules.js";
 
 /**
  * The Tab custom element definition. Implements {@link @microsoft/fast-foundation#FASTTab}.
@@ -9,4 +10,9 @@ import { composeTab } from "./tab.compose.js";
  *
  * @public
  */
-export const tabDefinition = composeTab(DefaultDesignSystem);
+export const tabDefinition = composeTab(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

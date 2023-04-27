@@ -1,11 +1,11 @@
 import { FASTAccordionItem } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import type { ComposableStyles, FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
-import type { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./accordion-item.styles.js";
-import { AccordionItemStatics, template } from "./accordion-item.template.js";
+import { AccordionItemAnatomy, AccordionItemStatics, template } from "./accordion-item.template.js";
 
-const styles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
 export function composeAccordionItem(
     ds: DesignSystem,
@@ -27,10 +27,12 @@ export function composeAccordionItem(
         }
     }
 
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, AccordionItemAnatomy.interactivity, options);
+
     return FASTAccordionItem.compose({
         name: `${ds.prefix}-accordion-item`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

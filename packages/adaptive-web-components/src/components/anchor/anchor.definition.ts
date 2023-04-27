@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAnchor } from "./anchor.compose.js";
+import { styleModules } from "./anchor.styles.modules.js";
 
 /**
  * The Anchor custom element definition. Implements {@link AdaptiveAnchor}.
@@ -10,10 +11,11 @@ import { composeAnchor } from "./anchor.compose.js";
  * @public
  */
 export const anchorDefinition = composeAnchor(
-	DefaultDesignSystem,
-	{
-		shadowOptions: {
-			delegatesFocus: true
-		}
-	}
+    DefaultDesignSystem,
+    {
+        styleModules,
+        shadowOptions: {
+            delegatesFocus: true
+        },
+    }
 );

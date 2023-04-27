@@ -4,13 +4,9 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
     neutralFillStealthRecipe,
-    neutralFillStealthRest,
     neutralFillSubtleRecipe,
     neutralFillSubtleRest,
-    neutralForegroundRest,
     strokeWidth,
     Swatch,
     typeRampBase,
@@ -117,18 +113,8 @@ export const aestheticStyles: ElementStyles = css`
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
         padding: 0 calc(${designUnit} * 2px + 8px);
-        background: ${neutralFillStealthRest};
-        color: ${neutralForegroundRest};
         fill: currentcolor;
         ${typeRampBase}
-    }
-
-    :host(:not([disabled])) .control:hover {
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(:not([disabled])) .control:active {
-        background: ${neutralFillStealthActive};
     }
 
     :host(:focus-visible) .control {

@@ -1,24 +1,18 @@
 import { css } from "@microsoft/fast-element";
 import type { CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import type { StyleProperty, Styles } from "../modules/types.js";
+import type { StyleProperty } from "../modules/types.js";
 import type { InteractiveTokenSet } from "../types.js";
 import { makeSelector } from "./selector.js";
 import type { FocusSelector, StyleModuleEvaluateParameters } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
+import { Styles } from "./styles.js";
 
 type StyleModuleEvaluate = (params: StyleModuleEvaluateParameters) => ElementStyles;
 
-function cssPartial(
-    value: CSSDirective,
-): StyleModuleEvaluate {
-    return (params: StyleModuleEvaluateParameters): ElementStyles =>
-        css`${makeSelector(params)} { ${value} }`;
-}
-
 function propertySingle<T = string>(
     property: string,
-    value: string | CSSDesignToken<T>,
+    value: string | CSSDesignToken<T> | CSSDirective,
 ): StyleModuleEvaluate {
     return (params: StyleModuleEvaluateParameters): ElementStyles =>
         css`${makeSelector(params)} { ${property}: ${value}; }`;
@@ -32,17 +26,17 @@ function propertyInteractive<T = string>(
     return (params: StyleModuleEvaluateParameters): ElementStyles => css`
         ${makeSelector(params)} { ${property}: ${values.rest}; }
         ${
-            values.hover
+            params.interactivitySelector !== undefined && values.hover
                 ? css.partial`${makeSelector(params, "hover")} { ${property}: ${values.hover}; }`
                 : ``
         }
         ${
-            values.active
+            params.interactivitySelector !== undefined && values.active
                 ? css.partial`${makeSelector(params, "active")} { ${property}: ${values.active}; }`
                 : ``
         }
         ${
-            values.focus
+            params.interactivitySelector !== undefined && values.focus
                 ? css.partial`${makeSelector(params, focusSelector)} { ${property}: ${values.focus}; }`
                 : ``
         }
@@ -50,12 +44,12 @@ function propertyInteractive<T = string>(
 }
 
 function createElementStyleModules(styles: Styles): StyleModuleEvaluate[] {
-    const modules: StyleModuleEvaluate[] = Object.entries(styles).map(([key, value]) => {
+    const modules: StyleModuleEvaluate[] = Object.entries(styles.properties).map(([key, value]) => {
         const property = stylePropertyToCssProperty(key as StyleProperty);
         if (typeof value === "string" || value instanceof CSSDesignToken) {
             return propertySingle(property, value);
         } else if (value && typeof (value as any).createCSS === "function") {
-            return cssPartial(value as CSSDirective);
+            return propertySingle(property, value as CSSDirective);
         } else {
             return propertyInteractive(property, value as InteractiveTokenSet<any>);
         }
