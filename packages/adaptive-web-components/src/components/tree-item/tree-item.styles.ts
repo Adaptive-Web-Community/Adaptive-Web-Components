@@ -9,7 +9,6 @@ import {
     neutralFillSubtleRest,
     strokeWidth,
     Swatch,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
@@ -114,7 +113,6 @@ export const aestheticStyles: ElementStyles = css`
         border-radius: calc(${controlCornerRadius} * 1px);
         padding: 0 calc(${designUnit} * 2px + 8px);
         fill: currentcolor;
-        ${typeRampBase}
     }
 
     :host(:focus-visible) .control {

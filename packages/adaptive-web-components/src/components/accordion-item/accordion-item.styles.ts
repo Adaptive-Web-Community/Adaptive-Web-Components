@@ -5,7 +5,6 @@ import {
     focusStrokeWidth,
     neutralStrokeSubtleRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { density, heightNumber } from "../../styles/index.js";
 
@@ -34,6 +33,7 @@ export const templateStyles: ElementStyles = css`
         grid-row: 1;
         outline: none;
         cursor: pointer;
+        font: inherit;
     }
 
     .button::before {
@@ -105,13 +105,11 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
-        ${typeRampBase}
     }
 
     .button {
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         height: calc(${heightNumber} * 1px);
-        font-family: inherit;
     }
 
     :host(:not([disabled])) .button:focus-visible::before {

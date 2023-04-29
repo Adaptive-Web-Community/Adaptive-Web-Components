@@ -16,38 +16,98 @@ export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> 
  * @public
  */
 export class Styles {
-    private _alias: Styles;
-    private _properties: StyleProperties;
+    // An array of composed styles
+    private _composed?: Styles[];
+    // Individual properties, or additional to composed style properties
+    private _properties?: StyleProperties;
+    // Effective properties from composed styles and additional properties
+    private _composedProperties?: StyleProperties;
 
-    private constructor(propertiesOrStyles: StyleProperties | Styles) {
-        if (propertiesOrStyles instanceof Styles) {
-            this._alias = propertiesOrStyles;
+    private constructor(propertiesOrStyles: StyleProperties | Styles[]) {
+        if (Array.isArray(propertiesOrStyles)) {
+            this._composed = propertiesOrStyles;
+            this.createEffectiveProperties();
         } else {
             this._properties = propertiesOrStyles;
         }
     }
 
-    public get alias(): Styles {
-        return this._alias;
+    /**
+     * Gets the array of composed styles.
+     */
+    public get composed(): Styles[] | undefined {
+        return this._composed;
     }
 
-    public set alias(alias: Styles) {
-        this._alias = alias;
-        this._properties = {};
+    /**
+     * Clears the array of composed styles.
+     */
+    public clearComposed(): void {
+        this._composed = undefined;
+        this._composedProperties = undefined;
     }
 
-    public get properties(): StyleProperties {
-        if (this._alias) {
-            return this._alias.properties;
-        } else {
+    public appendComposed(styles: Styles): void {
+        this._composed?.push(styles);
+        this.createEffectiveProperties();
+    }
+
+    /**
+     * Gets the local properties or composition overrides. See {@link }.
+     */
+    public get properties(): StyleProperties | undefined {
+        return this._properties;
+    }
+
+    /**
+     * Sets the local properties or composition overrides.
+     */
+    public set properties(properties: StyleProperties | undefined) {
+        this._properties = properties;
+        this.createEffectiveProperties();
+    }
+
+    /**
+     * Gets the full effective set of properties, from composed styles and local properties as applicable.
+     */
+    public get effectiveProperties(): StyleProperties {
+        if (this._composedProperties) {
+            return this._composedProperties;
+        } else if (this._properties) {
             return this._properties;
+        } else {
+            return {};
         }
     }
 
-    public static fromAlias(styles: Styles): Styles {
+    private createEffectiveProperties() {
+        if (this._composed) {
+            const propsArray: Array<StyleProperties> = this._composed.map((styles: Styles) => styles.effectiveProperties);
+            const props: StyleProperties = Object.assign(
+                {},
+                ...propsArray,
+                this._properties
+            );
+            this._composedProperties = props;
+        }
+    }
+
+    /**
+     * Creates a new Styles object for the composed styles.
+     *
+     * @param styles - An array of styles to compose.
+     * @returns A new Styles object representing the composed styles.
+     */
+    public static compose(...styles: Styles[]): Styles {
         return new Styles(styles);
     }
 
+    /**
+     * Creates a new Styles object for the individual properties.
+     *
+     * @param properties - Individual properties for the new style module.
+     * @returns A new Styles object representing the properties.
+     */
     public static fromProperties(properties: StyleProperties): Styles {
         return new Styles(properties);
     }

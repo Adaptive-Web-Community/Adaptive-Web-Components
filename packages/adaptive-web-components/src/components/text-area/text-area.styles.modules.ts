@@ -1,7 +1,8 @@
 import {
     inputStyles,
-    plainTextStyles,
+    labelTextStyles,
     StyleModules,
+    typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { TextAreaAnatomy } from "./text-area.template.js";
 
@@ -13,9 +14,14 @@ import { TextAreaAnatomy } from "./text-area.template.js";
 export const styleModules: StyleModules = [
     [
         {
+        },
+        typeRampBaseStyles
+    ],
+    [
+        {
             part: TextAreaAnatomy.parts.label
         },
-        plainTextStyles
+        labelTextStyles
     ],
     [
         {

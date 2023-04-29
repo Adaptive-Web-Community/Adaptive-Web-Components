@@ -5,7 +5,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { density, heightNumber } from "../../styles/index.js";
 
@@ -24,6 +23,7 @@ export const templateStyles: ElementStyles = css`
         align-items: center;
         white-space: nowrap;
         outline: none;
+        font: inherit;
     }
 
     .control::-moz-focus-inner {
@@ -53,7 +53,6 @@ export const aestheticStyles: ElementStyles = css`
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
         border-radius: calc(${controlCornerRadius} * 1px);
-        ${typeRampBase}
     }
 
     .control {
@@ -62,7 +61,6 @@ export const aestheticStyles: ElementStyles = css`
         border-radius: inherit;
         white-space: nowrap;
         fill: currentcolor;
-        font-family: inherit;
     }
 
     .control.icon-only {

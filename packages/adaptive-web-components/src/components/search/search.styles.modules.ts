@@ -1,8 +1,9 @@
 import {
     inputStyles,
+    labelTextStyles,
     neutralFillStealthControlStyles,
-    plainTextStyles,
     StyleModules,
+    typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { SearchAnatomy } from "./search.template.js";
 
@@ -14,9 +15,14 @@ import { SearchAnatomy } from "./search.template.js";
 export const styleModules: StyleModules = [
     [
         {
+        },
+        typeRampBaseStyles
+    ],
+    [
+        {
             part: SearchAnatomy.parts.label
         },
-        plainTextStyles
+        labelTextStyles
     ],
     [
         {

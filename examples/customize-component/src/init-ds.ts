@@ -2,4 +2,4 @@
 
 import { neutralFillDiscernibleControlStyles, selectableSelectedStyles } from "@adaptive-web/adaptive-ui";
 
-selectableSelectedStyles.alias = neutralFillDiscernibleControlStyles;
+selectableSelectedStyles.appendComposed(neutralFillDiscernibleControlStyles);

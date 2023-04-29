@@ -1,6 +1,7 @@
 import {
     accentFillReadableControlStyles,
     StyleModules,
+    typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { AvatarAnatomy } from "./avatar.template.js";
 
@@ -10,6 +11,11 @@ import { AvatarAnatomy } from "./avatar.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        typeRampBaseStyles
+    ],
     [
         {
             part: AvatarAnatomy.parts.backplate,

@@ -4,7 +4,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -77,10 +76,6 @@ export const templateStyles: ElementStyles = css`
  * Visual styles including Adaptive UI tokens.
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        ${typeRampBase}
-    }
-
     .label {
         margin-bottom: 4px;
     }
@@ -101,8 +96,6 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         height: calc(100% - 4px);
         padding: 0 calc(${designUnit} * 2px + 1px);
-        font-size: inherit;
-        line-height: inherit;
     }
 
     .step-up,

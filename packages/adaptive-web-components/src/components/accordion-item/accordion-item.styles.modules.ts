@@ -1,6 +1,7 @@
 import {
     accentForegroundReadableControlStyles,
     neutralForegroundStrongElementStyles,
+    plainTextStyles,
     StyleModules,
 } from "@adaptive-web/adaptive-ui";
 import { AccordionItemAnatomy } from "./accordion-item.template.js";
@@ -11,6 +12,11 @@ import { AccordionItemAnatomy } from "./accordion-item.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        plainTextStyles
+    ],
     [
         {
             part: AccordionItemAnatomy.parts.button,

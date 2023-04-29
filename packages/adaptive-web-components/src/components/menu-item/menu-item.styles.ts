@@ -6,7 +6,6 @@ import {
     neutralFillStealthActive,
     neutralStrokeReadableRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -137,7 +136,6 @@ export const aestheticStyles: ElementStyles = css`
         padding: 0 12px;
         grid-column-gap: 8px;
         fill: currentcolor;
-        ${typeRampBase}
     }
 
     :host([aria-expanded="true"]) {

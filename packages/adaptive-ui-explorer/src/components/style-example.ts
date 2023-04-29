@@ -66,7 +66,7 @@ export class StyleExample extends FASTElement {
         let backgroundActive = fillColor;
         let backgroundFocus = fillColor;
 
-        const backgroundValue = (this.styles?.properties || {})[StyleProperty.backgroundFill];
+        const backgroundValue = (this.styles?.effectiveProperties || {})[StyleProperty.backgroundFill];
         if (backgroundValue) {
             if (typeof backgroundValue === "string") {
                 // ignore for now
@@ -106,7 +106,7 @@ export class StyleExample extends FASTElement {
             }
         }
 
-        const colorValue = (this.styles?.properties || {})[StyleProperty.foregroundFill];
+        const colorValue = (this.styles?.effectiveProperties || {})[StyleProperty.foregroundFill];
         if (colorValue) {
             if (typeof colorValue === "string") {
                 // ignore for now
@@ -146,7 +146,7 @@ export class StyleExample extends FASTElement {
             }
         }
 
-        const borderValue = (this.styles?.properties || {})[StyleProperty.borderFill];
+        const borderValue = (this.styles?.effectiveProperties || {})[StyleProperty.borderFill];
         if (borderValue) {
             if (typeof borderValue === "string") {
                 // ignore for now

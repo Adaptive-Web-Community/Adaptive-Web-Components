@@ -3,9 +3,7 @@ import {
     fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralForegroundRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -50,11 +48,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         gap: 8px;
-        ${typeRampBase}
-    }
-
-    .label {
-        color: ${neutralForegroundRest};
     }
 
     .switch {

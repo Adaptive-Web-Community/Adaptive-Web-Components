@@ -3,9 +3,7 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralForegroundRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -82,8 +80,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .label {
         padding-inline-start: calc(${designUnit} * 2px + 2px);
-        color: ${neutralForegroundRest};
-        ${typeRampBase}
     }
 
     :host([disabled]) {

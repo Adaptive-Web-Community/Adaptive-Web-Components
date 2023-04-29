@@ -4,9 +4,7 @@ import {
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralForegroundRest,
     strokeWidth,
-    typeRampBase,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -26,9 +24,7 @@ export const aestheticStyles: ElementStyles = css`
         border: transparent calc(${strokeWidth} * 1px) solid;
         border-radius: calc(${controlCornerRadius} * 1px);
         padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
-        color: ${neutralForegroundRest};
         fill: currentcolor;
-        ${typeRampBase}
         white-space: nowrap;
     }
 

@@ -1,7 +1,8 @@
 import {
     inputStyles,
-    plainTextStyles,
+    labelTextStyles,
     StyleModules,
+    typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { NumberFieldAnatomy } from "./number-field.template.js";
 
@@ -13,9 +14,14 @@ import { NumberFieldAnatomy } from "./number-field.template.js";
 export const styleModules: StyleModules = [
     [
         {
+        },
+        typeRampBaseStyles
+    ],
+    [
+        {
             part: NumberFieldAnatomy.parts.label
         },
-        plainTextStyles
+        labelTextStyles
     ],
     [
         {

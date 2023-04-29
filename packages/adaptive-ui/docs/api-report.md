@@ -607,6 +607,9 @@ export function isDark(color: RelativeLuminance): boolean;
 // @public (undocumented)
 export const itemStyles: Styles;
 
+// @public (undocumented)
+export const labelTextStyles: Styles;
+
 // @public
 export const LayerBaseLuminance: Readonly<{
     readonly LightMode: 0.95;
@@ -1391,6 +1394,7 @@ export const StyleProperty: {
     readonly fontSize: "fontSize";
     readonly fontWeight: "fontWeight";
     readonly fontStyle: "fontStyle";
+    readonly fontVariationSettings: "fontVariationSettings";
     readonly letterSpacing: "letterSpacing";
     readonly lineHeight: "lineHeight";
     readonly padding: "padding";
@@ -1407,14 +1411,14 @@ export type StyleProperty = ValuesOf<typeof StyleProperty>;
 // @public
 export class Styles {
     // (undocumented)
-    get alias(): Styles;
-    set alias(alias: Styles);
-    // (undocumented)
-    static fromAlias(styles: Styles): Styles;
-    // (undocumented)
+    appendComposed(styles: Styles): void;
+    clearComposed(): void;
+    static compose(...styles: Styles[]): Styles;
+    get composed(): Styles[] | undefined;
+    get effectiveProperties(): StyleProperties;
     static fromProperties(properties: StyleProperties): Styles;
-    // (undocumented)
-    get properties(): StyleProperties;
+    get properties(): StyleProperties | undefined;
+    set properties(properties: StyleProperties | undefined);
 }
 
 // @public
@@ -1446,7 +1450,7 @@ export class SwatchRGB implements Swatch {
     toColorString(): string;
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const typeRampBase: CSSDirective;
 
 // @public (undocumented)
@@ -1458,7 +1462,10 @@ export const typeRampBaseFontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampBaseLineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampBaseStyles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampMinus1: CSSDirective;
 
 // @public (undocumented)
@@ -1470,7 +1477,10 @@ export const typeRampMinus1FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampMinus1LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampMinus1Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampMinus2: CSSDirective;
 
 // @public (undocumented)
@@ -1482,7 +1492,10 @@ export const typeRampMinus2FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampMinus2LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampMinus2Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus1: CSSDirective;
 
 // @public (undocumented)
@@ -1494,7 +1507,10 @@ export const typeRampPlus1FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus1LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampPlus1Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus2: CSSDirective;
 
 // @public (undocumented)
@@ -1506,7 +1522,10 @@ export const typeRampPlus2FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus2LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampPlus2Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus3: CSSDirective;
 
 // @public (undocumented)
@@ -1518,7 +1537,10 @@ export const typeRampPlus3FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus3LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampPlus3Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus4: CSSDirective;
 
 // @public (undocumented)
@@ -1530,7 +1552,10 @@ export const typeRampPlus4FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus4LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampPlus4Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus5: CSSDirective;
 
 // @public (undocumented)
@@ -1542,7 +1567,10 @@ export const typeRampPlus5FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus5LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
+export const typeRampPlus5Styles: Styles;
+
+// @public @deprecated (undocumented)
 export const typeRampPlus6: CSSDirective;
 
 // @public (undocumented)
@@ -1553,6 +1581,9 @@ export const typeRampPlus6FontVariations: CSSDesignToken<string>;
 
 // @public (undocumented)
 export const typeRampPlus6LineHeight: CSSDesignToken<string>;
+
+// @public
+export const typeRampPlus6Styles: Styles;
 
 // @public
 export const WcagContrastLevel: {
