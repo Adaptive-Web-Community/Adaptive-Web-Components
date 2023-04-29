@@ -1,7 +1,7 @@
 import {
     inputStyles,
-    neutralFillStealthControlStyles,
     labelTextStyles,
+    neutralFillStealthControlStyles,
     StyleModules,
     typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";

@@ -1462,7 +1462,7 @@ export const typeRampBaseFontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampBaseLineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampBaseStyles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1477,7 +1477,7 @@ export const typeRampMinus1FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampMinus1LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampMinus1Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1492,7 +1492,7 @@ export const typeRampMinus2FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampMinus2LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampMinus2Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1507,7 +1507,7 @@ export const typeRampPlus1FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus1LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus1Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1522,7 +1522,7 @@ export const typeRampPlus2FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus2LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus2Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1537,7 +1537,7 @@ export const typeRampPlus3FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus3LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus3Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1552,7 +1552,7 @@ export const typeRampPlus4FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus4LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus4Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1567,7 +1567,7 @@ export const typeRampPlus5FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus5LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus5Styles: Styles;
 
 // @public @deprecated (undocumented)
@@ -1582,7 +1582,7 @@ export const typeRampPlus6FontVariations: CSSDesignToken<string>;
 // @public (undocumented)
 export const typeRampPlus6LineHeight: CSSDesignToken<string>;
 
-// @public (undocumented)
+// @public
 export const typeRampPlus6Styles: Styles;
 
 // @public
