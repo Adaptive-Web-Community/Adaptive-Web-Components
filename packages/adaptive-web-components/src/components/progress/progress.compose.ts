@@ -16,7 +16,7 @@ export function composeProgress(
     return FASTProgress.compose({
         name: `${ds.prefix}-progress`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

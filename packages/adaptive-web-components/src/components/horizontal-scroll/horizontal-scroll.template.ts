@@ -9,8 +9,28 @@ import {
     tagFor,
     TemplateElementDependency,
 } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { composeFlipper } from "../flipper/index.js";
+
+export const HorizontalScrollConditions = {
+};
+
+export const HorizontalScrollParts = {
+    scrollArea: "scroll-area",
+    scrollView: "scroll-view",
+    content: "content",
+    scrollPrevious: "scroll-previous",
+    previousFlipper: "previous-flipper",
+    scrollNext: "scroll-next",
+    nextFlipper: "next-flipper",
+};
+
+export const HorizontalScrollAnatomy: ComponentAnatomy<typeof HorizontalScrollConditions, typeof HorizontalScrollParts> = {
+    interactivity: Interactivity.never,
+    conditions: HorizontalScrollConditions,
+    parts: HorizontalScrollParts,
+};
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
 

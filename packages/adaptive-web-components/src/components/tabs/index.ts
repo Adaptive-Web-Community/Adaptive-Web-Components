@@ -3,4 +3,7 @@ export {
     templateStyles as tabsTemplateStyles,
     aestheticStyles as tabsAestheticStyles,
 } from "./tabs.styles.js";
-export { template as tabsTemplate } from "./tabs.template.js";
+export {
+    styleModules as tabsStyleModules,
+} from "./tabs.styles.modules.js";
+export { template as tabsTemplate, TabsAnatomy, TabsConditions, TabsParts } from "./tabs.template.js";

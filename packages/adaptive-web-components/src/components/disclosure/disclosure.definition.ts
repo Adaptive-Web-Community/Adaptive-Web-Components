@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDisclosure } from "./disclosure.compose.js";
+import { styleModules } from "./disclosure.styles.modules.js";
 
 /**
  * The Disclosure custom element definition. Implements {@link @microsoft/fast-foundation#FASTDisclosure}.
@@ -9,4 +10,9 @@ import { composeDisclosure } from "./disclosure.compose.js";
  *
  * @public
  */
-export const disclosureDefinition = composeDisclosure(DefaultDesignSystem);
+export const disclosureDefinition = composeDisclosure(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBreadcrumb } from "./breadcrumb.compose.js";
+import { styleModules } from "./breadcrumb.styles.modules.js";
 
 /**
  * The Breadcrumb custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumb}.
@@ -9,4 +10,9 @@ import { composeBreadcrumb } from "./breadcrumb.compose.js";
  *
  * @public
  */
-export const breadcrumbDefinition = composeBreadcrumb(DefaultDesignSystem);
+export const breadcrumbDefinition = composeBreadcrumb(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

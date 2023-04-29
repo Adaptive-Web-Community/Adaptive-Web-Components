@@ -25,7 +25,7 @@ export function composeSelect(
     return AdaptiveSelect.compose({
         name: `${ds.prefix}-select`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

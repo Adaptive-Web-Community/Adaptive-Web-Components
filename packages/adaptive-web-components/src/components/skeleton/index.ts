@@ -3,4 +3,7 @@ export {
     templateStyles as skeletonTemplateStyles,
     aestheticStyles as skeletonAestheticStyles,
 } from "./skeleton.styles.js";
-export { template as skeletonTemplate } from "./skeleton.template.js";
+export {
+    styleModules as skeletonStyleModules,
+} from "./skeleton.styles.modules.js";
+export { template as skeletonTemplate, SkeletonAnatomy, SkeletonConditions, SkeletonParts } from "./skeleton.template.js";

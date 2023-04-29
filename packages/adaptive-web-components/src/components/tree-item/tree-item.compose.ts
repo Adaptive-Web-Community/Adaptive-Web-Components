@@ -25,7 +25,7 @@ export function composeTreeItem(
     return FASTTreeItem.compose({
         name: `${ds.prefix}-tree-item`,
         template: options?.template?.(ds) ?? template(ds),
-        styles: options?.styles ?? styles,
+        styles,
         registry: ds.registry,
         elementOptions: options?.elementOptions,
         shadowOptions: options?.shadowOptions

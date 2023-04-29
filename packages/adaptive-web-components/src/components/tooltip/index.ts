@@ -3,4 +3,7 @@ export {
     templateStyles as tooltipTemplateStyles,
     aestheticStyles as tooltipAestheticStyles,
 } from "./tooltip.styles.js";
-export { template as tooltipTemplate } from "./tooltip.template.js";
+export {
+    styleModules as tooltipStyleModules,
+} from "./tooltip.styles.modules.js";
+export { template as tooltipTemplate, TooltipAnatomy, TooltipConditions, TooltipParts } from "./tooltip.template.js";

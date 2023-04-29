@@ -1,6 +1,21 @@
 import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import type { FASTSkeleton } from "@microsoft/fast-foundation";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+
+export const SkeletonConditions = {
+    rectangle: "[shape='rect']",
+    circle: "[shape='circle']",
+};
+
+export const SkeletonParts = {
+};
+
+export const SkeletonAnatomy: ComponentAnatomy<typeof SkeletonConditions, typeof SkeletonParts> = {
+    interactivity: Interactivity.never,
+    conditions: SkeletonConditions,
+    parts: SkeletonParts,
+};
 
 /**
  * Default Skeleton template, {@link @microsoft/fast-foundation#skeletonTemplate}.

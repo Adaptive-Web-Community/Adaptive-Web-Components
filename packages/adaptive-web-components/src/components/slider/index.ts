@@ -3,4 +3,7 @@ export {
     templateStyles as sliderTemplateStyles,
     aestheticStyles as sliderAestheticStyles,
 } from "./slider.styles.js";
-export { template as sliderTemplate } from "./slider.template.js";
+export {
+    styleModules as sliderStyleModules,
+} from "./slider.styles.modules.js";
+export { template as sliderTemplate, SliderAnatomy, SliderConditions, SliderParts } from "./slider.template.js";

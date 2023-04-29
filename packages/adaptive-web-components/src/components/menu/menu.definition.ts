@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenu } from "./menu.compose.js";
+import { styleModules } from "./menu.styles.modules.js";
 
 /**
  * The Menu custom element definition. Implements {@link @microsoft/fast-foundation#FASTMenu}.
@@ -9,4 +10,9 @@ import { composeMenu } from "./menu.compose.js";
  *
  * @public
  */
-export const menuDefinition = composeMenu(DefaultDesignSystem);
+export const menuDefinition = composeMenu(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

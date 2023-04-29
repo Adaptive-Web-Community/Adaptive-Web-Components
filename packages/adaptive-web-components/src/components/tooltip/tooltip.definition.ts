@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTooltip } from "./tooltip.compose.js";
+import { styleModules } from "./tooltip.styles.modules.js";
 
 /**
  * The Tooltip custom element definition. Implements {@link @microsoft/fast-foundation#FASTTooltip}.
@@ -9,4 +10,9 @@ import { composeTooltip } from "./tooltip.compose.js";
  *
  * @public
  */
-export const tooltipDefinition = composeTooltip(DefaultDesignSystem);
+export const tooltipDefinition = composeTooltip(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);

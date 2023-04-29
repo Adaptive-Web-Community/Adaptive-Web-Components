@@ -1,5 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDialog } from "./dialog.compose.js";
+import { styleModules } from "./dialog.styles.modules.js";
 
 /**
  * The Dialog custom element definition. Implements {@link @microsoft/fast-foundation#FASTDialog}.
@@ -9,4 +10,9 @@ import { composeDialog } from "./dialog.compose.js";
  *
  * @public
  */
-export const dialogDefinition = composeDialog(DefaultDesignSystem);
+export const dialogDefinition = composeDialog(
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
+);
