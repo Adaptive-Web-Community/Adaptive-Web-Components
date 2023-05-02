@@ -1,6 +1,6 @@
 import { ComposableStyles, css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
-import { CSSDesignToken } from "@microsoft/fast-foundation";
+import { CSSDesignToken, MatchMediaStyleSheetBehavior } from "@microsoft/fast-foundation";
 import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
 import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
@@ -184,8 +184,17 @@ export class ElementStylesRenderer {
      */
     public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
         for (const rule of styleRules) {
+            const target = rule.target || {};
             const styles = Styles.fromDeclaration(rule);
-            const renderedStyles = new ElementStylesRenderer(styles).render(rule.target || {}, anatomy?.interactivity);
+            const renderedStyles = new ElementStylesRenderer(styles).render(target, anatomy?.interactivity);
+
+            styles.getMediaQueryStyles()?.forEach((queryStyles, query) => {
+                const queryRenderedStyles = new ElementStylesRenderer(queryStyles).render(target, anatomy?.interactivity);
+                renderedStyles.withBehaviors(
+                    MatchMediaStyleSheetBehavior.with(
+                        window.matchMedia(query))(queryRenderedStyles))
+            });
+
             baseStyles.push(renderedStyles);
         }
 

@@ -203,6 +203,8 @@ export class Styles {
     private _properties?: StylePropertiesMap;
     // Effective properties from composed styles and additional properties
     private _composedProperties?: StylePropertiesMap;
+    // Style overrides for a media query
+    private _mediaQueryVariations: Map<string, Styles>;
 
     private constructor(
         /**
@@ -264,6 +266,30 @@ export class Styles {
     public set properties(properties: StylePropertiesMap | undefined) {
         this._properties = properties;
         this.createEffectiveProperties();
+    }
+
+    /**
+     * Adds a style variation for a media query like `forced-colors`.
+     *
+     * @param query - The media query, see {@link MediaQuery}.
+     * @param styles - The styles to apply for the provided media query
+     * @returns The `Styles` definition with media query variation.
+     */
+    public withMediaQuery(query: string, styles: Styles): this {
+        if (!this._mediaQueryVariations) {
+            this._mediaQueryVariations = new Map();
+        }
+        this._mediaQueryVariations.set(query, styles);
+        return this;
+    }
+
+    /**
+     * Gets the media query variations for this style.
+     *
+     * @returns The defined media query variations.
+     */
+    public getMediaQueryStyles(): ReadonlyMap<string, Styles> | undefined {
+        return this._mediaQueryVariations;
     }
 
     /**
