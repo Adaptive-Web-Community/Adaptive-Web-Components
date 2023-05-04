@@ -23,7 +23,7 @@ const template = html<DesignTokenAdd>`
             x => x.designTokens,
             html<DesignTokenDefinition, DesignTokenAdd>`
                 <option value="${x => x.id}">
-                    ${x => x.name} (${x => x.groupTitle})
+                    ${x => x.title} (${x => x.groupTitle})
                 </option>
             `
         )}

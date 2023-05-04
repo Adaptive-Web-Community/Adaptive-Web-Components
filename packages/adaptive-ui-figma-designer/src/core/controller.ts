@@ -20,20 +20,20 @@ export abstract class Controller {
     // public static nodeCount: number = 0;
 
     /**
-     * Retrieve a Node from the design tool by ID.
+     * Gets a Node from the design tool by ID.
      * @param id The ID of the node.
-     * @returns Returns the PluginNode or null if no node by the provided ID exists.
+     * @returns The PluginNode or null if no node by the provided ID exists.
      */
     public abstract getNode(id: string): PluginNode | null;
 
     /**
      * Provides the state object to the UI component and updates the UI.
-     * @param state the UI state object.
+     * @param state The UI state object.
      */
     protected abstract sendStateToUI(state: PluginUIState): void;
 
     /**
-     * Set the selected node IDs - Setting the IDs will trigger a UI refresh.
+     * Sets the selected node IDs - Setting the IDs will trigger a UI refresh.
      * @param ids The node IDs.
      */
     public setSelectedNodes(ids: string[]): void {
@@ -87,13 +87,13 @@ export abstract class Controller {
             if (pluginNode) {
                 pluginNode.handleManualDarkMode();
                 pluginNode.setDesignTokens(node.designTokens);
-                pluginNode.setRecipeEvaluations(node.recipeEvaluations);
+                pluginNode.setAppliedDesignTokens(node.appliedDesignTokens);
 
-                // Paint all recipes of the node
-                pluginNode.recipeEvaluations.forEach((evaluation, target) => {
-                    // console.log("recipe eval", target, evaluation);
+                // Paint all applied design tokens on the node
+                pluginNode.appliedDesignTokens.forEach((applied, target) => {
+                    // console.log("applied design token eval", target, applied);
 
-                    pluginNode.paint(target, evaluation);
+                    pluginNode.paint(target, applied);
                 });
 
                 this.syncPluginNodes(node.children);

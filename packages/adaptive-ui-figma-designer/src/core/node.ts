@@ -2,12 +2,12 @@ import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import {
     AdditionalData,
+    AppliedDesignToken,
+    AppliedDesignTokens,
     DesignTokenValues,
     PluginNodeData,
+    ReadonlyAppliedDesignTokens,
     ReadonlyDesignTokenValues,
-    ReadonlyRecipeEvaluations,
-    RecipeEvaluation,
-    RecipeEvaluations,
     TOOL_FILL_COLOR_TOKEN,
 } from "./model.js";
 
@@ -21,13 +21,13 @@ const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
  */
 export abstract class PluginNode {
     protected _componentDesignTokens?: DesignTokenValues;
-    protected _componentRecipes?: RecipeEvaluations;
+    protected _componentAppliedDesignTokens?: AppliedDesignTokens;
     protected _localDesignTokens: DesignTokenValues = new DesignTokenValues();
-    protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
+    protected _appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
     protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
-     * Retrieves the design token overrides on ancestor nodes.
+     * Gets the design token values set on ancestor nodes.
      */
     public get inheritedDesignTokens(): ReadonlyDesignTokenValues {
         // Return value from the cache if we have it
@@ -54,8 +54,11 @@ export abstract class PluginNode {
         return designTokens;
     }
 
-    public get componentRecipes(): ReadonlyRecipeEvaluations | undefined {
-        return this._componentRecipes as ReadonlyRecipeEvaluations;
+    /**
+     * Gets the applied design tokens inherited by an instance node from the main component.
+     */
+    public get componentAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
+        return this._componentAppliedDesignTokens as ReadonlyAppliedDesignTokens;
     }
 
     protected loadLocalDesignTokens(): void {
@@ -65,12 +68,15 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets a readonly map of design token overrides applied to this node.
+     * Gets the design tokens set for this node. The key is the design token ID.
      */
     public get localDesignTokens(): ReadonlyDesignTokenValues {
         return this._localDesignTokens;
     }
 
+    /**
+     * Gets the design tokens inherited by an instance node from the main component. The key is the design token ID.
+     */
     public get componentDesignTokens(): ReadonlyDesignTokenValues {
         return this._componentDesignTokens as ReadonlyDesignTokenValues;
     }
@@ -98,36 +104,48 @@ export abstract class PluginNode {
         this.invalidateDesignTokenCache();
     }
 
-    protected loadRecipeEvaluations(): void {
-        const json = this.getPluginData("recipeEvaluations");
-        this._recipeEvaluations.deserialize(json);
+    protected loadAppliedDesignTokens(): void {
+        const json = this.getPluginData("appliedDesignTokens");
+        this._appliedDesignTokens.deserialize(json);
     }
 
     /**
-     * Gets a readonly map of recipe evaluations applied to this node.
+     * Gets the design tokens applied to the style of this node. The key is the target style property.
      */
-    public get recipeEvaluations(): ReadonlyRecipeEvaluations {
-        return this._recipeEvaluations;
+    public get appliedDesignTokens(): ReadonlyAppliedDesignTokens {
+        return this._appliedDesignTokens;
     }
 
-    public setRecipeEvaluations(evaluations: RecipeEvaluations) {
-        this._recipeEvaluations = evaluations;
-        if (evaluations.size) {
-            const json = evaluations.serialize();
-            this.setPluginData("recipeEvaluations", json);
+    /**
+     * Sets the design tokens applied to the style of this node.
+     * @param appliedTokens The complete design tokens applied to the style.
+     */
+    public setAppliedDesignTokens(appliedTokens: AppliedDesignTokens) {
+        this._appliedDesignTokens = appliedTokens;
+        if (appliedTokens.size) {
+            const json = appliedTokens.serialize();
+            this.setPluginData("appliedDesignTokens", json);
         } else {
-            this.deletePluginData("recipeEvaluations");
+            this.deletePluginData("appliedDesignTokens");
         }
     }
 
+    /**
+     * Gets additional data associated with this node.
+     */
     public get additionalData(): AdditionalData {
         return this._additionalData;
     }
 
-    public abstract paint(target: StyleProperty, data: RecipeEvaluation): void;
+    /**
+     * Updates the style property applied to this node.
+     * @param target The style property.
+     * @param data The applied token + value.
+     */
+    public abstract paint(target: StyleProperty, data: AppliedDesignToken): void;
 
     /**
-     * Retrieve the effective fill color for the node.
+     * Gets the effective fill color for the node.
      * This color is communicated to color recipes as the fillColor context for a node.
      */
     public abstract getEffectiveFillColor(): ColorRGBA64 | null;
@@ -138,16 +156,16 @@ export abstract class PluginNode {
     public abstract handleManualDarkMode(): boolean;
 
     /**
-     * Setup special handling for fill color. It should either be a recipe or a fixed color applied in the design tool.
-     * Must be called after design tokens and recipe evaluations are loaded.
+     * Setup special handling for fill color. It should either be a design token or a fixed color applied in the design tool.
+     * Must be called after design tokens are loaded.
      */
     protected setupFillColor(): void {
         if (this.canHaveChildren()) {
             // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
-            // If the fill color comes from a recipe, don't pass it again.
+            // If the fill color comes from a design token, don't pass it again.
             let foundFill = false;
-            this._recipeEvaluations.forEach((evaluation, target) => {
-                // console.log("    evaluation", target, "value", evaluation.value);
+            this._appliedDesignTokens.forEach((applied, target) => {
+                // console.log("    applied design token", target, "value", applied.value);
                 if (target === StyleProperty.backgroundFill) {
                     foundFill = true;
                 }

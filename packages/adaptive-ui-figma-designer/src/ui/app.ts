@@ -26,20 +26,20 @@ const assignedTokensTemplate = (
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 (x) => tokens!,
                 html<DesignTokenDefinition, App>`
-                    <div class="applied-recipe">
+                    <div class="applied-design-token">
                         <designer-token-glyph
                             circular
                             value=${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}
                             orientation="horizontal"
                             type="${(x) => glyphType}"
                         >
-                            ${(x) => x.name}
+                            ${(x) => x.title}
                         </designer-token-glyph>
                         <span>${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}</span>
                         <adaptive-button
                             appearance="stealth"
                             aria-label="Detach"
-                            @click=${(x, c) => c.parent.controller.removeRecipe(x)}
+                            @click=${(x, c) => c.parent.controller.removeAppliedDesignToken(x)}
                         >
                             Detach
                         </adaptive-button>
@@ -62,7 +62,7 @@ const availableTokensTemplate = (
             ${when((x) => title, html` <p class="title inset">${(x) => title}</p> `)}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
-                    (x) => x.controller.recipeOptionsByType(tokenType),
+                    (x) => x.controller.appliableDesignTokenOptionsByType(tokenType),
                     html<DesignTokenDefinition, App>`
                         <designer-token-glyph
                             circular
@@ -70,10 +70,10 @@ const availableTokensTemplate = (
                             orientation="horizontal"
                             type="${(x) => glyphType}"
                             interactive
-                            ?selected=${(x, c) => c.parent.controller.recipeIsAssigned(x.id).length > 0}
-                            @click=${(x, c) => c.parent.controller.assignRecipe(x)}
+                            ?selected=${(x, c) => c.parent.controller.getNodesWithDesignTokenApplied(x.id).length > 0}
+                            @click=${(x, c) => c.parent.controller.applyDesignToken(x)}
                         >
-                            ${(x) => x.name}
+                            ${(x) => x.title}
                         </designer-token-glyph>
                     `
                 )}
@@ -82,7 +82,7 @@ const availableTokensTemplate = (
     )}
 `;
 
-const syncLabel = "Evaluate and apply all design tokens and recipes to the current selection.";
+const syncLabel = "Evaluate and apply all design tokens for the current selection.";
 const revertLabel = "Remove all plugin data from the current selection.";
 
 const footerTemplate = html<App>`
@@ -111,20 +111,20 @@ const footerTemplate = html<App>`
 `;
 
 const template = html<App>`
-    <adaptive-tabs activeid="recipes">
-        <adaptive-tab id="recipes">Recipes</adaptive-tab>
+    <adaptive-tabs activeid="styling">
+        <adaptive-tab id="styling">Styling</adaptive-tab>
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
-        <adaptive-tab-panel id="recipesPanel">
+        <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
                 ${when(
                     (x) => x.supportsColor,
                     html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.layerRecipes, "Layer")}
-                                ${(x) => assignedTokensTemplate(x.backgroundRecipes, "Background")}
-                                ${(x) => assignedTokensTemplate(x.foregroundRecipes, "Foreground")}
-                                ${(x) => assignedTokensTemplate(x.strokeRecipes, "Stroke", TokenGlyphType.borderSwatch)}
+                                ${(x) => assignedTokensTemplate(x.layerTokens, "Layer")}
+                                ${(x) => assignedTokensTemplate(x.backgroundTokens, "Background")}
+                                ${(x) => assignedTokensTemplate(x.foregroundTokens, "Foreground")}
+                                ${(x) => assignedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
                             </div>
                             <div>
                                 ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fills")}
@@ -145,7 +145,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Stroke width">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.strokeWidthRecipes, null, TokenGlyphType.icon)}
+                                ${(x) => assignedTokensTemplate(x.strokeWidthTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
@@ -164,7 +164,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Corner radius">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.cornerRadiusRecipes, null, TokenGlyphType.icon)}
+                                ${(x) => assignedTokensTemplate(x.cornerRadiusTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
@@ -183,7 +183,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Text">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.textRecipes, null, TokenGlyphType.icon)}
+                                ${(x) => assignedTokensTemplate(x.textTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
@@ -222,7 +222,7 @@ const template = html<App>`
                             <designer-design-token-add
                                 :designTokens=${(x) => x.availableDesignTokens}
                                 @add=${(x, c) =>
-                                    x.controller.assignDesignToken(
+                                    x.controller.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
                                         (c.event as CustomEvent).detail.value
                                     )}
@@ -233,7 +233,7 @@ const template = html<App>`
                             <designer-design-tokens-form
                                 :designTokens=${(x) => x.designTokenValues}
                                 @tokenChange=${(x, c) =>
-                                    x.controller.assignDesignToken(
+                                    x.controller.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
                                         (c.event as CustomEvent).detail.value
                                     )}
@@ -316,7 +316,7 @@ const styles = css`
         padding: 0 calc(var(--design-unit) * 2px);
     }
 
-    .applied-recipe {
+    .applied-design-token {
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
@@ -324,7 +324,7 @@ const styles = css`
         margin-bottom: 8px;
     }
 
-    .applied-recipe > span {
+    .applied-design-token > span {
         margin: 0 8px;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -379,25 +379,25 @@ export class App extends FASTElement {
     public supportsText: boolean;
 
     @observable
-    public layerRecipes: DesignTokenDefinition[] | null;
+    public layerTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public backgroundRecipes: DesignTokenDefinition[] | null;
+    public backgroundTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public foregroundRecipes: DesignTokenDefinition[] | null;
+    public foregroundTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public strokeRecipes: DesignTokenDefinition[] | null;
+    public strokeTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public strokeWidthRecipes: DesignTokenDefinition[] | null;
+    public strokeWidthTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public cornerRadiusRecipes: DesignTokenDefinition[] | null;
+    public cornerRadiusTokens: DesignTokenDefinition[] | null;
 
     @observable
-    public textRecipes: DesignTokenDefinition[] | null;
+    public textTokens: DesignTokenDefinition[] | null;
 
     @observable
     public supportsDesignSystem: boolean;
@@ -424,28 +424,25 @@ export class App extends FASTElement {
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadius);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
-        this.backgroundRecipes = this.controller.appliedRecipes(StyleProperty.backgroundFill);
-        this.foregroundRecipes = this.controller.appliedRecipes(StyleProperty.foregroundFill);
-        this.strokeRecipes = this.controller.appliedRecipes(StyleProperty.borderFill);
-        this.strokeWidthRecipes = this.controller.appliedRecipes(StyleProperty.borderThickness);
-        this.cornerRadiusRecipes = this.controller.appliedRecipes(StyleProperty.cornerRadius);
-        this.textRecipes = [
-            ...this.controller.appliedRecipes(StyleProperty.fontFamily),
-            ...this.controller.appliedRecipes(StyleProperty.fontSize),
-            ...this.controller.appliedRecipes(StyleProperty.lineHeight),
+        this.backgroundTokens = this.controller.appliedDesignTokens(StyleProperty.backgroundFill);
+        this.foregroundTokens = this.controller.appliedDesignTokens(StyleProperty.foregroundFill);
+        this.strokeTokens = this.controller.appliedDesignTokens(StyleProperty.borderFill);
+        this.strokeWidthTokens = this.controller.appliedDesignTokens(StyleProperty.borderThickness);
+        this.cornerRadiusTokens = this.controller.appliedDesignTokens(StyleProperty.cornerRadius);
+        this.textTokens = [
+            ...this.controller.appliedDesignTokens(StyleProperty.fontFamily),
+            ...this.controller.appliedDesignTokens(StyleProperty.fontSize),
+            ...this.controller.appliedDesignTokens(StyleProperty.lineHeight),
         ];
 
         this.supportsDesignSystem = true;
 
-        // Get all applied design tokens except fillColor because it's handled through a recipe or plain color from the design tool.
         this.designTokenValues = this.controller.getDesignTokenValues();
-        //.filter(token => token.definition.id !== "fillColor");
 
-        // Get all design tokens that can be added, which is the full list except any already applied /* or fillColor (see above). */
+        // Get all design tokens that can be added, which is the full list except any already applied.
         this.availableDesignTokens = this.controller.getDesignTokenDefinitions().filter(
             (definition) =>
-                this.designTokenValues!.find((appliedToken) => appliedToken.definition.id === definition.id) || true
-                //&& definition.id !== "fillColor"
+                this.designTokenValues.find((appliedToken) => appliedToken.definition.id === definition.id) || true
         );
     }
 

@@ -60,170 +60,170 @@ import { DesignTokenDefinition, DesignTokenRegistry, FormControlId } from "./des
 import { docBaseColor, docFill, docForeground } from "./custom-recipes.js";
 
 /**
- * A subset of DesignTokenDefinition as a convenience for adding a number of tokens to a DesignTokenRegistry.
+ * A subset of {@link DesignTokenDefinition} as a convenience for adding a number of tokens to a {@link DesignTokenRegistry}.
  */
 interface DesignTokenStore<T = any> {
-    [key: string]: {
-        name: string;
+    [id: string]: {
+        title: string;
         token: DesignToken<T>;
         target?: StyleProperty;
-        formControlId?: string;
+        formControlId?: FormControlId;
     };
 }
 
 const designTokens: DesignTokenStore = {
-    accentBaseColor: { token: accentBaseColor, name: "Accent base color", formControlId: FormControlId.color },
-    neutralBaseColor: { token: neutralBaseColor, name: "Neutral base color", formControlId: FormControlId.color },
-    baseLayerLuminance: { token: layerFillBaseLuminance, name: "Layer fill base luminance" },
-    fillColor: { token: fillColor, name: "Fill color", formControlId: FormControlId.color },
-    docBaseColor: { token: docBaseColor, name: "Doc base color", formControlId: FormControlId.color },
+    accentBaseColor: { token: accentBaseColor, title: "Accent base color", formControlId: FormControlId.color },
+    neutralBaseColor: { token: neutralBaseColor, title: "Neutral base color", formControlId: FormControlId.color },
+    baseLayerLuminance: { token: layerFillBaseLuminance, title: "Layer fill base luminance" },
+    fillColor: { token: fillColor, title: "Fill color", formControlId: FormControlId.color },
+    docBaseColor: { token: docBaseColor, title: "Doc base color", formControlId: FormControlId.color },
 };
 
-const layerRecipes: DesignTokenStore<Swatch> = {
-    layerFillFixedMinus4: { token: layerFillFixedMinus4, name: "-4" },
-    layerFillFixedMinus3: { token: layerFillFixedMinus3, name: "-3" },
-    layerFillFixedMinus2: { token: layerFillFixedMinus2, name: "-2" },
-    layerFillFixedMinus1: { token: layerFillFixedMinus1, name: "-1" },
-    layerFillFixedBase: { token: layerFillFixedBase, name: "Base" },
-    layerFillFixedPlus1: { token: layerFillFixedPlus1, name: "+1" },
-    layerFillFixedPlus2: { token: layerFillFixedPlus2, name: "+2" },
-    layerFillFixedPlus3: { token: layerFillFixedPlus3, name: "+3" },
-    layerFillFixedPlus4: { token: layerFillFixedPlus4, name: "+4" },
+const layerTokens: DesignTokenStore<Swatch> = {
+    layerFillFixedMinus4: { token: layerFillFixedMinus4, title: "-4" },
+    layerFillFixedMinus3: { token: layerFillFixedMinus3, title: "-3" },
+    layerFillFixedMinus2: { token: layerFillFixedMinus2, title: "-2" },
+    layerFillFixedMinus1: { token: layerFillFixedMinus1, title: "-1" },
+    layerFillFixedBase: { token: layerFillFixedBase, title: "Base" },
+    layerFillFixedPlus1: { token: layerFillFixedPlus1, title: "+1" },
+    layerFillFixedPlus2: { token: layerFillFixedPlus2, title: "+2" },
+    layerFillFixedPlus3: { token: layerFillFixedPlus3, title: "+3" },
+    layerFillFixedPlus4: { token: layerFillFixedPlus4, title: "+4" },
 };
 
-const fillRecipes: DesignTokenStore<Swatch> = {
-    accentFillRest: { token: accentFillRest, name: "Accent" },
-    neutralFillRest: { token: neutralFillRest, name: "Neutral" },
-    neutralFillLayerRest: { token: layerFillInteractiveRest, name: "Neutral Layer" },
-    neutralFillInputRest: { token: neutralFillInputRest, name: "Neutral Input" },
-    neutralFillSecondaryRest: { token: neutralFillSecondaryRest, name: "Neutral Secondary" },
-    neutralFillStealthRest: { token: neutralFillStealthRest, name: "Neutral Stealth" },
-    neutralFillStrongRest: { token: neutralFillStrongRest, name: "Neutral Strong" },
-    docFillRest: { token: docFill, name: "Doc" },
+const fillTokens: DesignTokenStore<Swatch> = {
+    accentFillRest: { token: accentFillRest, title: "Accent" },
+    neutralFillRest: { token: neutralFillRest, title: "Neutral" },
+    neutralFillLayerRest: { token: layerFillInteractiveRest, title: "Neutral Layer" },
+    neutralFillInputRest: { token: neutralFillInputRest, title: "Neutral Input" },
+    neutralFillSecondaryRest: { token: neutralFillSecondaryRest, title: "Neutral Secondary" },
+    neutralFillStealthRest: { token: neutralFillStealthRest, title: "Neutral Stealth" },
+    neutralFillStrongRest: { token: neutralFillStrongRest, title: "Neutral Strong" },
+    docFillRest: { token: docFill, title: "Doc" },
 };
 
-const strokeRecipes: DesignTokenStore<Swatch> = {
-    focusStrokeOuter: { token: focusStrokeOuter, name: "Focus Outer" },
-    focusStrokeInner: { token: focusStrokeInner, name: "Focus Inner" },
-    neutralStrokeDividerRest: { token: neutralStrokeDividerRest, name: "Divider" },
-    neutralStrokeRest: { token: neutralStrokeRest, name: "Neutral" },
-    neutralStrokeStrongRest: { token: neutralStrokeStrongRest, name: "Neutral Strong" },
-    neutralStrokeInputRest: { token: neutralStrokeInputRest, name: "Neutral Input" },
+const strokeTokens: DesignTokenStore<Swatch> = {
+    focusStrokeOuter: { token: focusStrokeOuter, title: "Focus Outer" },
+    focusStrokeInner: { token: focusStrokeInner, title: "Focus Inner" },
+    neutralStrokeDividerRest: { token: neutralStrokeDividerRest, title: "Divider" },
+    neutralStrokeRest: { token: neutralStrokeRest, title: "Neutral" },
+    neutralStrokeStrongRest: { token: neutralStrokeStrongRest, title: "Neutral Strong" },
+    neutralStrokeInputRest: { token: neutralStrokeInputRest, title: "Neutral Input" },
 };
 
-const strokeWidthRecipes: DesignTokenStore<number> = {
-    strokeWidth: { token: strokeWidth, name: "Stroke width" },
-    focusStrokeWidth: { token: focusStrokeWidth, name: "Focus stroke width" },
+const strokeWidthTokens: DesignTokenStore<number> = {
+    strokeWidth: { token: strokeWidth, title: "Stroke width" },
+    focusStrokeWidth: { token: focusStrokeWidth, title: "Focus stroke width" },
 };
 
-const textFillRecipes: DesignTokenStore<Swatch> = {
-    neutralForegroundRest: { token: neutralForegroundRest, name: "Neutral" },
-    neutralForegroundHint: { token: neutralForegroundHint, name: "Hint" },
-    accentForegroundRest: { token: accentForegroundRest, name: "Accent" },
-    foregroundOnAccentRest: { token: foregroundOnAccentRest, name: "On Accent" },
-    docForegroundRest: { token: docForeground, name: "Doc" },
+const textFillTokens: DesignTokenStore<Swatch> = {
+    neutralForegroundRest: { token: neutralForegroundRest, title: "Neutral" },
+    neutralForegroundHint: { token: neutralForegroundHint, title: "Hint" },
+    accentForegroundRest: { token: accentForegroundRest, title: "Accent" },
+    foregroundOnAccentRest: { token: foregroundOnAccentRest, title: "On Accent" },
+    docForegroundRest: { token: docForeground, title: "Doc" },
 };
 
-const cornerRadiusRecipes: DesignTokenStore<number> = {
-    controlCornerRadius: { token: controlCornerRadius, name: "Control" },
-    layerCornerRadius: { token: layerCornerRadius, name: "Layer" },
+const cornerRadiusTokens: DesignTokenStore<number> = {
+    controlCornerRadius: { token: controlCornerRadius, title: "Control" },
+    layerCornerRadius: { token: layerCornerRadius, title: "Layer" },
 };
 
-const textRecipes: DesignTokenStore = {
+const textTokens: DesignTokenStore = {
     bodyFont: {
         target: StyleProperty.fontFamily,
         token: bodyFont,
-        name: "Font"
+        title: "Font"
     },
     typeRampPlus6FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampPlus6FontSize,
-        name: "Plus 6 font size"
+        title: "Plus 6 font size"
     },
     typeRampPlus6LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus6LineHeight,
-        name: "Plus 6 line height",
+        title: "Plus 6 line height",
     },
     typeRampPlus5FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampPlus5FontSize,
-        name: "Plus 5 font size"
+        title: "Plus 5 font size"
     },
     typeRampPlus5LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus5LineHeight,
-        name: "Plus 5 line height",
+        title: "Plus 5 line height",
     },
     typeRampPlus4FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampPlus4FontSize,
-        name: "Plus 4 font size"
+        title: "Plus 4 font size"
     },
     typeRampPlus4LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus4LineHeight,
-        name: "Plus 4 line height",
+        title: "Plus 4 line height",
     },
     typeRampPlus3FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampPlus3FontSize,
-        name: "Plus 3 font size"
+        title: "Plus 3 font size"
     },
     typeRampPlus3LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus3LineHeight,
-        name: "Plus 3 line height",
+        title: "Plus 3 line height",
     },
     typeRampPlus2FontSize: { 
         target: StyleProperty.fontSize,
         token: typeRampPlus2FontSize,
-        name: "Plus 2 font size"
+        title: "Plus 2 font size"
         },
     typeRampPlus2LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus2LineHeight,
-        name: "Plus 2 line height",
+        title: "Plus 2 line height",
     },
     typeRampPlus1FontSize: { 
         target: StyleProperty.fontSize,
         token: typeRampPlus1FontSize,
-        name: "Plus 1 font size"
+        title: "Plus 1 font size"
     },
     typeRampPlus1LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampPlus1LineHeight,
-        name: "Plus 1 line height",
+        title: "Plus 1 line height",
     },
     typeRampBaseFontSize: {
         target: StyleProperty.fontSize,
         token: typeRampBaseFontSize,
-        name: "Base font size" 
+        title: "Base font size" 
     },
     typeRampBaseLineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampBaseLineHeight,
-        name: "Base line height",
+        title: "Base line height",
     },
     typeRampMinus1FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampMinus1FontSize,
-        name: "Minus 1 font size",
+        title: "Minus 1 font size",
     },
     typeRampMinus1LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampMinus1LineHeight,
-        name: "Minus 1 line height",
+        title: "Minus 1 line height",
     },
     typeRampMinus2FontSize: {
         target: StyleProperty.fontSize,
         token: typeRampMinus2FontSize,
-        name: "Minus 2 font size",
+        title: "Minus 2 font size",
     },
     typeRampMinus2LineHeight: {
         target: StyleProperty.lineHeight,
         token: typeRampMinus2LineHeight,
-        name: "Minus 2 line height",
+        title: "Minus 2 line height",
     },
 };
 
@@ -239,7 +239,7 @@ function registerStore<T>(
         const entryTarget = target || entry.target;
         const definition: DesignTokenDefinition = {
             id: key,
-            name: entry.name,
+            title: entry.title,
             groupTitle: title,
             target: entryTarget,
             formControlId: entry.formControlId,
@@ -252,18 +252,18 @@ function registerStore<T>(
 
 export const registerTokens = (registry: DesignTokenRegistry) => {
     registerStore(null, designTokens, "Global tokens", registry);
-    // This could be optimized, but some tokens are intended to be modified as well as applied as recipes.
-    registerStore(null, textRecipes, "Text", registry);
-    registerStore(null, strokeWidthRecipes, "Stroke width", registry);
-    registerStore(null, cornerRadiusRecipes, "Corner radius", registry);
+    // This could be optimized, but some tokens are intended to be modified as well as applied as style properties.
+    registerStore(null, textTokens, "Text", registry);
+    registerStore(null, strokeWidthTokens, "Stroke width", registry);
+    registerStore(null, cornerRadiusTokens, "Corner radius", registry);
 };
 
-export const registerRecipes = (registry: DesignTokenRegistry) => {
-    registerStore(StyleProperty.backgroundFill, layerRecipes, "Layer fill", registry);
-    registerStore(StyleProperty.backgroundFill, fillRecipes, "Fill", registry);
-    registerStore(StyleProperty.foregroundFill, textFillRecipes, "Foreground", registry);
-    registerStore(StyleProperty.borderFill, strokeRecipes, "Stroke", registry);
-    registerStore(StyleProperty.borderThickness, strokeWidthRecipes, "Stroke width", registry);
-    registerStore(StyleProperty.cornerRadius, cornerRadiusRecipes, "Corner radius", registry);
-    registerStore(null, textRecipes, "Text", registry);
+export const registerAppliableTokens = (registry: DesignTokenRegistry) => {
+    registerStore(StyleProperty.backgroundFill, layerTokens, "Layer fill", registry);
+    registerStore(StyleProperty.backgroundFill, fillTokens, "Fill", registry);
+    registerStore(StyleProperty.foregroundFill, textFillTokens, "Foreground", registry);
+    registerStore(StyleProperty.borderFill, strokeTokens, "Stroke", registry);
+    registerStore(StyleProperty.borderThickness, strokeWidthTokens, "Stroke width", registry);
+    registerStore(StyleProperty.cornerRadius, cornerRadiusTokens, "Corner radius", registry);
+    registerStore(null, textTokens, "Text", registry);
 };

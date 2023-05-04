@@ -1,6 +1,6 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { DesignTokenValues, PluginNodeData, RecipeEvaluation, RecipeEvaluations } from "../core/model.js";
+import { AppliedDesignToken, AppliedDesignTokens, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
@@ -45,10 +45,12 @@ function canHaveChildren(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
+export const FIGMA_SHARED_DATA_NAMESPACE: string = "adaptive_ui";
+
 export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
-    private node: BaseNode;
+    private _node: BaseNode;
 
     constructor(node: BaseNode) {
         super();
@@ -57,24 +59,24 @@ export class FigmaPluginNode extends PluginNode {
 
         // console.log("  new FigmaPluginNode", node.id, node.name, node);
 
-        this.node = node;
+        this._node = node;
         this.id = node.id;
         this.type = node.type;
 
         this.loadLocalDesignTokens();
-        this.loadRecipeEvaluations();
+        this.loadAppliedDesignTokens();
 
-        // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
-        if (isInstanceNode(this.node)) {
-            const mainComponentNode = (this.node as InstanceNode).mainComponent;
+        // If it's an instance node, the plugin data may also include main component settings. Deduplicate them.
+        if (isInstanceNode(this._node)) {
+            const mainComponentNode = (this._node as InstanceNode).mainComponent;
             if (mainComponentNode) {
                 this.deduplicateComponentDesignTokens(mainComponentNode);
-                this.deduplicateComponentRecipes(mainComponentNode);
+                this.deduplicateComponentAppliedDesignTokens(mainComponentNode);
             }
         }
 
-        // if (this._recipes.size) {
-        //     console.log("    final recipes", this._recipes.serialize());
+        // if (this._appliedDesignTokens.size) {
+        //     console.log("    final applied design tokens", this._appliedDesignTokens.serialize());
         // }
 
         // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
@@ -86,7 +88,7 @@ export class FigmaPluginNode extends PluginNode {
 
     private deduplicateComponentDesignTokens(node: BaseNode) {
         this._componentDesignTokens = new DesignTokenValues();
-        const componentDesignTokensJson = node.getSharedPluginData("fast", "designTokens");
+        const componentDesignTokensJson = this.getPluginData("designTokens");
         this._componentDesignTokens.deserialize(componentDesignTokensJson);
 
         this._componentDesignTokens.forEach((token, tokenId) => {
@@ -94,26 +96,26 @@ export class FigmaPluginNode extends PluginNode {
         });
     }
 
-    private deduplicateComponentRecipes(node: BaseNode) {
-        this._componentRecipes = new RecipeEvaluations();
-        const componentRecipesJson = node.getSharedPluginData("fast", "recipes");
-        this._componentRecipes.deserialize(componentRecipesJson);
+    private deduplicateComponentAppliedDesignTokens(node: BaseNode) {
+        this._componentAppliedDesignTokens = new AppliedDesignTokens();
+        const componentAppliedDesignTokensJson = this.getPluginData("appliedDesignTokens");
+        this._componentAppliedDesignTokens.deserialize(componentAppliedDesignTokensJson);
 
-        this._componentRecipes.forEach((recipe, recipeId) => {
-            this._recipeEvaluations.delete(recipeId);
+        this._componentAppliedDesignTokens.forEach((applied, target) => {
+            this._appliedDesignTokens.delete(target);
         });
     }
 
     public canHaveChildren(): boolean {
-        return canHaveChildren(this.node);
+        return canHaveChildren(this._node);
     }
 
     public children(): FigmaPluginNode[] {
-        if (canHaveChildren(this.node)) {
+        if (canHaveChildren(this._node)) {
             const children: FigmaPluginNode[] = [];
 
             // console.log("  get children");
-            for (const child of this.node.children) {
+            for (const child of this._node.children) {
                 children.push(new FigmaPluginNode(child));
             }
 
@@ -139,7 +141,7 @@ export class FigmaPluginNode extends PluginNode {
                         isVectorNode,
                         isComponentNode,
                         isInstanceNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.borderFill:
                 case StyleProperty.borderThickness:
                     return [
@@ -152,7 +154,7 @@ export class FigmaPluginNode extends PluginNode {
                         isVectorNode,
                         isComponentNode,
                         isInstanceNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.cornerRadius:
                     return [
                         isFrameNode,
@@ -162,7 +164,7 @@ export class FigmaPluginNode extends PluginNode {
                         isStarNode,
                         isComponentNode,
                         isInstanceNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.foregroundFill:
                     return [
                         isFrameNode,
@@ -176,18 +178,18 @@ export class FigmaPluginNode extends PluginNode {
                         isComponentNode,
                         isInstanceNode,
                         isTextNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.fontFamily:
                 case StyleProperty.fontSize:
                 case StyleProperty.lineHeight:
-                    return isTextNode(this.node);
+                    return isTextNode(this._node);
                 default:
                     return false;
             }
         }) as Array<StyleProperty>;
     }
 
-    public paint(target: StyleProperty, data: RecipeEvaluation): void {
+    public paint(target: StyleProperty, data: AppliedDesignToken): void {
         switch (target) {
             case StyleProperty.borderFill:
             case StyleProperty.backgroundFill:
@@ -206,13 +208,13 @@ export class FigmaPluginNode extends PluginNode {
                     const families = data.value.split(",");
                     const fontName = { family: families[0], style: "Regular" };
                     figma.loadFontAsync(fontName).then(x => {
-                        (this.node as TextNode).fontName = fontName;
+                        (this._node as TextNode).fontName = fontName;
                     });
                 }
                 break;
             case StyleProperty.fontSize:
                 {
-                    const textNode = this.node as TextNode;
+                    const textNode = this._node as TextNode;
                     figma.loadFontAsync(textNode.fontName as FontName).then(x => {
                         textNode.fontSize = Number.parseFloat(data.value);
                     });
@@ -220,7 +222,7 @@ export class FigmaPluginNode extends PluginNode {
                 break;
             case StyleProperty.lineHeight:
                 {
-                    const textNode = this.node as TextNode;
+                    const textNode = this._node as TextNode;
                     figma.loadFontAsync(textNode.fontName as FontName).then(x => {
                         textNode.lineHeight = {
                             value: Number.parseFloat(data.value),
@@ -230,12 +232,12 @@ export class FigmaPluginNode extends PluginNode {
                 }
                 break;
             default:
-                throw new Error(`Recipe could not be painted ${JSON.stringify(data)}`);
+                throw new Error(`Applied design token could not be painted ${JSON.stringify(data)}`);
         }
     }
 
     public parent(): FigmaPluginNode | null {
-        const parent = this.node.parent;
+        const parent = this._node.parent;
 
         if (parent === null) {
             return null;
@@ -246,7 +248,7 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     public getEffectiveFillColor(): ColorRGBA64 | null {
-        let node: BaseNode | null = this.node;
+        let node: BaseNode | null = this._node;
 
         while (node !== null) {
             if ((node as GeometryMixin).fills) {
@@ -276,9 +278,9 @@ export class FigmaPluginNode extends PluginNode {
     private darkTarget: number = (-0.1 + Math.sqrt(0.21)) / 2;
 
     public handleManualDarkMode(): boolean {
-        if (isInstanceNode(this.node)) {
-            if (this.node.variantProperties) {
-                const currentDarkMode = this.node.variantProperties["Dark mode"];
+        if (isInstanceNode(this._node)) {
+            if (this._node.variantProperties) {
+                const currentDarkMode = this._node.variantProperties["Dark mode"];
                 if (currentDarkMode) {
                     const color = this.getEffectiveFillColor();
                     if (color) {
@@ -287,7 +289,7 @@ export class FigmaPluginNode extends PluginNode {
                         // console.log("handleManualDarkMode", this.node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
                         const value = variantBooleanHelper(currentDarkMode, containerIsDark);
                         if (value) {
-                            this.node.setProperties({
+                            this._node.setProperties({
                                 "Dark mode": value,
                             });
                             return true;
@@ -301,7 +303,7 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
-        let value: string | undefined = this.node.getSharedPluginData("fast", key as string);
+        let value: string | undefined = this._node.getSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key as string);
         if (value === "") {
             value = undefined;
         }
@@ -311,15 +313,15 @@ export class FigmaPluginNode extends PluginNode {
 
     protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
         // console.log("    setPluginData", this.node.id, this.node.type, key, value);
-        this.node.setSharedPluginData("fast", key, value);
+        this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, value);
     }
 
     protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
         // console.log("    deletePluginData", this.node.id, this.node.type, key);
-        this.node.setSharedPluginData("fast", key, "");
+        this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
     }
 
-    private paintColor(target: StyleProperty, data: RecipeEvaluation): void {
+    private paintColor(target: StyleProperty, data: AppliedDesignToken): void {
         let paint: Paint | null = null;
 
         if (data.value.startsWith("linear-gradient")) {
@@ -351,8 +353,8 @@ export class FigmaPluginNode extends PluginNode {
                                     .replace("px)", "")
                             );
                             const size = degrees === 90 || degrees === 270
-                                ? (this.node as LayoutMixin).height
-                                : (this.node as LayoutMixin).width;
+                                ? (this._node as LayoutMixin).height
+                                : (this._node as LayoutMixin).width;
                             position = (size - px) / size;
                         }
                     } else if (index === array.length - 1) {
@@ -408,19 +410,19 @@ export class FigmaPluginNode extends PluginNode {
         switch (target) {
             case StyleProperty.backgroundFill:
             case StyleProperty.foregroundFill:
-                (this.node as any).fills = [paint];
+                (this._node as any).fills = [paint];
                 break;
             case StyleProperty.borderFill:
-                (this.node as any).strokes = [paint];
+                (this._node as any).strokes = [paint];
                 break;
         }
     }
 
-    private paintStrokeWidth(data: RecipeEvaluation): void {
-        (this.node as any).strokeWeight = Number.parseFloat(data.value);
+    private paintStrokeWidth(data: AppliedDesignToken): void {
+        (this._node as any).strokeWeight = Number.parseFloat(data.value);
     }
 
-    private paintCornerRadius(data: RecipeEvaluation): void {
-        (this.node as any).cornerRadius = data.value;
+    private paintCornerRadius(data: AppliedDesignToken): void {
+        (this._node as any).cornerRadius = data.value;
     }
 }

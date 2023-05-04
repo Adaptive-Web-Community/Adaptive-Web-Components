@@ -1,42 +1,44 @@
-import type { DesignToken } from "@microsoft/fast-foundation";
+import type { DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 
-export enum FormControlId {
-    text = "text",
-    color = "color",
-}
+export const FormControlId = {
+    text: "text",
+    color: "color",
+} as const;
+
+export type FormControlId = ValuesOf<typeof FormControlId>;
 
 /**
- * Defines a generic design token
+ * Defines a generic design token.
  */
 export interface DesignTokenDefinition {
     /**
-     * A title for organizing recipe sets
+     * Display title for organizing design token sets.
      */
     groupTitle: string;
 
     /**
-     * The name of the design token
+     * Display title of the design token.
      */
-    name: string;
+    title: string;
 
     /**
-     * Unique ID for the design token
+     * Unique ID for the design token.
      */
     id: string;
 
     /**
-     * The target style property for the design token
+     * Target style property for the design token.
      */
     target?: StyleProperty;
 
     /**
-     * The type of form control to edit this value. Following convention from fast-tooling.
+     * Type of form control to edit this value. Following convention from fast-tooling.
      */
-    formControlId?: string;
+    formControlId?: FormControlId;
 
     /**
-     * The underlying DesignToken for the plugin definition
+     * Underlying {@link DesignToken} for the plugin definition.
      */
     token: DesignToken<any>;
 }
@@ -45,8 +47,8 @@ export class DesignTokenRegistry {
     private _entries: { [id: string]: DesignTokenDefinition } = {};
 
     /**
-     * Register a new design token
-     * @param designToken the design token to register
+     * Registers a new design token definition.
+     * @param designToken The design token definition to register.
      */
     public register(designToken: DesignTokenDefinition): void {
         const { id } = designToken;
@@ -61,16 +63,16 @@ export class DesignTokenRegistry {
     }
 
     /**
-     * Unregister a design token
-     * @param id the ID of the design token to unregister
+     * Unregisters a design token definition.
+     * @param id The ID of the design token definition to unregister.
      */
     public unregister(id: string): void {
         delete this._entries[id];
     }
 
     /**
-     * Get a design token definition by ID
-     * @param id the id of the design token
+     * Gets a design token definition by ID.
+     * @param id The ID of the design token definition.
      */
     public get(id: string): DesignTokenDefinition | null {
         if (this.isRegistered(id)) {
@@ -81,15 +83,15 @@ export class DesignTokenRegistry {
     }
 
     /**
-     * Get all entries in this registry.
+     * Gets all entries in this registry.
      */
-    public get entries() {
+    public get entries(): DesignTokenDefinition[] {
         return Object.values(this._entries);
     }
 
     /**
-     * Determines if the design token has been registered
-     * @param id the id of the design token
+     * Determines if the design token definition has been registered.
+     * @param id The ID of the design token definition.
      */
     public isRegistered(id: string): boolean {
         return this._entries.hasOwnProperty(id);

@@ -70,7 +70,7 @@ const tokenTemplatesByType = {
 
 const template = html<DesignTokenField>`
     <label>
-        <span>${x => x.designToken?.name}</span>
+        <span>${x => x.designToken?.title}</span>
         ${x => x.selectTemplate()}
     </label>
 `;

@@ -1,5 +1,5 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AdditionalData, DesignTokenValues, PluginUINodeData, RecipeEvaluations } from "../core/model.js";
+import { AdditionalData, AppliedDesignTokens, DesignTokenValues, PluginUINodeData } from "../core/model.js";
 
 /**
  * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
@@ -12,8 +12,8 @@ export interface SerializableNodeData {
     inheritedDesignTokens: string;
     componentDesignTokens?: string;
     designTokens: string;
-    componentRecipes?: string;
-    recipeEvaluations: string;
+    componentAppliedDesignTokens?: string;
+    appliedDesignTokens: string;
     additionalData: string;
 }
 
@@ -42,8 +42,8 @@ export function serializeUINodes(
                 inheritedDesignTokens: (node.inheritedDesignTokens as DesignTokenValues).serialize(),
                 componentDesignTokens: (node.componentDesignTokens as DesignTokenValues)?.serialize(),
                 designTokens: node.designTokens.serialize(),
-                componentRecipes: (node.componentRecipes as RecipeEvaluations)?.serialize(),
-                recipeEvaluations: node.recipeEvaluations.serialize(),
+                componentAppliedDesignTokens: (node.componentAppliedDesignTokens as AppliedDesignTokens)?.serialize(),
+                appliedDesignTokens: node.appliedDesignTokens.serialize(),
                 additionalData: node.additionalData.serialize(),
             };
         }
@@ -68,10 +68,10 @@ export function deserializeUINodes(
             componentDesignTokens.deserialize(node.componentDesignTokens);
             const designTokens = new DesignTokenValues();
             designTokens.deserialize(node.designTokens);
-            const componentRecipes = new RecipeEvaluations();
-            componentRecipes.deserialize(node.componentRecipes);
-            const recipeEvaluations = new RecipeEvaluations();
-            recipeEvaluations.deserialize(node.recipeEvaluations);
+            const componentAppliedDesignTokens = new AppliedDesignTokens();
+            componentAppliedDesignTokens.deserialize(node.componentAppliedDesignTokens);
+            const appliedDesignTokens = new AppliedDesignTokens();
+            appliedDesignTokens.deserialize(node.appliedDesignTokens);
             const additionalData = new AdditionalData();
             additionalData.deserialize(node.additionalData);
 
@@ -83,8 +83,8 @@ export function deserializeUINodes(
                 inheritedDesignTokens,
                 componentDesignTokens,
                 designTokens,
-                componentRecipes,
-                recipeEvaluations,
+                componentAppliedDesignTokens,
+                appliedDesignTokens,
                 additionalData,
             };
         }

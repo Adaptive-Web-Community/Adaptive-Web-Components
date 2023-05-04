@@ -10,11 +10,11 @@ You can also use `npm run start` to watch files and rebuild the plugin when file
 
 ## Usage
 
-This plugin enables using certain parts of Adaptive UI in Figma. Currently, it supports assigning recipes and editing design token values.
+This plugin enables using certain parts of Adaptive UI in Figma. Currently, it supports applying design tokens for styling and editing design token values.
 
-With the plugin open, selecting a node in Figma will cause the available options for that node type to be reflected in the UI. Assigning a recipe to the node will apply the recipe to the node.
+With the plugin open, selecting a node in Figma will cause the available options for that node type to be reflected in the UI. Applying an option from the Styling tab will update the appearance in Figma.
 
-Assigning a recipe to a node opts the node into the adaptive system, and assigning a background fill recipe higher in the Figma node tree will inform what the output color the downstream recipe is. Changing upstream nodes will cause all nodes downstream that have been assigned a recipe type to be re-evaluated, allowing you to keep an entire tree of nodes in sync with their background fill.
+Applying a token to a node opts the node into the adaptive system, and assigning a background fill token higher in the Figma node tree will inform what the output color the downstream token is. Changing upstream nodes will cause all nodes downstream that have been assigned a token type to be re-evaluated, allowing you to keep an entire tree of nodes in sync with their background fill.
 
 ## Next Steps
 
