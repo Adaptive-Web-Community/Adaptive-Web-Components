@@ -35,6 +35,7 @@ import {
     neutralStrokeRest,
     neutralStrokeStrongRest,
     strokeWidth,
+    StyleProperty,
     Swatch,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -55,7 +56,6 @@ import {
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
 } from "@adaptive-web/adaptive-ui";
-import { DesignTokenType } from "../model.js";
 import { DesignTokenDefinition, DesignTokenRegistry, FormControlId } from "./design-token-registry.js";
 import { docBaseColor, docFill, docForeground } from "./custom-recipes.js";
 
@@ -66,7 +66,7 @@ interface DesignTokenStore<T = any> {
     [key: string]: {
         name: string;
         token: DesignToken<T>;
-        type?: DesignTokenType;
+        target?: StyleProperty;
         formControlId?: string;
     };
 }
@@ -131,104 +131,104 @@ const cornerRadiusRecipes: DesignTokenStore<number> = {
 
 const textRecipes: DesignTokenStore = {
     bodyFont: {
-        type: DesignTokenType.fontName,
+        target: StyleProperty.fontFamily,
         token: bodyFont,
         name: "Font"
     },
     typeRampPlus6FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus6FontSize,
         name: "Plus 6 font size"
     },
     typeRampPlus6LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus6LineHeight,
         name: "Plus 6 line height",
     },
     typeRampPlus5FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus5FontSize,
         name: "Plus 5 font size"
     },
     typeRampPlus5LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus5LineHeight,
         name: "Plus 5 line height",
     },
     typeRampPlus4FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus4FontSize,
         name: "Plus 4 font size"
     },
     typeRampPlus4LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus4LineHeight,
         name: "Plus 4 line height",
     },
     typeRampPlus3FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus3FontSize,
         name: "Plus 3 font size"
     },
     typeRampPlus3LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus3LineHeight,
         name: "Plus 3 line height",
     },
     typeRampPlus2FontSize: { 
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus2FontSize,
         name: "Plus 2 font size"
         },
     typeRampPlus2LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus2LineHeight,
         name: "Plus 2 line height",
     },
     typeRampPlus1FontSize: { 
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampPlus1FontSize,
         name: "Plus 1 font size"
     },
     typeRampPlus1LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampPlus1LineHeight,
         name: "Plus 1 line height",
     },
     typeRampBaseFontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampBaseFontSize,
         name: "Base font size" 
     },
     typeRampBaseLineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampBaseLineHeight,
         name: "Base line height",
     },
     typeRampMinus1FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampMinus1FontSize,
         name: "Minus 1 font size",
     },
     typeRampMinus1LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampMinus1LineHeight,
         name: "Minus 1 line height",
     },
     typeRampMinus2FontSize: {
-        type: DesignTokenType.fontSize,
+        target: StyleProperty.fontSize,
         token: typeRampMinus2FontSize,
         name: "Minus 2 font size",
     },
     typeRampMinus2LineHeight: {
-        type: DesignTokenType.lineHeight,
+        target: StyleProperty.lineHeight,
         token: typeRampMinus2LineHeight,
         name: "Minus 2 line height",
     },
 };
 
 function registerStore<T>(
-    type: DesignTokenType | null,
+    target: StyleProperty | null,
     store: DesignTokenStore<T>,
     title: string,
     registry: DesignTokenRegistry
@@ -236,38 +236,34 @@ function registerStore<T>(
     Object.keys(store).forEach((key: string) => {
         const entry = store[key];
 
-        const entryType = type || entry.type;
-        if (entryType !== void 0) {
-            const definition: DesignTokenDefinition = {
-                id: key,
-                name: entry.name,
-                groupTitle: title,
-                type: entryType,
-                formControlId: entry.formControlId,
-                token: entry.token,
-            };
+        const entryTarget = target || entry.target;
+        const definition: DesignTokenDefinition = {
+            id: key,
+            name: entry.name,
+            groupTitle: title,
+            target: entryTarget,
+            formControlId: entry.formControlId,
+            token: entry.token,
+        };
 
-            registry.register(definition);
-        } else {
-            throw `DesignTokenType not specified for ${key}`;
-        }
+        registry.register(definition);
     });
 }
 
 export const registerTokens = (registry: DesignTokenRegistry) => {
-    registerStore(DesignTokenType.designToken, designTokens, "Global tokens", registry);
+    registerStore(null, designTokens, "Global tokens", registry);
     // This could be optimized, but some tokens are intended to be modified as well as applied as recipes.
-    registerStore(DesignTokenType.designToken, textRecipes, "Text", registry);
-    registerStore(DesignTokenType.designToken, strokeWidthRecipes, "Stroke width", registry);
-    registerStore(DesignTokenType.designToken, cornerRadiusRecipes, "Corner radius", registry);
+    registerStore(null, textRecipes, "Text", registry);
+    registerStore(null, strokeWidthRecipes, "Stroke width", registry);
+    registerStore(null, cornerRadiusRecipes, "Corner radius", registry);
 };
 
 export const registerRecipes = (registry: DesignTokenRegistry) => {
-    registerStore(DesignTokenType.layerFill, layerRecipes, "Layer fill", registry);
-    registerStore(DesignTokenType.backgroundFill, fillRecipes, "Fill", registry);
-    registerStore(DesignTokenType.foregroundFill, textFillRecipes, "Foreground", registry);
-    registerStore(DesignTokenType.strokeFill, strokeRecipes, "Stroke", registry);
-    registerStore(DesignTokenType.strokeWidth, strokeWidthRecipes, "Stroke width", registry);
-    registerStore(DesignTokenType.cornerRadius, cornerRadiusRecipes, "Corner radius", registry);
+    registerStore(StyleProperty.backgroundFill, layerRecipes, "Layer fill", registry);
+    registerStore(StyleProperty.backgroundFill, fillRecipes, "Fill", registry);
+    registerStore(StyleProperty.foregroundFill, textFillRecipes, "Foreground", registry);
+    registerStore(StyleProperty.borderFill, strokeRecipes, "Stroke", registry);
+    registerStore(StyleProperty.borderThickness, strokeWidthRecipes, "Stroke width", registry);
+    registerStore(StyleProperty.cornerRadius, cornerRadiusRecipes, "Corner radius", registry);
     registerStore(null, textRecipes, "Text", registry);
 };

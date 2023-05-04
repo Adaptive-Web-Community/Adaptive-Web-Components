@@ -1,6 +1,7 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
-import { DesignTokenType, PluginUINodeData } from "../core/model.js";
+import { PluginUINodeData } from "../core/model.js";
 import { UIController, UIDesignTokenValue } from "./ui-controller.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
@@ -50,7 +51,7 @@ const assignedTokensTemplate = (
 `;
 
 const availableTokensTemplate = (
-    tokenType: DesignTokenType,
+    tokenType: StyleProperty,
     title: string | null,
     tokenLayout: "stack" | "grid" = "stack",
     glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
@@ -126,16 +127,15 @@ const template = html<App>`
                                 ${(x) => assignedTokensTemplate(x.strokeRecipes, "Stroke", TokenGlyphType.borderSwatch)}
                             </div>
                             <div>
-                                ${(x) => availableTokensTemplate(DesignTokenType.layerFill, "Layer backgrounds")}
-                                ${(x) => availableTokensTemplate(DesignTokenType.backgroundFill, "Fills")}
+                                ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fills")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.strokeFill,
+                                        StyleProperty.borderFill,
                                         "Strokes",
                                         "stack",
                                         TokenGlyphType.borderSwatch
                                     )}
-                                ${(x) => availableTokensTemplate(DesignTokenType.foregroundFill, "Foregrounds")}
+                                ${(x) => availableTokensTemplate(StyleProperty.foregroundFill, "Foregrounds")}
                             </div>
                         </designer-drawer>
                     `
@@ -150,7 +150,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.strokeWidth,
+                                        StyleProperty.borderThickness,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -169,7 +169,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.cornerRadius,
+                                        StyleProperty.cornerRadius,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -188,21 +188,21 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.fontName,
+                                        StyleProperty.fontFamily,
                                         "font name",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.fontSize,
+                                        StyleProperty.fontSize,
                                         "font size",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        DesignTokenType.lineHeight,
+                                        StyleProperty.lineHeight,
                                         "Line height",
                                         "stack",
                                         TokenGlyphType.icon
@@ -231,7 +231,7 @@ const template = html<App>`
                         </div>
                         <div style="overflow-y: overlay;">
                             <designer-design-tokens-form
-                                :designTokens=${(x) => x.appliedDesignTokens}
+                                :designTokens=${(x) => x.designTokenValues}
                                 @tokenChange=${(x, c) =>
                                     x.controller.assignDesignToken(
                                         (c.event as CustomEvent).detail.definition,
@@ -403,7 +403,7 @@ export class App extends FASTElement {
     public supportsDesignSystem: boolean;
 
     @observable
-    public appliedDesignTokens: UIDesignTokenValue[] | null;
+    public designTokenValues: UIDesignTokenValue[] | null;
 
     @observable
     public availableDesignTokens: DesignTokenDefinition[] | null;
@@ -416,36 +416,35 @@ export class App extends FASTElement {
         this.supportsColor =
             this.selectedNodes?.some(
                 (node) =>
-                    node.supports.includes(DesignTokenType.backgroundFill) ||
-                    node.supports.includes(DesignTokenType.foregroundFill) ||
-                    node.supports.includes(DesignTokenType.strokeFill)
+                    node.supports.includes(StyleProperty.backgroundFill) ||
+                    node.supports.includes(StyleProperty.foregroundFill) ||
+                    node.supports.includes(StyleProperty.borderFill)
             ) || false;
-        this.supportsStrokeWidth = this.controller.supports(DesignTokenType.strokeWidth);
-        this.supportsCornerRadius = this.controller.supports(DesignTokenType.cornerRadius);
-        this.supportsText = this.controller.supports(DesignTokenType.fontName);
+        this.supportsStrokeWidth = this.controller.supports(StyleProperty.borderThickness);
+        this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadius);
+        this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
-        this.layerRecipes = this.controller.appliedRecipes(DesignTokenType.layerFill);
-        this.backgroundRecipes = this.controller.appliedRecipes(DesignTokenType.backgroundFill);
-        this.foregroundRecipes = this.controller.appliedRecipes(DesignTokenType.foregroundFill);
-        this.strokeRecipes = this.controller.appliedRecipes(DesignTokenType.strokeFill);
-        this.strokeWidthRecipes = this.controller.appliedRecipes(DesignTokenType.strokeWidth);
-        this.cornerRadiusRecipes = this.controller.appliedRecipes(DesignTokenType.cornerRadius);
+        this.backgroundRecipes = this.controller.appliedRecipes(StyleProperty.backgroundFill);
+        this.foregroundRecipes = this.controller.appliedRecipes(StyleProperty.foregroundFill);
+        this.strokeRecipes = this.controller.appliedRecipes(StyleProperty.borderFill);
+        this.strokeWidthRecipes = this.controller.appliedRecipes(StyleProperty.borderThickness);
+        this.cornerRadiusRecipes = this.controller.appliedRecipes(StyleProperty.cornerRadius);
         this.textRecipes = [
-            ...this.controller.appliedRecipes(DesignTokenType.fontName),
-            ...this.controller.appliedRecipes(DesignTokenType.fontSize),
-            ...this.controller.appliedRecipes(DesignTokenType.lineHeight),
+            ...this.controller.appliedRecipes(StyleProperty.fontFamily),
+            ...this.controller.appliedRecipes(StyleProperty.fontSize),
+            ...this.controller.appliedRecipes(StyleProperty.lineHeight),
         ];
 
-        this.supportsDesignSystem = this.controller.supports(DesignTokenType.designToken);
+        this.supportsDesignSystem = true;
 
         // Get all applied design tokens except fillColor because it's handled through a recipe or plain color from the design tool.
-        this.appliedDesignTokens = this.controller.appliedDesignTokens();
+        this.designTokenValues = this.controller.getDesignTokenValues();
         //.filter(token => token.definition.id !== "fillColor");
 
         // Get all design tokens that can be added, which is the full list except any already applied /* or fillColor (see above). */
         this.availableDesignTokens = this.controller.getDesignTokenDefinitions().filter(
             (definition) =>
-                this.appliedDesignTokens!.find((appliedToken) => appliedToken.definition.id === definition.id) || true
+                this.designTokenValues!.find((appliedToken) => appliedToken.definition.id === definition.id) || true
                 //&& definition.id !== "fillColor"
         );
     }

@@ -1,5 +1,5 @@
-import { AdditionalData, AppliedDesignTokens, AppliedRecipes, PluginUINodeData, RecipeEvaluations } from "../core/model.js";
-import type { DesignTokenType } from "../core/model.js";
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { AdditionalData, DesignTokenValues, PluginUINodeData, RecipeEvaluations } from "../core/model.js";
 
 /**
  * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
@@ -7,13 +7,12 @@ import type { DesignTokenType } from "../core/model.js";
 export interface SerializableNodeData {
     id: string;
     type: string;
-    supports: Array<DesignTokenType>;
+    supports: Array<StyleProperty>;
     children: SerializableNodeData[];
     inheritedDesignTokens: string;
     componentDesignTokens?: string;
     designTokens: string;
     componentRecipes?: string;
-    recipes: string;
     recipeEvaluations: string;
     additionalData: string;
 }
@@ -40,11 +39,10 @@ export function serializeUINodes(
                 type: node.type,
                 supports: node.supports,
                 children: serializeUINodes(node.children),
-                inheritedDesignTokens: (node.inheritedDesignTokens as AppliedDesignTokens).serialize(),
-                componentDesignTokens: (node.componentDesignTokens as AppliedDesignTokens)?.serialize(),
+                inheritedDesignTokens: (node.inheritedDesignTokens as DesignTokenValues).serialize(),
+                componentDesignTokens: (node.componentDesignTokens as DesignTokenValues)?.serialize(),
                 designTokens: node.designTokens.serialize(),
-                componentRecipes: (node.componentRecipes as AppliedRecipes)?.serialize(),
-                recipes: node.recipes.serialize(),
+                componentRecipes: (node.componentRecipes as RecipeEvaluations)?.serialize(),
                 recipeEvaluations: node.recipeEvaluations.serialize(),
                 additionalData: node.additionalData.serialize(),
             };
@@ -64,15 +62,13 @@ export function deserializeUINodes(
 ): PluginUINodeData[] {
     const deserializedNodes = nodes.map(
         (node): PluginUINodeData => {
-            const inheritedDesignTokens = new AppliedDesignTokens();
+            const inheritedDesignTokens = new DesignTokenValues();
             inheritedDesignTokens.deserialize(node.inheritedDesignTokens);
-            const componentDesignTokens = new AppliedDesignTokens();
+            const componentDesignTokens = new DesignTokenValues();
             componentDesignTokens.deserialize(node.componentDesignTokens);
-            const designTokens = new AppliedDesignTokens();
+            const designTokens = new DesignTokenValues();
             designTokens.deserialize(node.designTokens);
-            const recipes = new AppliedRecipes();
-            recipes.deserialize(node.recipes);
-            const componentRecipes = new AppliedRecipes();
+            const componentRecipes = new RecipeEvaluations();
             componentRecipes.deserialize(node.componentRecipes);
             const recipeEvaluations = new RecipeEvaluations();
             recipeEvaluations.deserialize(node.recipeEvaluations);
@@ -88,7 +84,6 @@ export function deserializeUINodes(
                 componentDesignTokens,
                 designTokens,
                 componentRecipes,
-                recipes,
                 recipeEvaluations,
                 additionalData,
             };

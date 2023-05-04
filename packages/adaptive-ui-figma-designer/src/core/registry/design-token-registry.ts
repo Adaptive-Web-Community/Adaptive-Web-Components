@@ -1,5 +1,5 @@
 import type { DesignToken } from "@microsoft/fast-foundation";
-import type { DesignTokenType } from "../model.js";
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
 
 export enum FormControlId {
     text = "text",
@@ -26,9 +26,9 @@ export interface DesignTokenDefinition {
     id: string;
 
     /**
-     * The type of design token
+     * The target style property for the design token
      */
-    type: DesignTokenType;
+    target?: StyleProperty;
 
     /**
      * The type of form control to edit this value. Following convention from fast-tooling.
@@ -42,7 +42,7 @@ export interface DesignTokenDefinition {
 }
 
 export class DesignTokenRegistry {
-    private entries: { [id: string]: DesignTokenDefinition } = {};
+    private _entries: { [id: string]: DesignTokenDefinition } = {};
 
     /**
      * Register a new design token
@@ -56,16 +56,16 @@ export class DesignTokenRegistry {
                 `Design token ${id} has already been registered. You must unregister the design token before registering with that ID.`
             );
         } else {
-            this.entries[id] = designToken;
+            this._entries[id] = designToken;
         }
     }
 
     /**
      * Unregister a design token
-     * @param id - the ID of the design token to unregister
+     * @param id the ID of the design token to unregister
      */
     public unregister(id: string): void {
-        delete this.entries[id];
+        delete this._entries[id];
     }
 
     /**
@@ -74,25 +74,32 @@ export class DesignTokenRegistry {
      */
     public get(id: string): DesignTokenDefinition | null {
         if (this.isRegistered(id)) {
-            return this.entries[id];
+            return this._entries[id];
         }
 
         return null;
     }
 
     /**
-     * Determines if the design token has been registered
-     * @param id - the id of the design token
+     * Get all entries in this registry.
      */
-    public isRegistered(id: string): boolean {
-        return this.entries.hasOwnProperty(id);
+    public get entries() {
+        return Object.values(this._entries);
     }
 
     /**
-     * Returns all entries of a given design token type
-     * @param type the design token type to return entries of
+     * Determines if the design token has been registered
+     * @param id the id of the design token
      */
-    public find(type: DesignTokenType): DesignTokenDefinition[] {
-        return Object.values(this.entries).filter(value => value.type === type);
+    public isRegistered(id: string): boolean {
+        return this._entries.hasOwnProperty(id);
+    }
+
+    /**
+     * Returns all entries that apply to a given style property type
+     * @param target the style property type to return entries of
+     */
+    public find(target: StyleProperty): DesignTokenDefinition[] {
+        return Object.values(this._entries).filter(value => value.target === target);
     }
 }

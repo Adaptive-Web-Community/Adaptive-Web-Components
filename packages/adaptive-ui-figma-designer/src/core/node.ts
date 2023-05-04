@@ -1,19 +1,17 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import {
     AdditionalData,
-    AppliedDesignTokens,
-    AppliedRecipes,
-    DesignTokenType,
+    DesignTokenValues,
     PluginNodeData,
-    ReadonlyAppliedDesignTokens,
-    ReadonlyAppliedRecipes,
+    ReadonlyDesignTokenValues,
     ReadonlyRecipeEvaluations,
     RecipeEvaluation,
     RecipeEvaluations,
     TOOL_FILL_COLOR_TOKEN,
 } from "./model.js";
 
-const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
+const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
 
 /**
  * The abstract class the plugin Controller interacts with.
@@ -22,30 +20,29 @@ const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
  * for each design tool.
  */
 export abstract class PluginNode {
-    protected _recipes: AppliedRecipes = new AppliedRecipes();
-    protected _componentDesignTokens?: AppliedDesignTokens;
-    protected _componentRecipes?: AppliedRecipes;
-    protected _localDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+    protected _componentDesignTokens?: DesignTokenValues;
+    protected _componentRecipes?: RecipeEvaluations;
+    protected _localDesignTokens: DesignTokenValues = new DesignTokenValues();
     protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
     protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
      * Retrieves the design token overrides on ancestor nodes.
      */
-    public get inheritedDesignTokens(): ReadonlyAppliedDesignTokens {
+    public get inheritedDesignTokens(): ReadonlyDesignTokenValues {
         // Return value from the cache if we have it
         if (DesignTokenCache.has(this.id)) {
-            return DesignTokenCache.get(this.id) as ReadonlyAppliedDesignTokens;
+            return DesignTokenCache.get(this.id) as ReadonlyDesignTokenValues;
         }
 
-        let designTokens = new AppliedDesignTokens();
+        let designTokens = new DesignTokenValues();
         const parent = this.parent();
         if (parent !== null) {
-            designTokens = new AppliedDesignTokens([
+            designTokens = new DesignTokenValues([
                 ...parent.inheritedDesignTokens,
                 ...(parent.componentDesignTokens
                     ? parent.componentDesignTokens
-                    : new AppliedDesignTokens()),
+                    : new DesignTokenValues()),
                 ...parent.localDesignTokens,
             ]);
         }
@@ -57,35 +54,8 @@ export abstract class PluginNode {
         return designTokens;
     }
 
-    protected loadRecipes(): void {
-        const json = this.getPluginData("recipes");
-        // console.log("  loadRecipes", this.id, this.type, json);
-        this._recipes.deserialize(json);
-    }
-
-    /**
-     * Gets a readonly map of recipes applied to this node.
-     */
-    public get recipes(): ReadonlyAppliedRecipes {
-        return this._recipes as ReadonlyAppliedRecipes;
-    }
-
-    /**
-     * Sets the recipes to the node and design tool.
-     * @param recipes The complete applied recipes map.
-     */
-    public setRecipes(recipes: AppliedRecipes) {
-        this._recipes = recipes;
-        if (recipes.size) {
-            const json = recipes.serialize();
-            this.setPluginData("recipes", json);
-        } else {
-            this.deletePluginData("recipes");
-        }
-    }
-
-    public get componentRecipes(): ReadonlyAppliedRecipes | undefined {
-        return this._componentRecipes as ReadonlyAppliedRecipes;
+    public get componentRecipes(): ReadonlyRecipeEvaluations | undefined {
+        return this._componentRecipes as ReadonlyRecipeEvaluations;
     }
 
     protected loadLocalDesignTokens(): void {
@@ -97,12 +67,12 @@ export abstract class PluginNode {
     /**
      * Gets a readonly map of design token overrides applied to this node.
      */
-    public get localDesignTokens(): ReadonlyAppliedDesignTokens {
+    public get localDesignTokens(): ReadonlyDesignTokenValues {
         return this._localDesignTokens;
     }
 
-    public get componentDesignTokens(): ReadonlyAppliedDesignTokens {
-        return this._componentDesignTokens as ReadonlyAppliedDesignTokens;
+    public get componentDesignTokens(): ReadonlyDesignTokenValues {
+        return this._componentDesignTokens as ReadonlyDesignTokenValues;
     }
 
     public abstract id: string;
@@ -110,13 +80,13 @@ export abstract class PluginNode {
     public abstract canHaveChildren(): boolean;
     public abstract children(): PluginNode[];
     public abstract parent(): PluginNode | null;
-    public abstract supports(): Array<DesignTokenType>;
+    public abstract supports(): Array<StyleProperty>;
 
     /**
      * Sets the design tokens to the node and design tool.
      * @param tokens The complete design tokens override map.
      */
-    public setDesignTokens(tokens: AppliedDesignTokens) {
+    public setDesignTokens(tokens: DesignTokenValues) {
         this._localDesignTokens = tokens;
         if (tokens.size) {
             const json = tokens.serialize();
@@ -154,7 +124,7 @@ export abstract class PluginNode {
         return this._additionalData;
     }
 
-    public abstract paint(data: RecipeEvaluation): void;
+    public abstract paint(target: StyleProperty, data: RecipeEvaluation): void;
 
     /**
      * Retrieve the effective fill color for the node.
@@ -176,16 +146,11 @@ export abstract class PluginNode {
             // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
             // If the fill color comes from a recipe, don't pass it again.
             let foundFill = false;
-            this._recipeEvaluations.forEach(evaluations => {
-                evaluations.forEach(evaluation => {
-                    // console.log("    evaluation", evaluation.type, "value", evaluation.value);
-                    if (
-                        evaluation.type === DesignTokenType.backgroundFill ||
-                        evaluation.type === DesignTokenType.layerFill
-                    ) {
-                        foundFill = true;
-                    }
-                });
+            this._recipeEvaluations.forEach((evaluation, target) => {
+                // console.log("    evaluation", target, "value", evaluation.value);
+                if (target === StyleProperty.backgroundFill) {
+                    foundFill = true;
+                }
             });
             if (!foundFill) {
                 const nodeFillColor = this.getEffectiveFillColor();

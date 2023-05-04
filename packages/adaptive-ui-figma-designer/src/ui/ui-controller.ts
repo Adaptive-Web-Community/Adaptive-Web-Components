@@ -1,9 +1,8 @@
-import { SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { StyleProperty, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
-import type { DesignToken } from "@microsoft/fast-foundation";
-import type { DesignTokenValue } from "@microsoft/fast-foundation/design-token-core";
-import { AppliedDesignToken, AppliedRecipe, DesignTokenType, PluginUINodeData, RecipeEvaluation } from "../core/model.js";
+import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
+import { DesignTokenValue, PluginUINodeData, RecipeEvaluation } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerRecipes, registerTokens } from "../core/registry/recipes.js";
 
@@ -106,15 +105,15 @@ export class UIController {
         this.dispatchState(reason);
     }
 
-    public supports(type: DesignTokenType) {
-        return this._selectedNodes.some(node => node.supports.includes(type));
+    public supports(target: StyleProperty) {
+        return this._selectedNodes.some(node => node.supports.includes(target));
     }
 
     /**
      * Gets a display representation of design tokens applied to the selected nodes.
      * @returns Applied design tokens.
      */
-    public appliedDesignTokens(): UIDesignTokenValue[] {
+    public getDesignTokenValues(): UIDesignTokenValue[] {
         const tokenValues = new Map<string, Set<string>>();
         const designTokens: UIDesignTokenValue[] = [];
 
@@ -128,9 +127,7 @@ export class UIController {
             })
         );
 
-        const allDesignTokens = this._designTokenRegistry.find(
-            DesignTokenType.designToken
-        );
+        const allDesignTokens = this._designTokenRegistry.entries;
 
         allDesignTokens.forEach(designToken => {
             if (tokenValues.has(designToken.id)) {
@@ -149,18 +146,18 @@ export class UIController {
 
     /**
      * Gets a display representation of recipes applied to the selected nodes.
-     * @param type Recipe type.
+     * @param target Style property type.
      * @returns Applied recipes.
      */
-    public appliedRecipes(type: DesignTokenType): DesignTokenDefinition[] {
+    public appliedRecipes(target: StyleProperty): DesignTokenDefinition[] {
         const ids = new Set<string>();
         const recipes: DesignTokenDefinition[] = [];
 
         this._selectedNodes.forEach(node =>
-            node.recipes.forEach((recipe, recipeId) => ids.add(recipeId))
+            node.recipeEvaluations.forEach((recipe) => ids.add(recipe.tokenName))
         );
 
-        const typeRecipes = this._recipeRegistry.find(type);
+        const typeRecipes = this._recipeRegistry.find(target);
 
         typeRecipes.forEach(recipe => {
             if (ids.has(recipe.id)) {
@@ -168,16 +165,16 @@ export class UIController {
             }
         });
 
-        return recipes.filter(recipe => recipe.type === type);
+        return recipes.filter(recipe => recipe.target === target);
     }
 
     /**
      * Gets a list of recipes for the recipe type.
-     * @param type Recipe type.
+     * @param target Recipe type.
      * @returns List of available recipes.
      */
-    public recipeOptionsByType(type: DesignTokenType): DesignTokenDefinition[] {
-        const val = this._recipeRegistry.find(type);
+    public recipeOptionsByType(target: StyleProperty): DesignTokenDefinition[] {
+        const val = this._recipeRegistry.find(target);
         return val;
     }
 
@@ -188,7 +185,7 @@ export class UIController {
     public recipeIsAssigned(id: string): string[] {
         return this._selectedNodes
             .filter(node => {
-                return Object.keys(node.recipes).includes(id);
+                return Object.keys(node.recipeEvaluations).includes(id);
             })
             .map(node => node.id);
     }
@@ -202,7 +199,6 @@ export class UIController {
             // console.log("reset", node);
 
             node.designTokens.clear();
-            node.recipes.clear();
             node.recipeEvaluations.clear();
         });
 
@@ -216,7 +212,7 @@ export class UIController {
                 ...(node.componentRecipes
                     ? node.componentRecipes.keys()
                     : new Array<string>()),
-                ...node.recipes.keys(),
+                ...node.recipeEvaluations.keys(),
             ];
 
             allRecipeIds.reduceRight<Array<DesignTokenDefinition>>(
@@ -225,7 +221,7 @@ export class UIController {
                     const currentRecipe = this._recipeRegistry.get(currentId);
                     if (
                         currentRecipe &&
-                        !previousRecipes.find(value => value.type === currentRecipe.type)
+                        !previousRecipes.find(value => value.target === currentRecipe.target)
                     ) {
                         // console.log("adding", currentRecipe);
                         this.evaluateRecipe(currentRecipe, node);
@@ -241,17 +237,17 @@ export class UIController {
     }
 
     private evaluateRecipe(recipe: DesignTokenDefinition, node: PluginUINodeData): any {
-        // console.log("    evaluateRecipe", recipe);
+        console.log("    evaluateRecipe", recipe);
         let value: any = this.getDesignTokenValue(node, recipe.token);
         if (typeof (value as any).toColorString === "function") {
             value = (value as any).toColorString();
         }
-        node.recipeEvaluations.set(recipe.id, [
-            new RecipeEvaluation(recipe.type, (value as unknown) as string),
-        ]);
+        node.recipeEvaluations.set(recipe.target,
+            new RecipeEvaluation(recipe.id, (value as unknown) as string),
+        );
         // console.log("      evaluations", node.recipeEvaluations);
 
-        if (recipe.type === DesignTokenType.layerFill) {
+        if (recipe.target ===StyleProperty.backgroundFill) {
             // console.log("      Fill recipe, setting fillColor design token");
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const def = this._designTokenRegistry.get("fillColor")!;
@@ -266,9 +262,8 @@ export class UIController {
 
     public removeRecipe(recipe: DesignTokenDefinition): void {
         this._selectedNodes.forEach(node => {
-            node.recipes.delete(recipe.id);
 
-            node.recipeEvaluations.delete(recipe.id);
+            node.recipeEvaluations.delete(recipe.target);
 
             // console.log("--------------------------------");
             // console.log("removed recipe from node", recipe.id, node);
@@ -283,25 +278,6 @@ export class UIController {
         this._selectedNodes.forEach(node => {
             // console.log("--------------------------------");
             // console.log("assigning recipe to node", recipe);
-
-            // There should only be able to be one recipe for a type, but maybe add safety check.
-            let recipeToRemove: string | null = null;
-            node.recipeEvaluations.forEach((evaluationAttrs, evaluationRecipeId) => {
-                const found = evaluationAttrs.find(
-                    evaluation => evaluation.type === recipe.type
-                );
-                if (found) {
-                    recipeToRemove = evaluationRecipeId;
-                }
-            });
-
-            if (recipeToRemove) {
-                // console.log("  Removing recipe and evaluations for", recipeToRemove);
-                node.recipes.delete(recipeToRemove);
-                node.recipeEvaluations.delete(recipeToRemove);
-            }
-
-            node.recipes.set(recipe.id, new AppliedRecipe());
 
             this.evaluateRecipe(recipe, node);
             // console.log("  node", node);
@@ -322,13 +298,13 @@ export class UIController {
                         // console.log("      raw value");
                         token.setValueFor(
                             nodeElement,
-                            value as DesignTokenValue<T>
+                            value as StaticDesignTokenValue<T>
                         );
                     } else {
                         // console.log("      color object");
                         token.setValueFor(
                             nodeElement,
-                            (SwatchRGB.from(color) as unknown) as DesignTokenValue<T>
+                            (SwatchRGB.from(color) as unknown) as StaticDesignTokenValue<T>
                         );
                     }
                 } else {
@@ -337,11 +313,11 @@ export class UIController {
                         // console.log("    setting DesignToken value (number)", token.name, value);
                         token.setValueFor(
                             nodeElement,
-                            (num as unknown) as DesignTokenValue<T>
+                            (num as unknown) as StaticDesignTokenValue<T>
                         );
                     } else {
                         // console.log("    setting DesignToken value (unconverted)", token.name, value);
-                        token.setValueFor(nodeElement, value as DesignTokenValue<T>);
+                        token.setValueFor(nodeElement, value as StaticDesignTokenValue<T>);
                     }
                 }
             } else {
@@ -361,10 +337,10 @@ export class UIController {
         return element;
     }
 
-    private appliedDesignTokensHandler(
+    private designTokenValuesHandler(
         nodeElement: FASTElement
-    ): (value: AppliedDesignToken, key: string) => void {
-        return (value: AppliedDesignToken, key: string): void => {
+    ): (value: DesignTokenValue, key: string) => void {
+        return (value: DesignTokenValue, key: string): void => {
             const def = this._designTokenRegistry.get(key);
             if (def) {
                 this.setDesignTokenForElement(
@@ -389,20 +365,20 @@ export class UIController {
         // Set all the inherited design token values for the local element.
         // console.log("    setting inherited tokens");
         node.inheritedDesignTokens.forEach(
-            this.appliedDesignTokensHandler(nodeElement),
+            this.designTokenValuesHandler(nodeElement),
             this
         );
 
         // Set all design token values from the main component for the local element (an instance component).
         // console.log("    setting main component tokens", node.componentDesignTokens);
         node.componentDesignTokens?.forEach(
-            this.appliedDesignTokensHandler(nodeElement),
+            this.designTokenValuesHandler(nodeElement),
             this
         );
 
         // Set all the design token override values for the local element.
         // console.log("    setting local tokens");
-        node.designTokens.forEach(this.appliedDesignTokensHandler(nodeElement), this);
+        node.designTokens.forEach(this.designTokenValuesHandler(nodeElement), this);
 
         // Handle any additional data. Keys are provided as design token ids.
         node.additionalData.forEach((value, key) => {
@@ -426,7 +402,7 @@ export class UIController {
     }
 
     public getDesignTokenDefinitions(): DesignTokenDefinition[] {
-        return this._designTokenRegistry.find(DesignTokenType.designToken);
+        return this._designTokenRegistry.entries;
     }
 
     public getDesignTokenDefinition(id: string): DesignTokenDefinition | null {
@@ -455,7 +431,7 @@ export class UIController {
         value: T | null
     ): void {
         if (value) {
-            const designToken = new AppliedDesignToken();
+            const designToken = new DesignTokenValue();
             designToken.value = this.valueToString(value);
             node.designTokens.set(definition.id, designToken);
         } else {
@@ -468,9 +444,7 @@ export class UIController {
     }
 
     public assignDesignToken(definition: DesignTokenDefinition, value: any): void {
-        const nodes = this._selectedNodes.filter(node =>
-            node.supports.includes(DesignTokenType.designToken)
-        );
+        const nodes = this._selectedNodes;
 
         // console.log("--------------------------------");
         // console.log("UIController.assignDesignToken", definition, value, typeof value, nodes);
@@ -484,9 +458,7 @@ export class UIController {
     }
 
     public removeDesignToken(definition: DesignTokenDefinition): void {
-        const nodes = this._selectedNodes.filter(node =>
-            node.supports.includes(DesignTokenType.designToken)
-        );
+        const nodes = this._selectedNodes;
 
         // console.log("--------------------------------");
         // console.log("UIController.removeDesignToken", definition.id, nodes);

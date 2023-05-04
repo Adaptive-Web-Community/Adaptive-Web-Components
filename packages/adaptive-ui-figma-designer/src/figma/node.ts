@@ -1,5 +1,6 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
-import { AppliedDesignTokens, AppliedRecipes, DesignTokenType, PluginNodeData, RecipeEvaluation } from "../core/model.js";
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { DesignTokenValues, PluginNodeData, RecipeEvaluation, RecipeEvaluations } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
@@ -61,7 +62,6 @@ export class FigmaPluginNode extends PluginNode {
         this.type = node.type;
 
         this.loadLocalDesignTokens();
-        this.loadRecipes();
         this.loadRecipeEvaluations();
 
         // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
@@ -85,8 +85,8 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private deduplicateComponentDesignTokens(node: BaseNode) {
-        this._componentDesignTokens = new AppliedDesignTokens();
-        const componentDesignTokensJson = node.getSharedPluginData("fast","designTokens");
+        this._componentDesignTokens = new DesignTokenValues();
+        const componentDesignTokensJson = node.getSharedPluginData("fast", "designTokens");
         this._componentDesignTokens.deserialize(componentDesignTokensJson);
 
         this._componentDesignTokens.forEach((token, tokenId) => {
@@ -95,12 +95,12 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private deduplicateComponentRecipes(node: BaseNode) {
-        this._componentRecipes = new AppliedRecipes();
+        this._componentRecipes = new RecipeEvaluations();
         const componentRecipesJson = node.getSharedPluginData("fast", "recipes");
         this._componentRecipes.deserialize(componentRecipesJson);
 
         this._componentRecipes.forEach((recipe, recipeId) => {
-            this._recipes.delete(recipeId);
+            this._recipeEvaluations.delete(recipeId);
         });
     }
 
@@ -123,11 +123,10 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public supports(): Array<DesignTokenType> {
-        return Object.keys(DesignTokenType).filter((key: string) => {
+    public supports(): Array<StyleProperty> {
+        return Object.keys(StyleProperty).filter((key: string) => {
             switch (key) {
-                case DesignTokenType.layerFill:
-                case DesignTokenType.backgroundFill:
+                case StyleProperty.backgroundFill:
                     return [
                         isDocumentNode,
                         isPageNode,
@@ -141,8 +140,8 @@ export class FigmaPluginNode extends PluginNode {
                         isComponentNode,
                         isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                case DesignTokenType.strokeFill:
-                case DesignTokenType.strokeWidth:
+                case StyleProperty.borderFill:
+                case StyleProperty.borderThickness:
                     return [
                         isFrameNode,
                         isRectangleNode,
@@ -154,7 +153,7 @@ export class FigmaPluginNode extends PluginNode {
                         isComponentNode,
                         isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                case DesignTokenType.cornerRadius:
+                case StyleProperty.cornerRadius:
                     return [
                         isFrameNode,
                         isRectangleNode,
@@ -164,7 +163,7 @@ export class FigmaPluginNode extends PluginNode {
                         isComponentNode,
                         isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                case DesignTokenType.foregroundFill:
+                case StyleProperty.foregroundFill:
                     return [
                         isFrameNode,
                         isRectangleNode,
@@ -178,33 +177,30 @@ export class FigmaPluginNode extends PluginNode {
                         isInstanceNode,
                         isTextNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                case DesignTokenType.fontName:
-                case DesignTokenType.fontSize:
-                case DesignTokenType.lineHeight:
+                case StyleProperty.fontFamily:
+                case StyleProperty.fontSize:
+                case StyleProperty.lineHeight:
                     return isTextNode(this.node);
-                case DesignTokenType.designToken:
-                    return true;
                 default:
                     return false;
             }
-        }) as Array<DesignTokenType>;
+        }) as Array<StyleProperty>;
     }
 
-    public paint(data: RecipeEvaluation): void {
-        switch (data.type) {
-            case DesignTokenType.strokeFill:
-            case DesignTokenType.layerFill:
-            case DesignTokenType.backgroundFill:
-            case DesignTokenType.foregroundFill:
-                this.paintColor(data);
+    public paint(target: StyleProperty, data: RecipeEvaluation): void {
+        switch (target) {
+            case StyleProperty.borderFill:
+            case StyleProperty.backgroundFill:
+            case StyleProperty.foregroundFill:
+                this.paintColor(target, data);
                 break;
-            case DesignTokenType.strokeWidth:
+            case StyleProperty.borderThickness:
                 this.paintStrokeWidth(data);
                 break;
-            case DesignTokenType.cornerRadius:
+            case StyleProperty.cornerRadius:
                 this.paintCornerRadius(data);
                 break;
-            case DesignTokenType.fontName:
+            case StyleProperty.fontFamily:
                 {
                     // TODO Handle font list better and font weight
                     const families = data.value.split(",");
@@ -214,7 +210,7 @@ export class FigmaPluginNode extends PluginNode {
                     });
                 }
                 break;
-            case DesignTokenType.fontSize:
+            case StyleProperty.fontSize:
                 {
                     const textNode = this.node as TextNode;
                     figma.loadFontAsync(textNode.fontName as FontName).then(x => {
@@ -222,7 +218,7 @@ export class FigmaPluginNode extends PluginNode {
                     });
                 }
                 break;
-            case DesignTokenType.lineHeight:
+            case StyleProperty.lineHeight:
                 {
                     const textNode = this.node as TextNode;
                     figma.loadFontAsync(textNode.fontName as FontName).then(x => {
@@ -323,7 +319,7 @@ export class FigmaPluginNode extends PluginNode {
         this.node.setSharedPluginData("fast", key, "");
     }
 
-    private paintColor(data: RecipeEvaluation): void {
+    private paintColor(target: StyleProperty, data: RecipeEvaluation): void {
         let paint: Paint | null = null;
 
         if (data.value.startsWith("linear-gradient")) {
@@ -409,13 +405,12 @@ export class FigmaPluginNode extends PluginNode {
             paint = solidPaint;
         }
 
-        switch (data.type) {
-            case DesignTokenType.layerFill:
-            case DesignTokenType.backgroundFill:
-            case DesignTokenType.foregroundFill:
+        switch (target) {
+            case StyleProperty.backgroundFill:
+            case StyleProperty.foregroundFill:
                 (this.node as any).fills = [paint];
                 break;
-            case DesignTokenType.strokeFill:
+            case StyleProperty.borderFill:
                 (this.node as any).strokes = [paint];
                 break;
         }

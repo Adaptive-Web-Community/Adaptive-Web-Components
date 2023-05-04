@@ -87,16 +87,13 @@ export abstract class Controller {
             if (pluginNode) {
                 pluginNode.handleManualDarkMode();
                 pluginNode.setDesignTokens(node.designTokens);
-                pluginNode.setRecipes(node.recipes);
                 pluginNode.setRecipeEvaluations(node.recipeEvaluations);
 
                 // Paint all recipes of the node
-                pluginNode.recipeEvaluations.forEach((evaluations, recipeId) => {
-                    // console.log("recipe eval", recipeId, evaluations);
+                pluginNode.recipeEvaluations.forEach((evaluation, target) => {
+                    // console.log("recipe eval", target, evaluation);
 
-                    evaluations.forEach(evaluation => {
-                        pluginNode.paint(evaluation);
-                    });
+                    pluginNode.paint(target, evaluation);
                 });
 
                 this.syncPluginNodes(node.children);

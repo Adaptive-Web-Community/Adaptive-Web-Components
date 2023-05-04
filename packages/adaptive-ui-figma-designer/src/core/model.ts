@@ -1,3 +1,4 @@
+import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
 
 /**
@@ -5,50 +6,23 @@ import { PluginNode } from "./node.js";
  */
 export const TOOL_FILL_COLOR_TOKEN = "fillColor";
 
-export enum DesignTokenType {
-    designToken = "designToken",
-    layerFill = "layerFill",
-    backgroundFill = "backgroundFill",
-    foregroundFill = "foregroundFill",
-    strokeFill = "strokeFill",
-    strokeWidth = "strokeWidth",
-    cornerRadius = "cornerRadius",
-    fontName = "fontName",
-    fontSize = "fontSize",
-    lineHeight = "lineHeight",
-}
 
 /**
- * Optional scoping for a design token value. For instance, apply a token to a particular component or all "rest" states of any component.
+ * A design token value.
  */
-export class DesignTokenScope {
-    public component?: string;
-    public part?: string;
-    public state?: string;
-    public appearance?: string;
-}
-
-/**
- * A design token value applied to a node and optionally scoped.
- */
-export class AppliedDesignToken extends DesignTokenScope {
+export class DesignTokenValue {
     public value?: string;
 }
-
-/**
- * A recipe applied to a node and optionally scoped.
- */
-export class AppliedRecipe extends DesignTokenScope {}
 
 /**
  * An attribute + value pair from an evaluated recipe.
  */
 export class RecipeEvaluation {
-    public type: DesignTokenType;
+    public tokenName: string;
     public value: string;
 
-    constructor(type: DesignTokenType, value: string) {
-        this.type = type;
+    constructor(tokenName: string, value: string) {
+        this.tokenName = tokenName;
         this.value = value;
     }
 }
@@ -104,32 +78,22 @@ export class SerializableMap<K, V> extends Map<K, V> {
 /**
  * Map of design tokens applied to a node. The key is the design token ID.
  */
-export class AppliedDesignTokens extends SerializableMap<string, AppliedDesignToken> {}
+export class DesignTokenValues extends SerializableMap<string, DesignTokenValue> {}
 
 /**
  * Readonly Map of design tokens applied to a node. The key is the design token ID.
  */
-export type ReadonlyAppliedDesignTokens = ReadonlyMap<string, AppliedDesignToken>;
+export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
 
 /**
- * Map of recipes applied to a node. The key is the recipe ID.
+ * Map of recipe evaluations applied to a node. The key is the target style property.
  */
-export class AppliedRecipes extends SerializableMap<string, AppliedRecipe> {}
+export class RecipeEvaluations extends SerializableMap <StyleProperty, RecipeEvaluation> {}
 
 /**
- * Readonly Map of recipes applied to a node. The key is the recipe ID.
+ * Readonly Map of recipe evaluations applied to a node. The key is the target style property.
  */
-export type ReadonlyAppliedRecipes = ReadonlyMap<string, AppliedRecipe>;
-
-/**
- * Map of recipe evaluations applied to a node. The key is the recipe ID.
- */
-export class RecipeEvaluations extends SerializableMap<string, Array<RecipeEvaluation>> {}
-
-/**
- * Readonly Map of recipe evaluations applied to a node. The key is the recipe ID.
- */
-export type ReadonlyRecipeEvaluations = ReadonlyMap<string, Array<RecipeEvaluation>>;
+export type ReadonlyRecipeEvaluations = ReadonlyMap<StyleProperty, RecipeEvaluation>;
 
 /**
  * Map of additional data exchanged between the design tool and plugin. Not persisted.
@@ -143,12 +107,7 @@ export interface PluginNodeData {
     /**
      * Design token overrides applied directly to the node.
      */
-    designTokens: AppliedDesignTokens;
-
-    /**
-     * Recipes applied directly to the node.
-     */
-    recipes: AppliedRecipes;
+    designTokens: DesignTokenValues;
 
     /**
      * Attribute and value pairs applied to the node evaluated from local and inherited recipes.
@@ -173,7 +132,7 @@ export interface PluginUINodeData extends PluginNodeData {
     /**
      * The recipe types that the node supports
      */
-    supports: Array<DesignTokenType>;
+    supports: Array<StyleProperty>;
 
     /**
      * For other transient data exchanged between the design tool and the plugin.
@@ -183,17 +142,17 @@ export interface PluginUINodeData extends PluginNodeData {
     /**
      * The design token values inherited by this node from layer hierarchy.
      */
-    inheritedDesignTokens: ReadonlyAppliedDesignTokens;
+    inheritedDesignTokens: ReadonlyDesignTokenValues;
 
     /**
      * The design token values inherited by an instance node from the main component.
      */
-    componentDesignTokens?: ReadonlyAppliedDesignTokens;
+    componentDesignTokens?: ReadonlyDesignTokenValues;
 
     /**
      * Recipes inherited by an instance node from the main component.
      */
-    componentRecipes?: ReadonlyAppliedRecipes;
+    componentRecipes?: ReadonlyRecipeEvaluations;
 
     /**
      * Children of this node that have design tokens or recipes applied.
@@ -211,7 +170,7 @@ export const pluginNodesToUINodes = (
             const children = pluginNodesToUINodes(node.children(), false);
             const inheritedDesignTokens = includeInherited
                 ? node.inheritedDesignTokens
-                : new AppliedDesignTokens();
+                : new DesignTokenValues();
 
             return {
                 id: node.id,
@@ -222,8 +181,7 @@ export const pluginNodesToUINodes = (
                 componentDesignTokens: node.componentDesignTokens,
                 componentRecipes: node.componentRecipes,
                 children,
-                designTokens: node.localDesignTokens as AppliedDesignTokens,
-                recipes: node.recipes as AppliedRecipes,
+                designTokens: node.localDesignTokens as DesignTokenValues,
                 recipeEvaluations: node.recipeEvaluations as RecipeEvaluations,
             };
         }
