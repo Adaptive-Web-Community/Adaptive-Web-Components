@@ -1,6 +1,5 @@
 import {
     accentForegroundRest,
-    controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
@@ -118,7 +117,6 @@ export const aestheticStyles: ElementStyles = css`
         --track-overhang: calc((${designUnit} / 2) * -1);
         --track-width: ${designUnit};
         margin: calc(${designUnit} * 1px) 0;
-        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host([orientation="horizontal"]) .positioning-region {
@@ -151,7 +149,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .track-start {
-        border-radius: calc(${controlCornerRadius} * 1px);
         background: ${accentForegroundRest};
     }
 

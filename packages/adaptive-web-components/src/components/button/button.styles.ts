@@ -1,10 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { density, heightNumber } from "../../styles/index.js";
 
@@ -52,13 +50,10 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: calc(${heightNumber} * 1px);
-        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .control {
-        border: calc(${strokeWidth} * 1px) solid transparent;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
-        border-radius: inherit;
         white-space: nowrap;
         fill: currentcolor;
     }

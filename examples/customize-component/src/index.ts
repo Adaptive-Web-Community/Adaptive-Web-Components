@@ -1,9 +1,9 @@
 import {
     accentFillReadableControlStyles,
-    accentStrokeReadableInteractiveSet,
+    accentStrokeReadable,
     accentStrokeReadableRecipe,
     createForegroundSet,
-    neutralFillSubtleInteractiveSet,
+    neutralFillSubtle,
     Styles,
 } from '@adaptive-web/adaptive-ui';
 import {
@@ -35,9 +35,9 @@ AdaptiveDesignSystem.defineComponents({
 
 // Define a custom style module.
 const accentOutlineReadableControlStyles: Styles = Styles.fromProperties({
-    backgroundFill: neutralFillSubtleInteractiveSet,
-    borderFill: accentStrokeReadableInteractiveSet,
-    foregroundFill: createForegroundSet(accentStrokeReadableRecipe, "rest", neutralFillSubtleInteractiveSet),
+    backgroundFill: neutralFillSubtle,
+    borderFill: accentStrokeReadable,
+    foregroundFill: createForegroundSet(accentStrokeReadableRecipe, "rest", neutralFillSubtle),
 });
 
 const myDS = new DesignSystem("my");

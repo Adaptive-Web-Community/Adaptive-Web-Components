@@ -1,6 +1,8 @@
 import {
+    controlShapeStyles,
     plainTextStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -12,6 +14,9 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        plainTextStyles
+        Styles.compose(
+            controlShapeStyles,
+            plainTextStyles,
+        )
     ],
 ];

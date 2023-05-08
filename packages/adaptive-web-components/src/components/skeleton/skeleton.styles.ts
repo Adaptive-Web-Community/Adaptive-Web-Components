@@ -1,4 +1,4 @@
-import { controlCornerRadius, neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
+import { neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -50,10 +50,6 @@ export const templateStyles: ElementStyles = css`
  * Visual styles including Adaptive UI tokens.
  */
 export const aestheticStyles: ElementStyles = css`
-    :host([shape="rect"]) {
-        border-radius: calc(${controlCornerRadius} * 1px);
-    }
-
     :host {
         background-color: ${neutralFillSubtleRest};
     }

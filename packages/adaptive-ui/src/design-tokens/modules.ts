@@ -1,37 +1,40 @@
-import { CSSDesignToken, DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
+import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
-import type { InteractiveSet, InteractiveTokenSet } from "../types.js";
+import type { InteractiveSet, InteractiveTokenGroup } from "../types.js";
 import { StyleProperties, Styles } from "../modules/styles.js";
+import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
 import {
-    accentFillDiscernibleInteractiveSet,
-    accentFillReadableInteractiveSet,
-    accentFillStealthInteractiveSet,
-    accentFillSubtleInteractiveSet,
-    accentStrokeDiscernibleInteractiveSet,
-    accentStrokeReadableInteractiveSet,
+    accentFillDiscernible,
+    accentFillReadable,
+    accentFillStealth,
+    accentFillSubtle,
+    accentStrokeDiscernible,
+    accentStrokeReadable,
     accentStrokeReadableRecipe,
-    accentStrokeSafetyInteractiveSet,
-    accentStrokeSubtleInteractiveSet,
+    accentStrokeSafety,
+    accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
-    neutralFillDiscernibleInteractiveSet,
-    neutralFillReadableInteractiveSet,
-    neutralFillStealthInteractiveSet,
-    neutralFillSubtleInteractiveSet,
-    neutralStrokeDiscernibleInteractiveSet,
+    neutralFillDiscernible,
+    neutralFillReadable,
+    neutralFillStealth,
+    neutralFillSubtle,
+    neutralStrokeDiscernible,
     neutralStrokeDiscernibleRest,
     neutralStrokeReadableRest,
-    neutralStrokeSafetyInteractiveSet,
-    neutralStrokeStrongInteractiveSet,
+    neutralStrokeSafety,
+    neutralStrokeStrong,
     neutralStrokeStrongRecipe,
     neutralStrokeStrongRest,
-    neutralStrokeSubtleInteractiveSet,
+    neutralStrokeSubtle,
     neutralStrokeSubtleRest,
 } from "./color.js";
-import { createNonCss } from "./create.js";
+import { createNonCss, createTokenSwatch } from "./create.js";
 import {
-    bodyFont,
+    fontFamily,
+    fontWeight,
     typeRampBaseFontSize,
     typeRampBaseFontVariations,
     typeRampBaseLineHeight,
@@ -74,22 +77,23 @@ import {
 export const createForegroundSet = (
     foregroundRecipe: DesignToken<InteractiveColorRecipe>,
     foregroundState: keyof InteractiveSet<any>,
-    background: InteractiveTokenSet<Swatch>,
-): InteractiveTokenSet<Swatch> => {
+    background: InteractiveTokenGroup<Swatch>,
+): InteractiveTokenGroup<Swatch> => {
     const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}-${foregroundState}`;
     const backgroundBaseName = background.rest.name.replace("-rest", "");
     const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
 
     function createState(
         state: keyof InteractiveSet<any>,
-    ): CSSDesignToken<Swatch> {
-        return DesignToken.create<Swatch>(`${setName}-${state}`).withDefault(
+    ): TypedCSSDesignToken<Swatch> {
+        return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(foregroundRecipe).evaluate(resolve, resolve(background[state]))[foregroundState]
         );
     }
 
     return {
+        name: setName,
         rest: createState("rest"),
         hover: createState("hover"),
         active: createState("active"),
@@ -99,8 +103,8 @@ export const createForegroundSet = (
 
 function createForegroundSetBySet(
     foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>,
-    background: InteractiveTokenSet<Swatch>,
-): InteractiveTokenSet<Swatch> {
+    background: InteractiveTokenGroup<Swatch>,
+): InteractiveTokenGroup<Swatch> {
     const foregroundBaseName = foregroundRecipe.name.replace("-recipe", "");
     const backgroundBaseName = background.rest.name.replace("-rest", "");
     const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
@@ -120,14 +124,15 @@ function createForegroundSetBySet(
 
     function createState(
         state: keyof InteractiveSet<any>,
-    ): CSSDesignToken<Swatch> {
-        return DesignToken.create<Swatch>(`${setName}-${state}`).withDefault(
+    ): TypedCSSDesignToken<Swatch> {
+        return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(set)[state]
         );
     }
 
     return {
+        name: setName,
         rest: createState("rest"),
         hover: createState("hover"),
         active: createState("active"),
@@ -136,7 +141,7 @@ function createForegroundSetBySet(
 }
 
 function backgroundAndForeground(
-    background: InteractiveTokenSet<Swatch>,
+    background: InteractiveTokenGroup<Swatch>,
     foregroundRecipe: DesignToken<InteractiveColorRecipe>
 ): StyleProperties {
     return {
@@ -146,7 +151,7 @@ function backgroundAndForeground(
 }
 
 function backgroundAndForegroundBySet(
-    background: InteractiveTokenSet<Swatch>,
+    background: InteractiveTokenGroup<Swatch>,
     foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>
 ): StyleProperties {
     return {
@@ -154,6 +159,34 @@ function backgroundAndForegroundBySet(
         foregroundFill: createForegroundSetBySet(foregroundRecipe,  background),
     };
 }
+
+/**
+ * Style module for the shape of a control.
+ *
+ * By default, sets the border radius, thickness, and style, useful for buttons, inputs, list items, etc.
+ *
+ * @public
+ */
+export const controlShapeStyles: Styles = Styles.fromProperties({
+    borderThickness: strokeThickness,
+    borderStyle: "solid",
+    borderFill: "transparent",
+    cornerRadius: cornerRadiusControl,
+});
+
+/**
+ * Style module for the shape of a layer.
+ *
+ * By default, sets the border radius, thickness, and style, useful for card, panes, etc.
+ *
+ * @public
+ */
+export const layerShapeStyles: Styles = Styles.fromProperties({
+    borderThickness: strokeThickness,
+    borderStyle: "solid",
+    borderFill: "transparent",
+    cornerRadius: cornerRadiusLayer,
+});
 
 /**
  * Convenience style module for an accent-filled stealth control (interactive).
@@ -166,8 +199,8 @@ function backgroundAndForegroundBySet(
  * @public
  */
 export const accentFillStealthControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForeground(accentFillStealthInteractiveSet, accentStrokeReadableRecipe),
-    borderFill: accentStrokeSafetyInteractiveSet,
+    ...backgroundAndForeground(accentFillStealth, accentStrokeReadableRecipe),
+    borderFill: accentStrokeSafety,
 });
 
 /**
@@ -181,8 +214,8 @@ export const accentFillStealthControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const accentFillSubtleControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForeground(accentFillSubtleInteractiveSet, accentStrokeReadableRecipe),
-    borderFill: accentStrokeSubtleInteractiveSet,
+    ...backgroundAndForeground(accentFillSubtle, accentStrokeReadableRecipe),
+    borderFill: accentStrokeSubtle,
 });
 
 /**
@@ -196,7 +229,7 @@ export const accentFillSubtleControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForegroundBySet(accentFillDiscernibleInteractiveSet, blackOrWhiteDiscernibleRecipe),
+    ...backgroundAndForegroundBySet(accentFillDiscernible, blackOrWhiteDiscernibleRecipe),
     borderFill: "transparent", // TODO Remove "transparent" borders, this is a hack for the Explorer app.
 });
 
@@ -211,7 +244,7 @@ export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
  * @public
  */
 export const accentFillReadableControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForegroundBySet(accentFillReadableInteractiveSet, blackOrWhiteReadableRecipe),
+    ...backgroundAndForegroundBySet(accentFillReadable, blackOrWhiteReadableRecipe),
     borderFill: "transparent",
 });
 
@@ -226,8 +259,8 @@ export const accentFillReadableControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperties({
-    borderFill: accentStrokeDiscernibleInteractiveSet,
-    foregroundFill: accentStrokeReadableInteractiveSet,
+    borderFill: accentStrokeDiscernible,
+    foregroundFill: accentStrokeReadable,
 });
 
 /**
@@ -242,7 +275,7 @@ export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperti
  */
 export const accentForegroundReadableControlStyles: Styles = Styles.fromProperties({
     borderFill: "transparent",
-    foregroundFill: accentStrokeReadableInteractiveSet,
+    foregroundFill: accentStrokeReadable,
 });
 
 /**
@@ -256,8 +289,8 @@ export const accentForegroundReadableControlStyles: Styles = Styles.fromProperti
  * @public
  */
 export const neutralFillStealthControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForeground(neutralFillStealthInteractiveSet, neutralStrokeStrongRecipe),
-    borderFill: neutralStrokeSafetyInteractiveSet,
+    ...backgroundAndForeground(neutralFillStealth, neutralStrokeStrongRecipe),
+    borderFill: neutralStrokeSafety,
 });
 
 /**
@@ -271,8 +304,8 @@ export const neutralFillStealthControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForeground(neutralFillSubtleInteractiveSet, neutralStrokeStrongRecipe),
-    borderFill: neutralStrokeSubtleInteractiveSet,
+    ...backgroundAndForeground(neutralFillSubtle, neutralStrokeStrongRecipe),
+    borderFill: neutralStrokeSubtle,
 });
 
 /**
@@ -286,7 +319,7 @@ export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForegroundBySet(neutralFillDiscernibleInteractiveSet, blackOrWhiteDiscernibleRecipe),
+    ...backgroundAndForegroundBySet(neutralFillDiscernible, blackOrWhiteDiscernibleRecipe),
     borderFill: "transparent",
 });
 
@@ -301,7 +334,7 @@ export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties
  * @public
  */
 export const neutralFillReadableControlStyles: Styles = Styles.fromProperties({
-    ...backgroundAndForeground(neutralFillReadableInteractiveSet, neutralStrokeStrongRecipe),
+    ...backgroundAndForeground(neutralFillReadable, neutralStrokeStrongRecipe),
     borderFill: "transparent",
 });
 
@@ -316,8 +349,8 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties({
-    borderFill: neutralStrokeDiscernibleInteractiveSet,
-    foregroundFill: neutralStrokeStrongInteractiveSet,
+    borderFill: neutralStrokeDiscernible,
+    foregroundFill: neutralStrokeStrong,
 });
 
 /**
@@ -384,10 +417,10 @@ export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromPropert
  * @public
  */
 export const typeRampBaseStyles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampBaseFontSize,
     lineHeight: typeRampBaseLineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampBaseFontVariations,
 });
 
@@ -397,10 +430,10 @@ export const typeRampBaseStyles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampMinus1Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampMinus1FontSize,
     lineHeight: typeRampMinus1LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampMinus1FontVariations,
 });
 
@@ -410,10 +443,10 @@ export const typeRampMinus1Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampMinus2Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampMinus2FontSize,
     lineHeight: typeRampMinus2LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampMinus2FontVariations,
 });
 
@@ -423,10 +456,10 @@ export const typeRampMinus2Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus1Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus1FontSize,
     lineHeight: typeRampPlus1LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus1FontVariations,
 });
 
@@ -436,10 +469,10 @@ export const typeRampPlus1Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus2Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus2FontSize,
     lineHeight: typeRampPlus2LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus2FontVariations,
 });
 
@@ -449,10 +482,10 @@ export const typeRampPlus2Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus3Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus3FontSize,
     lineHeight: typeRampPlus3LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus3FontVariations,
 });
 
@@ -462,10 +495,10 @@ export const typeRampPlus3Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus4Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus4FontSize,
     lineHeight: typeRampPlus4LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus4FontVariations,
 });
 
@@ -475,10 +508,10 @@ export const typeRampPlus4Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus5Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus5FontSize,
     lineHeight: typeRampPlus5LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus5FontVariations,
 });
 
@@ -488,10 +521,10 @@ export const typeRampPlus5Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const typeRampPlus6Styles: Styles = Styles.fromProperties({
-    fontFamily: bodyFont,
+    fontFamily: fontFamily,
     fontSize: typeRampPlus6FontSize,
     lineHeight: typeRampPlus6LineHeight,
-    fontWeight: "initial",
+    fontWeight: fontWeight,
     fontVariationSettings: typeRampPlus6FontVariations,
 });
 
@@ -499,6 +532,7 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties({
  * @public
  */
 export const actionStyles: Styles = Styles.compose(
+    controlShapeStyles,
     typeRampBaseStyles,
     neutralFillSubtleControlStyles
 );
@@ -507,6 +541,7 @@ export const actionStyles: Styles = Styles.compose(
  * @public
  */
 export const inputStyles: Styles = Styles.compose(
+    controlShapeStyles,
     typeRampBaseStyles,
     neutralOutlineDiscernibleControlStyles
 );
@@ -515,6 +550,7 @@ export const inputStyles: Styles = Styles.compose(
  * @public
  */
 export const selectableSelectedStyles: Styles = Styles.compose(
+    controlShapeStyles,
     typeRampBaseStyles,
     accentFillReadableControlStyles
 );
@@ -523,6 +559,7 @@ export const selectableSelectedStyles: Styles = Styles.compose(
  * @public
  */
 export const selectableUnselectedStyles: Styles = Styles.compose(
+    controlShapeStyles,
     typeRampBaseStyles,
     neutralOutlineDiscernibleControlStyles
 );
@@ -531,6 +568,7 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
  * @public
  */
 export const itemStyles: Styles = Styles.compose(
+    controlShapeStyles,
     typeRampBaseStyles,
     neutralFillStealthControlStyles
 );

@@ -1,7 +1,16 @@
-import type { CSSDesignToken } from "@microsoft/fast-foundation";
+import type { TypedCSSDesignToken } from "./adaptive-design-tokens.js";
 
 /**
- * A set of values to use for an interactive element's states.
+ * A group of tokens.
+ *
+ * @public
+ */
+export interface TokenGroup {
+    name: string;
+}
+
+/**
+ * A set for an interactive element's states.
  *
  * @public
  */
@@ -28,8 +37,8 @@ export interface InteractiveSet<T> {
 }
 
 /**
- * A set of tokens to use for an interactive element's states.
+ * A group of tokens to use for an interactive element's states.
  *
  * @public
  */
-export interface InteractiveTokenSet<T> extends InteractiveSet<CSSDesignToken<T>> {}
+export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveSet<TypedCSSDesignToken<T>> {}

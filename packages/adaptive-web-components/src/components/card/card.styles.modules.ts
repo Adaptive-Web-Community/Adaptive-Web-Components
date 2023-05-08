@@ -1,6 +1,8 @@
 import {
+    layerShapeStyles,
     plainTextStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -12,6 +14,9 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        plainTextStyles
+        Styles.compose(
+            layerShapeStyles,
+            plainTextStyles,
+        )
     ],
 ];

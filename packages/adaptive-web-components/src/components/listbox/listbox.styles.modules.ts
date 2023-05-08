@@ -1,5 +1,8 @@
 import {
+    controlShapeStyles,
+    neutralStrokeSubtleRest,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -8,4 +11,14 @@ import {
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        Styles.compose(
+            controlShapeStyles,
+            Styles.fromProperties({
+                borderFill: neutralStrokeSubtleRest
+            }),
+        )
+    ],
 ];

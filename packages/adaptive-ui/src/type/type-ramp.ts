@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import {
-    bodyFont,
+    fontFamily,
     typeRampBaseFontSize,
     typeRampBaseFontVariations,
     typeRampBaseLineHeight,
@@ -35,7 +35,7 @@ import {
  * @deprecated Use style modules instead.
  */
 export const typeRampBase = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampBaseFontSize};
     line-height: ${typeRampBaseLineHeight};
     font-weight: initial;
@@ -47,7 +47,7 @@ export const typeRampBase = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampMinus1 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampMinus1FontSize};
     line-height: ${typeRampMinus1LineHeight};
     font-weight: initial;
@@ -59,7 +59,7 @@ export const typeRampMinus1 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampMinus2 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampMinus2FontSize};
     line-height: ${typeRampMinus2LineHeight};
     font-weight: initial;
@@ -71,7 +71,7 @@ export const typeRampMinus2 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus1 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus1FontSize};
     line-height: ${typeRampPlus1LineHeight};
     font-weight: initial;
@@ -83,7 +83,7 @@ export const typeRampPlus1 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus2 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus2FontSize};
     line-height: ${typeRampPlus2LineHeight};
     font-weight: initial;
@@ -95,7 +95,7 @@ export const typeRampPlus2 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus3 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus3FontSize};
     line-height: ${typeRampPlus3LineHeight};
     font-weight: initial;
@@ -107,7 +107,7 @@ export const typeRampPlus3 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus4 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus4FontSize};
     line-height: ${typeRampPlus4LineHeight};
     font-weight: initial;
@@ -119,7 +119,7 @@ export const typeRampPlus4 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus5 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus5FontSize};
     line-height: ${typeRampPlus5LineHeight};
     font-weight: initial;
@@ -131,7 +131,7 @@ export const typeRampPlus5 = css.partial`
  * @deprecated Use style modules instead.
  */
 export const typeRampPlus6 = css.partial`
-    font-family: ${bodyFont};
+    font-family: ${fontFamily};
     font-size: ${typeRampPlus6FontSize};
     line-height: ${typeRampPlus6LineHeight};
     font-weight: initial;

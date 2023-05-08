@@ -1,6 +1,9 @@
 import {
+    controlShapeStyles,
+    neutralStrokeSubtleRest,
     plainTextStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -12,6 +15,12 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        plainTextStyles
+        Styles.compose(
+            controlShapeStyles,
+            plainTextStyles,
+            Styles.fromProperties({
+                borderFill: neutralStrokeSubtleRest
+            }),
+        )
     ],
 ];

@@ -1,11 +1,8 @@
 import {
-    controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     layerFillFixedPlus1,
-    neutralStrokeSubtleRest,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -24,8 +21,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
         box-sizing: border-box;
         padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
