@@ -7,6 +7,9 @@ import { ProgressAnatomy, template } from "./progress.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeProgress(
     ds: DesignSystem,
     options?: ComposeOptions<FASTProgress>

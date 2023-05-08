@@ -7,6 +7,9 @@ import { SliderLabelAnatomy, template } from "./slider-label.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSliderLabel(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSliderLabel>

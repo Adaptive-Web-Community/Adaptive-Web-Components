@@ -7,6 +7,9 @@ import { CheckboxAnatomy, CheckboxStatics, template } from "./checkbox.template.
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeCheckbox(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCheckbox, CheckboxStatics>

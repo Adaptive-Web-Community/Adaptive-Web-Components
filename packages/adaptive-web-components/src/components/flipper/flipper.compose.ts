@@ -7,6 +7,9 @@ import { FlipperAnatomy, FlipperStatics, template } from "./flipper.template.js"
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeFlipper(
     ds: DesignSystem,
     options?: ComposeOptions<FASTFlipper, FlipperStatics>

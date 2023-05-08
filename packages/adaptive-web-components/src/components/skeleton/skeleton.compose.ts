@@ -7,6 +7,9 @@ import { SkeletonAnatomy, template } from "./skeleton.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSkeleton(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSkeleton>

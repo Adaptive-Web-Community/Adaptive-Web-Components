@@ -7,6 +7,9 @@ import { PickerAnatomy, template } from "./picker.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composePicker(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPicker>

@@ -7,6 +7,9 @@ import { SearchAnatomy, template } from "./search.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSearch(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSearch>

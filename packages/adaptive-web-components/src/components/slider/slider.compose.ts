@@ -7,6 +7,9 @@ import { SliderAnatomy, template } from "./slider.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSlider(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSlider>

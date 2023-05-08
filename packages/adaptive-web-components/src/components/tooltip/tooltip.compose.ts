@@ -7,6 +7,9 @@ import { template, TooltipAnatomy } from "./tooltip.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTooltip(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTooltip>

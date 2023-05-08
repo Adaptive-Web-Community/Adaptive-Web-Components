@@ -7,6 +7,9 @@ import { BreadcrumbAnatomy, template } from "./breadcrumb.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeBreadcrumb(
     ds: DesignSystem,
     options?: ComposeOptions<FASTBreadcrumb>

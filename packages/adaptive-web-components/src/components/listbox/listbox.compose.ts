@@ -7,6 +7,9 @@ import { ListboxAnatomy, template } from "./listbox.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeListbox(
     ds: DesignSystem,
     options?: ComposeOptions<FASTListboxElement>

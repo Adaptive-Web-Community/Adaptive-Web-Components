@@ -7,6 +7,9 @@ import { TabsAnatomy, template } from "./tabs.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTabs(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTabs>

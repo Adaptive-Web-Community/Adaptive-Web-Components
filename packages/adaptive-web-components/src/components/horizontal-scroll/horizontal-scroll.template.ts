@@ -13,9 +13,15 @@ import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { composeFlipper } from "../flipper/index.js";
 
+/**
+ * @public
+ */
 export const HorizontalScrollConditions = {
 };
 
+/**
+ * @public
+ */
 export const HorizontalScrollParts = {
     scrollArea: "scroll-area",
     scrollView: "scroll-view",
@@ -26,6 +32,9 @@ export const HorizontalScrollParts = {
     nextFlipper: "next-flipper",
 };
 
+/**
+ * @public
+ */
 export const HorizontalScrollAnatomy: ComponentAnatomy<typeof HorizontalScrollConditions, typeof HorizontalScrollParts> = {
     interactivity: Interactivity.never,
     conditions: HorizontalScrollConditions,
@@ -42,6 +51,7 @@ export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
 
 /**
  * Default Horizontal Scroll template, {@link @microsoft/fast-foundation#horizontalScrollTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTHorizontalScroll> =
     (ds: DesignSystem) => {

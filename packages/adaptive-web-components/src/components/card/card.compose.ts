@@ -7,6 +7,9 @@ import { CardAnatomy, template } from "./card.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeCard(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCard>

@@ -7,6 +7,9 @@ import { template, TreeItemAnatomy, TreeItemStatics } from "./tree-item.template
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTreeItem(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTreeItem, TreeItemStatics>

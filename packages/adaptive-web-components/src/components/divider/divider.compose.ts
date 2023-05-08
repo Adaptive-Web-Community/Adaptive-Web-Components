@@ -7,6 +7,9 @@ import { DividerAnatomy, template } from "./divider.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeDivider(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDivider>

@@ -7,6 +7,9 @@ import { template, TextFieldAnatomy } from "./text-field.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTextField(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTextField>

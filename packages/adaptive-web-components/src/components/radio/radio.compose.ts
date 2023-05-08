@@ -7,6 +7,9 @@ import { RadioAnatomy, RadioStatics, template } from "./radio.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeRadio(
     ds: DesignSystem,
     options?: ComposeOptions<FASTRadio, RadioStatics>

@@ -7,6 +7,9 @@ import { CalendarAnatomy, template } from "./calendar.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeCalendar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCalendar>

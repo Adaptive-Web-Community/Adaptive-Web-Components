@@ -7,6 +7,9 @@ import { SwitchAnatomy, template } from "./switch.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSwitch(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSwitch>

@@ -7,6 +7,9 @@ import { PickerMenuOptionAnatomy, template } from "./picker-menu-option.template
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composePickerMenuOption(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPickerMenuOption>

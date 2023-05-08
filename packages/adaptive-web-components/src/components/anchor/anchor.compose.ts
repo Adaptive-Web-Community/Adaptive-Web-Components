@@ -7,6 +7,9 @@ import { AnchorAnatomy, template } from "./anchor.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeAnchor(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveAnchor>

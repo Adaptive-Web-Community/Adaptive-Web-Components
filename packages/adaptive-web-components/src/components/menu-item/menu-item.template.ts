@@ -13,6 +13,8 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the menu item.
+ *
+ * @beta
  */
 export const MenuItemStatics = {
     checkbox: "menu-item-checkbox-indicator",
@@ -20,17 +22,29 @@ export const MenuItemStatics = {
     submenu: "menu-item-submenu-item"
 } as const;
 
+/**
+ * @beta
+ */
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 
+/**
+ * @public
+ */
 export const MenuItemConditions = {
     checked: "[aria-checked='true']",
 };
 
+/**
+ * @public
+ */
 export const MenuItemParts = {
     content: "content",
     submenuIcon: "submenu-icon",
 };
 
+/**
+ * @public
+ */
 export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof MenuItemParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: MenuItemConditions,
@@ -41,6 +55,7 @@ export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof
 
 /**
  * Default Menu Item template, {@link @microsoft/fast-foundation#menuItemTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTMenuItem> =
     (ds: DesignSystem) => {

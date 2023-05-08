@@ -7,6 +7,9 @@ import { AdaptiveHorizontalScroll } from "./horizontal-scroll.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeHorizontalScroll(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveHorizontalScroll>

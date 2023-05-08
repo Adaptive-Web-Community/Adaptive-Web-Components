@@ -7,6 +7,9 @@ import { MenuItemAnatomy, MenuItemStatics, template } from "./menu-item.template
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeMenuItem(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveMenuItem, MenuItemStatics>

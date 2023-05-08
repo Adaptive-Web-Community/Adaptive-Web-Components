@@ -6,17 +6,28 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the number field.
+ *
+ * @beta
  */
 export const NumberFieldStatics = {
     stepDown: "number-field-step-down-icon",
     stepUp: "number-field-step-up-icon"
 } as const;
 
+/**
+ * @beta
+ */
 export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 
+/**
+ * @public
+ */
 export const NumberFieldConditions = {
 };
 
+/**
+ * @public
+ */
 export const NumberFieldParts = {
     label: "label",
     root: "root",
@@ -26,6 +37,9 @@ export const NumberFieldParts = {
     stepDown: "step-down",
 };
 
+/**
+ * @public
+ */
 export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, typeof NumberFieldParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: NumberFieldConditions,
@@ -34,6 +48,7 @@ export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, 
 
 /**
  * Default Number Field template, {@link @microsoft/fast-foundation#numberFieldTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTNumberField> =
     (ds: DesignSystem) =>

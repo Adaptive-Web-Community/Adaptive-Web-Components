@@ -7,6 +7,9 @@ import { SelectAnatomy, SelectStatics, template } from "./select.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeSelect(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveSelect, SelectStatics>

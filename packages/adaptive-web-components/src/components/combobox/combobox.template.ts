@@ -6,16 +6,27 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the combobox.
+ *
+ * @beta
  */
 export const ComboboxStatics = {
     indicator: "combobox-indicator"
 } as const;
 
+/**
+ * @beta
+ */
 export type ComboboxStatics = ValuesOf<typeof ComboboxStatics>;
 
+/**
+ * @public
+ */
 export const ComboboxConditions = {
 };
 
+/**
+ * @public
+ */
 export const ComboboxParts = {
     control: "control",
     selectedValue: "selected-value",
@@ -23,6 +34,9 @@ export const ComboboxParts = {
     listbox: "listbox",
 };
 
+/**
+ * @public
+ */
 export const ComboboxAnatomy: ComponentAnatomy<typeof ComboboxConditions, typeof ComboboxParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: ComboboxConditions,
@@ -31,6 +45,7 @@ export const ComboboxAnatomy: ComponentAnatomy<typeof ComboboxConditions, typeof
 
 /**
  * Default Combobox template, {@link @microsoft/fast-foundation#comboboxTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCombobox> =
     (ds: DesignSystem) =>

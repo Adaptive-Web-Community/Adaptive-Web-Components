@@ -7,6 +7,9 @@ import { DisclosureAnatomy, template } from "./disclosure.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeDisclosure(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDisclosure>

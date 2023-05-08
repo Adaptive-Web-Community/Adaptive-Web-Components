@@ -7,6 +7,9 @@ import { NumberFieldAnatomy, NumberFieldStatics, template } from "./number-field
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeNumberField(
     ds: DesignSystem,
     options?: ComposeOptions<FASTNumberField, NumberFieldStatics>
