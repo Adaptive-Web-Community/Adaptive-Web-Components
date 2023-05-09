@@ -69,11 +69,6 @@ export const aestheticStyles: ElementStyles = css`
         font-weight: 600;
     }
 
-    .day {
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${controlCornerRadius} * 1px);
-    }
-
     .date {
         height: 100%;
     }

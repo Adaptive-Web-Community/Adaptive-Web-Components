@@ -1,4 +1,7 @@
 {
     "extends": ["@microsoft/eslint-config-fast-dna"],
-    "ignorePatterns": ["dist", "*.spec.ts"]
+    "ignorePatterns": ["dist", "*.spec.ts"],
+    "rules": {
+        "max-len": "warn"
+    }
 }

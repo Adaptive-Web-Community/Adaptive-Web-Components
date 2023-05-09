@@ -1,8 +1,10 @@
 import {
+    controlShapeStyles,
     inputStyles,
     labelTextStyles,
     neutralFillStealthControlStyles,
     StyleModules,
+    Styles,
     typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { SearchAnatomy } from "./search.template.js";
@@ -34,6 +36,9 @@ export const styleModules: StyleModules = [
         {
             part: SearchAnatomy.parts.clearButton
         },
-        neutralFillStealthControlStyles
+        Styles.compose(
+            controlShapeStyles,
+            neutralFillStealthControlStyles,
+        )
     ],
 ];

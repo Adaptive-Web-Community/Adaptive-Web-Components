@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { elevationDialog, fillColor, layerCornerRadius, strokeWidth } from "@adaptive-web/adaptive-ui";
+import { elevationDialog, fillColor } from "@adaptive-web/adaptive-ui";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -48,8 +48,6 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         margin-top: auto;
         margin-bottom: auto;
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${layerCornerRadius} * 1px);
         width: var(--dialog-width);
         height: var(--dialog-height);
         background: ${fillColor};

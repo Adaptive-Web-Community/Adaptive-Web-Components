@@ -7,7 +7,6 @@ import {
     neutralFillStealthRecipe,
     neutralFillSubtleRecipe,
     neutralFillSubtleRest,
-    strokeWidth,
     Swatch,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -109,8 +108,6 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         box-sizing: border-box;
         height: calc((${heightNumber} + 1) * 1px);
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${controlCornerRadius} * 1px);
         padding: 0 calc(${designUnit} * 2px + 8px);
         fill: currentcolor;
     }

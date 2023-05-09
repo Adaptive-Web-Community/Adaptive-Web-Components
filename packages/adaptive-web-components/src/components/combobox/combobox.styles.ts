@@ -1,11 +1,9 @@
 import {
-    controlCornerRadius,
     designUnit,
     elevationFlyout,
     focusStrokeOuter,
     focusStrokeWidth,
     layerFillFixedPlus1,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -81,8 +79,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: 250px;
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
     }
 
@@ -108,7 +104,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .listbox {
-        border-radius: calc(${controlCornerRadius} * 1px);
         padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};

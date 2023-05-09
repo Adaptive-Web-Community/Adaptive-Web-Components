@@ -1,9 +1,6 @@
 import {
-    controlCornerRadius,
     elevationTooltip,
     neutralFillSubtleRest,
-    neutralStrokeSubtleRest,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -34,8 +31,6 @@ export const aestheticStyles: ElementStyles = css`
         height: fit-content;
         width: fit-content;
         padding: 4px 12px;
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
         background: ${neutralFillSubtleRest};
         white-space: nowrap;
         box-shadow: ${elevationTooltip};

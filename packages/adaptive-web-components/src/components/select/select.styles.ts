@@ -1,5 +1,4 @@
 import {
-    controlCornerRadius,
     designUnit,
     elevationFlyout,
     focusStrokeOuter,
@@ -81,8 +80,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         min-width: 250px;
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
     }
 
@@ -104,7 +101,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .listbox {
         max-height: calc((var(--size, 0) * ${heightNumber} + (${designUnit} * ${strokeWidth} * 2)) * 1px);
-        border-radius: calc(${controlCornerRadius} * 1px);
         padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
     }

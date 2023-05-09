@@ -1,6 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    controlCornerRadius,
     designUnit,
     strokeWidth,
 } from "@adaptive-web/adaptive-ui";
@@ -19,8 +18,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .control {
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${controlCornerRadius} * 1px);
         padding:
             calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
             calc((${designUnit} - ${strokeWidth}) * 1px);

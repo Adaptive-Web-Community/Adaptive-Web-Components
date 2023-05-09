@@ -1,5 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import type { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
+import type { DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { ColorRecipe, InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";
@@ -10,15 +10,16 @@ import { Swatch } from "../color/swatch.js";
 import { _white } from "../color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../color/utilities/conditional.js";
 import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/utilities/opacity.js";
-import type { InteractiveTokenSet } from "../types.js";
-import { create, createNonCss } from "./create.js";
+import type { InteractiveTokenGroup } from "../types.js";
+import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import { createNonCss, createTokenSwatch } from "./create.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
 function createDelta(name: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number> {
     return createNonCss<number>(`${name}-${state}-delta`).withDefault(value);
 }
 
-function createMinContrast(name: string, value: number | DesignToken<number>) {
+function createMinContrast(name: string, value: number | DesignToken<number>): DesignToken<number> {
     return createNonCss<number>(`${name}-min-contrast`).withDefault(value);
 }
 
@@ -43,15 +44,15 @@ function createSet(recipeToken: DesignToken<InteractiveColorRecipe>): DesignToke
     );
 }
 
-function createStateToken(valueToken: DesignToken<InteractiveSwatchSet>, state: keyof InteractiveSwatchSet): CSSDesignToken<Swatch> {
-    return create<Swatch>(`${valueToken.name.replace("-recipe-value", "")}-${state}`).withDefault(
+function createStateToken(valueToken: DesignToken<InteractiveSwatchSet>, state: keyof InteractiveSwatchSet): TypedCSSDesignToken<Swatch> {
+    return createTokenSwatch(`${valueToken.name.replace("-recipe-value", "")}-${state}`).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(valueToken)[state]
     );
 }
 
-function createRecipeToken(recipeToken: DesignToken<ColorRecipe>): CSSDesignToken<Swatch> {
-    return create<Swatch>(`${recipeToken.name.replace("-recipe-value", "")}`).withDefault(
+function createRecipeToken(recipeToken: DesignToken<ColorRecipe>): TypedCSSDesignToken<Swatch> {
+    return createTokenSwatch(`${recipeToken.name.replace("-recipe-value", "")}`).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -116,7 +117,7 @@ export const minContrastReadable = createNonCss<number>("min-contrast-readable")
 );
 
 /** @public */
-export const fillColor = create<Swatch>("fill-color").withDefault(_white);
+export const fillColor = createTokenSwatch("fill-color").withDefault(_white);
 
 /** @public */
 export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").withDefault(false);
@@ -344,7 +345,8 @@ export const accentFillStealthActive = createStateToken(accentFillStealthSet, "a
 export const accentFillStealthFocus = createStateToken(accentFillStealthSet, "focus");
 
 /** @public */
-export const accentFillStealthInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentFillStealth: InteractiveTokenGroup<Swatch> = {
+    name: accentFillStealthName,
     rest: accentFillStealthRest,
     hover: accentFillStealthHover,
     active: accentFillStealthActive,
@@ -383,7 +385,8 @@ export const accentFillSubtleActive = createStateToken(accentFillSubtleSet, "act
 export const accentFillSubtleFocus = createStateToken(accentFillSubtleSet, "focus");
 
 /** @public */
-export const accentFillSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentFillSubtle: InteractiveTokenGroup<Swatch> = {
+    name: accentFillSubtleName,
     rest: accentFillSubtleRest,
     hover: accentFillSubtleHover,
     active: accentFillSubtleActive,
@@ -423,7 +426,8 @@ export const accentFillDiscernibleActive = createStateToken(accentFillDiscernibl
 export const accentFillDiscernibleFocus = createStateToken(accentFillDiscernibleSet, "focus");
 
 /** @public */
-export const accentFillDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentFillDiscernible: InteractiveTokenGroup<Swatch> = {
+    name: accentFillDiscernibleName,
     rest: accentFillDiscernibleRest,
     hover: accentFillDiscernibleHover,
     active: accentFillDiscernibleActive,
@@ -475,7 +479,8 @@ export const accentFillReadableActive = createStateToken(accentFillReadableSet, 
 export const accentFillReadableFocus = createStateToken(accentFillReadableSet, "focus");
 
 /** @public */
-export const accentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentFillReadable: InteractiveTokenGroup<Swatch> = {
+    name: accentFillReadableName,
     rest: accentFillReadableRest,
     hover: accentFillReadableHover,
     active: accentFillReadableActive,
@@ -514,7 +519,8 @@ export const foregroundOnAccentFillReadableActive = createStateToken(foregroundO
 export const foregroundOnAccentFillReadableFocus = createStateToken(foregroundOnAccentFillReadableSet, "focus");
 
 /** @public @deprecated This functionality has been migrated to style modules */
-export const foregroundOnAccentFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const foregroundOnAccentFillReadable: InteractiveTokenGroup<Swatch> = {
+    name: foregroundOnAccentFillReadableName,
     rest: foregroundOnAccentFillReadableRest,
     hover: foregroundOnAccentFillReadableHover,
     active: foregroundOnAccentFillReadableActive,
@@ -557,7 +563,8 @@ export const accentStrokeSafetyActive = createStateToken(accentStrokeSafetySet, 
 export const accentStrokeSafetyFocus = createStateToken(accentStrokeSafetySet, "focus");
 
 /** @public */
-export const accentStrokeSafetyInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeSafety: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeSafetyName,
     rest: accentStrokeSafetyRest,
     hover: accentStrokeSafetyHover,
     active: accentStrokeSafetyActive,
@@ -597,7 +604,8 @@ export const accentStrokeStealthActive = createStateToken(accentStrokeStealthSet
 export const accentStrokeStealthFocus = createStateToken(accentStrokeStealthSet, "focus");
 
 /** @public */
-export const accentStrokeStealthInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeStealth: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeStealthName,
     rest: accentStrokeStealthRest,
     hover: accentStrokeStealthHover,
     active: accentStrokeStealthActive,
@@ -637,7 +645,8 @@ export const accentStrokeSubtleActive = createStateToken(accentStrokeSubtleSet, 
 export const accentStrokeSubtleFocus = createStateToken(accentStrokeSubtleSet, "focus");
 
 /** @public */
-export const accentStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeSubtle: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeSubtleName,
     rest: accentStrokeSubtleRest,
     hover: accentStrokeSubtleHover,
     active: accentStrokeSubtleActive,
@@ -677,7 +686,8 @@ export const accentStrokeDiscernibleActive = createStateToken(accentStrokeDiscer
 export const accentStrokeDiscernibleFocus = createStateToken(accentStrokeDiscernibleSet, "focus");
 
 /** @public */
-export const accentStrokeDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeDiscernible: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeDiscernibleName,
     rest: accentStrokeDiscernibleRest,
     hover: accentStrokeDiscernibleHover,
     active: accentStrokeDiscernibleActive,
@@ -729,7 +739,8 @@ export const accentStrokeReadableActive = createStateToken(accentStrokeReadableS
 export const accentStrokeReadableFocus = createStateToken(accentStrokeReadableSet, "focus");
 
 /** @public */
-export const accentStrokeReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeReadable: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeReadableName,
     rest: accentStrokeReadableRest,
     hover: accentStrokeReadableHover,
     active: accentStrokeReadableActive,
@@ -769,7 +780,8 @@ export const accentStrokeStrongActive = createStateToken(accentStrokeStrongSet, 
 export const accentStrokeStrongFocus = createStateToken(accentStrokeStrongSet, "focus");
 
 /** @public */
-export const accentStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const accentStrokeStrong: InteractiveTokenGroup<Swatch> = {
+    name: accentStrokeStrongName,
     rest: accentStrokeStrongRest,
     hover: accentStrokeStrongHover,
     active: accentStrokeStrongActive,
@@ -824,7 +836,8 @@ export const neutralFillStealthActive = createStateToken(neutralFillStealthSet, 
 export const neutralFillStealthFocus = createStateToken(neutralFillStealthSet, "focus");
 
 /** @public */
-export const neutralFillStealthInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralFillStealth: InteractiveTokenGroup<Swatch> = {
+    name: neutralFillStealthName,
     rest: neutralFillStealthRest,
     hover: neutralFillStealthHover,
     active: neutralFillStealthActive,
@@ -879,7 +892,8 @@ export const neutralFillSubtleActive = createStateToken(neutralFillSubtleSet, "a
 export const neutralFillSubtleFocus = createStateToken(neutralFillSubtleSet, "focus");
 
 /** @public */
-export const neutralFillSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralFillSubtle: InteractiveTokenGroup<Swatch> = {
+    name: neutralFillSubtleName,
     rest: neutralFillSubtleRest,
     hover: neutralFillSubtleHover,
     active: neutralFillSubtleActive,
@@ -935,7 +949,8 @@ export const neutralFillDiscernibleActive = createStateToken(neutralFillDiscerni
 export const neutralFillDiscernibleFocus = createStateToken(neutralFillDiscernibleSet, "focus");
 
 /** @public */
-export const neutralFillDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralFillDiscernible: InteractiveTokenGroup<Swatch> = {
+    name: neutralFillDiscernibleName,
     rest: neutralFillDiscernibleRest,
     hover: neutralFillDiscernibleHover,
     active: neutralFillDiscernibleActive,
@@ -975,7 +990,8 @@ export const neutralFillReadableActive = createStateToken(neutralFillReadableSet
 export const neutralFillReadableFocus = createStateToken(neutralFillReadableSet, "focus");
 
 /** @public */
-export const neutralFillReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralFillReadable: InteractiveTokenGroup<Swatch> = {
+    name: neutralFillReadableName,
     rest: neutralFillReadableRest,
     hover: neutralFillReadableHover,
     active: neutralFillReadableActive,
@@ -1022,7 +1038,8 @@ export const neutralStrokeSafetyActive = createStateToken(neutralStrokeSafetySet
 export const neutralStrokeSafetyFocus = createStateToken(neutralStrokeSafetySet, "focus");
 
 /** @public */
-export const neutralStrokeSafetyInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeSafety: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeSafetyName,
     rest: neutralStrokeSafetyRest,
     hover: neutralStrokeSafetyHover,
     active: neutralStrokeSafetyActive,
@@ -1066,7 +1083,8 @@ export const neutralStrokeStealthActive = createStateToken(neutralStrokeStealthS
 export const neutralStrokeStealthFocus = createStateToken(neutralStrokeStealthSet, "focus");
 
 /** @public */
-export const neutralStrokeStealthInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeStealth: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeStealthName,
     rest: neutralStrokeStealthRest,
     hover: neutralStrokeStealthHover,
     active: neutralStrokeStealthActive,
@@ -1122,7 +1140,8 @@ export const neutralStrokeSubtleActive = createStateToken(neutralStrokeSubtleSet
 export const neutralStrokeSubtleFocus = createStateToken(neutralStrokeSubtleSet, "focus");
 
 /** @public */
-export const neutralStrokeSubtleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeSubtle: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeSubtleName,
     rest: neutralStrokeSubtleRest,
     hover: neutralStrokeSubtleHover,
     active: neutralStrokeSubtleActive,
@@ -1178,7 +1197,8 @@ export const neutralStrokeDiscernibleActive = createStateToken(neutralStrokeDisc
 export const neutralStrokeDiscernibleFocus = createStateToken(neutralStrokeDiscernibleSet, "focus");
 
 /** @public */
-export const neutralStrokeDiscernibleInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeDiscernible: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeDiscernibleName,
     rest: neutralStrokeDiscernibleRest,
     hover: neutralStrokeDiscernibleHover,
     active: neutralStrokeDiscernibleActive,
@@ -1234,7 +1254,8 @@ export const neutralStrokeReadableActive = createStateToken(neutralStrokeReadabl
 export const neutralStrokeReadableFocus = createStateToken(neutralStrokeReadableSet, "rest")
 
 /** @public */
-export const neutralStrokeReadableInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeReadable: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeReadableName,
     rest: neutralStrokeReadableRest,
     hover: neutralStrokeReadableHover,
     active: neutralStrokeReadableActive,
@@ -1293,7 +1314,8 @@ export const neutralStrokeStrongActive = createStateToken(neutralStrokeStrongSet
 export const neutralStrokeStrongFocus = createStateToken(neutralStrokeStrongSet, "focus");
 
 /** @public */
-export const neutralStrokeStrongInteractiveSet: InteractiveTokenSet<Swatch> = {
+export const neutralStrokeStrong: InteractiveTokenGroup<Swatch> = {
+    name: neutralStrokeStrongName,
     rest: neutralStrokeStrongRest,
     hover: neutralStrokeStrongHover,
     active: neutralStrokeStrongActive,
