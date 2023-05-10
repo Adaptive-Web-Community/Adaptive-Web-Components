@@ -407,22 +407,24 @@ export class FigmaPluginNode extends PluginNode {
             paint = solidPaint;
         }
 
-        switch (target) {
-            case StyleProperty.backgroundFill:
-            case StyleProperty.foregroundFill:
-                (this._node as any).fills = [paint];
-                break;
-            case StyleProperty.borderFill:
-                (this._node as any).strokes = [paint];
-                break;
+        if (paint) {
+            switch (target) {
+                case StyleProperty.backgroundFill:
+                case StyleProperty.foregroundFill:
+                    (this._node as MinimalFillsMixin).fills = [paint];
+                    break;
+                case StyleProperty.borderFill:
+                    (this._node as MinimalStrokesMixin).strokes = [paint];
+                    break;
+            }
         }
     }
 
     private paintStrokeWidth(data: AppliedDesignToken): void {
-        (this._node as any).strokeWeight = Number.parseFloat(data.value);
+        (this._node as MinimalStrokesMixin).strokeWeight = Number.parseFloat(data.value);
     }
 
     private paintCornerRadius(data: AppliedDesignToken): void {
-        (this._node as any).cornerRadius = data.value;
+        (this._node as CornerMixin).cornerRadius = Number.parseFloat(data.value);
     }
 }

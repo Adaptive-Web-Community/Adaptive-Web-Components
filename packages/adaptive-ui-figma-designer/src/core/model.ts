@@ -4,7 +4,7 @@ import { PluginNode } from "./node.js";
 /**
  * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lo more special handling.
  */
-export const TOOL_FILL_COLOR_TOKEN = "fillColor";
+export const TOOL_FILL_COLOR_TOKEN = "fill-color";
 
 /**
  * A design token value.

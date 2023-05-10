@@ -1,5 +1,5 @@
 import { DesignToken } from "@microsoft/fast-foundation";
-import { DesignTokenType, TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { Swatch } from "../color/swatch.js";
 import { StyleProperty } from "../modules/types.js";
 
@@ -12,14 +12,27 @@ export function createNonCss<T>(name: string): DesignToken<T> {
 }
 
 /**
- * Creates a DesignToken that can be used by other DesignTokens, but not directly in styles.
+ * Creates a DesignToken that can be used for color value.
  *
  * @param name - The token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
  */
-export function createTokenNonCss<T>(name: string): DesignToken<T> {
-    return DesignToken.create<T>({ name });
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string> {
+    return TypedCSSDesignToken.createTyped<string>(name, DesignTokenType.color, intendedFor);
+}
+
+/**
+ * Creates a DesignToken that can be used by other DesignTokens, but not directly in styles.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ * @param allowedType - The allowed types for the token value.
+ *
+ * @public
+ */
+export function createTokenNonCss<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T> {
+    return TypedDesignToken.createTyped<T>(name, allowedType);
 }
 
 /**
@@ -90,6 +103,18 @@ export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>
 }
 
 /**
+ * Creates a DesignToken that can be used for number value.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ *
+ * @public
+ */
+export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number> {
+    return TypedCSSDesignToken.createTyped<number>(name, DesignTokenType.number, intendedFor);
+}
+
+/**
  * Creates a DesignToken that can be used as a fill in styles.
  *
  * @param name - The token name in `css-identifier` casing.
@@ -101,9 +126,6 @@ export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>
  * @public
  */
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch> {
-    return TypedCSSDesignToken.createTyped<Swatch>(
-        name,
-        [DesignTokenType.color, DesignTokenType.gradient],
-        intendedFor
-    );
+    // TODO: Add back `gradient` type support when multiple types are added. (see `adaptive-design-tokens.ts`)
+    return TypedCSSDesignToken.createTyped<Swatch>(name, DesignTokenType.color, intendedFor);
 }

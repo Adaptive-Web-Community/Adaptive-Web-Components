@@ -1,11 +1,12 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { DesignTokenType } from "../adaptive-design-tokens.js";
 import { Palette, Swatch, SwatchRGB } from "../color/index.js";
 import { PaletteRGB } from "../color/palette-rgb.js";
-import { create, createNonCss } from "./create.js";
+import { createNonCss, createTokenNonCss } from "./create.js";
 
 /** @public */
-export const neutralBaseColor = create<string>("neutral-base-color").withDefault("#808080");
+export const neutralBaseColor = createTokenNonCss<string>("neutral-base-color", DesignTokenType.color).withDefault("#808080");
 
 /** @public */
 export const neutralBaseSwatch = createNonCss<Swatch>("neutral-base-swatch").withDefault(
@@ -26,7 +27,7 @@ export const neutralPalette = createNonCss<Palette>("neutral-palette").withDefau
 );
 
 /** @public */
-export const accentBaseColor = create<string>("accent-base-color").withDefault("#F26C0D");
+export const accentBaseColor = createTokenNonCss<string>("accent-base-color", DesignTokenType.color).withDefault("#F26C0D");
 
 /** @public */
 export const accentBaseSwatch = createNonCss<Swatch>("accent-base-swatch").withDefault(

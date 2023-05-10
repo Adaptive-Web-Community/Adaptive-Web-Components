@@ -1,5 +1,5 @@
 import { cssDirective, htmlDirective } from "@microsoft/fast-element";
-import { CSSDesignToken, ValuesOf } from "@microsoft/fast-foundation";
+import { applyMixins, CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "./index.js";
 
 /**
@@ -35,21 +35,72 @@ export const DesignTokenType = {
 export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 /**
- * A DesignToken with allowed types and intended styling uses.
+ * Metadata describing the allowed types of a DesignToken.
+ *
+ * @public
+ */
+export class DesignTokenMetadata {
+    // TODO: This needs to support multiple types, tokens in Adaptive UI might represent different value
+    // types, like a Swatch type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
+    private _allowedType: DesignTokenType;
+
+    public get allowedType(): DesignTokenType {
+        return this._allowedType;
+    }
+
+    protected set allowedType(value: DesignTokenType) {
+        this._allowedType = value;
+    }
+}
+
+/**
+ * A DesignToken with allowed types.
+ *
+ * @public
+ */
+export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
+    constructor(name: string, allowedType: DesignTokenType) {
+        super({ name });
+        this.allowedType = allowedType;
+    }
+
+    /**
+     * Factory to create a DesignToken with allowed types.
+     */
+    public static createTyped<T>(
+        name: string,
+        allowedType: DesignTokenType,
+    ): TypedDesignToken<T> {
+        return new TypedDesignToken<T>(name, allowedType);
+    }
+}
+
+/**
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface TypedDesignToken<T> extends DesignTokenMetadata {}
+applyMixins(TypedDesignToken, DesignTokenMetadata);
+
+/**
+ * A CSSDesignToken with allowed types and intended styling uses.
  *
  * @public
  */
 @cssDirective()
 @htmlDirective()
-export class TypedCSSDesignToken<T> extends CSSDesignToken<T> {
-    public readonly allowedTypes: DesignTokenType[];
-    public readonly intendedFor?: StyleProperty[]
+export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
+    public readonly intendedFor?: StyleProperty[];
 
-    constructor(name: string, allowedTypes: DesignTokenType | DesignTokenType[], intendedFor?: StyleProperty | StyleProperty[]) {
+    constructor(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         super({ name, cssCustomPropertyName: name });
-        this.allowedTypes = [...allowedTypes];
+        this.allowedType = allowedType;
         if (intendedFor) {
-            this.intendedFor = [...intendedFor] as StyleProperty[];
+            if (Array.isArray(intendedFor)) {
+                this.intendedFor = intendedFor;
+            } else {
+                this.intendedFor = [intendedFor];
+            }
         }
     }
 
@@ -58,9 +109,16 @@ export class TypedCSSDesignToken<T> extends CSSDesignToken<T> {
      */
     public static createTyped<T>(
         name: string,
-        allowedTypes: DesignTokenType | DesignTokenType[],
+        allowedType: DesignTokenType,
         intendedFor?: StyleProperty | StyleProperty[],
     ): TypedCSSDesignToken<T> {
-        return new TypedCSSDesignToken<T>(name, allowedTypes, intendedFor);
+        return new TypedCSSDesignToken<T>(name, allowedType, intendedFor);
     }
 }
+
+/**
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {}
+applyMixins(TypedCSSDesignToken, DesignTokenMetadata);

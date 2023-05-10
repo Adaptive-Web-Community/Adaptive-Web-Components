@@ -7,6 +7,7 @@ import {
     FASTElement,
     html,
     observable,
+    ref,
 } from "@microsoft/fast-element";
 import { DesignTokenDefinition, FormControlId } from "../../../core/registry/design-token-registry.js";
 
@@ -32,7 +33,7 @@ const tokenTemplatesByType = {
         <input
             type="color"
             id="${x => x.designToken?.id}"
-            value="${x => x.value}"
+            ${ref("colorRef")}
             @change="${colorInputChangeHandler}"
         />
         <input
@@ -112,11 +113,29 @@ const styles = css`
     styles,
 })
 export class DesignTokenField extends FASTElement {
+    colorRef: HTMLInputElement;
+
     @observable
     designToken?: DesignTokenDefinition;
 
     @observable
     value?: any;
+    valueChanged(prev: any, next: any) {
+        this.setColorInputValue(next);
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        this.setColorInputValue(this.value);
+    }
+
+    // There seems to be a bug in the platform color picker element where the previous color is displayed
+    // even when the attribute changes. Setting the value in code works though.
+    setColorInputValue(value: string) {
+        if (this.colorRef && this.designToken && this.designToken.formControlId == FormControlId.color) {
+            this.colorRef.value = value;
+        }
+    }
 
     updateValue(value: any) {
         this.value = value;

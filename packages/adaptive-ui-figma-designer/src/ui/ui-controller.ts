@@ -2,7 +2,7 @@ import { StyleProperty, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
-import { AppliedDesignToken, DesignTokenValue, PluginUINodeData } from "../core/model.js";
+import { AppliedDesignToken, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 
@@ -249,10 +249,11 @@ export class UIController {
         );
         // console.log("      evaluations", node.appliedDesignTokens);
 
-        if (token.target === StyleProperty.backgroundFill) {
-            // console.log("      Fill style property, setting fillColor design token");
+        // TODO: The fillColor context isn't working yer, so only use it for layer backgrounds for now.
+        if (token.target === StyleProperty.backgroundFill && token.id.startsWith("layer-")) {
+            // console.log(`      Fill style property, setting '${TOOL_FILL_COLOR_TOKEN}' design token`);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const def = this._designTokenRegistry.get("fillColor")!;
+            const def = this._designTokenRegistry.get(TOOL_FILL_COLOR_TOKEN)!;
             const element = this.getElementForNode(node);
             this.setDesignTokenForElement(element, def.token, value);
 
