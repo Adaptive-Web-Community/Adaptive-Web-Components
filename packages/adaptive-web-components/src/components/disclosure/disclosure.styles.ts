@@ -2,7 +2,6 @@ import {
     accentFillReadableActive,
     accentFillReadableHover,
     accentFillReadableRest,
-    controlCornerRadius,
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
@@ -48,7 +47,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .invoker {
-        border-radius: calc(${controlCornerRadius} * 1px);
         background: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
         fill: currentcolor;

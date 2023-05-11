@@ -1,6 +1,5 @@
-import { fillColor, InteractiveTokenSet, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
+import { fillColor, InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
 import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
-import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { SwatchType } from "./swatch.js";
 import "./adaptive-component.js";
 import "./swatch.js";
@@ -43,9 +42,9 @@ const styles = css`
 interface StyleValue {
     type: SwatchType;
     tokenName: string;
-    foregroundRecipe?: CSSDesignToken<Swatch>;
-    fillRecipe?: CSSDesignToken<Swatch>;
-    outlineRecipe?: CSSDesignToken<Swatch>;
+    foregroundRecipe?: TypedCSSDesignToken<Swatch>;
+    fillRecipe?: TypedCSSDesignToken<Swatch>;
+    outlineRecipe?: TypedCSSDesignToken<Swatch>;
 }
 
 @customElement({
@@ -70,15 +69,15 @@ export class StyleExample extends FASTElement {
         if (backgroundValue) {
             if (typeof backgroundValue === "string") {
                 // ignore for now
-            } else if (backgroundValue instanceof CSSDesignToken) {
+            } else if (backgroundValue instanceof TypedCSSDesignToken) {
                 backgroundRest = backgroundValue;
                 values.push({
                     type: SwatchType.fill,
-                    tokenName: (backgroundValue as CSSDesignToken<any>).name,
+                    tokenName: (backgroundValue as TypedCSSDesignToken<any>).name,
                     fillRecipe: backgroundValue,
                 });
             } else {
-                const set = backgroundValue as InteractiveTokenSet<any>;
+                const set = backgroundValue as InteractiveTokenGroup<any>;
                 backgroundRest = set.rest;
                 backgroundHover = set.hover;
                 backgroundActive = set.active;
@@ -110,15 +109,15 @@ export class StyleExample extends FASTElement {
         if (colorValue) {
             if (typeof colorValue === "string") {
                 // ignore for now
-            } else if (colorValue instanceof CSSDesignToken) {
+            } else if (colorValue instanceof TypedCSSDesignToken) {
                 values.push({
                     type: SwatchType.foreground,
-                    tokenName: (colorValue as CSSDesignToken<any>).name,
+                    tokenName: (colorValue as TypedCSSDesignToken<any>).name,
                     foregroundRecipe: colorValue,
                     fillRecipe: backgroundRest,
                 });
             } else {
-                const set = colorValue as InteractiveTokenSet<any>;
+                const set = colorValue as InteractiveTokenGroup<any>;
                 values.push({
                     type: SwatchType.foreground,
                     tokenName: set.rest.name,
@@ -150,15 +149,15 @@ export class StyleExample extends FASTElement {
         if (borderValue) {
             if (typeof borderValue === "string") {
                 // ignore for now
-            } else if (borderValue instanceof CSSDesignToken) {
+            } else if (borderValue instanceof TypedCSSDesignToken) {
                 values.push({
                     type: SwatchType.outline,
-                    tokenName: (borderValue as CSSDesignToken<any>).name,
+                    tokenName: (borderValue as TypedCSSDesignToken<any>).name,
                     outlineRecipe: borderValue,
                     fillRecipe: backgroundRest,
                 });
             } else {
-                const set = borderValue as InteractiveTokenSet<any>;
+                const set = borderValue as InteractiveTokenGroup<any>;
                 values.push({
                     type: SwatchType.outline,
                     tokenName: set.rest.name,

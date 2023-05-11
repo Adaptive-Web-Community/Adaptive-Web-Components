@@ -1,6 +1,6 @@
 import type { CSSDirective } from "@microsoft/fast-element";
 import type { CSSDesignToken } from "@microsoft/fast-foundation";
-import { InteractiveTokenSet } from "../types.js";
+import { InteractiveTokenGroup } from "../types.js";
 import { StyleProperty } from "./types.js";
 
 /**
@@ -8,7 +8,7 @@ import { StyleProperty } from "./types.js";
  *
  * @public
  */
-export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenSet<any> | CSSDirective | string>>;
+export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>>;
 
 /**
  * A modular definition of style properties, either an alias to another style module or a collection of style properties.
@@ -53,15 +53,12 @@ export class Styles {
     }
 
     /**
-     * Gets the local properties or composition overrides. See {@link }.
+     * The local properties or composition overrides.
      */
     public get properties(): StyleProperties | undefined {
         return this._properties;
     }
 
-    /**
-     * Sets the local properties or composition overrides.
-     */
     public set properties(properties: StyleProperties | undefined) {
         this._properties = properties;
         this.createEffectiveProperties();

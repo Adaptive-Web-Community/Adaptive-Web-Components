@@ -1,9 +1,7 @@
 import {
-    controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
@@ -49,10 +47,8 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control {
-        border: calc(${strokeWidth} * 1px) solid transparent;
         gap: 10px;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
-        border-radius: calc(${controlCornerRadius} * 1px);
         fill: currentcolor;
     }
 

@@ -1,6 +1,8 @@
 import {
     accentFillReadableControlStyles,
+    controlShapeStyles,
     StyleModules,
+    Styles,
     typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { DisclosureAnatomy } from "./disclosure.template.js";
@@ -20,6 +22,9 @@ export const styleModules: StyleModules = [
         {
             part: DisclosureAnatomy.parts.invoker
         },
-        accentFillReadableControlStyles
+        Styles.compose(
+            controlShapeStyles,
+            accentFillReadableControlStyles,
+        )
     ],
 ];

@@ -3,7 +3,6 @@ import {
     fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -55,7 +54,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-        border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${heightNumber} * 1px);
         padding: 4px;
     }

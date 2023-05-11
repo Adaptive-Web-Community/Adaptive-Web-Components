@@ -1,9 +1,7 @@
 import {
     designUnit,
     elevationFlyout,
-    layerCornerRadius,
     layerFillFixedPlus1,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -27,8 +25,6 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         max-width: 368px;
         min-width: 64px;
-        border: calc(${strokeWidth} * 1px) solid transparent;
-        border-radius: calc(${layerCornerRadius} * 1px);
         padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};

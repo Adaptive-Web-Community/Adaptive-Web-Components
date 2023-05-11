@@ -2,7 +2,7 @@ import { css } from "@microsoft/fast-element";
 import type { CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import type { StyleProperty } from "../modules/types.js";
-import type { InteractiveTokenSet } from "../types.js";
+import type { InteractiveTokenGroup } from "../types.js";
 import { makeSelector } from "./selector.js";
 import type { FocusSelector, StyleModuleEvaluateParameters } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
@@ -20,7 +20,7 @@ function propertySingle<T = string>(
 
 function propertyInteractive<T = string>(
     property: string,
-    values: InteractiveTokenSet<T>,
+    values: InteractiveTokenGroup<T>,
     focusSelector: FocusSelector = "focus-visible",
 ): StyleModuleEvaluate {
     return (params: StyleModuleEvaluateParameters): ElementStyles => css`
@@ -51,7 +51,7 @@ function createElementStyleModules(styles: Styles): StyleModuleEvaluate[] {
         } else if (value && typeof (value as any).createCSS === "function") {
             return propertySingle(property, value as CSSDirective);
         } else {
-            return propertyInteractive(property, value as InteractiveTokenSet<any>);
+            return propertyInteractive(property, value as InteractiveTokenGroup<any>);
         }
     });
     return modules;
