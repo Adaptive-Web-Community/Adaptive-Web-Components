@@ -10,6 +10,7 @@ import { Swatch } from "../color/swatch.js";
 import { _white } from "../color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../color/utilities/conditional.js";
 import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/utilities/opacity.js";
+import { StyleProperty } from "../modules/types.js";
 import type { InteractiveTokenGroup } from "../types.js";
 import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
 import { createNonCss, createTokenSwatch } from "./create.js";
@@ -44,8 +45,12 @@ function createSet(recipeToken: DesignToken<InteractiveColorRecipe>): DesignToke
     );
 }
 
-function createStateToken(valueToken: DesignToken<InteractiveSwatchSet>, state: keyof InteractiveSwatchSet): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${valueToken.name.replace("-recipe-value", "")}-${state}`).withDefault(
+function createStateToken(
+    valueToken: DesignToken<InteractiveSwatchSet>,
+    state: keyof InteractiveSwatchSet,
+    intendedFor?: StyleProperty | StyleProperty[]
+): TypedCSSDesignToken<Swatch> {
+    return createTokenSwatch(`${valueToken.name.replace("-recipe-value", "")}-${state}`, intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(valueToken)[state]
     );
@@ -333,16 +338,16 @@ export const accentFillStealthRecipe = createRecipeInteractive(accentFillStealth
 const accentFillStealthSet = createSet(accentFillStealthRecipe);
 
 /** @public */
-export const accentFillStealthRest = createStateToken(accentFillStealthSet, "rest");
+export const accentFillStealthRest = createStateToken(accentFillStealthSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillStealthHover = createStateToken(accentFillStealthSet, "hover");
+export const accentFillStealthHover = createStateToken(accentFillStealthSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillStealthActive = createStateToken(accentFillStealthSet, "active");
+export const accentFillStealthActive = createStateToken(accentFillStealthSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillStealthFocus = createStateToken(accentFillStealthSet, "focus");
+export const accentFillStealthFocus = createStateToken(accentFillStealthSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillStealth: InteractiveTokenGroup<Swatch> = {
@@ -373,16 +378,16 @@ export const accentFillSubtleRecipe = createRecipeInteractive(accentFillSubtleNa
 const accentFillSubtleSet = createSet(accentFillSubtleRecipe);
 
 /** @public */
-export const accentFillSubtleRest = createStateToken(accentFillSubtleSet, "rest");
+export const accentFillSubtleRest = createStateToken(accentFillSubtleSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillSubtleHover = createStateToken(accentFillSubtleSet, "hover");
+export const accentFillSubtleHover = createStateToken(accentFillSubtleSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillSubtleActive = createStateToken(accentFillSubtleSet, "active");
+export const accentFillSubtleActive = createStateToken(accentFillSubtleSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillSubtleFocus = createStateToken(accentFillSubtleSet, "focus");
+export const accentFillSubtleFocus = createStateToken(accentFillSubtleSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillSubtle: InteractiveTokenGroup<Swatch> = {
@@ -414,16 +419,16 @@ export const accentFillDiscernibleRecipe = createRecipeInteractive(accentFillDis
 const accentFillDiscernibleSet = createSet(accentFillDiscernibleRecipe);
 
 /** @public */
-export const accentFillDiscernibleRest = createStateToken(accentFillDiscernibleSet, "rest");
+export const accentFillDiscernibleRest = createStateToken(accentFillDiscernibleSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillDiscernibleHover = createStateToken(accentFillDiscernibleSet, "hover");
+export const accentFillDiscernibleHover = createStateToken(accentFillDiscernibleSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillDiscernibleActive = createStateToken(accentFillDiscernibleSet, "active");
+export const accentFillDiscernibleActive = createStateToken(accentFillDiscernibleSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillDiscernibleFocus = createStateToken(accentFillDiscernibleSet, "focus");
+export const accentFillDiscernibleFocus = createStateToken(accentFillDiscernibleSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillDiscernible: InteractiveTokenGroup<Swatch> = {
@@ -467,16 +472,16 @@ export const accentFillReadableRecipe = createRecipeInteractive(accentFillReadab
 const accentFillReadableSet = createSet(accentFillReadableRecipe);
 
 /** @public */
-export const accentFillReadableRest = createStateToken(accentFillReadableSet, "rest");
+export const accentFillReadableRest = createStateToken(accentFillReadableSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillReadableHover = createStateToken(accentFillReadableSet, "hover");
+export const accentFillReadableHover = createStateToken(accentFillReadableSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillReadableActive = createStateToken(accentFillReadableSet, "active");
+export const accentFillReadableActive = createStateToken(accentFillReadableSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const accentFillReadableFocus = createStateToken(accentFillReadableSet, "focus");
+export const accentFillReadableFocus = createStateToken(accentFillReadableSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillReadable: InteractiveTokenGroup<Swatch> = {
@@ -551,16 +556,16 @@ export const accentStrokeSafetyRecipe = createRecipeInteractive(accentStrokeSafe
 const accentStrokeSafetySet = createSet(accentStrokeSafetyRecipe);
 
 /** @public */
-export const accentStrokeSafetyRest = createStateToken(accentStrokeSafetySet, "rest");
+export const accentStrokeSafetyRest = createStateToken(accentStrokeSafetySet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSafetyHover = createStateToken(accentStrokeSafetySet, "hover");
+export const accentStrokeSafetyHover = createStateToken(accentStrokeSafetySet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSafetyActive = createStateToken(accentStrokeSafetySet, "active");
+export const accentStrokeSafetyActive = createStateToken(accentStrokeSafetySet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSafetyFocus = createStateToken(accentStrokeSafetySet, "focus");
+export const accentStrokeSafetyFocus = createStateToken(accentStrokeSafetySet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const accentStrokeSafety: InteractiveTokenGroup<Swatch> = {
@@ -592,16 +597,16 @@ export const accentStrokeStealthRecipe = createRecipeInteractive(accentStrokeSte
 const accentStrokeStealthSet = createSet(accentStrokeStealthRecipe);
 
 /** @public */
-export const accentStrokeStealthRest = createStateToken(accentStrokeStealthSet, "rest");
+export const accentStrokeStealthRest = createStateToken(accentStrokeStealthSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeStealthHover = createStateToken(accentStrokeStealthSet, "hover");
+export const accentStrokeStealthHover = createStateToken(accentStrokeStealthSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeStealthActive = createStateToken(accentStrokeStealthSet, "active");
+export const accentStrokeStealthActive = createStateToken(accentStrokeStealthSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeStealthFocus = createStateToken(accentStrokeStealthSet, "focus");
+export const accentStrokeStealthFocus = createStateToken(accentStrokeStealthSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const accentStrokeStealth: InteractiveTokenGroup<Swatch> = {
@@ -633,16 +638,16 @@ export const accentStrokeSubtleRecipe = createRecipeInteractive(accentStrokeSubt
 const accentStrokeSubtleSet = createSet(accentStrokeSubtleRecipe);
 
 /** @public */
-export const accentStrokeSubtleRest = createStateToken(accentStrokeSubtleSet, "rest");
+export const accentStrokeSubtleRest = createStateToken(accentStrokeSubtleSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSubtleHover = createStateToken(accentStrokeSubtleSet, "hover");
+export const accentStrokeSubtleHover = createStateToken(accentStrokeSubtleSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSubtleActive = createStateToken(accentStrokeSubtleSet, "active");
+export const accentStrokeSubtleActive = createStateToken(accentStrokeSubtleSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeSubtleFocus = createStateToken(accentStrokeSubtleSet, "focus");
+export const accentStrokeSubtleFocus = createStateToken(accentStrokeSubtleSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const accentStrokeSubtle: InteractiveTokenGroup<Swatch> = {
@@ -674,16 +679,16 @@ export const accentStrokeDiscernibleRecipe = createRecipeInteractive(accentStrok
 const accentStrokeDiscernibleSet = createSet(accentStrokeDiscernibleRecipe);
 
 /** @public */
-export const accentStrokeDiscernibleRest = createStateToken(accentStrokeDiscernibleSet, "rest");
+export const accentStrokeDiscernibleRest = createStateToken(accentStrokeDiscernibleSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeDiscernibleHover = createStateToken(accentStrokeDiscernibleSet, "hover");
+export const accentStrokeDiscernibleHover = createStateToken(accentStrokeDiscernibleSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeDiscernibleActive = createStateToken(accentStrokeDiscernibleSet, "active");
+export const accentStrokeDiscernibleActive = createStateToken(accentStrokeDiscernibleSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const accentStrokeDiscernibleFocus = createStateToken(accentStrokeDiscernibleSet, "focus");
+export const accentStrokeDiscernibleFocus = createStateToken(accentStrokeDiscernibleSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const accentStrokeDiscernible: InteractiveTokenGroup<Swatch> = {
@@ -727,16 +732,16 @@ export const accentStrokeReadableRecipe = createRecipeInteractive(accentStrokeRe
 const accentStrokeReadableSet = createSet(accentStrokeReadableRecipe);
 
 /** @public */
-export const accentStrokeReadableRest = createStateToken(accentStrokeReadableSet, "rest");
+export const accentStrokeReadableRest = createStateToken(accentStrokeReadableSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeReadableHover = createStateToken(accentStrokeReadableSet, "hover");
+export const accentStrokeReadableHover = createStateToken(accentStrokeReadableSet, "hover", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeReadableActive = createStateToken(accentStrokeReadableSet, "active");
+export const accentStrokeReadableActive = createStateToken(accentStrokeReadableSet, "active", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeReadableFocus = createStateToken(accentStrokeReadableSet, "focus");
+export const accentStrokeReadableFocus = createStateToken(accentStrokeReadableSet, "focus", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
 export const accentStrokeReadable: InteractiveTokenGroup<Swatch> = {
@@ -768,16 +773,16 @@ export const accentStrokeStrongRecipe = createRecipeInteractive(accentStrokeStro
 const accentStrokeStrongSet = createSet(accentStrokeStrongRecipe);
 
 /** @public */
-export const accentStrokeStrongRest = createStateToken(accentStrokeStrongSet, "rest");
+export const accentStrokeStrongRest = createStateToken(accentStrokeStrongSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeStrongHover = createStateToken(accentStrokeStrongSet, "hover");
+export const accentStrokeStrongHover = createStateToken(accentStrokeStrongSet, "hover", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeStrongActive = createStateToken(accentStrokeStrongSet, "active");
+export const accentStrokeStrongActive = createStateToken(accentStrokeStrongSet, "active", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const accentStrokeStrongFocus = createStateToken(accentStrokeStrongSet, "focus");
+export const accentStrokeStrongFocus = createStateToken(accentStrokeStrongSet, "focus", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
 export const accentStrokeStrong: InteractiveTokenGroup<Swatch> = {
@@ -824,16 +829,16 @@ export const neutralFillStealthRecipe = createRecipeInteractive(neutralFillSteal
 const neutralFillStealthSet = createSet(neutralFillStealthRecipe);
 
 /** @public */
-export const neutralFillStealthRest = createStateToken(neutralFillStealthSet, "rest");
+export const neutralFillStealthRest = createStateToken(neutralFillStealthSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillStealthHover = createStateToken(neutralFillStealthSet, "hover");
+export const neutralFillStealthHover = createStateToken(neutralFillStealthSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillStealthActive = createStateToken(neutralFillStealthSet, "active");
+export const neutralFillStealthActive = createStateToken(neutralFillStealthSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillStealthFocus = createStateToken(neutralFillStealthSet, "focus");
+export const neutralFillStealthFocus = createStateToken(neutralFillStealthSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillStealth: InteractiveTokenGroup<Swatch> = {
@@ -880,16 +885,16 @@ export const neutralFillSubtleRecipe = createRecipeInteractive(neutralFillSubtle
 const neutralFillSubtleSet = createSet(neutralFillSubtleRecipe);
 
 /** @public */
-export const neutralFillSubtleRest = createStateToken(neutralFillSubtleSet, "rest");
+export const neutralFillSubtleRest = createStateToken(neutralFillSubtleSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillSubtleHover = createStateToken(neutralFillSubtleSet, "hover");
+export const neutralFillSubtleHover = createStateToken(neutralFillSubtleSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillSubtleActive = createStateToken(neutralFillSubtleSet, "active");
+export const neutralFillSubtleActive = createStateToken(neutralFillSubtleSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillSubtleFocus = createStateToken(neutralFillSubtleSet, "focus");
+export const neutralFillSubtleFocus = createStateToken(neutralFillSubtleSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillSubtle: InteractiveTokenGroup<Swatch> = {
@@ -937,16 +942,16 @@ export const neutralFillDiscernibleRecipe = createRecipeInteractive(neutralFillD
 const neutralFillDiscernibleSet = createSet(neutralFillDiscernibleRecipe);
 
 /** @public */
-export const neutralFillDiscernibleRest = createStateToken(neutralFillDiscernibleSet, "rest");
+export const neutralFillDiscernibleRest = createStateToken(neutralFillDiscernibleSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillDiscernibleHover = createStateToken(neutralFillDiscernibleSet, "hover");
+export const neutralFillDiscernibleHover = createStateToken(neutralFillDiscernibleSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillDiscernibleActive = createStateToken(neutralFillDiscernibleSet, "active");
+export const neutralFillDiscernibleActive = createStateToken(neutralFillDiscernibleSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillDiscernibleFocus = createStateToken(neutralFillDiscernibleSet, "focus");
+export const neutralFillDiscernibleFocus = createStateToken(neutralFillDiscernibleSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillDiscernible: InteractiveTokenGroup<Swatch> = {
@@ -978,16 +983,16 @@ export const neutralFillReadableRecipe = createRecipeInteractive(neutralFillRead
 const neutralFillReadableSet = createSet(neutralFillReadableRecipe);
 
 /** @public */
-export const neutralFillReadableRest = createStateToken(neutralFillReadableSet, "rest");
+export const neutralFillReadableRest = createStateToken(neutralFillReadableSet, "rest", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillReadableHover = createStateToken(neutralFillReadableSet, "hover");
+export const neutralFillReadableHover = createStateToken(neutralFillReadableSet, "hover", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillReadableActive = createStateToken(neutralFillReadableSet, "active");
+export const neutralFillReadableActive = createStateToken(neutralFillReadableSet, "active", StyleProperty.backgroundFill);
 
 /** @public */
-export const neutralFillReadableFocus = createStateToken(neutralFillReadableSet, "focus");
+export const neutralFillReadableFocus = createStateToken(neutralFillReadableSet, "focus", StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillReadable: InteractiveTokenGroup<Swatch> = {
@@ -1026,16 +1031,16 @@ export const neutralStrokeSafetyRecipe = createRecipeInteractive(neutralStrokeSa
 const neutralStrokeSafetySet = createSet(neutralStrokeSafetyRecipe);
 
 /** @public */
-export const neutralStrokeSafetyRest = createStateToken(neutralStrokeSafetySet, "rest");
+export const neutralStrokeSafetyRest = createStateToken(neutralStrokeSafetySet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSafetyHover = createStateToken(neutralStrokeSafetySet, "hover");
+export const neutralStrokeSafetyHover = createStateToken(neutralStrokeSafetySet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSafetyActive = createStateToken(neutralStrokeSafetySet, "active");
+export const neutralStrokeSafetyActive = createStateToken(neutralStrokeSafetySet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSafetyFocus = createStateToken(neutralStrokeSafetySet, "focus");
+export const neutralStrokeSafetyFocus = createStateToken(neutralStrokeSafetySet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const neutralStrokeSafety: InteractiveTokenGroup<Swatch> = {
@@ -1071,16 +1076,16 @@ export const neutralStrokeStealthRecipe = createRecipeInteractive(neutralStrokeS
 const neutralStrokeStealthSet = createSet(neutralStrokeStealthRecipe);
 
 /** @public */
-export const neutralStrokeStealthRest = createStateToken(neutralStrokeStealthSet, "rest");
+export const neutralStrokeStealthRest = createStateToken(neutralStrokeStealthSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeStealthHover = createStateToken(neutralStrokeStealthSet, "hover");
+export const neutralStrokeStealthHover = createStateToken(neutralStrokeStealthSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeStealthActive = createStateToken(neutralStrokeStealthSet, "active");
+export const neutralStrokeStealthActive = createStateToken(neutralStrokeStealthSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeStealthFocus = createStateToken(neutralStrokeStealthSet, "focus");
+export const neutralStrokeStealthFocus = createStateToken(neutralStrokeStealthSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const neutralStrokeStealth: InteractiveTokenGroup<Swatch> = {
@@ -1128,16 +1133,16 @@ export const neutralStrokeSubtleRecipe = createRecipeInteractive(neutralStrokeSu
 const neutralStrokeSubtleSet = createSet(neutralStrokeSubtleRecipe);
 
 /** @public */
-export const neutralStrokeSubtleRest = createStateToken(neutralStrokeSubtleSet, "rest");
+export const neutralStrokeSubtleRest = createStateToken(neutralStrokeSubtleSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSubtleHover = createStateToken(neutralStrokeSubtleSet, "hover");
+export const neutralStrokeSubtleHover = createStateToken(neutralStrokeSubtleSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSubtleActive = createStateToken(neutralStrokeSubtleSet, "active");
+export const neutralStrokeSubtleActive = createStateToken(neutralStrokeSubtleSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeSubtleFocus = createStateToken(neutralStrokeSubtleSet, "focus");
+export const neutralStrokeSubtleFocus = createStateToken(neutralStrokeSubtleSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const neutralStrokeSubtle: InteractiveTokenGroup<Swatch> = {
@@ -1185,16 +1190,16 @@ export const neutralStrokeDiscernibleRecipe = createRecipeInteractive(neutralStr
 const neutralStrokeDiscernibleSet = createSet(neutralStrokeDiscernibleRecipe);
 
 /** @public */
-export const neutralStrokeDiscernibleRest = createStateToken(neutralStrokeDiscernibleSet, "rest");
+export const neutralStrokeDiscernibleRest = createStateToken(neutralStrokeDiscernibleSet, "rest", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeDiscernibleHover = createStateToken(neutralStrokeDiscernibleSet, "hover");
+export const neutralStrokeDiscernibleHover = createStateToken(neutralStrokeDiscernibleSet, "hover", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeDiscernibleActive = createStateToken(neutralStrokeDiscernibleSet, "active");
+export const neutralStrokeDiscernibleActive = createStateToken(neutralStrokeDiscernibleSet, "active", StyleProperty.borderFill);
 
 /** @public */
-export const neutralStrokeDiscernibleFocus = createStateToken(neutralStrokeDiscernibleSet, "focus");
+export const neutralStrokeDiscernibleFocus = createStateToken(neutralStrokeDiscernibleSet, "focus", StyleProperty.borderFill);
 
 /** @public */
 export const neutralStrokeDiscernible: InteractiveTokenGroup<Swatch> = {
@@ -1242,16 +1247,16 @@ export const neutralStrokeReadableRecipe = createRecipeInteractive(neutralStroke
 const neutralStrokeReadableSet = createSet(neutralStrokeReadableRecipe);
 
 /** @public */
-export const neutralStrokeReadableRest = createStateToken(neutralStrokeReadableSet, "rest")
+export const neutralStrokeReadableRest = createStateToken(neutralStrokeReadableSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeReadableHover = createStateToken(neutralStrokeReadableSet, "rest")
+export const neutralStrokeReadableHover = createStateToken(neutralStrokeReadableSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeReadableActive = createStateToken(neutralStrokeReadableSet, "rest")
+export const neutralStrokeReadableActive = createStateToken(neutralStrokeReadableSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeReadableFocus = createStateToken(neutralStrokeReadableSet, "rest")
+export const neutralStrokeReadableFocus = createStateToken(neutralStrokeReadableSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
 export const neutralStrokeReadable: InteractiveTokenGroup<Swatch> = {
@@ -1302,16 +1307,16 @@ export const neutralStrokeStrongRecipe = createRecipeInteractive(neutralStrokeSt
 const neutralStrokeStrongSet = createSet(neutralStrokeStrongRecipe);
 
 /** @public */
-export const neutralStrokeStrongRest = createStateToken(neutralStrokeStrongSet, "rest");
+export const neutralStrokeStrongRest = createStateToken(neutralStrokeStrongSet, "rest", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeStrongHover = createStateToken(neutralStrokeStrongSet, "hover");
+export const neutralStrokeStrongHover = createStateToken(neutralStrokeStrongSet, "hover", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeStrongActive = createStateToken(neutralStrokeStrongSet, "active");
+export const neutralStrokeStrongActive = createStateToken(neutralStrokeStrongSet, "active", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
-export const neutralStrokeStrongFocus = createStateToken(neutralStrokeStrongSet, "focus");
+export const neutralStrokeStrongFocus = createStateToken(neutralStrokeStrongSet, "focus", [StyleProperty.borderFill, StyleProperty.foregroundFill]);
 
 /** @public */
 export const neutralStrokeStrong: InteractiveTokenGroup<Swatch> = {

@@ -4,8 +4,9 @@ import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch } from "../color/swatch.js";
 import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
+import { DesignTokenType } from "../adaptive-design-tokens.js";
 import { fillColor } from "./color.js";
-import { create, createNonCss } from "./create.js";
+import { createNonCss, createTokenNonCss, createTokenSwatch } from "./create.js";
 import { neutralPalette } from "./palette.js";
 
 /**
@@ -57,7 +58,7 @@ export const layerPalette = createNonCss<Palette>("layer-palette").withDefault(n
  *
  * @public
  */
-export const layerFillBaseLuminance = createNonCss<number>("layer-fill-base-luminance").withDefault(LayerBaseLuminance.LightMode);
+export const layerFillBaseLuminance = createTokenNonCss<number>("layer-fill-base-luminance", DesignTokenType.number).withDefault(LayerBaseLuminance.LightMode);
 
 /**
  * The offset between "Fixed" layers, or from the container for "Interactive" rest state, {@link layerFillInteractiveRest}.
@@ -67,28 +68,28 @@ export const layerFillBaseLuminance = createNonCss<number>("layer-fill-base-lumi
  *
  * @public
  */
-export const layerFillDelta = createNonCss<number>("layer-fill-delta").withDefault(-2);
+export const layerFillDelta = createTokenNonCss<number>("layer-fill-delta", DesignTokenType.number).withDefault(-2);
 
 /**
  * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
  *
  * @public
  */
-export const layerFillHoverDelta = createNonCss<number>("layer-fill-hover-delta").withDefault(-3);
+export const layerFillHoverDelta = createTokenNonCss<number>("layer-fill-hover-delta", DesignTokenType.number).withDefault(-3);
 
 /**
  * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
  *
  * @public
  */
-export const layerFillActiveDelta = createNonCss<number>("layer-fill-active-delta").withDefault(-1);
+export const layerFillActiveDelta = createTokenNonCss<number>("layer-fill-active-delta", DesignTokenType.number).withDefault(-1);
 
 /**
  * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
  *
  * @public
  */
-export const layerFillFocusDelta = createNonCss<number>("layer-fill-focus-delta").withDefault(-3);
+export const layerFillFocusDelta = createTokenNonCss<number>("layer-fill-focus-delta", DesignTokenType.number).withDefault(-3);
 
 /**
  * The "Fixed" layers represent background fills commonly used to define app structure.
@@ -120,7 +121,7 @@ export const layerFillFixedRecipe = createNonCss<LayerRecipe>("layer-fill-fixed-
  *
  * @public
  */
-export const layerFillFixedBase = create<Swatch>("layer-fill-fixed-base").withDefault(
+export const layerFillFixedBase = createTokenSwatch("layer-fill-fixed-base").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 0)
 );
@@ -133,7 +134,7 @@ export const layerFillFixedBase = create<Swatch>("layer-fill-fixed-base").withDe
  *
  * @public
  */
-export const layerFillFixedMinus1 = create<Swatch>("layer-fill-fixed-minus-1").withDefault(
+export const layerFillFixedMinus1 = createTokenSwatch("layer-fill-fixed-minus-1").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -1)
 );
@@ -146,7 +147,7 @@ export const layerFillFixedMinus1 = create<Swatch>("layer-fill-fixed-minus-1").w
  *
  * @public
  */
-export const layerFillFixedMinus2 = create<Swatch>("layer-fill-fixed-minus-2").withDefault(
+export const layerFillFixedMinus2 = createTokenSwatch("layer-fill-fixed-minus-2").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -2)
 );
@@ -159,7 +160,7 @@ export const layerFillFixedMinus2 = create<Swatch>("layer-fill-fixed-minus-2").w
  *
  * @public
  */
-export const layerFillFixedMinus3 = create<Swatch>("layer-fill-fixed-minus-3").withDefault(
+export const layerFillFixedMinus3 = createTokenSwatch("layer-fill-fixed-minus-3").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -3)
 );
@@ -172,7 +173,7 @@ export const layerFillFixedMinus3 = create<Swatch>("layer-fill-fixed-minus-3").w
  *
  * @public
  */
-export const layerFillFixedMinus4 = create<Swatch>("layer-fill-fixed-minus-4").withDefault(
+export const layerFillFixedMinus4 = createTokenSwatch("layer-fill-fixed-minus-4").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -4)
 );
@@ -185,7 +186,7 @@ export const layerFillFixedMinus4 = create<Swatch>("layer-fill-fixed-minus-4").w
  *
  * @public
  */
-export const layerFillFixedPlus1 = create<Swatch>("layer-fill-fixed-plus-1").withDefault(
+export const layerFillFixedPlus1 = createTokenSwatch("layer-fill-fixed-plus-1").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 1)
 );
@@ -198,7 +199,7 @@ export const layerFillFixedPlus1 = create<Swatch>("layer-fill-fixed-plus-1").wit
  *
  * @public
  */
-export const layerFillFixedPlus2 = create<Swatch>("layer-fill-fixed-plus-2").withDefault(
+export const layerFillFixedPlus2 = createTokenSwatch("layer-fill-fixed-plus-2").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 2)
 );
@@ -211,7 +212,7 @@ export const layerFillFixedPlus2 = create<Swatch>("layer-fill-fixed-plus-2").wit
  *
  * @public
  */
-export const layerFillFixedPlus3 = create<Swatch>("layer-fill-fixed-plus-3").withDefault(
+export const layerFillFixedPlus3 = createTokenSwatch("layer-fill-fixed-plus-3").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 3)
 );
@@ -224,7 +225,7 @@ export const layerFillFixedPlus3 = create<Swatch>("layer-fill-fixed-plus-3").wit
  *
  * @public
  */
-export const layerFillFixedPlus4 = create<Swatch>("layer-fill-fixed-plus-4").withDefault(
+export const layerFillFixedPlus4 = createTokenSwatch("layer-fill-fixed-plus-4").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 4)
 );
@@ -258,7 +259,7 @@ export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>("
  *
  * @public
  */
-export const layerFillInteractiveRest = create<Swatch>("layer-fill-interactive-rest").withDefault(
+export const layerFillInteractiveRest = createTokenSwatch("layer-fill-interactive-rest").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillInteractiveRecipe).evaluate(resolve).rest
 );
@@ -271,7 +272,7 @@ export const layerFillInteractiveRest = create<Swatch>("layer-fill-interactive-r
  *
  * @public
  */
-export const layerFillInteractiveHover = create<Swatch>("layer-fill-interactive-hover").withDefault(
+export const layerFillInteractiveHover = createTokenSwatch("layer-fill-interactive-hover").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillInteractiveRecipe).evaluate(resolve).hover
 );
@@ -284,7 +285,7 @@ export const layerFillInteractiveHover = create<Swatch>("layer-fill-interactive-
  *
  * @public
  */
-export const layerFillInteractiveActive = create<Swatch>("layer-fill-interactive-active").withDefault(
+export const layerFillInteractiveActive = createTokenSwatch("layer-fill-interactive-active").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillInteractiveRecipe).evaluate(resolve).active
 );
@@ -297,7 +298,7 @@ export const layerFillInteractiveActive = create<Swatch>("layer-fill-interactive
  *
  * @public
  */
-export const layerFillInteractiveFocus = create<Swatch>("layer-fill-interactive-focus").withDefault(
+export const layerFillInteractiveFocus = createTokenSwatch("layer-fill-interactive-focus").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillInteractiveRecipe).evaluate(resolve).focus
 );

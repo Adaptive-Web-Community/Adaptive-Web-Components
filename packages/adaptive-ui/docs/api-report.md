@@ -11,10 +11,11 @@ import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import type { ElementStyles } from '@microsoft/fast-element';
 import { TypedCSSDesignToken as TypedCSSDesignToken_2 } from '../adaptive-design-tokens.js';
+import { TypedDesignToken as TypedDesignToken_2 } from '../adaptive-design-tokens.js';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public (undocumented)
-export const accentBaseColor: CSSDesignToken<string>;
+export const accentBaseColor: TypedDesignToken_2<string>;
 
 // @public (undocumented)
 export const accentBaseSwatch: DesignToken<Swatch>;
@@ -411,6 +412,9 @@ export const createForegroundSet: (foregroundRecipe: DesignToken<InteractiveColo
 export function createNonCss<T>(name: string): DesignToken<T>;
 
 // @public
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
+
+// @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
 
 // @public
@@ -429,7 +433,10 @@ export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>
 export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>;
 
 // @public
-export function createTokenNonCss<T>(name: string): DesignToken<T>;
+export function createTokenNonCss<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T>;
+
+// @public
+export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
 
 // @public
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
@@ -439,6 +446,13 @@ export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, 
 
 // @public
 export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
+
+// @public
+export class DesignTokenMetadata {
+    // (undocumented)
+    get allowedType(): DesignTokenType;
+    protected set allowedType(value: DesignTokenType);
+}
 
 // @public
 export const DesignTokenType: {
@@ -463,7 +477,7 @@ export const DesignTokenType: {
 export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 // @public (undocumented)
-export const designUnit: CSSDesignToken<number>;
+export const designUnit: TypedCSSDesignToken_2<number>;
 
 // @public
 export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
@@ -585,6 +599,9 @@ export const focusStrokeOuter: TypedCSSDesignToken<Swatch>;
 export const focusStrokeOuterRecipe: DesignToken<ColorRecipe<Swatch>>;
 
 // @public (undocumented)
+export const focusStrokeThickness: TypedCSSDesignToken_2<string>;
+
+// @public @deprecated (undocumented)
 export const focusStrokeWidth: CSSDesignToken<number>;
 
 // @public (undocumented)
@@ -695,64 +712,64 @@ export const LayerBaseLuminance: Readonly<{
 export const layerCornerRadius: CSSDesignToken<number>;
 
 // @public
-export const layerFillActiveDelta: DesignToken<number>;
+export const layerFillActiveDelta: TypedDesignToken_2<number>;
 
 // @public
-export const layerFillBaseLuminance: DesignToken<number>;
+export const layerFillBaseLuminance: TypedDesignToken_2<number>;
 
 // @public
-export const layerFillDelta: DesignToken<number>;
+export const layerFillDelta: TypedDesignToken_2<number>;
 
 // @public
-export const layerFillFixedBase: CSSDesignToken<Swatch>;
+export const layerFillFixedBase: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedMinus1: CSSDesignToken<Swatch>;
+export const layerFillFixedMinus1: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedMinus2: CSSDesignToken<Swatch>;
+export const layerFillFixedMinus2: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedMinus3: CSSDesignToken<Swatch>;
+export const layerFillFixedMinus3: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedMinus4: CSSDesignToken<Swatch>;
+export const layerFillFixedMinus4: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedPlus1: CSSDesignToken<Swatch>;
+export const layerFillFixedPlus1: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedPlus2: CSSDesignToken<Swatch>;
+export const layerFillFixedPlus2: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedPlus3: CSSDesignToken<Swatch>;
+export const layerFillFixedPlus3: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillFixedPlus4: CSSDesignToken<Swatch>;
+export const layerFillFixedPlus4: TypedCSSDesignToken_2<Swatch>;
 
 // @public
 export const layerFillFixedRecipe: DesignToken<LayerRecipe>;
 
 // @public
-export const layerFillFocusDelta: DesignToken<number>;
+export const layerFillFocusDelta: TypedDesignToken_2<number>;
 
 // @public
-export const layerFillHoverDelta: DesignToken<number>;
+export const layerFillHoverDelta: TypedDesignToken_2<number>;
 
 // @public
-export const layerFillInteractiveActive: CSSDesignToken<Swatch>;
+export const layerFillInteractiveActive: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillInteractiveFocus: CSSDesignToken<Swatch>;
+export const layerFillInteractiveFocus: TypedCSSDesignToken_2<Swatch>;
 
 // @public
-export const layerFillInteractiveHover: CSSDesignToken<Swatch>;
+export const layerFillInteractiveHover: TypedCSSDesignToken_2<Swatch>;
 
 // @public
 export const layerFillInteractiveRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public
-export const layerFillInteractiveRest: CSSDesignToken<Swatch>;
+export const layerFillInteractiveRest: TypedCSSDesignToken_2<Swatch>;
 
 // @public
 export const layerPalette: DesignToken<Palette<Swatch>>;
@@ -787,7 +804,7 @@ export const minContrastSubtle: DesignToken<number>;
 export const neutralAsOverlay: DesignToken<boolean>;
 
 // @public (undocumented)
-export const neutralBaseColor: CSSDesignToken<string>;
+export const neutralBaseColor: TypedDesignToken_2<string>;
 
 // @public (undocumented)
 export const neutralBaseSwatch: DesignToken<Swatch>;
@@ -1537,14 +1554,32 @@ export interface TokenGroup {
     name: string;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedCSSDesignToken" because one of its declarations is marked as @internal
+//
 // @public
-export class TypedCSSDesignToken<T> extends CSSDesignToken<T> {
-    constructor(name: string, allowedTypes: DesignTokenType | DesignTokenType[], intendedFor?: StyleProperty | StyleProperty[]);
-    // (undocumented)
-    readonly allowedTypes: DesignTokenType[];
-    static createTyped<T>(name: string, allowedTypes: DesignTokenType | DesignTokenType[], intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<T>;
+export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
+    constructor(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
+    static createTyped<T>(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<T>;
     // (undocumented)
     readonly intendedFor?: StyleProperty[];
+}
+
+// @internal (undocumented)
+export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedDesignToken" because one of its declarations is marked as @internal
+//
+// @public
+export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
+    constructor(name: string, allowedType: DesignTokenType);
+    static createTyped<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T>;
+}
+
+// @internal (undocumented)
+export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
 
 // @public @deprecated (undocumented)

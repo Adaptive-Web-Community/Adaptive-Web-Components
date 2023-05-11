@@ -1,0 +1,8 @@
+{
+    "name": "Adaptive UI Designer",
+    "id": "1210401851009710286",
+    "api": "1.0.0",
+    "main": "./dist/main.js",
+    "ui": "./dist/index.html",
+    "editorType": ["figma"]
+}
