@@ -7,6 +7,11 @@ import { FASTMenuItem } from "@microsoft/fast-foundation";
  */
 export type AdaptiveMenuItemColumnCount = 0 | 1 | 2;
 
+/**
+ * The Adaptive version of MenuItem. Extends {@link @microsoft/fast-foundation#FASTMenuItem}.
+ *
+ * @public
+ */
 export class AdaptiveMenuItem extends FASTMenuItem {
     /**
      * Managed by {@link AdaptiveMenu} to align checkbox or radio controls and `start` slot content properly.

@@ -4,17 +4,26 @@ import type { FASTSliderLabel } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const SliderLabelConditions = {
     horizontal: "[orientation='horizontal']",
     vertical: "[orientation='vertical']",
 };
 
+/**
+ * @public
+ */
 export const SliderLabelParts = {
     container: "container",
     mark: "mark",
     content: "content",
 };
 
+/**
+ * @public
+ */
 export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, typeof SliderLabelParts> = {
     interactivity: Interactivity.never,
     conditions: SliderLabelConditions,
@@ -25,6 +34,7 @@ export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, 
 
 /**
  * Default Slider Label template, {@link @microsoft/fast-foundation#sliderLabelTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSliderLabel> =
     (ds: DesignSystem) =>

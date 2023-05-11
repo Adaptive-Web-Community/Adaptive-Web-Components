@@ -3,9 +3,15 @@ import { FASTSearch, searchTemplate } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const SearchConditions = {
 };
 
+/**
+ * @public
+ */
 export const SearchParts = {
     label: "label",
     root: "root",
@@ -13,6 +19,9 @@ export const SearchParts = {
     clearButton: "clear-button",
 };
 
+/**
+ * @public
+ */
 export const SearchAnatomy: ComponentAnatomy<typeof SearchConditions, typeof SearchParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: SearchConditions,
@@ -21,6 +30,7 @@ export const SearchAnatomy: ComponentAnatomy<typeof SearchConditions, typeof Sea
 
 /**
  * Default Search Field template, {@link @microsoft/fast-foundation#searchTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSearch> =
     (ds: DesignSystem) =>

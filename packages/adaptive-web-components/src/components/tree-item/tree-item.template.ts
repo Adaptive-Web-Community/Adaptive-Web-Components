@@ -6,17 +6,28 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the tree item.
+ *
+ * @beta
  */
 export const TreeItemStatics = {
     expandCollapse: "tree-item-expand-collapse-icon"
 } as const;
 
+/**
+ * @beta
+ */
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 
+/**
+ * @public
+ */
 export const TreeItemConditions = {
     selected: "[aria-selected='true']",
 };
 
+/**
+ * @public
+ */
 export const TreeItemParts = {
     control: "control",
     expandCollapseButton: "expand-collapse-button",
@@ -24,6 +35,9 @@ export const TreeItemParts = {
     items: "items",
 };
 
+/**
+ * @public
+ */
 export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof TreeItemParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: TreeItemConditions,
@@ -34,6 +48,7 @@ export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof
 
 /**
  * Default Tree Item template, {@link @microsoft/fast-foundation#treeItemTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTTreeItem> =
     (ds: DesignSystem) => {

@@ -7,6 +7,9 @@ import { TabPanelAnatomy, template } from "./tab-panel.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTabPanel(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTabPanel>

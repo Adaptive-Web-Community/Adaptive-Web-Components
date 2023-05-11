@@ -3,15 +3,24 @@ import { FASTProgressRing, StaticallyComposableHTML, staticallyCompose } from "@
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const ProgressRingConditions = {
 };
 
+/**
+ * @public
+ */
 export const ProgressRingParts = {
     indicator: "indicator",
     determinate: "determinate",
     indeterminate: "indeterminate",
 };
 
+/**
+ * @public
+ */
 export const ProgressRingAnatomy: ComponentAnatomy<typeof ProgressRingConditions, typeof ProgressRingParts> = {
     interactivity: Interactivity.never,
     conditions: ProgressRingConditions,
@@ -34,6 +43,7 @@ const progressRingIndicatorTemplate = html`
 
 /**
  * Default Progress template, {@link @microsoft/fast-foundation#progressTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTProgressRing> =
     (ds: DesignSystem) => {

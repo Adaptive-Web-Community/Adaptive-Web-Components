@@ -10,6 +10,7 @@ import { density, heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
+ * @public
  */
 export const templateStyles: ElementStyles = css`
     :host {
@@ -101,6 +102,7 @@ export const templateStyles: ElementStyles = css`
 
 /**
  * Visual styles including Adaptive UI tokens.
+ * @public
  */
 export const aestheticStyles: ElementStyles = css`
     :host {

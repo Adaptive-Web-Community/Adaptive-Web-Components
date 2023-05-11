@@ -7,6 +7,9 @@ import { template, ToolbarAnatomy } from "./toolbar.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeToolbar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTToolbar>

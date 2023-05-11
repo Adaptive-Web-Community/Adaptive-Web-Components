@@ -7,6 +7,9 @@ import { RadioGroupAnatomy, template } from "./radio-group.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeRadioGroup(
     ds: DesignSystem,
     options?: ComposeOptions<FASTRadioGroup>

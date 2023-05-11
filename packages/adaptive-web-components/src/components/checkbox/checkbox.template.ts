@@ -6,24 +6,38 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the checkbox.
+ *
+ * @beta
  */
 export const CheckboxStatics = {
     checked: "checkbox-checked-indicator",
     indeterminate: "checkbox-indeterminate-indicator"
 } as const;
 
+/**
+ * @beta
+ */
 export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 
+/**
+ * @public
+ */
 export const CheckboxConditions = {
     checked: "[aria-checked='true']",
     indeterminate: "[aria-checked='mixed']"
 };
 
+/**
+ * @public
+ */
 export const CheckboxParts = {
     control: "control",
     label: "label"
 };
 
+/**
+ * @public
+ */
 export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof CheckboxParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: CheckboxConditions,
@@ -32,6 +46,7 @@ export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof
 
 /**
  * Default Checkbox template, {@link @microsoft/fast-foundation#checkboxTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCheckbox> =
     (ds: DesignSystem) => {

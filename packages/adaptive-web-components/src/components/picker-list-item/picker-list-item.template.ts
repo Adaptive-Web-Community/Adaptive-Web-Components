@@ -3,12 +3,21 @@ import { FASTPickerListItem, pickerListItemTemplate } from "@microsoft/fast-foun
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const PickerListItemConditions = {
 };
 
+/**
+ * @public
+ */
 export const PickerListItemParts = {
 };
 
+/**
+ * @public
+ */
 export const PickerListItemAnatomy: ComponentAnatomy<typeof PickerListItemConditions, typeof PickerListItemParts> = {
     interactivity: Interactivity.always,
     conditions: PickerListItemConditions,
@@ -17,6 +26,7 @@ export const PickerListItemAnatomy: ComponentAnatomy<typeof PickerListItemCondit
 
 /**
  * Default Picker List Item template, {@link @microsoft/fast-foundation#pickerListItemTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTPickerListItem> =
     (ds: DesignSystem) =>

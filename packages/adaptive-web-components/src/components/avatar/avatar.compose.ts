@@ -7,6 +7,9 @@ import { AvatarAnatomy, template } from "./avatar.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeAvatar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAvatar>

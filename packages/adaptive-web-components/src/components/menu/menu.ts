@@ -7,6 +7,11 @@ import { AdaptiveMenuItem, AdaptiveMenuItemColumnCount } from "../menu-item/menu
  */
 type AdaptiveMenuIndentInfo = { hasControl: boolean; hasStart: boolean };
 
+/**
+ * The Adaptive version of Menu. Extends {@link @microsoft/fast-foundation#FASTMenu}.
+ *
+ * @public
+ */
 export class AdaptiveMenu extends FASTMenu {
     private static elementIndent(el: HTMLElement): AdaptiveMenuIndentInfo {
         const role = el.getAttribute("role");

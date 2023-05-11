@@ -3,15 +3,24 @@ import { FASTProgress, StaticallyComposableHTML, staticallyCompose } from "@micr
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const ProgressConditions = {
 };
 
+/**
+ * @public
+ */
 export const ProgressParts = {
     indicator: "indicator",
     determinate: "determinate",
     indeterminate: "indeterminate",
 };
 
+/**
+ * @public
+ */
 export const ProgressAnatomy: ComponentAnatomy<typeof ProgressConditions, typeof ProgressParts> = {
     interactivity: Interactivity.never,
     conditions: ProgressConditions,
@@ -31,6 +40,7 @@ const progressIndicatorTemplate = html`
 
 /**
  * Default Progress template, {@link @microsoft/fast-foundation#progressTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTProgress> =
     (ds: DesignSystem) => {

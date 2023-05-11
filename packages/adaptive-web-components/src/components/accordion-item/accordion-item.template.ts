@@ -14,12 +14,21 @@ export const AccordionItemStatics = {
     expanded: "accordion-item-expanded-icon"
 } as const;
 
+/**
+ * @beta
+ */
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
+/**
+ * @public
+ */
 export const AccordionItemConditions = {
     expanded: "[expanded]",
 };
 
+/**
+ * @public
+ */
 export const AccordionItemParts = {
     heading: "heading",
     button: "button",
@@ -28,6 +37,9 @@ export const AccordionItemParts = {
     region: "region",
 };
 
+/**
+ * @public
+ */
 export const AccordionItemAnatomy: ComponentAnatomy<typeof AccordionItemConditions, typeof AccordionItemParts> = {
     interactivity: Interactivity.disabledAttribute,
     conditions: AccordionItemConditions,
@@ -36,6 +48,7 @@ export const AccordionItemAnatomy: ComponentAnatomy<typeof AccordionItemConditio
 
 /**
  * Default Accordion Item template, {@link @microsoft/fast-foundation#accordionItemTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAccordionItem> =
     (ds: DesignSystem) =>

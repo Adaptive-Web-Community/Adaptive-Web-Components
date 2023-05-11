@@ -143,6 +143,8 @@ export class DesignSystem {
 
 /**
  * The default {@link DesignSystem} configuration.
+ *
+ * @beta
  */
 export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 

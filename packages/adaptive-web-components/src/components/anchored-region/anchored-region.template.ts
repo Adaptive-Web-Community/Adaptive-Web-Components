@@ -3,13 +3,22 @@ import { anchoredRegionTemplate, FASTAnchoredRegion } from "@microsoft/fast-foun
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
+/**
+ * @public
+ */
 export const AnchoredRegionConditions = {
     loaded: "[data-loaded='loaded']",
 };
 
+/**
+ * @public
+ */
 export const AnchoredRegionParts = {
 };
 
+/**
+ * @public
+ */
 export const AnchoredRegionAnatomy: ComponentAnatomy<typeof AnchoredRegionConditions, typeof AnchoredRegionParts> = {
     interactivity: Interactivity.never,
     conditions: AnchoredRegionConditions,
@@ -18,6 +27,7 @@ export const AnchoredRegionAnatomy: ComponentAnatomy<typeof AnchoredRegionCondit
 
 /**
  * Default Anchored Region template, {@link @microsoft/fast-foundation#anchoredRegionTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAnchoredRegion> =
     (ds: DesignSystem) =>

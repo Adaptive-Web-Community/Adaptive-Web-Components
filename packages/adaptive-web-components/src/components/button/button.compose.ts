@@ -7,6 +7,9 @@ import { ButtonAnatomy, template } from "./button.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeButton(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveButton>

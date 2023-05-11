@@ -7,6 +7,9 @@ import { template, TextAreaAnatomy } from "./text-area.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTextArea(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTextArea>

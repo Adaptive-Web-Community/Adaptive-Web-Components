@@ -2,6 +2,8 @@ import { FASTButton } from "@microsoft/fast-foundation";
 
 /**
  * The Adaptive version of Button. Extends {@link @microsoft/fast-foundation#FASTButton}.
+ *
+ * @public
  */
 export class AdaptiveButton extends FASTButton {
     /**

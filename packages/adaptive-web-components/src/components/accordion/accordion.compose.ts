@@ -7,6 +7,9 @@ import { AccordionAnatomy, template } from "./accordion.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeAccordion(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAccordion>

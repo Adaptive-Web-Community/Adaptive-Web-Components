@@ -6,15 +6,26 @@ import { DesignSystem } from "../../design-system.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the breadcrumb item.
+ *
+ * @beta
  */
 export const BreadcrumbItemStatics = {
     separator: "breadcrumb-item-separator"
 } as const;
 
+/**
+ * @beta
+ */
 export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 
+/**
+ * @public
+ */
 export const BreadcrumbItemConditions = {};
 
+/**
+ * @public
+ */
 export const BreadcrumbItemParts = {
     control: "control",
     content: "content",
@@ -22,6 +33,9 @@ export const BreadcrumbItemParts = {
     separator: "separator",
 };
 
+/**
+ * @public
+ */
 export const BreadcrumbItemAnatomy: ComponentAnatomy<typeof BreadcrumbItemConditions, typeof BreadcrumbItemParts> = {
     interactivity: Interactivity.hrefAttribute,
     conditions: BreadcrumbItemConditions,
@@ -30,6 +44,7 @@ export const BreadcrumbItemAnatomy: ComponentAnatomy<typeof BreadcrumbItemCondit
 
 /**
  * Default Breadcrumb Item template, {@link @microsoft/fast-foundation#breadcrumbItemTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTBreadcrumbItem> =
     (ds: DesignSystem) =>

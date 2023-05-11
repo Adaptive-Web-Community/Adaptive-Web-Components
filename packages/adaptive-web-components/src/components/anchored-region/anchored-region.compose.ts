@@ -7,6 +7,9 @@ import { AnchoredRegionAnatomy, template } from "./anchored-region.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeAnchoredRegion(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAnchoredRegion>

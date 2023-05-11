@@ -2,6 +2,8 @@ import { FASTAnchor } from "@microsoft/fast-foundation";
 
 /**
  * The Adaptive version of Anchor. Extends {@link @microsoft/fast-foundation#FASTAnchor}.
+ *
+ * @public
  */
 export class AdaptiveAnchor extends FASTAnchor {
     /**

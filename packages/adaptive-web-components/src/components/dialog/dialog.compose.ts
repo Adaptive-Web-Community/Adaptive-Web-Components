@@ -7,6 +7,9 @@ import { DialogAnatomy, template } from "./dialog.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeDialog(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDialog>

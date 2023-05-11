@@ -7,6 +7,9 @@ import { ComboboxAnatomy, ComboboxStatics, template } from "./combobox.template.
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeCombobox(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCombobox, ComboboxStatics>

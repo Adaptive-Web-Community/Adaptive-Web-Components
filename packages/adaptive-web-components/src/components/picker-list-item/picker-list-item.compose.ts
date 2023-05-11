@@ -7,6 +7,9 @@ import { PickerListItemAnatomy, template } from "./picker-list-item.template.js"
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composePickerListItem(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPickerListItem>

@@ -7,6 +7,9 @@ import { BadgeAnatomy, template } from "./badge.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeBadge(
     ds: DesignSystem,
     options?: ComposeOptions<FASTBadge>

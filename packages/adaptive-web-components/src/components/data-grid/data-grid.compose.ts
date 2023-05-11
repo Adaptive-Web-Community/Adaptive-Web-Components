@@ -7,6 +7,9 @@ import { DataGridAnatomy, template } from "./data-grid.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeDataGrid(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDataGrid>

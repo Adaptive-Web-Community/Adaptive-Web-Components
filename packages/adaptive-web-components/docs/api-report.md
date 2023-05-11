@@ -97,15 +97,13 @@ export const AccordionItemParts: {
     region: string;
 };
 
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-//
 // @beta
 export const AccordionItemStatics: {
     readonly collapsed: "accordion-item-collapsed-icon";
     readonly expanded: "accordion-item-expanded-icon";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
 // @public
@@ -143,12 +141,10 @@ export class AdaptiveButton extends FASTButton {
     protected defaultSlottedContentChanged(): void;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "DefaultDesignSystem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
-// @public
+// @beta
 export const AdaptiveDesignSystem: DesignSystem;
 
-// @public (undocumented)
+// @public
 export class AdaptiveHorizontalScroll extends FASTHorizontalScroll {
     // (undocumented)
     connectedCallback(): void;
@@ -156,13 +152,13 @@ export class AdaptiveHorizontalScroll extends FASTHorizontalScroll {
     protected viewChanged(prev?: HorizontalScrollView, next?: HorizontalScrollView): void;
 }
 
-// @public (undocumented)
+// @public
 export class AdaptiveMenu extends FASTMenu {
     // (undocumented)
     protected setItems(): void;
 }
 
-// @public (undocumented)
+// @public
 export class AdaptiveMenuItem extends FASTMenuItem {
     // Warning: (ae-forgotten-export) The symbol "AdaptiveMenuItemColumnCount" needs to be exported by the entry point index.d.ts
     startColumnCount: AdaptiveMenuItemColumnCount;
@@ -297,12 +293,12 @@ export const BreadcrumbItemParts: {
     separator: string;
 };
 
-// @public
+// @beta
 export const BreadcrumbItemStatics: {
     readonly separator: "breadcrumb-item-separator";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 
 // @public
@@ -435,13 +431,13 @@ export const CheckboxParts: {
     label: string;
 };
 
-// @public
+// @beta
 export const CheckboxStatics: {
     readonly checked: "checkbox-checked-indicator";
     readonly indeterminate: "checkbox-indeterminate-indicator";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 
 // @public
@@ -472,12 +468,12 @@ export const ComboboxParts: {
     listbox: string;
 };
 
-// @public
+// @beta
 export const ComboboxStatics: {
     readonly indicator: "combobox-indicator";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type ComboboxStatics = ValuesOf<typeof ComboboxStatics>;
 
 // @public
@@ -498,6 +494,7 @@ export const comboboxTemplateStyles: ElementStyles;
 export function composeAccordion(ds: DesignSystem, options?: ComposeOptions<FASTAccordion>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "AccordionItemStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeAccordionItem(ds: DesignSystem, options?: ComposeOptions<FASTAccordionItem, AccordionItemStatics>): FASTElementDefinition;
@@ -528,6 +525,7 @@ export function composeBadge(ds: DesignSystem, options?: ComposeOptions<FASTBadg
 export function composeBreadcrumb(ds: DesignSystem, options?: ComposeOptions<FASTBreadcrumb>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "BreadcrumbItemStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeBreadcrumbItem(ds: DesignSystem, options?: ComposeOptions<FASTBreadcrumbItem, BreadcrumbItemStatics>): FASTElementDefinition;
@@ -548,11 +546,13 @@ export function composeCalendar(ds: DesignSystem, options?: ComposeOptions<FASTC
 export function composeCard(ds: DesignSystem, options?: ComposeOptions<FASTCard>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "CheckboxStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeCheckbox(ds: DesignSystem, options?: ComposeOptions<FASTCheckbox, CheckboxStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCombobox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeCombobox" is marked as @public, but its signature references "ComboboxStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeCombobox(ds: DesignSystem, options?: ComposeOptions<FASTCombobox, ComboboxStatics>): FASTElementDefinition;
@@ -588,6 +588,7 @@ export function composeDisclosure(ds: DesignSystem, options?: ComposeOptions<FAS
 export function composeDivider(ds: DesignSystem, options?: ComposeOptions<FASTDivider>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeFlipper" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeFlipper" is marked as @public, but its signature references "FlipperStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeFlipper(ds: DesignSystem, options?: ComposeOptions<FASTFlipper, FlipperStatics>): FASTElementDefinition;
@@ -613,11 +614,13 @@ export function composeListboxOption(ds: DesignSystem, options?: ComposeOptions<
 export function composeMenu(ds: DesignSystem, options?: ComposeOptions<AdaptiveMenu>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "MenuItemStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeMenuItem(ds: DesignSystem, options?: ComposeOptions<AdaptiveMenuItem, MenuItemStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "NumberFieldStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeNumberField(ds: DesignSystem, options?: ComposeOptions<FASTNumberField, NumberFieldStatics>): FASTElementDefinition;
@@ -658,6 +661,7 @@ export function composeProgress(ds: DesignSystem, options?: ComposeOptions<FASTP
 export function composeProgressRing(ds: DesignSystem, options?: ComposeOptions<FASTProgressRing>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "RadioStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeRadio(ds: DesignSystem, options?: ComposeOptions<FASTRadio, RadioStatics>): FASTElementDefinition;
@@ -674,6 +678,7 @@ export function composeSearch(ds: DesignSystem, options?: ComposeOptions<FASTSea
 
 // Warning: (ae-forgotten-export) The symbol "AdaptiveSelect" needs to be exported by the entry point index.d.ts
 // Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "SelectStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeSelect(ds: DesignSystem, options?: ComposeOptions<AdaptiveSelect, SelectStatics>): FASTElementDefinition;
@@ -734,6 +739,7 @@ export function composeToolbar(ds: DesignSystem, options?: ComposeOptions<FASTTo
 export function composeTooltip(ds: DesignSystem, options?: ComposeOptions<FASTTooltip>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+// Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "TreeItemStatics" which is marked as @beta
 //
 // @public (undocumented)
 export function composeTreeItem(ds: DesignSystem, options?: ComposeOptions<FASTTreeItem, TreeItemStatics>): FASTElementDefinition;
@@ -936,13 +942,13 @@ export const FlipperParts: {
     previous: string;
 };
 
-// @public
+// @beta
 export const FlipperStatics: {
     readonly next: "flipper-next";
     readonly previous: "flipper-previous";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type FlipperStatics = ValuesOf<typeof FlipperStatics>;
 
 // @public
@@ -1066,14 +1072,14 @@ export const MenuItemParts: {
     submenuIcon: string;
 };
 
-// @public
+// @beta
 export const MenuItemStatics: {
     readonly checkbox: "menu-item-checkbox-indicator";
     readonly radio: "menu-item-radio-indicator";
     readonly submenu: "menu-item-submenu-item";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 
 // @public
@@ -1120,13 +1126,13 @@ export const NumberFieldParts: {
     stepDown: string;
 };
 
-// @public
+// @beta
 export const NumberFieldStatics: {
     readonly stepDown: "number-field-step-down-icon";
     readonly stepUp: "number-field-step-up-icon";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 
 // @public
@@ -1364,12 +1370,12 @@ export const RadioParts: {
     label: string;
 };
 
-// @public
+// @beta
 export const RadioStatics: {
     readonly checked: "radio-checked-indicator";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type RadioStatics = ValuesOf<typeof RadioStatics>;
 
 // @public
@@ -1428,12 +1434,12 @@ export const SelectParts: {
     listbox: string;
 };
 
-// @public
+// @beta
 export const SelectStatics: {
     readonly indicator: "select-indicator";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type SelectStatics = ValuesOf<typeof SelectStatics>;
 
 // @public
@@ -1765,12 +1771,12 @@ export const TreeItemParts: {
     items: string;
 };
 
-// @public
+// @beta
 export const TreeItemStatics: {
     readonly expandCollapse: "tree-item-expand-collapse-icon";
 };
 
-// @public (undocumented)
+// @beta (undocumented)
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 
 // @public

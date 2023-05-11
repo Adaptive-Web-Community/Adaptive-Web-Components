@@ -6,9 +6,15 @@ import { composeDataGridCell } from "../data-grid-cell/index.js";
 import { composeDataGridRow } from "../data-grid-row/index.js";
 import { composeDataGrid } from "../data-grid/index.js";
 
+/**
+ * @public
+ */
 export const CalendarConditions = {
 };
 
+/**
+ * @public
+ */
 export const CalendarParts = {
     title: "title",
     month: "month",
@@ -22,6 +28,9 @@ export const CalendarParts = {
     today: "today",
 };
 
+/**
+ * @public
+ */
 export const CalendarAnatomy: ComponentAnatomy<typeof CalendarConditions, typeof CalendarParts> = {
     interactivity: Interactivity.never,
     conditions: CalendarConditions,
@@ -30,6 +39,7 @@ export const CalendarAnatomy: ComponentAnatomy<typeof CalendarConditions, typeof
 
 /**
  * Default Calendar template, {@link @microsoft/fast-foundation#calendarTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCalendar> =
     (ds: DesignSystem) =>

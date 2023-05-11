@@ -7,6 +7,9 @@ import { template, TreeViewAnatomy } from "./tree-view.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeTreeView(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTreeView>

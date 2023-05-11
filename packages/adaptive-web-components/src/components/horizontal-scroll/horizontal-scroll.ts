@@ -1,6 +1,11 @@
 import { FASTHorizontalScroll, HorizontalScrollView } from "@microsoft/fast-foundation";
 import { actionsStyles } from "./horizontal-scroll.styles.js";
 
+/**
+ * The Adaptive version of HorizontalScroll. Extends {@link @microsoft/fast-foundation#FASTHorizontalScroll}.
+ *
+ * @public
+ */
 export class AdaptiveHorizontalScroll extends FASTHorizontalScroll {
     public connectedCallback(): void {
         super.connectedCallback();

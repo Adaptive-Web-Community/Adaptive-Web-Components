@@ -7,6 +7,9 @@ import { BreadcrumbItemAnatomy, BreadcrumbItemStatics, template } from "./breadc
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeBreadcrumbItem(
     ds: DesignSystem,
     options?: ComposeOptions<FASTBreadcrumbItem, BreadcrumbItemStatics>

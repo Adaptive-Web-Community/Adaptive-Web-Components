@@ -7,6 +7,9 @@ import { AccordionItemAnatomy, AccordionItemStatics, template } from "./accordio
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeAccordionItem(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAccordionItem, AccordionItemStatics>

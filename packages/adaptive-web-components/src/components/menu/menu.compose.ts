@@ -7,6 +7,9 @@ import { MenuAnatomy, template } from "./menu.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeMenu(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveMenu>

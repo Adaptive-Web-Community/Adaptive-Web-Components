@@ -7,6 +7,9 @@ import { ProgressRingAnatomy, template } from "./progress-ring.template.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
+/**
+ * @public
+ */
 export function composeProgressRing(
     ds: DesignSystem,
     options?: ComposeOptions<FASTProgressRing>

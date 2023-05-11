@@ -9,9 +9,15 @@ import { composePickerListItem } from '../picker-list-item/index.js';
 import { composePickerMenuOption } from '../picker-menu-option/index.js';
 import { composeProgressRing } from '../progress-ring/index.js';
 
+/**
+ * @public
+ */
 export const PickerConditions = {
 };
 
+/**
+ * @public
+ */
 export const PickerParts = {
     region: "region",
     noOptionsDisplay: "no-options-display",
@@ -19,6 +25,9 @@ export const PickerParts = {
     loadingProgress: "loading-progress",
 };
 
+/**
+ * @public
+ */
 export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof PickerParts> = {
     interactivity: Interactivity.never,
     conditions: PickerConditions,
@@ -27,6 +36,7 @@ export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof Pic
 
 /**
  * Default Picker template, {@link @microsoft/fast-foundation#pickerTemplate}.
+ * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTPicker> =
     (ds: DesignSystem) =>
