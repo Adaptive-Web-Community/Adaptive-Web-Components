@@ -1,6 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { ComboboxAutocomplete, FASTCombobox } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as listboxOptionTemplate } from "../listbox-option/listbox-option.stories.js";
 
@@ -16,13 +16,17 @@ const storyTemplate = html<StoryArgs<FASTCombobox>>`
         ?required="${(x) => x.required}"
         value="${(x) => x.value}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-combobox>
 `;
 
 export default {
     title: "Components/Combobox",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: html`
             ${repeat((x) => x.storyItems, listboxOptionTemplate)}
         `,

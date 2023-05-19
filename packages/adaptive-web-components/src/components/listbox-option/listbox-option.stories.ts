@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { FASTListboxOption } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 export const storyTemplate = html<StoryArgs<FASTListboxOption>>`
@@ -10,7 +10,9 @@ export const storyTemplate = html<StoryArgs<FASTListboxOption>>`
         ?selected="${(x) => x.selected}"
         value="${(x) => x.value}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-option>
 `;
 
@@ -18,6 +20,8 @@ export default {
     title: "Components/Listbox/Listbox Option",
     excludeStories: ["storyTemplate"],
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Listbox option",
         disabled: false,
         selected: false,

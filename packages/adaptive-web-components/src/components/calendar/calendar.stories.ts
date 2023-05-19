@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { FASTCalendar } from "@microsoft/fast-foundation";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTCalendar>>`
@@ -18,13 +18,17 @@ const storyTemplate = html<StoryArgs<FASTCalendar>>`
         year="${(x) => x.year}"
         year-format="${(x) => x.yearFormat}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-calendar>
 `;
 
 export default {
     title: "Components/Calendar",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         readonly: false,
     },
     argTypes: {

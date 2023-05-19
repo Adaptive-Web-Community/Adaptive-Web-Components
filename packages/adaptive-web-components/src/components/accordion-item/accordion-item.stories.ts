@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTAccordionItem } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
@@ -9,13 +9,17 @@ const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
         heading-level="${(x) => x.headinglevel}"
         id="${(x) => x.id}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-accordion-item>
 `;
 
 export default {
     title: "Components/Accordion Item",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         expanded: false,
     },
     argTypes: {

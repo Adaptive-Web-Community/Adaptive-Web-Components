@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { AnchorTarget } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { AdaptiveAnchor } from "./anchor.js";
 
@@ -35,7 +35,9 @@ export const storyTemplate = html<StoryArgs<AdaptiveAnchor>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-anchor>
 `;
 
@@ -43,6 +45,8 @@ export default {
     title: "Components/Anchor",
     includeStories: ["Anchor"],
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Anchor",
         href: "#",
     },
