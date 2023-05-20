@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTSearch } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTSearch>>`
@@ -39,13 +39,17 @@ const storyTemplate = html<StoryArgs<FASTSearch>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-search>
 `;
 
 export default {
     title: "Components/Search",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Search",
         autofocus: false,
         disabled: false,

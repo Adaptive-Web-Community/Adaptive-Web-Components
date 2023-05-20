@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { FASTTreeItem } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTTreeItem>>`
@@ -10,13 +10,17 @@ const storyTemplate = html<StoryArgs<FASTTreeItem>>`
         :nested="${(x) => x.nested}"
         ?selected="${(x) => x.selected}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-tree-item>
 `;
 
 export default {
     title: "Components/Tree view/Tree Item",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Tree Item",
         disabled: false,
         nested: false,

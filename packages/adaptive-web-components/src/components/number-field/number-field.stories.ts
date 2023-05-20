@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTNumberField } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTNumberField>>`
@@ -39,13 +39,17 @@ const storyTemplate = html<StoryArgs<FASTNumberField>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-number-field>
 `;
 
 export default {
     title: "Components/Number Field",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Number Field",
         autofocus: false,
         disabled: false,

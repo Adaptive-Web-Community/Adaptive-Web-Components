@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTDisclosure } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTDisclosure>>`
@@ -8,13 +8,17 @@ const storyTemplate = html<StoryArgs<FASTDisclosure>>`
         ?expanded="${(x) => x.expanded}"
         summary="${(x) => x.summary}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-disclosure>
 `;
 
 export default {
     title: "Components/Disclosure",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         expanded: false,
     },
     argTypes: {

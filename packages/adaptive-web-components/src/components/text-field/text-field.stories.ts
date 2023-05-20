@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTTextField, TextFieldType } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTTextField>>`
@@ -41,13 +41,17 @@ const storyTemplate = html<StoryArgs<FASTTextField>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-text-field>
 `;
 
 export default {
     title: "Components/Text Field",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Text Field",
         autofocus: false,
         disabled: false,

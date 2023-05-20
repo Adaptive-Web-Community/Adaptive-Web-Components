@@ -1,20 +1,24 @@
 import { html } from "@microsoft/fast-element";
 import type { FASTToolbar } from "@microsoft/fast-foundation";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTToolbar>>`
     <adaptive-toolbar
         orientation="${(x) => x.orientation}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-toolbar>
 `;
 
 export default {
     title: "Components/Toolbar",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: html`
             <button slot="start">Start Slot Button</button>
             <button>Button</button>

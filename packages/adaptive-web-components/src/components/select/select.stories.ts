@@ -1,6 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { FASTSelect } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as listboxOptionTemplate } from "../listbox-option/listbox-option.stories.js";
 
@@ -12,13 +12,17 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         size="${(x) => x.size}"
         value="${(x) => x.value}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-select>
 `;
 
 export default {
     title: "Components/Select",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: html<StoryArgs<FASTSelect>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
         storyItems: [
             { storyContent: "William Hartnell" },

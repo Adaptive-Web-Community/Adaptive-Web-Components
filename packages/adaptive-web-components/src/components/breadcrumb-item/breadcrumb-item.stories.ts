@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { FASTBreadcrumbItem } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 const storyTemplate = html<StoryArgs<FASTBreadcrumbItem>>`
@@ -35,12 +35,18 @@ const storyTemplate = html<StoryArgs<FASTBreadcrumbItem>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-breadcrumb-item>
 `;
 
 export default {
     title: "Components/Breadcrumb Item",
+    args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
+    },
     argTypes: {
         storyContent: { table: { disable: true } },
         download: { control: "text" },

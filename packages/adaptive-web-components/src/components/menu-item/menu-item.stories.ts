@@ -1,6 +1,6 @@
 import { html, repeat } from "@microsoft/fast-element";
 import { FASTMenuItem, MenuItemRole } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 export const storyTemplate = html<StoryArgs<FASTMenuItem>>`
@@ -11,7 +11,9 @@ export const storyTemplate = html<StoryArgs<FASTMenuItem>>`
         role="${(x) =>x.role}"
         start-column-count="${(x) =>x.startColumnCount}"
     >
-        ${(x) =>x.storyContent}
+        ${(x) => maybeStartSlotIcon(x)}
+        ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-menu-item>
 `;
 
@@ -19,6 +21,8 @@ export default {
     title: "Components/Menu/Menu Item",
     excludeStories: ["storyTemplate"],
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Menu item",
         checked: false,
         disabled: false,

@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { ButtonType, FASTButton } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
 export const storyTemplate = html<StoryArgs<FASTButton>>`
@@ -38,7 +38,9 @@ export const storyTemplate = html<StoryArgs<FASTButton>>`
         :ariaRelevant="${(x) => x.ariaRelevant}"
         :ariaRoledescription="${(x) => x.ariaRoledescription}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-button>
 `;
 
@@ -46,6 +48,8 @@ export default {
     title: "Components/Button",
     includeStories: ["Button"],
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: "Button",
         disabled: false,
     },

@@ -1,6 +1,6 @@
 import { css, html, repeat, Updates } from "@microsoft/fast-element";
 import { FASTHorizontalScroll, HorizontalScrollView, ScrollEasing } from "@microsoft/fast-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as cardStoryTemplate } from "../card/card.stories.js";
 
@@ -12,13 +12,17 @@ const storyTemplate = html<StoryArgs<FASTHorizontalScroll>>`
         flippers-hidden-from-at="${(x) => x.flippersHiddenFromAT}"
         view="${(x) => x.view}"
     >
+        ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
+        ${(x) => maybeEndSlotIcon(x)}
     </adaptive-horizontal-scroll>
 `;
 
 export default {
     title: "Components/Horizontal Scroll",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         flippersHiddenFromAT: false,
         storyContent: html` ${repeat((x) => x.storyItems, cardStoryTemplate)} `,
         storyItems: new Array(16).fill(null).map((_, i) => ({
