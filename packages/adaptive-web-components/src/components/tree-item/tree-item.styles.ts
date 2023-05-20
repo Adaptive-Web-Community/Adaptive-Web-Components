@@ -1,7 +1,6 @@
 import {
     accentForegroundRest,
     controlCornerRadius,
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthRecipe,
@@ -67,6 +66,10 @@ export const templateStyles: ElementStyles = css`
         pointer-events: none;
     }
 
+    .content {
+        flex-grow: 1;
+    }
+
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
@@ -109,8 +112,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .control {
         box-sizing: border-box;
-        height: calc((${heightNumber} + 1) * 1px);
-        padding: 0 calc(${designUnit} * 2px + 8px);
         fill: currentcolor;
     }
 

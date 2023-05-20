@@ -1,4 +1,5 @@
 import {
+    controlDensityStyles,
     controlShapeStyles,
     plainTextStyles,
     StyleModules,
@@ -16,6 +17,7 @@ export const styleModules: StyleModules = [
         },
         Styles.compose(
             controlShapeStyles,
+            controlDensityStyles,
             plainTextStyles,
         )
     ],

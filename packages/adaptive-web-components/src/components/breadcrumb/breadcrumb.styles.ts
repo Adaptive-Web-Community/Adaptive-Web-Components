@@ -20,7 +20,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .list {
-        gap: 8px;
-    }
 `;

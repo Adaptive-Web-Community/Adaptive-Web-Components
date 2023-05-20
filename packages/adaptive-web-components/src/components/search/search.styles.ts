@@ -24,6 +24,11 @@ export const templateStyles: ElementStyles = css`
 
     .control {
         -webkit-appearance: none;
+        margin: 0;
+        padding: unset;
+        border: none;
+        background: transparent;
+        color: inherit;
         font: inherit;
     }
 
@@ -93,23 +98,11 @@ export const aestheticStyles: ElementStyles = css`
     .root {
         /*position: relative;*/
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
         fill: currentcolor;
     }
 
     :host(:not([disabled]):focus-within) .root {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-    }
-
-    .control {
-        height: calc(100% - 4px);
-        width: 100%;
-        margin-top: auto;
-        margin-bottom: auto;
-        padding: 0 calc(${designUnit} * 2px + 1px);
-        border: none;
-        background: transparent;
-        color: inherit;
     }
 
     .control:focus-visible {

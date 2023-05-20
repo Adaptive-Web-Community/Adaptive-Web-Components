@@ -80,8 +80,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
-        min-width: 250px;
         fill: currentcolor;
     }
 
@@ -96,14 +94,10 @@ export const aestheticStyles: ElementStyles = css`
 
     .control {
         box-sizing: border-box;
-        min-height: 100%;
-        width: 100%;
-        padding: 0 calc(${designUnit} * 2.25px);
     }
 
     .listbox {
         max-height: calc((var(--size, 0) * ${heightNumber} + (${designUnit} * ${strokeWidth} * 2)) * 1px);
-        padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
     }
 

@@ -39,7 +39,8 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         width: calc(${heightNumber} * 1px);
         height: calc(${heightNumber} * 1px);
-        border-radius: 50%;
+        border-radius: 50% !important;
+        padding: 0 !important;
         fill: currentcolor;
     }
 

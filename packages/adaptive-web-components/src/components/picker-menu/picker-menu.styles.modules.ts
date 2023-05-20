@@ -1,6 +1,8 @@
 import {
+    itemContainerDensityStyles,
     layerShapeStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -12,6 +14,9 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        layerShapeStyles
+        Styles.compose(
+            layerShapeStyles,
+            itemContainerDensityStyles,
+        )
     ],
 ];

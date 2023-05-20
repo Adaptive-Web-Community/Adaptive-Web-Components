@@ -1,12 +1,10 @@
 import {
-    designUnit,
     elevationFlyout,
     focusStrokeOuter,
     focusStrokeWidth,
     layerFillFixedPlus1,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -38,6 +36,7 @@ export const templateStyles: ElementStyles = css`
         border: none;
         color: inherit;
         font: inherit;
+        padding: unset;
     }
 
     .selected-value:focus-visible {
@@ -79,12 +78,11 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
         min-width: 250px;
         fill: currentcolor;
     }
 
-    :host(:focus-within) {
+    :host(:focus-within) .control {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
@@ -97,7 +95,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         min-height: 100%;
         width: 100%;
-        padding: 0 calc(${designUnit} * 2.25px);
     }
 
     .selected-value {
@@ -106,7 +103,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .listbox {
-        padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
     }

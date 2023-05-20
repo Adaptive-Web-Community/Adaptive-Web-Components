@@ -96,3 +96,8 @@ export default {
 } as Meta<FASTTextField>;
 
 export const TextField: Story<FASTTextField> = renderComponent(storyTemplate).bind({});
+
+export const TextFieldWithAutofill: Story<FASTTextField> = TextField.bind({});
+TextFieldWithAutofill.args = {
+    name: "Name",
+};

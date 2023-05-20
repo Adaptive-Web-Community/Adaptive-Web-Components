@@ -1,7 +1,9 @@
 import {
-    controlShapeStyles,
     inputStyles,
+    itemContainerDensityStyles,
+    layerShapeStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 import { ComboboxAnatomy } from "./combobox.template.js";
 
@@ -13,6 +15,7 @@ import { ComboboxAnatomy } from "./combobox.template.js";
 export const styleModules: StyleModules = [
     [
         {
+            part: ComboboxAnatomy.parts.control
         },
         inputStyles
     ],
@@ -20,6 +23,9 @@ export const styleModules: StyleModules = [
         {
             part: ComboboxAnatomy.parts.listbox
         },
-        controlShapeStyles
+        Styles.compose(
+            layerShapeStyles,
+            itemContainerDensityStyles,
+        )
     ],
 ];

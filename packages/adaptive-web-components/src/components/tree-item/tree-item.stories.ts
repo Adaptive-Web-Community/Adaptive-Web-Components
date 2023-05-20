@@ -3,7 +3,7 @@ import type { FASTTreeItem } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 
-const storyTemplate = html<StoryArgs<FASTTreeItem>>`
+export const storyTemplate = html<StoryArgs<FASTTreeItem>>`
     <adaptive-tree-item
         ?disabled="${(x) => x.disabled}"
         ?expanded="${(x) => x.expanded}"
@@ -18,6 +18,7 @@ const storyTemplate = html<StoryArgs<FASTTreeItem>>`
 
 export default {
     title: "Components/Tree view/Tree Item",
+    excludeStories: ["storyTemplate"],
     args: {
         startSlotIcon: false,
         endSlotIcon: false,

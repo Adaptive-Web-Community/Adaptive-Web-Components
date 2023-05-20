@@ -6,6 +6,9 @@ import type { TypedCSSDesignToken } from "./adaptive-design-tokens.js";
  * @public
  */
 export interface TokenGroup {
+    /**
+     * The name of the token group. Contained tokens should extend this name like `group-name` -> `group-name-child`.
+     */
     name: string;
 }
 

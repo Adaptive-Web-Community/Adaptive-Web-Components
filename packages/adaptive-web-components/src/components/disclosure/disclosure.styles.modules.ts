@@ -1,5 +1,6 @@
 import {
     accentFillReadableControlStyles,
+    controlDensityStyles,
     controlShapeStyles,
     StyleModules,
     Styles,
@@ -24,6 +25,7 @@ export const styleModules: StyleModules = [
         },
         Styles.compose(
             controlShapeStyles,
+            controlDensityStyles,
             accentFillReadableControlStyles,
         )
     ],

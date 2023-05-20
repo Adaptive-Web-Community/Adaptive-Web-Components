@@ -4,7 +4,6 @@ import {
     neutralForegroundRest,
     strokeWidth,
 } from "@adaptive-web/adaptive-ui";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -45,14 +44,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        min-width: calc(${heightNumber} * 1px);
-    }
-
-    .listitem {
-        gap: 8px;
-    }
-
     .control {
         box-sizing: border-box;
         text-decoration: none;

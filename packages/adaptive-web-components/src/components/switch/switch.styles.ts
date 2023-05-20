@@ -16,6 +16,7 @@ export const templateStyles: ElementStyles = css`
         display: inline-flex;
         align-items: center;
         user-select: none;
+        outline: none;
     }
 
     :host([disabled]) .label,
@@ -56,7 +57,7 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-        border-radius: calc(${heightNumber} * 1px);
+        border-radius: calc(${heightNumber} * 1px) !important;
         padding: 4px;
     }
 

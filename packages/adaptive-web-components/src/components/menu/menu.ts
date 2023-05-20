@@ -26,11 +26,13 @@ export class AdaptiveMenu extends FASTMenu {
     protected setItems(): void {
         super.setItems();
 
-        this.menuItems?.filter(this.isMenuItemElement).forEach((item: HTMLElement) => {
+        const items = this.menuItems?.filter(this.isMenuItemElement);
+        
+        items?.forEach((item: HTMLElement) => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const indentInfo: AdaptiveMenuIndentInfo = this.menuItems!.reduce(
+            const indentInfo: AdaptiveMenuIndentInfo = items.reduce(
                 (accum: AdaptiveMenuIndentInfo, current: HTMLElement) => {
-                    const elementValue = AdaptiveMenu.elementIndent(current as HTMLElement);
+                    const elementValue = AdaptiveMenu.elementIndent(current);
                     return {
                         hasControl: accum.hasControl || elementValue.hasControl,
                         hasStart: accum.hasStart || elementValue.hasStart,
