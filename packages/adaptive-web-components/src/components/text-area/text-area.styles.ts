@@ -1,5 +1,4 @@
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
 } from "@adaptive-web/adaptive-ui";
@@ -66,7 +65,6 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: calc(${heightNumber} * 2px);
         width: 100%;
-        padding: calc(${designUnit} * 1.5px) calc(${designUnit} * 2px + 1px);
     }
 
     :host(:not([disabled]):focus-within) .control {

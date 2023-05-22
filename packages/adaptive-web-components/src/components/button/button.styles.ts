@@ -1,10 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
 } from "@adaptive-web/adaptive-ui";
-import { density, heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -50,12 +48,9 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
-        min-width: calc(${heightNumber} * 1px);
     }
 
     .control {
-        padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         white-space: nowrap;
         fill: currentcolor;
     }

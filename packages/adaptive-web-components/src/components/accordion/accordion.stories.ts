@@ -16,8 +16,6 @@ export default {
     title: "Components/Accordion",
     args: {
         expandmode: AccordionExpandMode.multi,
-        startSlot: false,
-        endSlot: false,
     },
     argTypes: {
         expandmode: { control: "radio", options: Object.values(AccordionExpandMode) },

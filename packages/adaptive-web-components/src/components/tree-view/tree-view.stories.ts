@@ -1,7 +1,8 @@
-import { html } from "@microsoft/fast-element";
-import type { FASTTreeView } from "@microsoft/fast-foundation";
+import { html, repeat } from "@microsoft/fast-element";
+import type { FASTTreeItem, FASTTreeView } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import { storyTemplate as treeItemStoryTemplate } from "../tree-item/tree-item.stories.js";
 
 const storyTemplate = html<StoryArgs<FASTTreeView>>`
     <adaptive-tree-view>
@@ -9,10 +10,21 @@ const storyTemplate = html<StoryArgs<FASTTreeView>>`
     </adaptive-tree-view>
 `;
 
+const storyContentTemplate = html`
+    ${repeat(
+        x => x.storyItems,
+        html<StoryArgs<FASTTreeItem>>`
+            ${x => treeItemStoryTemplate}
+        `
+    )}
+`;
+
 export default {
     title: "Components/Tree view",
     args: {
         renderCollapsedNodes: true,
+        storyContent: storyContentTemplate,
+        storyItems: [],
     },
     argTypes: {
         storyContent: { table: { disable: true } },
@@ -21,51 +33,70 @@ export default {
 
 export const TreeView: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
 TreeView.args = {
-    storyContent: html`
-        <adaptive-tree-item>
-            Root item 1
-            <adaptive-tree-item expanded>
-                Flowers
-                <adaptive-tree-item>Daisy</adaptive-tree-item>
-                <adaptive-tree-item disabled>Sunflower</adaptive-tree-item>
-                <adaptive-tree-item expanded>
-                    Rose
-                    <adaptive-tree-item>Pink</adaptive-tree-item>
-                    <adaptive-tree-item>Red</adaptive-tree-item>
-                    <adaptive-tree-item>White</adaptive-tree-item>
-                </adaptive-tree-item>
-            </adaptive-tree-item>
-            <adaptive-tree-item>Nested item 2</adaptive-tree-item>
-            <adaptive-tree-item>Nested item 3</adaptive-tree-item>
-        </adaptive-tree-item>
-        <adaptive-tree-item expanded>
-            Root item 2
-            <adaptive-tree-item>
-                Flowers
-                <adaptive-tree-item disabled>Daisy</adaptive-tree-item>
-                <adaptive-tree-item>Sunflower</adaptive-tree-item>
-                <adaptive-tree-item>Rose</adaptive-tree-item>
-            </adaptive-tree-item>
-            <adaptive-tree-item>Nested item 2</adaptive-tree-item>
-            <adaptive-tree-item>Nested item 3</adaptive-tree-item>
-        </adaptive-tree-item>
-        <adaptive-tree-item>
-            Root item 3
-        </adaptive-tree-item>
-    `,
+    storyItems: [
+        {
+            storyContent: html`
+                Root item 1
+                ${repeat(x => x.storyItems, treeItemStoryTemplate)}
+            `,
+            storyItems: [
+                {
+                    storyContent: html`
+                        Flowers
+                        ${repeat(x => x.storyItems, treeItemStoryTemplate)}
+                    `,
+                    storyItems: [
+                        {
+                            storyContent: "Daisy",
+                        },
+                        {
+                            storyContent: "Sunflower",
+                            disabled: true,
+                        },
+                        {
+                            storyContent: html`
+                                Rose
+                                ${repeat(x => x.storyItems, treeItemStoryTemplate)}
+                            `,
+                            storyItems: [
+                                {
+                                    storyContent: "Pink",
+                                },
+                                {
+                                    storyContent: "Red",
+                                },
+                                {
+                                    storyContent: "White",
+                                },
+                            ],
+                        },
+                    ],
+                    expanded: true,
+                },
+                {
+                    storyContent: "Nested item 2",
+                },
+                {
+                    storyContent: "Nested item 3",
+                },
+            ],
+            expanded: true,
+        },
+        {
+            storyContent: "Root item 2",
+            expanded: true,
+        },
+        {
+            storyContent: "Root item 3",
+        },
+    ],
 };
 
 export const TreeViewFlat: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
 TreeViewFlat.args = {
-    storyContent: html`
-        <adaptive-tree-item>
-            Tree item 1
-        </adaptive-tree-item>
-        <adaptive-tree-item>
-            Tree item 2
-        </adaptive-tree-item>
-        <adaptive-tree-item>
-            Tree item 3
-        </adaptive-tree-item>
-    `,
+    storyItems: [
+        { storyContent: "Tree item 1" },
+        { storyContent: "Tree item 2" },
+        { storyContent: "Tree item 3" },
+    ],
 };

@@ -1,6 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
 } from "@adaptive-web/adaptive-ui";
@@ -21,7 +20,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
         fill: currentcolor;
         white-space: nowrap;
     }

@@ -25,6 +25,8 @@ const storyContentTemplate = html`
 export default {
     title: "Components/Menu",
     args: {
+        startSlotIcon: false,
+        endSlotIcon: false,
         storyContent: storyContentTemplate,
         storyItems: [
             { storyContent: "Menu Item 1" },

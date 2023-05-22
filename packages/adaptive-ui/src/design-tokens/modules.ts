@@ -1,3 +1,4 @@
+import { css } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
@@ -25,13 +26,13 @@ import {
     neutralStrokeDiscernibleRest,
     neutralStrokeReadableRest,
     neutralStrokeSafety,
-    neutralStrokeStrong,
     neutralStrokeStrongRecipe,
     neutralStrokeStrongRest,
     neutralStrokeSubtle,
     neutralStrokeSubtleRest,
 } from "./color.js";
 import { createNonCss, createTokenSwatch } from "./create.js";
+import { densityControl, densityItemContainer } from "./density.js";
 import {
     fontFamily,
     fontWeight,
@@ -186,6 +187,61 @@ export const layerShapeStyles: Styles = Styles.fromProperties({
     borderStyle: "solid",
     borderFill: "transparent",
     cornerRadius: cornerRadiusLayer,
+});
+
+/**
+ * Style module for the density and spacing of a control.
+ *
+ * By default, sets the padding and gap, useful for buttons, list items, etc.
+ *
+ * See {@link autofillDensityStyles} or {@link itemContainerDensityStyles}.
+ *
+ * @public
+ */
+export const controlDensityStyles: Styles = Styles.fromProperties({
+    padding: css.partial`${densityControl.verticalPadding} ${densityControl.horizontalPadding}`,
+    gap: densityControl.horizontalGap,
+});
+
+/**
+ * Style module pair (outer portion) for input controls that support autofill to allow for better handling of platform styling.
+ *
+ * By default, sets the horizontal padding and gap, useful for the container of wrapped inputs like text field.
+ *
+ * See {@link autofillInnerDensityStyles}.
+ *
+ * @public
+ */
+export const autofillOuterDensityStyles: Styles = Styles.fromProperties({
+    padding: css.partial`0 ${densityControl.horizontalPadding}`,
+    gap: densityControl.horizontalGap,
+});
+
+/**
+ * Style module pair (inner portion) for input controls that support autofill to allow for better handling of platform styling.
+ *
+ * By default, sets the vertical padding, useful for wrapped inputs like text field.
+ *
+ * See {@link autofillOuterDensityStyles}.
+ *
+ * @public
+ */
+export const autofillInnerDensityStyles: Styles = Styles.fromProperties({
+    padding: css.partial`${densityControl.verticalPadding} 0`,
+});
+
+/**
+ * Style module for the density and spacing of an item container.
+ *
+ * By default, sets the padding and gap, useful for buttons, list items, etc.
+ *
+ * See {@link controlDensityStyles} or {@link autofillDensityStyles}.
+ *
+ * @public
+ */
+export const itemContainerDensityStyles: Styles = Styles.fromProperties({
+    padding: css.partial`${densityItemContainer.verticalPadding} ${densityItemContainer.horizontalPadding}`,
+    gap: densityItemContainer.horizontalGap,
 });
 
 /**
@@ -350,7 +406,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties({
  */
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties({
     borderFill: neutralStrokeDiscernible,
-    foregroundFill: neutralStrokeStrong,
+    foregroundFill: neutralStrokeStrongRest,
 });
 
 /**
@@ -533,6 +589,7 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties({
  */
 export const actionStyles: Styles = Styles.compose(
     controlShapeStyles,
+    controlDensityStyles,
     typeRampBaseStyles,
     neutralFillSubtleControlStyles
 );
@@ -542,6 +599,17 @@ export const actionStyles: Styles = Styles.compose(
  */
 export const inputStyles: Styles = Styles.compose(
     controlShapeStyles,
+    controlDensityStyles,
+    typeRampBaseStyles,
+    neutralOutlineDiscernibleControlStyles
+);
+
+/**
+ * @public
+ */
+export const inputAutofillStyles: Styles = Styles.compose(
+    controlShapeStyles,
+    autofillOuterDensityStyles,
     typeRampBaseStyles,
     neutralOutlineDiscernibleControlStyles
 );
@@ -569,6 +637,7 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
  */
 export const itemStyles: Styles = Styles.compose(
     controlShapeStyles,
+    controlDensityStyles,
     typeRampBaseStyles,
     neutralFillStealthControlStyles
 );

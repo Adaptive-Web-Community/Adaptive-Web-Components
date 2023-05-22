@@ -1,5 +1,6 @@
 import {
-    inputStyles,
+    autofillInnerDensityStyles,
+    inputAutofillStyles,
     labelTextStyles,
     StyleModules,
     typeRampBaseStyles,
@@ -27,6 +28,12 @@ export const styleModules: StyleModules = [
         {
             part: NumberFieldAnatomy.parts.root
         },
-        inputStyles
+        inputAutofillStyles
+    ],
+    [
+        {
+            part: NumberFieldAnatomy.parts.control
+        },
+        autofillInnerDensityStyles
     ],
 ];

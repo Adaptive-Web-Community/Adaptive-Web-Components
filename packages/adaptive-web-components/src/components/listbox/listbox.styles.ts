@@ -1,5 +1,4 @@
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     layerFillFixedPlus1,
@@ -24,7 +23,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         box-sizing: border-box;
-        padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
     }
 

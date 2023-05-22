@@ -2,7 +2,6 @@ import {
     accentStrokeReadableRest,
     controlCornerRadius,
     focusStrokeWidth,
-    neutralForegroundRest,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -72,10 +71,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        color: ${neutralForegroundRest};
-    }
-
     ::slotted([role="tab"][aria-selected="true"])::after {
         content: "";
         display: block;

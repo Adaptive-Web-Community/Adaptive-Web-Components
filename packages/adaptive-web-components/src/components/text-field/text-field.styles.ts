@@ -1,10 +1,8 @@
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -19,10 +17,16 @@ export const templateStyles: ElementStyles = css`
 
     .root {
         display: flex;
+        align-items: center;
     }
 
     .control {
         -webkit-appearance: none;
+        margin: 0;
+        padding: unset;
+        border: none;
+        background: transparent;
+        color: inherit;
         font: inherit;
     }
 
@@ -64,7 +68,6 @@ export const aestheticStyles: ElementStyles = css`
     .root {
         /*position: relative;*/
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
         fill: currentcolor;
     }
 
@@ -73,14 +76,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control {
-        height: calc(100% - 4px);
-        width: 100%;
-        margin-top: auto;
-        margin-bottom: auto;
-        padding: 0 calc(${designUnit} * 2px + 1px);
-        border: none;
-        background: transparent;
-        color: inherit;
+        height: 100%;
     }
 
     .control:focus-visible {

@@ -1,5 +1,4 @@
-import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import type { DesignToken, ValuesOf } from "@microsoft/fast-foundation";
+import type { DesignToken, DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
 import { ColorRecipe, InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";

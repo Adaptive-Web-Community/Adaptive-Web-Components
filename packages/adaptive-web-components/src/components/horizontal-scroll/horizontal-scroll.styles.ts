@@ -36,10 +36,6 @@ export const aestheticStyles: ElementStyles = css`
     .scroll-view {
         padding: 4px;
     }
-
-    .content {
-        gap: 8px;
-    }
 `;
 
 /**

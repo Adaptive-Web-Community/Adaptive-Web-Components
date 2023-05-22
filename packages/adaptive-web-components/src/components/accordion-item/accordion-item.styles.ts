@@ -1,12 +1,10 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralStrokeSubtleRest,
     strokeWidth,
 } from "@adaptive-web/adaptive-ui";
-import { density, heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -19,9 +17,9 @@ export const templateStyles: ElementStyles = css`
     }
 
     .heading {
-        display: grid;
+        display: flex;
         position: relative;
-        grid-template-columns: auto 1fr auto auto;
+        align-items: center;
         z-index: 2;
     }
 
@@ -30,8 +28,8 @@ export const templateStyles: ElementStyles = css`
         border: none;
         background: none;
         text-align: left;
-        grid-column: 2;
-        grid-row: 1;
+        flex-grow: 1;
+        padding: unset;
         outline: none;
         cursor: pointer;
         font: inherit;
@@ -52,7 +50,6 @@ export const templateStyles: ElementStyles = css`
         display: flex;
         align-items: center;
         justify-content: center;
-        grid-column: 4;
         pointer-events: none;
     }
 
@@ -80,11 +77,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     ::slotted([slot="start"]) {
-        grid-column: 1;
-    }
-
-    ::slotted([slot="end"]) {
-        grid-column: 3;
+        order: -1;
     }
 
     .region {
@@ -109,23 +102,12 @@ export const aestheticStyles: ElementStyles = css`
         border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
     }
 
-    .button {
-        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
-        height: calc(${heightNumber} * 1px);
-    }
-
     :host(:not([disabled])) .button:focus-visible::before {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     }
 
     .icon {
-        height: calc(${heightNumber} * 1px);
-        width: calc(${heightNumber} * 1px);
         fill: currentcolor;
-    }
-
-    .region {
-        padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
     }
 
     :host([disabled]) {

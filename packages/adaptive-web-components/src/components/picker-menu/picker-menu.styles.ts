@@ -1,4 +1,4 @@
-import { designUnit, elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui";
+import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -30,7 +30,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        padding: calc(${designUnit} * 1px) 0;
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
     }

@@ -1,7 +1,10 @@
 import {
     accentForegroundReadableControlStyles,
+    controlDensityStyles,
+    controlShapeStyles,
     plainTextStyles,
     StyleModules,
+    Styles,
     typeRampBaseStyles,
 } from "@adaptive-web/adaptive-ui";
 import { BreadcrumbItemAnatomy } from "./breadcrumb-item.template.js";
@@ -21,7 +24,11 @@ export const styleModules: StyleModules = [
         {
             part: BreadcrumbItemAnatomy.parts.control,
         },
-        accentForegroundReadableControlStyles
+        Styles.compose(
+            controlShapeStyles,
+            controlDensityStyles,
+            accentForegroundReadableControlStyles
+        )
     ],
     [
         {

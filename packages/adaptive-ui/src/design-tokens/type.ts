@@ -1,4 +1,4 @@
-import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
+import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import {
     createTokenFontFamily,
     createTokenFontSize,
@@ -49,7 +49,7 @@ function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenRe
 export const typeRampBaseFontSize = createTokenFontSize("type-ramp-base-font-size").withDefault("14px");
 
 /** @public */
-export const typeRampBaseLineHeight = createTokenLineHeight("type-ramp-base-line-height").withDefault("20px");
+export const typeRampBaseLineHeight = createTokenLineHeight("type-ramp-base-line-height").withDefault("16px");
 
 /** @public */
 export const typeRampBaseFontVariations = createTokenFontVariations("type-ramp-base-font-variations").withDefault(
@@ -60,7 +60,7 @@ export const typeRampBaseFontVariations = createTokenFontVariations("type-ramp-b
 export const typeRampMinus1FontSize = createTokenFontSize("type-ramp-minus-1-font-size").withDefault("12px");
 
 /** @public */
-export const typeRampMinus1LineHeight = createTokenLineHeight("type-ramp-minus-1-line-height").withDefault("16px");
+export const typeRampMinus1LineHeight = createTokenLineHeight("type-ramp-minus-1-line-height").withDefault("14px");
 
 /** @public */
 export const typeRampMinus1FontVariations = createTokenFontVariations("type-ramp-minus-1-font-variations").withDefault(
@@ -71,7 +71,7 @@ export const typeRampMinus1FontVariations = createTokenFontVariations("type-ramp
 export const typeRampMinus2FontSize = createTokenFontSize("type-ramp-minus-2-font-size").withDefault("10px");
 
 /** @public */
-export const typeRampMinus2LineHeight = createTokenLineHeight("type-ramp-minus-2-line-height").withDefault("14px");
+export const typeRampMinus2LineHeight = createTokenLineHeight("type-ramp-minus-2-line-height").withDefault("12px");
 
 /** @public */
 export const typeRampMinus2FontVariations = createTokenFontVariations("type-ramp-minus-2-font-variations").withDefault(

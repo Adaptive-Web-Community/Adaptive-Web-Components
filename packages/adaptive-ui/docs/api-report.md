@@ -303,6 +303,12 @@ export const accentStrokeSubtleRest: TypedCSSDesignToken<Swatch>;
 export const actionStyles: Styles;
 
 // @public
+export const autofillInnerDensityStyles: Styles;
+
+// @public
+export const autofillOuterDensityStyles: Styles;
+
+// @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
     constructor(source: T, swatches: ReadonlyArray<T>);
     readonly closestIndexCache: Map<number, number>;
@@ -390,6 +396,9 @@ export const ContrastTarget: Readonly<{
 export const controlCornerRadius: CSSDesignToken<number>;
 
 // @public
+export const controlDensityStyles: Styles;
+
+// @public
 export const controlShapeStyles: Styles;
 
 // @public (undocumented)
@@ -448,6 +457,30 @@ export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, 
 export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public
+export const densityAdjustmentUnits: DesignToken<number>;
+
+// @public (undocumented)
+export const densityControl: DensityPaddingAndGapTokenGroup;
+
+// @public (undocumented)
+export const densityItemContainer: DensityPaddingAndGapTokenGroup;
+
+// @public
+export class DensityPaddingAndGapTokenGroup implements TokenGroup {
+    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number);
+    readonly horizontalGap: TypedCSSDesignToken<string>;
+    readonly horizontalGapUnits: DesignToken<number>;
+    readonly horizontalPadding: TypedCSSDesignToken<string>;
+    readonly horizontalPaddingUnits: DesignToken<number>;
+    // (undocumented)
+    readonly name: string;
+    readonly verticalGap: TypedCSSDesignToken<string>;
+    readonly verticalGapUnits: DesignToken<number>;
+    readonly verticalPadding: TypedCSSDesignToken<string>;
+    readonly verticalPaddingUnits: DesignToken<number>;
+}
+
+// @public
 export class DesignTokenMetadata {
     // (undocumented)
     get allowedType(): DesignTokenType;
@@ -476,8 +509,11 @@ export const DesignTokenType: {
 // @public
 export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const designUnit: TypedCSSDesignToken_2<number>;
+
+// @public @deprecated (undocumented)
+export const designUnitDimension: TypedCSSDesignToken_2<string>;
 
 // @public
 export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
@@ -647,6 +683,9 @@ export const foregroundOnAccentRest: TypedCSSDesignToken<Swatch>;
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
 
 // @public (undocumented)
+export const inputAutofillStyles: Styles;
+
+// @public (undocumented)
 export const inputStyles: Styles;
 
 // @public
@@ -692,6 +731,9 @@ export interface InteractivityDefinition {
 
 // @public
 export function isDark(color: RelativeLuminance): boolean;
+
+// @public
+export const itemContainerDensityStyles: Styles;
 
 // @public (undocumented)
 export const itemStyles: Styles;
@@ -1550,7 +1592,6 @@ export class SwatchRGB implements Swatch {
 
 // @public
 export interface TokenGroup {
-    // (undocumented)
     name: string;
 }
 

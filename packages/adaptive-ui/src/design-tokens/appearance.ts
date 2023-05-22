@@ -1,8 +1,11 @@
 import { StyleProperty } from "../modules/types.js";
 import { create, createTokenDimension, createTokenNumber } from "./create.js";
 
-/** @public */
+/** @public @deprecated This is changing to a `dimension` type like `4px`, which breaks non-modular styling. See designUnitDimension */
 export const designUnit = createTokenNumber("design-unit").withDefault(4);
+
+/** @public @deprecated This is the new `dimension` type, but the name will go back to `designUnit` after the modular styling conversion. */
+export const designUnitDimension = createTokenDimension("design-unit-dimension").withDefault("4px");
 
 /** @public @deprecated Use `cornerRadiusControl` instead */
 export const controlCornerRadius = create<number>("control-corner-radius").withDefault(4);

@@ -1,7 +1,9 @@
 import {
-    controlShapeStyles,
     inputStyles,
+    itemContainerDensityStyles,
+    layerShapeStyles,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 import { SelectAnatomy } from "./select.template.js";
 
@@ -13,6 +15,7 @@ import { SelectAnatomy } from "./select.template.js";
 export const styleModules: StyleModules = [
     [
         {
+            part: SelectAnatomy.parts.control
         },
         inputStyles
     ],
@@ -20,6 +23,9 @@ export const styleModules: StyleModules = [
         {
             part: SelectAnatomy.parts.listbox
         },
-        controlShapeStyles
+        Styles.compose(
+            layerShapeStyles,
+            itemContainerDensityStyles,
+        )
     ],
 ];

@@ -1,12 +1,10 @@
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthActive,
     neutralStrokeReadableRest,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -127,12 +125,8 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         --col-width: minmax(20px, auto);
-        margin: 0 calc(${designUnit} * 1px);
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
         overflow: visible;
-        padding: 0 12px;
-        grid-column-gap: 8px;
         fill: currentcolor;
     }
 

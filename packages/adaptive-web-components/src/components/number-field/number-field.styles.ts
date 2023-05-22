@@ -1,10 +1,8 @@
 import {
-    designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -28,6 +26,7 @@ export const templateStyles: ElementStyles = css`
 
     .root {
         display: flex;
+        align-items: center;
     }
 
     .control {
@@ -82,8 +81,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .root {
         box-sizing: border-box;
-        height: calc(${heightNumber} * 1px);
-        gap: 8px;
         fill: currentcolor;
     }
 
@@ -93,7 +90,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .control {
         height: calc(100% - 4px);
-        padding: 0 calc(${designUnit} * 2px + 1px);
     }
 
     .step-up,

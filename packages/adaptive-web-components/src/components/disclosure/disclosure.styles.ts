@@ -52,7 +52,6 @@ export const aestheticStyles: ElementStyles = css`
         background: ${accentFillReadableRest};
         color: ${foregroundOnAccentRest};
         fill: currentcolor;
-        padding: 12px;
         max-width: max-content;
     }
 
