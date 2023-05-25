@@ -11,6 +11,7 @@ import {
     InteractiveSwatchSet,
     Palette,
     PaletteRGB,
+    StyleProperty,
     Swatch,
 } from "@adaptive-web/adaptive-ui";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
@@ -33,7 +34,7 @@ export const docForegroundRecipe = DesignToken.create<ColorRecipe>("doc-foregrou
         ),
 });
 
-export const docForeground = createTokenSwatch("doc-foreground").withDefault(
+export const docForeground = createTokenSwatch("doc-foreground", [StyleProperty.borderFill, StyleProperty.foregroundFill]).withDefault(
     (resolve: DesignTokenResolver) => resolve(docForegroundRecipe).evaluate(resolve)
 );
 
@@ -46,13 +47,13 @@ export const docFillRecipe = DesignToken.create<ColorRecipe>("doc-fill-recipe").
         ),
 });
 
-export const docFill = createTokenSwatch("doc-fill").withDefault(
+export const docFill = createTokenSwatch("doc-fill", StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) => resolve(docFillRecipe).evaluate(resolve)
 );
 
 // Placeholder tokens for `blackOrWhite` recipes, which have special handling in style modules.
 
-export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-discernible-rest").withDefault(
+export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-discernible-rest", StyleProperty.foregroundFill).withDefault(
     (resolve: DesignTokenResolver) => {
         const fill = resolve(fillColor);
         const set: InteractiveSwatchSet = {
@@ -65,7 +66,7 @@ export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-dis
     }
 );
 
-export const blackOrWhiteReadableRest = createTokenSwatch("black-or-white-readable-rest").withDefault(
+export const blackOrWhiteReadableRest = createTokenSwatch("black-or-white-readable-rest", StyleProperty.foregroundFill).withDefault(
     (resolve: DesignTokenResolver) => {
         const fill = resolve(fillColor);
         const set: InteractiveSwatchSet = {

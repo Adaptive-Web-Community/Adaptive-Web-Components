@@ -798,6 +798,9 @@ export const layerFillFocusDelta: TypedDesignToken_2<number>;
 // @public
 export const layerFillHoverDelta: TypedDesignToken_2<number>;
 
+// @public (undocumented)
+export const layerFillInteractive: InteractiveTokenGroup<Swatch>;
+
 // @public
 export const layerFillInteractiveActive: TypedCSSDesignToken_2<Swatch>;
 

@@ -15,7 +15,7 @@ export interface DesignTokenDefinition {
     /**
      * Display title for organizing design token sets.
      */
-    groupTitle: string;
+    groupTitle?: string;
 
     /**
      * Display title of the design token.
@@ -28,9 +28,9 @@ export interface DesignTokenDefinition {
     id: string;
 
     /**
-     * Target style property for the design token.
+     * Target style properties for the design token.
      */
-    target?: StyleProperty;
+    intendedFor?: StyleProperty[];
 
     /**
      * Type of form control to edit this value. Following convention from fast-tooling.
@@ -102,6 +102,6 @@ export class DesignTokenRegistry {
      * @param target the style property type to return entries of
      */
     public find(target: StyleProperty): DesignTokenDefinition[] {
-        return Object.values(this._entries).filter(value => value.target === target);
+        return Object.values(this._entries).filter(value => value.intendedFor?.includes(target));
     }
 }

@@ -2,7 +2,7 @@ import { css, customElement, FASTElement, html, observable, repeat, when } from 
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import { PluginUINodeData } from "../core/model.js";
-import { UIController, UIDesignTokenValue } from "./ui-controller.js";
+import { AppliedDesignTokenItem, UIController, UIDesignTokenValue } from "./ui-controller.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
 TokenGlyph;
@@ -10,8 +10,8 @@ Drawer;
 DesignTokenAdd;
 DesignTokensForm;
 
-const assignedTokensTemplate = (
-    tokens: DesignTokenDefinition[] | null,
+const appliedTokensTemplate = (
+    tokens: AppliedDesignTokenItem[] | null,
     title: string | null,
     glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
 ) => html<App>`
@@ -25,21 +25,21 @@ const assignedTokensTemplate = (
             ${repeat(
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 (x) => tokens!,
-                html<DesignTokenDefinition, App>`
+                html<AppliedDesignTokenItem, App>`
                     <div class="applied-design-token">
                         <designer-token-glyph
                             circular
-                            value=${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}
+                            value=${(x) => x.value}
                             orientation="horizontal"
-                            type="${(x) => glyphType}"
+                            type=${(x) => glyphType}
                         >
-                            ${(x) => x.title}
+                            ${(x, c) => c.parent.controller.getAppliableDesignTokenDefinition(x.tokenID)?.title}
                         </designer-token-glyph>
-                        <span>${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}</span>
+                        <span>${(x) => x.value}</span>
                         <adaptive-button
                             appearance="stealth"
                             aria-label="Detach"
-                            @click=${(x, c) => c.parent.controller.removeAppliedDesignToken(x)}
+                            @click=${(x, c) => c.parent.controller.removeAppliedDesignToken(x.target, x.tokenID)}
                         >
                             Detach
                         </adaptive-button>
@@ -59,7 +59,10 @@ const availableTokensTemplate = (
     ${when(
         (x) => x.selectedNodes?.some((node) => node.supports.includes(tokenType)),
         html<App>`
-            ${when((x) => title, html` <p class="title inset">${(x) => title}</p> `)}
+            ${when(
+                (x) => title,
+                html`<p class="title inset">${(x) => title}</p>`
+            )}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.appliableDesignTokenOptionsByType(tokenType),
@@ -68,10 +71,10 @@ const availableTokensTemplate = (
                             circular
                             value=${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}
                             orientation="horizontal"
-                            type="${(x) => glyphType}"
+                            type=${(x) => glyphType}
                             interactive
                             ?selected=${(x, c) => c.parent.controller.getNodesWithDesignTokenApplied(x.id).length > 0}
-                            @click=${(x, c) => c.parent.controller.applyDesignToken(x)}
+                            @click=${(x, c) => c.parent.controller.applyDesignToken(tokenType, x)}
                         >
                             ${(x) => x.title}
                         </designer-token-glyph>
@@ -121,21 +124,21 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.layerTokens, "Layer")}
-                                ${(x) => assignedTokensTemplate(x.backgroundTokens, "Background")}
-                                ${(x) => assignedTokensTemplate(x.foregroundTokens, "Foreground")}
-                                ${(x) => assignedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
+                                ${(x) => appliedTokensTemplate(x.layerTokens, "Layer")}
+                                ${(x) => appliedTokensTemplate(x.backgroundTokens, "Background")}
+                                ${(x) => appliedTokensTemplate(x.foregroundTokens, "Foreground")}
+                                ${(x) => appliedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
                             </div>
                             <div>
-                                ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fills")}
+                                ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fill")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         StyleProperty.borderFill,
-                                        "Strokes",
+                                        "Stroke",
                                         "stack",
                                         TokenGlyphType.borderSwatch
                                     )}
-                                ${(x) => availableTokensTemplate(StyleProperty.foregroundFill, "Foregrounds")}
+                                ${(x) => availableTokensTemplate(StyleProperty.foregroundFill, "Foreground")}
                             </div>
                         </designer-drawer>
                     `
@@ -145,7 +148,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Stroke width">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.strokeWidthTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.strokeWidthTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
@@ -164,7 +167,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Corner radius">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.cornerRadiusTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
@@ -183,20 +186,20 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Text">
                             <div slot="collapsed-content">
-                                ${(x) => assignedTokensTemplate(x.textTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.textTokens, null, TokenGlyphType.icon)}
                             </div>
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
                                         StyleProperty.fontFamily,
-                                        "font name",
+                                        "Font family",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         StyleProperty.fontSize,
-                                        "font size",
+                                        "Font size",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
@@ -379,25 +382,25 @@ export class App extends FASTElement {
     public supportsText: boolean;
 
     @observable
-    public layerTokens: DesignTokenDefinition[] | null;
+    public layerTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public backgroundTokens: DesignTokenDefinition[] | null;
+    public backgroundTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public foregroundTokens: DesignTokenDefinition[] | null;
+    public foregroundTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public strokeTokens: DesignTokenDefinition[] | null;
+    public strokeTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public strokeWidthTokens: DesignTokenDefinition[] | null;
+    public strokeWidthTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public cornerRadiusTokens: DesignTokenDefinition[] | null;
+    public cornerRadiusTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public textTokens: DesignTokenDefinition[] | null;
+    public textTokens: AppliedDesignTokenItem[] | null;
 
     @observable
     public supportsDesignSystem: boolean;
