@@ -45,14 +45,17 @@ function canHaveChildren(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
-export const FIGMA_SHARED_DATA_NAMESPACE: string = "adaptive_ui";
+const FIGMA_SHARED_DATA_NAMESPACE: string = "adaptive_ui";
 
 export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
+    public name: string;
     private _node: BaseNode;
 
-    constructor(node: BaseNode) {
+    private static NodeCache: Map<string, FigmaPluginNode> = new Map();
+
+    private constructor(node: BaseNode) {
         super();
 
         // Controller.nodeCount++;
@@ -62,18 +65,100 @@ export class FigmaPluginNode extends PluginNode {
         this._node = node;
         this.id = node.id;
         this.type = node.type;
+        this.name = node.name;
 
-        this.loadLocalDesignTokens();
-        this.loadAppliedDesignTokens();
+        /*
+        This data model and token processing is to handle an unfortunate consequence of the Figma component model.
 
-        // If it's an instance node, the plugin data may also include main component settings. Deduplicate them.
+        An instance component will inherit plugin data from the main component by default. For instance:
+
+        Main component (set plugin data "A=1") --> Instance (get plugin data "A=1")
+
+        This is mostly beneficial as when it comes to applying design tokens, we want to apply whatever was defined on main.
+
+        However, once you override the value at an instance level, you no longer directly get the value from main:
+
+        Instance (set plugin data "A=2") --> Instance (set plugin data "A=2")
+
+        In our normal workflow we're reevaluating the applied tokens, so the instance may have the same overall structure
+        but with different values. This would also normally be fine as we're going to evaluate for current values anyway.
+
+        The problem is that once we've updated the values on the instance don't directly get any _changes_ made on the main.
+
+        Main component (set plugin data "A=1, B=2") --> Instance (get plugin data "A=2")
+
+        Notice we don't have the addition of "B=2".
+
+        The solution is to *store* the fully evaluated tokens on the instance node, but to *read* back both the main and instance
+        values, and to deduplicate them.
+
+        In the example above, we'd read "A=2" from the instance, "A=1, B=2" from the main, then assemble the full list, keeping
+        any overrides from the instance: "A=2, B=2".
+
+        In the case of the "design tokens" the key will be the name of the token, like "corner-radius".
+        In the case of the "applied design tokens" the key will be the style target, like "backgroundFill".
+        */
+
+        // Find the "main" reference node if this node is part of an instance.
+        let mainComponentNode: BaseNode | null = null;
         if (isInstanceNode(this._node)) {
-            const mainComponentNode = (this._node as InstanceNode).mainComponent;
-            if (mainComponentNode) {
-                this.deduplicateComponentDesignTokens(mainComponentNode);
-                this.deduplicateComponentAppliedDesignTokens(mainComponentNode);
+            mainComponentNode = (this._node as InstanceNode).mainComponent;
+        } else if (this.id.startsWith("I")) {
+            // Child nodes of an instance have an ID like `I##:##;##:##`
+            // where the second `##:##` is the ID of the layer in the main component.
+            const [, mainID] = this.id.split(";");
+            mainComponentNode = figma.getNodeById(mainID);
+        }
+
+        const parsedDesignTokens = this.parseLocalDesignTokens();
+        const parsedAppliedDesignTokens = this.parseAppliedDesignTokens();
+
+        // Reconcile plugin data with the main component.
+        if (mainComponentNode) {
+            const mainFigmaNode = FigmaPluginNode.get(mainComponentNode);
+            // console.log("  is instance node", this.debugInfo, mainFigmaNode);
+
+            this._componentDesignTokens = mainFigmaNode.localDesignTokens;
+            this._componentAppliedDesignTokens = mainFigmaNode.appliedDesignTokens;
+
+            mainFigmaNode.localDesignTokens.forEach((value, tokenId) => {
+                // If the token values are the same between the nodes, remove it from the local.
+                if (parsedDesignTokens.get(tokenId)?.value === value.value) {
+                    // console.log("    removing design token", this.debugInfo, tokenId);
+                    parsedDesignTokens.delete(tokenId);
+                }
+            });
+
+            mainFigmaNode.appliedDesignTokens.forEach((applied, target) => {
+                // If the target and token are the same between the nodes, remove it from the local.
+                if (parsedAppliedDesignTokens.get(target)?.tokenID === applied.tokenID) {
+                    // console.log("    removing applied design token", this.debugInfo, target, applied.tokenID);
+                    parsedAppliedDesignTokens.delete(target);
+                }
+            });
+
+            if (parsedDesignTokens.size) {
+                // console.log("    reconciled design tokens", this.debugInfo, parsedDesignTokens.serialize());
+            }
+
+            if (parsedAppliedDesignTokens.size) {
+                // console.log("    reconciled applied design tokens", this.debugInfo, parsedAppliedDesignTokens.serialize());
             }
         }
+
+        this._localDesignTokens = parsedDesignTokens;
+        this._appliedDesignTokens = parsedAppliedDesignTokens;
+
+        // Check for and/or remove legacy FAST plugin data.
+        // const fastKeys = this._node.getSharedPluginDataKeys("fast");
+        // if (fastKeys.length > 0) {
+        //     console.log("Found FAST keys", this.type, this._node.name, fastKeys);
+        //     fastKeys.forEach((fastKey) => {
+        //         // this._node.setSharedPluginData("fast", fastKey, "");
+        //         console.log("  deleting data", fastKey);
+        //         // console.log("  ", fastKey, this._node.getSharedPluginData("fast", fastKey));
+        //     });
+        // }
 
         // if (this._appliedDesignTokens.size) {
         //     console.log("    final applied design tokens", this._appliedDesignTokens.serialize());
@@ -86,37 +171,48 @@ export class FigmaPluginNode extends PluginNode {
         // this.setupFillColor();
     }
 
-    private deduplicateComponentDesignTokens(node: BaseNode) {
-        this._componentDesignTokens = new DesignTokenValues();
-        const componentDesignTokensJson = this.getPluginData("designTokens");
-        this._componentDesignTokens.deserialize(componentDesignTokensJson);
-
-        this._componentDesignTokens.forEach((token, tokenId) => {
-            this._localDesignTokens.delete(tokenId);
-        });
+    public static get(node: BaseNode): FigmaPluginNode {
+        if (FigmaPluginNode.NodeCache.has(node.id)) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            return FigmaPluginNode.NodeCache.get(node.id)!;
+        } else {
+            const pluginNode = new FigmaPluginNode(node);
+            FigmaPluginNode.NodeCache.set(node.id, pluginNode);
+            return pluginNode;
+        }
     }
 
-    private deduplicateComponentAppliedDesignTokens(node: BaseNode) {
-        this._componentAppliedDesignTokens = new AppliedDesignTokens();
-        const componentAppliedDesignTokensJson = this.getPluginData("appliedDesignTokens");
-        this._componentAppliedDesignTokens.deserialize(componentAppliedDesignTokensJson);
-
-        this._componentAppliedDesignTokens.forEach((applied, target) => {
-            this._appliedDesignTokens.delete(target);
-        });
+    public static clearCache(): void {
+        FigmaPluginNode.NodeCache.clear();
     }
 
-    public canHaveChildren(): boolean {
+    private parseLocalDesignTokens(): DesignTokenValues {
+        const json = this.getPluginData("designTokens");
+        // console.log("  parseLocalDesignTokens", this.debugInfo, json);
+        const parsed = new DesignTokenValues();
+        parsed.deserialize(json);
+        return parsed;
+    }
+
+    private parseAppliedDesignTokens(): AppliedDesignTokens {
+        const json = this.getPluginData("appliedDesignTokens");
+        // console.log("  parseAppliedDesignTokens", this.debugInfo, json);
+        const parsed = new AppliedDesignTokens();
+        parsed.deserialize(json);
+        return parsed;
+    }
+
+    public get canHaveChildren(): boolean {
         return canHaveChildren(this._node);
     }
 
-    public children(): FigmaPluginNode[] {
+    public get children(): PluginNode[] {
         if (canHaveChildren(this._node)) {
             const children: FigmaPluginNode[] = [];
 
             // console.log("  get children");
             for (const child of this._node.children) {
-                children.push(new FigmaPluginNode(child));
+                children.push(FigmaPluginNode.get(child));
             }
 
             return children;
@@ -125,7 +221,7 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public supports(): Array<StyleProperty> {
+    public get supports(): Array<StyleProperty> {
         return Object.keys(StyleProperty).filter((key: string) => {
             switch (key) {
                 case StyleProperty.backgroundFill:
@@ -236,7 +332,7 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public parent(): FigmaPluginNode | null {
+    public get parent(): FigmaPluginNode | null {
         const parent = this._node.parent;
 
         if (parent === null) {
@@ -244,7 +340,7 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         // console.log("  get parent");
-        return new FigmaPluginNode(parent);
+        return FigmaPluginNode.get(parent);
     }
 
     public getEffectiveFillColor(): ColorRGBA64 | null {
@@ -312,12 +408,12 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
-        // console.log("    setPluginData", this.node.id, this.node.type, key, value);
+        // console.log("    setPluginData", this.debugInfo, key, value);
         this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, value);
     }
 
     protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
-        // console.log("    deletePluginData", this.node.id, this.node.type, key);
+        // console.log("    deletePluginData", this.debugInfo, key);
         this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
     }
 

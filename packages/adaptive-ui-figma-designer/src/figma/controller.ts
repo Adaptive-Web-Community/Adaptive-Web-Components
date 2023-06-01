@@ -6,7 +6,7 @@ export class FigmaController extends Controller {
     public getNode(id: string): FigmaPluginNode | null {
         const node = figma.getNodeById(id);
         if (node) {
-            return new FigmaPluginNode(node);
+            return FigmaPluginNode.get(node);
         } else {
             return null;
         }
@@ -20,6 +20,8 @@ export class FigmaController extends Controller {
     }
 
     public sendStateToUI(state: PluginUIState): void {
+        FigmaPluginNode.clearCache();
+
         const message: SerializableUIState = {
             selectedNodes: serializeUINodes(state.selectedNodes),
         };

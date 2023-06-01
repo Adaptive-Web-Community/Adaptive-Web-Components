@@ -44,7 +44,6 @@ import {
     neutralStrokeStrongRest,
     neutralStrokeSubtleRest,
     strokeThickness,
-    StyleProperty,
     Swatch,
     TypedCSSDesignToken,
     typeRampBaseFontSize,
@@ -82,7 +81,8 @@ const designTokens: DesignTokenStore = [
     docBaseColor,
 ];
 
-const layerTokens: DesignTokenStore<Swatch> = [
+const colorTokens: DesignTokenStore<Swatch> = [
+    // Layer
     layerFillFixedMinus4,
     layerFillFixedMinus3,
     layerFillFixedMinus2,
@@ -92,9 +92,8 @@ const layerTokens: DesignTokenStore<Swatch> = [
     layerFillFixedPlus2,
     layerFillFixedPlus3,
     layerFillFixedPlus4,
-];
-
-const fillTokens: DesignTokenStore<Swatch> = [
+    layerFillInteractiveRest,
+    // Fill
     accentFillStealthRest,
     accentFillSubtleRest,
     accentFillDiscernibleRest,
@@ -103,39 +102,29 @@ const fillTokens: DesignTokenStore<Swatch> = [
     neutralFillSubtleRest,
     neutralFillDiscernibleRest,
     neutralFillReadableRest,
-    layerFillInteractiveRest,
-    docFill,
-];
-
-const strokeTokens: DesignTokenStore<Swatch> = [
+    // Stroke
     focusStrokeOuter,
     focusStrokeInner,
     accentStrokeSafetyRest,
     accentStrokeSubtleRest,
     accentStrokeDiscernibleRest,
-    // TODO: The current bridge model to Adaptive UI doesn't allow for the same tokens in two different style targets.
-    // accentStrokeReadableRest,
-    // accentStrokeStrongRest,
+    accentStrokeReadableRest,
+    accentStrokeStrongRest,
     neutralStrokeSafetyRest,
     neutralStrokeSubtleRest,
     neutralStrokeDiscernibleRest,
-    // neutralStrokeReadableRest,
-    // neutralStrokeStrongRest,
+    neutralStrokeReadableRest,
+    neutralStrokeStrongRest,
+    // Custom
+    blackOrWhiteDiscernibleRest,
+    blackOrWhiteReadableRest,
+    docForeground,
+    docFill,
 ];
 
 const strokeWidthTokens: DesignTokenStore = [
     strokeThickness,
     focusStrokeThickness,
-];
-
-const textFillTokens: DesignTokenStore<Swatch> = [
-    accentStrokeReadableRest,
-    accentStrokeStrongRest,
-    neutralStrokeReadableRest,
-    neutralStrokeStrongRest,
-    blackOrWhiteDiscernibleRest,
-    blackOrWhiteReadableRest,
-    docForeground,
 ];
 
 const cornerRadiusTokens: DesignTokenStore<string> = [
@@ -174,24 +163,22 @@ function nameToTitle(name: string): string {
 }
 
 function registerStore<T>(
-    target: StyleProperty | undefined,
     store: DesignTokenStore<T>,
-    title: string,
+    groupTitle: string | undefined, // Phasing this out. Currently only used on the "Design Tokens" tab.
     registry: DesignTokenRegistry
 ): void {
     store.forEach((token) => {
         // console.log("registerStore", token);
         
-        const entryTarget = target ||
-            (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor?.at(0) : undefined);
+        const entryIntendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
 
         const entryFormControlId = token.allowedType.includes(DesignTokenType.color) ? FormControlId.color : FormControlId.text;
 
         const definition: DesignTokenDefinition = {
             id: token.name,
             title: nameToTitle(token.name),
-            groupTitle: title,
-            target: entryTarget,
+            groupTitle,
+            intendedFor: entryIntendedFor,
             formControlId: entryFormControlId,
             token,
         };
@@ -200,21 +187,22 @@ function registerStore<T>(
     });
 }
 
+// This registration system is being phased out. The remaining task is to determine if a design token is a static value or derived. If it's
+// static we'll show it on the "Tokens" registry for the "Design Tokens" tab where the value can be overridden. Eventually we'll need an
+// interface for mapping tokens to other recipes or fixed values as well.
+// For now we've grouped the color tokens since by default those are all recipes/derived.
+
 export const registerTokens = (registry: DesignTokenRegistry) => {
-    registerStore(undefined, designTokens, "Global tokens", registry);
+    registerStore(designTokens, "Global tokens", registry);
     // This could be optimized, but some tokens are intended to be modified as well as applied as style properties.
-    registerStore(undefined, textTokens, "Text", registry);
-    registerStore(undefined, strokeWidthTokens, "Stroke width", registry);
-    registerStore(undefined, cornerRadiusTokens, "Corner radius", registry);
+    registerStore(strokeWidthTokens, "Stroke width", registry);
+    registerStore(cornerRadiusTokens, "Corner radius", registry);
+    registerStore(textTokens, "Text", registry);
 };
 
 export const registerAppliableTokens = (registry: DesignTokenRegistry) => {
-    registerStore(StyleProperty.backgroundFill, layerTokens, "Layer fill", registry);
-    registerStore(StyleProperty.backgroundFill, fillTokens, "Fill", registry);
-    registerStore(StyleProperty.foregroundFill, textFillTokens, "Foreground", registry);
-    registerStore(StyleProperty.borderFill, strokeTokens, "Stroke", registry);
-    // These tokens are already setup with intended use style properties.
-    registerStore(undefined, strokeWidthTokens, "Stroke width", registry);
-    registerStore(undefined, cornerRadiusTokens, "Corner radius", registry);
-    registerStore(undefined, textTokens, "Text", registry);
+    registerStore(colorTokens, undefined, registry);
+    registerStore(strokeWidthTokens, undefined, registry);
+    registerStore(cornerRadiusTokens, undefined, registry);
+    registerStore(textTokens, undefined, registry);
 };

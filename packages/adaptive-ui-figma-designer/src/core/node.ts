@@ -20,10 +20,39 @@ const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
  * for each design tool.
  */
 export abstract class PluginNode {
-    protected _componentDesignTokens?: DesignTokenValues;
-    protected _componentAppliedDesignTokens?: AppliedDesignTokens;
+    /**
+     * Design tokens inherited by an instance node from the main component.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
+    protected _componentDesignTokens?: ReadonlyDesignTokenValues;
+
+    /**
+     * Applied design tokens inherited by an instance node from the main component.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
+    protected _componentAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
+
+    /**
+     * Design tokens set for this node.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
     protected _localDesignTokens: DesignTokenValues = new DesignTokenValues();
+
+    /**
+     * Design tokens applied to the style of this node.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
     protected _appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+
+    /**
+     * Additional data associated with this node.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
     protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
@@ -36,7 +65,7 @@ export abstract class PluginNode {
         }
 
         let designTokens = new DesignTokenValues();
-        const parent = this.parent();
+        const parent = this.parent;
         if (parent !== null) {
             designTokens = new DesignTokenValues([
                 ...parent.inheritedDesignTokens,
@@ -58,35 +87,57 @@ export abstract class PluginNode {
      * Gets the applied design tokens inherited by an instance node from the main component.
      */
     public get componentAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
-        return this._componentAppliedDesignTokens as ReadonlyAppliedDesignTokens;
-    }
-
-    protected loadLocalDesignTokens(): void {
-        const json = this.getPluginData("designTokens");
-        // console.log("  loadLocalDesignTokens", this.id, this.type, json);
-        this._localDesignTokens.deserialize(json);
+        return this._componentAppliedDesignTokens;
     }
 
     /**
-     * Gets the design tokens set for this node. The key is the design token ID.
+     * Gets the design tokens set for this node.
      */
     public get localDesignTokens(): ReadonlyDesignTokenValues {
         return this._localDesignTokens;
     }
 
     /**
-     * Gets the design tokens inherited by an instance node from the main component. The key is the design token ID.
+     * Gets the design tokens inherited by an instance node from the main component.
      */
-    public get componentDesignTokens(): ReadonlyDesignTokenValues {
-        return this._componentDesignTokens as ReadonlyDesignTokenValues;
+    public get componentDesignTokens(): ReadonlyDesignTokenValues | undefined {
+        return this._componentDesignTokens;
     }
 
-    public abstract id: string;
-    public abstract type: string;
-    public abstract canHaveChildren(): boolean;
-    public abstract children(): PluginNode[];
-    public abstract parent(): PluginNode | null;
-    public abstract supports(): Array<StyleProperty>;
+    /**
+     * The ID of this node.
+     */
+    public abstract readonly id: string;
+
+    /**
+     * The type of this node. Design tool dependent.
+     */
+    public abstract readonly type: string;
+
+    /**
+     * The name of the node, useful for debugging.
+     */
+    public abstract readonly name: string;
+
+    /**
+     * Gets whether this type of node can have children or not.
+     */
+    public abstract get canHaveChildren(): boolean;
+
+    /**
+     * Gets all child nodes.
+     */
+    public abstract get children(): PluginNode[];
+
+    /**
+     * Gets the parent node.
+     */
+    public abstract get parent(): PluginNode | null;
+
+    /**
+     * Gets the style properties this node supports.
+     */
+    public abstract get supports(): Array<StyleProperty>;
 
     /**
      * Sets the design tokens to the node and design tool.
@@ -104,13 +155,8 @@ export abstract class PluginNode {
         this.invalidateDesignTokenCache();
     }
 
-    protected loadAppliedDesignTokens(): void {
-        const json = this.getPluginData("appliedDesignTokens");
-        this._appliedDesignTokens.deserialize(json);
-    }
-
     /**
-     * Gets the design tokens applied to the style of this node. The key is the target style property.
+     * Gets the design tokens applied to the style of this node.
      */
     public get appliedDesignTokens(): ReadonlyAppliedDesignTokens {
         return this._appliedDesignTokens;
@@ -160,7 +206,7 @@ export abstract class PluginNode {
      * Must be called after design tokens are loaded.
      */
     protected setupFillColor(): void {
-        if (this.canHaveChildren()) {
+        if (this.canHaveChildren) {
             // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
             // If the fill color comes from a design token, don't pass it again.
             let foundFill = false;
@@ -189,7 +235,7 @@ export abstract class PluginNode {
         function getIds(node: PluginNode): string[] {
             let found = [node.id];
 
-            node.children().forEach((child: PluginNode) => {
+            node.children.forEach((child: PluginNode) => {
                 found = found.concat(getIds(child));
             });
 
@@ -197,6 +243,14 @@ export abstract class PluginNode {
         }
 
         getIds(this).forEach((id: string) => DesignTokenCache.delete(id));
+    }
+
+    protected get debugInfo() {
+        return {
+            id: this.id,
+            type: this.type,
+            name: this.name,
+        };
     }
 
     /**

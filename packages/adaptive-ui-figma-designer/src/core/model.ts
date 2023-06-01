@@ -162,7 +162,7 @@ export const pluginNodesToUINodes = (
     const convertedNodes = nodes.map(
         (node): PluginUINodeData => {
             // TODO Not all children, only nodes with design tokens.
-            const children = pluginNodesToUINodes(node.children(), false);
+            const children = pluginNodesToUINodes(node.children, false);
             const inheritedDesignTokens = includeInherited
                 ? node.inheritedDesignTokens
                 : new DesignTokenValues();
@@ -170,7 +170,7 @@ export const pluginNodesToUINodes = (
             return {
                 id: node.id,
                 type: node.type,
-                supports: node.supports(),
+                supports: node.supports,
                 additionalData: node.additionalData,
                 inheritedDesignTokens,
                 componentDesignTokens: node.componentDesignTokens,

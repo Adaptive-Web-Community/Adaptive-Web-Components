@@ -55,8 +55,11 @@ function createStateToken(
     );
 }
 
-function createRecipeToken(recipeToken: DesignToken<ColorRecipe>): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${recipeToken.name.replace("-recipe-value", "")}`).withDefault(
+function createRecipeToken(
+    recipeToken: DesignToken<ColorRecipe>,
+    intendedFor?: StyleProperty | StyleProperty[]
+): TypedCSSDesignToken<Swatch> {
+    return createTokenSwatch(`${recipeToken.name.replace("-recipe-value", "")}`, intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -1337,7 +1340,7 @@ export const focusStrokeOuterRecipe = createRecipe(focusStrokeOuterName,
 );
 
 /** @public */
-export const focusStrokeOuter = createRecipeToken(focusStrokeOuterRecipe);
+export const focusStrokeOuter = createRecipeToken(focusStrokeOuterRecipe, StyleProperty.borderFill);
 
 // Focus Stroke Inner
 
@@ -1350,7 +1353,7 @@ export const focusStrokeInnerRecipe = createRecipe(focusStrokeInnerName,
 );
 
 /** @public */
-export const focusStrokeInner = createRecipeToken(focusStrokeInnerRecipe);
+export const focusStrokeInner = createRecipeToken(focusStrokeInnerRecipe, StyleProperty.borderFill);
 
 // Deprecated tokens
 
