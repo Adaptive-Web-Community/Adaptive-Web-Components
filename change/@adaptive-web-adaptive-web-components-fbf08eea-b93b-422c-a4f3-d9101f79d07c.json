@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add start and end icon args in Storybook",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,101 +1,101 @@
 {
-    "name": "@adaptive-web/adaptive-web-components",
-    "version": "0.1.2",
-    "description": "Standards based, framework agnostic web components built using FAST.",
-    "type": "module",
-    "sideEffects": false,
-    "license": "MIT",
-    "author": {
-        "name": "Adaptive Web Community",
-        "url": "https://github.com/adaptive-web-community"
+  "name": "@adaptive-web/adaptive-web-components",
+  "version": "0.2.0",
+  "description": "Standards based, framework agnostic web components built using FAST.",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+    "directory": "packages/adaptive-web-components"
+  },
+  "main": "dist/adaptive-web-components.cjs",
+  "module": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "unpkg": "dist/adaptive-web-components.min.js",
+  "scripts": {
+    "build:tsc": "tsc -p ./tsconfig.build.json",
+    "build:bundle": "rollup -c",
+    "build": "rimraf clean ./dist && npm run build:tsc && npm run build:bundle && npm run cem:analyze",
+    "build:storybook": "build-storybook",
+    "clean": "rimraf dist storybook-static",
+    "cem:analyze": "cem analyze --config ./cem.config.mjs",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "start": "start-storybook -p 6006",
+    "test": "npm run lint && npm run build:tsc"
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "0.1.0",
+    "@fluentui/svg-icons": "^1.1.192",
+    "@microsoft/fast-element": "2.0.0-beta.23",
+    "@microsoft/fast-foundation": "3.0.0-alpha.27",
+    "@microsoft/fast-web-utilities": "6.0.0",
+    "tslib": "^2.5.0"
+  },
+  "peerDependencies": {
+    "@adaptive-web/adaptive-ui": "0.1.0",
+    "@fluentui/svg-icons": "^1.1.192",
+    "@microsoft/fast-element": "2.0.0-beta.23",
+    "@microsoft/fast-foundation": "3.0.0-alpha.27",
+    "@microsoft/fast-web-utilities": "6.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@custom-elements-manifest/analyzer": "^0.6.8",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@microsoft/api-extractor": "^7.34.4",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/csf": "0.0.2--canary.0899bb7.0",
+    "@storybook/html": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@types/node": "^16.0.0",
+    "@types/react": "^16.14.0",
+    "babel-loader": "^8.3.0",
+    "lit-html": "^2.5.0",
+    "resolve-typescript-plugin": "^1.2.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.71.1",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-svgo": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-transform-tagged-template": "^0.0.3",
+    "source-map-loader": "^0.2.4",
+    "svg-inline-loader": "^0.8.2",
+    "ts-loader": "^7.0.2",
+    "typescript": "^4.7.0"
+  },
+  "customElements": "dist/custom-elements.json",
+  "exports": {
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
     },
-    "bugs": {
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+    "./all-components": {
+      "types": "./dist/dts/custom-elements.d.ts",
+      "default": "./dist/esm/custom-elements.js"
     },
-    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
-        "directory": "packages/adaptive-web-components"
-    },
-    "main": "dist/adaptive-web-components.cjs",
-    "module": "dist/esm/index.js",
-    "types": "dist/dts/index.d.ts",
-    "unpkg": "dist/adaptive-web-components.min.js",
-    "scripts": {
-        "build:tsc": "tsc -p ./tsconfig.build.json",
-        "build:bundle": "rollup -c",
-        "build": "rimraf clean ./dist && npm run build:tsc && npm run build:bundle && npm run cem:analyze",
-        "build:storybook": "build-storybook",
-        "clean": "rimraf dist storybook-static",
-        "cem:analyze": "cem analyze --config ./cem.config.mjs",
-        "doc": "api-extractor run --local",
-        "postbuild": "npm run doc",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        "start": "start-storybook -p 6006",
-        "test": "npm run lint && npm run build:tsc"
-    },
-    "dependencies": {
-        "@adaptive-web/adaptive-ui": "0.0.3",
-        "@fluentui/svg-icons": "^1.1.192",
-        "@microsoft/fast-element": "2.0.0-beta.23",
-        "@microsoft/fast-foundation": "3.0.0-alpha.27",
-        "@microsoft/fast-web-utilities": "6.0.0",
-        "tslib": "^2.5.0"
-    },
-    "peerDependencies": {
-        "@adaptive-web/adaptive-ui": "0.0.3",
-        "@fluentui/svg-icons": "^1.1.192",
-        "@microsoft/fast-element": "2.0.0-beta.23",
-        "@microsoft/fast-foundation": "3.0.0-alpha.27",
-        "@microsoft/fast-web-utilities": "6.0.0"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.20.12",
-        "@custom-elements-manifest/analyzer": "^0.6.8",
-        "@custom-elements-manifest/to-markdown": "^0.1.0",
-        "@microsoft/api-extractor": "^7.34.4",
-        "@rollup/plugin-commonjs": "^11.0.1",
-        "@rollup/plugin-node-resolve": "^7.0.0",
-        "@storybook/addon-actions": "^6.5.16",
-        "@storybook/addon-essentials": "^6.5.16",
-        "@storybook/addon-links": "^6.5.16",
-        "@storybook/builder-webpack5": "^6.5.16",
-        "@storybook/csf": "0.0.2--canary.0899bb7.0",
-        "@storybook/html": "^6.5.16",
-        "@storybook/manager-webpack5": "^6.5.16",
-        "@types/node": "^16.0.0",
-        "@types/react": "^16.14.0",
-        "babel-loader": "^8.3.0",
-        "lit-html": "^2.5.0",
-        "resolve-typescript-plugin": "^1.2.0",
-        "rimraf": "^3.0.2",
-        "rollup": "^2.71.1",
-        "rollup-plugin-filesize": "^9.1.2",
-        "rollup-plugin-svgo": "^2.0.0",
-        "rollup-plugin-terser": "^7.0.2",
-        "rollup-plugin-transform-tagged-template": "^0.0.3",
-        "source-map-loader": "^0.2.4",
-        "svg-inline-loader": "^0.8.2",
-        "ts-loader": "^7.0.2",
-        "typescript": "^4.7.0"
-    },
-    "customElements": "dist/custom-elements.json",
-    "exports": {
-        "./custom-elements.json": "./dist/custom-elements.json",
-        "./package.json": "./package.json",
-        ".": {
-            "types": "./dist/dts/index.d.ts",
-            "default": "./dist/esm/index.js"
-        },
-        "./all-components": {
-            "types": "./dist/dts/custom-elements.d.ts",
-            "default": "./dist/esm/custom-elements.js"
-        },
-        "./*": {
-            "types": "./dist/dts/components/*/*.definition.d.ts",
-            "default": "./dist/esm/components/*/*.definition.js"
-        }
+    "./*": {
+      "types": "./dist/dts/components/*/*.definition.d.ts",
+      "default": "./dist/esm/components/*/*.definition.js"
     }
+  }
 }

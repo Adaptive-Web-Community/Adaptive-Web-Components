@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Designer token model update - Aligned plugin to new model where a token might have multiple uses - Aligned token registration - Cleanup of some component handling logic - More comments",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
