@@ -25,8 +25,10 @@ export const styleModules: StyleModules = [
             part: AccordionItemAnatomy.parts.heading,
         },
         Styles.compose(
-            controlShapeStyles,
-            controlDensityStyles,
+            [
+                controlShapeStyles,
+                controlDensityStyles,
+            ],
         )
     ],
     [

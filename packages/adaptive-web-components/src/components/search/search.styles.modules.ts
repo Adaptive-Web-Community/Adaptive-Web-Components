@@ -37,8 +37,10 @@ export const styleModules: StyleModules = [
             part: SearchAnatomy.parts.clearButton
         },
         Styles.compose(
-            controlShapeStyles,
-            neutralFillStealthControlStyles,
+            [
+                controlShapeStyles,
+                neutralFillStealthControlStyles,
+            ],
         )
     ],
 ];

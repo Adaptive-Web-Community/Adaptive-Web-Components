@@ -24,9 +24,11 @@ export const styleModules: StyleModules = [
             part: DisclosureAnatomy.parts.invoker
         },
         Styles.compose(
-            controlShapeStyles,
-            controlDensityStyles,
-            accentFillReadableControlStyles,
+            [
+                controlShapeStyles,
+                controlDensityStyles,
+                accentFillReadableControlStyles,
+            ],
         )
     ],
 ];

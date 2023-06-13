@@ -24,8 +24,10 @@ export const styleModules: StyleModules = [
             part: ComboboxAnatomy.parts.listbox
         },
         Styles.compose(
-            layerShapeStyles,
-            itemContainerDensityStyles,
+            [
+                layerShapeStyles,
+                itemContainerDensityStyles,
+            ],
         )
     ],
 ];

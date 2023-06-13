@@ -25,9 +25,11 @@ export const styleModules: StyleModules = [
             part: BreadcrumbItemAnatomy.parts.control,
         },
         Styles.compose(
-            controlShapeStyles,
-            controlDensityStyles,
-            accentForegroundReadableControlStyles
+            [
+                controlShapeStyles,
+                controlDensityStyles,
+                accentForegroundReadableControlStyles,
+            ],
         )
     ],
     [

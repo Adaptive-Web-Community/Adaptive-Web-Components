@@ -23,12 +23,22 @@ export class Styles {
     // Effective properties from composed styles and additional properties
     private _composedProperties?: StyleProperties;
 
-    private constructor(propertiesOrStyles: StyleProperties | Styles[]) {
+    private constructor(
+        /**
+         * The style module name.
+         */
+        public readonly name: string | undefined,
+        propertiesOrStyles: StyleProperties | Styles[]
+    ) {
         if (Array.isArray(propertiesOrStyles)) {
             this._composed = propertiesOrStyles;
             this.createEffectiveProperties();
         } else {
             this._properties = propertiesOrStyles;
+        }
+
+        if (name) {
+            Styles.Shared.set(name, this);
         }
     }
 
@@ -89,14 +99,19 @@ export class Styles {
         }
     }
 
+    public static Shared: Map<string, Styles> = new Map();
+
     /**
      * Creates a new Styles object for the composed styles.
      *
      * @param styles - An array of styles to compose.
      * @returns A new Styles object representing the composed styles.
      */
-    public static compose(...styles: Styles[]): Styles {
-        return new Styles(styles);
+    public static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles {
+        if (properties) {
+            styles.push(Styles.fromProperties(properties));
+        }
+        return new Styles(name, styles);
     }
 
     /**
@@ -105,7 +120,7 @@ export class Styles {
      * @param properties - Individual properties for the new style module.
      * @returns A new Styles object representing the properties.
      */
-    public static fromProperties(properties: StyleProperties): Styles {
-        return new Styles(properties);
+    public static fromProperties(properties: StyleProperties, name?: string): Styles {
+        return new Styles(name, properties);
     }
 }

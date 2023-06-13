@@ -15,8 +15,10 @@ export const styleModules: StyleModules = [
         {
         },
         Styles.compose(
-            layerShapeStyles,
-            plainTextStyles,
+            [
+                layerShapeStyles,
+                plainTextStyles,
+            ],
         )
     ],
 ];

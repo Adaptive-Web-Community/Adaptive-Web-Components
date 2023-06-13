@@ -1556,12 +1556,15 @@ export class Styles {
     // (undocumented)
     appendComposed(styles: Styles): void;
     clearComposed(): void;
-    static compose(...styles: Styles[]): Styles;
+    static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles;
     get composed(): Styles[] | undefined;
     get effectiveProperties(): StyleProperties;
-    static fromProperties(properties: StyleProperties): Styles;
+    static fromProperties(properties: StyleProperties, name?: string): Styles;
+    readonly name: string | undefined;
     get properties(): StyleProperties | undefined;
     set properties(properties: StyleProperties | undefined);
+    // (undocumented)
+    static Shared: Map<string, Styles>;
 }
 
 // @public
