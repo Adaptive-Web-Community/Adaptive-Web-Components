@@ -17,11 +17,11 @@ export class FigmaController extends Controller {
         super.receiveStateFromUI({
             selectedNodes: pluginNodes
         })
+
+        FigmaPluginNode.clearCache();
     }
 
     public sendStateToUI(state: PluginUIState): void {
-        FigmaPluginNode.clearCache();
-
         const message: SerializableUIState = {
             selectedNodes: serializeUINodes(state.selectedNodes),
         };

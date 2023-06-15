@@ -1,8 +1,8 @@
 import { StyleProperty, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
-import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
-import { AppliedDesignToken, AppliedDesignTokens, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
+import type { DesignToken, StaticDesignTokenValue, ValuesOf } from "@microsoft/fast-foundation";
+import { AppliedDesignToken, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 
@@ -38,6 +38,29 @@ export interface AppliedDesignTokenItem {
     target: StyleProperty;
     tokenID: string;
     value: string;
+}
+
+/**
+ * The source of an applied design token.
+ * Used to determine which values to persist (and to ease debugging).
+ */
+const AppliedTokenSource = {
+    component: "component",
+    local: "local",
+} as const;
+
+/**
+ * The source of an applied design token.
+ * Used to determine which values to persist (and to ease debugging).
+ */
+type AppliedTokenSource = ValuesOf<typeof AppliedTokenSource>;
+
+/**
+ * Information about an applied design token, used to evaluate and apply the value.
+ */
+type AppliedDesignTokenInfo = {
+    tokenID: string;
+    source: AppliedTokenSource;
 }
 
 /**
@@ -108,7 +131,7 @@ export class UIController {
     }
 
     public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
-        this.evaluateAppliedDesignTokens(this._selectedNodes);
+        this.evaluateEffectiveAppliedDesignTokens(this._selectedNodes);
 
         this.dispatchState(reason);
     }
@@ -216,57 +239,63 @@ export class UIController {
         this.dispatchState("resetNodes");
     }
 
-    private getEffectiveAppliedDesignTokens(node: PluginUINodeData): AppliedDesignTokens {
-        if (node.componentAppliedDesignTokens.size > 0) {
-            const allApplied = [
-                ...node.componentAppliedDesignTokens.entries(),
-                ...node.appliedDesignTokens.entries(),
-            ];
+    /**
+     * Reduces the effective set of applied design tokens from the various sources.
+     * @param node - The plugin UI node data.
+     * @returns The effective set of applied design tokens by target property.
+     */
+    private getEffectiveAppliedDesignTokens(node: PluginUINodeData): Map<StyleProperty, AppliedDesignTokenInfo> {
+        const allApplied = new Map<StyleProperty, AppliedDesignTokenInfo>();
 
-            return allApplied.reduceRight<AppliedDesignTokens>(
-                (previousApplied, [currentTarget, currentApplied], index, array) => {
-                    // console.log("  reducing effective applied", previousApplied.size, currentTarget, currentApplied, index, array);
-                    if (!previousApplied.has(currentTarget)) {
-                        // console.log("    adding", currentTarget, currentApplied.tokenID);
-                        previousApplied.set(currentTarget, new AppliedDesignToken(currentApplied.tokenID, ""));
-                    } else {
-                        // console.log("    skipping", currentTarget, currentApplied.tokenID);
-                    }
-                    return previousApplied;
-                },
-                new AppliedDesignTokens()
-            );
-        } else {
-            return node.appliedDesignTokens;
-        }
+        node.componentAppliedDesignTokens.forEach((applied, target) => {
+            allApplied.set(target, {
+                tokenID: applied.tokenID,
+                source: AppliedTokenSource.component,
+            })
+        });
+
+        node.appliedDesignTokens.forEach((applied, target) => {
+            allApplied.set(target, {
+                tokenID: applied.tokenID,
+                source: AppliedTokenSource.local,
+            })
+        });
+
+        return allApplied;
     }
 
-    private evaluateAppliedDesignTokens(nodes: PluginUINodeData[]) {
-        // console.log("  evaluateAppliedDesignTokens", nodes);
+    private evaluateEffectiveAppliedDesignTokens(nodes: PluginUINodeData[]) {
+        // console.log("evaluateEffectiveAppliedDesignTokens", nodes.length, nodes);
         nodes.forEach(node => {
+            // console.log("  evaluateEffectiveAppliedDesignTokens", node);
             const allApplied = this.getEffectiveAppliedDesignTokens(node);
-            allApplied.forEach((applied, target) => {
-                const token = this._appliableDesignTokenRegistry.get(applied.tokenID);
-                this.evaluateAppliedDesignToken(target, token, node);
+            allApplied.forEach((info, target) => {
+                const token = this._appliableDesignTokenRegistry.get(info.tokenID);
+                this.evaluateEffectiveAppliedDesignToken(target, token, node, info.source);
             });
 
-            // console.log("      evaluations", node.appliedDesignTokens);
+            // console.log("      evaluations", node.effectiveAppliedDesignTokens);
 
-            this.evaluateAppliedDesignTokens(node.children);
+            if (node.children.length > 0) {
+                this.evaluateEffectiveAppliedDesignTokens(node.children);
+            }
         });
     }
 
-    private evaluateAppliedDesignToken(target: StyleProperty, token: DesignTokenDefinition, node: PluginUINodeData): any {
+    private evaluateEffectiveAppliedDesignToken(target: StyleProperty, token: DesignTokenDefinition, node: PluginUINodeData, source: AppliedTokenSource) {
         let value: any = this.getDesignTokenValue(node, token.token);
         if (typeof (value as any).toColorString === "function") {
             value = (value as any).toColorString();
         }
-        // console.log("    evaluateAppliedDesignToken", target, token, value);
+        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.id, " -> ", value, `(from ${source})`);
 
-        node.appliedDesignTokens.set(target,
-            new AppliedDesignToken(token.id, (value as unknown) as string),
-        );
-        // console.log("      evaluations", node.appliedDesignTokens);
+        const applied = new AppliedDesignToken(token.id, (value as unknown) as string);
+
+        node.effectiveAppliedDesignTokens.set(target, applied);
+
+        if (source === AppliedTokenSource.local) {
+            node.appliedDesignTokens.set(target, applied);
+        }
 
         // TODO: The fillColor context isn't working yet, so only use it for "fixed" layer backgrounds for now.
         if (target === StyleProperty.backgroundFill && token.id.startsWith("layer-fill-fixed")) {
@@ -277,10 +306,11 @@ export class UIController {
             node.designTokens.set(TOOL_FILL_COLOR_TOKEN, { value });
             this.setDesignTokenForElement(element, def.token, value);
 
-            this.evaluateAppliedDesignTokens(node.children);
+            // TODO: Optimize this, currently it will process children twice.
+            if (node.children.length > 0) {
+                this.evaluateEffectiveAppliedDesignTokens(node.children);
+            }
         }
-
-        return value;
     }
 
     public removeAppliedDesignToken(target: StyleProperty, tokenID: string): void {
@@ -294,7 +324,7 @@ export class UIController {
             // console.log("removed applied design token from node", target, node);
         });
 
-        this.evaluateAppliedDesignTokens(this._selectedNodes);
+        this.evaluateEffectiveAppliedDesignTokens(this._selectedNodes);
 
         this.dispatchState("removeAppliedDesignToken");
     }
@@ -304,7 +334,8 @@ export class UIController {
             // console.log("--------------------------------");
             // console.log("applying token to node", target, token);
 
-            this.evaluateAppliedDesignToken(target, token, node);
+            this.evaluateEffectiveAppliedDesignToken(target, token, node, AppliedTokenSource.local);
+
             // console.log("  node", node);
         });
 
@@ -478,7 +509,7 @@ export class UIController {
         nodes.forEach(node => this.setDesignTokenForNode(node, definition, value));
 
         // console.log("  Evaluating all design tokens for all selected nodes");
-        this.evaluateAppliedDesignTokens(this._selectedNodes);
+        this.evaluateEffectiveAppliedDesignTokens(this._selectedNodes);
 
         this.dispatchState("setDesignToken " + definition.id);
     }
@@ -492,7 +523,7 @@ export class UIController {
         nodes.forEach(node => this.setDesignTokenForNode(node, definition, null));
 
         // console.log("  Evaluating all design tokens for all selected nodes");
-        this.evaluateAppliedDesignTokens(this._selectedNodes);
+        this.evaluateEffectiveAppliedDesignTokens(this._selectedNodes);
 
         this.dispatchState("removeDesignToken");
     }
