@@ -1,55 +1,55 @@
 {
-  "name": "@adaptive-web/adaptive-ui-figma-designer",
-  "version": "0.0.1",
-  "description": "A designer for working with Adaptive UI within Figma",
-  "type": "module",
-  "private": true,
-  "license": "MIT",
-  "author": {
-    "name": "Adaptive Web Community",
-    "url": "https://github.com/adaptive-web-community"
-  },
-  "bugs": {
-    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
-  },
-  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
-    "directory": "packages/adaptive-ui-figma-designer"
-  },
-  "scripts": {
-    "build": "npm run build:ui -- --minify esbuild && npm run build:figma -- --minify",
-    "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --outfile=dist/main.js",
-    "build:ui": "npx vite build --emptyOutDir=false --minify false",
-    "build:watch": "concurrently -n figma,ui \"npm run build:figma -- --watch\" \"npm run build:ui -- --watch\"",
-    "compile": "npm run compile:figma && npm run compile:ui",
-    "compile:figma": "tsc --noEmit -p src/figma",
-    "compile:ui": "tsc --noEmit -p src/ui",
-    "compile:watch": "concurrently -n figma,ui \"npm run compile:figma -- --watch --preserveWatchOutput\" \"npm run compile:ui -- --watch --preserveWatchOutput\"",
-    "clean": "rimraf dist",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "start": "concurrently -n compile,build,vite 'npm:compile:watch' 'npm:build:watch' 'vite'",
-    "test": "npm run lint && npm run compile"
-  },
-  "dependencies": {
-    "@adaptive-web/adaptive-web-components": "0.2.0",
-    "@microsoft/fast-colors": "^5.3.1"
-  },
-  "peerDependencies": {
-    "@adaptive-web/adaptive-ui": "0.1.0",
-    "@microsoft/fast-element": "2.0.0-beta.23",
-    "@microsoft/fast-foundation": "3.0.0-alpha.27"
-  },
-  "devDependencies": {
-    "@figma/plugin-typings": "^1.58.0",
-    "concurrently": "^7.6.0",
-    "esbuild": "^0.17.10",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.7.0",
-    "vite": "^4.1.1",
-    "vite-plugin-singlefile": "^0.13.3",
-    "vite-plugin-svgo": "^1.3.0"
-  }
+    "name": "@adaptive-web/adaptive-ui-figma-designer",
+    "version": "0.0.1",
+    "description": "A designer for working with Adaptive UI within Figma",
+    "type": "module",
+    "private": true,
+    "license": "MIT",
+    "author": {
+        "name": "Adaptive Web Community",
+        "url": "https://github.com/adaptive-web-community"
+    },
+    "bugs": {
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+    },
+    "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+        "directory": "packages/adaptive-ui-figma-designer"
+    },
+    "scripts": {
+        "build": "npm run build:ui -- --minify esbuild && npm run build:figma -- --minify",
+        "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --outfile=dist/main.js",
+        "build:ui": "npx vite build --emptyOutDir=false --minify false",
+        "build:watch": "concurrently -n figma,ui \"npm run build:figma -- --watch\" \"npm run build:ui -- --watch\"",
+        "compile": "npm run compile:figma && npm run compile:ui",
+        "compile:figma": "tsc --noEmit -p src/figma",
+        "compile:ui": "tsc --noEmit -p src/ui",
+        "compile:watch": "concurrently -n figma,ui \"npm run compile:figma -- --watch --preserveWatchOutput\" \"npm run compile:ui -- --watch --preserveWatchOutput\"",
+        "clean": "rimraf dist",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "start": "concurrently -n compile,build,vite 'npm:compile:watch' 'npm:build:watch' 'vite'",
+        "test": "npm run lint && npm run compile"
+    },
+    "dependencies": {
+        "@adaptive-web/adaptive-web-components": "0.2.0",
+        "@microsoft/fast-colors": "^5.3.1"
+    },
+    "peerDependencies": {
+        "@adaptive-web/adaptive-ui": "0.1.0",
+        "@microsoft/fast-element": "2.0.0-beta.23",
+        "@microsoft/fast-foundation": "3.0.0-alpha.27"
+    },
+    "devDependencies": {
+        "@figma/plugin-typings": "^1.58.0",
+        "concurrently": "^7.6.0",
+        "esbuild": "^0.17.10",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.7.0",
+        "vite": "^4.1.1",
+        "vite-plugin-singlefile": "^0.13.3",
+        "vite-plugin-svgo": "^1.3.0"
+    }
 }
