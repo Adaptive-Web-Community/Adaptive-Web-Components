@@ -20,5 +20,8 @@
     "cSpell.words": [
         "Appliable",
         "Unregisters"
-    ]
+    ],
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false
 }

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Package color tokens as sets and style modules, add style module rendering to ElementStyles",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

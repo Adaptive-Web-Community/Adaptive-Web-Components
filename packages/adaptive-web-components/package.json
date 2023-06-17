@@ -1,6 +1,6 @@
 {
     "name": "@adaptive-web/adaptive-web-components",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "description": "Standards based, framework agnostic web components built using FAST.",
     "type": "module",
     "sideEffects": false,
@@ -37,7 +37,7 @@
         "test": "npm run lint && npm run build:tsc"
     },
     "dependencies": {
-        "@adaptive-web/adaptive-ui": "0.0.3",
+        "@adaptive-web/adaptive-ui": "0.1.0",
         "@fluentui/svg-icons": "^1.1.192",
         "@microsoft/fast-element": "2.0.0-beta.23",
         "@microsoft/fast-foundation": "3.0.0-alpha.27",
@@ -45,7 +45,7 @@
         "tslib": "^2.5.0"
     },
     "peerDependencies": {
-        "@adaptive-web/adaptive-ui": "0.0.3",
+        "@adaptive-web/adaptive-ui": "0.1.0",
         "@fluentui/svg-icons": "^1.1.192",
         "@microsoft/fast-element": "2.0.0-beta.23",
         "@microsoft/fast-foundation": "3.0.0-alpha.27",

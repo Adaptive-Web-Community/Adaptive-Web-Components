@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Migrated type ramp to style modules",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
