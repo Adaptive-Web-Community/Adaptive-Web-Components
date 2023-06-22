@@ -60,12 +60,12 @@ export class FigmaPluginNode extends PluginNode {
 
         // Controller.nodeCount++;
 
-        // console.log("  new FigmaPluginNode", node.id, node.name, node);
-
         this._node = node;
         this.id = node.id;
         this.type = node.type;
         this.name = node.name;
+
+        // console.log("  new FigmaPluginNode", this.debugInfo, "node", node);
 
         /*
         This data model and token processing is to handle an unfortunate consequence of the Figma component model.
@@ -110,44 +110,45 @@ export class FigmaPluginNode extends PluginNode {
             mainComponentNode = figma.getNodeById(mainID);
         }
 
-        const parsedDesignTokens = this.parseLocalDesignTokens();
-        const parsedAppliedDesignTokens = this.parseAppliedDesignTokens();
+        const deserializedDesignTokens = this.deserializeLocalDesignTokens();
+        const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens();
 
         // Reconcile plugin data with the main component.
         if (mainComponentNode) {
+            // console.log("    get main");
             const mainFigmaNode = FigmaPluginNode.get(mainComponentNode);
-            // console.log("  is instance node", this.debugInfo, mainFigmaNode);
+            // console.log("      is instance node", this.debugInfo, mainFigmaNode);
 
             this._componentDesignTokens = mainFigmaNode.localDesignTokens;
             this._componentAppliedDesignTokens = mainFigmaNode.appliedDesignTokens;
 
             mainFigmaNode.localDesignTokens.forEach((value, tokenId) => {
                 // If the token values are the same between the nodes, remove it from the local.
-                if (parsedDesignTokens.get(tokenId)?.value === value.value) {
+                if (deserializedDesignTokens.get(tokenId)?.value === value.value) {
                     // console.log("    removing design token", this.debugInfo, tokenId);
-                    parsedDesignTokens.delete(tokenId);
+                    deserializedDesignTokens.delete(tokenId);
                 }
             });
 
             mainFigmaNode.appliedDesignTokens.forEach((applied, target) => {
                 // If the target and token are the same between the nodes, remove it from the local.
-                if (parsedAppliedDesignTokens.get(target)?.tokenID === applied.tokenID) {
+                if (deserializedAppliedDesignTokens.get(target)?.tokenID === applied.tokenID) {
                     // console.log("    removing applied design token", this.debugInfo, target, applied.tokenID);
-                    parsedAppliedDesignTokens.delete(target);
+                    deserializedAppliedDesignTokens.delete(target);
                 }
             });
 
-            if (parsedDesignTokens.size) {
-                // console.log("    reconciled design tokens", this.debugInfo, parsedDesignTokens.serialize());
+            if (deserializedDesignTokens.size) {
+                // console.log("    reconciled design tokens", this.debugInfo, deserializedDesignTokens.serialize());
             }
 
-            if (parsedAppliedDesignTokens.size) {
-                // console.log("    reconciled applied design tokens", this.debugInfo, parsedAppliedDesignTokens.serialize());
+            if (deserializedAppliedDesignTokens.size) {
+                // console.log("    reconciled applied design tokens", this.debugInfo, deserializedAppliedDesignTokens.serialize());
             }
         }
 
-        this._localDesignTokens = parsedDesignTokens;
-        this._appliedDesignTokens = parsedAppliedDesignTokens;
+        this._localDesignTokens = deserializedDesignTokens;
+        this._appliedDesignTokens = deserializedAppliedDesignTokens;
 
         // Check for and/or remove legacy FAST plugin data.
         // const fastKeys = this._node.getSharedPluginDataKeys("fast");
@@ -186,20 +187,24 @@ export class FigmaPluginNode extends PluginNode {
         FigmaPluginNode.NodeCache.clear();
     }
 
-    private parseLocalDesignTokens(): DesignTokenValues {
+    private deserializeLocalDesignTokens(): DesignTokenValues {
         const json = this.getPluginData("designTokens");
-        // console.log("  parseLocalDesignTokens", this.debugInfo, json);
-        const parsed = new DesignTokenValues();
-        parsed.deserialize(json);
-        return parsed;
+        const value = new DesignTokenValues();
+        if (json) {
+            value.deserialize(json);
+            // console.log("    deserializeLocalDesignTokens", this.debugInfo, value);
+        }
+        return value;
     }
 
-    private parseAppliedDesignTokens(): AppliedDesignTokens {
+    private deserializeAppliedDesignTokens(): AppliedDesignTokens {
         const json = this.getPluginData("appliedDesignTokens");
-        // console.log("  parseAppliedDesignTokens", this.debugInfo, json);
-        const parsed = new AppliedDesignTokens();
-        parsed.deserialize(json);
-        return parsed;
+        const value = new AppliedDesignTokens();
+        if (json) {
+            value.deserialize(json);
+            // console.log("    deserializeAppliedDesignTokens", this.debugInfo, value);
+        }
+        return value;
     }
 
     public get canHaveChildren(): boolean {
@@ -210,7 +215,7 @@ export class FigmaPluginNode extends PluginNode {
         if (canHaveChildren(this._node)) {
             const children: FigmaPluginNode[] = [];
 
-            // console.log("  get children");
+            // console.log("    get children");
             for (const child of this._node.children) {
                 children.push(FigmaPluginNode.get(child));
             }
@@ -339,7 +344,7 @@ export class FigmaPluginNode extends PluginNode {
             return null;
         }
 
-        // console.log("  get parent");
+        // console.log("    get parent");
         return FigmaPluginNode.get(parent);
     }
 
@@ -382,7 +387,7 @@ export class FigmaPluginNode extends PluginNode {
                     if (color) {
                         const containerIsDark = rgbToRelativeLuminance(color) <= this.darkTarget;
                         // eslint-disable-next-line max-len
-                        // console.log("handleManualDarkMode", this.node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
+                        // console.log("handleManualDarkMode", this._node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
                         const value = variantBooleanHelper(currentDarkMode, containerIsDark);
                         if (value) {
                             this._node.setProperties({
@@ -403,7 +408,7 @@ export class FigmaPluginNode extends PluginNode {
         if (value === "") {
             value = undefined;
         }
-        // console.log("    getPluginData", this.node.id, this.node.type, key, value);
+        // console.log("    getPluginData", this.debugInfo, key, value);
         return value;
     }
 

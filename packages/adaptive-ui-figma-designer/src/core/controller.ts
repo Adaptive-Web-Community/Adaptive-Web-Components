@@ -1,6 +1,9 @@
 import { pluginNodesToUINodes, PluginUINodeData } from "./model.js";
 import { PluginNode } from "./node.js";
 
+/**
+ * The state object that is passed back and forth between the plugin UI and Controller portions.
+ */
 export interface PluginUIState {
     selectedNodes: PluginUINodeData[];
 }
@@ -90,7 +93,7 @@ export abstract class Controller {
                 pluginNode.setAppliedDesignTokens(node.appliedDesignTokens);
 
                 // Paint all applied design tokens on the node
-                pluginNode.appliedDesignTokens.forEach((applied, target) => {
+                node.effectiveAppliedDesignTokens?.forEach((applied, target) => {
                     // console.log("applied design token eval", target, applied);
 
                     pluginNode.paint(target, applied);

@@ -150,6 +150,13 @@ export interface PluginUINodeData extends PluginNodeData {
     componentAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
 
     /**
+     * The resultant set of effective applied design tokens and values that need to be updated
+     * to the node. This will include the sum of applied design tokens inherited from the main
+     * component, applied directly to this node, or applied via style modules.
+     */
+    effectiveAppliedDesignTokens: AppliedDesignTokens;
+
+    /**
      * Children of this node that have design tokens set or applied.
      */
     children: PluginUINodeData[];
@@ -175,6 +182,7 @@ export const pluginNodesToUINodes = (
                 inheritedDesignTokens,
                 componentDesignTokens: node.componentDesignTokens,
                 componentAppliedDesignTokens: node.componentAppliedDesignTokens,
+                effectiveAppliedDesignTokens: new AppliedDesignTokens(),
                 children,
                 designTokens: node.localDesignTokens as DesignTokenValues,
                 appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,

@@ -15,6 +15,7 @@ export interface SerializableNodeData {
     componentAppliedDesignTokens?: string;
     appliedDesignTokens: string;
     additionalData: string;
+    effectiveAppliedDesignTokens: string;
 }
 
 /**
@@ -45,6 +46,7 @@ export function serializeUINodes(
                 componentAppliedDesignTokens: (node.componentAppliedDesignTokens as AppliedDesignTokens)?.serialize(),
                 appliedDesignTokens: node.appliedDesignTokens.serialize(),
                 additionalData: node.additionalData.serialize(),
+                effectiveAppliedDesignTokens: node.effectiveAppliedDesignTokens.serialize(),
             };
         }
     );
@@ -74,6 +76,8 @@ export function deserializeUINodes(
             appliedDesignTokens.deserialize(node.appliedDesignTokens);
             const additionalData = new AdditionalData();
             additionalData.deserialize(node.additionalData);
+            const effectiveAppliedDesignTokens = new AppliedDesignTokens();
+            effectiveAppliedDesignTokens.deserialize(node.effectiveAppliedDesignTokens);
 
             return {
                 id: node.id,
@@ -86,6 +90,7 @@ export function deserializeUINodes(
                 componentAppliedDesignTokens,
                 appliedDesignTokens,
                 additionalData,
+                effectiveAppliedDesignTokens,
             };
         }
     );
