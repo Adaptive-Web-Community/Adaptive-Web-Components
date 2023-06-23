@@ -1,8 +1,8 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import { PluginUINodeData } from "../core/model.js";
-import { AppliedDesignTokenItem, UIController, UIDesignTokenValue } from "./ui-controller.js";
+import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
+import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList, UIController, UIDesignTokenValue } from "./ui-controller.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
 TokenGlyph;
@@ -119,6 +119,61 @@ const template = html<App>`
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
+                <designer-drawer name="Style modules">
+                    <div slot="collapsed-content">
+                        ${repeat(
+                            (x) => new Array(...x.appliedStyleModules.entries()),
+                            html<[string, StyleModuleDisplay[]], App>`
+                                <p class="title inset">${(x) => x[0]}</p>
+                                <div class="swatch-stack">
+                                    ${repeat(
+                                        (x) => x[1],
+                                        html<StyleModuleDisplay, App>`
+                                            <div class="applied-style-module">
+                                                <designer-token-glyph
+                                                    orientation="horizontal"
+                                                    type=${TokenGlyphType.icon}
+                                                >
+                                                    ${(x) => x.title}
+                                                </designer-token-glyph>
+                                                <adaptive-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
+                                                    @click=${(x, c) => c.parentContext.parent.controller.removeStyleModule(x.name)}
+                                                >
+                                                    Detach
+                                                </adaptive-button>
+                                            </div>
+                                        `
+                                    )}
+                                </div>
+                            `
+                        )}
+                    </div>
+                    <div>
+                        ${repeat(
+                            (x) => new Array(...x.controller.getAvailableStyleModules().entries()),
+                            html<[string, StyleModuleDisplay[]], App>`
+                                <p class="title inset">${(x) => x[0]}</p>
+                                <div class="swatch-stack">
+                                    ${repeat(
+                                        (x) => x[1],
+                                        html<StyleModuleDisplay, App>`
+                                            <designer-token-glyph
+                                                orientation="horizontal"
+                                                type=${TokenGlyphType.icon}
+                                                interactive
+                                                @click=${(x, c) => c.parentContext.parent.controller.applyStyleModule(x.name)}
+                                            >
+                                                ${(x) => x.title}
+                                            </designer-token-glyph>
+                                        `
+                                    )}
+                                </div>
+                            `
+                        )}
+                    </div>
+                </designer-drawer>
                 ${when(
                     (x) => x.supportsColor,
                     html<App>`
@@ -319,12 +374,17 @@ const styles = css`
         padding: 0 calc(var(--design-unit) * 2px);
     }
 
-    .applied-design-token {
+    .applied-design-token,
+    .applied-style-module {
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
         padding-inline-start: calc(var(--design-unit) * 2px);
         margin-bottom: 8px;
+    }
+
+    .applied-style-module {
+        grid-template-columns: 1fr auto;
     }
 
     .applied-design-token > span {
@@ -406,6 +466,9 @@ export class App extends FASTElement {
     public supportsDesignSystem: boolean;
 
     @observable
+    public appliedStyleModules: StyleModuleDisplayList = new Map();
+
+    @observable
     public designTokenValues: UIDesignTokenValue[] | null;
 
     @observable
@@ -439,6 +502,8 @@ export class App extends FASTElement {
         ];
 
         this.supportsDesignSystem = true;
+
+        this.appliedStyleModules = this.controller.getAppliedStyleModules();
 
         this.designTokenValues = this.controller.getDesignTokenValues();
 

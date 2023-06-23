@@ -44,7 +44,7 @@ function propertyInteractive<T = string>(
 }
 
 function createElementStyleModules(styles: Styles): StyleModuleEvaluate[] {
-    const modules: StyleModuleEvaluate[] = Object.entries(styles.effectiveProperties).map(([key, value]) => {
+    const modules: StyleModuleEvaluate[] = new Array(...styles.effectiveProperties.entries()).map(([key, value]) => {
         const property = stylePropertyToCssProperty(key as StyleProperty);
         if (typeof value === "string" || value instanceof CSSDesignToken) {
             return propertySingle(property, value);

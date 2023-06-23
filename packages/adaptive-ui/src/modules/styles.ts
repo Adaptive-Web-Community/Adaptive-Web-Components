@@ -4,11 +4,21 @@ import { InteractiveTokenGroup } from "../types.js";
 import { StyleProperty } from "./types.js";
 
 /**
- * A collection of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
+ * An object of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
+ *
+ * @remarks
+ * The `Record` format is a convenience for manual authoring of style modules (instead of a `Map`).
  *
  * @public
  */
 export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>>;
+
+/**
+ * A `Map` of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
+ *
+ * @public
+ */
+export type StylePropertiesMap = Map<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>;
 
 /**
  * A modular definition of style properties, either an alias to another style module or a collection of style properties.
@@ -19,9 +29,9 @@ export class Styles {
     // An array of composed styles
     private _composed?: Styles[];
     // Individual properties, or additional to composed style properties
-    private _properties?: StyleProperties;
+    private _properties?: StylePropertiesMap;
     // Effective properties from composed styles and additional properties
-    private _composedProperties?: StyleProperties;
+    private _composedProperties?: StylePropertiesMap;
 
     private constructor(
         /**
@@ -34,7 +44,14 @@ export class Styles {
             this._composed = propertiesOrStyles;
             this.createEffectiveProperties();
         } else {
-            this._properties = propertiesOrStyles;
+            this._properties = new Map();
+            for (const k in propertiesOrStyles) {
+                const key: keyof StyleProperties = k as keyof StyleProperties;
+                const value = propertiesOrStyles[key];
+                if (value) {
+                    this._properties.set(key, value);
+                }
+            }
         }
 
         if (name) {
@@ -65,11 +82,11 @@ export class Styles {
     /**
      * The local properties or composition overrides.
      */
-    public get properties(): StyleProperties | undefined {
+    public get properties(): StylePropertiesMap | undefined {
         return this._properties;
     }
 
-    public set properties(properties: StyleProperties | undefined) {
+    public set properties(properties: StylePropertiesMap | undefined) {
         this._properties = properties;
         this.createEffectiveProperties();
     }
@@ -77,25 +94,28 @@ export class Styles {
     /**
      * Gets the full effective set of properties, from composed styles and local properties as applicable.
      */
-    public get effectiveProperties(): StyleProperties {
+    public get effectiveProperties(): StylePropertiesMap {
         if (this._composedProperties) {
             return this._composedProperties;
         } else if (this._properties) {
             return this._properties;
         } else {
-            return {};
+            return new Map();
         }
     }
 
     private createEffectiveProperties() {
         if (this._composed) {
-            const propsArray: Array<StyleProperties> = this._composed.map((styles: Styles) => styles.effectiveProperties);
-            const props: StyleProperties = Object.assign(
-                {},
-                ...propsArray,
-                this._properties
-            );
-            this._composedProperties = props;
+            const map: StylePropertiesMap = new Map();
+            this._composed.forEach((styles: Styles) => {
+                styles.effectiveProperties.forEach((value, target) => {
+                    map.set(target, value);
+                });
+            });
+            this._properties?.forEach((value, target) => {
+                map.set(target, value);
+            });
+            this._composedProperties = map;
         }
     }
 

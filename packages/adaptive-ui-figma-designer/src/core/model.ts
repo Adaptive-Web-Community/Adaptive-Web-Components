@@ -43,6 +43,37 @@ function mapReviver(key: string, value: any) {
 }
 
 /**
+ * An Array that can be serialized to JSON and deserialized with correct typing.
+ *
+ * @remarks
+ * This is mostly for consistency with SerializableMap.
+ */
+export class SerializableArray<T> extends Array<T> {
+    public deserialize(json: string | undefined): void {
+        if (this.length > 0) {
+            throw "There are already entries in this Array. Expected empty Array.";
+        }
+
+        if (json) {
+            try {
+                const array = JSON.parse(json as string) as Array<T>;
+                array.forEach((value) => {
+                    this.push(value);
+                });
+            } catch (e) {
+                // console.warn(e);
+                // Ignore, empty string
+            }
+        }
+    }
+
+    public serialize(): string {
+        const json = JSON.stringify(this);
+        return json;
+    }
+}
+
+/**
  * A Map that can be serialized to JSON and deserialized with correct typing.
  */
 export class SerializableMap<K, V> extends Map<K, V> {
@@ -81,6 +112,16 @@ export class DesignTokenValues extends SerializableMap<string, DesignTokenValue>
 export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
 
 /**
+ * Array of style modules applied to the style of a node.
+ */
+export class AppliedStyleModules extends SerializableArray<string> {}
+
+/**
+ * Readonly Array of style modules applied to the style of a node.
+ */
+export type ReadonlyAppliedStyleModules = ReadonlyArray<string>;
+
+/**
  * Map of design tokens applied to the style of a node. The key is the target style property.
  */
 export class AppliedDesignTokens extends SerializableMap<StyleProperty, AppliedDesignToken> {}
@@ -105,6 +146,11 @@ export interface PluginNodeData {
     designTokens: DesignTokenValues;
 
     /**
+     * Style modules applied to the node.
+     */
+    appliedStyleModules: AppliedStyleModules;
+
+    /**
      * Token + value pairs applied to the style of a node, evaluated from local and inherited design tokens.
      */
     appliedDesignTokens: AppliedDesignTokens;
@@ -125,6 +171,11 @@ export interface PluginUINodeData extends PluginNodeData {
     type: string;
 
     /**
+     * The node given name.
+     */
+    name: string;
+
+    /**
      * The {@link StyleProperty} the node supports.
      */
     supports: Array<StyleProperty>;
@@ -143,6 +194,11 @@ export interface PluginUINodeData extends PluginNodeData {
      * The design token values inherited by an instance node from the main component.
      */
     componentDesignTokens?: ReadonlyDesignTokenValues;
+
+    /**
+     * Applied style modules inherited by an instance node from the main component.
+     */
+    componentAppliedStyleModules?: ReadonlyAppliedStyleModules;
 
     /**
      * Applied design tokens inherited by an instance node from the main component.
@@ -177,14 +233,17 @@ export const pluginNodesToUINodes = (
             return {
                 id: node.id,
                 type: node.type,
+                name: node.name,
                 supports: node.supports,
                 additionalData: node.additionalData,
                 inheritedDesignTokens,
                 componentDesignTokens: node.componentDesignTokens,
+                componentAppliedStyleModules: node.componentAppliedStyleModules,
                 componentAppliedDesignTokens: node.componentAppliedDesignTokens,
                 effectiveAppliedDesignTokens: new AppliedDesignTokens(),
                 children,
                 designTokens: node.localDesignTokens as DesignTokenValues,
+                appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
                 appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,
             };
         }

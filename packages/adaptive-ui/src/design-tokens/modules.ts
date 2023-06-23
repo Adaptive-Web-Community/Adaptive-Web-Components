@@ -311,7 +311,6 @@ export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForegroundBySet(accentFillDiscernible, blackOrWhiteDiscernibleRecipe),
-        borderFill: "transparent", // TODO Remove "transparent" borders, this is a hack for the Explorer app.
     },
     "color.accent-fill-discernible-control",
 );
@@ -329,7 +328,6 @@ export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
 export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForegroundBySet(accentFillReadable, blackOrWhiteReadableRecipe),
-        borderFill: "transparent",
     },
     "color.accent-fill-readable-control",
 );
@@ -364,7 +362,6 @@ export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperti
  */
 export const accentForegroundReadableControlStyles: Styles = Styles.fromProperties(
     {
-        borderFill: "transparent",
         foregroundFill: accentStrokeReadable,
     },
     "color.accent-foreground-readable-control",
@@ -419,7 +416,6 @@ export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForegroundBySet(neutralFillDiscernible, blackOrWhiteDiscernibleRecipe),
-        borderFill: "transparent",
     },
     "color.neutral-fill-discernible-control",
 );
@@ -437,7 +433,6 @@ export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties
 export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForeground(neutralFillReadable, neutralStrokeStrongRecipe),
-        borderFill: "transparent",
     },
     "color.neutral-fill-readable-control",
 );
@@ -472,7 +467,6 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties(
     {
-        borderFill: "transparent",
         foregroundFill: neutralStrokeReadableRest,
     },
     "color.neutral-foreground-readable-control",
@@ -490,7 +484,6 @@ export const neutralForegroundReadableElementStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundStrongElementStyles: Styles = Styles.fromProperties(
     {
-        borderFill: "transparent",
         foregroundFill: neutralStrokeStrongRest,
     },
     "color.neutral-foreground-strong-element",

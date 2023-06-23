@@ -157,7 +157,7 @@ const textTokens: DesignTokenStore = [
     typeRampMinus2LineHeight,
 ];
 
-function nameToTitle(name: string): string {
+export function nameToTitle(name: string): string {
     const base = name.replace(/-/g, ' ');
     return base.charAt(0).toUpperCase() + base.substr(1);
 }
