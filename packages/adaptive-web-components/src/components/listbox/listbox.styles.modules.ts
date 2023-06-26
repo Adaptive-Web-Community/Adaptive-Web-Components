@@ -1,4 +1,5 @@
 import {
+    BorderFill,
     controlShapeStyles,
     itemContainerDensityStyles,
     neutralStrokeSubtleRest,
@@ -21,7 +22,7 @@ export const styleModules: StyleModules = [
                 itemContainerDensityStyles,
             ],
             {
-                borderFill: neutralStrokeSubtleRest,
+                ...BorderFill.all(neutralStrokeSubtleRest),
             },
         )
     ],

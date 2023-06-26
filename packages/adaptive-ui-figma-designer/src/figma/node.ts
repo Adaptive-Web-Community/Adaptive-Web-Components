@@ -281,15 +281,27 @@ export class FigmaPluginNode extends PluginNode {
                         isContainerNode,
                         isShapeNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
-                case StyleProperty.borderFill:
-                case StyleProperty.borderStyle:
-                case StyleProperty.borderThickness:
+                case StyleProperty.borderFillTop:
+                case StyleProperty.borderFillRight:
+                case StyleProperty.borderFillBottom:
+                case StyleProperty.borderFillLeft:
+                case StyleProperty.borderStyleTop:
+                case StyleProperty.borderStyleRight:
+                case StyleProperty.borderStyleBottom:
+                case StyleProperty.borderStyleLeft:
+                case StyleProperty.borderThicknessTop:
+                case StyleProperty.borderThicknessRight:
+                case StyleProperty.borderThicknessBottom:
+                case StyleProperty.borderThicknessLeft:
                     return [
                         isContainerNode,
                         isShapeNode,
                         isLineNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
-                case StyleProperty.cornerRadius:
+                case StyleProperty.cornerRadiusTopLeft:
+                case StyleProperty.cornerRadiusTopRight:
+                case StyleProperty.cornerRadiusBottomRight:
+                case StyleProperty.cornerRadiusBottomLeft:
                     return [
                         isContainerNode,
                         isShapeNode,
@@ -330,18 +342,30 @@ export class FigmaPluginNode extends PluginNode {
             });
         } else {
             switch (target) {
-                case StyleProperty.borderFill:
+                case StyleProperty.borderFillTop:
+                case StyleProperty.borderFillRight:
+                case StyleProperty.borderFillBottom:
+                case StyleProperty.borderFillLeft:
                 case StyleProperty.backgroundFill:
                 case StyleProperty.foregroundFill:
                     this.paintColor(target, data);
                     break;
-                case StyleProperty.borderStyle:
+                case StyleProperty.borderStyleTop:
+                case StyleProperty.borderStyleRight:
+                case StyleProperty.borderStyleBottom:
+                case StyleProperty.borderStyleLeft:
                     // Ignore for now, "solid" only
                     break;
-                case StyleProperty.borderThickness:
+                case StyleProperty.borderThicknessTop:
+                case StyleProperty.borderThicknessRight:
+                case StyleProperty.borderThicknessBottom:
+                case StyleProperty.borderThicknessLeft:
                     this.paintStrokeWidth(data);
                     break;
-                case StyleProperty.cornerRadius:
+                case StyleProperty.cornerRadiusTopLeft:
+                case StyleProperty.cornerRadiusTopRight:
+                case StyleProperty.cornerRadiusBottomRight:
+                case StyleProperty.cornerRadiusBottomLeft:
                     this.paintCornerRadius(data);
                     break;
                 case StyleProperty.fontFamily:
@@ -368,6 +392,9 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.fontWeight:
                     // Ignore, but don't throw an error.
                     break;
+                case StyleProperty.fontVariationSettings:
+                    // Ignore, but don't throw an error.
+                    break;
                 case StyleProperty.lineHeight:
                     if (isTextNode(this._node)) {
                         const textNode = this._node as TextNode;
@@ -378,6 +405,21 @@ export class FigmaPluginNode extends PluginNode {
                             };
                         });
                     }
+                    break;
+                case StyleProperty.paddingTop:
+                    (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    break;
+                case StyleProperty.paddingRight:
+                    (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    break;
+                case StyleProperty.paddingBottom:
+                    (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    break;
+                case StyleProperty.paddingLeft:
+                    (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    break;
+                case StyleProperty.gap:
+                    (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(data.value); // Removes unit, so assumes px
                     break;
                 default:
                     throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(data)}`);
@@ -562,7 +604,8 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.foregroundFill:
                     (this._node as MinimalFillsMixin).fills = [paint];
                     break;
-                case StyleProperty.borderFill:
+                case StyleProperty.borderFillTop:
+                    // TODO: Figma only supports on border color, though it can be hacked using inner shadow.
                     (this._node as MinimalStrokesMixin).strokes = [paint];
                     break;
             }

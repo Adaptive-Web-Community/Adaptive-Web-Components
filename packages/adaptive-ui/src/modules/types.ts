@@ -118,10 +118,22 @@ export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDef
 export const StyleProperty = {
     backgroundFill: "backgroundFill",
     foregroundFill: "foregroundFill",
-    borderFill: "borderFill",
-    borderThickness: "borderThickness",
-    borderStyle: "borderStyle",
-    cornerRadius: "cornerRadius",
+    borderFillTop: "borderFillTop",
+    borderFillRight: "borderFillRight",
+    borderFillBottom: "borderFillBottom",
+    borderFillLeft: "borderFillLeft",
+    borderThicknessTop: "borderThicknessTop",
+    borderThicknessRight: "borderThicknessRight",
+    borderThicknessBottom: "borderThicknessBottom",
+    borderThicknessLeft: "borderThicknessLeft",
+    borderStyleTop: "borderStyleTop",
+    borderStyleRight: "borderStyleRight",
+    borderStyleBottom: "borderStyleBottom",
+    borderStyleLeft: "borderStyleLeft",
+    cornerRadiusTopLeft: "cornerRadiusTopLeft",
+    cornerRadiusTopRight: "cornerRadiusTopRight",
+    cornerRadiusBottomRight: "cornerRadiusBottomRight",
+    cornerRadiusBottomLeft: "cornerRadiusBottomLeft",
     fontFamily: "fontFamily",
     fontSize: "fontSize",
     fontWeight: "fontWeight",
@@ -129,13 +141,41 @@ export const StyleProperty = {
     fontVariationSettings: "fontVariationSettings",
     letterSpacing: "letterSpacing",
     lineHeight: "lineHeight",
-    padding: "padding",
+    paddingTop: "paddingTop",
+    paddingRight: "paddingRight",
+    paddingBottom: "paddingBottom",
+    paddingLeft: "paddingLeft",
     gap: "gap",
     height: "height",
     width: "width",
     layoutDirection: "layoutDirection",
     opacity: "opacity",
 } as const;
+
+/**
+ * @public
+ */
+export const stylePropertyBorderFillAll = [StyleProperty.borderFillTop, StyleProperty.borderFillRight, StyleProperty.borderFillBottom, StyleProperty.borderFillLeft];
+
+/**
+ * @public
+ */
+export const stylePropertyBorderThicknessAll = [StyleProperty.borderThicknessTop, StyleProperty.borderThicknessRight, StyleProperty.borderThicknessBottom, StyleProperty.borderThicknessLeft];
+
+/**
+ * @public
+ */
+export const stylePropertyBorderStyleAll = [StyleProperty.borderStyleTop, StyleProperty.borderStyleRight, StyleProperty.borderStyleBottom, StyleProperty.borderStyleLeft];
+
+/**
+ * @public
+ */
+export const stylePropertyCornerRadiusAll = [StyleProperty.cornerRadiusTopLeft, StyleProperty.cornerRadiusTopRight, StyleProperty.cornerRadiusBottomRight, StyleProperty.cornerRadiusBottomLeft];
+
+/**
+ * @public
+ */
+export const stylePropertyPaddingAll = [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft];
 
 /**
  * The style property, like background color or border thickness.

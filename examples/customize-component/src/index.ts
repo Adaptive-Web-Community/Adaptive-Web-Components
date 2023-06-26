@@ -2,6 +2,7 @@ import {
     accentFillReadableControlStyles,
     accentStrokeReadable,
     accentStrokeReadableRecipe,
+    BorderFill,
     createForegroundSet,
     neutralFillSubtle,
     Styles,
@@ -36,7 +37,7 @@ AdaptiveDesignSystem.defineComponents({
 // Define a custom style module.
 const accentOutlineReadableControlStyles: Styles = Styles.fromProperties({
     backgroundFill: neutralFillSubtle,
-    borderFill: accentStrokeReadable,
+    ...BorderFill.all(accentStrokeReadable),
     foregroundFill: createForegroundSet(accentStrokeReadableRecipe, "rest", neutralFillSubtle),
 });
 

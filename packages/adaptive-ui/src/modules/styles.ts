@@ -4,6 +4,13 @@ import { InteractiveTokenGroup } from "../types.js";
 import { StyleProperty } from "./types.js";
 
 /**
+ * Supported values for a style property.
+ *
+ * @public
+ */
+export type StyleValue = CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string;
+
+/**
  * An object of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
  *
  * @remarks
@@ -11,14 +18,92 @@ import { StyleProperty } from "./types.js";
  *
  * @public
  */
-export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>>;
+export type StyleProperties = Partial<Record<StyleProperty, StyleValue>>;
 
 /**
  * A `Map` of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
  *
  * @public
  */
-export type StylePropertiesMap = Map<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>;
+export type StylePropertiesMap = Map<StyleProperty, StyleValue>;
+
+/**
+ * @public
+ */
+export const BorderFill = {
+    all: function(value: StyleValue): StyleProperties {
+        return {
+            borderFillTop: value,
+            borderFillRight: value,
+            borderFillBottom: value,
+            borderFillLeft: value,
+        };
+    },
+}
+
+/**
+ * @public
+ */
+export const BorderThickness = {
+    all: function(value: StyleValue): StyleProperties {
+        return {
+            borderThicknessTop: value,
+            borderThicknessRight: value,
+            borderThicknessBottom: value,
+            borderThicknessLeft: value,
+        };
+    },
+}
+
+/**
+ * @public
+ */
+export const BorderStyle = {
+    all: function(value: StyleValue): StyleProperties {
+        return {
+            borderStyleTop: value,
+            borderStyleRight: value,
+            borderStyleBottom: value,
+            borderStyleLeft: value,
+        };
+    },
+}
+
+/**
+ * @public
+ */
+export const CornerRadius = {
+    all: function(value: StyleValue): StyleProperties {
+        return {
+            cornerRadiusTopLeft: value,
+            cornerRadiusTopRight: value,
+            cornerRadiusBottomRight: value,
+            cornerRadiusBottomLeft: value,
+        };
+    },
+}
+
+/**
+ * @public
+ */
+export const Padding = {
+    all: function(value: StyleValue): StyleProperties {
+        return {
+            paddingTop: value,
+            paddingRight: value,
+            paddingBottom: value,
+            paddingLeft: value,
+        };
+    },
+    verticalHorizontal: function(valueVertical: StyleValue, valueHorizontal: StyleValue): StyleProperties {
+        return {
+            paddingTop: valueVertical,
+            paddingRight: valueHorizontal,
+            paddingBottom: valueVertical,
+            paddingLeft: valueHorizontal,
+        };
+    },
+}
 
 /**
  * A modular definition of style properties, either an alias to another style module or a collection of style properties.

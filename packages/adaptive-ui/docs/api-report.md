@@ -348,6 +348,21 @@ export const bodyFont: TypedCSSDesignToken_2<string>;
 // @public (undocumented)
 export const bodyFontFamily: TypedCSSDesignToken_2<string>;
 
+// @public (undocumented)
+export const BorderFill: {
+    all: (value: StyleValue) => StyleProperties;
+};
+
+// @public (undocumented)
+export const BorderStyle: {
+    all: (value: StyleValue) => StyleProperties;
+};
+
+// @public (undocumented)
+export const BorderThickness: {
+    all: (value: StyleValue) => StyleProperties;
+};
+
 // @public
 export interface ColorRecipe<T = Swatch> {
     evaluate(resolver: DesignTokenResolver, reference?: Swatch): T;
@@ -400,6 +415,11 @@ export const controlDensityStyles: Styles;
 
 // @public
 export const controlShapeStyles: Styles;
+
+// @public (undocumented)
+export const CornerRadius: {
+    all: (value: StyleValue) => StyleProperties;
+};
 
 // @public (undocumented)
 export const cornerRadiusControl: TypedCSSDesignToken_2<string>;
@@ -1358,6 +1378,12 @@ export const neutralStrokeSubtleRest: TypedCSSDesignToken<Swatch>;
 // @public @deprecated (undocumented)
 export const neutralStrokeSubtleRestDelta: DesignToken<number>;
 
+// @public (undocumented)
+export const Padding: {
+    all: (value: StyleValue) => StyleProperties;
+    verticalHorizontal: (valueVertical: StyleValue, valueHorizontal: StyleValue) => StyleProperties;
+};
+
 // @public
 export interface Palette<T extends Swatch = Swatch> {
     closestIndexOf(reference: RelativeLuminance): number;
@@ -1523,19 +1549,31 @@ export interface StyleModuleTarget {
 }
 
 // @public
-export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>>;
+export type StyleProperties = Partial<Record<StyleProperty, StyleValue>>;
 
 // @public
-export type StylePropertiesMap = Map<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>;
+export type StylePropertiesMap = Map<StyleProperty, StyleValue>;
 
 // @public
 export const StyleProperty: {
     readonly backgroundFill: "backgroundFill";
     readonly foregroundFill: "foregroundFill";
-    readonly borderFill: "borderFill";
-    readonly borderThickness: "borderThickness";
-    readonly borderStyle: "borderStyle";
-    readonly cornerRadius: "cornerRadius";
+    readonly borderFillTop: "borderFillTop";
+    readonly borderFillRight: "borderFillRight";
+    readonly borderFillBottom: "borderFillBottom";
+    readonly borderFillLeft: "borderFillLeft";
+    readonly borderThicknessTop: "borderThicknessTop";
+    readonly borderThicknessRight: "borderThicknessRight";
+    readonly borderThicknessBottom: "borderThicknessBottom";
+    readonly borderThicknessLeft: "borderThicknessLeft";
+    readonly borderStyleTop: "borderStyleTop";
+    readonly borderStyleRight: "borderStyleRight";
+    readonly borderStyleBottom: "borderStyleBottom";
+    readonly borderStyleLeft: "borderStyleLeft";
+    readonly cornerRadiusTopLeft: "cornerRadiusTopLeft";
+    readonly cornerRadiusTopRight: "cornerRadiusTopRight";
+    readonly cornerRadiusBottomRight: "cornerRadiusBottomRight";
+    readonly cornerRadiusBottomLeft: "cornerRadiusBottomLeft";
     readonly fontFamily: "fontFamily";
     readonly fontSize: "fontSize";
     readonly fontWeight: "fontWeight";
@@ -1543,7 +1581,10 @@ export const StyleProperty: {
     readonly fontVariationSettings: "fontVariationSettings";
     readonly letterSpacing: "letterSpacing";
     readonly lineHeight: "lineHeight";
-    readonly padding: "padding";
+    readonly paddingTop: "paddingTop";
+    readonly paddingRight: "paddingRight";
+    readonly paddingBottom: "paddingBottom";
+    readonly paddingLeft: "paddingLeft";
     readonly gap: "gap";
     readonly height: "height";
     readonly width: "width";
@@ -1553,6 +1594,21 @@ export const StyleProperty: {
 
 // @public
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
+
+// @public (undocumented)
+export const stylePropertyBorderFillAll: ("borderFillTop" | "borderFillRight" | "borderFillBottom" | "borderFillLeft")[];
+
+// @public (undocumented)
+export const stylePropertyBorderStyleAll: ("borderStyleTop" | "borderStyleRight" | "borderStyleBottom" | "borderStyleLeft")[];
+
+// @public (undocumented)
+export const stylePropertyBorderThicknessAll: ("borderThicknessTop" | "borderThicknessRight" | "borderThicknessBottom" | "borderThicknessLeft")[];
+
+// @public (undocumented)
+export const stylePropertyCornerRadiusAll: ("cornerRadiusTopLeft" | "cornerRadiusTopRight" | "cornerRadiusBottomRight" | "cornerRadiusBottomLeft")[];
+
+// @public (undocumented)
+export const stylePropertyPaddingAll: ("paddingBottom" | "paddingLeft" | "paddingRight" | "paddingTop")[];
 
 // @public
 export class Styles {
@@ -1569,6 +1625,9 @@ export class Styles {
     // (undocumented)
     static Shared: Map<string, Styles>;
 }
+
+// @public
+export type StyleValue = CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string;
 
 // @public
 export interface Swatch extends RelativeLuminance {
