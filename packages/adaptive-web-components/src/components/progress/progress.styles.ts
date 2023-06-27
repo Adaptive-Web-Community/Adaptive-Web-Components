@@ -46,21 +46,14 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         height: calc(${designUnit} * 1px);
-        border-radius: calc(${designUnit} * 1px);
     }
 
     .determinate {
-        border-radius: calc(${designUnit} * 1px);
         transition: all 0.2s ease-in-out;
-    }
-
-    .indeterminate {
-        border-radius: calc(${designUnit} * 1px);
     }
 
     .indeterminate .indicator {
         animation: indeterminate 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        border-radius: calc(${designUnit} * 1px);
     }
 
     @keyframes indeterminate {
