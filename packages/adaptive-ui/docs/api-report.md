@@ -384,7 +384,7 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
 }
 
 // @public
-export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n";
+export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n\n    :host {\n        box-sizing: border-box;\n    }\n\n    *, *:before, *:after {\n        box-sizing: inherit;\n    }\n";
 
 // @public
 export type ComponentConditions = Record<string, string>;

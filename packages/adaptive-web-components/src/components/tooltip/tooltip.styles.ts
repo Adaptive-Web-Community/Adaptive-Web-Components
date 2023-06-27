@@ -29,7 +29,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         position: fixed;
-        box-sizing: border-box;
         height: fit-content;
         width: fit-content;
         padding: 4px 12px;

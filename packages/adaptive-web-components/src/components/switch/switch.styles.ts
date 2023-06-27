@@ -54,7 +54,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .switch {
         position: relative;
-        box-sizing: border-box;
         width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
         height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
         border-radius: calc(${heightNumber} * 1px) !important;

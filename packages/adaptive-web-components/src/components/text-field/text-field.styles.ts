@@ -67,7 +67,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .root {
         /*position: relative;*/
-        box-sizing: border-box;
         fill: currentcolor;
     }
 

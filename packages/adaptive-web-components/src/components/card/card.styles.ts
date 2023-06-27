@@ -24,7 +24,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         height: 100%;
         width: 100%;
         background: ${layerFillInteractiveRest};

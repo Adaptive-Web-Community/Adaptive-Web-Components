@@ -125,7 +125,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         --col-width: minmax(20px, auto);
-        box-sizing: border-box;
         overflow: visible;
         fill: currentcolor;
     }

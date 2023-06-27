@@ -66,7 +66,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control {
-        box-sizing: border-box;
         width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
         fill: currentcolor;

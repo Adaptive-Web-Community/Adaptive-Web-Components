@@ -7,7 +7,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         width: 100%;
         display: flex;
         flex-direction: column;

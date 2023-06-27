@@ -111,7 +111,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control {
-        box-sizing: border-box;
         fill: currentcolor;
     }
 
@@ -121,7 +120,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .expand-collapse-button {
-        box-sizing: border-box;
         width: var(--expand-collapse-button-size);
         height: var(--expand-collapse-button-size);
         padding: 6px;

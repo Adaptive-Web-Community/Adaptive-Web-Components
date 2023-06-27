@@ -14,7 +14,6 @@ import { heightNumber } from "../../styles/index.js";
 export const templateStyles: ElementStyles = css`
     :host {
         display: grid;
-        box-sizing: border-box;
         width: 100%;
     }
 

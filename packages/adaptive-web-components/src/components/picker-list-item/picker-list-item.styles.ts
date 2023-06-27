@@ -26,7 +26,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         fill: currentcolor;
     }
 

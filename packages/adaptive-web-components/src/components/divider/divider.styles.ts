@@ -18,8 +18,4 @@ export const templateStyles: ElementStyles = css`
  * Visual styles including Adaptive UI tokens.
  * @public
  */
-export const aestheticStyles: ElementStyles = css`
-    :host {
-        box-sizing: content-box;
-    }
-`;
+export const aestheticStyles: ElementStyles = css``;

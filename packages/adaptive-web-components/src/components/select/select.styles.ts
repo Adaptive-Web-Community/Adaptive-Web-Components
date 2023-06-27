@@ -51,7 +51,6 @@ export const templateStyles: ElementStyles = css`
     }
 
     .listbox {
-        box-sizing: border-box;
         z-index: 1;
         display: flex;
         flex-direction: column;
@@ -79,7 +78,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         fill: currentcolor;
     }
 
@@ -91,10 +89,6 @@ export const aestheticStyles: ElementStyles = css`
     :host(:focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
     } */
-
-    .control {
-        box-sizing: border-box;
-    }
 
     .listbox {
         max-height: calc((var(--size, 0) * ${heightNumber} + (${designUnit} * ${strokeWidth} * 2)) * 1px);

@@ -46,10 +46,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        box-sizing: border-box;
-    }
-
     .control {
         white-space: nowrap;
         fill: currentcolor;
