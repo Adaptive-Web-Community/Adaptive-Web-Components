@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "move tokens to their own export path",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "32497422+KingOfTac@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
