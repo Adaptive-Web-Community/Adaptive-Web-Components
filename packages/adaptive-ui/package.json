@@ -50,6 +50,10 @@
         ".": {
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
+        },
+        "./reference": {
+            "types": "./dist/esm/design-tokens/index.js",
+            "default": "./dist/dts/design-tokens/index.d.ts"
         }
     }
 }

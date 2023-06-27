@@ -498,7 +498,7 @@ export const accentFillReadable: InteractiveTokenGroup<Swatch> = {
 
 const foregroundOnAccentFillReadableName = "foreground-on-accent-fill-readable";
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadableRecipe = createRecipeInteractive(foregroundOnAccentFillReadableName,
     (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
@@ -513,19 +513,19 @@ export const foregroundOnAccentFillReadableRecipe = createRecipeInteractive(fore
 
 const foregroundOnAccentFillReadableSet = createSet(foregroundOnAccentFillReadableRecipe);
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadableRest = createStateToken(foregroundOnAccentFillReadableSet, "rest");
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadableHover = createStateToken(foregroundOnAccentFillReadableSet, "hover");
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadableActive = createStateToken(foregroundOnAccentFillReadableSet, "active");
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadableFocus = createStateToken(foregroundOnAccentFillReadableSet, "focus");
 
-/** @public @deprecated This functionality has been migrated to style modules */
+/** @public */
 export const foregroundOnAccentFillReadable: InteractiveTokenGroup<Swatch> = {
     name: foregroundOnAccentFillReadableName,
     rest: foregroundOnAccentFillReadableRest,
