@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "move type ramp tokens to reference path",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "32497422+KingOfTac@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
