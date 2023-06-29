@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Update styles to normalize to `border-box` sizing",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

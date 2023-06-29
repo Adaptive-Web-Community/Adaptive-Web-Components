@@ -41,7 +41,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
         max-width: calc(${heightNumber} * 1px);
     }

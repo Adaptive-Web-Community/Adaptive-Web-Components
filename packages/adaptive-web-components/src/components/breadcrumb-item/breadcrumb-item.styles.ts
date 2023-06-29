@@ -45,7 +45,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .control {
-        box-sizing: border-box;
         text-decoration: none;
         fill: currentcolor;
     }

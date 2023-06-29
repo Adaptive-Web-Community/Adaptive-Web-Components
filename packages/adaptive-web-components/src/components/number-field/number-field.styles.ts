@@ -80,7 +80,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .root {
-        box-sizing: border-box;
         fill: currentcolor;
     }
 

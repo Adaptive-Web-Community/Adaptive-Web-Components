@@ -48,7 +48,6 @@ export const templateStyles: ElementStyles = css`
     }
 
     .listbox {
-        box-sizing: border-box;
         z-index: 1;
         display: flex;
         flex-direction: column;
@@ -77,7 +76,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        box-sizing: border-box;
         min-width: 250px;
         fill: currentcolor;
     }
@@ -92,7 +90,6 @@ export const aestheticStyles: ElementStyles = css`
     } */
 
     .control {
-        box-sizing: border-box;
         min-height: 100%;
         width: 100%;
     }

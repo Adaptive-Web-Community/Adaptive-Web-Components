@@ -9,4 +9,12 @@ export const componentBaseStyles = /* css */`
     :host([hidden]) {
         display: none !important;
     }
+
+    :host {
+        box-sizing: border-box;
+    }
+
+    *, *:before, *:after {
+        box-sizing: inherit;
+    }
 `;

@@ -62,7 +62,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .control {
         /* position: relative; */
-        box-sizing: border-box;
         height: calc(${heightNumber} * 2px);
         width: 100%;
     }
