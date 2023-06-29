@@ -88,7 +88,9 @@ export const createForegroundSet = (
     ): TypedCSSDesignToken<Swatch> {
         return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
-                resolve(foregroundRecipe).evaluate(resolve, resolve(background[state]))[foregroundState]
+                resolve(foregroundRecipe).evaluate(resolve, {
+                    reference: resolve(background[state])
+                })[foregroundState]
         );
     }
 

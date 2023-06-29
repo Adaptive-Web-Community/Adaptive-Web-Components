@@ -1,16 +1,15 @@
-import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { Recipe, RecipeEvaluate } from "../recipes.js";
 
 /**
  * A recipe that evaluates to an elevation treatment, commonly, but not limited to, a box shadow.
  *
  * @public
  */
-export interface ElevationRecipe {
-    /**
-     * Evaluate an elevation treatment.
-     *
-     * @param resolver - A function that resolves design tokens
-     * @param size - The size of the elevation
-     */
-    evaluate(resolver: DesignTokenResolver, size: number): string;
-}
+export type ElevationRecipe = Recipe<number, string>;
+
+/**
+ * The type of the `evaluate` function for {@link ElevationRecipe}.
+ *
+ * @public
+ */
+export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
