@@ -145,7 +145,7 @@ export class StyleExample extends FASTElement {
             }
         }
 
-        const borderValue = this.styles?.effectiveProperties?.get(StyleProperty.borderFill);
+        const borderValue = this.styles?.effectiveProperties?.get(StyleProperty.borderFillTop);
         if (borderValue) {
             if (typeof borderValue === "string") {
                 // ignore for now

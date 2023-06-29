@@ -13,14 +13,38 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "background-color";
         case StyleProperty.foregroundFill:
             return "color";
-        case StyleProperty.borderFill:
-            return "border-color";
-        case StyleProperty.borderThickness:
-            return "border-width";
-        case StyleProperty.borderStyle:
-            return "border-style";
-        case StyleProperty.cornerRadius:
-            return "border-radius";
+        case StyleProperty.borderFillTop:
+            return "border-top-color";
+        case StyleProperty.borderFillRight:
+            return "border-right-color";
+        case StyleProperty.borderFillBottom:
+            return "border-bottom-color";
+        case StyleProperty.borderFillLeft:
+            return "border-left-color";
+        case StyleProperty.borderThicknessTop:
+            return "border-top-width";
+        case StyleProperty.borderThicknessRight:
+            return "border-right-width";
+        case StyleProperty.borderThicknessBottom:
+            return "border-bottom-width";
+        case StyleProperty.borderThicknessLeft:
+            return "border-left-width";
+        case StyleProperty.borderStyleTop:
+            return "border-top-style";
+        case StyleProperty.borderStyleRight:
+            return "border-right-style";
+        case StyleProperty.borderStyleBottom:
+            return "border-bottom-style";
+        case StyleProperty.borderStyleLeft:
+            return "border-left-style";
+        case StyleProperty.cornerRadiusTopLeft:
+            return "border-top-left-radius";
+        case StyleProperty.cornerRadiusTopRight:
+            return "border-top-right-radius";
+        case StyleProperty.cornerRadiusBottomRight:
+            return "border-bottom-right-radius";
+        case StyleProperty.cornerRadiusBottomLeft:
+            return "border-bottom-left-radius";
         case StyleProperty.fontFamily:
             return "font-family";
         case StyleProperty.fontSize:
@@ -35,8 +59,14 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "letter-spacing";
         case StyleProperty.lineHeight:
             return "line-height";
-        case StyleProperty.padding:
-            return "padding";
+        case StyleProperty.paddingTop:
+            return "padding-top";
+        case StyleProperty.paddingRight:
+            return "padding-right";
+        case StyleProperty.paddingBottom:
+            return "padding-bottom";
+        case StyleProperty.paddingLeft:
+            return "padding-left";
         case StyleProperty.gap:
             return "gap";
         case StyleProperty.height:

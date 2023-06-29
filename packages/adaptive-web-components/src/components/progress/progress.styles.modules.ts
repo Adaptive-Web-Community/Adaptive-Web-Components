@@ -1,5 +1,7 @@
 import {
     accentFillReadableRest,
+    CornerRadius,
+    designUnitDimension,
     neutralFillSubtleRest,
     StyleModules,
     Styles
@@ -16,7 +18,8 @@ export const styleModules: StyleModules = [
         {
         },
         Styles.fromProperties({
-            backgroundFill: neutralFillSubtleRest
+            backgroundFill: neutralFillSubtleRest,
+            ...CornerRadius.all(designUnitDimension),
         })
     ],
     [
@@ -24,7 +27,8 @@ export const styleModules: StyleModules = [
             part: ProgressAnatomy.parts.indicator
         },
         Styles.fromProperties({
-            backgroundFill: accentFillReadableRest
+            backgroundFill: accentFillReadableRest,
+            ...CornerRadius.all(designUnitDimension),
         })
     ],
 ];

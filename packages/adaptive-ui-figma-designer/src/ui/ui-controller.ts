@@ -1,4 +1,5 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { calc } from '@csstools/css-calc';
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import { CSSDesignToken, type DesignToken, type StaticDesignTokenValue, type ValuesOf } from "@microsoft/fast-foundation";
@@ -422,8 +423,14 @@ export class UIController {
         let value: any = this.getDesignTokenValue(node, token);
         if (typeof (value as any).toColorString === "function") {
             value = (value as any).toColorString();
+        } else if (typeof value === "string") {
+            if (value.startsWith("calc")) {
+                const ret = calc(value as string);
+                console.log(`    calc ${value} returns ${ret}`);
+                value = ret;
+            }
         }
-        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, `(from ${source})`);
+        console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, `(from ${source})`);
 
         const applied = new AppliedDesignToken(token.name, (value as unknown) as string);
 
@@ -434,13 +441,13 @@ export class UIController {
         }
 
         // TODO: The fillColor context isn't working yet, so only use it for "fixed" layer backgrounds for now.
-        if (target === StyleProperty.backgroundFill && token.name.startsWith("layer-fill-fixed")) {
+        if (target === StyleProperty.backgroundFill && applied.tokenID.startsWith("layer-fill-fixed")) {
             // console.log(`      Fill style property, setting '${TOOL_FILL_COLOR_TOKEN}' design token`);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const def = this._designTokenRegistry.get(TOOL_FILL_COLOR_TOKEN)!;
             const element = this.getElementForNode(node);
-            node.designTokens.set(TOOL_FILL_COLOR_TOKEN, { value });
-            this.setDesignTokenForElement(element, def.token, value);
+            node.designTokens.set(TOOL_FILL_COLOR_TOKEN, { value: applied.value });
+            this.setDesignTokenForElement(element, def.token, applied.value);
 
             // TODO: Optimize this, currently it will process children twice.
             if (node.children.length > 0) {
@@ -501,7 +508,7 @@ export class UIController {
                     }
                 } else {
                     const num = Number.parseFloat((value as unknown) as string);
-                    if (!Number.isNaN(num)) {
+                    if (!Number.isNaN(num) && num.toString() === value) {
                         // console.log("    setting DesignToken value (number)", token.name, value);
                         token.setValueFor(
                             nodeElement,

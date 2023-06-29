@@ -188,7 +188,7 @@ const template = html<App>`
                                 ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fill")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.borderFill,
+                                        StyleProperty.borderFillTop,
                                         "Stroke",
                                         "stack",
                                         TokenGlyphType.borderSwatch
@@ -208,7 +208,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.borderThickness,
+                                        StyleProperty.borderThicknessTop,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -227,7 +227,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.cornerRadius,
+                                        StyleProperty.cornerRadiusTopLeft,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -484,17 +484,17 @@ export class App extends FASTElement {
                 (node) =>
                     node.supports.includes(StyleProperty.backgroundFill) ||
                     node.supports.includes(StyleProperty.foregroundFill) ||
-                    node.supports.includes(StyleProperty.borderFill)
+                    node.supports.includes(StyleProperty.borderFillTop)
             ) || false;
-        this.supportsStrokeWidth = this.controller.supports(StyleProperty.borderThickness);
-        this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadius);
+        this.supportsStrokeWidth = this.controller.supports(StyleProperty.borderThicknessTop);
+        this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
         this.backgroundTokens = this.controller.appliedDesignTokens(StyleProperty.backgroundFill);
         this.foregroundTokens = this.controller.appliedDesignTokens(StyleProperty.foregroundFill);
-        this.strokeTokens = this.controller.appliedDesignTokens(StyleProperty.borderFill);
-        this.strokeWidthTokens = this.controller.appliedDesignTokens(StyleProperty.borderThickness);
-        this.cornerRadiusTokens = this.controller.appliedDesignTokens(StyleProperty.cornerRadius);
+        this.strokeTokens = this.controller.appliedDesignTokens(StyleProperty.borderFillTop);
+        this.strokeWidthTokens = this.controller.appliedDesignTokens(StyleProperty.borderThicknessTop);
+        this.cornerRadiusTokens = this.controller.appliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
         this.textTokens = [
             ...this.controller.appliedDesignTokens(StyleProperty.fontFamily),
             ...this.controller.appliedDesignTokens(StyleProperty.fontSize),

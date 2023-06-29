@@ -43,6 +43,9 @@
         "@microsoft/fast-foundation": "3.0.0-alpha.27"
     },
     "devDependencies": {
+        "@csstools/css-calc": "^1.1.1",
+        "@csstools/css-parser-algorithms": "^2.2.0",
+        "@csstools/css-tokenizer": "^2.1.1",
         "@figma/plugin-typings": "^1.58.0",
         "concurrently": "^7.6.0",
         "esbuild": "^0.17.10",

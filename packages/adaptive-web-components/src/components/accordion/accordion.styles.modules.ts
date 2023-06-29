@@ -1,6 +1,9 @@
 import {
+    neutralStrokeSubtleRest,
     plainTextStyles,
+    strokeThickness,
     StyleModules,
+    Styles,
 } from "@adaptive-web/adaptive-ui";
 
 /**
@@ -12,6 +15,15 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        plainTextStyles
+        Styles.compose(
+            [
+                plainTextStyles
+            ],
+            {
+                borderFillTop: neutralStrokeSubtleRest,
+                borderStyleTop: "solid",
+                borderThicknessTop: strokeThickness,
+            }
+        ),
     ],
 ];

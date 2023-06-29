@@ -1,9 +1,8 @@
-import { css } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
 import type { InteractiveSet, InteractiveTokenGroup } from "../types.js";
-import { StyleProperties, Styles } from "../modules/styles.js";
+import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Padding, StyleProperties, Styles } from "../modules/styles.js";
 import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
 import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
 import {
@@ -170,10 +169,10 @@ function backgroundAndForegroundBySet(
  */
 export const controlShapeStyles: Styles = Styles.fromProperties(
     {
-        borderThickness: strokeThickness,
-        borderStyle: "solid",
-        borderFill: "transparent",
-        cornerRadius: cornerRadiusControl,
+        ...BorderThickness.all(strokeThickness),
+        ...BorderStyle.all("solid"),
+        ...BorderFill.all("transparent"),
+        ...CornerRadius.all(cornerRadiusControl),
     },
     "shape.control",
 );
@@ -187,10 +186,10 @@ export const controlShapeStyles: Styles = Styles.fromProperties(
  */
 export const layerShapeStyles: Styles = Styles.fromProperties(
     {
-        borderThickness: strokeThickness,
-        borderStyle: "solid",
-        borderFill: "transparent",
-        cornerRadius: cornerRadiusLayer,
+        ...BorderThickness.all(strokeThickness),
+        ...BorderStyle.all("solid"),
+        ...BorderFill.all("transparent"),
+        ...CornerRadius.all(cornerRadiusLayer),
     },
     "shape.layer",
 );
@@ -206,7 +205,7 @@ export const layerShapeStyles: Styles = Styles.fromProperties(
  */
 export const controlDensityStyles: Styles = Styles.fromProperties(
     {
-        padding: css.partial`${densityControl.verticalPadding} ${densityControl.horizontalPadding}`,
+        ...Padding.verticalHorizontal(densityControl.verticalPadding, densityControl.horizontalPadding),
         gap: densityControl.horizontalGap,
     },
     "density.control",
@@ -223,7 +222,10 @@ export const controlDensityStyles: Styles = Styles.fromProperties(
  */
 export const autofillOuterDensityStyles: Styles = Styles.fromProperties(
     {
-        padding: css.partial`0 ${densityControl.horizontalPadding}`,
+        paddingTop: "0",
+        paddingRight: densityControl.horizontalPadding,
+        paddingBottom: "0",
+        paddingLeft: densityControl.horizontalPadding,
         gap: densityControl.horizontalGap,
     },
     "density.autofill-outer",
@@ -240,7 +242,10 @@ export const autofillOuterDensityStyles: Styles = Styles.fromProperties(
  */
 export const autofillInnerDensityStyles: Styles = Styles.fromProperties(
     {
-        padding: css.partial`${densityControl.verticalPadding} 0`,
+        paddingTop: densityControl.verticalPadding,
+        paddingRight: "0",
+        paddingBottom: densityControl.verticalPadding,
+        paddingLeft: "0",
     },
     "density.autofill-inner",
 );
@@ -256,7 +261,7 @@ export const autofillInnerDensityStyles: Styles = Styles.fromProperties(
  */
 export const itemContainerDensityStyles: Styles = Styles.fromProperties(
     {
-        padding: css.partial`${densityItemContainer.verticalPadding} ${densityItemContainer.horizontalPadding}`,
+        ...Padding.verticalHorizontal(densityItemContainer.verticalPadding, densityItemContainer.horizontalPadding),
         gap: densityItemContainer.horizontalGap,
     },
     "density.item-container",
@@ -275,7 +280,7 @@ export const itemContainerDensityStyles: Styles = Styles.fromProperties(
 export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForeground(accentFillStealth, accentStrokeReadableRecipe),
-        borderFill: accentStrokeSafety,
+        ...BorderFill.all(accentStrokeSafety),
     },
     "color.accent-fill-stealth-control",
 );
@@ -293,7 +298,7 @@ export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
 export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForeground(accentFillSubtle, accentStrokeReadableRecipe),
-        borderFill: accentStrokeSubtle,
+        ...BorderFill.all(accentStrokeSubtle),
     },
     "color.accent-fill-subtle-control",
 );
@@ -344,7 +349,7 @@ export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        borderFill: accentStrokeDiscernible,
+        ...BorderFill.all(accentStrokeDiscernible),
         foregroundFill: accentStrokeReadable,
     },
     "color.accent-outline-discernible-control",
@@ -380,7 +385,7 @@ export const accentForegroundReadableControlStyles: Styles = Styles.fromProperti
 export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForeground(neutralFillStealth, neutralStrokeStrongRecipe),
-        borderFill: neutralStrokeSafety,
+        ...BorderFill.all(neutralStrokeSafety),
     },
     "color.neutral-fill-stealth-control",
 );
@@ -398,7 +403,7 @@ export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
 export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...backgroundAndForeground(neutralFillSubtle, neutralStrokeStrongRecipe),
-        borderFill: neutralStrokeSubtle,
+        ...BorderFill.all(neutralStrokeSubtle),
     },
     "color.neutral-fill-subtle-control",
 );
@@ -449,7 +454,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        borderFill: neutralStrokeDiscernible,
+        ...BorderFill.all(neutralStrokeDiscernible),
         foregroundFill: neutralStrokeStrongRest,
     },
     "color.neutral-outline-discernible-control",

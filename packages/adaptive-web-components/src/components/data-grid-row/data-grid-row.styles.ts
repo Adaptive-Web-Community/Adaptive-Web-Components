@@ -4,8 +4,6 @@ import {
     controlCornerRadius,
     focusStrokeWidth,
     neutralFillSubtleRest,
-    neutralStrokeSubtleRest,
-    strokeWidth,
 } from "@adaptive-web/adaptive-ui";
 import { heightNumber } from "../../styles/index.js";
 
@@ -33,7 +31,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         padding: 1px 0;
-        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeSubtleRest};
     }
 
     :host([cell-type="sticky-header"]) {

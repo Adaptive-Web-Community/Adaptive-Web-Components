@@ -1,4 +1,5 @@
 import {
+    BorderFill,
     controlShapeStyles,
     neutralStrokeSubtleRest,
     plainTextStyles,
@@ -21,7 +22,7 @@ export const styleModules: StyleModules = [
                 plainTextStyles,
             ],
             {
-                borderFill: neutralStrokeSubtleRest,
+                ...BorderFill.all(neutralStrokeSubtleRest),
             },
         )
     ],

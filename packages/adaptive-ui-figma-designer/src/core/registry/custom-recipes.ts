@@ -12,6 +12,7 @@ import {
     Palette,
     PaletteRGB,
     StyleProperty,
+    stylePropertyBorderFillAll,
     Swatch,
 } from "@adaptive-web/adaptive-ui";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
@@ -34,7 +35,7 @@ export const docForegroundRecipe = DesignToken.create<ColorRecipe>("doc-foregrou
         ),
 });
 
-export const docForeground = createTokenSwatch("doc-foreground", [StyleProperty.borderFill, StyleProperty.foregroundFill]).withDefault(
+export const docForeground = createTokenSwatch("doc-foreground", [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]).withDefault(
     (resolve: DesignTokenResolver) => resolve(docForegroundRecipe).evaluate(resolve)
 );
 
