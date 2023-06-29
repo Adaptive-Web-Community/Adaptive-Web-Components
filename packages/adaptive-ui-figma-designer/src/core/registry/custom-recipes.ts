@@ -2,6 +2,7 @@ import {
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     ColorRecipe,
+    ColorRecipeParams,
     contrastSwatch,
     createNonCss,
     createTokenNonCss,
@@ -27,10 +28,10 @@ export const docPalette = createNonCss<Palette>("doc-palette").withDefault(
 );
 
 export const docForegroundRecipe = DesignToken.create<ColorRecipe>("doc-foreground-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
+    evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         contrastSwatch(
             resolve(docPalette),
-            reference || resolve(fillColor),
+            params?.reference || resolve(fillColor),
             4.5,
         ),
 });
@@ -40,10 +41,10 @@ export const docForeground = createTokenSwatch("doc-foreground", [...styleProper
 );
 
 export const docFillRecipe = DesignToken.create<ColorRecipe>("doc-fill-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): Swatch =>
+    evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         contrastSwatch(
             resolve(docPalette),
-            reference || resolve(fillColor),
+            params?.reference || resolve(fillColor),
             5,
         ),
 });

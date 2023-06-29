@@ -1,7 +1,7 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { DesignTokenType } from "../adaptive-design-tokens.js";
 import { Palette, PaletteDirectionValue } from "../color/palette.js";
-import { InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
+import { ColorRecipeParams, InteractiveColorRecipe, InteractiveSwatchSet } from "../color/recipe.js";
 import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch } from "../color/swatch.js";
 import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
@@ -241,10 +241,10 @@ export const layerFillFixedPlus4 = createTokenSwatch("layer-fill-fixed-plus-4", 
  * @public
  */
 export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>("layer-fill-interactive-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, reference?: Swatch): InteractiveSwatchSet =>
+    evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): InteractiveSwatchSet =>
         deltaSwatchSet(
             resolve(layerPalette),
-            reference || resolve(fillColor),
+            params?.reference || resolve(fillColor),
             resolve(layerFillDelta),
             resolve(layerFillHoverDelta),
             resolve(layerFillActiveDelta),
