@@ -24,6 +24,7 @@ import { listboxOptionDefinition } from './components/listbox-option/listbox-opt
 import { menuDefinition } from './components/menu/menu.definition.js';
 import { menuItemDefinition } from './components/menu-item/menu-item.definition.js';
 import { numberFieldDefinition } from './components/number-field/number-field.definition.js';
+import { patientSearchDefinition } from './components/patient-search/patient-search.definition.js';
 import { pickerDefinition } from './components/picker/picker.definition.js';
 import { pickerListDefinition } from './components/picker-list/picker-list.definition.js';
 import { pickerListItemDefinition } from './components/picker-list-item/picker-list-item.definition.js';
@@ -76,6 +77,7 @@ export const AllComponents = {
 	menuDefinition,
 	menuItemDefinition,
 	numberFieldDefinition,
+    patientSearchDefinition,
 	pickerDefinition,
 	pickerListDefinition,
 	pickerListItemDefinition,
