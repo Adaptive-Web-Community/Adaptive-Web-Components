@@ -4,5 +4,6 @@ export * from "./elevation/index.js";
 export * from "./modules/index.js";
 export * from "./adaptive-design-tokens.js";
 export * from "./styles.js";
+export * from "./token-helpers-color.js";
 export * from "./token-helpers.js";
 export * from "./types.js";

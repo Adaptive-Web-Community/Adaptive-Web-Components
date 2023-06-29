@@ -126,6 +126,12 @@ export const CornerRadius: {
 // @internal @deprecated (undocumented)
 export const create: typeof DesignToken.create;
 
+// @public
+export function createForegroundSet(foregroundRecipe: DesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
+
+// @public
+export function createForegroundSetBySet(foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
+
 // Warning: (ae-internal-missing-underscore) The name "createNonCss" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)
@@ -133,6 +139,24 @@ export function createNonCss<T>(name: string): DesignToken<T>;
 
 // @public
 export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
+
+// @public
+export function createTokenColorRecipe<T = Swatch>(baseName: string, evaluate: ColorRecipeEvaluate<T>): DesignToken<ColorRecipe<T>>;
+
+// @public
+export function createTokenColorRecipeForPalette<T = Swatch>(baseName: string, evaluate: ColorRecipePaletteEvaluate<T>): DesignToken<ColorRecipePalette<T>>;
+
+// @public
+export function createTokenColorRecipeValue(recipeToken: DesignToken<ColorRecipe<Swatch>>, intendedFor: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
+
+// @public
+export function createTokenColorRecipeWithPalette<T>(recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>, paletteToken: DesignToken<Palette>): DesignToken<RecipeOptional<ColorRecipeParams, T>>;
+
+// @public
+export function createTokenColorSet(recipeToken: DesignToken<InteractiveColorRecipe>, intendedFor: StyleProperty | StyleProperty[]): InteractiveTokenGroup<Swatch>;
+
+// @public
+export function createTokenDelta(baseName: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number>;
 
 // @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
@@ -151,6 +175,9 @@ export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>
 
 // @public
 export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>;
+
+// @public
+export function createTokenMinContrast(baseName: string, value: number | DesignToken<number>): DesignToken<number>;
 
 // @public
 export function createTokenNonCss<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T>;
@@ -222,6 +249,12 @@ export type ElevationRecipe = Recipe<number, string>;
 
 // @public
 export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
+
+// @public (undocumented)
+export const Fill: {
+    backgroundAndForeground: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: DesignToken<InteractiveColorRecipe>) => StyleProperties;
+    backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
+};
 
 // @public
 export type FocusSelector = "focus" | "focus-visible" | "focus-within";

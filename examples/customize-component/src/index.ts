@@ -1,12 +1,12 @@
 import {
     BorderFill,
+    createForegroundSet,
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
     accentFillReadableControlStyles,
     accentStrokeReadable,
     accentStrokeReadableRecipe,
-    createForegroundSet,
     neutralFillSubtle
 } from "@adaptive-web/adaptive-ui/reference";
 import {
