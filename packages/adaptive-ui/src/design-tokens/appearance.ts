@@ -1,5 +1,5 @@
 import { stylePropertyBorderThicknessAll, stylePropertyCornerRadiusAll } from "../modules/types.js";
-import { create, createTokenDimension, createTokenNumber } from "./create.js";
+import { create, createTokenDimension, createTokenNumber } from "../token-helpers.js";
 
 /** @public @deprecated This is changing to a `dimension` type like `4px`, which breaks non-modular styling. See designUnitDimension */
 export const designUnit = createTokenNumber("design-unit").withDefault(4);

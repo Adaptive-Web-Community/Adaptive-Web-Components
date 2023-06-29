@@ -1,6 +1,6 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { ElevationRecipe } from "../elevation/recipe.js";
-import { create, createNonCss } from "./create.js";
+import { create, createNonCss } from "../token-helpers.js";
 
 /**
  * @public

@@ -4,6 +4,7 @@ import { Swatch } from "../color/swatch.js";
 import type { InteractiveSet, InteractiveTokenGroup } from "../types.js";
 import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Padding, StyleProperties, Styles } from "../modules/styles.js";
 import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import { createNonCss, createTokenSwatch } from "../token-helpers.js";
 import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
@@ -30,7 +31,6 @@ import {
     neutralStrokeSubtle,
     neutralStrokeSubtleRest,
 } from "./color.js";
-import { createNonCss, createTokenSwatch } from "./create.js";
 import { densityControl, densityItemContainer } from "./density.js";
 import {
     fontFamily,

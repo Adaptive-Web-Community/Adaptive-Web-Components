@@ -3,7 +3,7 @@ import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { DesignTokenType } from "../adaptive-design-tokens.js";
 import { Palette, Swatch, SwatchRGB } from "../color/index.js";
 import { PaletteRGB } from "../color/palette-rgb.js";
-import { createNonCss, createTokenNonCss } from "./create.js";
+import { createNonCss, createTokenNonCss } from "../token-helpers.js";
 
 /** @public */
 export const neutralBaseColor = createTokenNonCss<string>("neutral-base-color", DesignTokenType.color).withDefault("#808080");

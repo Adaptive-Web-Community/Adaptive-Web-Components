@@ -24,18 +24,18 @@ import { StyleProperty, stylePropertyBorderFillAll } from "../modules/types.js";
 import type { InteractiveTokenGroup } from "../types.js";
 import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "../recipes.js";
-import { createNonCss, createTokenSwatch } from "./create.js";
+import { createNonCss, createTokenSwatch } from "../token-helpers.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
-function createDelta(name: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number> {
+function createTokenDelta(name: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number> {
     return createNonCss<number>(`${name}-${state}-delta`).withDefault(value);
 }
 
-function createMinContrast(name: string, value: number | DesignToken<number>): DesignToken<number> {
+function createTokenMinContrast(name: string, value: number | DesignToken<number>): DesignToken<number> {
     return createNonCss<number>(`${name}-min-contrast`).withDefault(value);
 }
 
-function createRecipe<T = Swatch>(
+function createTokenColorRecipe<T = Swatch>(
     name: string,
     evaluate: ColorRecipeEvaluate<T>,
 ): DesignToken<ColorRecipe<T>> {
@@ -44,7 +44,7 @@ function createRecipe<T = Swatch>(
     });
 }
 
-function createRecipeForPalette(
+function createTokenColorRecipeForPalette(
     name: string,
     evaluate: InteractiveColorRecipePaletteEvaluate,
 ): DesignToken<InteractiveColorRecipePalette> {
@@ -53,7 +53,7 @@ function createRecipeForPalette(
     });
 }
 
-function createRecipeWithPalette<T>(
+function createTokenColorRecipeWithPalette<T>(
     recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
     paletteToken: DesignToken<Palette>,
 ): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
@@ -67,13 +67,13 @@ function createRecipeWithPalette<T>(
     });
 }
 
-function createRecipeAccent<T>(
+function createTokenColorRecipeAccent<T>(
     recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createRecipeWithPalette(recipeToken, accentPalette);
+    return createTokenColorRecipeWithPalette(recipeToken, accentPalette);
 }
 
-function createRecipeNeutral<T extends InteractiveSwatchSet>(
+function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
     recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
     const paletteToken = neutralPalette;
@@ -91,7 +91,7 @@ function createRecipeNeutral<T extends InteractiveSwatchSet>(
     });
 }
 
-function createSet(
+function createTokenColorSet(
     recipeToken: DesignToken<InteractiveColorRecipe>,
     intendedFor: StyleProperty | StyleProperty[],
 ): InteractiveTokenGroup<Swatch> {
@@ -102,14 +102,14 @@ function createSet(
     );
     return {
         name,
-        rest: createStateToken(valueToken, "rest", intendedFor),
-        hover: createStateToken(valueToken, "hover", intendedFor),
-        active: createStateToken(valueToken, "active", intendedFor),
-        focus: createStateToken(valueToken, "focus", intendedFor),
+        rest: createTokenColorSetState(valueToken, "rest", intendedFor),
+        hover: createTokenColorSetState(valueToken, "hover", intendedFor),
+        active: createTokenColorSetState(valueToken, "active", intendedFor),
+        focus: createTokenColorSetState(valueToken, "focus", intendedFor),
     };
 }
 
-function createStateToken(
+function createTokenColorSetState(
     valueToken: DesignToken<InteractiveSwatchSet>,
     state: keyof InteractiveSwatchSet,
     intendedFor: StyleProperty | StyleProperty[],
@@ -120,7 +120,7 @@ function createStateToken(
     );
 }
 
-function createRecipeToken(
+function createTokenColorRecipeValue(
     recipeToken: DesignToken<ColorRecipe<Swatch>>,
     intendedFor: StyleProperty | StyleProperty[],
 ): TypedCSSDesignToken<Swatch> {
@@ -245,150 +245,19 @@ export const blackOrWhiteReadableRecipe = createNonCss<InteractiveColorRecipeByS
 const fillStealthName = "fill-stealth";
 
 /** @public */
-export const fillStealthRestDelta = createDelta(fillStealthName, "rest", 0);
+export const fillStealthRestDelta = createTokenDelta(fillStealthName, "rest", 0);
 
 /** @public */
-export const fillStealthHoverDelta = createDelta(fillStealthName, "hover", 3);
+export const fillStealthHoverDelta = createTokenDelta(fillStealthName, "hover", 3);
 
 /** @public */
-export const fillStealthActiveDelta = createDelta(fillStealthName, "active", 2);
+export const fillStealthActiveDelta = createTokenDelta(fillStealthName, "active", 2);
 
 /** @public */
-export const fillStealthFocusDelta = createDelta(fillStealthName, "focus", 0);
-
-const fillSubtleName = "fill-subtle";
+export const fillStealthFocusDelta = createTokenDelta(fillStealthName, "focus", 0);
 
 /** @public */
-export const fillSubtleRestDelta = createDelta(fillSubtleName, "rest", 2);
-
-/** @public */
-export const fillSubtleHoverDelta = createDelta(fillSubtleName, "hover", 1);
-
-/** @public */
-export const fillSubtleActiveDelta = createDelta(fillSubtleName, "active", 0);
-
-/** @public */
-export const fillSubtleFocusDelta = createDelta(fillSubtleName, "focus", 2);
-
-const fillDiscernibleName = "fill-discernible";
-
-/** @public */
-export const fillDiscernibleRestDelta = createDelta(fillDiscernibleName, "rest", 0);
-
-/** @public */
-export const fillDiscernibleHoverDelta = createDelta(fillDiscernibleName, "hover", 8);
-
-/** @public */
-export const fillDiscernibleActiveDelta = createDelta(fillDiscernibleName, "active", -5);
-
-/** @public */
-export const fillDiscernibleFocusDelta = createDelta(fillDiscernibleName, "focus", 0);
-
-const fillReadableName = "fill-readable";
-
-/** @public */
-export const fillReadableRestDelta = createDelta(fillReadableName, "rest", 0);
-
-/** @public */
-export const fillReadableHoverDelta = createDelta(fillReadableName, "hover", -2);
-
-/** @public */
-export const fillReadableActiveDelta = createDelta(fillReadableName, "active", -5);
-
-/** @public */
-export const fillReadableFocusDelta = createDelta(fillReadableName, "focus", 0);
-
-const strokeSafetyName = "stroke-safety";
-
-/** @public */
-export const strokeSafetyRestDelta = createDelta(strokeSafetyName, "rest", 0);
-
-/** @public */
-export const strokeSafetyHoverDelta = createDelta(strokeSafetyName, "hover", 6);
-
-/** @public */
-export const strokeSafetyActiveDelta = createDelta(strokeSafetyName, "active", -6);
-
-/** @public */
-export const strokeSafetyFocusDelta = createDelta(strokeSafetyName, "focus", 0);
-
-const strokeStealthName = "stroke-stealth";
-
-/** @public */
-export const strokeStealthRestDelta = createDelta(strokeStealthName, "rest", 0);
-
-/** @public */
-export const strokeStealthHoverDelta = createDelta(strokeStealthName, "hover", 6);
-
-/** @public */
-export const strokeStealthActiveDelta = createDelta(strokeStealthName, "active", -6);
-
-/** @public */
-export const strokeStealthFocusDelta = createDelta(strokeStealthName, "focus", 0);
-
-const strokeSubtleName = "stroke-subtle";
-
-/** @public */
-export const strokeSubtleRestDelta = createDelta(strokeSubtleName, "rest", 0);
-
-/** @public */
-export const strokeSubtleHoverDelta = createDelta(strokeSubtleName, "hover", 4);
-
-/** @public */
-export const strokeSubtleActiveDelta = createDelta(strokeSubtleName, "active", -2);
-
-/** @public */
-export const strokeSubtleFocusDelta = createDelta(strokeSubtleName, "focus", 0);
-
-const strokeDiscernibleName = "stroke-discernible";
-
-/** @public */
-export const strokeDiscernibleRestDelta = createDelta(strokeDiscernibleName, "rest", 0);
-
-/** @public */
-export const strokeDiscernibleHoverDelta = createDelta(strokeDiscernibleName, "hover", 8);
-
-/** @public */
-export const strokeDiscernibleActiveDelta = createDelta(strokeDiscernibleName, "active", -4);
-
-/** @public */
-export const strokeDiscernibleFocusDelta = createDelta(strokeDiscernibleName, "focus", 0);
-
-const strokeReadableName = "stroke-readable";
-
-/** @public */
-export const strokeReadableRestDelta = createDelta(strokeReadableName, "rest", 0);
-
-/** @public */
-export const strokeReadableHoverDelta = createDelta(strokeReadableName, "hover", 6);
-
-/** @public */
-export const strokeReadableActiveDelta = createDelta(strokeReadableName, "active", -6);
-
-/** @public */
-export const strokeReadableFocusDelta = createDelta(strokeReadableName, "focus", 0);
-
-const strokeStrongName = "stroke-strong";
-
-/** @public */
-export const strokeStrongMinContrast = createMinContrast(strokeStrongName, 12);
-
-/** @public */
-export const strokeStrongRestDelta = createDelta(strokeStrongName, "rest", 0);
-
-/** @public */
-export const strokeStrongHoverDelta = createDelta(strokeStrongName, "hover", 10);
-
-/** @public */
-export const strokeStrongActiveDelta = createDelta(strokeStrongName, "active", -10);
-
-/** @public */
-export const strokeStrongFocusDelta = createDelta(strokeStrongName, "focus", 0);
-
-// Accent Fill Stealth
-
-/** @public */
-export const fillStealthRecipe = createRecipeForPalette(fillStealthName,
+export const fillStealthRecipe = createTokenColorRecipeForPalette(fillStealthName,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
@@ -400,11 +269,270 @@ export const fillStealthRecipe = createRecipeForPalette(fillStealthName,
         )
 );
 
-/** @public */
-export const accentFillStealthRecipe = createRecipeAccent(fillStealthRecipe);
+const fillSubtleName = "fill-subtle";
 
 /** @public */
-export const accentFillStealth = createSet(accentFillStealthRecipe, StyleProperty.backgroundFill);
+export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, "rest", 2);
+
+/** @public */
+export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, "hover", 1);
+
+/** @public */
+export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 0);
+
+/** @public */
+export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, "focus", 2);
+
+/** @public */
+export const fillSubtleRecipe = createTokenColorRecipeForPalette(fillSubtleName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        deltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(fillSubtleRestDelta),
+            resolve(fillSubtleHoverDelta),
+            resolve(fillSubtleActiveDelta),
+            resolve(fillSubtleFocusDelta)
+        )
+);
+
+const fillDiscernibleName = "fill-discernible";
+
+/** @public */
+export const fillDiscernibleRestDelta = createTokenDelta(fillDiscernibleName, "rest", 0);
+
+/** @public */
+export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, "hover", 8);
+
+/** @public */
+export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, "active", -5);
+
+/** @public */
+export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, "focus", 0);
+
+/** @public */
+export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(fillDiscernibleName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastDiscernible),
+            resolve(fillDiscernibleRestDelta),
+            resolve(fillDiscernibleHoverDelta),
+            resolve(fillDiscernibleActiveDelta),
+            resolve(fillDiscernibleFocusDelta)
+        )
+);
+
+const fillReadableName = "fill-readable";
+
+/** @public */
+export const fillReadableRestDelta = createTokenDelta(fillReadableName, "rest", 0);
+
+/** @public */
+export const fillReadableHoverDelta = createTokenDelta(fillReadableName, "hover", -2);
+
+/** @public */
+export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "active", -5);
+
+/** @public */
+export const fillReadableFocusDelta = createTokenDelta(fillReadableName, "focus", 0);
+
+/** @public */
+export const fillReadableRecipe = createTokenColorRecipeForPalette(fillReadableName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastReadable),
+            resolve(fillReadableRestDelta),
+            resolve(fillReadableHoverDelta),
+            resolve(fillReadableActiveDelta),
+            resolve(fillReadableFocusDelta)
+        )
+);
+
+const strokeSafetyName = "stroke-safety";
+
+/** @public */
+export const strokeSafetyRestDelta = createTokenDelta(strokeSafetyName, "rest", 0);
+
+/** @public */
+export const strokeSafetyHoverDelta = createTokenDelta(strokeSafetyName, "hover", 6);
+
+/** @public */
+export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, "active", -6);
+
+/** @public */
+export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, "focus", 0);
+
+/** @public */
+export const strokeSafetyRecipe = createTokenColorRecipeForPalette(strokeSafetyName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        conditionalSwatchSet(
+            contrastAndDeltaSwatchSet(
+                params.palette,
+                params.reference || resolve(fillColor),
+                resolve(minContrastSafety),
+                resolve(strokeSafetyRestDelta),
+                resolve(strokeSafetyHoverDelta),
+                resolve(strokeSafetyActiveDelta),
+                resolve(strokeSafetyFocusDelta)
+            ),
+            resolve(minContrastSafety) > 0
+        )
+);
+
+const strokeStealthName = "stroke-stealth";
+
+/** @public */
+export const strokeStealthRestDelta = createTokenDelta(strokeStealthName, "rest", 0);
+
+/** @public */
+export const strokeStealthHoverDelta = createTokenDelta(strokeStealthName, "hover", 6);
+
+/** @public */
+export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, "active", -6);
+
+/** @public */
+export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, "focus", 0);
+
+/** @public */
+export const strokeStealthRecipe = createTokenColorRecipeForPalette(strokeStealthName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastSafety),
+            resolve(strokeStealthRestDelta),
+            resolve(strokeStealthHoverDelta),
+            resolve(strokeStealthActiveDelta),
+            resolve(strokeStealthFocusDelta)
+        )
+);
+
+const strokeSubtleName = "stroke-subtle";
+
+/** @public */
+export const strokeSubtleRestDelta = createTokenDelta(strokeSubtleName, "rest", 0);
+
+/** @public */
+export const strokeSubtleHoverDelta = createTokenDelta(strokeSubtleName, "hover", 4);
+
+/** @public */
+export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, "active", -2);
+
+/** @public */
+export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, "focus", 0);
+
+/** @public */
+export const strokeSubtleRecipe = createTokenColorRecipeForPalette(strokeSubtleName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastSubtle),
+            resolve(strokeSubtleRestDelta),
+            resolve(strokeSubtleHoverDelta),
+            resolve(strokeSubtleActiveDelta),
+            resolve(strokeSubtleFocusDelta)
+        )
+);
+
+const strokeDiscernibleName = "stroke-discernible";
+
+/** @public */
+export const strokeDiscernibleRestDelta = createTokenDelta(strokeDiscernibleName, "rest", 0);
+
+/** @public */
+export const strokeDiscernibleHoverDelta = createTokenDelta(strokeDiscernibleName, "hover", 8);
+
+/** @public */
+export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleName, "active", -4);
+
+/** @public */
+export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, "focus", 0);
+
+/** @public */
+export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(strokeDiscernibleName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastDiscernible),
+            resolve(strokeDiscernibleRestDelta),
+            resolve(strokeDiscernibleHoverDelta),
+            resolve(strokeDiscernibleActiveDelta),
+            resolve(strokeDiscernibleFocusDelta)
+        )
+);
+
+const strokeReadableName = "stroke-readable";
+
+/** @public */
+export const strokeReadableRestDelta = createTokenDelta(strokeReadableName, "rest", 0);
+
+/** @public */
+export const strokeReadableHoverDelta = createTokenDelta(strokeReadableName, "hover", 6);
+
+/** @public */
+export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, "active", -6);
+
+/** @public */
+export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, "focus", 0);
+
+/** @public */
+export const strokeReadableRecipe = createTokenColorRecipeForPalette(strokeReadableName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastReadable),
+            resolve(strokeReadableRestDelta),
+            resolve(strokeReadableHoverDelta),
+            resolve(strokeReadableActiveDelta),
+            resolve(strokeReadableFocusDelta)
+        )
+);
+
+const strokeStrongName = "stroke-strong";
+
+/** @public */
+export const strokeStrongMinContrast = createTokenMinContrast(strokeStrongName, 12);
+
+/** @public */
+export const strokeStrongRestDelta = createTokenDelta(strokeStrongName, "rest", 0);
+
+/** @public */
+export const strokeStrongHoverDelta = createTokenDelta(strokeStrongName, "hover", 10);
+
+/** @public */
+export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, "active", -10);
+
+/** @public */
+export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, "focus", 0);
+
+/** @public */
+export const strokeStrongRecipe = createTokenColorRecipeForPalette(strokeStrongName,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        contrastAndDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(strokeStrongMinContrast),
+            resolve(strokeStrongRestDelta),
+            resolve(strokeStrongHoverDelta),
+            resolve(strokeStrongActiveDelta),
+            resolve(strokeStrongFocusDelta)
+        )
+);
+
+// Accent Fill Stealth
+
+/** @public */
+export const accentFillStealthRecipe = createTokenColorRecipeAccent(fillStealthRecipe);
+
+/** @public */
+export const accentFillStealth = createTokenColorSet(accentFillStealthRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillStealthRest = accentFillStealth.rest;
@@ -421,23 +549,10 @@ export const accentFillStealthFocus = accentFillStealth.focus;
 // Accent Fill Subtle
 
 /** @public */
-export const fillSubtleRecipe = createRecipeForPalette(fillSubtleName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        deltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(fillSubtleRestDelta),
-            resolve(fillSubtleHoverDelta),
-            resolve(fillSubtleActiveDelta),
-            resolve(fillSubtleFocusDelta)
-        )
-);
+export const accentFillSubtleRecipe = createTokenColorRecipeAccent(fillSubtleRecipe);
 
 /** @public */
-export const accentFillSubtleRecipe = createRecipeAccent(fillSubtleRecipe);
-
-/** @public */
-export const accentFillSubtle = createSet(accentFillSubtleRecipe, StyleProperty.backgroundFill);
+export const accentFillSubtle = createTokenColorSet(accentFillSubtleRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillSubtleRest = accentFillSubtle.rest;
@@ -454,24 +569,10 @@ export const accentFillSubtleFocus = accentFillSubtle.focus;
 // Accent Fill Discernible
 
 /** @public */
-export const fillDiscernibleRecipe = createRecipeForPalette(fillDiscernibleName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastDiscernible),
-            resolve(fillDiscernibleRestDelta),
-            resolve(fillDiscernibleHoverDelta),
-            resolve(fillDiscernibleActiveDelta),
-            resolve(fillDiscernibleFocusDelta)
-        )
-);
+export const accentFillDiscernibleRecipe = createTokenColorRecipeAccent(fillDiscernibleRecipe);
 
 /** @public */
-export const accentFillDiscernibleRecipe = createRecipeAccent(fillDiscernibleRecipe);
-
-/** @public */
-export const accentFillDiscernible = createSet(accentFillDiscernibleRecipe, StyleProperty.backgroundFill);
+export const accentFillDiscernible = createTokenColorSet(accentFillDiscernibleRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillDiscernibleRest = accentFillDiscernible.rest;
@@ -488,24 +589,10 @@ export const accentFillDiscernibleFocus = accentFillDiscernible.focus;
 // Accent Fill Readable (previously just "Accent Fill")
 
 /** @public */
-export const fillReadableRecipe = createRecipeForPalette(fillReadableName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastReadable),
-            resolve(fillReadableRestDelta),
-            resolve(fillReadableHoverDelta),
-            resolve(fillReadableActiveDelta),
-            resolve(fillReadableFocusDelta)
-        )
-);
+export const accentFillReadableRecipe = createTokenColorRecipeAccent(fillReadableRecipe);
 
 /** @public */
-export const accentFillReadableRecipe = createRecipeAccent(fillReadableRecipe);
-
-/** @public */
-export const accentFillReadable = createSet(accentFillReadableRecipe, StyleProperty.backgroundFill);
+export const accentFillReadable = createTokenColorSet(accentFillReadableRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const accentFillReadableRest = accentFillReadable.rest;
@@ -524,7 +611,7 @@ export const accentFillReadableFocus = accentFillReadable.focus;
 const foregroundOnAccentFillReadableName = "foreground-on-accent-fill-readable";
 
 /** @public @deprecated This functionality has been migrated to style modules */
-export const foregroundOnAccentFillReadableRecipe = createRecipe(foregroundOnAccentFillReadableName,
+export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(foregroundOnAccentFillReadableName,
     (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
             resolve(accentFillReadableRest),
@@ -537,7 +624,7 @@ export const foregroundOnAccentFillReadableRecipe = createRecipe(foregroundOnAcc
 );
 
 /** @public @deprecated This functionality has been migrated to style modules */
-export const foregroundOnAccentFillReadable = createSet(foregroundOnAccentFillReadableRecipe, StyleProperty.foregroundFill);
+export const foregroundOnAccentFillReadable = createTokenColorSet(foregroundOnAccentFillReadableRecipe, StyleProperty.foregroundFill);
 
 /** @public @deprecated This functionality has been migrated to style modules */
 export const foregroundOnAccentFillReadableRest = foregroundOnAccentFillReadable.rest;
@@ -554,27 +641,10 @@ export const foregroundOnAccentFillReadableFocus = foregroundOnAccentFillReadabl
 // Accent Stroke Safety
 
 /** @public */
-export const strokeSafetyRecipe = createRecipeForPalette(strokeSafetyName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        conditionalSwatchSet(
-            contrastAndDeltaSwatchSet(
-                params.palette,
-                params.reference || resolve(fillColor),
-                resolve(minContrastSafety),
-                resolve(strokeSafetyRestDelta),
-                resolve(strokeSafetyHoverDelta),
-                resolve(strokeSafetyActiveDelta),
-                resolve(strokeSafetyFocusDelta)
-            ),
-            resolve(minContrastSafety) > 0
-        )
-);
+export const accentStrokeSafetyRecipe = createTokenColorRecipeAccent(strokeSafetyRecipe);
 
 /** @public */
-export const accentStrokeSafetyRecipe = createRecipeAccent(strokeSafetyRecipe);
-
-/** @public */
-export const accentStrokeSafety = createSet(accentStrokeSafetyRecipe, stylePropertyBorderFillAll);
+export const accentStrokeSafety = createTokenColorSet(accentStrokeSafetyRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const accentStrokeSafetyRest = accentStrokeSafety.rest;
@@ -591,24 +661,10 @@ export const accentStrokeSafetyFocus = accentStrokeSafety.focus;
 // Accent Stroke Stealth
 
 /** @public */
-export const strokeStealthRecipe = createRecipeForPalette(strokeStealthName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastSafety),
-            resolve(strokeStealthRestDelta),
-            resolve(strokeStealthHoverDelta),
-            resolve(strokeStealthActiveDelta),
-            resolve(strokeStealthFocusDelta)
-        )
-);
+export const accentStrokeStealthRecipe = createTokenColorRecipeAccent(strokeStealthRecipe);
 
 /** @public */
-export const accentStrokeStealthRecipe = createRecipeAccent(strokeStealthRecipe);
-
-/** @public */
-export const accentStrokeStealth = createSet(accentStrokeStealthRecipe, stylePropertyBorderFillAll);
+export const accentStrokeStealth = createTokenColorSet(accentStrokeStealthRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const accentStrokeStealthRest = accentStrokeStealth.rest;
@@ -625,24 +681,10 @@ export const accentStrokeStealthFocus = accentStrokeStealth.focus;
 // Accent Stroke Subtle
 
 /** @public */
-export const strokeSubtleRecipe = createRecipeForPalette(strokeSubtleName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastSubtle),
-            resolve(strokeSubtleRestDelta),
-            resolve(strokeSubtleHoverDelta),
-            resolve(strokeSubtleActiveDelta),
-            resolve(strokeSubtleFocusDelta)
-        )
-);
+export const accentStrokeSubtleRecipe = createTokenColorRecipeAccent(strokeSubtleRecipe);
 
 /** @public */
-export const accentStrokeSubtleRecipe = createRecipeAccent(strokeSubtleRecipe);
-
-/** @public */
-export const accentStrokeSubtle = createSet(accentStrokeSubtleRecipe, stylePropertyBorderFillAll);
+export const accentStrokeSubtle = createTokenColorSet(accentStrokeSubtleRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const accentStrokeSubtleRest = accentStrokeSubtle.rest;
@@ -659,24 +701,10 @@ export const accentStrokeSubtleFocus = accentStrokeSubtle.focus;
 // Accent Stroke Discernible
 
 /** @public */
-export const strokeDiscernibleRecipe = createRecipeForPalette(strokeDiscernibleName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastDiscernible),
-            resolve(strokeDiscernibleRestDelta),
-            resolve(strokeDiscernibleHoverDelta),
-            resolve(strokeDiscernibleActiveDelta),
-            resolve(strokeDiscernibleFocusDelta)
-        )
-);
+export const accentStrokeDiscernibleRecipe = createTokenColorRecipeAccent(strokeDiscernibleRecipe);
 
 /** @public */
-export const accentStrokeDiscernibleRecipe = createRecipeAccent(strokeDiscernibleRecipe);
-
-/** @public */
-export const accentStrokeDiscernible = createSet(accentStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
+export const accentStrokeDiscernible = createTokenColorSet(accentStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const accentStrokeDiscernibleRest = accentStrokeDiscernible.rest;
@@ -693,24 +721,10 @@ export const accentStrokeDiscernibleFocus = accentStrokeDiscernible.focus;
 // Accent Stroke Readable (previously "Foreground")
 
 /** @public */
-export const strokeReadableRecipe = createRecipeForPalette(strokeReadableName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(minContrastReadable),
-            resolve(strokeReadableRestDelta),
-            resolve(strokeReadableHoverDelta),
-            resolve(strokeReadableActiveDelta),
-            resolve(strokeReadableFocusDelta)
-        )
-);
+export const accentStrokeReadableRecipe = createTokenColorRecipeAccent(strokeReadableRecipe);
 
 /** @public */
-export const accentStrokeReadableRecipe = createRecipeAccent(strokeReadableRecipe);
-
-/** @public */
-export const accentStrokeReadable = createSet(accentStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const accentStrokeReadable = createTokenColorSet(accentStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
 
 /** @public */
 export const accentStrokeReadableRest = accentStrokeReadable.rest;
@@ -727,24 +741,10 @@ export const accentStrokeReadableFocus = accentStrokeReadable.focus;
 // Accent Stroke Strong
 
 /** @public */
-export const strokeStrongRecipe = createRecipeForPalette(strokeStrongName,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(fillColor),
-            resolve(strokeStrongMinContrast),
-            resolve(strokeStrongRestDelta),
-            resolve(strokeStrongHoverDelta),
-            resolve(strokeStrongActiveDelta),
-            resolve(strokeStrongFocusDelta)
-        )
-);
+export const accentStrokeStrongRecipe = createTokenColorRecipeAccent(strokeStrongRecipe);
 
 /** @public */
-export const accentStrokeStrongRecipe = createRecipeAccent(strokeStrongRecipe);
-
-/** @public */
-export const accentStrokeStrong = createSet(accentStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const accentStrokeStrong = createTokenColorSet(accentStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
 
 /** @public */
 export const accentStrokeStrongRest = accentStrokeStrong.rest;
@@ -761,10 +761,10 @@ export const accentStrokeStrongFocus = accentStrokeStrong.focus;
 // Neutral Fill Stealth
 
 /** @public */
-export const neutralFillStealthRecipe = createRecipeNeutral(fillStealthRecipe);
+export const neutralFillStealthRecipe = createTokenColorRecipeNeutral(fillStealthRecipe);
 
 /** @public */
-export const neutralFillStealth = createSet(neutralFillStealthRecipe, StyleProperty.backgroundFill);
+export const neutralFillStealth = createTokenColorSet(neutralFillStealthRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillStealthRest = neutralFillStealth.rest;
@@ -781,10 +781,10 @@ export const neutralFillStealthFocus = neutralFillStealth.focus;
 // Neutral Fill Subtle (previously just "Neutral Fill")
 
 /** @public */
-export const neutralFillSubtleRecipe = createRecipeNeutral(fillSubtleRecipe);
+export const neutralFillSubtleRecipe = createTokenColorRecipeNeutral(fillSubtleRecipe);
 
 /** @public */
-export const neutralFillSubtle = createSet(neutralFillSubtleRecipe, StyleProperty.backgroundFill);
+export const neutralFillSubtle = createTokenColorSet(neutralFillSubtleRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillSubtleRest = neutralFillSubtle.rest;
@@ -801,10 +801,10 @@ export const neutralFillSubtleFocus = neutralFillSubtle.focus;
 // Neutral Fill Discernible (previously "Strong")
 
 /** @public */
-export const neutralFillDiscernibleRecipe = createRecipeNeutral(fillDiscernibleRecipe);
+export const neutralFillDiscernibleRecipe = createTokenColorRecipeNeutral(fillDiscernibleRecipe);
 
 /** @public */
-export const neutralFillDiscernible = createSet(neutralFillDiscernibleRecipe, StyleProperty.backgroundFill);
+export const neutralFillDiscernible = createTokenColorSet(neutralFillDiscernibleRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillDiscernibleRest = neutralFillDiscernible.rest;
@@ -821,10 +821,10 @@ export const neutralFillDiscernibleFocus = neutralFillDiscernible.focus;
 // Neutral Fill Readable
 
 /** @public */
-export const neutralFillReadableRecipe = createRecipeNeutral(fillReadableRecipe);
+export const neutralFillReadableRecipe = createTokenColorRecipeNeutral(fillReadableRecipe);
 
 /** @public */
-export const neutralFillReadable = createSet(neutralFillReadableRecipe, StyleProperty.backgroundFill);
+export const neutralFillReadable = createTokenColorSet(neutralFillReadableRecipe, StyleProperty.backgroundFill);
 
 /** @public */
 export const neutralFillReadableRest = neutralFillReadable.rest;
@@ -841,10 +841,10 @@ export const neutralFillReadableFocus = neutralFillReadable.focus;
 // Neutral Stroke Safety
 
 /** @public */
-export const neutralStrokeSafetyRecipe = createRecipeNeutral(strokeSafetyRecipe);
+export const neutralStrokeSafetyRecipe = createTokenColorRecipeNeutral(strokeSafetyRecipe);
 
 /** @public */
-export const neutralStrokeSafety = createSet(neutralStrokeSafetyRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeSafety = createTokenColorSet(neutralStrokeSafetyRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const neutralStrokeSafetyRest = neutralStrokeSafety.rest;
@@ -861,10 +861,10 @@ export const neutralStrokeSafetyFocus = neutralStrokeSafety.focus;
 // Neutral Stroke Stealth
 
 /** @public */
-export const neutralStrokeStealthRecipe = createRecipeNeutral(strokeStealthRecipe);
+export const neutralStrokeStealthRecipe = createTokenColorRecipeNeutral(strokeStealthRecipe);
 
 /** @public */
-export const neutralStrokeStealth = createSet(neutralStrokeStealthRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeStealth = createTokenColorSet(neutralStrokeStealthRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const neutralStrokeStealthRest = neutralStrokeStealth.rest;
@@ -881,10 +881,10 @@ export const neutralStrokeStealthFocus = neutralStrokeStealth.focus;
 // Neutral Stroke Subtle (previously just "Neutral Stroke")
 
 /** @public */
-export const neutralStrokeSubtleRecipe = createRecipeNeutral(strokeSubtleRecipe);
+export const neutralStrokeSubtleRecipe = createTokenColorRecipeNeutral(strokeSubtleRecipe);
 
 /** @public */
-export const neutralStrokeSubtle = createSet(neutralStrokeSubtleRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeSubtle = createTokenColorSet(neutralStrokeSubtleRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const neutralStrokeSubtleRest = neutralStrokeSubtle.rest;
@@ -901,10 +901,10 @@ export const neutralStrokeSubtleFocus = neutralStrokeSubtle.focus;
 // Neutral Stroke Discernible (previously "Strong")
 
 /** @public */
-export const neutralStrokeDiscernibleRecipe = createRecipeNeutral(strokeDiscernibleRecipe);
+export const neutralStrokeDiscernibleRecipe = createTokenColorRecipeNeutral(strokeDiscernibleRecipe);
 
 /** @public */
-export const neutralStrokeDiscernible = createSet(neutralStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeDiscernible = createTokenColorSet(neutralStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
 
 /** @public */
 export const neutralStrokeDiscernibleRest = neutralStrokeDiscernible.rest;
@@ -921,10 +921,10 @@ export const neutralStrokeDiscernibleFocus = neutralStrokeDiscernible.focus;
 // Neutral Stroke Readable (previously "Foreground Hint")
 
 /** @public */
-export const neutralStrokeReadableRecipe = createRecipeNeutral(strokeReadableRecipe);
+export const neutralStrokeReadableRecipe = createTokenColorRecipeNeutral(strokeReadableRecipe);
 
 /** @public */
-export const neutralStrokeReadable = createSet(neutralStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const neutralStrokeReadable = createTokenColorSet(neutralStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
 
 /** @public */
 export const neutralStrokeReadableRest = neutralStrokeReadable.rest;
@@ -941,10 +941,10 @@ export const neutralStrokeReadableFocus = neutralStrokeReadable.focus;
 // Neutral Stroke Strong (previously "Foreground")
 
 /** @public */
-export const neutralStrokeStrongRecipe = createRecipeNeutral(strokeStrongRecipe);
+export const neutralStrokeStrongRecipe = createTokenColorRecipeNeutral(strokeStrongRecipe);
 
 /** @public */
-export const neutralStrokeStrong = createSet(neutralStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
 
 /** @public */
 export const neutralStrokeStrongRest = neutralStrokeStrong.rest;
@@ -963,56 +963,56 @@ export const neutralStrokeStrongFocus = neutralStrokeStrong.focus;
 const focusStrokeOuterName = "focus-stroke-outer";
 
 /** @public */
-export const focusStrokeOuterRecipe = createRecipe(focusStrokeOuterName,
+export const focusStrokeOuterRecipe = createTokenColorRecipe(focusStrokeOuterName,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
 );
 
 /** @public */
-export const focusStrokeOuter = createRecipeToken(focusStrokeOuterRecipe, stylePropertyBorderFillAll);
+export const focusStrokeOuter = createTokenColorRecipeValue(focusStrokeOuterRecipe, stylePropertyBorderFillAll);
 
 // Focus Stroke Inner
 
 const focusStrokeInnerName = "focus-stroke-inner";
 
 /** @public */
-export const focusStrokeInnerRecipe = createRecipe(focusStrokeInnerName,
+export const focusStrokeInnerRecipe = createTokenColorRecipe(focusStrokeInnerName,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
 );
 
 /** @public */
-export const focusStrokeInner = createRecipeToken(focusStrokeInnerRecipe, stylePropertyBorderFillAll);
+export const focusStrokeInner = createTokenColorRecipeValue(focusStrokeInnerRecipe, stylePropertyBorderFillAll);
 
 // Deprecated tokens
 
 const accentFillReadableName = "accent-fill-readable";
 
 /** @public @deprecated Use `fillReadableRestDelta` instead. */
-export const accentFillReadableRestDelta = createDelta(accentFillReadableName, "rest", fillReadableRestDelta);
+export const accentFillReadableRestDelta = createTokenDelta(accentFillReadableName, "rest", fillReadableRestDelta);
 
 /** @public @deprecated Use `fillReadableHoverDelta` instead. */
-export const accentFillReadableHoverDelta = createDelta(accentFillReadableName, "hover", fillReadableHoverDelta);
+export const accentFillReadableHoverDelta = createTokenDelta(accentFillReadableName, "hover", fillReadableHoverDelta);
 
 /** @public @deprecated Use `fillReadableActiveDelta` instead. */
-export const accentFillReadableActiveDelta = createDelta(accentFillReadableName, "active", fillReadableActiveDelta);
+export const accentFillReadableActiveDelta = createTokenDelta(accentFillReadableName, "active", fillReadableActiveDelta);
 
 /** @public @deprecated Use `fillReadableFocusDelta` instead. */
-export const accentFillReadableFocusDelta = createDelta(accentFillReadableName, "focus", fillReadableFocusDelta);
+export const accentFillReadableFocusDelta = createTokenDelta(accentFillReadableName, "focus", fillReadableFocusDelta);
 
 const accentStrokeReadableName = "accent-stroke-readable";
 
 /** @public @deprecated Use `strokeReadableRestDelta` instead. */
-export const accentStrokeReadableRestDelta = createDelta(accentStrokeReadableName, "rest", strokeReadableRestDelta);
+export const accentStrokeReadableRestDelta = createTokenDelta(accentStrokeReadableName, "rest", strokeReadableRestDelta);
 
 /** @public @deprecated Use `strokeReadableHoverDelta` instead. */
-export const accentStrokeReadableHoverDelta = createDelta(accentStrokeReadableName, "hover", strokeReadableHoverDelta);
+export const accentStrokeReadableHoverDelta = createTokenDelta(accentStrokeReadableName, "hover", strokeReadableHoverDelta);
 
 /** @public @deprecated Use `strokeReadableActiveDelta` instead. */
-export const accentStrokeReadableActiveDelta = createDelta(accentStrokeReadableName, "active", strokeReadableActiveDelta);
+export const accentStrokeReadableActiveDelta = createTokenDelta(accentStrokeReadableName, "active", strokeReadableActiveDelta);
 
 /** @public @deprecated Use `strokeReadableFocusDelta` instead. */
-export const accentStrokeReadableFocusDelta = createDelta(accentStrokeReadableName, "focus", strokeReadableFocusDelta);
+export const accentStrokeReadableFocusDelta = createTokenDelta(accentStrokeReadableName, "focus", strokeReadableFocusDelta);
 
 /** @public @deprecated use "Readable" instead */
 export const accentFillRestDelta = accentFillReadableRestDelta;
@@ -1086,103 +1086,103 @@ export const accentForegroundFocus = accentStrokeReadableFocus;
 const neutralFillStealthName = "neutral-fill-stealth";
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthRestDelta = createDelta(neutralFillStealthName, "rest", fillStealthRestDelta);
+export const neutralFillStealthRestDelta = createTokenDelta(neutralFillStealthName, "rest", fillStealthRestDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthHoverDelta = createDelta(neutralFillStealthName, "hover", fillStealthHoverDelta);
+export const neutralFillStealthHoverDelta = createTokenDelta(neutralFillStealthName, "hover", fillStealthHoverDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthActiveDelta = createDelta(neutralFillStealthName, "active", fillStealthActiveDelta);
+export const neutralFillStealthActiveDelta = createTokenDelta(neutralFillStealthName, "active", fillStealthActiveDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthFocusDelta = createDelta(neutralFillStealthName, "focus", fillStealthFocusDelta);
+export const neutralFillStealthFocusDelta = createTokenDelta(neutralFillStealthName, "focus", fillStealthFocusDelta);
 
 const neutralFillSubtleName = "neutral-fill-subtle";
 
 /** @public @deprecated Use `fillSubtleRestDelta` instead. */
-export const neutralFillSubtleRestDelta = createDelta(neutralFillSubtleName, "rest", fillSubtleRestDelta);
+export const neutralFillSubtleRestDelta = createTokenDelta(neutralFillSubtleName, "rest", fillSubtleRestDelta);
 
 /** @public @deprecated Use `fillSubtleHoverDelta` instead. */
-export const neutralFillSubtleHoverDelta = createDelta(neutralFillSubtleName, "hover", fillSubtleHoverDelta);
+export const neutralFillSubtleHoverDelta = createTokenDelta(neutralFillSubtleName, "hover", fillSubtleHoverDelta);
 
 /** @public @deprecated Use `fillSubtleActiveDelta` instead. */
-export const neutralFillSubtleActiveDelta = createDelta(neutralFillSubtleName, "active", fillSubtleActiveDelta);
+export const neutralFillSubtleActiveDelta = createTokenDelta(neutralFillSubtleName, "active", fillSubtleActiveDelta);
 
 /** @public @deprecated Use `fillSubtleFocusDelta` instead. */
-export const neutralFillSubtleFocusDelta = createDelta(neutralFillSubtleName, "focus", fillSubtleFocusDelta);
+export const neutralFillSubtleFocusDelta = createTokenDelta(neutralFillSubtleName, "focus", fillSubtleFocusDelta);
 
 const neutralFillDiscernibleName = "neutral-fill-discernible";
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleRestDelta = createDelta(neutralFillDiscernibleName, "rest", fillDiscernibleRestDelta);
+export const neutralFillDiscernibleRestDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleRestDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleHoverDelta = createDelta(neutralFillDiscernibleName, "rest", fillDiscernibleHoverDelta);
+export const neutralFillDiscernibleHoverDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleHoverDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleActiveDelta = createDelta(neutralFillDiscernibleName, "rest", fillDiscernibleActiveDelta);
+export const neutralFillDiscernibleActiveDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleActiveDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleFocusDelta = createDelta(neutralFillDiscernibleName, "rest", fillDiscernibleFocusDelta);
+export const neutralFillDiscernibleFocusDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleFocusDelta);
 
 const neutralStrokeSubtleName = "neutral-stroke-subtle";
 
 /** @public @deprecated Use `strokeSubtleRestDelta` instead. */
-export const neutralStrokeSubtleRestDelta = createDelta(neutralStrokeSubtleName, "rest", strokeSubtleRestDelta);
+export const neutralStrokeSubtleRestDelta = createTokenDelta(neutralStrokeSubtleName, "rest", strokeSubtleRestDelta);
 
 /** @public @deprecated Use `strokeSubtleHoverDelta` instead. */
-export const neutralStrokeSubtleHoverDelta = createDelta(neutralStrokeSubtleName, "hover", strokeSubtleHoverDelta);
+export const neutralStrokeSubtleHoverDelta = createTokenDelta(neutralStrokeSubtleName, "hover", strokeSubtleHoverDelta);
 
 /** @public @deprecated Use `strokeSubtleActiveDelta` instead. */
-export const neutralStrokeSubtleActiveDelta = createDelta(neutralStrokeSubtleName, "active", strokeSubtleActiveDelta);
+export const neutralStrokeSubtleActiveDelta = createTokenDelta(neutralStrokeSubtleName, "active", strokeSubtleActiveDelta);
 
 /** @public @deprecated Use `strokeSubtleFocusDelta` instead. */
-export const neutralStrokeSubtleFocusDelta = createDelta(neutralStrokeSubtleName, "focus", strokeSubtleFocusDelta);
+export const neutralStrokeSubtleFocusDelta = createTokenDelta(neutralStrokeSubtleName, "focus", strokeSubtleFocusDelta);
 
 const neutralStrokeDiscernibleName = "neutral-stroke-discernible";
 
 /** @public @deprecated Use `strokeDiscernibleRestDelta` instead. */
-export const neutralStrokeDiscernibleRestDelta = createDelta(neutralStrokeDiscernibleName, "rest", strokeDiscernibleRestDelta);
+export const neutralStrokeDiscernibleRestDelta = createTokenDelta(neutralStrokeDiscernibleName, "rest", strokeDiscernibleRestDelta);
 
 /** @public @deprecated Use `strokeDiscernibleHoverDelta` instead. */
-export const neutralStrokeDiscernibleHoverDelta = createDelta(neutralStrokeDiscernibleName, "hover", strokeDiscernibleHoverDelta);
+export const neutralStrokeDiscernibleHoverDelta = createTokenDelta(neutralStrokeDiscernibleName, "hover", strokeDiscernibleHoverDelta);
 
 /** @public @deprecated Use `strokeDiscernibleActiveDelta` instead. */
-export const neutralStrokeDiscernibleActiveDelta = createDelta(neutralStrokeDiscernibleName, "active", strokeDiscernibleActiveDelta);
+export const neutralStrokeDiscernibleActiveDelta = createTokenDelta(neutralStrokeDiscernibleName, "active", strokeDiscernibleActiveDelta);
 
 /** @public @deprecated Use `strokeDiscernibleFocusDelta` instead. */
-export const neutralStrokeDiscernibleFocusDelta = createDelta(neutralStrokeDiscernibleName, "focus", strokeDiscernibleFocusDelta);
+export const neutralStrokeDiscernibleFocusDelta = createTokenDelta(neutralStrokeDiscernibleName, "focus", strokeDiscernibleFocusDelta);
 
 const neutralStrokeReadableName = "neutral-stroke-readable";
 
 /** @public @deprecated Use `strokeReadableRestDelta` instead. */
-export const neutralStrokeReadableRestDelta = createDelta(neutralStrokeReadableName, "rest", strokeReadableRestDelta);
+export const neutralStrokeReadableRestDelta = createTokenDelta(neutralStrokeReadableName, "rest", strokeReadableRestDelta);
 
 /** @public @deprecated Use `strokeReadableHoverDelta` instead. */
-export const neutralStrokeReadableHoverDelta = createDelta(neutralStrokeReadableName, "hover", strokeReadableHoverDelta);
+export const neutralStrokeReadableHoverDelta = createTokenDelta(neutralStrokeReadableName, "hover", strokeReadableHoverDelta);
 
 /** @public @deprecated Use `strokeReadableActiveDelta` instead. */
-export const neutralStrokeReadableActiveDelta = createDelta(neutralStrokeReadableName, "active", strokeReadableActiveDelta);
+export const neutralStrokeReadableActiveDelta = createTokenDelta(neutralStrokeReadableName, "active", strokeReadableActiveDelta);
 
 /** @public @deprecated Use `strokeReadableFocusDelta` instead. */
-export const neutralStrokeReadableFocusDelta = createDelta(neutralStrokeReadableName, "focus", strokeReadableFocusDelta);
+export const neutralStrokeReadableFocusDelta = createTokenDelta(neutralStrokeReadableName, "focus", strokeReadableFocusDelta);
 
 const neutralStrokeStrongName = "neutral-stroke-strong";
 
 /** @public @deprecated Use `strokeStrongMinContrast` instead. */
-export const neutralStrokeStrongMinContrast = createMinContrast(neutralStrokeStrongName, strokeStrongMinContrast);
+export const neutralStrokeStrongMinContrast = createTokenMinContrast(neutralStrokeStrongName, strokeStrongMinContrast);
 
 /** @public @deprecated Use `strokeStrongRestDelta` instead. */
-export const neutralStrokeStrongRestDelta = createDelta(neutralStrokeStrongName, "rest", strokeStrongRestDelta);
+export const neutralStrokeStrongRestDelta = createTokenDelta(neutralStrokeStrongName, "rest", strokeStrongRestDelta);
 
 /** @public @deprecated Use `strokeStrongHoverDelta` instead. */
-export const neutralStrokeStrongHoverDelta = createDelta(neutralStrokeStrongName, "hover", strokeStrongHoverDelta);
+export const neutralStrokeStrongHoverDelta = createTokenDelta(neutralStrokeStrongName, "hover", strokeStrongHoverDelta);
 
 /** @public @deprecated Use `strokeStrongActiveDelta` instead. */
-export const neutralStrokeStrongActiveDelta = createDelta(neutralStrokeStrongName, "active", strokeStrongActiveDelta);
+export const neutralStrokeStrongActiveDelta = createTokenDelta(neutralStrokeStrongName, "active", strokeStrongActiveDelta);
 
 /** @public @deprecated Use `strokeStrongFocusDelta` instead. */
-export const neutralStrokeStrongFocusDelta = createDelta(neutralStrokeStrongName, "focus", strokeStrongFocusDelta);
+export const neutralStrokeStrongFocusDelta = createTokenDelta(neutralStrokeStrongName, "focus", strokeStrongFocusDelta);
 
 /** @public @deprecated Use "Stroke Readable" instead */
 export const neutralForegroundHintRecipe = strokeReadableRecipe;
@@ -1252,19 +1252,19 @@ export const neutralFillFocus = neutralFillSubtleFocus;
 const neutralFillInputName = "neutral-fill-input";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputRestDelta = createDelta(neutralFillInputName, "rest", -1);
+export const neutralFillInputRestDelta = createTokenDelta(neutralFillInputName, "rest", -1);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputHoverDelta = createDelta(neutralFillInputName, "hover", 1);
+export const neutralFillInputHoverDelta = createTokenDelta(neutralFillInputName, "hover", 1);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputActiveDelta = createDelta(neutralFillInputName, "active", -2);
+export const neutralFillInputActiveDelta = createTokenDelta(neutralFillInputName, "active", -2);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputFocusDelta = createDelta(neutralFillInputName, "focus", -2);
+export const neutralFillInputFocusDelta = createTokenDelta(neutralFillInputName, "focus", -2);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputRecipe = createRecipe(neutralFillInputName,
+export const neutralFillInputRecipe = createTokenColorRecipe(neutralFillInputName,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1281,7 +1281,7 @@ export const neutralFillInputRecipe = createRecipe(neutralFillInputName,
 );
 
 /** @deprecated */
-const neutralFillInput = createSet(neutralFillInputRecipe, StyleProperty.backgroundFill);
+const neutralFillInput = createTokenColorSet(neutralFillInputRecipe, StyleProperty.backgroundFill);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRest = neutralFillInput.rest;
@@ -1300,19 +1300,19 @@ export const neutralFillInputFocus = neutralFillInput.focus;
 const neutralFillSecondaryName = "neutral-fill-secondary";
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryRestDelta = createDelta(neutralFillSecondaryName, "rest", 3);
+export const neutralFillSecondaryRestDelta = createTokenDelta(neutralFillSecondaryName, "rest", 3);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryHoverDelta = createDelta(neutralFillSecondaryName, "hover", 2);
+export const neutralFillSecondaryHoverDelta = createTokenDelta(neutralFillSecondaryName, "hover", 2);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryActiveDelta = createDelta(neutralFillSecondaryName, "active", 1);
+export const neutralFillSecondaryActiveDelta = createTokenDelta(neutralFillSecondaryName, "active", 1);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryFocusDelta = createDelta(neutralFillSecondaryName, "focus", 3);
+export const neutralFillSecondaryFocusDelta = createTokenDelta(neutralFillSecondaryName, "focus", 3);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryRecipe = createRecipe(neutralFillSecondaryName,
+export const neutralFillSecondaryRecipe = createTokenColorRecipe(neutralFillSecondaryName,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1329,7 +1329,7 @@ export const neutralFillSecondaryRecipe = createRecipe(neutralFillSecondaryName,
 );
 
 /** @deprecated */
-const neutralFillSecondary = createSet(neutralFillSecondaryRecipe, StyleProperty.backgroundFill);
+const neutralFillSecondary = createTokenColorSet(neutralFillSecondaryRecipe, StyleProperty.backgroundFill);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
 export const neutralFillSecondaryRest = neutralFillSecondary.rest;
@@ -1402,10 +1402,10 @@ export const neutralStrokeFocus = neutralStrokeSubtleFocus;
 const neutralStrokeDividerName = "neutral-stroke-divider";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRestDelta = createDelta(neutralStrokeDividerName, "rest", 4);
+export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDividerName, "rest", 4);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRecipe = createRecipe(neutralStrokeDividerName,
+export const neutralStrokeDividerRecipe = createTokenColorRecipe(neutralStrokeDividerName,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         swatchAsOverlay(
             deltaSwatch(
@@ -1419,26 +1419,26 @@ export const neutralStrokeDividerRecipe = createRecipe(neutralStrokeDividerName,
 );
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRest = createRecipeToken(neutralStrokeDividerRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeDividerRest = createTokenColorRecipeValue(neutralStrokeDividerRecipe, stylePropertyBorderFillAll);
 
 // Neutral Stroke Input (deprecated)
 
 const neutralStrokeInputName = "neutral-stroke-input";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputRestDelta = createDelta(neutralStrokeInputName, "rest", 3);
+export const neutralStrokeInputRestDelta = createTokenDelta(neutralStrokeInputName, "rest", 3);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputHoverDelta = createDelta(neutralStrokeInputName, "hover", 5);
+export const neutralStrokeInputHoverDelta = createTokenDelta(neutralStrokeInputName, "hover", 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputActiveDelta = createDelta(neutralStrokeInputName, "active", 5);
+export const neutralStrokeInputActiveDelta = createTokenDelta(neutralStrokeInputName, "active", 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputFocusDelta = createDelta(neutralStrokeInputName, "focus", 5);
+export const neutralStrokeInputFocusDelta = createTokenDelta(neutralStrokeInputName, "focus", 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputRecipe = createRecipe(neutralStrokeInputName,
+export const neutralStrokeInputRecipe = createTokenColorRecipe(neutralStrokeInputName,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1455,7 +1455,7 @@ export const neutralStrokeInputRecipe = createRecipe(neutralStrokeInputName,
 );
 
 /** @deprecated */
-const neutralStrokeInput = createSet(neutralStrokeInputRecipe, stylePropertyBorderFillAll);
+const neutralStrokeInput = createTokenColorSet(neutralStrokeInputRecipe, stylePropertyBorderFillAll);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRest = neutralStrokeInput.rest;
