@@ -1,5 +1,5 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AdditionalData, AppliedDesignTokens, DesignTokenValues, PluginUINodeData } from "../core/model.js";
+import { AdditionalData, AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginUINodeData } from "../core/model.js";
 
 /**
  * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
@@ -7,11 +7,14 @@ import { AdditionalData, AppliedDesignTokens, DesignTokenValues, PluginUINodeDat
 export interface SerializableNodeData {
     id: string;
     type: string;
+    name: string;
     supports: Array<StyleProperty>;
     children: SerializableNodeData[];
     inheritedDesignTokens: string;
     componentDesignTokens?: string;
     designTokens: string;
+    componentAppliedStyleModules?: string;
+    appliedStyleModules: string;
     componentAppliedDesignTokens?: string;
     appliedDesignTokens: string;
     additionalData: string;
@@ -38,11 +41,14 @@ export function serializeUINodes(
             return {
                 id: node.id,
                 type: node.type,
+                name: node.name,
                 supports: node.supports,
                 children: serializeUINodes(node.children),
                 inheritedDesignTokens: (node.inheritedDesignTokens as DesignTokenValues).serialize(),
                 componentDesignTokens: (node.componentDesignTokens as DesignTokenValues)?.serialize(),
                 designTokens: node.designTokens.serialize(),
+                componentAppliedStyleModules: (node.componentAppliedStyleModules as AppliedStyleModules)?.serialize(),
+                appliedStyleModules: node.appliedStyleModules.serialize(),
                 componentAppliedDesignTokens: (node.componentAppliedDesignTokens as AppliedDesignTokens)?.serialize(),
                 appliedDesignTokens: node.appliedDesignTokens.serialize(),
                 additionalData: node.additionalData.serialize(),
@@ -70,6 +76,10 @@ export function deserializeUINodes(
             componentDesignTokens.deserialize(node.componentDesignTokens);
             const designTokens = new DesignTokenValues();
             designTokens.deserialize(node.designTokens);
+            const componentAppliedStyleModules = new AppliedStyleModules();
+            componentAppliedStyleModules.deserialize(node.componentAppliedStyleModules);
+            const appliedStyleModules = new AppliedStyleModules();
+            appliedStyleModules.deserialize(node.appliedStyleModules);
             const componentAppliedDesignTokens = new AppliedDesignTokens();
             componentAppliedDesignTokens.deserialize(node.componentAppliedDesignTokens);
             const appliedDesignTokens = new AppliedDesignTokens();
@@ -82,11 +92,14 @@ export function deserializeUINodes(
             return {
                 id: node.id,
                 type: node.type,
+                name: node.name,
                 supports: node.supports,
                 children: deserializeUINodes(node.children),
                 inheritedDesignTokens,
                 componentDesignTokens,
                 designTokens,
+                componentAppliedStyleModules,
+                appliedStyleModules,
                 componentAppliedDesignTokens,
                 appliedDesignTokens,
                 additionalData,

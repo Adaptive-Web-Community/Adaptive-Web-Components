@@ -23,8 +23,10 @@ export const styleModules: StyleModules = [
             part: BadgeAnatomy.parts.control,
         },
         Styles.compose(
-            controlShapeStyles,
-            neutralFillReadableControlStyles,
+            [
+                controlShapeStyles,
+                neutralFillReadableControlStyles,
+            ],
         )
     ],
 ];

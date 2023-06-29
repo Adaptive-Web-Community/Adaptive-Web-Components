@@ -16,11 +16,13 @@ export const styleModules: StyleModules = [
         {
         },
         Styles.compose(
-            controlShapeStyles,
-            plainTextStyles,
-            Styles.fromProperties({
-                borderFill: neutralStrokeSubtleRest
-            }),
+            [
+                controlShapeStyles,
+                plainTextStyles,
+            ],
+            {
+                borderFill: neutralStrokeSubtleRest,
+            },
         )
     ],
 ];

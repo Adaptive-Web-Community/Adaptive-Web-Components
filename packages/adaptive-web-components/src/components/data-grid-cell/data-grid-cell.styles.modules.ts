@@ -16,9 +16,11 @@ export const styleModules: StyleModules = [
         {
         },
         Styles.compose(
-            controlShapeStyles,
-            controlDensityStyles,
-            plainTextStyles,
+            [
+                controlShapeStyles,
+                controlDensityStyles,
+                plainTextStyles,
+            ],
         )
     ],
 ];

@@ -1,6 +1,6 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedDesignToken, AppliedDesignTokens, DesignTokenValues, PluginNodeData } from "../core/model.js";
+import { AppliedDesignToken, AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
@@ -23,6 +23,34 @@ const isEllipseNode = isNodeType<EllipseNode>("ELLIPSE");
 const isPolygonNode = isNodeType<PolygonNode>("POLYGON");
 const isRectangleNode = isNodeType<RectangleNode>("RECTANGLE");
 const isTextNode = isNodeType<TextNode>("TEXT");
+
+function isContainerNode(node: BaseNode): node is
+    FrameNode |
+    ComponentNode |
+    InstanceNode {
+    return [
+        isFrameNode,
+        isComponentNode,
+        isInstanceNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
+function isShapeNode(node: BaseNode): node is
+    RectangleNode |
+    EllipseNode |
+    PolygonNode |
+    StarNode |
+    BooleanOperationNode |
+    VectorNode {
+    return [
+        isRectangleNode,
+        isEllipseNode,
+        isPolygonNode,
+        isStarNode,
+        isBooleanOperationNode,
+        isVectorNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
 
 function canHaveChildren(node: BaseNode): node is
     | DocumentNode
@@ -104,13 +132,16 @@ export class FigmaPluginNode extends PluginNode {
         if (isInstanceNode(this._node)) {
             mainComponentNode = (this._node as InstanceNode).mainComponent;
         } else if (this.id.startsWith("I")) {
-            // Child nodes of an instance have an ID like `I##:##;##:##`
-            // where the second `##:##` is the ID of the layer in the main component.
-            const [, mainID] = this.id.split(";");
-            mainComponentNode = figma.getNodeById(mainID);
+            // Child nodes of an instance have an ID like `I##:##;##:##;##:##`
+            // where each `##:##` points to the containing instance, and the last always points to the main node.
+            const ids = this.id.split(";");
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            mainComponentNode = figma.getNodeById(ids.pop()!);
         }
 
         const deserializedDesignTokens = this.deserializeLocalDesignTokens();
+        const parsedAppliedStyleModules = this.deserializeAppliedStyleModules();
+        let filteredAppliedStyleModules = parsedAppliedStyleModules;
         const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens();
 
         // Reconcile plugin data with the main component.
@@ -120,6 +151,7 @@ export class FigmaPluginNode extends PluginNode {
             // console.log("      is instance node", this.debugInfo, mainFigmaNode);
 
             this._componentDesignTokens = mainFigmaNode.localDesignTokens;
+            this._componentAppliedStyleModules = mainFigmaNode.appliedStyleModules;
             this._componentAppliedDesignTokens = mainFigmaNode.appliedDesignTokens;
 
             mainFigmaNode.localDesignTokens.forEach((value, tokenId) => {
@@ -129,6 +161,9 @@ export class FigmaPluginNode extends PluginNode {
                     deserializedDesignTokens.delete(tokenId);
                 }
             });
+
+            filteredAppliedStyleModules = parsedAppliedStyleModules
+                .filter((parsedName) => mainFigmaNode.appliedStyleModules.indexOf(parsedName) === -1) as AppliedStyleModules;
 
             mainFigmaNode.appliedDesignTokens.forEach((applied, target) => {
                 // If the target and token are the same between the nodes, remove it from the local.
@@ -148,6 +183,7 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         this._localDesignTokens = deserializedDesignTokens;
+        this._appliedStyleModules = filteredAppliedStyleModules;
         this._appliedDesignTokens = deserializedAppliedDesignTokens;
 
         // Check for and/or remove legacy FAST plugin data.
@@ -197,6 +233,16 @@ export class FigmaPluginNode extends PluginNode {
         return value;
     }
 
+    private deserializeAppliedStyleModules(): AppliedStyleModules {
+        const json = this.getPluginData("appliedStyleModules");
+        const value = new AppliedStyleModules();
+        if (json) {
+            value.deserialize(json);
+            // console.log("    deserializeAppliedStyleModules", this.debugInfo, value);
+        }
+        return value;
+    }
+
     private deserializeAppliedDesignTokens(): AppliedDesignTokens {
         const json = this.getPluginData("appliedDesignTokens");
         const value = new AppliedDesignTokens();
@@ -231,59 +277,39 @@ export class FigmaPluginNode extends PluginNode {
             switch (key) {
                 case StyleProperty.backgroundFill:
                     return [
-                        isDocumentNode,
                         isPageNode,
-                        isFrameNode,
-                        isRectangleNode,
-                        isEllipseNode,
-                        isPolygonNode,
-                        isStarNode,
-                        isBooleanOperationNode,
-                        isVectorNode,
-                        isComponentNode,
-                        isInstanceNode,
+                        isContainerNode,
+                        isShapeNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.borderFill:
+                case StyleProperty.borderStyle:
                 case StyleProperty.borderThickness:
                     return [
-                        isFrameNode,
-                        isRectangleNode,
-                        isEllipseNode,
-                        isPolygonNode,
-                        isStarNode,
+                        isContainerNode,
+                        isShapeNode,
                         isLineNode,
-                        isVectorNode,
-                        isComponentNode,
-                        isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.cornerRadius:
                     return [
-                        isFrameNode,
-                        isRectangleNode,
-                        isEllipseNode,
-                        isPolygonNode,
-                        isStarNode,
-                        isComponentNode,
-                        isInstanceNode,
+                        isContainerNode,
+                        isShapeNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.foregroundFill:
                     return [
-                        isFrameNode,
-                        isRectangleNode,
-                        isEllipseNode,
-                        isPolygonNode,
+                        isContainerNode, // Applies to children (for style module support)
+                        isShapeNode,
                         isLineNode,
-                        isStarNode,
-                        isBooleanOperationNode,
-                        isVectorNode,
-                        isComponentNode,
-                        isInstanceNode,
                         isTextNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.fontFamily:
                 case StyleProperty.fontSize:
+                case StyleProperty.fontStyle:
+                case StyleProperty.fontWeight:
                 case StyleProperty.lineHeight:
-                    return isTextNode(this._node);
+                    return [
+                        isContainerNode, // Applies to children (for style module support)
+                        isTextNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 default:
                     return false;
             }
@@ -291,49 +317,71 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     public paint(target: StyleProperty, data: AppliedDesignToken): void {
-        switch (target) {
-            case StyleProperty.borderFill:
-            case StyleProperty.backgroundFill:
-            case StyleProperty.foregroundFill:
-                this.paintColor(target, data);
-                break;
-            case StyleProperty.borderThickness:
-                this.paintStrokeWidth(data);
-                break;
-            case StyleProperty.cornerRadius:
-                this.paintCornerRadius(data);
-                break;
-            case StyleProperty.fontFamily:
-                {
+        if (isContainerNode(this._node) && (
+            target === StyleProperty.foregroundFill ||
+            target === StyleProperty.fontFamily ||
+            target === StyleProperty.fontSize ||
+            target === StyleProperty.fontStyle ||
+            target === StyleProperty.fontWeight ||
+            target === StyleProperty.lineHeight))
+        {
+            this.children.forEach((child) => {
+                child.paint(target, data);
+            });
+        } else {
+            switch (target) {
+                case StyleProperty.borderFill:
+                case StyleProperty.backgroundFill:
+                case StyleProperty.foregroundFill:
+                    this.paintColor(target, data);
+                    break;
+                case StyleProperty.borderStyle:
+                    // Ignore for now, "solid" only
+                    break;
+                case StyleProperty.borderThickness:
+                    this.paintStrokeWidth(data);
+                    break;
+                case StyleProperty.cornerRadius:
+                    this.paintCornerRadius(data);
+                    break;
+                case StyleProperty.fontFamily:
                     // TODO Handle font list better and font weight
-                    const families = data.value.split(",");
-                    const fontName = { family: families[0], style: "Regular" };
-                    figma.loadFontAsync(fontName).then(x => {
-                        (this._node as TextNode).fontName = fontName;
-                    });
-                }
-                break;
-            case StyleProperty.fontSize:
-                {
-                    const textNode = this._node as TextNode;
-                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
-                        textNode.fontSize = Number.parseFloat(data.value);
-                    });
-                }
-                break;
-            case StyleProperty.lineHeight:
-                {
-                    const textNode = this._node as TextNode;
-                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
-                        textNode.lineHeight = {
-                            value: Number.parseFloat(data.value),
-                            unit: "PIXELS",
-                        };
-                    });
-                }
-                break;
-            default:
-                throw new Error(`Applied design token could not be painted ${JSON.stringify(data)}`);
+                    if (isTextNode(this._node)) {
+                        const families = data.value.split(",");
+                        const fontName = { family: families[0], style: "Regular" };
+                        figma.loadFontAsync(fontName).then(x => {
+                            (this._node as TextNode).fontName = fontName;
+                        });
+                    }
+                    break;
+                case StyleProperty.fontSize:
+                    if (isTextNode(this._node)) {
+                        const textNode = this._node as TextNode;
+                        figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                            textNode.fontSize = Number.parseFloat(data.value);
+                        });
+                    }
+                    break;
+                case StyleProperty.fontStyle:
+                    // Ignore, but don't throw an error.
+                    break;
+                case StyleProperty.fontWeight:
+                    // Ignore, but don't throw an error.
+                    break;
+                case StyleProperty.lineHeight:
+                    if (isTextNode(this._node)) {
+                        const textNode = this._node as TextNode;
+                        figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                            textNode.lineHeight = {
+                                value: Number.parseFloat(data.value),
+                                unit: "PIXELS",
+                            };
+                        });
+                    }
+                    break;
+                default:
+                    throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(data)}`);
+            }
         }
     }
 

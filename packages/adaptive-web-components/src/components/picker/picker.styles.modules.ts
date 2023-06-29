@@ -8,9 +8,11 @@ import {
 import { PickerAnatomy } from "./picker.template.js";
 
 const menuStyles = Styles.compose(
-    plainTextStyles,
-    layerShapeStyles,
-    itemContainerDensityStyles,
+    [
+        plainTextStyles,
+        layerShapeStyles,
+        itemContainerDensityStyles,
+    ],
 );
 
 /**

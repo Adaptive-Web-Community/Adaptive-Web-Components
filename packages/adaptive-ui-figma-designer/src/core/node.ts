@@ -4,9 +4,11 @@ import {
     AdditionalData,
     AppliedDesignToken,
     AppliedDesignTokens,
+    AppliedStyleModules,
     DesignTokenValues,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
+    ReadonlyAppliedStyleModules,
     ReadonlyDesignTokenValues,
     TOOL_FILL_COLOR_TOKEN,
 } from "./model.js";
@@ -28,6 +30,13 @@ export abstract class PluginNode {
     protected _componentDesignTokens?: ReadonlyDesignTokenValues;
 
     /**
+     * Applied style modules inherited by an instance node from the main component.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
+    protected _componentAppliedStyleModules?: ReadonlyAppliedStyleModules;
+
+    /**
      * Applied design tokens inherited by an instance node from the main component.
      *
      * It is the responsibility of the subclass to load this field.
@@ -47,6 +56,13 @@ export abstract class PluginNode {
      * It is the responsibility of the subclass to load this field.
      */
     protected _appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+
+    /**
+     * Style modules applied to the style of this node.
+     *
+     * It is the responsibility of the subclass to load this field.
+     */
+    protected _appliedStyleModules: AppliedStyleModules = new AppliedStyleModules();
 
     /**
      * Additional data associated with this node.
@@ -81,6 +97,13 @@ export abstract class PluginNode {
         DesignTokenCache.set(this.id, designTokens);
 
         return designTokens;
+    }
+
+    /**
+     * Gets the applied style modules inherited by an instance node from the main component.
+     */
+    public get componentAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
+        return this._componentAppliedStyleModules;
     }
 
     /**
@@ -173,6 +196,27 @@ export abstract class PluginNode {
             this.setPluginData("appliedDesignTokens", json);
         } else {
             this.deletePluginData("appliedDesignTokens");
+        }
+    }
+
+    /**
+     * Gets the styler modules applied to the style of this node.
+     */
+    public get appliedStyleModules(): ReadonlyAppliedStyleModules {
+        return this._appliedStyleModules;
+    }
+
+    /**
+     * Sets the style modules applied to the style of this node.
+     * @param appliedModules The complete style modules applied to the style.
+     */
+    public setAppliedStyleModules(appliedModules: AppliedStyleModules) {
+        this._appliedStyleModules = appliedModules;
+        if (appliedModules.length) {
+            const json = JSON.stringify(appliedModules);
+            this.setPluginData("appliedStyleModules", json);
+        } else {
+            this.deletePluginData("appliedStyleModules");
         }
     }
 

@@ -1,10 +1,10 @@
-import { StyleProperty, SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
-import type { DesignToken, StaticDesignTokenValue, ValuesOf } from "@microsoft/fast-foundation";
+import { CSSDesignToken, type DesignToken, type StaticDesignTokenValue, type ValuesOf } from "@microsoft/fast-foundation";
 import { AppliedDesignToken, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
-import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
+import { nameToTitle, registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 
 /**
  * Simple display information for representing design tokens applied to one or more Nodes.
@@ -26,6 +26,19 @@ export interface UIDesignTokenValue {
     multipleValues?: string;
 }
 
+/**
+ * Display definition for a single style module.
+ */
+export type StyleModuleDisplay = {
+    name: string;
+    title: string;
+}
+
+/**
+ * A list of style modules grouped by the single top-level group name.
+ */
+export type StyleModuleDisplayList = Map<string, StyleModuleDisplay[]>;
+
 @customElement({
     name: `plugin-design-system-provider`,
     template: html`
@@ -45,7 +58,24 @@ export interface AppliedDesignTokenItem {
  * Used to determine which values to persist (and to ease debugging).
  */
 const AppliedTokenSource = {
+    /**
+     * 1st - Component style modules.
+     */
+    componentModules: "componentModules",
+
+    /**
+     * 2nd - Component local individual styles or module overrides.
+     */
     component: "component",
+
+    /**
+     * 3rd - Local style modules.
+     */
+    localModules: "localModules",
+
+    /**
+     * 4th - Local individual styles or module overrides.
+     */
     local: "local",
 } as const;
 
@@ -59,7 +89,7 @@ type AppliedTokenSource = ValuesOf<typeof AppliedTokenSource>;
  * Information about an applied design token, used to evaluate and apply the value.
  */
 type AppliedDesignTokenInfo = {
-    tokenID: string;
+    token: CSSDesignToken<any>;
     source: AppliedTokenSource;
 }
 
@@ -134,6 +164,80 @@ export class UIController {
         this.evaluateEffectiveAppliedDesignTokens(this._selectedNodes);
 
         this.dispatchState(reason);
+    }
+
+    private styleModuleSort(a: [string, Styles], b: [string, Styles]): number {
+        return a[0].localeCompare(b[0]);
+    }
+
+    private styleModuleReduce(accumulated: StyleModuleDisplayList, current: [string, Styles]) {
+        const [topGroup, ...remaining] = current[0].split(".");
+        const topGroupFormatted = nameToTitle(topGroup);
+        const modules = accumulated.has(topGroupFormatted) ? accumulated.get(topGroupFormatted) : [];
+        modules.push({
+            name: current[0],
+            title: remaining.map((value) => nameToTitle(value)).join(" / "),
+        });
+        accumulated.set(topGroupFormatted, modules);
+        return accumulated;
+    }
+
+    /**
+     * Get all registered style modules.
+     */
+    public getAvailableStyleModules(): StyleModuleDisplayList {
+        return new Array(...Styles.Shared.entries())
+            .sort(this.styleModuleSort)
+            .reduce<StyleModuleDisplayList>(this.styleModuleReduce, new Map());
+    }
+
+    /**
+     * Gets a display representation of applied style modules for the selected nodes.
+     * @returns Applied style modules.
+     */
+    public getAppliedStyleModules(): StyleModuleDisplayList {
+        const allModules: Map<string, Styles> = new Map();
+
+        // TODO: Handle multiple values better
+        this._selectedNodes.forEach(node => {
+            node.appliedStyleModules.forEach((name) => {
+                if (!allModules.has(name)) {
+                    allModules.set(name, null); // null Styles for now
+                }
+            })
+        });
+
+        return new Array(...allModules.entries())
+            .sort(this.styleModuleSort)
+            .reduce<StyleModuleDisplayList>(this.styleModuleReduce, new Map());
+    }
+
+    public applyStyleModule(name: string) {
+        this._selectedNodes.forEach(node => {
+            // console.log("--------------------------------");
+            // console.log("applying style module to node", name);
+
+            node.appliedStyleModules.push(name);
+            this.evaluateEffectiveAppliedDesignTokens([node]);
+            // console.log("  node", node);
+        });
+
+        this.dispatchState("applyStyleModule");
+    }
+
+    public removeStyleModule(name: string) {
+        this._selectedNodes.forEach(node => {
+            // console.log("--------------------------------");
+            // console.log("removing style module from node", name);
+
+            const foundIndex = node.appliedStyleModules.indexOf(name);
+            if (foundIndex > -1) {
+                node.appliedStyleModules.splice(foundIndex, 1);
+            }
+            // console.log("  node", node);
+        });
+
+        this.dispatchState("removeStyleModule");
     }
 
     public supports(target: StyleProperty) {
@@ -247,19 +351,48 @@ export class UIController {
     private getEffectiveAppliedDesignTokens(node: PluginUINodeData): Map<StyleProperty, AppliedDesignTokenInfo> {
         const allApplied = new Map<StyleProperty, AppliedDesignTokenInfo>();
 
-        node.componentAppliedDesignTokens.forEach((applied, target) => {
-            allApplied.set(target, {
-                tokenID: applied.tokenID,
-                source: AppliedTokenSource.component,
-            })
-        });
+        const registry = this._appliableDesignTokenRegistry;
+        function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
+            return function(applied, target) {
+                const token = registry.get(applied.tokenID);
+                allApplied.set(target, {
+                    token: token.token as CSSDesignToken<any>,
+                    source,
+                });
+            }
+        }
 
-        node.appliedDesignTokens.forEach((applied, target) => {
-            allApplied.set(target, {
-                tokenID: applied.tokenID,
-                source: AppliedTokenSource.local,
-            })
-        });
+        function appliedStyleModulesHandler(source: AppliedTokenSource): (moduleID: string) => void {
+            return function(moduleID) {
+                const styles = Styles.Shared.get(moduleID);
+                styles.effectiveProperties.forEach((value, target) => {
+                    // TODO: Support other properties.
+                    if (value instanceof CSSDesignToken) {
+                        // console.log("    applying token >", value);
+                        allApplied.set(target, {
+                            token: value,
+                            source,
+                        });
+                    } else {
+                        const group = (value as InteractiveTokenGroup<any>);
+                        if (group && group.rest) {
+                            // console.log("    applying group >", group);
+                            allApplied.set(target, {
+                                token: group.rest,
+                                source,
+                            });
+                        } else {
+                            console.warn("    token type not supported >", typeof value, value);
+                        }
+                    }
+                });
+            }
+        }
+
+        node.componentAppliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.componentModules));
+        node.componentAppliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
+        node.appliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.localModules));
+        node.appliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.local));
 
         return allApplied;
     }
@@ -270,8 +403,11 @@ export class UIController {
             // console.log("  evaluateEffectiveAppliedDesignTokens", node);
             const allApplied = this.getEffectiveAppliedDesignTokens(node);
             allApplied.forEach((info, target) => {
-                const token = this._appliableDesignTokenRegistry.get(info.tokenID);
-                this.evaluateEffectiveAppliedDesignToken(target, token, node, info.source);
+                if (info.token) {
+                    this.evaluateEffectiveAppliedDesignToken(target, info.token, node, info.source);
+                } else {
+                    // console.warn("Token not found in appliable tokens", info.token);
+                }
             });
 
             // console.log("      evaluations", node.effectiveAppliedDesignTokens);
@@ -282,14 +418,14 @@ export class UIController {
         });
     }
 
-    private evaluateEffectiveAppliedDesignToken(target: StyleProperty, token: DesignTokenDefinition, node: PluginUINodeData, source: AppliedTokenSource) {
-        let value: any = this.getDesignTokenValue(node, token.token);
+    private evaluateEffectiveAppliedDesignToken(target: StyleProperty, token: CSSDesignToken<any>, node: PluginUINodeData, source: AppliedTokenSource) {
+        let value: any = this.getDesignTokenValue(node, token);
         if (typeof (value as any).toColorString === "function") {
             value = (value as any).toColorString();
         }
-        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.id, " -> ", value, `(from ${source})`);
+        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, `(from ${source})`);
 
-        const applied = new AppliedDesignToken(token.id, (value as unknown) as string);
+        const applied = new AppliedDesignToken(token.name, (value as unknown) as string);
 
         node.effectiveAppliedDesignTokens.set(target, applied);
 
@@ -298,7 +434,7 @@ export class UIController {
         }
 
         // TODO: The fillColor context isn't working yet, so only use it for "fixed" layer backgrounds for now.
-        if (target === StyleProperty.backgroundFill && token.id.startsWith("layer-fill-fixed")) {
+        if (target === StyleProperty.backgroundFill && token.name.startsWith("layer-fill-fixed")) {
             // console.log(`      Fill style property, setting '${TOOL_FILL_COLOR_TOKEN}' design token`);
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const def = this._designTokenRegistry.get(TOOL_FILL_COLOR_TOKEN)!;
@@ -334,7 +470,7 @@ export class UIController {
             // console.log("--------------------------------");
             // console.log("applying token to node", target, token);
 
-            this.evaluateEffectiveAppliedDesignToken(target, token, node, AppliedTokenSource.local);
+            this.evaluateEffectiveAppliedDesignToken(target, token.token as CSSDesignToken<any>, node, AppliedTokenSource.local);
 
             // console.log("  node", node);
         });

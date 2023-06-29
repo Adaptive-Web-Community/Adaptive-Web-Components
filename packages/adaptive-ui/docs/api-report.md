@@ -1526,6 +1526,9 @@ export interface StyleModuleTarget {
 export type StyleProperties = Partial<Record<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>>;
 
 // @public
+export type StylePropertiesMap = Map<StyleProperty, CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string>;
+
+// @public
 export const StyleProperty: {
     readonly backgroundFill: "backgroundFill";
     readonly foregroundFill: "foregroundFill";
@@ -1556,12 +1559,15 @@ export class Styles {
     // (undocumented)
     appendComposed(styles: Styles): void;
     clearComposed(): void;
-    static compose(...styles: Styles[]): Styles;
+    static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles;
     get composed(): Styles[] | undefined;
-    get effectiveProperties(): StyleProperties;
-    static fromProperties(properties: StyleProperties): Styles;
-    get properties(): StyleProperties | undefined;
-    set properties(properties: StyleProperties | undefined);
+    get effectiveProperties(): StylePropertiesMap;
+    static fromProperties(properties: StyleProperties, name?: string): Styles;
+    readonly name: string | undefined;
+    get properties(): StylePropertiesMap | undefined;
+    set properties(properties: StylePropertiesMap | undefined);
+    // (undocumented)
+    static Shared: Map<string, Styles>;
 }
 
 // @public
