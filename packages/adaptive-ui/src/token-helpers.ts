@@ -1,7 +1,7 @@
 import { DesignToken } from "@microsoft/fast-foundation";
-import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { Swatch } from "../color/swatch.js";
-import { StyleProperty } from "../modules/types.js";
+import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
+import { Swatch } from "./color/swatch.js";
+import { StyleProperty } from "./modules/types.js";
 
 /** @internal @deprecated Use one of the typed `createTokenX` functions instead */
 export const { create } = DesignToken;

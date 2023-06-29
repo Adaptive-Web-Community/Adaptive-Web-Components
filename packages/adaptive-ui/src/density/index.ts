@@ -2,7 +2,7 @@ import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundatio
 import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
 import { designUnitDimension, strokeThickness } from "../design-tokens/appearance.js";
-import { createNonCss, createTokenDimension } from "../design-tokens/create.js";
+import { createNonCss, createTokenDimension } from "../token-helpers.js";
 
 /**
  * The adjustment (plus or minus) to density unit values.

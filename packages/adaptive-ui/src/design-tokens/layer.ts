@@ -6,9 +6,9 @@ import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
 import { Swatch } from "../color/swatch.js";
 import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
 import { StyleProperty } from "../modules/types.js";
+import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { InteractiveTokenGroup } from "../types.js";
 import { fillColor } from "./color.js";
-import { createNonCss, createTokenNonCss, createTokenSwatch } from "./create.js";
 import { neutralPalette } from "./palette.js";
 
 /**
