@@ -3,6 +3,7 @@ export * from "./density/index.js";
 export * from "./elevation/index.js";
 export * from "./modules/index.js";
 export * from "./adaptive-design-tokens.js";
+export * from "./recipes.js";
 export * from "./styles.js";
 export * from "./token-helpers-color.js";
 export * from "./token-helpers.js";

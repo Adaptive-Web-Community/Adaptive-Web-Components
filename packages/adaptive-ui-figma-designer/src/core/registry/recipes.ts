@@ -174,7 +174,7 @@ function registerStore<T>(
         
         const entryIntendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
 
-        const entryFormControlId = token.allowedType.includes(DesignTokenType.color) ? FormControlId.color : FormControlId.text;
+        const entryFormControlId = token.type === DesignTokenType.color ? FormControlId.color : FormControlId.text;
 
         const definition: DesignTokenDefinition = {
             id: token.name,

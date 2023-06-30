@@ -1,5 +1,5 @@
-import type { DesignToken, DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
-import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
+import type { DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
+import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";
 import { contrastAndDeltaSwatchSet } from "../color/recipes/contrast-and-delta-swatch-set.js";
@@ -13,6 +13,7 @@ import { StyleProperty, stylePropertyBorderFillAll } from "../modules/types.js";
 import { Recipe, RecipeOptional } from "../recipes.js";
 import {
     createTokenColorRecipe,
+    createTokenColorRecipeBySet,
     createTokenColorRecipeForPalette,
     createTokenColorRecipeValue,
     createTokenColorRecipeWithPalette,
@@ -20,7 +21,8 @@ import {
     createTokenDelta,
     createTokenMinContrast
 } from "../token-helpers-color.js";
-import { createNonCss, createTokenSwatch } from "../token-helpers.js";
+import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
+import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
 /**
@@ -31,8 +33,8 @@ import { accentPalette, neutralPalette } from "./palette.js";
  * @public
  */
 export function createTokenColorRecipeAccent<T>(
-    recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     return createTokenColorRecipeWithPalette(recipeToken, accentPalette);
 }
 
@@ -44,12 +46,12 @@ export function createTokenColorRecipeAccent<T>(
  * @public
  */
 export function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
-    recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     const paletteToken = neutralPalette;
     const palettePrefix = paletteToken.name.split("-")[0] + "-"; // TODO: More resilient
     const name = palettePrefix + recipeToken.name;
-    return createNonCss<RecipeOptional<ColorRecipeParams, T>>(name).withDefault({
+    return createTokenNonCss<RecipeOptional<ColorRecipeParams, T>>(name, DesignTokenType.recipe, recipeToken.intendedFor).withDefault({
         evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): T => {
             const p = Object.assign({ palette: resolve(paletteToken) }, params);
             return interactiveSwatchSetAsOverlay(
@@ -96,25 +98,25 @@ export type WcagContrastLevel = ValuesOf<typeof WcagContrastLevel>;
 export const wcagContrastLevel = createNonCss<WcagContrastLevel>("wcag-contrast-level").withDefault("aa");
 
 /** @public */
-export const minContrastSafety = createNonCss<number>("min-contrast-safety").withDefault(
+export const minContrastSafety = createTokenNonCss<number>("min-contrast-safety", DesignTokenType.number).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(wcagContrastLevel) === "aa" ? 0 : 3
 );
 
 /** @public */
-export const minContrastSubtle = createNonCss<number>("min-contrast-subtle").withDefault(
+export const minContrastSubtle = createTokenNonCss<number>("min-contrast-subtle", DesignTokenType.number).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(wcagContrastLevel) === "aa" ? 1.5 : 3
 );
 
 /** @public */
-export const minContrastDiscernible = createNonCss<number>("min-contrast-discernible").withDefault(
+export const minContrastDiscernible = createTokenNonCss<number>("min-contrast-discernible", DesignTokenType.number).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(wcagContrastLevel) === "aa" ? 3 : 4.5
 );
 
 /** @public */
-export const minContrastReadable = createNonCss<number>("min-contrast-readable").withDefault(
+export const minContrastReadable = createTokenNonCss<number>("min-contrast-readable", DesignTokenType.number).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(wcagContrastLevel) === "aa" ? 4.5 : 7
 );
@@ -134,18 +136,18 @@ export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").with
  *
  * @public
  */
-export const blackOrWhiteDiscernibleRecipe = createNonCss<InteractiveColorRecipeBySet>("black-or-white-discernible-recipe").withDefault(
-    {
-        evaluate: (resolve: DesignTokenResolver, reference: InteractiveSwatchSet): InteractiveSwatchSet =>
-            blackOrWhiteByContrastSet(
-                reference.rest,
-                reference.hover,
-                reference.active,
-                reference.focus,
-                resolve(minContrastDiscernible),
-                false
-            )
-    }
+export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<InteractiveSwatchSet>(
+    "black-or-white-discernible",
+    StyleProperty.foregroundFill,
+    (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
+        blackOrWhiteByContrastSet(
+            reference.rest,
+            reference.hover,
+            reference.active,
+            reference.focus,
+            resolve(minContrastDiscernible),
+            false
+        )
 );
 
 /**
@@ -157,18 +159,18 @@ export const blackOrWhiteDiscernibleRecipe = createNonCss<InteractiveColorRecipe
  *
  * @public
  */
-export const blackOrWhiteReadableRecipe = createNonCss<InteractiveColorRecipeBySet>("black-or-white-readable-recipe").withDefault(
-    {
-        evaluate: (resolve: DesignTokenResolver, reference: InteractiveSwatchSet): InteractiveSwatchSet =>
-            blackOrWhiteByContrastSet(
-                reference.rest,
-                reference.hover,
-                reference.active,
-                reference.focus,
-                resolve(minContrastReadable),
-                false
-            )
-    }
+export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<InteractiveSwatchSet>(
+    "black-or-white-readable",
+    StyleProperty.foregroundFill,
+    (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
+        blackOrWhiteByContrastSet(
+            reference.rest,
+            reference.hover,
+            reference.active,
+            reference.focus,
+            resolve(minContrastReadable),
+            false
+        )
 );
 
 // Common recipe deltas
@@ -188,7 +190,9 @@ export const fillStealthActiveDelta = createTokenDelta(fillStealthName, "active"
 export const fillStealthFocusDelta = createTokenDelta(fillStealthName, "focus", 0);
 
 /** @public */
-export const fillStealthRecipe = createTokenColorRecipeForPalette(fillStealthName,
+export const fillStealthRecipe = createTokenColorRecipeForPalette(
+    fillStealthName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
@@ -215,7 +219,9 @@ export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 
 export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, "focus", 2);
 
 /** @public */
-export const fillSubtleRecipe = createTokenColorRecipeForPalette(fillSubtleName,
+export const fillSubtleRecipe = createTokenColorRecipeForPalette(
+    fillSubtleName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
@@ -242,7 +248,9 @@ export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, 
 export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, "focus", 0);
 
 /** @public */
-export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(fillDiscernibleName,
+export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
+    fillDiscernibleName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -270,7 +278,9 @@ export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "activ
 export const fillReadableFocusDelta = createTokenDelta(fillReadableName, "focus", 0);
 
 /** @public */
-export const fillReadableRecipe = createTokenColorRecipeForPalette(fillReadableName,
+export const fillReadableRecipe = createTokenColorRecipeForPalette(
+    fillReadableName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -298,7 +308,9 @@ export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, "activ
 export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, "focus", 0);
 
 /** @public */
-export const strokeSafetyRecipe = createTokenColorRecipeForPalette(strokeSafetyName,
+export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
+    strokeSafetyName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         conditionalSwatchSet(
             contrastAndDeltaSwatchSet(
@@ -329,7 +341,9 @@ export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, "act
 export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, "focus", 0);
 
 /** @public */
-export const strokeStealthRecipe = createTokenColorRecipeForPalette(strokeStealthName,
+export const strokeStealthRecipe = createTokenColorRecipeForPalette(
+    strokeStealthName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -357,7 +371,9 @@ export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, "activ
 export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, "focus", 0);
 
 /** @public */
-export const strokeSubtleRecipe = createTokenColorRecipeForPalette(strokeSubtleName,
+export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
+    strokeSubtleName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -385,7 +401,9 @@ export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleNa
 export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, "focus", 0);
 
 /** @public */
-export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(strokeDiscernibleName,
+export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
+    strokeDiscernibleName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -413,7 +431,9 @@ export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, "a
 export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, "focus", 0);
 
 /** @public */
-export const strokeReadableRecipe = createTokenColorRecipeForPalette(strokeReadableName,
+export const strokeReadableRecipe = createTokenColorRecipeForPalette(
+    strokeReadableName,
+    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -444,7 +464,9 @@ export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, "activ
 export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, "focus", 0);
 
 /** @public */
-export const strokeStrongRecipe = createTokenColorRecipeForPalette(strokeStrongName,
+export const strokeStrongRecipe = createTokenColorRecipeForPalette(
+    strokeStrongName,
+    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -463,7 +485,7 @@ export const strokeStrongRecipe = createTokenColorRecipeForPalette(strokeStrongN
 export const accentFillStealthRecipe = createTokenColorRecipeAccent(fillStealthRecipe);
 
 /** @public */
-export const accentFillStealth = createTokenColorSet(accentFillStealthRecipe, StyleProperty.backgroundFill);
+export const accentFillStealth = createTokenColorSet(accentFillStealthRecipe);
 
 /** @public */
 export const accentFillStealthRest = accentFillStealth.rest;
@@ -483,7 +505,7 @@ export const accentFillStealthFocus = accentFillStealth.focus;
 export const accentFillSubtleRecipe = createTokenColorRecipeAccent(fillSubtleRecipe);
 
 /** @public */
-export const accentFillSubtle = createTokenColorSet(accentFillSubtleRecipe, StyleProperty.backgroundFill);
+export const accentFillSubtle = createTokenColorSet(accentFillSubtleRecipe);
 
 /** @public */
 export const accentFillSubtleRest = accentFillSubtle.rest;
@@ -503,7 +525,7 @@ export const accentFillSubtleFocus = accentFillSubtle.focus;
 export const accentFillDiscernibleRecipe = createTokenColorRecipeAccent(fillDiscernibleRecipe);
 
 /** @public */
-export const accentFillDiscernible = createTokenColorSet(accentFillDiscernibleRecipe, StyleProperty.backgroundFill);
+export const accentFillDiscernible = createTokenColorSet(accentFillDiscernibleRecipe);
 
 /** @public */
 export const accentFillDiscernibleRest = accentFillDiscernible.rest;
@@ -523,7 +545,7 @@ export const accentFillDiscernibleFocus = accentFillDiscernible.focus;
 export const accentFillReadableRecipe = createTokenColorRecipeAccent(fillReadableRecipe);
 
 /** @public */
-export const accentFillReadable = createTokenColorSet(accentFillReadableRecipe, StyleProperty.backgroundFill);
+export const accentFillReadable = createTokenColorSet(accentFillReadableRecipe);
 
 /** @public */
 export const accentFillReadableRest = accentFillReadable.rest;
@@ -542,7 +564,9 @@ export const accentFillReadableFocus = accentFillReadable.focus;
 const foregroundOnAccentFillReadableName = "foreground-on-accent-fill-readable";
 
 /** @public @deprecated This functionality has been migrated to style modules */
-export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(foregroundOnAccentFillReadableName,
+export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(
+    foregroundOnAccentFillReadableName,
+    StyleProperty.foregroundFill,
     (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
             resolve(accentFillReadableRest),
@@ -555,7 +579,7 @@ export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(foreg
 );
 
 /** @public @deprecated This functionality has been migrated to style modules */
-export const foregroundOnAccentFillReadable = createTokenColorSet(foregroundOnAccentFillReadableRecipe, StyleProperty.foregroundFill);
+export const foregroundOnAccentFillReadable = createTokenColorSet(foregroundOnAccentFillReadableRecipe);
 
 /** @public @deprecated This functionality has been migrated to style modules */
 export const foregroundOnAccentFillReadableRest = foregroundOnAccentFillReadable.rest;
@@ -575,7 +599,7 @@ export const foregroundOnAccentFillReadableFocus = foregroundOnAccentFillReadabl
 export const accentStrokeSafetyRecipe = createTokenColorRecipeAccent(strokeSafetyRecipe);
 
 /** @public */
-export const accentStrokeSafety = createTokenColorSet(accentStrokeSafetyRecipe, stylePropertyBorderFillAll);
+export const accentStrokeSafety = createTokenColorSet(accentStrokeSafetyRecipe);
 
 /** @public */
 export const accentStrokeSafetyRest = accentStrokeSafety.rest;
@@ -595,7 +619,7 @@ export const accentStrokeSafetyFocus = accentStrokeSafety.focus;
 export const accentStrokeStealthRecipe = createTokenColorRecipeAccent(strokeStealthRecipe);
 
 /** @public */
-export const accentStrokeStealth = createTokenColorSet(accentStrokeStealthRecipe, stylePropertyBorderFillAll);
+export const accentStrokeStealth = createTokenColorSet(accentStrokeStealthRecipe);
 
 /** @public */
 export const accentStrokeStealthRest = accentStrokeStealth.rest;
@@ -615,7 +639,7 @@ export const accentStrokeStealthFocus = accentStrokeStealth.focus;
 export const accentStrokeSubtleRecipe = createTokenColorRecipeAccent(strokeSubtleRecipe);
 
 /** @public */
-export const accentStrokeSubtle = createTokenColorSet(accentStrokeSubtleRecipe, stylePropertyBorderFillAll);
+export const accentStrokeSubtle = createTokenColorSet(accentStrokeSubtleRecipe);
 
 /** @public */
 export const accentStrokeSubtleRest = accentStrokeSubtle.rest;
@@ -635,7 +659,7 @@ export const accentStrokeSubtleFocus = accentStrokeSubtle.focus;
 export const accentStrokeDiscernibleRecipe = createTokenColorRecipeAccent(strokeDiscernibleRecipe);
 
 /** @public */
-export const accentStrokeDiscernible = createTokenColorSet(accentStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
+export const accentStrokeDiscernible = createTokenColorSet(accentStrokeDiscernibleRecipe);
 
 /** @public */
 export const accentStrokeDiscernibleRest = accentStrokeDiscernible.rest;
@@ -655,7 +679,7 @@ export const accentStrokeDiscernibleFocus = accentStrokeDiscernible.focus;
 export const accentStrokeReadableRecipe = createTokenColorRecipeAccent(strokeReadableRecipe);
 
 /** @public */
-export const accentStrokeReadable = createTokenColorSet(accentStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const accentStrokeReadable = createTokenColorSet(accentStrokeReadableRecipe);
 
 /** @public */
 export const accentStrokeReadableRest = accentStrokeReadable.rest;
@@ -675,7 +699,7 @@ export const accentStrokeReadableFocus = accentStrokeReadable.focus;
 export const accentStrokeStrongRecipe = createTokenColorRecipeAccent(strokeStrongRecipe);
 
 /** @public */
-export const accentStrokeStrong = createTokenColorSet(accentStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const accentStrokeStrong = createTokenColorSet(accentStrokeStrongRecipe);
 
 /** @public */
 export const accentStrokeStrongRest = accentStrokeStrong.rest;
@@ -695,7 +719,7 @@ export const accentStrokeStrongFocus = accentStrokeStrong.focus;
 export const neutralFillStealthRecipe = createTokenColorRecipeNeutral(fillStealthRecipe);
 
 /** @public */
-export const neutralFillStealth = createTokenColorSet(neutralFillStealthRecipe, StyleProperty.backgroundFill);
+export const neutralFillStealth = createTokenColorSet(neutralFillStealthRecipe);
 
 /** @public */
 export const neutralFillStealthRest = neutralFillStealth.rest;
@@ -715,7 +739,7 @@ export const neutralFillStealthFocus = neutralFillStealth.focus;
 export const neutralFillSubtleRecipe = createTokenColorRecipeNeutral(fillSubtleRecipe);
 
 /** @public */
-export const neutralFillSubtle = createTokenColorSet(neutralFillSubtleRecipe, StyleProperty.backgroundFill);
+export const neutralFillSubtle = createTokenColorSet(neutralFillSubtleRecipe);
 
 /** @public */
 export const neutralFillSubtleRest = neutralFillSubtle.rest;
@@ -735,7 +759,7 @@ export const neutralFillSubtleFocus = neutralFillSubtle.focus;
 export const neutralFillDiscernibleRecipe = createTokenColorRecipeNeutral(fillDiscernibleRecipe);
 
 /** @public */
-export const neutralFillDiscernible = createTokenColorSet(neutralFillDiscernibleRecipe, StyleProperty.backgroundFill);
+export const neutralFillDiscernible = createTokenColorSet(neutralFillDiscernibleRecipe);
 
 /** @public */
 export const neutralFillDiscernibleRest = neutralFillDiscernible.rest;
@@ -755,7 +779,7 @@ export const neutralFillDiscernibleFocus = neutralFillDiscernible.focus;
 export const neutralFillReadableRecipe = createTokenColorRecipeNeutral(fillReadableRecipe);
 
 /** @public */
-export const neutralFillReadable = createTokenColorSet(neutralFillReadableRecipe, StyleProperty.backgroundFill);
+export const neutralFillReadable = createTokenColorSet(neutralFillReadableRecipe);
 
 /** @public */
 export const neutralFillReadableRest = neutralFillReadable.rest;
@@ -775,7 +799,7 @@ export const neutralFillReadableFocus = neutralFillReadable.focus;
 export const neutralStrokeSafetyRecipe = createTokenColorRecipeNeutral(strokeSafetyRecipe);
 
 /** @public */
-export const neutralStrokeSafety = createTokenColorSet(neutralStrokeSafetyRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeSafety = createTokenColorSet(neutralStrokeSafetyRecipe);
 
 /** @public */
 export const neutralStrokeSafetyRest = neutralStrokeSafety.rest;
@@ -795,7 +819,7 @@ export const neutralStrokeSafetyFocus = neutralStrokeSafety.focus;
 export const neutralStrokeStealthRecipe = createTokenColorRecipeNeutral(strokeStealthRecipe);
 
 /** @public */
-export const neutralStrokeStealth = createTokenColorSet(neutralStrokeStealthRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeStealth = createTokenColorSet(neutralStrokeStealthRecipe);
 
 /** @public */
 export const neutralStrokeStealthRest = neutralStrokeStealth.rest;
@@ -815,7 +839,7 @@ export const neutralStrokeStealthFocus = neutralStrokeStealth.focus;
 export const neutralStrokeSubtleRecipe = createTokenColorRecipeNeutral(strokeSubtleRecipe);
 
 /** @public */
-export const neutralStrokeSubtle = createTokenColorSet(neutralStrokeSubtleRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeSubtle = createTokenColorSet(neutralStrokeSubtleRecipe);
 
 /** @public */
 export const neutralStrokeSubtleRest = neutralStrokeSubtle.rest;
@@ -835,7 +859,7 @@ export const neutralStrokeSubtleFocus = neutralStrokeSubtle.focus;
 export const neutralStrokeDiscernibleRecipe = createTokenColorRecipeNeutral(strokeDiscernibleRecipe);
 
 /** @public */
-export const neutralStrokeDiscernible = createTokenColorSet(neutralStrokeDiscernibleRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeDiscernible = createTokenColorSet(neutralStrokeDiscernibleRecipe);
 
 /** @public */
 export const neutralStrokeDiscernibleRest = neutralStrokeDiscernible.rest;
@@ -855,7 +879,7 @@ export const neutralStrokeDiscernibleFocus = neutralStrokeDiscernible.focus;
 export const neutralStrokeReadableRecipe = createTokenColorRecipeNeutral(strokeReadableRecipe);
 
 /** @public */
-export const neutralStrokeReadable = createTokenColorSet(neutralStrokeReadableRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const neutralStrokeReadable = createTokenColorSet(neutralStrokeReadableRecipe);
 
 /** @public */
 export const neutralStrokeReadableRest = neutralStrokeReadable.rest;
@@ -875,7 +899,7 @@ export const neutralStrokeReadableFocus = neutralStrokeReadable.focus;
 export const neutralStrokeStrongRecipe = createTokenColorRecipeNeutral(strokeStrongRecipe);
 
 /** @public */
-export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe, [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]);
+export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe);
 
 /** @public */
 export const neutralStrokeStrongRest = neutralStrokeStrong.rest;
@@ -894,26 +918,30 @@ export const neutralStrokeStrongFocus = neutralStrokeStrong.focus;
 const focusStrokeOuterName = "focus-stroke-outer";
 
 /** @public */
-export const focusStrokeOuterRecipe = createTokenColorRecipe(focusStrokeOuterName,
+export const focusStrokeOuterRecipe = createTokenColorRecipe(
+    focusStrokeOuterName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
 );
 
 /** @public */
-export const focusStrokeOuter = createTokenColorRecipeValue(focusStrokeOuterRecipe, stylePropertyBorderFillAll);
+export const focusStrokeOuter = createTokenColorRecipeValue(focusStrokeOuterRecipe);
 
 // Focus Stroke Inner
 
 const focusStrokeInnerName = "focus-stroke-inner";
 
 /** @public */
-export const focusStrokeInnerRecipe = createTokenColorRecipe(focusStrokeInnerName,
+export const focusStrokeInnerRecipe = createTokenColorRecipe(
+    focusStrokeInnerName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
 );
 
 /** @public */
-export const focusStrokeInner = createTokenColorRecipeValue(focusStrokeInnerRecipe, stylePropertyBorderFillAll);
+export const focusStrokeInner = createTokenColorRecipeValue(focusStrokeInnerRecipe);
 
 // Deprecated tokens
 
@@ -1195,7 +1223,9 @@ export const neutralFillInputActiveDelta = createTokenDelta(neutralFillInputName
 export const neutralFillInputFocusDelta = createTokenDelta(neutralFillInputName, "focus", -2);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputRecipe = createTokenColorRecipe(neutralFillInputName,
+export const neutralFillInputRecipe = createTokenColorRecipe(
+    neutralFillInputName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1212,7 +1242,7 @@ export const neutralFillInputRecipe = createTokenColorRecipe(neutralFillInputNam
 );
 
 /** @deprecated */
-const neutralFillInput = createTokenColorSet(neutralFillInputRecipe, StyleProperty.backgroundFill);
+const neutralFillInput = createTokenColorSet(neutralFillInputRecipe);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRest = neutralFillInput.rest;
@@ -1243,7 +1273,9 @@ export const neutralFillSecondaryActiveDelta = createTokenDelta(neutralFillSecon
 export const neutralFillSecondaryFocusDelta = createTokenDelta(neutralFillSecondaryName, "focus", 3);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryRecipe = createTokenColorRecipe(neutralFillSecondaryName,
+export const neutralFillSecondaryRecipe = createTokenColorRecipe(
+    neutralFillSecondaryName,
+    StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1260,7 +1292,7 @@ export const neutralFillSecondaryRecipe = createTokenColorRecipe(neutralFillSeco
 );
 
 /** @deprecated */
-const neutralFillSecondary = createTokenColorSet(neutralFillSecondaryRecipe, StyleProperty.backgroundFill);
+const neutralFillSecondary = createTokenColorSet(neutralFillSecondaryRecipe);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
 export const neutralFillSecondaryRest = neutralFillSecondary.rest;
@@ -1336,7 +1368,9 @@ const neutralStrokeDividerName = "neutral-stroke-divider";
 export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDividerName, "rest", 4);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRecipe = createTokenColorRecipe(neutralStrokeDividerName,
+export const neutralStrokeDividerRecipe = createTokenColorRecipe(
+    neutralStrokeDividerName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         swatchAsOverlay(
             deltaSwatch(
@@ -1350,7 +1384,7 @@ export const neutralStrokeDividerRecipe = createTokenColorRecipe(neutralStrokeDi
 );
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRest = createTokenColorRecipeValue(neutralStrokeDividerRecipe, stylePropertyBorderFillAll);
+export const neutralStrokeDividerRest = createTokenColorRecipeValue(neutralStrokeDividerRecipe);
 
 // Neutral Stroke Input (deprecated)
 
@@ -1369,7 +1403,9 @@ export const neutralStrokeInputActiveDelta = createTokenDelta(neutralStrokeInput
 export const neutralStrokeInputFocusDelta = createTokenDelta(neutralStrokeInputName, "focus", 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputRecipe = createTokenColorRecipe(neutralStrokeInputName,
+export const neutralStrokeInputRecipe = createTokenColorRecipe(
+    neutralStrokeInputName,
+    stylePropertyBorderFillAll,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
@@ -1386,7 +1422,7 @@ export const neutralStrokeInputRecipe = createTokenColorRecipe(neutralStrokeInpu
 );
 
 /** @deprecated */
-const neutralStrokeInput = createTokenColorSet(neutralStrokeInputRecipe, stylePropertyBorderFillAll);
+const neutralStrokeInput = createTokenColorSet(neutralStrokeInputRecipe);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRest = neutralStrokeInput.rest;

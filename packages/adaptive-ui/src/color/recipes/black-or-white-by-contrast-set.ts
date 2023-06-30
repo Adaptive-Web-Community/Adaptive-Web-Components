@@ -1,3 +1,4 @@
+import { InteractiveSwatchSet } from "../recipe.js";
 import { Swatch } from "../swatch.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
@@ -27,7 +28,7 @@ export function blackOrWhiteByContrastSet(
     focusReference: Swatch,
     minContrast: number,
     defaultBlack: boolean
-) {
+): InteractiveSwatchSet {
     const defaultRule: (reference: Swatch) => Swatch = (reference) =>
         blackOrWhiteByContrast(reference, minContrast, defaultBlack);
 

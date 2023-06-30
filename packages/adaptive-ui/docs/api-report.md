@@ -33,12 +33,7 @@ export const _black: SwatchRGB;
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
 
 // @public
-export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, minContrast: number, defaultBlack: boolean): {
-    rest: Swatch;
-    hover: Swatch;
-    active: Swatch;
-    focus: Swatch;
-};
+export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
 
 // @public (undocumented)
 export const BorderFill: {
@@ -55,26 +50,21 @@ export const BorderThickness: {
     all: (value: StyleValue) => StyleProperties;
 };
 
-// Warning: (ae-forgotten-export) The symbol "RecipeOptional" needs to be exported by the entry point index.d.ts
-//
 // @public
 export type ColorRecipe<T = Swatch> = RecipeOptional<ColorRecipeParams, T>;
 
-// Warning: (ae-forgotten-export) The symbol "Recipe" needs to be exported by the entry point index.d.ts
-//
 // @public
 export type ColorRecipeBySet<T = Swatch> = Recipe<InteractiveSwatchSet, T>;
 
-// Warning: (ae-forgotten-export) The symbol "RecipeEvaluateOptional" needs to be exported by the entry point index.d.ts
-//
+// @public
+export type ColorRecipeBySetEvaluate<T = Swatch> = RecipeEvaluate<InteractiveSwatchSet, T>;
+
 // @public
 export type ColorRecipeEvaluate<T = Swatch> = RecipeEvaluateOptional<ColorRecipeParams, T>;
 
 // @public
 export type ColorRecipePalette<T = Swatch> = Recipe<ColorRecipePaletteParams, T>;
 
-// Warning: (ae-forgotten-export) The symbol "RecipeEvaluate" needs to be exported by the entry point index.d.ts
-//
 // @public
 export type ColorRecipePaletteEvaluate<T = Swatch> = RecipeEvaluate<ColorRecipePaletteParams, T>;
 
@@ -127,10 +117,10 @@ export const CornerRadius: {
 export const create: typeof DesignToken.create;
 
 // @public
-export function createForegroundSet(foregroundRecipe: DesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
+export function createForegroundSet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
 
 // @public
-export function createForegroundSetBySet(foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
+export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
 
 // Warning: (ae-internal-missing-underscore) The name "createNonCss" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -141,22 +131,25 @@ export function createNonCss<T>(name: string): DesignToken<T>;
 export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
 
 // @public
-export function createTokenColorRecipe<T = Swatch>(baseName: string, evaluate: ColorRecipeEvaluate<T>): DesignToken<ColorRecipe<T>>;
+export function createTokenColorRecipe<T = Swatch>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeEvaluate<T>): TypedDesignToken<ColorRecipe<T>>;
 
 // @public
-export function createTokenColorRecipeForPalette<T = Swatch>(baseName: string, evaluate: ColorRecipePaletteEvaluate<T>): DesignToken<ColorRecipePalette<T>>;
+export function createTokenColorRecipeBySet<T = Swatch>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeBySetEvaluate<T>): TypedDesignToken<ColorRecipeBySet<T>>;
 
 // @public
-export function createTokenColorRecipeValue(recipeToken: DesignToken<ColorRecipe<Swatch>>, intendedFor: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
+export function createTokenColorRecipeForPalette<T = Swatch>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipePaletteEvaluate<T>): TypedDesignToken<ColorRecipePalette<T>>;
 
 // @public
-export function createTokenColorRecipeWithPalette<T>(recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>, paletteToken: DesignToken<Palette>): DesignToken<RecipeOptional<ColorRecipeParams, T>>;
+export function createTokenColorRecipeValue(recipeToken: TypedDesignToken<ColorRecipe<Swatch>>): TypedCSSDesignToken<Swatch>;
 
 // @public
-export function createTokenColorSet(recipeToken: DesignToken<InteractiveColorRecipe>, intendedFor: StyleProperty | StyleProperty[]): InteractiveTokenGroup<Swatch>;
+export function createTokenColorRecipeWithPalette<T>(recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>, paletteToken: DesignToken<Palette>): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>>;
 
 // @public
-export function createTokenDelta(baseName: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number>;
+export function createTokenColorSet(recipeToken: TypedDesignToken<InteractiveColorRecipe>): InteractiveTokenGroup<Swatch>;
+
+// @public
+export function createTokenDelta(baseName: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): TypedDesignToken<number>;
 
 // @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
@@ -177,10 +170,10 @@ export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>
 export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>;
 
 // @public
-export function createTokenMinContrast(baseName: string, value: number | DesignToken<number>): DesignToken<number>;
+export function createTokenMinContrast(baseName: string, value: number | DesignToken<number>): TypedDesignToken<number>;
 
 // @public
-export function createTokenNonCss<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T>;
+export function createTokenNonCss<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
 
 // @public
 export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
@@ -215,8 +208,11 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
 // @public
 export class DesignTokenMetadata {
     // (undocumented)
-    get allowedType(): DesignTokenType;
-    protected set allowedType(value: DesignTokenType);
+    protected init(type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): void;
+    get intendedFor(): StyleProperty[] | undefined;
+    protected set intendedFor(value: StyleProperty[] | undefined);
+    get type(): DesignTokenType;
+    protected set type(value: DesignTokenType);
 }
 
 // @public
@@ -236,6 +232,7 @@ export const DesignTokenType: {
     readonly typography: "typography";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
+    readonly recipe: "recipe";
 };
 
 // @public
@@ -252,8 +249,8 @@ export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
 
 // @public (undocumented)
 export const Fill: {
-    backgroundAndForeground: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: DesignToken<InteractiveColorRecipe>) => StyleProperties;
-    backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
+    backgroundAndForeground: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>) => StyleProperties;
+    backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
 };
 
 // @public
@@ -267,6 +264,9 @@ export type InteractiveColorRecipe = ColorRecipe<InteractiveSwatchSet>;
 
 // @public
 export type InteractiveColorRecipeBySet = ColorRecipeBySet<InteractiveSwatchSet>;
+
+// @public
+export type InteractiveColorRecipeBySetEvaluate = ColorRecipeBySetEvaluate<InteractiveSwatchSet>;
 
 // @public
 export type InteractiveColorRecipeEvaluate = ColorRecipeEvaluate<InteractiveSwatchSet>;
@@ -357,6 +357,22 @@ export interface PaletteRGBOptions {
     preserveSource: boolean;
     stepContrast: number;
     stepContrastRamp: number;
+}
+
+// @public
+export interface Recipe<TParam, TResult> {
+    evaluate: RecipeEvaluate<TParam, TResult>;
+}
+
+// @public (undocumented)
+export type RecipeEvaluate<TParam, TResult> = (resolver: DesignTokenResolver, params: TParam) => TResult;
+
+// @public (undocumented)
+export type RecipeEvaluateOptional<TParam, TResult> = (resolver: DesignTokenResolver, params?: TParam) => TResult;
+
+// @public
+export interface RecipeOptional<TParam, TResult> {
+    evaluate: RecipeEvaluateOptional<TParam, TResult>;
 }
 
 // @public
@@ -498,7 +514,9 @@ export class SwatchRGB implements Swatch {
 
 // @public
 export interface TokenGroup {
+    intendedFor?: StyleProperty | StyleProperty[];
     name: string;
+    type?: DesignTokenType;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -506,10 +524,8 @@ export interface TokenGroup {
 //
 // @public
 export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
-    constructor(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
-    static createTyped<T>(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<T>;
-    // (undocumented)
-    readonly intendedFor?: StyleProperty[];
+    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
+    static createTyped<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<T>;
 }
 
 // @internal (undocumented)
@@ -521,8 +537,8 @@ export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {
 //
 // @public
 export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
-    constructor(name: string, allowedType: DesignTokenType);
-    static createTyped<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T>;
+    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
+    static createTyped<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
 }
 
 // @internal (undocumented)
