@@ -4,7 +4,7 @@ import {
     controlCornerRadius,
     focusStrokeWidth,
     neutralFillSubtleRest,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
 
 /**

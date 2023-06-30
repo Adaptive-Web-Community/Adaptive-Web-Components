@@ -1,8 +1,8 @@
 import {
-    densityControl,
     StyleModules,
     Styles,
 } from "@adaptive-web/adaptive-ui";
+import { densityControl } from "@adaptive-web/adaptive-ui/reference";
 import { HorizontalScrollAnatomy } from "./horizontal-scroll.template.js";
 
 /**

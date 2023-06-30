@@ -1,4 +1,4 @@
-import { neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui";
+import { neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**

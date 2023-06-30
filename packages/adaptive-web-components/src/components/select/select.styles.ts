@@ -5,7 +5,7 @@ import {
     focusStrokeWidth,
     layerFillFixedPlus1,
     strokeWidth,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 

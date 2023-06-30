@@ -1,4 +1,5 @@
-import { neutralStrokeSubtleRest, strokeThickness, StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { neutralStrokeSubtleRest, strokeThickness } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Visual styles composed by modules.

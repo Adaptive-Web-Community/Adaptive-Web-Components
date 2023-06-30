@@ -1,11 +1,13 @@
 import {
-    accentFillReadableRest,
     CornerRadius,
-    designUnitDimension,
-    neutralFillSubtleRest,
     StyleModules,
     Styles
 } from "@adaptive-web/adaptive-ui";
+import {
+    accentFillReadableRest,
+    designUnitDimension,
+    neutralFillSubtleRest
+} from "@adaptive-web/adaptive-ui/reference";
 import { ProgressAnatomy } from "./progress.template.js";
 
 /**

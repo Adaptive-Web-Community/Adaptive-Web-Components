@@ -3,12 +3,14 @@ import {
     controlDensityStyles,
     controlShapeStyles,
     neutralForegroundStrongElementStyles,
-    neutralStrokeSubtleRest,
     plainTextStyles,
-    strokeThickness,
     StyleModules,
     Styles,
 } from "@adaptive-web/adaptive-ui";
+import {
+    neutralStrokeSubtleRest,
+    strokeThickness
+} from "@adaptive-web/adaptive-ui/reference";
 import { AccordionItemAnatomy } from "./accordion-item.template.js";
 
 /**

@@ -1,11 +1,11 @@
 import {
     BorderFill,
     controlShapeStyles,
-    neutralStrokeSubtleRest,
     plainTextStyles,
     StyleModules,
     Styles,
 } from "@adaptive-web/adaptive-ui";
+import { neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Visual styles composed by modules.
