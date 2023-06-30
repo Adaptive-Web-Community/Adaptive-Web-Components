@@ -1,79 +1,49 @@
 import type { DesignToken, DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
-import {
-    ColorRecipe,
-    ColorRecipeEvaluate,
-    ColorRecipePaletteParams,
-    ColorRecipeParams,
-    InteractiveColorRecipe,
-    InteractiveColorRecipeBySet,
-    InteractiveColorRecipePalette,
-    InteractiveColorRecipePaletteEvaluate,
-    InteractiveSwatchSet,
-} from "../color/recipe.js";
+import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";
 import { contrastAndDeltaSwatchSet } from "../color/recipes/contrast-and-delta-swatch-set.js";
 import { deltaSwatchSet } from "../color/recipes/delta-swatch-set.js";
 import { deltaSwatch } from "../color/recipes/delta-swatch.js";
-import { Palette } from "../color/palette.js";
 import { Swatch } from "../color/swatch.js";
 import { _white } from "../color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../color/utilities/conditional.js";
 import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/utilities/opacity.js";
 import { StyleProperty, stylePropertyBorderFillAll } from "../modules/types.js";
-import type { InteractiveTokenGroup } from "../types.js";
-import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "../recipes.js";
+import {
+    createTokenColorRecipe,
+    createTokenColorRecipeForPalette,
+    createTokenColorRecipeValue,
+    createTokenColorRecipeWithPalette,
+    createTokenColorSet,
+    createTokenDelta,
+    createTokenMinContrast
+} from "../token-helpers-color.js";
 import { createNonCss, createTokenSwatch } from "../token-helpers.js";
 import { accentPalette, neutralPalette } from "./palette.js";
 
-function createTokenDelta(name: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): DesignToken<number> {
-    return createNonCss<number>(`${name}-${state}-delta`).withDefault(value);
-}
-
-function createTokenMinContrast(name: string, value: number | DesignToken<number>): DesignToken<number> {
-    return createNonCss<number>(`${name}-min-contrast`).withDefault(value);
-}
-
-function createTokenColorRecipe<T = Swatch>(
-    name: string,
-    evaluate: ColorRecipeEvaluate<T>,
-): DesignToken<ColorRecipe<T>> {
-    return createNonCss<ColorRecipe<T>>(`${name}-recipe`).withDefault({
-        evaluate
-    });
-}
-
-function createTokenColorRecipeForPalette(
-    name: string,
-    evaluate: InteractiveColorRecipePaletteEvaluate,
-): DesignToken<InteractiveColorRecipePalette> {
-    return createNonCss<InteractiveColorRecipePalette>(`${name}-recipe`).withDefault({
-        evaluate
-    });
-}
-
-function createTokenColorRecipeWithPalette<T>(
-    recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
-    paletteToken: DesignToken<Palette>,
-): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    const palettePrefix = paletteToken.name.split("-")[0] + "-"; // TODO: More resilient
-    const name = palettePrefix + recipeToken.name;
-    return createNonCss<RecipeOptional<ColorRecipeParams, T>>(name).withDefault({
-        evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): T => {
-            const p = Object.assign({ palette: resolve(paletteToken) }, params);
-            return resolve(recipeToken).evaluate(resolve, p)
-        }
-    });
-}
-
-function createTokenColorRecipeAccent<T>(
+/**
+ * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
+ *
+ * @param recipeToken - The color recipe token.
+ *
+ * @public
+ */
+export function createTokenColorRecipeAccent<T>(
     recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
     return createTokenColorRecipeWithPalette(recipeToken, accentPalette);
 }
 
-function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
+/**
+ * Creates a DesignToken that can be used for the _neutral_ palette configuration of a shared color recipe.
+ *
+ * @param recipeToken - The color recipe token.
+ *
+ * @public
+ */
+export function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
     recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
     const paletteToken = neutralPalette;
@@ -89,45 +59,6 @@ function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
             ) as T;
         }
     });
-}
-
-function createTokenColorSet(
-    recipeToken: DesignToken<InteractiveColorRecipe>,
-    intendedFor: StyleProperty | StyleProperty[],
-): InteractiveTokenGroup<Swatch> {
-    const name = recipeToken.name.replace("-recipe", "");
-    const valueToken = createNonCss<InteractiveSwatchSet>(`${name}-value`).withDefault(
-        (resolve: DesignTokenResolver) =>
-            resolve(recipeToken).evaluate(resolve)
-    );
-    return {
-        name,
-        rest: createTokenColorSetState(valueToken, "rest", intendedFor),
-        hover: createTokenColorSetState(valueToken, "hover", intendedFor),
-        active: createTokenColorSetState(valueToken, "active", intendedFor),
-        focus: createTokenColorSetState(valueToken, "focus", intendedFor),
-    };
-}
-
-function createTokenColorSetState(
-    valueToken: DesignToken<InteractiveSwatchSet>,
-    state: keyof InteractiveSwatchSet,
-    intendedFor: StyleProperty | StyleProperty[],
-): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${valueToken.name.replace("-recipe-value", "")}-${state}`, intendedFor).withDefault(
-        (resolve: DesignTokenResolver) =>
-            resolve(valueToken)[state]
-    );
-}
-
-function createTokenColorRecipeValue(
-    recipeToken: DesignToken<ColorRecipe<Swatch>>,
-    intendedFor: StyleProperty | StyleProperty[],
-): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${recipeToken.name.replace("-recipe-value", "")}`, intendedFor).withDefault(
-        (resolve: DesignTokenResolver) =>
-            resolve(recipeToken).evaluate(resolve)
-    );
 }
 
 /**

@@ -1,10 +1,4 @@
-import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
-import { InteractiveColorRecipe, InteractiveColorRecipeBySet, InteractiveSwatchSet } from "../color/recipe.js";
-import { Swatch } from "../color/swatch.js";
-import type { InteractiveSet, InteractiveTokenGroup } from "../types.js";
-import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Padding, StyleProperties, Styles } from "../modules/styles.js";
-import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
-import { createNonCss, createTokenSwatch } from "../token-helpers.js";
+import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles } from "../modules/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
@@ -63,104 +57,6 @@ import {
     typeRampPlus6FontVariations,
     typeRampPlus6LineHeight,
 } from "./type.js";
-
-/**
- * Creates a set of foreground tokens applied over the background tokens.
- *
- * @param foregroundRecipe - The recipe for the foreground
- * @param foregroundState - The state from the foreground recipe, typically "rest"
- * @param background - The recipe for the background
- * @returns A token set representing the foreground over the background.
- * 
- * @public
- */
-export const createForegroundSet = (
-    foregroundRecipe: DesignToken<InteractiveColorRecipe>,
-    foregroundState: keyof InteractiveSet<any>,
-    background: InteractiveTokenGroup<Swatch>,
-): InteractiveTokenGroup<Swatch> => {
-    const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}-${foregroundState}`;
-    const backgroundBaseName = background.rest.name.replace("-rest", "");
-    const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
-
-    function createState(
-        state: keyof InteractiveSet<any>,
-    ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}-${state}`).withDefault(
-            (resolve: DesignTokenResolver) =>
-                resolve(foregroundRecipe).evaluate(resolve, {
-                    reference: resolve(background[state])
-                })[foregroundState]
-        );
-    }
-
-    return {
-        name: setName,
-        rest: createState("rest"),
-        hover: createState("hover"),
-        active: createState("active"),
-        focus: createState("focus")
-    };
-}
-
-function createForegroundSetBySet(
-    foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>,
-    background: InteractiveTokenGroup<Swatch>,
-): InteractiveTokenGroup<Swatch> {
-    const foregroundBaseName = foregroundRecipe.name.replace("-recipe", "");
-    const backgroundBaseName = background.rest.name.replace("-rest", "");
-    const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
-
-    const set = createNonCss<InteractiveSwatchSet>(`${setName}-value`).withDefault(
-        (resolve: DesignTokenResolver) =>
-            {
-                const backgroundSet: InteractiveSwatchSet = {
-                    rest: resolve(background.rest),
-                    hover: resolve(background.hover),
-                    active: resolve(background.active),
-                    focus: resolve(background.focus),
-                }
-                return resolve(foregroundRecipe).evaluate(resolve, backgroundSet);
-            }
-    );
-
-    function createState(
-        state: keyof InteractiveSet<any>,
-    ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}-${state}`).withDefault(
-            (resolve: DesignTokenResolver) =>
-                resolve(set)[state]
-        );
-    }
-
-    return {
-        name: setName,
-        rest: createState("rest"),
-        hover: createState("hover"),
-        active: createState("active"),
-        focus: createState("focus")
-    };
-}
-
-function backgroundAndForeground(
-    background: InteractiveTokenGroup<Swatch>,
-    foregroundRecipe: DesignToken<InteractiveColorRecipe>
-): StyleProperties {
-    return {
-        backgroundFill: background,
-        foregroundFill: createForegroundSet(foregroundRecipe, "rest",  background),
-    };
-}
-
-function backgroundAndForegroundBySet(
-    background: InteractiveTokenGroup<Swatch>,
-    foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>
-): StyleProperties {
-    return {
-        backgroundFill: background,
-        foregroundFill: createForegroundSetBySet(foregroundRecipe,  background),
-    };
-}
 
 /**
  * Style module for the shape of a control.
@@ -281,7 +177,7 @@ export const itemContainerDensityStyles: Styles = Styles.fromProperties(
  */
 export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForeground(accentFillStealth, accentStrokeReadableRecipe),
+        ...Fill.backgroundAndForeground(accentFillStealth, accentStrokeReadableRecipe),
         ...BorderFill.all(accentStrokeSafety),
     },
     "color.accent-fill-stealth-control",
@@ -299,7 +195,7 @@ export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
  */
 export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForeground(accentFillSubtle, accentStrokeReadableRecipe),
+        ...Fill.backgroundAndForeground(accentFillSubtle, accentStrokeReadableRecipe),
         ...BorderFill.all(accentStrokeSubtle),
     },
     "color.accent-fill-subtle-control",
@@ -317,7 +213,7 @@ export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
  */
 export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForegroundBySet(accentFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...Fill.backgroundAndForegroundBySet(accentFillDiscernible, blackOrWhiteDiscernibleRecipe),
     },
     "color.accent-fill-discernible-control",
 );
@@ -334,7 +230,7 @@ export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
  */
 export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForegroundBySet(accentFillReadable, blackOrWhiteReadableRecipe),
+        ...Fill.backgroundAndForegroundBySet(accentFillReadable, blackOrWhiteReadableRecipe),
     },
     "color.accent-fill-readable-control",
 );
@@ -386,7 +282,7 @@ export const accentForegroundReadableControlStyles: Styles = Styles.fromProperti
  */
 export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForeground(neutralFillStealth, neutralStrokeStrongRecipe),
+        ...Fill.backgroundAndForeground(neutralFillStealth, neutralStrokeStrongRecipe),
         ...BorderFill.all(neutralStrokeSafety),
     },
     "color.neutral-fill-stealth-control",
@@ -404,7 +300,7 @@ export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
  */
 export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForeground(neutralFillSubtle, neutralStrokeStrongRecipe),
+        ...Fill.backgroundAndForeground(neutralFillSubtle, neutralStrokeStrongRecipe),
         ...BorderFill.all(neutralStrokeSubtle),
     },
     "color.neutral-fill-subtle-control",
@@ -422,7 +318,7 @@ export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
  */
 export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForegroundBySet(neutralFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...Fill.backgroundAndForegroundBySet(neutralFillDiscernible, blackOrWhiteDiscernibleRecipe),
     },
     "color.neutral-fill-discernible-control",
 );
@@ -439,7 +335,7 @@ export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties
  */
 export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
     {
-        ...backgroundAndForeground(neutralFillReadable, neutralStrokeStrongRecipe),
+        ...Fill.backgroundAndForeground(neutralFillReadable, neutralStrokeStrongRecipe),
     },
     "color.neutral-fill-readable-control",
 );
