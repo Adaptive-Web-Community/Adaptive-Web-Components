@@ -1,8 +1,8 @@
+import { StyleModules } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
-    plainTextStyles,
-    StyleModules,
-} from "@adaptive-web/adaptive-ui";
+    plainTextStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { CalendarAnatomy } from "./calendar.template.js";
 
 /**

@@ -1,9 +1,9 @@
+import { StyleModules } from "@adaptive-web/adaptive-ui";
 import {
     labelTextStyles,
     selectableSelectedStyles,
-    selectableUnselectedStyles,
-    StyleModules,
-} from "@adaptive-web/adaptive-ui";
+    selectableUnselectedStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { SwitchAnatomy } from "./switch.template.js";
 
 /**

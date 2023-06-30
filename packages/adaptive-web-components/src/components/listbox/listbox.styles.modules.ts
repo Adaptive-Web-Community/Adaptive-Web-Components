@@ -1,10 +1,12 @@
 import {
     BorderFill,
-    controlShapeStyles,
-    itemContainerDensityStyles,
     StyleModules,
-    Styles,
+    Styles
 } from "@adaptive-web/adaptive-ui";
+import {
+    controlShapeStyles,
+    itemContainerDensityStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 
 /**

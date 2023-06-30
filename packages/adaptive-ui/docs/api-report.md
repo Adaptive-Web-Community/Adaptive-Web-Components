@@ -13,33 +13,6 @@ import type { ElementStyles } from '@microsoft/fast-element';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
-export const accentFillDiscernibleControlStyles: Styles;
-
-// @public
-export const accentFillReadableControlStyles: Styles;
-
-// @public
-export const accentFillStealthControlStyles: Styles;
-
-// @public
-export const accentFillSubtleControlStyles: Styles;
-
-// @public
-export const accentForegroundReadableControlStyles: Styles;
-
-// @public
-export const accentOutlineDiscernibleControlStyles: Styles;
-
-// @public (undocumented)
-export const actionStyles: Styles;
-
-// @public
-export const autofillInnerDensityStyles: Styles;
-
-// @public
-export const autofillOuterDensityStyles: Styles;
-
-// @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
     constructor(source: T, swatches: ReadonlyArray<T>);
     readonly closestIndexCache: Map<number, number>;
@@ -143,12 +116,6 @@ export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, m
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
 
-// @public
-export const controlDensityStyles: Styles;
-
-// @public
-export const controlShapeStyles: Styles;
-
 // @public (undocumented)
 export const CornerRadius: {
     all: (value: StyleValue) => StyleProperties;
@@ -158,9 +125,6 @@ export const CornerRadius: {
 //
 // @internal @deprecated (undocumented)
 export const create: typeof DesignToken.create;
-
-// @public
-export const createForegroundSet: (foregroundRecipe: DesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenGroup<Swatch>) => InteractiveTokenGroup<Swatch>;
 
 // Warning: (ae-internal-missing-underscore) The name "createNonCss" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -265,12 +229,6 @@ export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 // @public
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
 
-// @public (undocumented)
-export const inputAutofillStyles: Styles;
-
-// @public (undocumented)
-export const inputStyles: Styles;
-
 // @public
 export type InteractiveColorRecipe = ColorRecipe<InteractiveSwatchSet>;
 
@@ -323,49 +281,10 @@ export interface InteractivityDefinition {
 export function isDark(color: RelativeLuminance): boolean;
 
 // @public
-export const itemContainerDensityStyles: Styles;
-
-// @public (undocumented)
-export const itemStyles: Styles;
-
-// @public (undocumented)
-export const labelTextStyles: Styles;
-
-// @public
-export const layerShapeStyles: Styles;
-
-// @public
 export function luminanceSwatch(luminance: number): Swatch;
 
 // @public
 export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string;
-
-// @public
-export const neutralDividerDiscernibleElementStyles: Styles;
-
-// @public
-export const neutralDividerSubtleElementStyles: Styles;
-
-// @public
-export const neutralFillDiscernibleControlStyles: Styles;
-
-// @public
-export const neutralFillReadableControlStyles: Styles;
-
-// @public
-export const neutralFillStealthControlStyles: Styles;
-
-// @public
-export const neutralFillSubtleControlStyles: Styles;
-
-// @public
-export const neutralForegroundReadableElementStyles: Styles;
-
-// @public
-export const neutralForegroundStrongElementStyles: Styles;
-
-// @public
-export const neutralOutlineDiscernibleControlStyles: Styles;
 
 // @public (undocumented)
 export const Padding: {
@@ -407,9 +326,6 @@ export interface PaletteRGBOptions {
     stepContrastRamp: number;
 }
 
-// @public (undocumented)
-export const plainTextStyles: Styles;
-
 // @public
 export interface RelativeLuminance {
     readonly relativeLuminance: number;
@@ -420,12 +336,6 @@ export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateP
 
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
-
-// @public (undocumented)
-export const selectableSelectedStyles: Styles;
-
-// @public (undocumented)
-export const selectableUnselectedStyles: Styles;
 
 // @public
 export type StateSelector = "hover" | "active" | FocusSelector;
@@ -585,33 +495,6 @@ export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMe
 // @internal (undocumented)
 export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
-
-// @public
-export const typeRampBaseStyles: Styles;
-
-// @public
-export const typeRampMinus1Styles: Styles;
-
-// @public
-export const typeRampMinus2Styles: Styles;
-
-// @public
-export const typeRampPlus1Styles: Styles;
-
-// @public
-export const typeRampPlus2Styles: Styles;
-
-// @public
-export const typeRampPlus3Styles: Styles;
-
-// @public
-export const typeRampPlus4Styles: Styles;
-
-// @public
-export const typeRampPlus5Styles: Styles;
-
-// @public
-export const typeRampPlus6Styles: Styles;
 
 // @internal
 export const _white: SwatchRGB;

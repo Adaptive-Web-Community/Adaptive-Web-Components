@@ -1,10 +1,12 @@
 import {
+    StyleModules,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     itemContainerDensityStyles,
     layerShapeStyles,
-    plainTextStyles,
-    StyleModules,
-    Styles,
-} from "@adaptive-web/adaptive-ui";
+    plainTextStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
 const menuStyles = Styles.compose(

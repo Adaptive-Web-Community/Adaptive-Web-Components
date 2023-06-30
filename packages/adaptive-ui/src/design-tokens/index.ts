@@ -5,3 +5,4 @@ export * from "./elevation.js";
 export * from "./layer.js";
 export * from "./palette.js";
 export * from "./type.js";
+export * from "./modules.js";

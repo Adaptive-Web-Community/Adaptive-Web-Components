@@ -1,10 +1,10 @@
 import {
-    plainTextStyles,
     StyleModules,
     Styles,
 } from "@adaptive-web/adaptive-ui";
 import {
     neutralStrokeSubtleRest,
+    plainTextStyles,
     strokeThickness
 } from "@adaptive-web/adaptive-ui/reference";
 

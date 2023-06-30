@@ -1,3 +1,4 @@
+import { SwatchRGB } from "@adaptive-web/adaptive-ui";
 import {
     accentFillDiscernibleControlStyles,
     accentFillReadableControlStyles,
@@ -5,6 +6,7 @@ import {
     accentFillSubtleControlStyles,
     accentForegroundReadableControlStyles,
     accentOutlineDiscernibleControlStyles,
+    fillColor,
     neutralDividerDiscernibleElementStyles,
     neutralDividerSubtleElementStyles,
     neutralFillDiscernibleControlStyles,
@@ -14,9 +16,8 @@ import {
     neutralForegroundReadableElementStyles,
     neutralForegroundStrongElementStyles,
     neutralOutlineDiscernibleControlStyles,
-    SwatchRGB,
-} from "@adaptive-web/adaptive-ui";
-import { fillColor, neutralStrokeReadableRest } from '@adaptive-web/adaptive-ui/reference';
+    neutralStrokeReadableRest
+} from '@adaptive-web/adaptive-ui/reference';
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     attr,
