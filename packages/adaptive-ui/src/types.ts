@@ -1,4 +1,5 @@
-import type { TypedCSSDesignToken } from "./adaptive-design-tokens.js";
+import type { DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
+import { StyleProperty } from "./modules/types.js";
 
 /**
  * A group of tokens.
@@ -10,6 +11,16 @@ export interface TokenGroup {
      * The name of the token group. Contained tokens should extend this name like `group-name` -> `group-name-child`.
      */
     name: string;
+
+    /**
+     * The default type for any tokens within this group.
+     */
+    type?: DesignTokenType;
+
+    /**
+     * The style properties where tokens within this group are intended to be used.
+     */
+    intendedFor?: StyleProperty | StyleProperty[]
 }
 
 /**

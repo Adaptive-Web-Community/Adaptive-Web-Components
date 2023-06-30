@@ -1,7 +1,8 @@
 import type { CSSDirective } from "@microsoft/fast-element";
-import type { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
+import type { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
+import { TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveTokenGroup } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
 import { StyleProperty } from "./types.js";
@@ -36,7 +37,7 @@ export type StylePropertiesMap = Map<StyleProperty, StyleValue>;
 export const Fill = {
     backgroundAndForeground: function(
         background: InteractiveTokenGroup<Swatch>,
-        foregroundRecipe: DesignToken<InteractiveColorRecipe>
+        foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>
     ): StyleProperties {
         return {
             backgroundFill: background,
@@ -45,7 +46,7 @@ export const Fill = {
     },
     backgroundAndForegroundBySet: function(
         background: InteractiveTokenGroup<Swatch>,
-        foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>
+        foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>
     ): StyleProperties {
         return {
             backgroundFill: background,

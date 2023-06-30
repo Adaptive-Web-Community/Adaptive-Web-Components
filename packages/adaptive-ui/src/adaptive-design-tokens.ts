@@ -25,6 +25,7 @@ export const DesignTokenType = {
     // Added in Adaptive UI
     fontStyle: "fontStyle",
     fontVariations: "fontVariations",
+    recipe: "recipe",
 } as const;
 
 /**
@@ -35,43 +36,71 @@ export const DesignTokenType = {
 export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 /**
- * Metadata describing the allowed types of a DesignToken.
+ * Metadata describing the value type and intended styling uses of a DesignToken.
  *
  * @public
  */
 export class DesignTokenMetadata {
     // TODO: This needs to support multiple types, tokens in Adaptive UI might represent different value
     // types, like a Swatch type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
-    private _allowedType: DesignTokenType;
+    private _type: DesignTokenType;
 
-    public get allowedType(): DesignTokenType {
-        return this._allowedType;
+    /**
+     * Gets the value type for this token.
+     */
+    public get type(): DesignTokenType {
+        return this._type;
     }
 
-    protected set allowedType(value: DesignTokenType) {
-        this._allowedType = value;
+    protected set type(value: DesignTokenType) {
+        this._type = value;
+    }
+
+    private _intendedFor?: StyleProperty[];
+
+    /**
+     * Gets intended styling uses for this token.
+     */
+    public get intendedFor(): StyleProperty[] | undefined {
+        return this._intendedFor;
+    }
+
+    protected set intendedFor(value: StyleProperty[] | undefined) {
+        this._intendedFor = value;
+    }
+
+    protected init(type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
+        this.type = type;
+        if (intendedFor) {
+            if (Array.isArray(intendedFor)) {
+                this.intendedFor = intendedFor;
+            } else {
+                this.intendedFor = [intendedFor];
+            }
+        }
     }
 }
 
 /**
- * A DesignToken with allowed types.
+ * A DesignToken with value type and intended styling uses.
  *
  * @public
  */
 export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
-    constructor(name: string, allowedType: DesignTokenType) {
+    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         super({ name });
-        this.allowedType = allowedType;
+        this.init(type, intendedFor);
     }
 
     /**
-     * Factory to create a DesignToken with allowed types.
+     * Factory to create a DesignToken with value type and intended styling uses.
      */
     public static createTyped<T>(
         name: string,
-        allowedType: DesignTokenType,
+        type: DesignTokenType,
+        intendedFor?: StyleProperty | StyleProperty[],
     ): TypedDesignToken<T> {
-        return new TypedDesignToken<T>(name, allowedType);
+        return new TypedDesignToken<T>(name, type, intendedFor);
     }
 }
 
@@ -83,36 +112,27 @@ export interface TypedDesignToken<T> extends DesignTokenMetadata {}
 applyMixins(TypedDesignToken, DesignTokenMetadata);
 
 /**
- * A CSSDesignToken with allowed types and intended styling uses.
+ * A CSSDesignToken with value type and intended styling uses.
  *
  * @public
  */
 @cssDirective()
 @htmlDirective()
 export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
-    public readonly intendedFor?: StyleProperty[];
-
-    constructor(name: string, allowedType: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
+    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         super({ name, cssCustomPropertyName: name });
-        this.allowedType = allowedType;
-        if (intendedFor) {
-            if (Array.isArray(intendedFor)) {
-                this.intendedFor = intendedFor;
-            } else {
-                this.intendedFor = [intendedFor];
-            }
-        }
+        this.init(type, intendedFor);
     }
 
     /**
-     * Factory to create a DesignToken with allowed types and intended styling uses.
+     * Factory to create a DesignToken with value type and intended styling uses.
      */
     public static createTyped<T>(
         name: string,
-        allowedType: DesignTokenType,
+        type: DesignTokenType,
         intendedFor?: StyleProperty | StyleProperty[],
     ): TypedCSSDesignToken<T> {
-        return new TypedCSSDesignToken<T>(name, allowedType, intendedFor);
+        return new TypedCSSDesignToken<T>(name, type, intendedFor);
     }
 }
 

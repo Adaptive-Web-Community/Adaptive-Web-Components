@@ -1,6 +1,8 @@
 import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import {
     ColorRecipe,
+    ColorRecipeBySet,
+    ColorRecipeBySetEvaluate,
     ColorRecipeEvaluate,
     ColorRecipePalette,
     ColorRecipePaletteEvaluate,
@@ -13,9 +15,9 @@ import {
 import { Palette } from "./color/palette.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
-import { TypedCSSDesignToken } from "./adaptive-design-tokens.js";
+import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "./recipes.js";
-import { createNonCss, createTokenSwatch } from "./token-helpers.js";
+import { createTokenNonCss, createTokenSwatch } from "./token-helpers.js";
 import type { InteractiveSet, InteractiveTokenGroup } from "./types.js";
 
 /**
@@ -31,8 +33,8 @@ export function createTokenDelta(
     baseName: string,
     state: keyof InteractiveSwatchSet,
     value: number | DesignToken<number>
-): DesignToken<number> {
-    return createNonCss<number>(`${baseName}-${state}-delta`).withDefault(value);
+): TypedDesignToken<number> {
+    return createTokenNonCss<number>(`${baseName}-${state}-delta`, DesignTokenType.number).withDefault(value);
 }
 
 /**
@@ -46,23 +48,44 @@ export function createTokenDelta(
 export function createTokenMinContrast(
     baseName: string,
     value: number | DesignToken<number>
-): DesignToken<number> {
-    return createNonCss<number>(`${baseName}-min-contrast`).withDefault(value);
+): TypedDesignToken<number> {
+    return createTokenNonCss<number>(`${baseName}-min-contrast`, DesignTokenType.number).withDefault(value);
 }
 
 /**
  * Creates a DesignToken that can be used for a color recipe.
  *
  * @param baseName - The base token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *
  * @public
  */
 export function createTokenColorRecipe<T = Swatch>(
     baseName: string,
+    intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipeEvaluate<T>,
-): DesignToken<ColorRecipe<T>> {
-    return createNonCss<ColorRecipe<T>>(`${baseName}-recipe`).withDefault({
+): TypedDesignToken<ColorRecipe<T>> {
+    return createTokenNonCss<ColorRecipe<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+        evaluate
+    });
+}
+
+/**
+ * Creates a DesignToken that can be used for a color recipe, based on another interactive color set.
+ *
+ * @param baseName - The base token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ * @param evaluate - The function to call when the derived token needs to be evaluated.
+ *
+ * @public
+ */
+export function createTokenColorRecipeBySet<T = Swatch>(
+    baseName: string,
+    intendedFor: StyleProperty | StyleProperty[],
+    evaluate: ColorRecipeBySetEvaluate<T>,
+): TypedDesignToken<ColorRecipeBySet<T>> {
+    return createTokenNonCss<ColorRecipeBySet<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }
@@ -72,15 +95,17 @@ export function createTokenColorRecipe<T = Swatch>(
  * Use in conjunction with {@link createTokenColorRecipeWithPalette}.
  *
  * @param baseName - The base token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *
  * @public
  */
 export function createTokenColorRecipeForPalette<T = Swatch>(
     baseName: string,
+    intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipePaletteEvaluate<T>,
-): DesignToken<ColorRecipePalette<T>> {
-    return createNonCss<ColorRecipePalette<T>>(`${baseName}-recipe`).withDefault({
+): TypedDesignToken<ColorRecipePalette<T>> {
+    return createTokenNonCss<ColorRecipePalette<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }
@@ -94,12 +119,12 @@ export function createTokenColorRecipeForPalette<T = Swatch>(
  * @public
  */
 export function createTokenColorRecipeWithPalette<T>(
-    recipeToken: DesignToken<Recipe<ColorRecipePaletteParams, T>>,
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
     paletteToken: DesignToken<Palette>,
-): DesignToken<RecipeOptional<ColorRecipeParams, T>> {
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     const palettePrefix = paletteToken.name.split("-")[0] + "-"; // TODO: More resilient
     const name = palettePrefix + recipeToken.name;
-    return createNonCss<RecipeOptional<ColorRecipeParams, T>>(name).withDefault({
+    return createTokenNonCss<RecipeOptional<ColorRecipeParams, T>>(name, DesignTokenType.recipe, recipeToken.intendedFor).withDefault({
         evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): T => {
             const p = Object.assign({ palette: resolve(paletteToken) }, params);
             return resolve(recipeToken).evaluate(resolve, p)
@@ -108,11 +133,10 @@ export function createTokenColorRecipeWithPalette<T>(
 }
 
 function createTokenColorSetState(
-    valueToken: DesignToken<InteractiveSwatchSet>,
+    valueToken: TypedDesignToken<InteractiveSwatchSet>,
     state: keyof InteractiveSwatchSet,
-    intendedFor: StyleProperty | StyleProperty[],
 ): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${valueToken.name.replace("-value", "")}-${state}`, intendedFor).withDefault(
+    return createTokenSwatch(`${valueToken.name.replace("-value", "")}-${state}`, valueToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(valueToken)[state]
     );
@@ -122,25 +146,25 @@ function createTokenColorSetState(
  * Creates a TokenGroup that can be used for the evaluated value of an interactive color recipe.
  *
  * @param recipeToken - The interactive color recipe token.
- * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
  */
 export function createTokenColorSet(
-    recipeToken: DesignToken<InteractiveColorRecipe>,
-    intendedFor: StyleProperty | StyleProperty[],
+    recipeToken: TypedDesignToken<InteractiveColorRecipe>
 ): InteractiveTokenGroup<Swatch> {
     const name = recipeToken.name.replace("-recipe", "");
-    const valueToken = createNonCss<InteractiveSwatchSet>(`${name}-value`).withDefault(
+    const valueToken = createTokenNonCss<InteractiveSwatchSet>(`${name}-value`, DesignTokenType.color, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
     return {
         name,
-        rest: createTokenColorSetState(valueToken, "rest", intendedFor),
-        hover: createTokenColorSetState(valueToken, "hover", intendedFor),
-        active: createTokenColorSetState(valueToken, "active", intendedFor),
-        focus: createTokenColorSetState(valueToken, "focus", intendedFor),
+        type: DesignTokenType.color,
+        intendedFor: valueToken.intendedFor,
+        rest: createTokenColorSetState(valueToken, "rest"),
+        hover: createTokenColorSetState(valueToken, "hover"),
+        active: createTokenColorSetState(valueToken, "active"),
+        focus: createTokenColorSetState(valueToken, "focus"),
     };
 }
 
@@ -148,15 +172,13 @@ export function createTokenColorSet(
  * Creates a DesignToken that can be used for the resulting color value from a recipe in styles.
  *
  * @param recipeToken - The color recipe token.
- * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
  */
 export function createTokenColorRecipeValue(
-    recipeToken: DesignToken<ColorRecipe<Swatch>>,
-    intendedFor: StyleProperty | StyleProperty[],
+    recipeToken: TypedDesignToken<ColorRecipe<Swatch>>,
 ): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${recipeToken.name.replace("-recipe", "")}`, intendedFor).withDefault(
+    return createTokenSwatch(`${recipeToken.name.replace("-recipe", "")}`, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -172,7 +194,7 @@ export function createTokenColorRecipeValue(
  * @public
  */
 export function createForegroundSet(
-    foregroundRecipe: DesignToken<InteractiveColorRecipe>,
+    foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>,
     foregroundState: keyof InteractiveSet<any>,
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
@@ -193,6 +215,8 @@ export function createForegroundSet(
 
     return {
         name: setName,
+        type: DesignTokenType.color,
+        intendedFor: foregroundRecipe.intendedFor,
         rest: createState("rest"),
         hover: createState("hover"),
         active: createState("active"),
@@ -209,14 +233,14 @@ export function createForegroundSet(
  * @public
  */
 export function createForegroundSetBySet(
-    foregroundRecipe: DesignToken<InteractiveColorRecipeBySet>,
+    foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>,
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
     const foregroundBaseName = foregroundRecipe.name.replace("-recipe", "");
     const backgroundBaseName = background.rest.name.replace("-rest", "");
     const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
 
-    const set = createNonCss<InteractiveSwatchSet>(`${setName}-value`).withDefault(
+    const set = createTokenNonCss<InteractiveSwatchSet>(`${setName}-value`, DesignTokenType.color).withDefault(
         (resolve: DesignTokenResolver) =>
             {
                 const backgroundSet: InteractiveSwatchSet = {
@@ -240,6 +264,8 @@ export function createForegroundSetBySet(
 
     return {
         name: setName,
+        intendedFor: foregroundRecipe.intendedFor,
+        type: DesignTokenType.color,
         rest: createState("rest"),
         hover: createState("hover"),
         active: createState("active"),

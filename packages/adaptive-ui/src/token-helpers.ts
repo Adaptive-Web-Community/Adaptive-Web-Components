@@ -27,12 +27,12 @@ export function createTokenColor(name: string, intendedFor?: StyleProperty | Sty
  * Creates a DesignToken that can be used by other DesignTokens, but not directly in styles.
  *
  * @param name - The token name in `css-identifier` casing.
- * @param allowedType - The allowed types for the token value.
+ * @param type - The allowed types for the token value.
  *
  * @public
  */
-export function createTokenNonCss<T>(name: string, allowedType: DesignTokenType): TypedDesignToken<T> {
-    return TypedDesignToken.createTyped<T>(name, allowedType);
+export function createTokenNonCss<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T> {
+    return TypedDesignToken.createTyped<T>(name, type, intendedFor);
 }
 
 /**

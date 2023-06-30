@@ -100,8 +100,22 @@ export interface InteractiveSwatchSet extends InteractiveSet<Swatch> {}
 export type ColorRecipeBySet<T = Swatch> = Recipe<InteractiveSwatchSet, T>;
 
 /**
+ * The type of the `evaluate` function for {@link ColorRecipeBySet}.
+ *
+ * @public
+ */
+export type ColorRecipeBySetEvaluate<T = Swatch> = RecipeEvaluate<InteractiveSwatchSet, T>;
+
+/**
  * A recipe that evaluates a color value for rest, hover, active, and focus states.
  *
  * @public
  */
 export type InteractiveColorRecipeBySet = ColorRecipeBySet<InteractiveSwatchSet>;
+
+/**
+ * The type of the `evaluate` function for {@link InteractiveColorRecipeBySet}.
+ *
+ * @public
+ */
+export type InteractiveColorRecipeBySetEvaluate = ColorRecipeBySetEvaluate<InteractiveSwatchSet>;
