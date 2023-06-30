@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "update component imports and FAST versions",
+  "comment": "updated all token imports from adaptive-ui and updated FAST to latest versions",
   "packageName": "@adaptive-web/adaptive-web-components",
   "email": "nbrown414@outlook.com",
   "dependentChangeType": "patch"

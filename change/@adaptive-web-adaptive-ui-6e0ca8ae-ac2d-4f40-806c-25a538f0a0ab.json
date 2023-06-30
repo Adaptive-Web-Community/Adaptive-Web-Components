@@ -1,6 +1,6 @@
 {
   "type": "minor",
-  "comment": "updated all token imports from adaptive-ui and updated FAST to latest versions",
+  "comment": "fixed modules exported from wrong path",
   "packageName": "@adaptive-web/adaptive-ui",
   "email": "nbrown414@outlook.com",
   "dependentChangeType": "patch"
