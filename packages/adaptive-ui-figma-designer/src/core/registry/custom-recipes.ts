@@ -1,6 +1,4 @@
 import {
-    blackOrWhiteDiscernibleRecipe,
-    blackOrWhiteReadableRecipe,
     ColorRecipe,
     ColorRecipeParams,
     contrastSwatch,
@@ -8,7 +6,6 @@ import {
     createTokenNonCss,
     createTokenSwatch,
     DesignTokenType,
-    fillColor,
     InteractiveSwatchSet,
     Palette,
     PaletteRGB,
@@ -16,6 +13,11 @@ import {
     stylePropertyBorderFillAll,
     Swatch,
 } from "@adaptive-web/adaptive-ui";
+import {
+    blackOrWhiteDiscernibleRecipe,
+    blackOrWhiteReadableRecipe,
+    fillColor
+} from "@adaptive-web/adaptive-ui/reference"
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 
 // Local recipes for use in documentation files.
