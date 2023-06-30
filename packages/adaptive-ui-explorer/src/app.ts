@@ -1,4 +1,9 @@
 import {
+    Palette,
+    Swatch,
+    SwatchRGB
+} from "@adaptive-web/adaptive-ui";
+import {
     accentBaseColor,
     accentPalette,
     LayerBaseLuminance,
@@ -10,11 +15,8 @@ import {
     layerFillFixedPlus1,
     neutralBaseColor,
     neutralPalette,
-    Palette,
-    Swatch,
-    SwatchRGB,
-    wcagContrastLevel,
-} from "@adaptive-web/adaptive-ui";
+    wcagContrastLevel
+} from "@adaptive-web/adaptive-ui/reference"
 import {
     attr,
     css,
