@@ -23,7 +23,7 @@ import {
 } from "../token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { accentPalette, neutralPalette } from "./palette.js";
+import { accentPalette, highlightPalette, neutralPalette } from "./palette.js";
 
 /**
  * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
@@ -36,6 +36,19 @@ export function createTokenColorRecipeAccent<T>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     return createTokenColorRecipeWithPalette(recipeToken, accentPalette);
+}
+
+/**
+ * Creates a DesignToken that can be used for the _highlight_ palette configuration of a shared color recipe.
+ *
+ * @param recipeToken - The color recipe token.
+ *
+ * @public
+ */
+export function createTokenColorRecipeHighlight<T>(
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
+    return createTokenColorRecipeWithPalette(recipeToken, highlightPalette);
 }
 
 /**
@@ -712,6 +725,206 @@ export const accentStrokeStrongActive = accentStrokeStrong.active;
 
 /** @public */
 export const accentStrokeStrongFocus = accentStrokeStrong.focus;
+
+// Highlight Fill Stealth
+
+/** @public */
+export const highlightFillStealthRecipe = createTokenColorRecipeHighlight(fillStealthRecipe);
+
+/** @public */
+export const highlightFillStealth = createTokenColorSet(highlightFillStealthRecipe);
+
+/** @public */
+export const highlightFillStealthRest = highlightFillStealth.rest;
+
+/** @public */
+export const highlightFillStealthHover = highlightFillStealth.hover;
+
+/** @public */
+export const highlightFillStealthActive = highlightFillStealth.active;
+
+/** @public */
+export const highlightFillStealthFocus = highlightFillStealth.focus;
+
+// Highlight Fill Subtle
+
+/** @public */
+export const highlightFillSubtleRecipe = createTokenColorRecipeHighlight(fillSubtleRecipe);
+
+/** @public */
+export const highlightFillSubtle = createTokenColorSet(highlightFillSubtleRecipe);
+
+/** @public */
+export const highlightFillSubtleRest = highlightFillSubtle.rest;
+
+/** @public */
+export const highlightFillSubtleHover = highlightFillSubtle.hover;
+
+/** @public */
+export const highlightFillSubtleActive = highlightFillSubtle.active;
+
+/** @public */
+export const highlightFillSubtleFocus = highlightFillSubtle.focus;
+
+// Highlight Fill Discernible
+
+/** @public */
+export const highlightFillDiscernibleRecipe = createTokenColorRecipeHighlight(fillDiscernibleRecipe);
+
+/** @public */
+export const highlightFillDiscernible = createTokenColorSet(highlightFillDiscernibleRecipe);
+
+/** @public */
+export const highlightFillDiscernibleRest = highlightFillDiscernible.rest;
+
+/** @public */
+export const highlightFillDiscernibleHover = highlightFillDiscernible.hover;
+
+/** @public */
+export const highlightFillDiscernibleActive = highlightFillDiscernible.active;
+
+/** @public */
+export const highlightFillDiscernibleFocus = highlightFillDiscernible.focus;
+
+// Highlight Fill Readable
+
+/** @public */
+export const highlightFillReadableRecipe = createTokenColorRecipeHighlight(fillReadableRecipe);
+
+/** @public */
+export const highlightFillReadable = createTokenColorSet(highlightFillReadableRecipe);
+
+/** @public */
+export const highlightFillReadableRest = highlightFillReadable.rest;
+
+/** @public */
+export const highlightFillReadableHover = highlightFillReadable.hover;
+
+/** @public */
+export const highlightFillReadableActive = highlightFillReadable.active;
+
+/** @public */
+export const highlightFillReadableFocus = highlightFillReadable.focus;
+
+// Highlight Stroke Safety
+
+/** @public */
+export const highlightStrokeSafetyRecipe = createTokenColorRecipeHighlight(strokeSafetyRecipe);
+
+/** @public */
+export const highlightStrokeSafety = createTokenColorSet(highlightStrokeSafetyRecipe);
+
+/** @public */
+export const highlightStrokeSafetyRest = highlightStrokeSafety.rest;
+
+/** @public */
+export const highlightStrokeSafetyHover = highlightStrokeSafety.hover;
+
+/** @public */
+export const highlightStrokeSafetyActive = highlightStrokeSafety.active;
+
+/** @public */
+export const highlightStrokeSafetyFocus = highlightStrokeSafety.focus;
+
+// Highlight Stroke Stealth
+
+/** @public */
+export const highlightStrokeStealthRecipe = createTokenColorRecipeHighlight(strokeStealthRecipe);
+
+/** @public */
+export const highlightStrokeStealth = createTokenColorSet(highlightStrokeStealthRecipe);
+
+/** @public */
+export const highlightStrokeStealthRest = highlightStrokeStealth.rest;
+
+/** @public */
+export const highlightStrokeStealthHover = highlightStrokeStealth.hover;
+
+/** @public */
+export const highlightStrokeStealthActive = highlightStrokeStealth.active;
+
+/** @public */
+export const highlightStrokeStealthFocus = highlightStrokeStealth.focus;
+
+// Highlight Stroke Subtle
+
+/** @public */
+export const highlightStrokeSubtleRecipe = createTokenColorRecipeHighlight(strokeSubtleRecipe);
+
+/** @public */
+export const highlightStrokeSubtle = createTokenColorSet(highlightStrokeSubtleRecipe);
+
+/** @public */
+export const highlightStrokeSubtleRest = highlightStrokeSubtle.rest;
+
+/** @public */
+export const highlightStrokeSubtleHover = highlightStrokeSubtle.hover;
+
+/** @public */
+export const highlightStrokeSubtleActive = highlightStrokeSubtle.active;
+
+/** @public */
+export const highlightStrokeSubtleFocus = highlightStrokeSubtle.focus;
+
+// Highlight Stroke Discernible
+
+/** @public */
+export const highlightStrokeDiscernibleRecipe = createTokenColorRecipeHighlight(strokeDiscernibleRecipe);
+
+/** @public */
+export const highlightStrokeDiscernible = createTokenColorSet(highlightStrokeDiscernibleRecipe);
+
+/** @public */
+export const highlightStrokeDiscernibleRest = highlightStrokeDiscernible.rest;
+
+/** @public */
+export const highlightStrokeDiscernibleHover = highlightStrokeDiscernible.hover;
+
+/** @public */
+export const highlightStrokeDiscernibleActive = highlightStrokeDiscernible.active;
+
+/** @public */
+export const highlightStrokeDiscernibleFocus = highlightStrokeDiscernible.focus;
+
+// Highlight Stroke Readable
+
+/** @public */
+export const highlightStrokeReadableRecipe = createTokenColorRecipeHighlight(strokeReadableRecipe);
+
+/** @public */
+export const highlightStrokeReadable = createTokenColorSet(highlightStrokeReadableRecipe);
+
+/** @public */
+export const highlightStrokeReadableRest = highlightStrokeReadable.rest;
+
+/** @public */
+export const highlightStrokeReadableHover = highlightStrokeReadable.hover;
+
+/** @public */
+export const highlightStrokeReadableActive = highlightStrokeReadable.active;
+
+/** @public */
+export const highlightStrokeReadableFocus = highlightStrokeReadable.focus;
+
+// Highlight Stroke Strong
+
+/** @public */
+export const highlightStrokeStrongRecipe = createTokenColorRecipeHighlight(strokeStrongRecipe);
+
+/** @public */
+export const highlightStrokeStrong = createTokenColorSet(highlightStrokeStrongRecipe);
+
+/** @public */
+export const highlightStrokeStrongRest = highlightStrokeStrong.rest;
+
+/** @public */
+export const highlightStrokeStrongHover = highlightStrokeStrong.hover;
+
+/** @public */
+export const highlightStrokeStrongActive = highlightStrokeStrong.active;
+
+/** @public */
+export const highlightStrokeStrongFocus = highlightStrokeStrong.focus;
 
 // Neutral Fill Stealth
 

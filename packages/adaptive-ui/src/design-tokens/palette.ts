@@ -8,7 +8,7 @@ import { createNonCss, createTokenNonCss } from "../token-helpers.js";
 /** @public */
 export const neutralBaseColor = createTokenNonCss<string>("neutral-base-color", DesignTokenType.color).withDefault("#808080");
 
-/** @public */
+/** @public @deprecated The "BaseSwatch" will be removed and the "Palette" will use the "BaseColor" directly */
 export const neutralBaseSwatch = createNonCss<Swatch>("neutral-base-swatch").withDefault(
     (resolve: DesignTokenResolver) => {
         const hex = resolve(neutralBaseColor);
@@ -29,7 +29,7 @@ export const neutralPalette = createNonCss<Palette>("neutral-palette").withDefau
 /** @public */
 export const accentBaseColor = createTokenNonCss<string>("accent-base-color", DesignTokenType.color).withDefault("#F26C0D");
 
-/** @public */
+/** @public @deprecated The "BaseSwatch" will be removed and the "Palette" will use the "BaseColor" directly */
 export const accentBaseSwatch = createNonCss<Swatch>("accent-base-swatch").withDefault(
     (resolve: DesignTokenResolver) => {
         const hex = resolve(accentBaseColor);
@@ -45,4 +45,13 @@ export const accentBaseSwatch = createNonCss<Swatch>("accent-base-swatch").withD
 export const accentPalette = createNonCss<Palette>("accent-palette").withDefault(
     (resolve: DesignTokenResolver) =>
         PaletteRGB.from(resolve(accentBaseSwatch) as SwatchRGB)
+);
+
+/** @public */
+export const highlightBaseColor = createTokenNonCss<string>("highlight-base-color", DesignTokenType.color).withDefault("#0DA1F2");
+
+/** @public */
+export const highlightPalette = createNonCss<Palette>("highlight-palette").withDefault(
+    (resolve: DesignTokenResolver) =>
+        PaletteRGB.from(resolve(highlightBaseColor))
 );

@@ -6,6 +6,8 @@ import {
 import {
     accentBaseColor,
     accentPalette,
+    highlightBaseColor,
+    highlightPalette,
     LayerBaseLuminance,
     layerFillBaseLuminance,
     layerFillFixedBase,
@@ -16,7 +18,7 @@ import {
     neutralBaseColor,
     neutralPalette,
     wcagContrastLevel
-} from "@adaptive-web/adaptive-ui/reference"
+} from "@adaptive-web/adaptive-ui/reference";
 import {
     attr,
     css,
@@ -64,6 +66,9 @@ const template = html<App>`
                     <div class="row gradient">
                         <app-palette-gradient :palette="${(x) => x.accentPalette}"></app-palette-gradient>
                     </div>
+                    <div class="row gradient">
+                        <app-palette-gradient :palette="${(x) => x.highlightPalette}"></app-palette-gradient>
+                    </div>
                     <div class="row fill">
                         <div style="display: flex; overflow: auto;">${(x) => x.componentTypeTemplate()}</div>
                     </div>
@@ -80,6 +85,7 @@ const template = html<App>`
                         :componentType="${(x) => x.componentType}"
                         :neutralColor="${(x) => x.neutralColor}"
                         :accentColor="${(x) => x.accentColor}"
+                        :highlightColor="${(x) => x.highlightColor}"
                         :showOnlyLayerBackgrounds="${(x) => x.showOnlyLayerBackgrounds}"
                         @formvaluechange="${(x, c) => x.controlPaneHandler(c.event as CustomEvent)}"
                     ></app-control-pane>
@@ -159,6 +165,7 @@ export interface AppAttributes {
     componentType: ComponentType;
     neutralColor: string;
     accentColor: string;
+    highlightColor: string;
     showOnlyLayerBackgrounds: boolean;
 }
 
@@ -205,6 +212,19 @@ export class App extends FASTElement implements AppAttributes {
     @observable
     public accentPalette: Palette;
 
+    @attr({ attribute: "highlight-color" })
+    public highlightColor: string;
+    protected highlightColorChanged(prev?: string, next?: string) {
+        if (this.$fastController.isConnected && next) {
+            highlightBaseColor.setValueFor(this.canvas, next);
+
+            this.highlightPalette = highlightPalette.getValueFor(this.canvas);
+        }
+    }
+
+    @observable
+    public highlightPalette: Palette;
+
     @observable
     public showOnlyLayerBackgrounds: boolean = true;
     protected showOnlyLayerBackgroundsChanged() {
@@ -220,6 +240,7 @@ export class App extends FASTElement implements AppAttributes {
         super.connectedCallback();
         this.neutralColor = "#808080";
         this.accentColor = "#F26C0D";
+        this.highlightColor = "#0DA1F2";
     }
 
     public designSystemElement: FASTElement;

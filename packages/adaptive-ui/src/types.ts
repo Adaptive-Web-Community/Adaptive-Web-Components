@@ -8,7 +8,7 @@ import { StyleProperty } from "./modules/types.js";
  */
 export interface TokenGroup {
     /**
-     * The name of the token group. Contained tokens should extend this name like `group-name` -> `group-name-child`.
+     * The name of the token group. Contained tokens should extend this name like `group-name` -\> `group-name-child`.
      */
     name: string;
 

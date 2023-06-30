@@ -1,59 +1,58 @@
 import {
-    ColorRecipe,
     ColorRecipeParams,
     contrastSwatch,
     createNonCss,
-    createTokenNonCss,
+    createTokenColor,
+    createTokenColorRecipe,
+    createTokenColorRecipeValue,
     createTokenSwatch,
-    DesignTokenType,
     InteractiveSwatchSet,
     Palette,
     PaletteRGB,
     StyleProperty,
     stylePropertyBorderFillAll,
-    Swatch,
 } from "@adaptive-web/adaptive-ui";
 import {
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     fillColor
 } from "@adaptive-web/adaptive-ui/reference"
-import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
+import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
 // Local recipes for use in documentation files.
 
-export const docBaseColor = createTokenNonCss<string>("doc-base-color", DesignTokenType.color).withDefault("#E1477E");
+export const docBaseColor = createTokenColor("doc-base-color").withDefault("#E1477E");
 
 export const docPalette = createNonCss<Palette>("doc-palette").withDefault(
     (resolve: DesignTokenResolver) =>
         PaletteRGB.from(resolve(docBaseColor))
 );
 
-export const docForegroundRecipe = DesignToken.create<ColorRecipe>("doc-foreground-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
+export const docForegroundRecipe = createTokenColorRecipe(
+    "doc-foreground",
+    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         contrastSwatch(
             resolve(docPalette),
             params?.reference || resolve(fillColor),
             4.5,
         ),
-});
-
-export const docForeground = createTokenSwatch("doc-foreground", [...stylePropertyBorderFillAll, StyleProperty.foregroundFill]).withDefault(
-    (resolve: DesignTokenResolver) => resolve(docForegroundRecipe).evaluate(resolve)
 );
 
-export const docFillRecipe = DesignToken.create<ColorRecipe>("doc-fill-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
+export const docForeground = createTokenColorRecipeValue(docForegroundRecipe);
+
+export const docFillRecipe = createTokenColorRecipe(
+    "doc-fill-recipe",
+    StyleProperty.backgroundFill,
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         contrastSwatch(
             resolve(docPalette),
             params?.reference || resolve(fillColor),
             5,
         ),
-});
-
-export const docFill = createTokenSwatch("doc-fill", StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) => resolve(docFillRecipe).evaluate(resolve)
 );
+
+export const docFill = createTokenColorRecipeValue(docFillRecipe);
 
 // Placeholder tokens for `blackOrWhite` recipes, which have special handling in style modules.
 

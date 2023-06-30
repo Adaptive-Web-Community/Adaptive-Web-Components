@@ -12,6 +12,15 @@ import {
     accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
+    highlightFillDiscernible,
+    highlightFillReadable,
+    highlightFillStealth,
+    highlightFillSubtle,
+    highlightStrokeDiscernible,
+    highlightStrokeReadable,
+    highlightStrokeReadableRecipe,
+    highlightStrokeSafety,
+    highlightStrokeSubtle,
     neutralFillDiscernible,
     neutralFillReadable,
     neutralFillStealth,
@@ -268,6 +277,111 @@ export const accentForegroundReadableControlStyles: Styles = Styles.fromProperti
         foregroundFill: accentStrokeReadable,
     },
     "color.accent-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for an highlight-filled stealth control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - highlight stealth background
+ * - highlight readable foreground (a11y)
+ * - highlight safety border
+ *
+ * @public
+ */
+export const highlightFillStealthControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(highlightFillStealth, highlightStrokeReadableRecipe),
+        ...BorderFill.all(highlightStrokeSafety),
+    },
+    "color.highlight-fill-stealth-control",
+);
+
+/**
+ * Convenience style module for an highlight-filled subtle control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - highlight subtle background
+ * - highlight readable foreground (a11y)
+ * - highlight subtle border
+ *
+ * @public
+ */
+export const highlightFillSubtleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(highlightFillSubtle, highlightStrokeReadableRecipe),
+        ...BorderFill.all(highlightStrokeSubtle),
+    },
+    "color.highlight-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an highlight-filled discernible control (interactive).
+ *
+ * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
+ * - highlight discernible background (a11y)
+ * - highlight discernible foreground
+ * - no border
+ *
+ * @public
+ */
+export const highlightFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(highlightFillDiscernible, blackOrWhiteDiscernibleRecipe),
+    },
+    "color.highlight-fill-discernible-control",
+);
+
+/**
+ * Convenience style module for an highlight-filled readable control (interactive).
+ *
+ * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
+ * - highlight readable background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const highlightFillReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(highlightFillReadable, blackOrWhiteReadableRecipe),
+    },
+    "color.highlight-fill-readable-control",
+);
+
+/**
+ * Convenience style module for an highlight-outlined discernible control (interactive).
+ *
+ * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
+ * - no background
+ * - highlight readable foreground
+ * - highlight discernible border
+ *
+ * @public
+ */
+export const highlightOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...BorderFill.all(highlightStrokeDiscernible),
+        foregroundFill: highlightStrokeReadable,
+    },
+    "color.highlight-outline-discernible-control",
+);
+
+/**
+ * Convenience style module for an highlight-colored text or icon control (interactive).
+ *
+ * By default, the foreground color meets accessibility, useful for a button, link, or similar:
+ * - no background
+ * - highlight readable foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const highlightForegroundReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        foregroundFill: highlightStrokeReadable,
+    },
+    "color.highlight-foreground-readable-control",
 );
 
 /**
@@ -619,7 +733,7 @@ export const selectableSelectedStyles: Styles = Styles.compose(
     [
         controlShapeStyles,
         typeRampBaseStyles,
-        accentFillReadableControlStyles
+        highlightFillReadableControlStyles
     ],
     undefined,
     "styles.selectable-control-selected",
