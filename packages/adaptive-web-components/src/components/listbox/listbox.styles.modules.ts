@@ -5,9 +5,9 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
-    itemContainerDensityStyles
+    itemContainerDensityStyles,
+    neutralStrokeSubtleRest
 } from "@adaptive-web/adaptive-ui/reference";
-import { neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Visual styles composed by modules.
