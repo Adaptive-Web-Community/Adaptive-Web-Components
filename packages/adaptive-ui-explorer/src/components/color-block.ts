@@ -7,6 +7,12 @@ import {
     accentForegroundReadableControlStyles,
     accentOutlineDiscernibleControlStyles,
     fillColor,
+    highlightFillDiscernibleControlStyles,
+    highlightFillReadableControlStyles,
+    highlightFillStealthControlStyles,
+    highlightFillSubtleControlStyles,
+    highlightForegroundReadableControlStyles,
+    highlightOutlineDiscernibleControlStyles,
     neutralDividerDiscernibleElementStyles,
     neutralDividerSubtleElementStyles,
     neutralFillDiscernibleControlStyles,
@@ -58,6 +64,18 @@ const backplateComponents = html<ColorBlock>`
     <app-style-example :styles="${x => neutralFillSubtleControlStyles}">
         Neutral subtle
     </app-style-example>
+
+    <app-style-example :styles="${x => highlightFillReadableControlStyles}">
+        Highlight readable
+    </app-style-example>
+
+    <app-style-example :styles="${x => highlightFillStealthControlStyles}">
+        Highlight stealth
+    </app-style-example>
+
+    <app-style-example :styles="${x => highlightFillSubtleControlStyles}">
+        Highlight subtle
+    </app-style-example>
 `;
 
 const textComponents = html<ColorBlock>`
@@ -71,6 +89,10 @@ const textComponents = html<ColorBlock>`
 
     <app-style-example :styles="${x => neutralForegroundReadableElementStyles}">
         Hint / placeholder element
+    </app-style-example>
+
+    <app-style-example :styles="${x => highlightForegroundReadableControlStyles}">
+        Highlight control
     </app-style-example>
 `;
 
@@ -97,6 +119,14 @@ const formComponents = html<ColorBlock>`
 
     <app-style-example :styles="${x => neutralDividerDiscernibleElementStyles}">
         Divider discernible
+    </app-style-example>
+
+    <app-style-example :styles="${x => highlightOutlineDiscernibleControlStyles}">
+        Highlight outline
+    </app-style-example>
+
+    <app-style-example :styles="${x => highlightFillDiscernibleControlStyles}">
+        Highlight discernible
     </app-style-example>
 `;
 

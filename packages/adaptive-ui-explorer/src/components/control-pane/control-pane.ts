@@ -9,6 +9,9 @@ export class ControlPane extends FASTElement {
     public accentColor: string;
 
     @observable
+    public highlightColor: string;
+
+    @observable
     public neutralColor: string;
 
     @observable

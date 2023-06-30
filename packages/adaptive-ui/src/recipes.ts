@@ -1,7 +1,13 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
+/**
+ * @public
+ */
 export type RecipeEvaluate<TParam, TResult> = (resolver: DesignTokenResolver, params: TParam) => TResult;
 
+/**
+ * @public
+ */
 export type RecipeEvaluateOptional<TParam, TResult> = (resolver: DesignTokenResolver, params?: TParam) => TResult;
 
 /**

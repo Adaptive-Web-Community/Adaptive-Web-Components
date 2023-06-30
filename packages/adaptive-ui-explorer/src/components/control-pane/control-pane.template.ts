@@ -62,6 +62,16 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                 }}"
             />
         </div>
+        <div>
+            <label>Highlight base color</label>
+            <input
+                type="color"
+                value="${(x) => x.highlightColor}"
+                @change="${(x, c) => {
+                    x.updateFormValue("highlightColor", c.eventTarget<HTMLInputElement>().value);
+                }}"
+            />
+        </div>
         <div class="radio-group">
             <label>WCAG Contrast Level</label>
             ${repeat(
