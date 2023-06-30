@@ -1,4 +1,4 @@
-import type { WcagContrastLevel } from "@adaptive-web/adaptive-ui";
+import type { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
 import { FASTElement, observable } from "@microsoft/fast-element";
 
 export class ControlPane extends FASTElement {

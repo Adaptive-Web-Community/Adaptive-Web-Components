@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
-import { typeRampPlus1FontSize, typeRampPlus1LineHeight } from "@adaptive-web/adaptive-ui";
+import { typeRampPlus1FontSize, typeRampPlus1LineHeight } from "@adaptive-web/adaptive-ui/reference";
 
 export const controlPaneStyles = css`
     ${display("flex")} :host {

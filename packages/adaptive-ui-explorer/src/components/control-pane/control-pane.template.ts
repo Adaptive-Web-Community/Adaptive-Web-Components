@@ -1,4 +1,4 @@
-import { WcagContrastLevel } from "@adaptive-web/adaptive-ui";
+import { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
 import { ElementViewTemplate, html, repeat } from "@microsoft/fast-element";
 import { ComponentType } from "../../component-type.js";
 import { ControlPane } from "./control-pane.js";
