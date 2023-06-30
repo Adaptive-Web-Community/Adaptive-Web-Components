@@ -1,3 +1,4 @@
+import { Swatch } from"@adaptive-web/adaptive-ui";
 import {
     accentForegroundRest,
     controlCornerRadius,
@@ -6,8 +7,7 @@ import {
     neutralFillStealthRecipe,
     neutralFillSubtleRecipe,
     neutralFillSubtleRest,
-    Swatch,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { heightNumber } from "../../styles/index.js";

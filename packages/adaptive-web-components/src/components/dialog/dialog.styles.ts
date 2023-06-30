@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { elevationDialog, fillColor } from "@adaptive-web/adaptive-ui";
+import { elevationDialog, fillColor } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Basic layout styling associated with the anatomy of the template.

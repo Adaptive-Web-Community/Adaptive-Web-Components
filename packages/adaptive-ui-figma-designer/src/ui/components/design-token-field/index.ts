@@ -1,4 +1,4 @@
-import { LayerBaseLuminance } from "@adaptive-web/adaptive-ui";
+import { LayerBaseLuminance } from "@adaptive-web/adaptive-ui/reference";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     css,

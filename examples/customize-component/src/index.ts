@@ -1,12 +1,14 @@
 import {
+    BorderFill,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     accentFillReadableControlStyles,
     accentStrokeReadable,
     accentStrokeReadableRecipe,
-    BorderFill,
     createForegroundSet,
-    neutralFillSubtle,
-    Styles,
-} from '@adaptive-web/adaptive-ui';
+    neutralFillSubtle
+} from "@adaptive-web/adaptive-ui/reference";
 import {
     AdaptiveDesignSystem,
     CheckboxAnatomy,

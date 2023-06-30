@@ -1,4 +1,5 @@
-import { fillColor, InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
+import { InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
+import { fillColor } from '@adaptive-web/adaptive-ui/reference';
 import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
 import { SwatchType } from "./swatch.js";
 import "./adaptive-component.js";

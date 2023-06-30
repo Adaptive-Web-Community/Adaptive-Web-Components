@@ -1,10 +1,11 @@
 import {
-    layerShapeStyles,
-    plainTextStyles,
     StyleModules,
-    Styles,
+    Styles
 } from "@adaptive-web/adaptive-ui";
-
+import {
+    layerShapeStyles,
+    plainTextStyles
+} from "@adaptive-web/adaptive-ui/reference";
 /**
  * Visual styles composed by modules.
  * 

@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui";
+import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Basic layout styling associated with the anatomy of the template.

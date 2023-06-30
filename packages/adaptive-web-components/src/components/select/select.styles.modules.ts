@@ -1,10 +1,12 @@
 import {
+    StyleModules,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     inputStyles,
     itemContainerDensityStyles,
-    layerShapeStyles,
-    StyleModules,
-    Styles,
-} from "@adaptive-web/adaptive-ui";
+    layerShapeStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { SelectAnatomy } from "./select.template.js";
 
 /**

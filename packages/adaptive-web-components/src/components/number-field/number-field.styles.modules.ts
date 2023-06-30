@@ -1,10 +1,10 @@
+import { StyleModules } from "@adaptive-web/adaptive-ui";
 import {
     autofillInnerDensityStyles,
     inputAutofillStyles,
     labelTextStyles,
-    StyleModules,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui";
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { NumberFieldAnatomy } from "./number-field.template.js";
 
 /**

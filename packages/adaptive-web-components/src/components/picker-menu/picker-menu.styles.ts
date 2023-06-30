@@ -1,4 +1,4 @@
-import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui";
+import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**

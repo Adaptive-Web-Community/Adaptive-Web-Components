@@ -3,7 +3,7 @@ import {
     focusStrokeWidth,
     neutralForegroundRest,
     strokeWidth,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Basic layout styling associated with the anatomy of the template.

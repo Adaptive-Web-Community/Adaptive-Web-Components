@@ -1,14 +1,16 @@
 import {
+    StyleModules,
+    Styles,
+} from "@adaptive-web/adaptive-ui";
+import {
     accentForegroundReadableControlStyles,
     controlDensityStyles,
     controlShapeStyles,
     neutralForegroundStrongElementStyles,
     neutralStrokeSubtleRest,
     plainTextStyles,
-    strokeThickness,
-    StyleModules,
-    Styles,
-} from "@adaptive-web/adaptive-ui";
+    strokeThickness
+} from "@adaptive-web/adaptive-ui/reference";
 import { AccordionItemAnatomy } from "./accordion-item.template.js";
 
 /**

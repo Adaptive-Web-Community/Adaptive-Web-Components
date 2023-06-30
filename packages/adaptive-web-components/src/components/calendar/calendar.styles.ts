@@ -6,7 +6,7 @@ import {
     foregroundOnAccentRest,
     neutralStrokeReadableRest,
     strokeWidth,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
 

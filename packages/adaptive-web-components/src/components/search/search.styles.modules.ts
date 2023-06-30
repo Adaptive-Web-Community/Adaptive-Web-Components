@@ -1,12 +1,14 @@
 import {
+    StyleModules,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     controlShapeStyles,
     inputStyles,
     labelTextStyles,
     neutralFillStealthControlStyles,
-    StyleModules,
-    Styles,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui";
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { SearchAnatomy } from "./search.template.js";
 
 /**

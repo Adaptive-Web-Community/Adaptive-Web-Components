@@ -1,9 +1,11 @@
 import {
-    accentFillReadableRest,
-    neutralFillSubtleRest,
     StyleModules,
     Styles
 } from "@adaptive-web/adaptive-ui";
+import {
+    accentFillReadableRest,
+    neutralFillSubtleRest
+} from "@adaptive-web/adaptive-ui/reference";
 import { ProgressRingAnatomy } from "./progress-ring.template.js";
 
 /**

@@ -1,9 +1,9 @@
+import { StyleModules } from "@adaptive-web/adaptive-ui";
 import {
     inputStyles,
     labelTextStyles,
-    StyleModules,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui";
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { TextAreaAnatomy } from "./text-area.template.js";
 
 /**

@@ -1,10 +1,12 @@
 import {
-    controlShapeStyles,
-    neutralFillReadableControlStyles,
     StyleModules,
     Styles,
-    typeRampMinus1Styles,
 } from "@adaptive-web/adaptive-ui";
+import {
+    controlShapeStyles,
+    neutralFillReadableControlStyles,
+    typeRampMinus1Styles,
+} from "@adaptive-web/adaptive-ui/reference";
 import { BadgeAnatomy } from "./badge.template.js";
 
 /**

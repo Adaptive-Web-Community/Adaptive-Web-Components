@@ -1,4 +1,4 @@
-import { designUnit, neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui";
+import { designUnit, neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 

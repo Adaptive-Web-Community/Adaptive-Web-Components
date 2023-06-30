@@ -1,7 +1,7 @@
 import {
     focusStrokeOuter,
     focusStrokeWidth,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 

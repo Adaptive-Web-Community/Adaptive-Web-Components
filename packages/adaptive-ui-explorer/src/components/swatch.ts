@@ -1,4 +1,5 @@
-import { fillColor, neutralForegroundHint, Swatch } from "@adaptive-web/adaptive-ui";
+import { Swatch } from "@adaptive-web/adaptive-ui";
+import { fillColor, neutralForegroundHint } from "@adaptive-web/adaptive-ui/reference";
 import { contrastRatio, parseColor } from "@microsoft/fast-colors";
 import {
     attr,

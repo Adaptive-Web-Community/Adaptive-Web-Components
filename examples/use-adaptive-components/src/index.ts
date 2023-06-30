@@ -17,7 +17,13 @@ AdaptiveDesignSystem.defineComponents({
     // textFieldDefinition // Uncomment to define the `adaptive-text-field` element.
 });
 
-import { accentBaseColor, fillColor, LayerBaseLuminance, layerFillBaseLuminance, layerFillFixedBase } from "@adaptive-web/adaptive-ui";
+import {
+    accentBaseColor,
+    fillColor,
+    LayerBaseLuminance,
+    layerFillBaseLuminance,
+    layerFillFixedBase
+} from "@adaptive-web/adaptive-ui/reference";
 import { DesignToken, FASTRadioGroup, FASTSwitch } from "@microsoft/fast-foundation";
 
 // This must be called during initialization for the Design Tokens to be setup so the component styling is applied.

@@ -1,7 +1,5 @@
-import {
-    controlShapeStyles,
-    StyleModules,
-} from "@adaptive-web/adaptive-ui";
+import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { controlShapeStyles } from "@adaptive-web/adaptive-ui/reference";
 import { SkeletonAnatomy } from "./skeleton.template.js";
 
 /**

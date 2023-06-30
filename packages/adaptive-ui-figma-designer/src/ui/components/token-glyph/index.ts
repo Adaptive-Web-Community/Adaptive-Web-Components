@@ -3,7 +3,7 @@ import {
     controlCornerRadius,
     neutralFillStealthHover,
     neutralForegroundHint,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 
 const template = html<TokenGlyph>`
     <template

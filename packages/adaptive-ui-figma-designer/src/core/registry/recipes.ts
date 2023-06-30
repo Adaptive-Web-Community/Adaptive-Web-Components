@@ -1,5 +1,11 @@
 import type { DesignToken } from "@microsoft/fast-foundation";
 import {
+    DesignTokenMetadata,
+    DesignTokenType,
+    Swatch,
+    TypedCSSDesignToken
+} from "@adaptive-web/adaptive-ui"
+import {
     accentBaseColor,
     accentFillDiscernibleRest,
     accentFillReadableRest,
@@ -13,8 +19,6 @@ import {
     bodyFontFamily,
     cornerRadiusControl,
     cornerRadiusLayer,
-    DesignTokenMetadata,
-    DesignTokenType,
     fillColor,
     focusStrokeInner,
     focusStrokeOuter,
@@ -44,8 +48,6 @@ import {
     neutralStrokeStrongRest,
     neutralStrokeSubtleRest,
     strokeThickness,
-    Swatch,
-    TypedCSSDesignToken,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
     typeRampMinus1FontSize,
@@ -64,7 +66,7 @@ import {
     typeRampPlus5LineHeight,
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
-} from "@adaptive-web/adaptive-ui";
+} from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenDefinition, DesignTokenRegistry, FormControlId } from "./design-token-registry.js";
 import { blackOrWhiteDiscernibleRest, blackOrWhiteReadableRest, docBaseColor, docFill, docForeground } from "./custom-recipes.js";
 

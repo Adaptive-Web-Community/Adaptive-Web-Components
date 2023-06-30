@@ -1,11 +1,13 @@
 import {
+    StyleModules,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     accentFillReadableControlStyles,
     controlDensityStyles,
     controlShapeStyles,
-    StyleModules,
-    Styles,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui";
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { DisclosureAnatomy } from "./disclosure.template.js";
 
 /**

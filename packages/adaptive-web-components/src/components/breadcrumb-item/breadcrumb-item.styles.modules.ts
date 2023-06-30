@@ -1,12 +1,14 @@
 import {
+    StyleModules,
+    Styles
+} from "@adaptive-web/adaptive-ui";
+import {
     accentForegroundReadableControlStyles,
     controlDensityStyles,
     controlShapeStyles,
     plainTextStyles,
-    StyleModules,
-    Styles,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui";
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { BreadcrumbItemAnatomy } from "./breadcrumb-item.template.js";
 
 /**
