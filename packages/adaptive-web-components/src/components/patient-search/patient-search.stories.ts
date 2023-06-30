@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import type { PatientSearch } from "./patient-search.js";
+import type { PatientSearch as PatientSearchBase } from "./patient-search.js";
 
-export const storyTemplate = html<StoryArgs<PatientSearch>>`
+export const storyTemplate = html<StoryArgs<PatientSearchBase>>`
     <adaptive-patient-search>
         ${(x) => x.storyContent}
     </adaptive-patient-search>
@@ -11,11 +11,11 @@ export const storyTemplate = html<StoryArgs<PatientSearch>>`
 
 export default {
     title: "Components/PatientSearch",
-    excludeStories: ["storyTemplate"],
+    includeStories: ["PatientSearch"],
     args: {
     },
     argTypes: {
     },
-} as Meta<PatientSearch>;
+} as Meta<PatientSearchBase>;
 
-export const PatientSearchPane: Story<PatientSearch> = renderComponent(storyTemplate).bind({});
+export const PatientSearch: Story<PatientSearchBase> = renderComponent(storyTemplate).bind({});
