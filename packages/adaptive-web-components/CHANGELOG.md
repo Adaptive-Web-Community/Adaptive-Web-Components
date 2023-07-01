@@ -1,8 +1,25 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Sat, 03 Jun 2023 04:25:41 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Jul 2023 03:28:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Sat, 01 Jul 2023 03:28:44 GMT
+
+### Minor changes
+
+- Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
+- Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
+- Designer: add style module support (47367562+bheston@users.noreply.github.com)
+- Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.0
+
+### Patches
+
+- updated all token imports from adaptive-ui and updated FAST to latest versions (nbrown414@outlook.com)
 
 ## 0.2.0
 

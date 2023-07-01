@@ -2,6 +2,81 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Sat, 01 Jul 2023 03:28:44 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nbrown414@outlook.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f1a5ef4b356c494d96a21c5ba4455e21544c0748",
+            "comment": "fixed modules exported from wrong path"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "72225c4800c2e89968b93287d2734c7c3485648e",
+            "comment": "Export color token and style helpers"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "d1cf04f9e38e5d4bb5b7b69778e86696b855ac44",
+            "comment": "Update compound properties (padding, border, etc.)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "ca899f4011a84821519a7b182f5f5a65169554e9",
+            "comment": "Update styles to normalize to `border-box` sizing"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "62c7e39bb68899f8055974d7b8f0a030bbc11c54",
+            "comment": "move type ramp tokens to reference path"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "797a1abaaadc7f974f105d4e5ac0ee998cb2b732",
+            "comment": "Added `migration` export for deprecated design tokens"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "59539e9d425a9ca97bae8a923b20894906d6aba1",
+            "comment": "Add highlight palette and recipes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "cf32c059b8fb9038373b33cf33afc6a5b4adceaf",
+            "comment": "Improved typing and metadata on color recipes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "6cf1409031aaf6440e55a0aa3fc8eb4b54ecca97",
+            "comment": "Adaptive UI: Formalized `Recipe` structure to enable better composition"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "9da42b73440a9305801734b0a497c3fdde95fce1",
+            "comment": "Adaptive UI: Token helpers cleanup"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "5c6f92995bd836a0c3130505a26046263bb45e0a",
+            "comment": "Designer: add style module support"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 03 Jun 2023 04:25:41 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.1.0",
       "version": "0.1.0",
