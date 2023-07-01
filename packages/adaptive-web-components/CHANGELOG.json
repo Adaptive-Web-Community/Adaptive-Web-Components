@@ -2,6 +2,59 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Sat, 01 Jul 2023 03:25:26 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "ca899f4011a84821519a7b182f5f5a65169554e9",
+            "comment": "Update styles to normalize to `border-box` sizing"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "797a1abaaadc7f974f105d4e5ac0ee998cb2b732",
+            "comment": "Added `migration` export for deprecated design tokens"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "5c6f92995bd836a0c3130505a26046263bb45e0a",
+            "comment": "Designer: add style module support"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "d1cf04f9e38e5d4bb5b7b69778e86696b855ac44",
+            "comment": "Update compound properties (padding, border, etc.)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "6cf1409031aaf6440e55a0aa3fc8eb4b54ecca97",
+            "comment": "Adaptive UI: Formalized `Recipe` structure to enable better composition"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.2.0",
+            "commit": "3c5cfa0444531ec74ccce4da0e6247e559dd466f"
+          }
+        ],
+        "patch": [
+          {
+            "author": "nbrown414@outlook.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f1a5ef4b356c494d96a21c5ba4455e21544c0748",
+            "comment": "updated all token imports from adaptive-ui and updated FAST to latest versions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 03 Jun 2023 04:25:41 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.2.0",
       "version": "0.2.0",

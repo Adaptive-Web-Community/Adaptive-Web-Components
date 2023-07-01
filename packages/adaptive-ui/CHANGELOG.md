@@ -1,8 +1,26 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Sat, 03 Jun 2023 04:25:41 GMT and should not be manually modified.
+This log was last generated on Sat, 01 Jul 2023 03:25:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Sat, 01 Jul 2023 03:25:26 GMT
+
+### Minor changes
+
+- Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
+- Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
+- move type ramp tokens to reference path (32497422+KingOfTac@users.noreply.github.com)
+- Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
+- Add highlight palette and recipes (47367562+bheston@users.noreply.github.com)
+- Improved typing and metadata on color recipes (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Token helpers cleanup (47367562+bheston@users.noreply.github.com)
+- Designer: add style module support (47367562+bheston@users.noreply.github.com)
+- fixed modules exported from wrong path (nbrown414@outlook.com)
+- Export color token and style helpers (47367562+bheston@users.noreply.github.com)
 
 ## 0.1.0
 
