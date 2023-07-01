@@ -8,15 +8,6 @@ on:
     types: [created]
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          scope: '@adaptive-web'
-      - run: beachball check
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -29,7 +20,8 @@ jobs:
           node-version: 16
           scope: '@adaptive-web'
       - run: npm ci
-      - run: npm run build
-      - run: beachball publish
+      - run: npm run build -w @adaptive-web/adaptive-ui
+      - run: npm run build -w @adaptive-web/adaptive-web-components
+      - run: npm run publish-ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
