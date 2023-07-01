@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "fixed modules exported from wrong path",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "nbrown414@outlook.com",
-  "dependentChangeType": "patch"
-}
