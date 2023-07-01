@@ -1,7 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -97,7 +97,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host(:not([disabled])) .button:focus-visible::before {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .icon {

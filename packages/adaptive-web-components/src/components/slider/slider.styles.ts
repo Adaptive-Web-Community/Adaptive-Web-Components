@@ -1,9 +1,11 @@
 import {
     accentForegroundRest,
+    neutralForegroundRest,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
     designUnit,
     focusStrokeOuter,
-    focusStrokeWidth,
-    neutralForegroundRest,
+    focusStrokeThickness,
     neutralStrokeDiscernibleRest,
     neutralStrokeSubtleActive,
     neutralStrokeSubtleHover,
@@ -26,13 +28,13 @@ export const templateStyles: ElementStyles = css`
 
     :host([orientation="horizontal"]) {
         width: 100%;
-        min-width: calc(var(--thumb-size) * 1px);
+        min-width: var(--thumb-size);
         touch-action: pan-y;
     }
 
     :host([orientation="vertical"]) {
         height: 100%;
-        min-height: calc(var(--thumb-size) * 1px);
+        min-height: var(--thumb-size);
         touch-action: pan-x;
     }
 
@@ -46,32 +48,32 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([orientation="horizontal"]) .positioning-region {
-        grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
+        grid-template-rows: var(--thumb-size) 1fr;
     }
 
     :host([orientation="vertical"]) .positioning-region {
         height: 100%;
-        grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
+        grid-template-columns: var(--thumb-size) 1fr;
     }
 
     .thumb-container {
         position: absolute;
-        height: calc(var(--thumb-size) * 1px);
-        width: calc(var(--thumb-size) * 1px);
+        height: var(--thumb-size);
+        width: var(--thumb-size);
         transition: all 0.2s ease;
     }
 
     :host([orientation="horizontal"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-size) * 0.5px)) translateY(calc(var(--thumb-translate) * 1px));
+        transform: translateX(calc(var(--thumb-size) * 0.5));
     }
 
     :host([orientation="vertical"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-translate) * 1px)) translateY(calc(var(--thumb-size) * -0.5px));
+        transform: translateY(calc(var(--thumb-size) * -0.5));
     }
 
     .thumb {
-        width: calc(var(--thumb-size) * 1px);
-        height: calc(var(--thumb-size) * 1px);
+        width: var(--thumb-size);
+        height: var(--thumb-size);
     }
 
     .track-start {
@@ -93,17 +95,18 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([orientation="horizontal"]) .track {
-        right: calc(var(--track-overhang) * 1px);
-        left: calc(var(--track-overhang) * 1px);
-        align-self: start;
-        height: calc(var(--track-width) * 1px);
+        right: var(--track-overhang);
+        left: var(--track-overhang);
+        align-self: center;
+        height: var(--track-width);
     }
 
     :host([orientation="vertical"]) .track {
-        top: calc(var(--track-overhang) * 1px);
-        bottom: calc(var(--track-overhang) * 1px);
+        top: var(--track-overhang);
+        bottom: var(--track-overhang);
+        justify-self: center;
         height: 100%;
-        width: calc(var(--track-width) * 1px);
+        width: var(--track-width);
     }
 
 `;
@@ -114,11 +117,10 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        --thumb-size: calc(${heightNumber} * 0.5);
-        --thumb-translate: calc(var(--thumb-size) * -0.5 + var(--track-width) / 2);
-        --track-overhang: calc((${designUnit} / 2) * -1);
+        --thumb-size: calc((${heightNumber} * 0.5) * 1px);
         --track-width: ${designUnit};
-        margin: calc(${designUnit} * 1px) 0;
+        --track-overhang: calc((${designUnit} / 2) * -1);
+        margin: ${designUnit} 0;
     }
 
     :host([orientation="horizontal"]) .positioning-region {
@@ -146,7 +148,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) .thumb {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
         outline-offset: 2px;
     }
 

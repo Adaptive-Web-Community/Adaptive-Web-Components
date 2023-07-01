@@ -5,7 +5,7 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     accentFillReadableRest,
-    designUnitDimension,
+    designUnit,
     neutralFillSubtleRest
 } from "@adaptive-web/adaptive-ui/reference";
 import { ProgressAnatomy } from "./progress.template.js";
@@ -21,7 +21,7 @@ export const styleModules: StyleModules = [
         },
         Styles.fromProperties({
             backgroundFill: neutralFillSubtleRest,
-            ...CornerRadius.all(designUnitDimension),
+            ...CornerRadius.all(designUnit),
         })
     ],
     [
@@ -30,7 +30,7 @@ export const styleModules: StyleModules = [
         },
         Styles.fromProperties({
             backgroundFill: accentFillReadableRest,
-            ...CornerRadius.all(designUnitDimension),
+            ...CornerRadius.all(designUnit),
         })
     ],
 ];

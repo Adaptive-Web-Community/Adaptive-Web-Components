@@ -1,8 +1,10 @@
 import {
+    foregroundOnAccentRest,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
     accentFillReadableRest,
     focusStrokeOuter,
-    focusStrokeWidth,
-    foregroundOnAccentRest,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -32,7 +34,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     :host([aria-selected="true"]) {

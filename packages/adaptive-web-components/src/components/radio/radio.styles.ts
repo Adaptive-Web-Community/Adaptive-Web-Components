@@ -1,7 +1,7 @@
 import {
     designUnit,
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -67,18 +67,18 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control {
-        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+        width: calc((${heightNumber} / 2) * 1px + ${designUnit});
+        height: calc((${heightNumber} / 2) * 1px + ${designUnit});
         border-radius: 50% !important;
         fill: currentcolor;
     }
 
     :host(:focus-visible) .control {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .label {
-        padding-inline-start: calc(${designUnit} * 2px + 2px);
+        padding-inline-start: calc((${designUnit} * 2) + 2px);
     }
 
     :host([disabled]) {

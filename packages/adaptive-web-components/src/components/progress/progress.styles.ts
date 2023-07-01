@@ -45,7 +45,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        height: calc(${designUnit} * 1px);
+        height: ${designUnit};
     }
 
     .determinate {

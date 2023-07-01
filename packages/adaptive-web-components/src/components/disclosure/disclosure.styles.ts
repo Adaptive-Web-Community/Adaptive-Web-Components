@@ -1,10 +1,12 @@
 import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
+    accentFillReadableActive,
+    accentFillReadableHover,
+    accentFillReadableRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 

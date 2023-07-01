@@ -1,6 +1,6 @@
 import {
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
@@ -50,6 +50,6 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control:focus-visible {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 `;

@@ -2,9 +2,9 @@ import {
     designUnit,
     elevationFlyout,
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
     layerFillFixedPlus1,
-    strokeWidth,
+    strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -82,16 +82,16 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     /* ideally the option can take care of itself
     :host(:focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     } */
 
     .listbox {
-        max-height: calc((var(--size, 0) * ${heightNumber} + (${designUnit} * ${strokeWidth} * 2)) * 1px);
+        max-height: calc((var(--size, 0) * ${heightNumber}) * 1px + (${designUnit} + ${strokeThickness} * 2));
         background: ${layerFillFixedPlus1};
     }
 

@@ -30,9 +30,6 @@ export const fontFamily = createTokenFontFamily("font-family").withDefault('Aria
 /** @public */
 export const bodyFontFamily = createTokenFontFamily("body-font-family").withDefault(fontFamily);
 
-/** @public @deprecated Renamed to `bodyFontFamily` */
-export const bodyFont = bodyFontFamily;
-
 /** @public */
 export const labelFontFamily = createTokenFontFamily("label-font-family").withDefault(fontFamily);
 

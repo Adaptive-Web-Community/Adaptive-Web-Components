@@ -1,8 +1,10 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import {
-    controlCornerRadius,
-    neutralFillStealthHover,
     neutralForegroundHint,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
+    cornerRadiusControl,
+    neutralFillStealthHover,
 } from "@adaptive-web/adaptive-ui/reference";
 
 const template = html<TokenGlyph>`
@@ -38,7 +40,7 @@ const styles = css`
         box-sizing: border-box;
         width: 32px;
         height: 32px;
-        border-radius: calc(${controlCornerRadius} * 2px);
+        border-radius: calc(${cornerRadiusControl} * 2);
         background: var(--swatch-value);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
         position: relative;
@@ -55,7 +57,7 @@ const styles = css`
         box-sizing: border-box;
         background: var(--fill-color);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
-        border-radius: calc(${controlCornerRadius} * 2px);
+        border-radius: calc(${cornerRadiusControl} * 2);
     }
 
     .swatch::after {

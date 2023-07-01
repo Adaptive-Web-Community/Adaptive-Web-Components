@@ -188,21 +188,21 @@ export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, 
 export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public
-export const densityAdjustmentUnits: DesignToken<number>;
+export const densityAdjustmentUnits: TypedDesignToken<number>;
 
 // @public
 export class DensityPaddingAndGapTokenGroup implements TokenGroup {
     constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number);
     readonly horizontalGap: TypedCSSDesignToken<string>;
-    readonly horizontalGapUnits: DesignToken<number>;
+    readonly horizontalGapUnits: TypedDesignToken<number>;
     readonly horizontalPadding: TypedCSSDesignToken<string>;
-    readonly horizontalPaddingUnits: DesignToken<number>;
+    readonly horizontalPaddingUnits: TypedDesignToken<number>;
     // (undocumented)
     readonly name: string;
     readonly verticalGap: TypedCSSDesignToken<string>;
-    readonly verticalGapUnits: DesignToken<number>;
+    readonly verticalGapUnits: TypedDesignToken<number>;
     readonly verticalPadding: TypedCSSDesignToken<string>;
-    readonly verticalPaddingUnits: DesignToken<number>;
+    readonly verticalPaddingUnits: TypedDesignToken<number>;
 }
 
 // @public

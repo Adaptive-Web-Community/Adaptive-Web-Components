@@ -51,6 +51,10 @@
             "types": "./dist/dts/index.d.ts",
             "default": "./dist/esm/index.js"
         },
+        "./migration": {
+            "types": "./dist/dts/migration/index.d.ts",
+            "default": "./dist/esm/migration/index.js"
+        },
         "./reference": {
             "types": "./dist/dts/reference.d.ts",
             "default": "./dist/esm/reference.js"
