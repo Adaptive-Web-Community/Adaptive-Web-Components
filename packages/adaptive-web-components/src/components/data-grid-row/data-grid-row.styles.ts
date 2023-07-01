@@ -1,8 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     accentStrokeReadableRest,
-    controlCornerRadius,
-    focusStrokeWidth,
+    cornerRadiusControl,
+    focusStrokeThickness,
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
@@ -40,10 +40,10 @@ export const aestheticStyles: ElementStyles = css`
         content: "";
         display: block;
         position: absolute;
-        border-radius: calc(${controlCornerRadius} * 1px);
+        border-radius: ${cornerRadiusControl};
         background: ${accentStrokeReadableRest};
         align-self: center;
-        left: calc(${focusStrokeWidth} * 1px);
+        left: ${focusStrokeThickness};
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
     }

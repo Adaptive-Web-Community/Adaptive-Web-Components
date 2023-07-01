@@ -46,13 +46,13 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([orientation="vertical"]) .content {
-        margin-left: calc((${designUnit} / 2) * 2px);
+        margin-left: calc((${designUnit} / 2) * 2);
     }
 
     .mark {
         justify-self: center;
         height: calc(${heightNumber} * 0.25 * 1px);
-        width: calc((${designUnit} / 2) * 1px);
+        width: calc(${designUnit} / 2);
     }
 
     :host([orientation="vertical"]) .mark {

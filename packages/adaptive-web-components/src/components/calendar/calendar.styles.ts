@@ -1,11 +1,11 @@
+import { foregroundOnAccentRest } from "@adaptive-web/adaptive-ui/migration";
 import {
     accentFillReadableRest,
-    controlCornerRadius,
+    cornerRadiusControl,
     designUnit,
     fillColor,
-    foregroundOnAccentRest,
     neutralStrokeReadableRest,
-    strokeWidth,
+    strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
@@ -40,13 +40,13 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit} * 1px);
+        --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit});
         --calendar-gap: 2px;
         fill: currentcolor;
     }
 
     .title {
-        padding: calc(${designUnit} * 1px);
+        padding: ${designUnit};
         font-weight: 600;
     }
 
@@ -84,7 +84,7 @@ export const aestheticStyles: ElementStyles = css`
         content: "";
         display: inline-block;
         width: calc(var(--calendar-cell-size) * 0.8);
-        height: calc(${strokeWidth} * 1px);
+        height: ${strokeThickness};
         background: currentcolor;
         position: absolute;
         margin-top: calc(var(--calendar-cell-size) / 2);
@@ -102,8 +102,8 @@ export const aestheticStyles: ElementStyles = css`
         border-start-start-radius: 0;
         border-end-start-radius: 0;
         border-inline-start-width: 0;
-        padding-inline-start: calc(var(--calendar-gap) + (${strokeWidth} + ${controlCornerRadius}) * 1px);
-        margin-inline-start: calc((${controlCornerRadius} * -1px) - var(--calendar-gap));
+        padding-inline-start: calc(var(--calendar-gap) + ${strokeThickness} + ${cornerRadiusControl});
+        margin-inline-start: calc((${cornerRadiusControl} * -1) - var(--calendar-gap));
     }
 
     .today.disabled::before {

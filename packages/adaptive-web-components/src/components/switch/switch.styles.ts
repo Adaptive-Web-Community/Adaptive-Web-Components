@@ -2,7 +2,7 @@ import {
     designUnit,
     fillColor,
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -54,21 +54,21 @@ export const aestheticStyles: ElementStyles = css`
 
     .switch {
         position: relative;
-        width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
-        height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
+        width: calc(((${heightNumber} / 2)) * 2px + (${designUnit} * 2));
+        height: calc(((${heightNumber} / 2)) * 1px + ${designUnit});
         border-radius: calc(${heightNumber} * 1px) !important;
         padding: 4px;
     }
 
     :host(:focus-visible) .switch {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .thumb {
         position: absolute;
-        height: calc((${heightNumber} - (${designUnit} * 5.5)) * 1px);
-        width: calc((${heightNumber} - (${designUnit} * 5.5)) * 1px);
-        top: calc(${designUnit} * 1px);
+        height: calc((${heightNumber}) * 1px - (${designUnit} * 5.5));
+        width: calc((${heightNumber}) * 1px - (${designUnit} * 5.5));
+        top: ${designUnit};
         background: currentcolor;
         fill: currentcolor;
         border-radius: 50%;

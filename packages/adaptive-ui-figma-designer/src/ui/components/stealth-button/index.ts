@@ -1,11 +1,13 @@
 import {
-    controlCornerRadius,
     foregroundOnAccentRest,
+    neutralForegroundRest,
+    neutralStrokeRest,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
+    cornerRadiusControl,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForegroundRest,
-    neutralStrokeRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
@@ -32,7 +34,7 @@ const styles = css`
         min-width: 32px;
         height: 32px;
         border: none;
-        border-radius: calc(${controlCornerRadius} * 1px);
+        border-radius: ${cornerRadiusControl};
         background: ${neutralFillStealthRest};
         fill: ${neutralForegroundRest};
         outline: none;

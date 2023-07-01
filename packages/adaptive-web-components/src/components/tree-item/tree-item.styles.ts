@@ -1,9 +1,9 @@
 import { Swatch } from"@adaptive-web/adaptive-ui";
+import { accentForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 import {
-    accentForegroundRest,
-    controlCornerRadius,
+    cornerRadiusControl,
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
     neutralFillStealthRecipe,
     neutralFillSubtleRecipe,
     neutralFillSubtleRest,
@@ -115,8 +115,8 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) .control {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
-        outline-offset: calc(${focusStrokeWidth} * -1px);
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+        outline-offset: calc(${focusStrokeThickness} * -1px);
     }
 
     .expand-collapse-button {
@@ -142,10 +142,10 @@ export const aestheticStyles: ElementStyles = css`
         display: block;
         position: absolute;
         top: calc((${heightNumber} / 4) * 1px);
-        left: calc(${focusStrokeWidth} * 1px);
+        left: ${focusStrokeThickness};
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
-        border-radius: calc(${controlCornerRadius} * 1px);
+        border-radius: calc(${cornerRadiusControl} * 1px);
         background: ${accentForegroundRest};
     }
 

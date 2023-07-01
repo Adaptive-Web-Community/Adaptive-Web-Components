@@ -1,6 +1,6 @@
 import {
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -84,7 +84,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:enabled:focus-within) .root {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .control {

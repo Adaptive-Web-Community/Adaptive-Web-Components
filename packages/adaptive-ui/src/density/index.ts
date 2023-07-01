@@ -1,8 +1,8 @@
-import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
-import { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import type { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
-import { designUnitDimension, strokeThickness } from "../design-tokens/appearance.js";
-import { createNonCss, createTokenDimension } from "../token-helpers.js";
+import { designUnit, strokeThickness } from "../design-tokens/appearance.js";
+import { createTokenDimension, createTokenNonCss } from "../token-helpers.js";
 
 /**
  * The adjustment (plus or minus) to density unit values.
@@ -16,8 +16,9 @@ import { createNonCss, createTokenDimension } from "../token-helpers.js";
  *
  * @public
  */
-export const densityAdjustmentUnits = createNonCss<number>(
-    "density-adjustment-units"
+export const densityAdjustmentUnits = createTokenNonCss<number>(
+    "density-adjustment-units",
+    DesignTokenType.number,
 ).withDefault(0);
 
 /**
@@ -36,7 +37,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
      *
      * @public
      */
-    public readonly horizontalPaddingUnits: DesignToken<number>;
+    public readonly horizontalPaddingUnits: TypedDesignToken<number>;
 
     /**
      * The calculated measurement for control horizontal padding, adjusted for border thickness.
@@ -57,7 +58,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
      *
      * @public
      */
-    public readonly horizontalGapUnits: DesignToken<number>;
+    public readonly horizontalGapUnits: TypedDesignToken<number>;
 
     /**
      * The calculated measurement for the horizontal gap between elements within a control.
@@ -78,7 +79,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
      *
      * @public
      */
-    public readonly verticalPaddingUnits: DesignToken<number>;
+    public readonly verticalPaddingUnits: TypedDesignToken<number>;
 
     /**
      * The calculated measurement for control vertical padding, adjusted for border thickness.
@@ -99,7 +100,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
      *
      * @public
      */
-    public readonly verticalGapUnits: DesignToken<number>;
+    public readonly verticalGapUnits: TypedDesignToken<number>;
 
     /**
      * The calculated measurement for the vertical gap between elements within a control.
@@ -127,48 +128,52 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         verticalPaddingUnits: number,
         verticalGapUnits: number,
     ) {
-        this.horizontalPaddingUnits = createNonCss<number>(
-            `${name}-horizontal-padding-units`
+        this.horizontalPaddingUnits = createTokenNonCss<number>(
+            `${name}-horizontal-padding-units`,
+            DesignTokenType.number,
         ).withDefault(horizontalPaddingUnits);
 
         this.horizontalPadding = createTokenDimension(
             `${name}-horizontal-padding`
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc(((${resolve(this.horizontalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnitDimension)}) - ${resolve(strokeThickness)})`
+                `calc(((${resolve(this.horizontalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
         );
 
-        this.horizontalGapUnits = createNonCss<number>(
-            `${name}-horizontal-gap-units`
+        this.horizontalGapUnits = createTokenNonCss<number>(
+            `${name}-horizontal-gap-units`,
+            DesignTokenType.number,
         ).withDefault(horizontalGapUnits);
 
         this.horizontalGap = createTokenDimension(
             `${name}-horizontal-gap`
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.horizontalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnitDimension)})`
+                `calc((${resolve(this.horizontalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
         );
 
-        this.verticalPaddingUnits = createNonCss<number>(
-            `${name}-vertical-padding-units`
+        this.verticalPaddingUnits = createTokenNonCss<number>(
+            `${name}-vertical-padding-units`,
+            DesignTokenType.number,
         ).withDefault(verticalPaddingUnits);
 
         this.verticalPadding = createTokenDimension(
             `${name}-vertical-padding`
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc(((${resolve(this.verticalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnitDimension)}) - ${resolve(strokeThickness)})`
+                `calc(((${resolve(this.verticalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
         );
 
-        this.verticalGapUnits = createNonCss<number>(
-            `${name}-vertical-gap-units`
+        this.verticalGapUnits = createTokenNonCss<number>(
+            `${name}-vertical-gap-units`,
+            DesignTokenType.number,
         ).withDefault(verticalGapUnits);
 
         this.verticalGap = createTokenDimension(
             "density-control-vertical-gap"
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnitDimension)})`
+                `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
         );
     }
 }

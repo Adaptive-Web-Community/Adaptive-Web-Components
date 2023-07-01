@@ -1,7 +1,7 @@
 import {
     designUnit,
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
@@ -101,7 +101,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:not([disabled]):focus-within) .root {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .control:focus-visible {
@@ -112,7 +112,7 @@ export const aestheticStyles: ElementStyles = css`
         margin: 1px;
         height: calc(100% - 2px);
         min-width: calc(${heightNumber} * 1px);
-        padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
+        padding: 0 calc(10px + (${designUnit} * (2 * ${density})));
         fill: currentcolor;
     }
 `;

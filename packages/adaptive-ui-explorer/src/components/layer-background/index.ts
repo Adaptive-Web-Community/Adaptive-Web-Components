@@ -1,5 +1,8 @@
 import { Swatch } from '@adaptive-web/adaptive-ui';
 import {
+    neutralForegroundRest,
+} from "@adaptive-web/adaptive-ui/migration";
+import {
     fillColor,
     layerFillBaseLuminance,
     layerFillFixedBase,
@@ -12,7 +15,6 @@ import {
     layerFillFixedPlus3,
     layerFillFixedPlus4,
     layerPalette,
-    neutralForegroundRest
 } from "@adaptive-web/adaptive-ui/reference";
 import { attr, css, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenChangeRecord, display } from "@microsoft/fast-foundation";

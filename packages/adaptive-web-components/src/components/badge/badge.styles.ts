@@ -1,7 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     designUnit,
-    strokeWidth,
+    strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -21,8 +21,8 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     .control {
         padding:
-            calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
-            calc((${designUnit} - ${strokeWidth}) * 1px);
+            calc(((${designUnit} * 0.5) - ${strokeThickness}) * 1)
+            calc((${designUnit} - ${strokeThickness}) * 1);
         fill: currentcolor;
     }
 `;

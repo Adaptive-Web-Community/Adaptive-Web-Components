@@ -1,8 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { neutralForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 import {
-    focusStrokeWidth,
-    neutralForegroundRest,
-    strokeWidth,
+    focusStrokeThickness,
+    strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -56,7 +56,7 @@ export const aestheticStyles: ElementStyles = css`
     .control .content::before {
         content: "";
         display: block;
-        height: calc(${strokeWidth} * 1px);
+        height: ${strokeThickness};
         left: 0;
         position: absolute;
         right: 0;
@@ -66,7 +66,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .control:focus-visible .content::before {
-        height: calc(${focusStrokeWidth} * 1px);
+        height: ${focusStrokeThickness};
     }
 
     :host(:not([href])),

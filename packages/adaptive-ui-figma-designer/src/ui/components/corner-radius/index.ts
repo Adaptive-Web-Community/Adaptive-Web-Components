@@ -1,5 +1,6 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { neutralFillStealthHover, neutralForegroundHint } from "@adaptive-web/adaptive-ui/reference";
+import { neutralForegroundHint } from "@adaptive-web/adaptive-ui/migration";
+import { neutralFillStealthHover } from "@adaptive-web/adaptive-ui/reference";
 
 const template = html<CornerRadius>`
     <template

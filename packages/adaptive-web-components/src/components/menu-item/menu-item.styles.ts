@@ -1,6 +1,6 @@
 import {
     focusStrokeOuter,
-    focusStrokeWidth,
+    focusStrokeThickness,
     neutralFillStealthActive,
     neutralStrokeReadableRest,
 } from "@adaptive-web/adaptive-ui/reference";
@@ -134,7 +134,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:focus-visible) {
-        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
+        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     ::slotted([slot="end"]:not(svg)) {
