@@ -27,5 +27,24 @@ export const aestheticStyles: ElementStyles = css`
         box-sizing: border-box;
         height: 100%;
         width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
+    .header{
+
+    }
+    .expanded-region{
+
+    }
+    .dob-input {}
+    .dob-label {}
+    .patient-id-picker {}
+    .patient-id-label {}
+    .last-name-picker {}
+    .last-name-label {}
+    .first-name-picker {}
+    .first-name-label {}
+    .middle-name-picker {}
+    .middle-name-label {}
+
 `;

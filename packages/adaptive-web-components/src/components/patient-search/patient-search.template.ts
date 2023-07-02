@@ -42,13 +42,22 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
             <h2 class="header">
                 ${PatientSearch.stringsProvider.title}
             </h2>
+            <h4
+                class="dob-label"
+            >
+                ${PatientSearch.stringsProvider.dobLabel}
+            <h4>
             <adaptive-text-field
                 class="dob-input"
                 maxlength="20"
                 placeholder="${PatientSearch.stringsProvider.dobPlaceholder}"
             >
-            ${PatientSearch.stringsProvider.dobLabel}
             </adaptive-text-field>
+            <h4
+                class="patient-id-label"
+            >
+                ${PatientSearch.stringsProvider.patientIdLabel}
+            <h4>
             <adaptive-picker
                 class="patient-id-picker"
                 filter-selected="false"
@@ -61,6 +70,11 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
             ${when(x => x.expanded,
                 html<T>`
                 <div class="expanded-region">
+                    <h4
+                        class="patient-id"
+                    >
+                        ${PatientSearch.stringsProvider.lastNameLabel}
+                    <h4>
                     <adaptive-picker
                         class="last-name-picker"
                         filter-selected="false"
@@ -68,6 +82,11 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.lastNamePlaceholder}"
                     ></adaptive-picker>
+                    <h4
+                        class="first-name-label"
+                    >
+                        ${PatientSearch.stringsProvider.firstNameLabel}
+                    <h4>
                     <adaptive-picker
                         class="first-name-picker"
                         filter-selected="false"
@@ -75,6 +94,11 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.firstNamePlaceholder}"
                     ></adaptive-picker>
+                    <h4
+                        class="middle-name-label"
+                    >
+                        ${PatientSearch.stringsProvider.middleNameLabel}
+                    <h4>
                     <adaptive-picker
                         class="middle-name-picker"
                         filter-selected="false"

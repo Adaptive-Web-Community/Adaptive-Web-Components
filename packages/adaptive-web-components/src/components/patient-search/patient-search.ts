@@ -2,6 +2,7 @@ import {
     FASTElement,
     observable
 } from "@microsoft/fast-element";
+import { FASTPicker, FASTTextField } from "@microsoft/fast-foundation";
 import {
     patientSearchQueryChangeDetail,
     PatientSearchQueryTypes,
@@ -10,7 +11,6 @@ import {
 import {
     patientSearchStringsEn
 } from "./strings.en.js";
-import { FASTPicker, FASTTextField } from "@microsoft/fast-foundation";
 
 /**
  * @public
