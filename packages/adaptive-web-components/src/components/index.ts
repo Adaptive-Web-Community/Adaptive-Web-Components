@@ -27,6 +27,7 @@ export * from "./listbox-option/index.js";
 export * from "./menu/index.js";
 export * from "./menu-item/index.js";
 export * from "./number-field/index.js";
+export * from "./patient-list/index.js";
 export * from "./patient-search/index.js";
 export * from "./picker/index.js";
 export * from "./picker-list/index.js";

@@ -8,7 +8,7 @@ export const PatientSearchQueryTypes = {
     middleName: "middleName",
     lastName: "lastName",
     dob: "dob",
-    patientId: "patientId"
+    patientID: "patientID"
 } as const;
 
 /**
@@ -18,18 +18,18 @@ export const PatientSearchQueryTypes = {
  */
 export type PatientSearchQueryTypes = typeof PatientSearchQueryTypes[keyof typeof PatientSearchQueryTypes];
 
-export interface patientSearchQueryChangeDetail {
+export interface PatientSearchQueryChangeDetail {
     changedQuery: PatientSearchQueryTypes,
     oldValue: string,
     newValue: string
 }
 
-export interface patientSearchStrings {
+export interface PatientSearchStrings {
     title: string;
     dobLabel: string;
     dobPlaceholder: string;
-    patientIdLabel: string;
-    patientIdPlaceholder: string;
+    patientIDLabel: string;
+    patientIDPlaceholder: string;
     firstNameLabel: string;
     firstNamePlaceholder: string;
     middleNameLabel: string;

@@ -1,9 +1,11 @@
-export const patientSearchStringsEn = {
+import {PatientSearchStrings} from "./patient-search.options.js";
+
+export const patientSearchStringsEn: PatientSearchStrings = {
     title: "Patient search",
     dobLabel: "Date of Birth",
     dobPlaceholder: "MM/DD/YYYY",
-    patientIdLabel: "Patient ID",
-    patientIdPlaceholder: "######",
+    patientIDLabel: "Patient ID",
+    patientIDPlaceholder: "######",
     firstNameLabel: "First Name",
     firstNamePlaceholder: "Start typing first name...",
     middleNameLabel: "Middle Name",

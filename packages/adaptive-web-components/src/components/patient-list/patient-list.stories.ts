@@ -1,13 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import {Patient} from "../patient-list/patient-list.options.js";
-import type { PatientSearch as PatientSearchBase } from "./patient-search.js";
+import type { PatientList as PatientListBase } from "./patient-list.js";
+import { Patient } from "./patient-list.options.js";
 
-const firstNameSuggestions = ["John", "Jane"];
-const middleNameSuggestions = ["A", "B"];
-const lastNameSuggestions = ["Doe", "Smith"];
-const patientIDSuggestions = ["1aaaaaaaa", "2aaaaaaaa"];
 const patients: Patient[]
  = [
     {first: "John", middle: "John", last: "Doe", dob: "1969-01-01", patientID: "1234"},
@@ -19,25 +15,21 @@ const patients: Patient[]
     {first: "Aileen", middle: "", last: "Smith", dob: "1969-01-01", patientID: "1234"},
 ];
 
-export const storyTemplate = html<StoryArgs<PatientSearchBase>>`
-    <adaptive-patient-search
-        :allPatients = ${patients}
-        :firstNameSuggestions = ${firstNameSuggestions}
-        :middleNameSuggestions = ${middleNameSuggestions}
-        :lastNameSuggestions = ${lastNameSuggestions}
-        :patientIDSuggestions = ${patientIDSuggestions}
+export const storyTemplate = html<StoryArgs<PatientListBase>>`
+    <adaptive-patient-list
+        :patients="${patients}"
     >
         ${(x) => x.storyContent}
-    </adaptive-patient-search>
+    </adaptive-patient-list>
 `;
 
 export default {
-    title: "Components/PatientSearch",
-    includeStories: ["PatientSearch"],
+    title: "Components/PatientList",
+    includeStories: ["PatientList"],
     args: {
     },
     argTypes: {
     },
-} as Meta<PatientSearchBase>;
+} as Meta<PatientListBase>;
 
-export const PatientSearch: Story<PatientSearchBase> = renderComponent(storyTemplate).bind({});
+export const PatientList: Story<PatientListBase> = renderComponent(storyTemplate).bind({});

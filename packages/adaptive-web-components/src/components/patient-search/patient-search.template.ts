@@ -36,7 +36,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<PatientSearch> 
     (ds: DesignSystem) =>
     patientSearchTemplate();
 
-export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T> {
+function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T> {
     return html`
         <template>
             <h2 class="header">
@@ -56,16 +56,16 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
             <h4
                 class="patient-id-label"
             >
-                ${PatientSearch.stringsProvider.patientIdLabel}
+                ${PatientSearch.stringsProvider.patientIDLabel}
             <h4>
             <adaptive-picker
                 class="patient-id-picker"
                 filter-selected="false"
-                :optionsList="${(x) => x.patientIdSuggestions}"
-                @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientId)}"
-                @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientId)}"
+                :optionsList="${(x) => x.patientIDSuggestions}"
+                @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
+                @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
                 max-selected="1"
-                placeholder="${PatientSearch.stringsProvider.patientIdPlaceholder}"
+                placeholder="${PatientSearch.stringsProvider.patientIDPlaceholder}"
             ></adaptive-picker>
             ${when(x => x.expanded,
                 html<T>`
@@ -79,6 +79,8 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                         class="last-name-picker"
                         filter-selected="false"
                         :optionsList="${(x) => x.lastNameSuggestions}"
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.lastNamePlaceholder}"
                     ></adaptive-picker>
@@ -91,6 +93,8 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                         class="first-name-picker"
                         filter-selected="false"
                         :optionsList="${(x) => x.firstNameSuggestions}"
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.firstNamePlaceholder}"
                     ></adaptive-picker>
@@ -103,6 +107,8 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                         class="middle-name-picker"
                         filter-selected="false"
                         :optionsList="${(x) => x.middleNameSuggestions}"
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.middleNamePlaceholder}"
                     ></adaptive-picker>
@@ -116,6 +122,10 @@ export function patientSearchTemplate<T extends PatientSearch>(): ElementViewTem
                     ? PatientSearch.stringsProvider.collapseSearchBtn 
                     : PatientSearch.stringsProvider.expandSearchBtn}
             </adaptive-button>
+                    <adaptive-patient-list
+                        :patients="${(x) => x.filteredPatients}"
+                    >
+                    </adaptive-patient-list>
             <slot></slot>
         </template>
     `;
