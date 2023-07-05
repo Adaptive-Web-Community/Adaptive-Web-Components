@@ -4,10 +4,6 @@ import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.j
 import {Patient} from "../patient-list/patient-list.options.js";
 import type { PatientSearch as PatientSearchBase } from "./patient-search.js";
 
-const firstNameSuggestions = ["John", "Jane"];
-const middleNameSuggestions = ["A", "B"];
-const lastNameSuggestions = ["Doe", "Smith"];
-const patientIDSuggestions = ["1aaaaaaaa", "2aaaaaaaa"];
 const patients: Patient[]
  = [
     {first: "John", middle: "John", last: "Doe", dob: "1969-01-01", patientID: "1234"},
@@ -22,10 +18,6 @@ const patients: Patient[]
 export const storyTemplate = html<StoryArgs<PatientSearchBase>>`
     <adaptive-patient-search
         :allPatients = ${patients}
-        :firstNameSuggestions = ${firstNameSuggestions}
-        :middleNameSuggestions = ${middleNameSuggestions}
-        :lastNameSuggestions = ${lastNameSuggestions}
-        :patientIDSuggestions = ${patientIDSuggestions}
     >
         ${(x) => x.storyContent}
     </adaptive-patient-search>

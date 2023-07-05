@@ -1,6 +1,7 @@
 import { 
     FASTElement,
-    observable
+    observable,
+    Updates,
 } from "@microsoft/fast-element";
 import { FASTPicker, FASTTextField } from "@microsoft/fast-foundation";
 import {Patient} from "../patient-list/patient-list.options.js";
@@ -57,15 +58,10 @@ export class PatientSearch extends FASTElement {
     }
 
     /**
-     * @public
+     * @internal
      */
     @observable
     public firstNameSuggestions: string[] = [];
-    protected firstNameSuggestionsChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-    }
 
     /**
      * @public
@@ -86,15 +82,10 @@ export class PatientSearch extends FASTElement {
     }
 
     /**
-     * @public
+     * @internal
      */
     @observable
     public middleNameSuggestions: string[] = [];
-    protected middleNameSuggestionsChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-    }
 
     /**
      * @public
@@ -115,15 +106,10 @@ export class PatientSearch extends FASTElement {
     }
 
     /**
-     * @public
+     * @internal
      */
     @observable
     public lastNameSuggestions: string[] = [];
-    protected lastNameSuggestionsChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-    }
 
     /**
      * @public
@@ -162,15 +148,10 @@ export class PatientSearch extends FASTElement {
     }
 
     /**
-     * @public
+     * @internal
      */
     @observable
     public patientIDSuggestions: string[] = [];
-    protected patientIDSuggestionsChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-    }
 
     /**
      * @internal
@@ -183,6 +164,13 @@ export class PatientSearch extends FASTElement {
      */
     @observable
     public showPatientsList: boolean = false;
+
+    public patientIDPicker: FASTPicker;
+    public firstNamePicker: FASTPicker;
+    public lastNamePicker: FASTPicker;
+    public middleNamePicker: FASTPicker;
+
+    private currentEditQuery: PatientSearchQueryTypes | null = null;
 
     /**
      * @internal
@@ -223,6 +211,72 @@ export class PatientSearch extends FASTElement {
         }
     }
 
+    public pickerMenuOpen = (e: Event, queryType: PatientSearchQueryTypes ): void => {
+        this.currentEditQuery = queryType;
+        const picker: FASTPicker = (e.target as FASTPicker);
+        picker.showLoading = true;
+        if (this.filteredPatients.length) {
+            Updates.enqueue(() => {
+                picker.optionsList = this.updatePickerSuggestions();
+                picker.showLoading = false;
+            });
+        }
+    }
+
+    private updatePickerSuggestions(): string[] {
+        if (!this.currentEditQuery) {
+            return [];
+        }
+        const newOptions: string[] = []
+        switch(this.currentEditQuery) {
+            case PatientSearchQueryTypes.patientID:
+                this.filteredPatients.forEach(
+                    (patient) => {
+                        if (!newOptions.includes(patient.patientID)){
+                            newOptions.push(patient.patientID)
+                        }
+                    }
+                )
+                break;
+
+            case PatientSearchQueryTypes.firstName:
+                this.filteredPatients.forEach(
+                    (patient) => {
+                        if (!newOptions.includes(patient.first)){
+                            newOptions.push(patient.first)
+                        }
+                    }
+                )
+                break;
+
+            case PatientSearchQueryTypes.middleName:
+                this.filteredPatients.forEach(
+                    (patient) => {
+                        if (patient.middle !== "" && !newOptions.includes(patient.middle)){
+                            newOptions.push(patient.middle)
+                        }
+                    }
+                )
+                break;
+
+            case PatientSearchQueryTypes.lastName:
+                this.filteredPatients.forEach(
+                    (patient) => {
+                        if (!newOptions.includes(patient.last)){
+                            newOptions.push(patient.last)
+                        }
+                    }
+                )
+                break;
+        }
+        return newOptions;
+    }
+
+    public pickerMenuClosed = (e: Event, queryType: PatientSearchQueryTypes ): void => {
+        this.currentEditQuery = null;
+        (e.target as FASTPicker).optionsList.splice(0);
+    }
+
     private getPickerValue(picker: FASTPicker) : string {
         return picker.selection !== "" 
             ? picker.selection 
@@ -240,33 +294,45 @@ export class PatientSearch extends FASTElement {
 
     private updateFilteredPatients(): void {
         let newFilteredPatients: Patient[] = this.allPatients.slice(0);
+        let query: string = "";
         if (this.firstNameQuery !== "") {
+            query = this.firstNameQuery.toLowerCase();
             newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.first.toLowerCase().includes(this.firstNameQuery.toLowerCase())
+              patient => patient.first.toLowerCase().includes(query)
             );
         }
         if (this.middleNameQuery !== "") {
+            query = this.middleNameQuery.toLowerCase()
             newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.middle.toLowerCase().includes(this.middleNameQuery.toLowerCase())
+              patient => patient.middle.toLowerCase().includes(query)
             );
         }
         if (this.lastNameQuery !== "") {
+            query = this.lastNameQuery.toLowerCase()
             newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.last.toLowerCase().includes(this.lastNameQuery.toLowerCase())
+              patient => patient.last.toLowerCase().includes(query)
             );
         }
         if (this.dobQuery !== "") {
-            // TODO: rethink filering dates
+            query = this.dobQuery.toLowerCase();
             newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.dob.toLowerCase().includes(this.dobQuery.toLowerCase())
+              patient => patient.dob.toLowerCase().includes(query)
             );
         }
         if (this.patientIDQuery !== "") {
+            query = this.patientIDQuery.toLowerCase()
             newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.patientID.toLowerCase().includes(this.patientIDQuery.toLowerCase())
+              patient => patient.patientID.toLowerCase().includes(query)
             );
         }
         this.filteredPatients.splice(0, this.filteredPatients.length, ...newFilteredPatients);
         this.showPatientsList = this.filteredPatients.length ? true : false;
+    }
+
+    private clearAllSuggestions(): void {
+        this.patientIDPicker.optionsList.splice(0);
+        this.firstNamePicker.optionsList.splice(0);
+        this.lastNamePicker.optionsList.splice(0);
+        this.middleNamePicker.optionsList.splice(0);
     }
 }
