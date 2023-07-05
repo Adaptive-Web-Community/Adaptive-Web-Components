@@ -62,7 +62,6 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                 class="patient-id-picker"
                 filter-selected="false"
                 ${ref("patientIDPicker")}
-                options="x"
                 @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
                 @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
                 @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryTypes.patientID)}"
@@ -81,6 +80,7 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="last-name-picker"
                         filter-selected="false"
+                        ${ref("lastNamePicker")}
                         :optionsList="${(x) => x.lastNameSuggestions}"
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
@@ -97,6 +97,7 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="first-name-picker"
                         filter-selected="false"
+                        ${ref("firstNamePicker")}
                         :optionsList="${(x) => x.firstNameSuggestions}"
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
@@ -113,6 +114,7 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="middle-name-picker"
                         filter-selected="false"
+                        ${ref("middleNamePicker")}
                         :optionsList="${(x) => x.middleNameSuggestions}"
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"

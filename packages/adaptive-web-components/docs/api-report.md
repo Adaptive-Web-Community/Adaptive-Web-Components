@@ -27,6 +27,7 @@ import { FASTDataGridRow } from '@microsoft/fast-foundation';
 import { FASTDialog } from '@microsoft/fast-foundation';
 import { FASTDisclosure } from '@microsoft/fast-foundation';
 import { FASTDivider } from '@microsoft/fast-foundation';
+import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { FASTFlipper } from '@microsoft/fast-foundation';
 import { FASTHorizontalScroll } from '@microsoft/fast-foundation';
@@ -625,6 +626,16 @@ export function composeMenuItem(ds: DesignSystem, options?: ComposeOptions<Adapt
 // @public (undocumented)
 export function composeNumberField(ds: DesignSystem, options?: ComposeOptions<FASTNumberField, NumberFieldStatics>): FASTElementDefinition;
 
+// Warning: (ae-incompatible-release-tags) The symbol "composePatientList" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public (undocumented)
+export function composePatientList(ds: DesignSystem, options?: ComposeOptions<PatientList>): FASTElementDefinition;
+
+// Warning: (ae-incompatible-release-tags) The symbol "composePatientSearch" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public (undocumented)
+export function composePatientSearch(ds: DesignSystem, options?: ComposeOptions<PatientSearch>): FASTElementDefinition;
+
 // Warning: (ae-incompatible-release-tags) The symbol "composePicker" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
@@ -1145,6 +1156,137 @@ export const numberFieldTemplate: (ds: DesignSystem) => ElementViewTemplate<FAST
 
 // @public
 export const numberFieldTemplateStyles: ElementStyles;
+
+// @public
+export class PatientList extends FASTElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    patientGrid: FASTDataGrid;
+    // Warning: (ae-forgotten-export) The symbol "Patient" needs to be exported by the entry point index.d.ts
+    patients: Patient[];
+    selectedIndex: number;
+    // (undocumented)
+    protected selectedItemIndexChanged(): void;
+    // @internal (undocumented)
+    selectionChange: () => void;
+    // Warning: (ae-forgotten-export) The symbol "PatientListStrings" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static stringsProvider: PatientListStrings;
+}
+
+// @public
+export const patientListAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const PatientListAnatomy: ComponentAnatomy<typeof PatientListConditions, typeof PatientListParts>;
+
+// @public (undocumented)
+export const PatientListConditions: {};
+
+// @public (undocumented)
+export const PatientListParts: {};
+
+// @public
+export const patientListStyleModules: StyleModules;
+
+// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public
+export const patientListTemplate: (ds: DesignSystem) => ElementViewTemplate<PatientList>;
+
+// @public
+export const patientListTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export class PatientSearch extends FASTElement {
+    // (undocumented)
+    allPatients: Patient[];
+    // (undocumented)
+    protected allPatientsChanged(): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    dobQuery: string;
+    // (undocumented)
+    protected dobQueryChanged(prev: string, next: string): void;
+    // @internal (undocumented)
+    expanded: boolean;
+    // (undocumented)
+    filteredPatients: Patient[];
+    // (undocumented)
+    firstNameQuery: string;
+    // (undocumented)
+    protected firstNameQueryChanged(prev: string, next: string): void;
+    // (undocumented)
+    firstNameSuggestions: string[];
+    // (undocumented)
+    protected firstNameSuggestionsChanged(): void;
+    // (undocumented)
+    lastNameQuery: string;
+    // (undocumented)
+    protected lastNameQueryChanged(prev: string, next: string): void;
+    // (undocumented)
+    lastNameSuggestions: string[];
+    // (undocumented)
+    protected lastNameSuggestionsChanged(): void;
+    // (undocumented)
+    middleNameQuery: string;
+    // (undocumented)
+    protected middleNameQueryChanged(prev: string, next: string): void;
+    // (undocumented)
+    middleNameSuggestions: string[];
+    // (undocumented)
+    protected middleNameSuggestionsChanged(): void;
+    // (undocumented)
+    patientIDQuery: string;
+    // (undocumented)
+    protected patientIDQueryChanged(prev: string, next: string): void;
+    // (undocumented)
+    patientIDSuggestions: string[];
+    // (undocumented)
+    protected patientIDSuggestionsChanged(): void;
+    // @internal (undocumented)
+    showPatientsList: boolean;
+    // Warning: (ae-forgotten-export) The symbol "PatientSearchStrings" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static stringsProvider: PatientSearchStrings;
+    // (undocumented)
+    toggleExpandedClick: () => void;
+    // Warning: (ae-forgotten-export) The symbol "PatientSearchQueryTypes" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    updateQuery: (e: Event, queryType: PatientSearchQueryTypes) => void;
+}
+
+// @public
+export const patientSearchAestheticStyles: ElementStyles;
+
+// @public (undocumented)
+export const PatientSearchAnatomy: ComponentAnatomy<typeof PatientSearchConditions, typeof PatientSearchParts>;
+
+// @public (undocumented)
+export const PatientSearchConditions: {};
+
+// @public (undocumented)
+export const PatientSearchParts: {};
+
+// @public
+export const patientSearchStyleModules: StyleModules;
+
+// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public
+export const patientSearchTemplate: (ds: DesignSystem) => ElementViewTemplate<PatientSearch>;
+
+// @public
+export const patientSearchTemplateStyles: ElementStyles;
 
 // @public
 export const pickerAestheticStyles: ElementStyles;

@@ -177,7 +177,9 @@ export class PatientSearch extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.updateFilteredPatients();
+        Updates.enqueue(() => {
+            this.updateFilteredPatients();
+        });
     }
 
     /**
@@ -189,6 +191,11 @@ export class PatientSearch extends FASTElement {
 
     public toggleExpandedClick = () => {
         this.expanded = !this.expanded;
+        if (this.expanded) {
+            Updates.enqueue(() => {
+                this.updatePickers();
+            });
+        }
     }
 
     public updateQuery = (e: Event, queryType: PatientSearchQueryTypes ): void => {
@@ -217,64 +224,14 @@ export class PatientSearch extends FASTElement {
         picker.showLoading = true;
         if (this.filteredPatients.length) {
             Updates.enqueue(() => {
-                picker.optionsList = this.updatePickerSuggestions();
+                picker.optionsList = picker.optionsList.slice(0);
                 picker.showLoading = false;
             });
         }
     }
 
-    private updatePickerSuggestions(): string[] {
-        if (!this.currentEditQuery) {
-            return [];
-        }
-        const newOptions: string[] = []
-        switch(this.currentEditQuery) {
-            case PatientSearchQueryTypes.patientID:
-                this.filteredPatients.forEach(
-                    (patient) => {
-                        if (!newOptions.includes(patient.patientID)){
-                            newOptions.push(patient.patientID)
-                        }
-                    }
-                )
-                break;
-
-            case PatientSearchQueryTypes.firstName:
-                this.filteredPatients.forEach(
-                    (patient) => {
-                        if (!newOptions.includes(patient.first)){
-                            newOptions.push(patient.first)
-                        }
-                    }
-                )
-                break;
-
-            case PatientSearchQueryTypes.middleName:
-                this.filteredPatients.forEach(
-                    (patient) => {
-                        if (patient.middle !== "" && !newOptions.includes(patient.middle)){
-                            newOptions.push(patient.middle)
-                        }
-                    }
-                )
-                break;
-
-            case PatientSearchQueryTypes.lastName:
-                this.filteredPatients.forEach(
-                    (patient) => {
-                        if (!newOptions.includes(patient.last)){
-                            newOptions.push(patient.last)
-                        }
-                    }
-                )
-                break;
-        }
-        return newOptions;
-    }
-
     public pickerMenuClosed = (e: Event, queryType: PatientSearchQueryTypes ): void => {
         this.currentEditQuery = null;
-        (e.target as FASTPicker).optionsList.splice(0);
     }
 
     private getPickerValue(picker: FASTPicker) : string {
@@ -327,12 +284,43 @@ export class PatientSearch extends FASTElement {
         }
         this.filteredPatients.splice(0, this.filteredPatients.length, ...newFilteredPatients);
         this.showPatientsList = this.filteredPatients.length ? true : false;
+
+        this.updatePickers();
+    }
+
+    private updatePickers() {
+        const patientIDSuggestions: string[] = [];
+        const firstNameSuggestions: string[] = [];
+        const middleNameSuggestions: string[] = [];
+        const lastNameSuggestions: string[] = [];
+
+        this.filteredPatients.forEach(
+            (patient) => {
+                if (!patientIDSuggestions.includes(patient.patientID)){
+                    patientIDSuggestions.push(patient.patientID)
+                }
+                if (!firstNameSuggestions.includes(patient.first)){
+                    firstNameSuggestions.push(patient.first)
+                }
+                if (!middleNameSuggestions.includes(patient.middle)){
+                    middleNameSuggestions.push(patient.middle)
+                }
+                if (!lastNameSuggestions.includes(patient.last)){
+                    lastNameSuggestions.push(patient.last)
+                }
+            }
+        )
+
+        this.patientIDPicker.optionsList = patientIDSuggestions;
+        this.firstNamePicker.optionsList = firstNameSuggestions;
+        this.middleNamePicker.optionsList= middleNameSuggestions;
+        this.lastNamePicker.optionsList = lastNameSuggestions;
     }
 
     private clearAllSuggestions(): void {
-        this.patientIDPicker.optionsList.splice(0);
-        this.firstNamePicker.optionsList.splice(0);
-        this.lastNamePicker.optionsList.splice(0);
-        this.middleNamePicker.optionsList.splice(0);
+        this.patientIDPicker.optionsList = [];
+        this.firstNamePicker.optionsList = [];
+        this.lastNamePicker.optionsList = [];
+        this.middleNamePicker.optionsList = [];
     }
 }
