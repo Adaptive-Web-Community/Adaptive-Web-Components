@@ -1,6 +1,6 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedDesignToken, AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginNodeData } from "../core/model.js";
+import { AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
@@ -328,7 +328,7 @@ export class FigmaPluginNode extends PluginNode {
         }) as Array<StyleProperty>;
     }
 
-    public paint(target: StyleProperty, data: AppliedDesignToken): void {
+    public paint(target: StyleProperty, value: string): void {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
             target === StyleProperty.fontFamily ||
@@ -338,7 +338,7 @@ export class FigmaPluginNode extends PluginNode {
             target === StyleProperty.lineHeight))
         {
             this.children.forEach((child) => {
-                child.paint(target, data);
+                child.paint(target, value);
             });
         } else {
             switch (target) {
@@ -348,7 +348,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderFillLeft:
                 case StyleProperty.backgroundFill:
                 case StyleProperty.foregroundFill:
-                    this.paintColor(target, data);
+                    this.paintColor(target, value);
                     break;
                 case StyleProperty.borderStyleTop:
                 case StyleProperty.borderStyleRight:
@@ -360,18 +360,18 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderThicknessRight:
                 case StyleProperty.borderThicknessBottom:
                 case StyleProperty.borderThicknessLeft:
-                    this.paintStrokeWidth(data);
+                    this.paintStrokeWidth(value);
                     break;
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
                 case StyleProperty.cornerRadiusBottomRight:
                 case StyleProperty.cornerRadiusBottomLeft:
-                    this.paintCornerRadius(data);
+                    this.paintCornerRadius(value);
                     break;
                 case StyleProperty.fontFamily:
                     // TODO Handle font list better and font weight
                     if (isTextNode(this._node)) {
-                        const families = data.value.split(",");
+                        const families = value.split(",");
                         const fontName = { family: families[0], style: "Regular" };
                         figma.loadFontAsync(fontName).then(x => {
                             (this._node as TextNode).fontName = fontName;
@@ -382,7 +382,7 @@ export class FigmaPluginNode extends PluginNode {
                     if (isTextNode(this._node)) {
                         const textNode = this._node as TextNode;
                         figma.loadFontAsync(textNode.fontName as FontName).then(x => {
-                            textNode.fontSize = Number.parseFloat(data.value);
+                            textNode.fontSize = Number.parseFloat(value);
                         });
                     }
                     break;
@@ -400,29 +400,29 @@ export class FigmaPluginNode extends PluginNode {
                         const textNode = this._node as TextNode;
                         figma.loadFontAsync(textNode.fontName as FontName).then(x => {
                             textNode.lineHeight = {
-                                value: Number.parseFloat(data.value),
+                                value: Number.parseFloat(value),
                                 unit: "PIXELS",
                             };
                         });
                     }
                     break;
                 case StyleProperty.paddingTop:
-                    (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingRight:
-                    (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingBottom:
-                    (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingLeft:
-                    (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.gap:
-                    (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(data.value); // Removes unit, so assumes px
+                    (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 default:
-                    throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(data)}`);
+                    throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(value)}`);
             }
         }
     }
@@ -512,12 +512,12 @@ export class FigmaPluginNode extends PluginNode {
         this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
     }
 
-    private paintColor(target: StyleProperty, data: AppliedDesignToken): void {
+    private paintColor(target: StyleProperty, value: string): void {
         let paint: Paint | null = null;
 
-        if (data.value.startsWith("linear-gradient")) {
+        if (value.startsWith("linear-gradient")) {
             const linearMatch = /linear-gradient\((?<params>.+)\)/;
-            const matches = data.value.match(linearMatch);
+            const matches = value.match(linearMatch);
             if (matches && matches.groups) {
                 const array = matches.groups.params.split(",").map(p => p.trim());
 
@@ -575,11 +575,11 @@ export class FigmaPluginNode extends PluginNode {
             }
         } else {
             // Assume it's solid
-            const color = parseColor(data.value);
+            const color = parseColor(value);
 
             if (color === null) {
                 throw new Error(
-                    `The value "${data.value}" could not be converted to a ColorRGBA64`
+                    `The value "${value}" could not be converted to a ColorRGBA64`
                 );
             }
 
@@ -612,11 +612,11 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    private paintStrokeWidth(data: AppliedDesignToken): void {
-        (this._node as MinimalStrokesMixin).strokeWeight = Number.parseFloat(data.value);
+    private paintStrokeWidth(value: string): void {
+        (this._node as MinimalStrokesMixin).strokeWeight = Number.parseFloat(value);
     }
 
-    private paintCornerRadius(data: AppliedDesignToken): void {
-        (this._node as CornerMixin).cornerRadius = Number.parseFloat(data.value);
+    private paintCornerRadius(value: string): void {
+        (this._node as CornerMixin).cornerRadius = Number.parseFloat(value);
     }
 }
