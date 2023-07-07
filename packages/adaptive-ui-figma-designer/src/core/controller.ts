@@ -94,10 +94,10 @@ export abstract class Controller {
                 pluginNode.setAppliedDesignTokens(node.appliedDesignTokens);
 
                 // Paint all applied design tokens on the node
-                node.effectiveAppliedDesignTokens?.forEach((applied, target) => {
+                node.effectiveAppliedStyleValues?.forEach((styleValue, target) => {
                     // console.log("applied design token eval", target, applied);
 
-                    pluginNode.paint(target, applied);
+                    pluginNode.paint(target, styleValue.value);
                 });
 
                 this.syncPluginNodes(node.children);

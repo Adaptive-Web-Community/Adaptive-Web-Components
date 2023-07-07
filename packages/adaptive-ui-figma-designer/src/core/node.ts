@@ -2,7 +2,6 @@ import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import {
     AdditionalData,
-    AppliedDesignToken,
     AppliedDesignTokens,
     AppliedStyleModules,
     DesignTokenValues,
@@ -230,9 +229,9 @@ export abstract class PluginNode {
     /**
      * Updates the style property applied to this node.
      * @param target The style property.
-     * @param data The applied token + value.
+     * @param value The applied value.
      */
-    public abstract paint(target: StyleProperty, data: AppliedDesignToken): void;
+    public abstract paint(target: StyleProperty, value: string): void;
 
     /**
      * Gets the effective fill color for the node.

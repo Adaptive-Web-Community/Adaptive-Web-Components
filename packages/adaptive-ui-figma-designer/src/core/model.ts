@@ -22,6 +22,14 @@ export class AppliedDesignToken {
     }
 }
 
+/**
+ * A value applied to a style property, possibly from a token evaluation or fixed value.
+ */
+export class AppliedStyleValue {
+    constructor(public value: string) {
+    }
+}
+
 function mapReplacer(key: string, value: any) {
     if (value instanceof Map) {
         return {
@@ -132,6 +140,16 @@ export class AppliedDesignTokens extends SerializableMap<StyleProperty, AppliedD
 export type ReadonlyAppliedDesignTokens = ReadonlyMap<StyleProperty, AppliedDesignToken>;
 
 /**
+ * Map of values applied to the style of a node. The key is the target style property.
+ */
+export class AppliedStyleValues extends SerializableMap<StyleProperty, AppliedStyleValue> {}
+
+/**
+ * Readonly Map of values applied to the style of a node. The key is the target style property.
+ */
+export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyleValue>;
+
+/**
  * Map of additional data exchanged between the design tool and plugin. Not persisted.
  */
 export class AdditionalData extends SerializableMap<string, any> {}
@@ -210,7 +228,7 @@ export interface PluginUINodeData extends PluginNodeData {
      * to the node. This will include the sum of applied design tokens inherited from the main
      * component, applied directly to this node, or applied via style modules.
      */
-    effectiveAppliedDesignTokens: AppliedDesignTokens;
+    effectiveAppliedStyleValues: AppliedStyleValues;
 
     /**
      * Children of this node that have design tokens set or applied.
@@ -240,7 +258,7 @@ export const pluginNodesToUINodes = (
                 componentDesignTokens: node.componentDesignTokens,
                 componentAppliedStyleModules: node.componentAppliedStyleModules,
                 componentAppliedDesignTokens: node.componentAppliedDesignTokens,
-                effectiveAppliedDesignTokens: new AppliedDesignTokens(),
+                effectiveAppliedStyleValues: new AppliedStyleValues(),
                 children,
                 designTokens: node.localDesignTokens as DesignTokenValues,
                 appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
