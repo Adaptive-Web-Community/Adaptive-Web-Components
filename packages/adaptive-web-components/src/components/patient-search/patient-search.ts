@@ -6,9 +6,11 @@ import {
 import { FASTPicker, FASTTextField } from "@microsoft/fast-foundation";
 import {Patient} from "../patient-list/patient-list.options.js";
 import {
-
+    PatientSearchQuery,
     PatientSearchQueryChangeDetail,
-    PatientSearchQueryTypes,
+    PatientSearchQueryResults,
+    PatientSearchQueryState,
+    PatientSearchQueryType,
     PatientSearchStrings
 } from "./patient-search.options.js";
 import {
@@ -25,16 +27,19 @@ export class PatientSearch extends FASTElement {
      * @public
      */
     @observable
-    public allPatients: Patient[] = [];
-    protected allPatientsChanged(): void {
-        if (!this.$fastController.isConnected) {
-            return;
+    public queryResults: PatientSearchQueryResults = {query: this.getEmptyQuery(), results: []};
+    protected queryResultsChanged(): void {
+        if (this.isQueryValid(this.queryResults.query)) {
+            this.queryState = PatientSearchQueryState.valid;
+            this.patients = this.queryResults.results;
+            this.updateFilteredPatients();
+        } else {
+            this.queryState = PatientSearchQueryState.invalid;
+            this.patients = [];
         }
-        this.updateFilteredPatients();
     }
-
     /**
-     * @public
+     * @internal
      */
     @observable
     public filteredPatients: Patient[] = [];
@@ -48,12 +53,10 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.emitQueryChange(
-            {
-                changedQuery: PatientSearchQueryTypes.firstName,
-                oldValue: prev,
-                newValue: next
-            }
+        this.handleQueryChange(
+            PatientSearchQueryType.firstName,
+            prev,
+            next,
         );
     }
 
@@ -72,12 +75,10 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.emitQueryChange(
-            {
-                changedQuery: PatientSearchQueryTypes.middleName,
-                oldValue: prev,
-                newValue: next
-            }
+        this.handleQueryChange(
+            PatientSearchQueryType.middleName,
+            prev,
+            next,
         );
     }
 
@@ -96,12 +97,10 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.emitQueryChange(
-            {
-                changedQuery: PatientSearchQueryTypes.lastName,
-                oldValue: prev,
-                newValue: next
-            }
+        this.handleQueryChange(
+            PatientSearchQueryType.lastName,
+            prev,
+            next
         );
     }
 
@@ -120,12 +119,10 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.emitQueryChange(
-            {
-                changedQuery: PatientSearchQueryTypes.dob,
-                oldValue: prev,
-                newValue: next
-            }
+        this.handleQueryChange(
+            PatientSearchQueryType.dob,
+            prev,
+            next
         );
     }
 
@@ -138,12 +135,10 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.emitQueryChange(
-            {
-                changedQuery: PatientSearchQueryTypes.patientID,
-                oldValue: prev,
-                newValue: next
-            }
+        this.handleQueryChange(
+            PatientSearchQueryType.patientID,
+            prev,
+            next
         );
     }
 
@@ -165,12 +160,18 @@ export class PatientSearch extends FASTElement {
     @observable
     public showPatientsList: boolean = false;
 
+    /**
+     * @internal
+     */
+    @observable
+    public queryState: PatientSearchQueryState = PatientSearchQueryState.none;
+
     public patientIDPicker: FASTPicker;
     public firstNamePicker: FASTPicker;
     public lastNamePicker: FASTPicker;
     public middleNamePicker: FASTPicker;
 
-    private currentEditQuery: PatientSearchQueryTypes | null = null;
+    private patients: Patient[] = [];
 
     /**
      * @internal
@@ -189,6 +190,42 @@ export class PatientSearch extends FASTElement {
         super.disconnectedCallback();
     }
 
+    private isQueryValid(query: PatientSearchQuery): boolean {
+        let isValid = false;
+        // if a query would include all the possible results of the components current state
+        // we can keep the current patient list with broader results and filter further in the component
+        if (
+            this.dobQuery === query.dob &&
+            (query.first === "" || this.firstNameQuery.startsWith(query.first)) &&
+            (query.middle === "" || this.middleNameQuery.startsWith(query.middle)) &&
+            (query.last === "" || this.lastNameQuery.startsWith(query.last)) &&
+            (query.patientID === "" || this.patientIDQuery.startsWith(query.patientID))
+        ){
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+    private isQueryEmpty(query: PatientSearchQuery): boolean {
+        let isEmpty = false;
+        if (
+            query.dob === "" &&
+            query.patientID === "" &&
+            query.first === "" &&
+            query.middle === "" &&
+            query.last === ""
+
+        ) {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+
+    /**
+     * @internal
+     */
     public toggleExpandedClick = () => {
         this.expanded = !this.expanded;
         if (this.expanded) {
@@ -198,40 +235,49 @@ export class PatientSearch extends FASTElement {
         }
     }
 
-    public updateQuery = (e: Event, queryType: PatientSearchQueryTypes ): void => {
+    public updateQuery = (e: Event, queryType: PatientSearchQueryType ): void => {
         switch(queryType) {
-            case PatientSearchQueryTypes.patientID:
+            case PatientSearchQueryType.patientID:
                 this.patientIDQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
-            case PatientSearchQueryTypes.dob:
+            case PatientSearchQueryType.dob:
                 this.dobQuery = (e.target as FASTTextField).value;
                 break;
-            case PatientSearchQueryTypes.firstName:
+            case PatientSearchQueryType.firstName:
                 this.firstNameQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
-            case PatientSearchQueryTypes.middleName:
+            case PatientSearchQueryType.middleName:
                 this.middleNameQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
-            case PatientSearchQueryTypes.lastName:
+            case PatientSearchQueryType.lastName:
                 this.lastNameQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
         }
-    }
 
-    public pickerMenuOpen = (e: Event, queryType: PatientSearchQueryTypes ): void => {
-        this.currentEditQuery = queryType;
-        const picker: FASTPicker = (e.target as FASTPicker);
-        picker.showLoading = true;
-        if (this.filteredPatients.length) {
-            Updates.enqueue(() => {
-                picker.optionsList = picker.optionsList.slice(0);
-                picker.showLoading = false;
-            });
+        if (!this.isQueryValid(this.queryResults.query)) {
+            this.queryState = PatientSearchQueryState.invalid;
+            this.patients = [];
+        } 
+        else if (
+            this.dobQuery === "" && 
+            this.patientIDQuery === "" && 
+            this.firstNameQuery === "" && 
+            this.middleNameQuery === "" && 
+            this.lastNameQuery === ""
+        ) {
+            this.queryState = PatientSearchQueryState.none;
+        } else {
+            this.queryState = PatientSearchQueryState.valid;
         }
     }
 
-    public pickerMenuClosed = (e: Event, queryType: PatientSearchQueryTypes ): void => {
-        this.currentEditQuery = null;
+    public pickerMenuOpen = (e: Event, queryType: PatientSearchQueryType ): void => {
+        const picker: FASTPicker = (e.target as FASTPicker);
+        if (this.filteredPatients.length) {
+            Updates.enqueue(() => {
+                picker.optionsList = picker.optionsList.slice(0);
+            });
+        }
     }
 
     private getPickerValue(picker: FASTPicker) : string {
@@ -240,17 +286,28 @@ export class PatientSearch extends FASTElement {
             : picker.query;
     }
 
-    private emitQueryChange(detail: PatientSearchQueryChangeDetail): void {
+    private handleQueryChange(changedParam: PatientSearchQueryType, prev: string, next: string): void {
         this.updateFilteredPatients();
+        const queryChangeDetail: PatientSearchQueryChangeDetail = {
+            changedParams: [changedParam],
+            invalidatesPrevious: false,
+            query: {
+                patientID: this.patientIDQuery,
+                dob: this.dobQuery,
+                first: this.firstNameQuery,
+                middle: this.middleNameQuery,
+                last: this.lastNameQuery
+            }
+        };
         this.$emit(
             "querychange", 
-            detail, 
+            queryChangeDetail,
             { bubbles: false }
         );
     }
 
     private updateFilteredPatients(): void {
-        let newFilteredPatients: Patient[] = this.allPatients.slice(0);
+        let newFilteredPatients: Patient[] = this.patients.slice(0);
         let query: string = "";
         if (this.firstNameQuery !== "") {
             query = this.firstNameQuery.toLowerCase();
@@ -311,16 +368,38 @@ export class PatientSearch extends FASTElement {
             }
         )
 
-        this.patientIDPicker.optionsList = patientIDSuggestions;
-        this.firstNamePicker.optionsList = firstNameSuggestions;
-        this.middleNamePicker.optionsList= middleNameSuggestions;
-        this.lastNamePicker.optionsList = lastNameSuggestions;
+        this.patientIDSuggestions = patientIDSuggestions;
+        this.firstNameSuggestions = firstNameSuggestions;
+        this.middleNameSuggestions = middleNameSuggestions;
+        this.lastNameSuggestions = lastNameSuggestions;
     }
 
-    private clearAllSuggestions(): void {
-        this.patientIDPicker.optionsList = [];
-        this.firstNamePicker.optionsList = [];
-        this.lastNamePicker.optionsList = [];
-        this.middleNamePicker.optionsList = [];
+    private getEmptyQuery(): PatientSearchQuery {
+        return {
+            patientID: "",
+            dob: "",
+            first: "",
+            middle: "",
+            last: ""
+        };
     }
+
+        // private clearAllSuggestions(): void {
+    //     this.patientIDPicker.optionsList = [];
+    //     this.firstNamePicker.optionsList = [];
+    //     this.lastNamePicker.optionsList = [];
+    //     this.middleNamePicker.optionsList = [];
+    // }
+
+    
+    // private getCurrentQuery(): PatientSearchQuery {
+    //     return {
+    //         patientID: this.patientIDQuery,
+    //         dob: this.dobQuery,
+    //         first: this.firstNameQuery,
+    //         middle: this.middleNameQuery,
+    //         last: this.lastNameQuery
+    //     };
+    // }
+
 }

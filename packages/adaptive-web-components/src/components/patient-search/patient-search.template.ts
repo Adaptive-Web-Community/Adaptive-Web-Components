@@ -3,7 +3,8 @@ import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { PatientSearch } from "./patient-search.js"
 import {
-    PatientSearchQueryTypes,
+    PatientSearchQueryState,
+    PatientSearchQueryType,
 } from "./patient-search.options.js";
 
 /**
@@ -47,12 +48,13 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
             >
                 ${PatientSearch.stringsProvider.dobLabel}
             </h4>
-            <adaptive-text-field
+            <input
                 class="dob-input"
-                maxlength="20"
+                type="date"  
+                name="trip-start"
                 placeholder="${PatientSearch.stringsProvider.dobPlaceholder}"
             >
-            </adaptive-text-field>
+            </input>
             <h4
                 class="patient-id-label"
             >
@@ -62,10 +64,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                 class="patient-id-picker"
                 filter-selected="false"
                 ${ref("patientIDPicker")}
-                @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
-                @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.patientID)}"
-                @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryTypes.patientID)}"
-                @menuclosing="${(x, c) => x.pickerMenuClosed(c.event, PatientSearchQueryTypes.lastName)}"
+                @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.patientID)}"
+                @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.patientID)}"
+                @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.patientID)}"
+                :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
+                :optionsList="${(x) => x.patientIDSuggestions}"
                 max-selected="1"
                 placeholder="${PatientSearch.stringsProvider.patientIDPlaceholder}"
             ></adaptive-picker>
@@ -81,11 +84,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         class="last-name-picker"
                         filter-selected="false"
                         ${ref("lastNamePicker")}
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.lastName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.lastName)}"
+                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.lastName)}"
+                        :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
                         :optionsList="${(x) => x.lastNameSuggestions}"
-                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
-                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.lastName)}"
-                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryTypes.lastName)}"
-                        @menuclosing="${(x, c) => x.pickerMenuClosed(c.event, PatientSearchQueryTypes.lastName)}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.lastNamePlaceholder}"
                     ></adaptive-picker>
@@ -98,11 +101,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         class="first-name-picker"
                         filter-selected="false"
                         ${ref("firstNamePicker")}
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.firstName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.firstName)}"
+                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.firstName)}"
                         :optionsList="${(x) => x.firstNameSuggestions}"
-                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
-                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.firstName)}"
-                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryTypes.firstName)}"
-                        @menuclosing="${(x, c) => x.pickerMenuClosed(c.event, PatientSearchQueryTypes.firstName)}"
+                        :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.firstNamePlaceholder}"
                     ></adaptive-picker>
@@ -115,11 +118,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         class="middle-name-picker"
                         filter-selected="false"
                         ${ref("middleNamePicker")}
+                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.middleName)}"
+                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.middleName)}"
+                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.middleName)}"
                         :optionsList="${(x) => x.middleNameSuggestions}"
-                        @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"
-                        @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryTypes.middleName)}"
-                        @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryTypes.middleName)}"
-                        @menuclosing="${(x, c) => x.pickerMenuClosed(c.event, PatientSearchQueryTypes.middleName)}"
+                        :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.middleNamePlaceholder}"
                     ></adaptive-picker>
