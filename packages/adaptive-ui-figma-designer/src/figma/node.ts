@@ -375,7 +375,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.cornerRadiusTopRight:
                 case StyleProperty.cornerRadiusBottomRight:
                 case StyleProperty.cornerRadiusBottomLeft:
-                    this.paintCornerRadius(value);
+                    this.paintCornerRadius(target, value);
                     break;
                 case StyleProperty.fontFamily:
                     // TODO Handle font list better and font weight
@@ -633,7 +633,25 @@ export class FigmaPluginNode extends PluginNode {
         (this._node as MinimalStrokesMixin).strokeWeight = Number.parseFloat(value);
     }
 
-    private paintCornerRadius(value: string): void {
-        (this._node as CornerMixin).cornerRadius = Number.parseFloat(value);
+    private paintCornerRadius(target: StyleProperty, value: string): void {
+        const numValue = Number.parseFloat(value);
+        if (isContainerNode(this._node) || isRectangleNode(this._node)) {
+            switch (target) {
+                case StyleProperty.cornerRadiusTopLeft:
+                    (this._node as RectangleCornerMixin).topLeftRadius = numValue;
+                    break;
+                case StyleProperty.cornerRadiusTopRight:
+                    (this._node as RectangleCornerMixin).topRightRadius = numValue;
+                    break;
+                case StyleProperty.cornerRadiusBottomRight:
+                    (this._node as RectangleCornerMixin).bottomRightRadius = numValue;
+                    break;
+                case StyleProperty.cornerRadiusBottomLeft:
+                    (this._node as RectangleCornerMixin).bottomLeftRadius = numValue;
+                    break;
+            }
+        } else {
+            (this._node as CornerMixin).cornerRadius = numValue;
+        }
     }
 }

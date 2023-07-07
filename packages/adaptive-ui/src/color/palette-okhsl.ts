@@ -4,6 +4,12 @@ import { SwatchRGB } from "./swatch.js";
 
 const stepCount = 56;
 
+/**
+ * An implementation of a {@link Palette} that uses the okhsl color model.
+ * This is useful for UI as it means the difference between swatches is perceptually equal.
+ *
+ * @public
+ */
 export class PaletteOkhsl extends BasePalette<SwatchRGB> {
     static swatchToColor(swatch: SwatchRGB): Color {
         return {mode: "rgb", r: swatch.r, g: swatch.g, b: swatch.b};

@@ -348,7 +348,7 @@ export const PaletteDirectionValue: Readonly<{
 // @public
 export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
 
-// @public (undocumented)
+// @public
 export class PaletteOkhsl extends BasePalette<SwatchRGB> {
     // (undocumented)
     static from(source: SwatchRGB | string): PaletteOkhsl;
