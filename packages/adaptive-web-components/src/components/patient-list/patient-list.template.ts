@@ -1,9 +1,8 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { DataGridSelectionMode } from "@microsoft/fast-foundation";
+import { DataGridSelectionMode, FASTDataGridCell } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { PatientList } from "./patient-list.js"
-import { PatientListSelectionChangeDetail } from "./patient-list.options.js";
 
 /**
  * @public
@@ -26,26 +25,51 @@ export const PatientListAnatomy: ComponentAnatomy<typeof PatientListConditions, 
     parts: PatientListParts,
 };
 
+export const headerSortCellTemplate = html`
+<template>
+    <adaptive-button
+      class="header-sort-button"
+      @click="${(x) => x.$emit('updatesort', x.columnDefinition)}"
+    >
+        ${ x => x.columnDefinition.title }
+    </adaptive-button>
+  </template>
+`;
+
+function getFocusTarget(cell: FASTDataGridCell): HTMLElement {
+    return cell.children[0] as HTMLElement;
+}
+
 const columnDefinitions = [
     {
         columnDataKey: "patientID",
         title: PatientList.stringsProvider.patientIDColumnTitle,
+        headerCellTemplate: headerSortCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
     {
         columnDataKey: "last",
         title: PatientList.stringsProvider.lastNameColumnTitle,
+        headerCellTemplate: headerSortCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
     {
         columnDataKey: "first",
         title: PatientList.stringsProvider.firstNameColumnTitle,
+        headerCellTemplate: headerSortCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
     {
         columnDataKey: "middle",
         title: PatientList.stringsProvider.middleNameColumnTitle,
+        headerCellTemplate: headerSortCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
     {
         columnDataKey: "dob",
         title: PatientList.stringsProvider.dobColumnTitle,
+        headerCellTemplate: headerSortCellTemplate,
+        headerCellFocusTargetCallback: getFocusTarget,
     },
 ]
 

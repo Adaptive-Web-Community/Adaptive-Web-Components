@@ -1,9 +1,12 @@
 import { 
     attr,
     FASTElement,
-    observable
+    Notifier,
+    Observable,
+    observable,
+    Updates
 } from "@microsoft/fast-element";
-import { FASTDataGrid } from "@microsoft/fast-foundation";
+import { ColumnDefinition, FASTDataGrid } from "@microsoft/fast-foundation";
 import {
     Patient,
     PatientListStrings as PatientListStrings
@@ -27,6 +30,27 @@ export class PatientList extends FASTElement {
      */
     @observable
     public patients: Patient[] = [];
+    protected patientsChanged(): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+        this.observePatients();
+        this.updateSort();
+    }
+
+    /**
+     * The current sort column
+     * 
+     * @public
+     */
+    @attr({ attribute: "sort-by" })
+    public sortBy: string = "last";
+    protected sortByChanged(): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+        this.updateSort();
+    } 
 
     /**
      * The currently selected patient index,
@@ -44,7 +68,6 @@ export class PatientList extends FASTElement {
         );
     } 
 
-
     /**
      * ref to the patient list data-grid component
      * 
@@ -52,11 +75,17 @@ export class PatientList extends FASTElement {
      */
     public patientGrid: FASTDataGrid;
 
+    private arrayChangeNotifier: Notifier | null = null;
+    private isUpdatingSort: boolean = false;
+
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.addEventListener("updatesort", this.handleSetSort);
+        this.observePatients();
+        this.updateSort();
     }
 
     /**
@@ -64,6 +93,8 @@ export class PatientList extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.removeEventListener("updatesort", this.handleSetSort);
+        this.unobservePatients();
     }
 
     /**
@@ -73,5 +104,69 @@ export class PatientList extends FASTElement {
         this.selectedIndex = this.patientGrid.selectedRowIndexes.length 
             ? this.patientGrid.selectedRowIndexes[0] 
             : -1;
+    }
+
+    /**
+     * @internal
+     */
+    public handleSetSort = (e: CustomEvent): void => {
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        this.sortBy = (e.detail as ColumnDefinition).columnDataKey;
+    }
+
+    private updateSort(): void {
+        if (this.isUpdatingSort) {
+            return;
+        }
+        this.isUpdatingSort = true;
+        const sortedPatients = this.patients.slice(0);
+
+        switch(this.sortBy) {
+            case "first":
+                sortedPatients.sort((a, b) => a.first.localeCompare(b.first));
+                break;
+
+            case "last":
+                sortedPatients.sort((a, b) => a.last.localeCompare(b.last));
+                break;
+            
+            case "middle":
+                sortedPatients.sort((a, b) => a.middle.localeCompare(b.middle));
+                break;
+
+            case "patientID":
+                sortedPatients.sort((a, b) => a.patientID.localeCompare(b.patientID));
+                break;
+                
+            case "dob":
+                sortedPatients.sort((a, b) => a.dob.localeCompare(b.dob));
+                break;
+        }
+
+        this.patients.splice(0, this.patients.length, ...sortedPatients);
+
+        Updates.enqueue(() => {
+            this.isUpdatingSort = false;
+        })
+    }
+
+    public handleChange = ():void => {
+        this.updateSort();
+    }
+
+    private observePatients(): void {
+        this.unobservePatients();
+        this.arrayChangeNotifier = Observable.getNotifier(this.patients);
+        this.arrayChangeNotifier.subscribe(this);
+    }
+
+    private unobservePatients(): void {
+        if (this.arrayChangeNotifier) {
+            this.arrayChangeNotifier.unsubscribe(this);
+            this.arrayChangeNotifier = null;
+        } 
     }
 }
