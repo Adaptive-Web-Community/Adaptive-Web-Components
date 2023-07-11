@@ -50,6 +50,20 @@ export class PatientList extends FASTElement {
             return;
         }
         this.updateSort();
+    }
+
+    /**
+     * Whether sort is inverted or not
+     * 
+     * @public
+     */
+    @attr({ attribute: "sort-inverted", mode: "boolean"})
+    public sortInverted: boolean = false;
+    protected sortInvertedChanged(): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+        this.updateSort();
     } 
 
     /**
@@ -114,7 +128,12 @@ export class PatientList extends FASTElement {
             return;
         }
 
-        this.sortBy = (e.detail as ColumnDefinition).columnDataKey;
+        const dataKey = (e.detail as ColumnDefinition).columnDataKey
+        if (dataKey === this.sortBy) {
+            this.sortInverted = !this.sortInverted;
+        } else {
+            this.sortBy = (e.detail as ColumnDefinition).columnDataKey;
+        }
     }
 
     private updateSort(): void {
@@ -144,6 +163,10 @@ export class PatientList extends FASTElement {
             case "dob":
                 sortedPatients.sort((a, b) => a.dob.localeCompare(b.dob));
                 break;
+        }
+
+        if (this.sortInverted) {
+            sortedPatients.reverse();
         }
 
         this.patients.splice(0, this.patients.length, ...sortedPatients);
