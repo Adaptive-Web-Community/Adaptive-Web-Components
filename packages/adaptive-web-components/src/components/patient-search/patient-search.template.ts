@@ -48,13 +48,13 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
             >
                 ${PatientSearch.stringsProvider.dobLabel}
             </h4>
-            <input
+            <adaptive-text-field
                 class="dob-input"
-                type="date"  
-                name="trip-start"
+                type="date"
+                @change="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.dob)}"
                 placeholder="${PatientSearch.stringsProvider.dobPlaceholder}"
             >
-            </input>
+            </adaptive-text-field>
             <h4
                 class="patient-id-label"
             >
@@ -63,7 +63,6 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
             <adaptive-picker
                 class="patient-id-picker"
                 filter-selected="false"
-                ${ref("patientIDPicker")}
                 @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.patientID)}"
                 @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.patientID)}"
                 @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.patientID)}"
@@ -71,6 +70,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                 :optionsList="${(x) => x.patientIDSuggestions}"
                 max-selected="1"
                 placeholder="${PatientSearch.stringsProvider.patientIDPlaceholder}"
+                loading-text="${PatientSearch.stringsProvider.pickerLoading}"
+                no-suggestions-text="${(x) => x.queryState === PatientSearchQueryState.none
+                    ? PatientSearch.stringsProvider.pickerTypeForSuggestions
+                    : PatientSearch.stringsProvider.pickerNoSuggestions
+                }"
             ></adaptive-picker>
             ${when(x => x.expanded,
                 html<T>`
@@ -83,7 +87,6 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="last-name-picker"
                         filter-selected="false"
-                        ${ref("lastNamePicker")}
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.lastName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.lastName)}"
                         @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.lastName)}"
@@ -91,6 +94,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         :optionsList="${(x) => x.lastNameSuggestions}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.lastNamePlaceholder}"
+                        loading-text="${PatientSearch.stringsProvider.pickerLoading}"
+                        no-suggestions-text="${(x) => x.queryState === PatientSearchQueryState.none
+                            ? PatientSearch.stringsProvider.pickerTypeForSuggestions
+                            : PatientSearch.stringsProvider.pickerNoSuggestions
+                        }"
                     ></adaptive-picker>
                     <h4
                         class="first-name-label"
@@ -100,7 +108,6 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="first-name-picker"
                         filter-selected="false"
-                        ${ref("firstNamePicker")}
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.firstName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.firstName)}"
                         @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.firstName)}"
@@ -108,6 +115,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.firstNamePlaceholder}"
+                        loading-text="${PatientSearch.stringsProvider.pickerLoading}"
+                        no-suggestions-text="${(x) => x.queryState === PatientSearchQueryState.none
+                            ? PatientSearch.stringsProvider.pickerTypeForSuggestions
+                            : PatientSearch.stringsProvider.pickerNoSuggestions
+                        }"
                     ></adaptive-picker>
                     <h4
                         class="middle-name-label"
@@ -117,7 +129,6 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     <adaptive-picker
                         class="middle-name-picker"
                         filter-selected="false"
-                        ${ref("middleNamePicker")}
                         @selectionchange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.middleName)}"
                         @querychange="${(x, c) => x.updateQuery(c.event, PatientSearchQueryType.middleName)}"
                         @menuopening="${(x, c) => x.pickerMenuOpen(c.event, PatientSearchQueryType.middleName)}"
@@ -125,6 +136,11 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                         :showLoading="${(x) => x.queryState === PatientSearchQueryState.invalid}"
                         max-selected="1"
                         placeholder="${PatientSearch.stringsProvider.middleNamePlaceholder}"
+                        loading-text="${PatientSearch.stringsProvider.pickerLoading}"
+                        no-suggestions-text="${(x) => x.queryState === PatientSearchQueryState.none
+                            ? PatientSearch.stringsProvider.pickerTypeForSuggestions
+                            : PatientSearch.stringsProvider.pickerNoSuggestions
+                        }"
                     ></adaptive-picker>
                 </div>
                 `
@@ -142,6 +158,34 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                 :patients="${(x) => x.filteredPatients}"
             >
             </adaptive-patient-list>
+            ${when(x => x.queryState === PatientSearchQueryState.none,
+                html<T>`
+                <h3
+                    class="type-to-search-message"
+                >
+                    ${PatientSearch.stringsProvider.typeToSearchMessage}
+                </h3>
+            `
+            )}
+            ${when(x => x.queryState === PatientSearchQueryState.noMatches,
+                html<T>`
+                <h3
+                    class="no-matches-message"
+                >
+                    ${PatientSearch.stringsProvider.noMatchesMessage}
+                </h3>
+            `
+            )}
+            ${when(x => x.queryState === PatientSearchQueryState.invalid,
+                html<T>`
+                <h3
+                    class="loading-message"
+                >
+                    ${PatientSearch.stringsProvider.loadingMessage}
+                </h3>
+            `
+            )}
+            
             <slot></slot>
         </template>
     `;

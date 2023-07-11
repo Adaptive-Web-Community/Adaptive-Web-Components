@@ -14,4 +14,10 @@ export const patientSearchStringsEn: PatientSearchStrings = {
     lastNamePlaceholder: "Start typing last name...",
     expandSearchBtn: "Expand search",
     collapseSearchBtn: "Collapse search",
+    pickerLoading: "Loading suggestions...",
+    pickerNoSuggestions: "No matches found.",
+    pickerTypeForSuggestions: "Start typing for suggestions",
+    typeToSearchMessage: "Type to search for patients.",
+    noMatchesMessage: "No matches found.",
+    loadingMessage: "Loading..."
 }

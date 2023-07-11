@@ -27,17 +27,15 @@ export class PatientSearch extends FASTElement {
      * @public
      */
     @observable
-    public queryResults: PatientSearchQueryResults = {query: this.getEmptyQuery(), results: []};
+    public queryResults: PatientSearchQueryResults | null = null;
     protected queryResultsChanged(): void {
-        if (this.isQueryValid(this.queryResults.query)) {
-            this.queryState = PatientSearchQueryState.valid;
-            this.patients = this.queryResults.results;
-            this.updateFilteredPatients();
-        } else {
-            this.queryState = PatientSearchQueryState.invalid;
-            this.patients = [];
+        if (!this.$fastController.isConnected) {
+            return;
         }
+        this.updateQueryState();
+        this.updateFilteredPatients();
     }
+
     /**
      * @internal
      */
@@ -166,19 +164,13 @@ export class PatientSearch extends FASTElement {
     @observable
     public queryState: PatientSearchQueryState = PatientSearchQueryState.none;
 
-    public patientIDPicker: FASTPicker;
-    public firstNamePicker: FASTPicker;
-    public lastNamePicker: FASTPicker;
-    public middleNamePicker: FASTPicker;
-
-    private patients: Patient[] = [];
-
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
         Updates.enqueue(() => {
+            this.updateQueryState();
             this.updateFilteredPatients();
         });
     }
@@ -188,6 +180,38 @@ export class PatientSearch extends FASTElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+    }
+
+    private componentQueriesEmpty(): boolean {
+        let isEmpty = false;
+        if (
+            this.dobQuery === "" &&
+            this.patientIDQuery === "" &&
+            this.firstNameQuery === "" &&
+            this.middleNameQuery === "" &&
+            this.lastNameQuery === ""
+
+        ) {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+    private isQueryEmpty(query: PatientSearchQuery): boolean {
+        let isEmpty = false;
+        // if a query would include all the possible results of the components current state
+        // we can keep the current patient list with broader results and filter further in the component
+        if (
+            this.dobQuery === "" &&
+            (query.first === "") &&
+            (query.middle === "") &&
+            (query.last === "") &&
+            (query.patientID === "")
+        ){
+            isEmpty = true;
+        }
+
+        return isEmpty;
     }
 
     private isQueryValid(query: PatientSearchQuery): boolean {
@@ -207,22 +231,6 @@ export class PatientSearch extends FASTElement {
         return isValid;
     }
 
-    private isQueryEmpty(query: PatientSearchQuery): boolean {
-        let isEmpty = false;
-        if (
-            query.dob === "" &&
-            query.patientID === "" &&
-            query.first === "" &&
-            query.middle === "" &&
-            query.last === ""
-
-        ) {
-            isEmpty = true;
-        }
-        return isEmpty;
-    }
-
-
     /**
      * @internal
      */
@@ -230,7 +238,7 @@ export class PatientSearch extends FASTElement {
         this.expanded = !this.expanded;
         if (this.expanded) {
             Updates.enqueue(() => {
-                this.updatePickers();
+                this.updateSuggestions();
             });
         }
     }
@@ -253,22 +261,8 @@ export class PatientSearch extends FASTElement {
                 this.lastNameQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
         }
-
-        if (!this.isQueryValid(this.queryResults.query)) {
-            this.queryState = PatientSearchQueryState.invalid;
-            this.patients = [];
-        } 
-        else if (
-            this.dobQuery === "" && 
-            this.patientIDQuery === "" && 
-            this.firstNameQuery === "" && 
-            this.middleNameQuery === "" && 
-            this.lastNameQuery === ""
-        ) {
-            this.queryState = PatientSearchQueryState.none;
-        } else {
-            this.queryState = PatientSearchQueryState.valid;
-        }
+        
+        this.updateQueryState();
     }
 
     public pickerMenuOpen = (e: Event, queryType: PatientSearchQueryType ): void => {
@@ -307,45 +301,50 @@ export class PatientSearch extends FASTElement {
     }
 
     private updateFilteredPatients(): void {
-        let newFilteredPatients: Patient[] = this.patients.slice(0);
-        let query: string = "";
-        if (this.firstNameQuery !== "") {
-            query = this.firstNameQuery.toLowerCase();
-            newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.first.toLowerCase().includes(query)
-            );
+        if (this.queryResults !== null && this.queryState === PatientSearchQueryState.valid) {
+            let newFilteredPatients: Patient[] = this.queryResults.results.slice(0);
+            if (!this.componentQueriesEmpty()) {
+                let query: string = "";
+                if (this.firstNameQuery !== "") {
+                    query = this.firstNameQuery.toLowerCase();
+                    newFilteredPatients = newFilteredPatients.filter(
+                      patient => patient.first.toLowerCase().includes(query)
+                    );
+                }
+                if (this.middleNameQuery !== "") {
+                    query = this.middleNameQuery.toLowerCase()
+                    newFilteredPatients = newFilteredPatients.filter(
+                      patient => patient.middle.toLowerCase().includes(query)
+                    );
+                }
+                if (this.lastNameQuery !== "") {
+                    query = this.lastNameQuery.toLowerCase()
+                    newFilteredPatients = newFilteredPatients.filter(
+                      patient => patient.last.toLowerCase().includes(query)
+                    );
+                }
+                if (this.dobQuery !== "") {
+                    newFilteredPatients = newFilteredPatients.filter(
+                      patient => patient.dob === this.dobQuery
+                    );
+                }
+                if (this.patientIDQuery !== "") {
+                    query = this.patientIDQuery.toLowerCase()
+                    newFilteredPatients = newFilteredPatients.filter(
+                      patient => patient.patientID.toLowerCase().includes(query)
+                    );
+                }
+            }
+            this.filteredPatients.splice(0, this.filteredPatients.length, ...newFilteredPatients);
+        } else {
+            this.filteredPatients.splice(0, this.filteredPatients.length);
         }
-        if (this.middleNameQuery !== "") {
-            query = this.middleNameQuery.toLowerCase()
-            newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.middle.toLowerCase().includes(query)
-            );
-        }
-        if (this.lastNameQuery !== "") {
-            query = this.lastNameQuery.toLowerCase()
-            newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.last.toLowerCase().includes(query)
-            );
-        }
-        if (this.dobQuery !== "") {
-            query = this.dobQuery.toLowerCase();
-            newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.dob.toLowerCase().includes(query)
-            );
-        }
-        if (this.patientIDQuery !== "") {
-            query = this.patientIDQuery.toLowerCase()
-            newFilteredPatients = newFilteredPatients.filter(
-              patient => patient.patientID.toLowerCase().includes(query)
-            );
-        }
-        this.filteredPatients.splice(0, this.filteredPatients.length, ...newFilteredPatients);
         this.showPatientsList = this.filteredPatients.length ? true : false;
 
-        this.updatePickers();
+        this.updateSuggestions();
     }
 
-    private updatePickers() {
+    private updateSuggestions() {
         const patientIDSuggestions: string[] = [];
         const firstNameSuggestions: string[] = [];
         const middleNameSuggestions: string[] = [];
@@ -353,16 +352,16 @@ export class PatientSearch extends FASTElement {
 
         this.filteredPatients.forEach(
             (patient) => {
-                if (!patientIDSuggestions.includes(patient.patientID)){
+                if (patient.patientID !== "" && !patientIDSuggestions.includes(patient.patientID)){
                     patientIDSuggestions.push(patient.patientID)
                 }
-                if (!firstNameSuggestions.includes(patient.first)){
+                if (patient.first !== "" && !firstNameSuggestions.includes(patient.first)){
                     firstNameSuggestions.push(patient.first)
                 }
-                if (!middleNameSuggestions.includes(patient.middle)){
+                if (patient.middle !== "" && !middleNameSuggestions.includes(patient.middle)){
                     middleNameSuggestions.push(patient.middle)
                 }
-                if (!lastNameSuggestions.includes(patient.last)){
+                if (patient.last !== "" && !lastNameSuggestions.includes(patient.last)){
                     lastNameSuggestions.push(patient.last)
                 }
             }
@@ -384,22 +383,25 @@ export class PatientSearch extends FASTElement {
         };
     }
 
-        // private clearAllSuggestions(): void {
-    //     this.patientIDPicker.optionsList = [];
-    //     this.firstNamePicker.optionsList = [];
-    //     this.lastNamePicker.optionsList = [];
-    //     this.middleNamePicker.optionsList = [];
-    // }
+    private updateQueryState(): void {
+        if (this.componentQueriesEmpty()) {
+            this.queryState = PatientSearchQueryState.none;
+        } else if (this.queryResults === null) {
+            this.queryState = PatientSearchQueryState.invalid
+        } else if (this.isQueryEmpty(this.queryResults.query) && !this.queryResults.results.length) {
+            this.queryState = PatientSearchQueryState.invalid;
+        } else if (this.isQueryValid(this.queryResults.query)) {
+            this.queryState = PatientSearchQueryState.valid;
+        } else {
+            this.queryState = PatientSearchQueryState.invalid;
+        }
+    }
 
-    
-    // private getCurrentQuery(): PatientSearchQuery {
-    //     return {
-    //         patientID: this.patientIDQuery,
-    //         dob: this.dobQuery,
-    //         first: this.firstNameQuery,
-    //         middle: this.middleNameQuery,
-    //         last: this.lastNameQuery
-    //     };
-    // }
+    private clearAllSuggestions(): void {
+        this.patientIDSuggestions.splice(0);
+        this.firstNameSuggestions.splice(0);
+        this.lastNameSuggestions.splice(0);
+        this.middleNameSuggestions.splice(0);
+    }
 
 }

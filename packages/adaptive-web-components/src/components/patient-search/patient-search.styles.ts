@@ -29,7 +29,7 @@ export const aestheticStyles: ElementStyles = css`
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto auto auto;
     }
     .header{
         grid-row: 1;
@@ -93,6 +93,12 @@ export const aestheticStyles: ElementStyles = css`
     .middle-name-label {
         grid-row: 1;
         grid-column: 3;
+    }
+    .type-to-search-message,
+    .no-matches-message,
+    .loading-message {
+        grid-row: 7;
+        grid-column: 1 / 3;
     }
 
 `;

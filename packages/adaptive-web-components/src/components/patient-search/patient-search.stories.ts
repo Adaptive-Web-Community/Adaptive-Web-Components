@@ -28,10 +28,22 @@ const generatePatients = (count: number): Patient[] => {
             middle: middleNames[Math.floor(Math.random() * middleNames.length)],
             last: lastNames[Math.floor(Math.random() * lastNames.length)],
             patientID: `${i}1234`,
-            dob: `${Math.floor(Math.random() * 100) + 1920}-${Math.floor(Math.random() * 12) + 1}-${Math.floor(Math.random() * 28) + 1}`
+            dob: generateDate()
         });
     }
     return patients;
+}
+
+const generateDate = (): string => {
+    let month: string  = `${Math.floor(Math.random() * 12) + 1}`
+    if (month.length === 1) {
+        month = `0${month}`
+    }
+    let day: string  = `${Math.floor(Math.random() * 28) + 1}`
+    if (day.length === 1) {
+        day = `0${day}`
+    }
+    return `${Math.floor(Math.random() * 20) + 2003}-${month}-${day}`
 }
 
 const patients = generatePatients(500);
@@ -65,7 +77,7 @@ export default {
 
 export const PatientSearch: Story<PatientSearchBase> = renderComponent(storyTemplate).bind({});
 
-export const PatientSearchinitialParams: Story<PatientSearchBase> = renderComponent(
+export const PatientSearchInitialParams: Story<PatientSearchBase> = renderComponent(
     html<StoryArgs<PatientSearchBase>>`
     <adaptive-patient-search
         :queryResults="${{
@@ -83,5 +95,15 @@ export const PatientSearchinitialParams: Story<PatientSearchBase> = renderCompon
     </adaptive-patient-search>
 `
 ).bind({});
-PatientSearchinitialParams.args = { 
+PatientSearchInitialParams.args = { 
+}
+
+export const PatientSearchNoData: Story<PatientSearchBase> = renderComponent(
+    html<StoryArgs<PatientSearchBase>>`
+    <adaptive-patient-search>
+        ${(x) => x.storyContent}
+    </adaptive-patient-search>
+`
+).bind({});
+PatientSearchNoData.args = { 
 }

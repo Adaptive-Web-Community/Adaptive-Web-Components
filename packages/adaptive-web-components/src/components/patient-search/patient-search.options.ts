@@ -27,8 +27,9 @@ export type PatientSearchQueryType = typeof PatientSearchQueryType[keyof typeof 
  */
 export const PatientSearchQueryState = {
     none: "none", // no query active
-    invalid: "invalid", // have a query, but no valid results
+    invalid: "invalid", // current query results not a superset of current component query
     valid: "valid", // have valid results for current query
+    noMatches: "noMatches", // results are valid, but no matches
 } as const;
 
 /**
@@ -71,4 +72,10 @@ export interface PatientSearchStrings {
     lastNamePlaceholder: string;
     expandSearchBtn: string;
     collapseSearchBtn: string;
+    pickerLoading: string;
+    pickerNoSuggestions: string;
+    pickerTypeForSuggestions: string;
+    typeToSearchMessage: string;
+    noMatchesMessage: string;
+    loadingMessage: string;
 }
