@@ -30,6 +30,7 @@ export const PatientSearchQueryState = {
     invalid: "invalid", // current query results not a superset of current component query
     valid: "valid", // have valid results for current query
     noMatches: "noMatches", // results are valid, but no matches
+    tooMany: "tooMany", // too many results
 } as const;
 
 /**
@@ -78,4 +79,5 @@ export interface PatientSearchStrings {
     typeToSearchMessage: string;
     noMatchesMessage: string;
     loadingMessage: string;
+    tooManyMessage: string;
 }

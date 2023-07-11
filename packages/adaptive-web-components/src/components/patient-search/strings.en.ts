@@ -19,5 +19,6 @@ export const patientSearchStringsEn: PatientSearchStrings = {
     pickerTypeForSuggestions: "Start typing for suggestions",
     typeToSearchMessage: "Type to search for patients.",
     noMatchesMessage: "No matches found.",
-    loadingMessage: "Loading..."
+    loadingMessage: "Loading...",
+    tooManyMessage: "Too many results."
 }

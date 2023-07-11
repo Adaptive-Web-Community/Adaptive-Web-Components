@@ -154,38 +154,49 @@ function patientSearchTemplate<T extends PatientSearch>(): ElementViewTemplate<T
                     : PatientSearch.stringsProvider.expandSearchBtn}
             </adaptive-button>
             <adaptive-patient-list
-                class="patient-list"
+                hidden="${(x) => x.queryState === PatientSearchQueryState.valid ? void 0 : true}"
+                class="${(x) => x.queryState === PatientSearchQueryState.valid ? '' : 'hidden'} patient-list"
                 :patients="${(x) => x.filteredPatients}"
             >
             </adaptive-patient-list>
-            ${when(x => x.queryState === PatientSearchQueryState.none,
-                html<T>`
-                <h3
-                    class="type-to-search-message"
-                >
-                    ${PatientSearch.stringsProvider.typeToSearchMessage}
-                </h3>
-            `
-            )}
-            ${when(x => x.queryState === PatientSearchQueryState.noMatches,
-                html<T>`
-                <h3
-                    class="no-matches-message"
-                >
-                    ${PatientSearch.stringsProvider.noMatchesMessage}
-                </h3>
-            `
-            )}
-            ${when(x => x.queryState === PatientSearchQueryState.invalid,
-                html<T>`
-                <h3
-                    class="loading-message"
-                >
-                    ${PatientSearch.stringsProvider.loadingMessage}
-                </h3>
-            `
-            )}
-            
+            <div class="status-pane">
+                ${when(x => x.queryState === PatientSearchQueryState.none,
+                    html<T>`
+                    <h3
+                        class="type-to-search-message"
+                    >
+                        ${PatientSearch.stringsProvider.typeToSearchMessage}
+                    </h3>
+                `
+                )}
+                ${when(x => x.queryState === PatientSearchQueryState.noMatches,
+                    html<T>`
+                    <h3
+                        class="no-matches-message"
+                    >
+                        ${PatientSearch.stringsProvider.noMatchesMessage}
+                    </h3>
+                `
+                )}
+                ${when(x => x.queryState === PatientSearchQueryState.invalid,
+                    html<T>`
+                    <h3
+                        class="loading-message"
+                    >
+                        ${PatientSearch.stringsProvider.loadingMessage}
+                    </h3>
+                `
+                )}
+                ${when(x => x.queryState === PatientSearchQueryState.tooMany,
+                    html<T>`
+                    <h3
+                        class="too-many-message"
+                    >
+                        ${PatientSearch.stringsProvider.tooManyMessage}
+                    </h3>
+                `
+                )}
+                </div>
             <slot></slot>
         </template>
     `;

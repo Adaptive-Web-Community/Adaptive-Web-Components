@@ -1,4 +1,5 @@
 import { 
+    attr,
     FASTElement,
     observable,
     Updates,
@@ -24,6 +25,14 @@ export class PatientSearch extends FASTElement {
     public static stringsProvider: PatientSearchStrings = patientSearchStringsEn; 
 
     /**
+     * Max results to display.  Default is 20.
+     * 
+     * @public
+     */
+    @attr({ attribute: "max-results" })
+    public maxResults: number = 20;
+
+    /**
      * @public
      */
     @observable
@@ -32,7 +41,6 @@ export class PatientSearch extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.updateQueryState();
         this.updateFilteredPatients();
     }
 
@@ -170,7 +178,6 @@ export class PatientSearch extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         Updates.enqueue(() => {
-            this.updateQueryState();
             this.updateFilteredPatients();
         });
     }
@@ -202,11 +209,11 @@ export class PatientSearch extends FASTElement {
         // if a query would include all the possible results of the components current state
         // we can keep the current patient list with broader results and filter further in the component
         if (
-            this.dobQuery === "" &&
-            (query.first === "") &&
-            (query.middle === "") &&
-            (query.last === "") &&
-            (query.patientID === "")
+            query.dob === "" &&
+            query.first === "" &&
+            query.middle === "" &&
+            query.last === "" &&
+            query.patientID === ""
         ){
             isEmpty = true;
         }
@@ -261,8 +268,6 @@ export class PatientSearch extends FASTElement {
                 this.lastNameQuery = this.getPickerValue(e.target as FASTPicker);
                 break;
         }
-        
-        this.updateQueryState();
     }
 
     public pickerMenuOpen = (e: Event, queryType: PatientSearchQueryType ): void => {
@@ -301,39 +306,37 @@ export class PatientSearch extends FASTElement {
     }
 
     private updateFilteredPatients(): void {
-        if (this.queryResults !== null && this.queryState === PatientSearchQueryState.valid) {
+        if (this.queryResults !== null && !this.componentQueriesEmpty()) {
             let newFilteredPatients: Patient[] = this.queryResults.results.slice(0);
-            if (!this.componentQueriesEmpty()) {
-                let query: string = "";
-                if (this.firstNameQuery !== "") {
-                    query = this.firstNameQuery.toLowerCase();
-                    newFilteredPatients = newFilteredPatients.filter(
-                      patient => patient.first.toLowerCase().includes(query)
-                    );
-                }
-                if (this.middleNameQuery !== "") {
-                    query = this.middleNameQuery.toLowerCase()
-                    newFilteredPatients = newFilteredPatients.filter(
-                      patient => patient.middle.toLowerCase().includes(query)
-                    );
-                }
-                if (this.lastNameQuery !== "") {
-                    query = this.lastNameQuery.toLowerCase()
-                    newFilteredPatients = newFilteredPatients.filter(
-                      patient => patient.last.toLowerCase().includes(query)
-                    );
-                }
-                if (this.dobQuery !== "") {
-                    newFilteredPatients = newFilteredPatients.filter(
-                      patient => patient.dob === this.dobQuery
-                    );
-                }
-                if (this.patientIDQuery !== "") {
-                    query = this.patientIDQuery.toLowerCase()
-                    newFilteredPatients = newFilteredPatients.filter(
-                      patient => patient.patientID.toLowerCase().includes(query)
-                    );
-                }
+            let query: string = "";
+            if (this.firstNameQuery !== "") {
+                query = this.firstNameQuery.toLowerCase();
+                newFilteredPatients = newFilteredPatients.filter(
+                    patient => patient.first.toLowerCase().includes(query)
+                );
+            }
+            if (this.middleNameQuery !== "") {
+                query = this.middleNameQuery.toLowerCase()
+                newFilteredPatients = newFilteredPatients.filter(
+                    patient => patient.middle.toLowerCase().includes(query)
+                );
+            }
+            if (this.lastNameQuery !== "") {
+                query = this.lastNameQuery.toLowerCase()
+                newFilteredPatients = newFilteredPatients.filter(
+                    patient => patient.last.toLowerCase().includes(query)
+                );
+            }
+            if (this.dobQuery !== "") {
+                newFilteredPatients = newFilteredPatients.filter(
+                    patient => patient.dob === this.dobQuery
+                );
+            }
+            if (this.patientIDQuery !== "") {
+                query = this.patientIDQuery.toLowerCase()
+                newFilteredPatients = newFilteredPatients.filter(
+                    patient => patient.patientID.toLowerCase().includes(query)
+                );
             }
             this.filteredPatients.splice(0, this.filteredPatients.length, ...newFilteredPatients);
         } else {
@@ -342,6 +345,7 @@ export class PatientSearch extends FASTElement {
         this.showPatientsList = this.filteredPatients.length ? true : false;
 
         this.updateSuggestions();
+        this.updateQueryState();
     }
 
     private updateSuggestions() {
@@ -367,10 +371,10 @@ export class PatientSearch extends FASTElement {
             }
         )
 
-        this.patientIDSuggestions = patientIDSuggestions;
-        this.firstNameSuggestions = firstNameSuggestions;
-        this.middleNameSuggestions = middleNameSuggestions;
-        this.lastNameSuggestions = lastNameSuggestions;
+        this.patientIDSuggestions = patientIDSuggestions.sort((a, b) => a.localeCompare(b));
+        this.firstNameSuggestions = firstNameSuggestions.sort((a, b) => a.localeCompare(b));
+        this.middleNameSuggestions = middleNameSuggestions.sort((a, b) => a.localeCompare(b));
+        this.lastNameSuggestions = lastNameSuggestions.sort((a, b) => a.localeCompare(b));
     }
 
     private getEmptyQuery(): PatientSearchQuery {
@@ -385,13 +389,19 @@ export class PatientSearch extends FASTElement {
 
     private updateQueryState(): void {
         if (this.componentQueriesEmpty()) {
+            // user has not entered anything
             this.queryState = PatientSearchQueryState.none;
         } else if (this.queryResults === null) {
+            // waiting for results
             this.queryState = PatientSearchQueryState.invalid
-        } else if (this.isQueryEmpty(this.queryResults.query) && !this.queryResults.results.length) {
-            this.queryState = PatientSearchQueryState.invalid;
-        } else if (this.isQueryValid(this.queryResults.query)) {
-            this.queryState = PatientSearchQueryState.valid;
+        } else if (this.isQueryEmpty(this.queryResults.query) || this.isQueryValid(this.queryResults.query)) {
+            if (this.filteredPatients.length === 0) {
+                this.queryState = PatientSearchQueryState.noMatches
+            } else if (this.filteredPatients.length > this.maxResults) {
+                this.queryState = PatientSearchQueryState.tooMany
+            } else {
+                this.queryState = PatientSearchQueryState.valid
+            }
         } else {
             this.queryState = PatientSearchQueryState.invalid;
         }

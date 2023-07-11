@@ -70,6 +70,10 @@ export const aestheticStyles: ElementStyles = css`
         grid-column: 1 / 3;
     }
 
+    .hidden {
+        display: none;
+    }
+
     .last-name-picker {
         grid-row: 2;
         grid-column: 1;
@@ -96,7 +100,9 @@ export const aestheticStyles: ElementStyles = css`
     }
     .type-to-search-message,
     .no-matches-message,
-    .loading-message {
+    .too-many-message,
+    .loading-message {} 
+    .status-pane {
         grid-row: 7;
         grid-column: 1 / 3;
     }
