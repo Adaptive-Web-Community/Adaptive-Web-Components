@@ -1,5 +1,5 @@
 export { composePatientList } from "./patient-list.compose.js";
-export {PatientList} from "./patient-list.js"
+export { PatientList } from "./patient-list.js"
 export {
     templateStyles as patientListTemplateStyles,
     aestheticStyles as patientListAestheticStyles,

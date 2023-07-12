@@ -40,6 +40,7 @@ import { selectDefinition } from './components/select/select.definition.js';
 import { skeletonDefinition } from './components/skeleton/skeleton.definition.js';
 import { sliderDefinition } from './components/slider/slider.definition.js';
 import { sliderLabelDefinition } from './components/slider-label/slider-label.definition.js';
+import { sortableColumnHeaderDefinition } from './components/sortable-column/sortable-column-header.definition.js';
 import { switchDefinition } from './components/switch/switch.definition.js';
 import { tabDefinition } from './components/tab/tab.definition.js';
 import { tabPanelDefinition } from './components/tab-panel/tab-panel.definition.js';
@@ -94,6 +95,7 @@ export const AllComponents = {
 	skeletonDefinition,
 	sliderDefinition,
 	sliderLabelDefinition,
+    sortableColumnHeaderDefinition,
 	switchDefinition,
 	tabDefinition,
 	tabPanelDefinition,

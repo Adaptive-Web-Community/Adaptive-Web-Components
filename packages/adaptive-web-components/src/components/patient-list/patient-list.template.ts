@@ -25,14 +25,15 @@ export const PatientListAnatomy: ComponentAnatomy<typeof PatientListConditions, 
     parts: PatientListParts,
 };
 
-export const headerSortCellTemplate = html`
+export const headerSortCellTemplate = html<FASTDataGridCell>`
 <template>
-    <adaptive-button
+    <adaptive-sortable-column-header
+      :columnDefinition = ${ x => x.columnDefinition }
       class="header-sort-button"
       @click="${(x) => x.$emit('updatesort', x.columnDefinition)}"
     >
-        ${ x => x.columnDefinition.title }
-    </adaptive-button>
+        ${ x => x.columnDefinition?.title }
+    </adaptive-sortable-column-header>
   </template>
 `;
 
