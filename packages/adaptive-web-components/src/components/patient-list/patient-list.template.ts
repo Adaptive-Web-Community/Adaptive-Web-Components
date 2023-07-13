@@ -94,9 +94,6 @@ function patientListTemplate<T extends PatientList>(): ElementViewTemplate<T> {
                 :rowsData="${ x => x.patients}"
                 @selectionchange="${(x, c) => x.selectionChange()}"
             >
-            <adaptive-sortable-column-header>
-                BOO
-            </adaptive-sortable-column-header>
             </adaptive-data-grid>
         </template>
     `;
