@@ -1,5 +1,4 @@
 import { ElementViewTemplate, html } from "@microsoft/fast-element";
-import { ColumnDefinition, DataGridSelectionMode, FASTDataGridCell } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { SortableColumnHeader } from "./sortable-column-header.js"
@@ -25,21 +24,6 @@ export const SortableColumnHeaderAnatomy: ComponentAnatomy<typeof SortableColumn
     parts: SortableColumnHeaderParts,
 };
 
-// export const headerSortCellTemplate = html<FASTDataGridCell>`
-// <template>
-//     <adaptive-button
-//       class="header-sort-button"
-//       @click="${(x) => x.$emit('updatesort', x.columnDefinition)}"
-//     >
-//         ${ x => x.columnDefinition?.title }
-//     </adaptive-button>
-//   </template>
-// `;
-
-// function getFocusTarget(cell: FASTDataGridCell): HTMLElement {
-//     return cell.children[0] as HTMLElement;
-// }
-
 /**
  * Template for sortable column header component.
  * @public
@@ -49,12 +33,12 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<SortableColumnH
     SortableColumnHeaderTemplate();
 
 function SortableColumnHeaderTemplate<T extends SortableColumnHeader>(): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <template>
-        <adaptive-button
-            class="header-sort-button"
-        >
-            ${ x => x.columnDefinition?.title }
+            <adaptive-button
+                class="sort-button ${x => x.sortableColumnContext.sortBy === x.columnDefinition.columnDataKey ? 'active': ''}"
+            >
+                <slot></slot> 
            </adaptive-button>
         </template>
     `;

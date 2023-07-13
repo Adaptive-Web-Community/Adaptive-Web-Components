@@ -6,7 +6,7 @@ export interface SortableColumnContext {
     sortInverted: boolean;
 }
 
-export const SortableColumnContext = Context.create<SortableColumnContext>("sortable-column-context");
+export const SortableColumnContext = Context.create<SortableColumnContext>("SortableColumnContext");
 
 export class DefaultSortableColumnContext implements SortableColumnContext {
     /**

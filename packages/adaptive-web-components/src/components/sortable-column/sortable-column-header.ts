@@ -4,10 +4,11 @@ import {
 
 import { 
     FASTElement,
-    observable
+    observable,
+    Updates,
 } from "@microsoft/fast-element";
 
-import { SortableColumnContext } from "./sortable-column.context.js";
+import { DefaultSortableColumnContext, SortableColumnContext } from "./sortable-column.context.js";
 
 /**
  * 
@@ -16,8 +17,16 @@ import { SortableColumnContext } from "./sortable-column.context.js";
  */
 export class SortableColumnHeader extends FASTElement {
 
+    /**
+     * Context
+     *
+     * @public
+     */
     @SortableColumnContext
-    public sortableColumnContext: SortableColumnContext;
+    sortableColumnContextSource: SortableColumnContext;
+
+    @observable
+    sortableColumnContext: SortableColumnContext = new DefaultSortableColumnContext();
 
     /**
      * The data-grid columnDefinition for this column
@@ -32,6 +41,10 @@ export class SortableColumnHeader extends FASTElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        console.debug(this.sortableColumnContext?.sortBy);
+        Updates.enqueue(() => {
+            this.sortableColumnContext = this.sortableColumnContextSource;
+        });
     }
 
     /**

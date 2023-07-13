@@ -29,7 +29,6 @@ export const headerSortCellTemplate = html<FASTDataGridCell>`
 <template>
     <adaptive-sortable-column-header
       :columnDefinition = ${ x => x.columnDefinition }
-      class="header-sort-button"
       @click="${(x) => x.$emit('updatesort', x.columnDefinition)}"
     >
         ${ x => x.columnDefinition?.title }
@@ -83,8 +82,9 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<PatientList> =
     patientListTemplate();
 
 function patientListTemplate<T extends PatientList>(): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <template>
+            <slot></slot>
             <adaptive-data-grid
                 ${ref("patientGrid")}
                 class="patient-grid"
@@ -94,6 +94,9 @@ function patientListTemplate<T extends PatientList>(): ElementViewTemplate<T> {
                 :rowsData="${ x => x.patients}"
                 @selectionchange="${(x, c) => x.selectionChange()}"
             >
+            <adaptive-sortable-column-header>
+                BOO
+            </adaptive-sortable-column-header>
             </adaptive-data-grid>
         </template>
     `;

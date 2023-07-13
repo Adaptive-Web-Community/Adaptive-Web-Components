@@ -11,7 +11,7 @@ import { ColumnDefinition, FASTDataGrid } from "@microsoft/fast-foundation";
 import { DefaultSortableColumnContext, SortableColumnContext } from "../sortable-column/sortable-column.context.js";
 import {
     Patient,
-    PatientListStrings as PatientListStrings
+    PatientListStrings
 } from "./patient-list.options.js";
 import {
     patientListStringsEn
@@ -24,11 +24,6 @@ import {
  */
 export class PatientList extends FASTElement {
     public static stringsProvider: PatientListStrings = patientListStringsEn;
-
-    /**
-    * @public
-    */
-    public sortableColumnListContext: SortableColumnContext = new DefaultSortableColumnContext();
 
     /**
      * The patients to be displayed
@@ -56,7 +51,7 @@ export class PatientList extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.sortableColumnListContext.sortBy = this.sortBy;
+        this.sortableColumnContext.sortBy = this.sortBy;
         this.updateSort();
     }
 
@@ -71,7 +66,7 @@ export class PatientList extends FASTElement {
         if (!this.$fastController.isConnected) {
             return;
         }
-        this.sortableColumnListContext.sortInverted = this.sortInverted;
+        this.sortableColumnContext.sortInverted = this.sortInverted;
         this.updateSort();
     } 
 
@@ -91,6 +86,8 @@ export class PatientList extends FASTElement {
         );
     } 
 
+    public sortableColumnContext: SortableColumnContext = new DefaultSortableColumnContext();
+
     /**
      * ref to the patient list data-grid component
      * 
@@ -107,9 +104,9 @@ export class PatientList extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.sortableColumnListContext.sortBy = this.sortBy;
-        this.sortableColumnListContext.sortInverted = this.sortInverted;
-        Context.provide(this, SortableColumnContext, this.sortableColumnListContext);
+        this.sortableColumnContext.sortBy = this.sortBy;
+        this.sortableColumnContext.sortInverted = this.sortInverted;
+        Context.provide(this.patientGrid, SortableColumnContext, this.sortableColumnContext);
 
         this.addEventListener("updatesort", this.handleSetSort);
         this.observePatients();
