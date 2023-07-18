@@ -31,7 +31,7 @@ jobs:
           git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
           git remote set-url origin "https://$REPO_PAT@github.com/adaptive-web-community/adaptive-web-components"
         env:
-          REPO_PAT: ${{ secrets.GITHUB_TOKEN }}
+          REPO_PAT: ${{ secrets.REPO_PAT }}
 
       - name: Check for the presence of changed files inside ./change
         run: npm run checkchange
@@ -44,4 +44,4 @@ jobs:
       - name: Publish to NPM
         run: npm run publish-ci -n $NPM_AUTH_TOKEN
         env:
-          NPM_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
