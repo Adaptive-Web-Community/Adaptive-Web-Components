@@ -1,13 +1,19 @@
-import type {
-    ComposableStyles,
-    ElementStyles,
-    ElementViewTemplate,
+import {
+    type ComposableStyles,
+    type ElementStyles,
+    type ElementViewTemplate,
     FASTElementDefinition,
-    ShadowRootOptions
+    type PartialFASTElementDefinition,
+    type ShadowRootOptions,
 } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
-import { renderElementStyles, Styles } from "@adaptive-web/adaptive-ui";
-import type { InteractivityDefinition, StyleModuleEvaluateParameters, StyleModuleTarget } from "@adaptive-web/adaptive-ui";
+import {
+    type InteractivityDefinition,
+    renderElementStyles,
+    type StyleModuleEvaluateParameters,
+    type StyleModuleTarget,
+    Styles,
+} from "@adaptive-web/adaptive-ui";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
@@ -102,10 +108,24 @@ export class DesignSystem {
      */
     public defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>) {
         for (const key in components) {
-            if (typeof components[key] === 'function') {
-                (components[key] as (ds: DesignSystem) => FASTElementDefinition)(this).define();
-            } else {
-                (components[key] as FASTElementDefinition).define(this._registry);
+            let definition = components[key];
+
+            if (typeof definition === 'function') {
+                definition(this).define();
+            } else if (definition instanceof FASTElementDefinition) {
+                const elementNameParts = definition.name.split('-');
+                const prefix = elementNameParts.shift();
+
+                if (prefix !== this._prefix) {
+                    const newDefinition = {
+                        ...(definition as unknown as PartialFASTElementDefinition),
+                        name: `${this._prefix}-${elementNameParts.join('-')}`
+                    };
+
+                    definition = FASTElementDefinition.compose(definition.type, newDefinition);
+                }
+
+                definition.define(this._registry);
             }
         }
     }

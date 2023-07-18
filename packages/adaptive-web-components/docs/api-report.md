@@ -5,7 +5,7 @@
 ```ts
 
 import { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
-import type { ComposableStyles } from '@microsoft/fast-element';
+import { ComposableStyles } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTAccordion } from '@microsoft/fast-foundation';
@@ -61,7 +61,7 @@ import { FASTTreeItem } from '@microsoft/fast-foundation';
 import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
 import type { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
-import type { ShadowRootOptions } from '@microsoft/fast-element';
+import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
 import { StyleModules } from '@adaptive-web/adaptive-ui';
 import type { StyleModuleTarget } from '@adaptive-web/adaptive-ui';
