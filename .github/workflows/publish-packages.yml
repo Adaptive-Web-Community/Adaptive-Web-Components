@@ -17,17 +17,9 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-
-      - name: Set Git Credentials
-        run: |
-          git config --global user.name "${{ vars.CI_SERVICE_NAME }}"
-          git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
-          git remote set-url origin "https://$REPO_PAT@github.com/adaptive-web-community/adaptive-web-components"
-        env:
-          REPO_PAT: ${{ secrets.REPO_PAT }}
 
       - name: Check for the presence of changed files inside ./change
         run: npm run checkchange
@@ -36,8 +28,16 @@ jobs:
         run: |
           npm run build -w @adaptive-web/adaptive-ui
           npm run build -w @adaptive-web/adaptive-web-components
+
+      - name: Set Git Credentials
+        run: |
+          git config --global user.name "${{ vars.CI_SERVICE_NAME }}"
+          git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
+          git remote set-url origin "https://$REPO_PAT@github.com/Adaptive-Web-Community/Adaptive-Web-Components"
+        env:
+          REPO_PAT: ${{ secrets.REPO_PAT }}
       
       - name: Publish to NPM
-        run: npm run publish-ci -n $NPM_AUTH_TOKEN
+        run: npm run publish-ci -n "$NODE_AUTH_TOKEN"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
