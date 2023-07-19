@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Sat, 01 Jul 2023 03:28:44 GMT and should not be manually modified.
+This log was last generated on Wed, 19 Jul 2023 04:28:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.0
+
+Wed, 19 Jul 2023 04:28:43 GMT
+
+### Minor changes
+
+- enable prefix changing for composed definitions (32497422+KingOfTac@users.noreply.github.com)
 
 ## 0.3.0
 
