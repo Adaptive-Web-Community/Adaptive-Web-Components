@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Wed, 19 Jul 2023 03:59:15 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "a7e92abf87f0611c9bbf7e46a4bd36365a0615f7",
+            "comment": "enable prefix changing for composed definitions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 01 Jul 2023 03:28:44 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.3.0",
       "version": "0.3.0",

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "enable prefix changing for composed definitions",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
