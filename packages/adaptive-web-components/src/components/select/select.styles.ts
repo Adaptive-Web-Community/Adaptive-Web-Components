@@ -34,6 +34,7 @@ export const templateStyles: ElementStyles = css`
         display: flex;
         align-items: center;
         cursor: pointer;
+        width: 100%;
     }
 
     ::slotted([slot="start"]),
