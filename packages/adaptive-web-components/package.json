@@ -1,6 +1,6 @@
 {
     "name": "@adaptive-web/adaptive-web-components",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "Standards based, framework agnostic web components built using FAST.",
     "type": "module",
     "sideEffects": false,
