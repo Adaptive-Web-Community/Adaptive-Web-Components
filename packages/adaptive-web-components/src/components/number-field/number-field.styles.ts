@@ -31,6 +31,7 @@ export const templateStyles: ElementStyles = css`
 
     .control {
         -webkit-appearance: none;
+        width: 100%;
         font: inherit;
         background: transparent;
         border: 0;
