@@ -22,6 +22,7 @@ export const templateStyles: ElementStyles = css`
 
     .control {
         -webkit-appearance: none;
+        width: 100%;
         margin: 0;
         padding: unset;
         border: none;
