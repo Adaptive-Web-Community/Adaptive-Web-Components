@@ -1,4 +1,5 @@
 import {
+    densityControl,
     focusStrokeOuter,
     focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
@@ -14,13 +15,14 @@ export const templateStyles: ElementStyles = css`
         flex-wrap: wrap;
         outline: none;
         user-select: none;
+        gap: ${densityControl.horizontalGap};
     }
 
     ::slotted([role="combobox"]) {
         width: auto;
         border: none;
         outline: none;
-        padding: unset;
+        padding: ${densityControl.verticalPadding} ${densityControl.horizontalPadding};
         user-select: none;
         font: inherit;
     }
