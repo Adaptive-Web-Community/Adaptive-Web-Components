@@ -15,14 +15,12 @@ export const templateStyles: ElementStyles = css`
         flex-wrap: wrap;
         outline: none;
         user-select: none;
-        gap: ${densityControl.horizontalGap};
     }
 
     ::slotted([role="combobox"]) {
         width: auto;
         border: none;
         outline: none;
-        padding: ${densityControl.verticalPadding} ${densityControl.horizontalPadding};
         user-select: none;
         font: inherit;
     }
@@ -35,9 +33,14 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         fill: currentcolor;
+        gap: ${densityControl.horizontalGap};
     }
 
     :host(:not([disabled]):focus-within) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+    }
+
+    ::slotted([role="combobox"]) {
+        padding: ${densityControl.verticalPadding} ${densityControl.horizontalPadding};
     }
 `;
