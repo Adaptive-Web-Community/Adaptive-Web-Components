@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "picker styles",
+  "packageName": "@adaptive-web/adaptive-web-components",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}

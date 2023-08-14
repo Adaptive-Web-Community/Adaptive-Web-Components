@@ -1,4 +1,5 @@
 import {
+    densityControl,
     focusStrokeOuter,
     focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
@@ -20,7 +21,6 @@ export const templateStyles: ElementStyles = css`
         width: auto;
         border: none;
         outline: none;
-        padding: unset;
         user-select: none;
         font: inherit;
     }
@@ -33,9 +33,14 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         fill: currentcolor;
+        gap: ${densityControl.horizontalGap};
     }
 
     :host(:not([disabled]):focus-within) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+    }
+
+    ::slotted([role="combobox"]) {
+        padding: ${densityControl.verticalPadding} ${densityControl.horizontalPadding};
     }
 `;

@@ -1,5 +1,9 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
-import { inputStyles } from "@adaptive-web/adaptive-ui/reference";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import {
+    controlShapeStyles,
+    neutralOutlineDiscernibleControlStyles,
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Visual styles composed by modules.
@@ -10,6 +14,12 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        inputStyles
+        Styles.compose(
+            [
+                controlShapeStyles,
+                typeRampBaseStyles,
+                neutralOutlineDiscernibleControlStyles
+            ],
+        )
     ],
 ];
