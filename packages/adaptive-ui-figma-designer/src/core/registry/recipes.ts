@@ -25,6 +25,7 @@ import {
     focusStrokeThickness,
     fontFamily,
     fontWeight,
+    highlightBaseColor,
     highlightFillDiscernibleRest,
     highlightFillReadableRest,
     highlightFillStealthRest,
@@ -86,6 +87,7 @@ type DesignTokenStore<T = any> = Array<DesignToken<T> & DesignTokenMetadata>;
 
 const designTokens: DesignTokenStore = [
     accentBaseColor,
+    highlightBaseColor,
     neutralBaseColor,
     layerFillBaseLuminance,
     fillColor,

@@ -20,6 +20,7 @@
     },
     "scripts": {
         "build": "npm run build:ui -- --minify esbuild && npm run build:figma -- --minify",
+        "build:debug": "npm run build:ui && npm run build:figma",
         "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --outfile=dist/main.js",
         "build:ui": "npx vite build --emptyOutDir=false --minify false",
         "build:watch": "concurrently -n figma,ui \"npm run build:figma -- --watch\" \"npm run build:ui -- --watch\"",
