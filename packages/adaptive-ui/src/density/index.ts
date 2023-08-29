@@ -3,6 +3,7 @@ import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adapt
 import { TokenGroup } from "../types.js";
 import { designUnit, strokeThickness } from "../design-tokens/appearance.js";
 import { createTokenDimension, createTokenNonCss } from "../token-helpers.js";
+import { StyleProperty } from "../modules/types.js";
 
 /**
  * The adjustment (plus or minus) to density unit values.
@@ -134,7 +135,8 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         ).withDefault(horizontalPaddingUnits);
 
         this.horizontalPadding = createTokenDimension(
-            `${name}-horizontal-padding`
+            `${name}-horizontal-padding`,
+            [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc(((${resolve(this.horizontalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
@@ -146,7 +148,8 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         ).withDefault(horizontalGapUnits);
 
         this.horizontalGap = createTokenDimension(
-            `${name}-horizontal-gap`
+            `${name}-horizontal-gap`,
+            StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.horizontalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
@@ -158,7 +161,8 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         ).withDefault(verticalPaddingUnits);
 
         this.verticalPadding = createTokenDimension(
-            `${name}-vertical-padding`
+            `${name}-vertical-padding`,
+            [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc(((${resolve(this.verticalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
@@ -170,7 +174,8 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         ).withDefault(verticalGapUnits);
 
         this.verticalGap = createTokenDimension(
-            "density-control-vertical-gap"
+            `${name}-vertical-gap`,
+            StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`

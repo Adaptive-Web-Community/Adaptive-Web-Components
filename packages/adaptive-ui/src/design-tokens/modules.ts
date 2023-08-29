@@ -70,15 +70,12 @@ import {
 /**
  * Style module for the shape of a control.
  *
- * By default, sets the border radius, thickness, and style, useful for buttons, inputs, list items, etc.
+ * By default, sets the border radius, useful for buttons, inputs, list items, etc.
  *
  * @public
  */
 export const controlShapeStyles: Styles = Styles.fromProperties(
     {
-        ...BorderThickness.all(strokeThickness),
-        ...BorderStyle.all("solid"),
-        ...BorderFill.all("transparent"),
         ...CornerRadius.all(cornerRadiusControl),
     },
     "shape.control",
@@ -87,18 +84,29 @@ export const controlShapeStyles: Styles = Styles.fromProperties(
 /**
  * Style module for the shape of a layer.
  *
- * By default, sets the border radius, thickness, and style, useful for card, panes, etc.
+ * By default, sets the border radius, useful for card, panes, etc.
  *
  * @public
  */
 export const layerShapeStyles: Styles = Styles.fromProperties(
     {
-        ...BorderThickness.all(strokeThickness),
-        ...BorderStyle.all("solid"),
-        ...BorderFill.all("transparent"),
         ...CornerRadius.all(cornerRadiusLayer),
     },
     "shape.layer",
+);
+
+/**
+ * Style module for the shape of a rounded control (pill shape).
+ *
+ * By default, sets the border radius, useful for badge, radio, etc.
+ *
+ * @public
+ */
+export const roundShapeStyles: Styles = Styles.fromProperties(
+    {
+        ...CornerRadius.all("50%"),
+    },
+    "shape.round",
 );
 
 /**
@@ -172,6 +180,22 @@ export const itemContainerDensityStyles: Styles = Styles.fromProperties(
         gap: densityItemContainer.horizontalGap,
     },
     "density.item-container",
+);
+
+/**
+ * Style module for the safety border.
+ *
+ * By default, sets the border thickness and style. The color is set to the safety recipe, which will turn on for increased contrast.
+ *
+ * @public
+ */
+export const safetyBorderStyles: Styles = Styles.fromProperties(
+    {
+        ...BorderThickness.all(strokeThickness),
+        ...BorderStyle.all("solid"),
+        ...BorderFill.all(neutralStrokeSafety),
+    },
+    "shape.control",
 );
 
 /**
@@ -689,6 +713,7 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties(
  */
 export const actionStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
@@ -703,6 +728,7 @@ export const actionStyles: Styles = Styles.compose(
  */
 export const inputStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
@@ -717,6 +743,7 @@ export const inputStyles: Styles = Styles.compose(
  */
 export const inputAutofillStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         autofillOuterDensityStyles,
         typeRampBaseStyles,
@@ -731,6 +758,7 @@ export const inputAutofillStyles: Styles = Styles.compose(
  */
 export const selectableSelectedStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
         highlightFillReadableControlStyles
@@ -744,6 +772,7 @@ export const selectableSelectedStyles: Styles = Styles.compose(
  */
 export const selectableUnselectedStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
         neutralOutlineDiscernibleControlStyles
@@ -757,6 +786,7 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
  */
 export const itemStyles: Styles = Styles.compose(
     [
+        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,

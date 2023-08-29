@@ -218,6 +218,25 @@ const template = html<App>`
                     `
                 )}
                 ${when(
+                    (x) => x.supportsDensity,
+                    html<App>`
+                        <designer-drawer name="Density">
+                            <div slot="collapsed-content">
+                                ${(x) => appliedTokensTemplate(x.densityTokens, null, TokenGlyphType.icon)}
+                            </div>
+                            <div>
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        StyleProperty.gap,
+                                        null,
+                                        "stack",
+                                        TokenGlyphType.icon
+                                    )}
+                            </div>
+                        </designer-drawer>
+                    `
+                )}
+                ${when(
                     (x) => x.supportsCornerRadius,
                     html<App>`
                         <designer-drawer name="Corner radius">
@@ -436,6 +455,9 @@ export class App extends FASTElement {
     public supportsStrokeWidth: boolean;
 
     @observable
+    public supportsDensity: boolean;
+
+    @observable
     public supportsCornerRadius: boolean;
 
     @observable
@@ -455,6 +477,9 @@ export class App extends FASTElement {
 
     @observable
     public strokeWidthTokens: AppliedDesignTokenItem[] | null;
+
+    @observable
+    public densityTokens: AppliedDesignTokenItem[] | null;
 
     @observable
     public cornerRadiusTokens: AppliedDesignTokenItem[] | null;
@@ -487,6 +512,7 @@ export class App extends FASTElement {
                     node.supports.includes(StyleProperty.borderFillTop)
             ) || false;
         this.supportsStrokeWidth = this.controller.supports(StyleProperty.borderThicknessTop);
+        this.supportsDensity = this.controller.supports(StyleProperty.gap);
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
@@ -494,6 +520,7 @@ export class App extends FASTElement {
         this.foregroundTokens = this.controller.appliedDesignTokens(StyleProperty.foregroundFill);
         this.strokeTokens = this.controller.appliedDesignTokens(StyleProperty.borderFillTop);
         this.strokeWidthTokens = this.controller.appliedDesignTokens(StyleProperty.borderThicknessTop);
+        this.densityTokens = this.controller.appliedDesignTokens(StyleProperty.gap);
         this.cornerRadiusTokens = this.controller.appliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
         this.textTokens = [
             ...this.controller.appliedDesignTokens(StyleProperty.fontFamily),
