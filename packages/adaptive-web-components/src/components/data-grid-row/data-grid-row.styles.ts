@@ -17,7 +17,7 @@ export const templateStyles: ElementStyles = css`
         width: 100%;
     }
 
-    :host([cell-type="sticky-header"]) {
+    :host([row-type="sticky-header"]) {
         position: sticky;
         top: 0;
     }
@@ -32,7 +32,7 @@ export const aestheticStyles: ElementStyles = css`
         padding: 1px 0;
     }
 
-    :host([cell-type="sticky-header"]) {
+    :host([row-type="sticky-header"]) {
         background: ${neutralFillSubtleRest};
     }
 
