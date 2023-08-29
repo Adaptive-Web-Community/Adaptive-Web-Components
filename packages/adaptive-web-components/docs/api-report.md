@@ -60,11 +60,11 @@ import { FASTTooltip } from '@microsoft/fast-foundation';
 import { FASTTreeItem } from '@microsoft/fast-foundation';
 import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
-import type { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
+import { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
 import { StyleModules } from '@adaptive-web/adaptive-ui';
-import type { StyleModuleTarget } from '@adaptive-web/adaptive-ui';
+import { StyleModuleTarget } from '@adaptive-web/adaptive-ui';
 import { Styles } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
