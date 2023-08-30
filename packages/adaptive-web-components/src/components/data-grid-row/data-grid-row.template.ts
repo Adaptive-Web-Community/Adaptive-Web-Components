@@ -1,5 +1,5 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
-import { dataGridRowTemplate, FASTDataGridRow } from "@microsoft/fast-foundation";
+import { dataGridRowTemplate, DataGridRowTypes, FASTDataGridRow } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { composeDataGridCell } from "../data-grid-cell/index.js";
@@ -8,9 +8,9 @@ import { composeDataGridCell } from "../data-grid-cell/index.js";
  * @public
  */
 export const DataGridRowConditions = {
-    rowTypeDefault: "[row-type='default']",
-    rowTypeHeader: "[row-type='header']",
-    rowTypeStickyHeader: "[row-type='stick-header']",
+    rowTypeDefault: `[row-type='${DataGridRowTypes.default}']`,
+    rowTypeHeader: `[row-type='${DataGridRowTypes.header}']`,
+    rowTypeStickyHeader: `[row-type='${DataGridRowTypes.stickyHeader}']`,
     selected: "[aria-selected='true']",
 };
 

@@ -1,5 +1,5 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
-import { dataGridCellTemplate, FASTDataGridCell } from "@microsoft/fast-foundation";
+import { dataGridCellTemplate, DataGridCellTypes, FASTDataGridCell } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
@@ -7,9 +7,9 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const DataGridCellConditions = {
-    cellTypeDefault: "[cell-type='default']",
-    cellTypeColumnHeader: "[cell-type='columnheader']",
-    cellTypeRowHeader: "[cell-type='rowheader']",
+    cellTypeDefault: `[cell-type='${DataGridCellTypes.default}']`,
+    cellTypeColumnHeader: `[cell-type='${DataGridCellTypes.columnHeader}']`,
+    cellTypeRowHeader: `[cell-type='${DataGridCellTypes.rowHeader}']`,
 };
 
 /**
