@@ -49,7 +49,7 @@ export class AdaptiveComponent extends FASTElement {
     @observable
     public styles?: Styles;
     protected stylesChanged(prev: Styles, next: Styles) {
-        console.log("stylesChanged", next);
+        // console.log("stylesChanged", next);
         
         // if (prev) {
         //     prev.forEach((s) => this.$fastController.removeStyles(s));

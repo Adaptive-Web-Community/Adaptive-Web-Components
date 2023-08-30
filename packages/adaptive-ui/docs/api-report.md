@@ -4,6 +4,7 @@
 
 ```ts
 
+import { Color } from 'culori';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import type { CSSDirective } from '@microsoft/fast-element';
@@ -346,6 +347,14 @@ export const PaletteDirectionValue: Readonly<{
 
 // @public
 export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
+
+// @public (undocumented)
+export class PaletteOkhsl extends BasePalette<SwatchRGB> {
+    // (undocumented)
+    static from(source: SwatchRGB | string): PaletteOkhsl;
+    // (undocumented)
+    static swatchToColor(swatch: SwatchRGB): Color;
+}
 
 // @public
 export class PaletteRGB extends BasePalette<SwatchRGB> {
