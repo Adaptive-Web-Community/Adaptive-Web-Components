@@ -7,7 +7,6 @@ import {
     observable,
     ref,
     repeat,
-    when,
 } from "@microsoft/fast-element";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import CheckmarkIcon from "../../assets/checkmark.svg";
@@ -17,7 +16,7 @@ import { DesignTokenField } from "../design-token-field/index.js";
 DesignTokenField;
 
 const template = html<DesignTokenAdd>`
-    <select @change="${(x, c) => x.selectHandler(c)}">
+    <select @change="${(x, c) => x.selectHandler(c)}" ${ref("list")}>
         <option selected value="-">Add design token override...</option>
         ${repeat(
             x => x.designTokens,
@@ -42,16 +41,6 @@ const template = html<DesignTokenAdd>`
             ${staticallyCompose(CheckmarkIcon)}
         </adaptive-button>
     </div>
-    ${when(
-        x => x.showMessageTemporary,
-        html<DesignTokenAdd>`
-            <p>
-                Design token added. Please select another layer then come back to this to
-                modify.
-            </p>
-            <p>This will be fixed asap.</p>
-        `
-    )}
 `;
 
 const styles = css`
@@ -83,47 +72,33 @@ export class DesignTokenAdd extends FASTElement {
     @observable
     selectedDesignToken?: DesignTokenDefinition;
 
-    selectedDesignTokenIndex: number;
+    list: HTMLSelectElement;
 
     field: DesignTokenField;
-
-    @observable
-    showMessageTemporary: boolean;
-
-    designTokensChanged() {
-        this.showMessageTemporary = false;
-    }
 
     selectHandler(c: ExecutionContext) {
         const selectedTokenId = (c.event.target as HTMLSelectElement).value;
 
         if (selectedTokenId !== "-") {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.selectedDesignToken = this.designTokens.find((token, index) => {
-                this.selectedDesignTokenIndex = index;
+            this.selectedDesignToken = this.designTokens.find((token) => {
                 return token.id === selectedTokenId;
-            })!;
+            });
+            this.list.value = "-";
+
             if (this.field) {
-                this.field.value = undefined;
+                this.field.value = this.selectedDesignToken.token.default;
             }
         }
     }
 
     addHandler() {
         if (this.field.value) {
-            // Remove the item from the list
-            this.designTokens.splice(this.selectedDesignTokenIndex, 1);
-
             this.$emit("add", {
                 definition: this.selectedDesignToken,
                 value: this.field.value,
             });
 
-            this.field.value = undefined;
             this.selectedDesignToken = undefined;
-
-            // Hack until rebuilt in web components to show a message to refresh selection.
-            this.showMessageTemporary = true;
         }
     }
 }

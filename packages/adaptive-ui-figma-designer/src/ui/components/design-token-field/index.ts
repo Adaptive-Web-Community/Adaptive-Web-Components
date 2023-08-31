@@ -1,68 +1,33 @@
-import { LayerBaseLuminance } from "@adaptive-web/adaptive-ui/reference";
-import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import {
-    css,
-    customElement,
-    ExecutionContext,
-    FASTElement,
-    html,
-    observable,
-    ref,
-} from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
+import { twoWay } from "@microsoft/fast-element/binding/two-way";
 import { DesignTokenDefinition, FormControlId } from "../../../core/registry/design-token-registry.js";
 
-const defaultTokenTemplate = html<DesignTokenField>`
-    <input
-        value="${x => x.value}"
-        @change="${(x, c) => {
-            x.updateValue((c.event.target as HTMLInputElement).value);
-        }}"
-    />
-`;
-
-const colorInputChangeHandler = (x: DesignTokenField, c: ExecutionContext) => {
-    const hex: string = (c.event.target as HTMLInputElement).value;
-    const parsed = parseColorHexRGB(hex);
-    if (parsed instanceof ColorRGBA64) {
-        x.updateValue(hex);
-    }
-};
-
 const tokenTemplatesByType = {
+    default: html<DesignTokenField>`
+        <input
+            :value="${twoWay(x => x.value)}"
+        />
+    `,
     color: html<DesignTokenField>`
         <input
             type="color"
-            id="${x => x.designToken?.id}"
-            ${ref("colorRef")}
-            @change="${colorInputChangeHandler}"
+            :value="${twoWay(x => x.value)}"
         />
         <input
-            type="text"
-            id="${x => x.designToken?.id}Hex"
             class="hex"
-            value="${x => x.value}"
-            @change="${colorInputChangeHandler}"
+            :value="${twoWay(x => x.value)}"
         />
     `,
+    // Would like to use LayerBaseLuminance for the values,
+    // but there appears to be a timing issue with two way binding
     luminance: html<DesignTokenField>`
         <select
-            @change="${(x, c) => {
-                x.updateValue((c.event.target as HTMLSelectElement).value);
-            }}"
+            :value="${twoWay(x => x.value)}"
         >
-            <option></option>
-            <option
-                value="${LayerBaseLuminance.LightMode}"
-                ?selected="${x =>
-                    Number.parseFloat(x.value) === LayerBaseLuminance.LightMode}"
-            >
+            <option value="0.95">
                 Light mode
             </option>
-            <option
-                value="${LayerBaseLuminance.DarkMode}"
-                ?selected="${x =>
-                    Number.parseFloat(x.value) === LayerBaseLuminance.DarkMode}"
-            >
+            <option value="0.15">
                 Dark mode
             </option>
         </select>
@@ -113,43 +78,23 @@ const styles = css`
     styles,
 })
 export class DesignTokenField extends FASTElement {
-    colorRef: HTMLInputElement;
-
     @observable
     designToken?: DesignTokenDefinition;
 
     @observable
-    value?: any;
-    valueChanged(prev: any, next: any) {
-        this.setColorInputValue(next);
-    }
-
-    connectedCallback(): void {
-        super.connectedCallback();
-        this.setColorInputValue(this.value);
-    }
-
-    // There seems to be a bug in the platform color picker element where the previous color is displayed
-    // even when the attribute changes. Setting the value in code works though.
-    setColorInputValue(value: string) {
-        if (this.colorRef && this.designToken && this.designToken.formControlId == FormControlId.color) {
-            this.colorRef.value = value;
-        }
-    }
-
-    updateValue(value: any) {
-        this.value = value;
+    value: string = "";
+    valueChanged(prev: string, next: string) {
         this.$emit("change", this.value);
     }
 
     selectTemplate() {
         if (this.designToken) {
             if (this.designToken.formControlId === FormControlId.color) {
-                return tokenTemplatesByType["color"];
-            } else if (this.designToken.id === "baseLayerLuminance") {
-                return tokenTemplatesByType["luminance"];
+                return tokenTemplatesByType.color;
+            } else if (this.designToken.id === "layer-fill-base-luminance") {
+                return tokenTemplatesByType.luminance;
             }
         }
-        return defaultTokenTemplate;
+        return tokenTemplatesByType.default;
     }
 }
