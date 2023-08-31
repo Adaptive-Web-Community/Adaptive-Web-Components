@@ -2,7 +2,7 @@ import { css, customElement, FASTElement, html, observable, repeat, when } from 
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginUINodeData } from "../core/model.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
-import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList, UIController, UIDesignTokenValue } from "./ui-controller.js";
+import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList, UIController } from "./ui-controller.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
 TokenGlyph;
@@ -297,7 +297,7 @@ const template = html<App>`
                     <div class="tokens-panel-content">
                         <div>
                             <designer-design-token-add
-                                :designTokens=${(x) => x.availableDesignTokens}
+                                :designTokens=${(x) => x.controller.availableDesignTokens}
                                 @add=${(x, c) =>
                                     x.controller.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
@@ -308,7 +308,7 @@ const template = html<App>`
                         </div>
                         <div style="overflow-y: overlay;">
                             <designer-design-tokens-form
-                                :designTokens=${(x) => x.designTokenValues}
+                                :designTokens=${(x) => x.controller.designTokenValues}
                                 @tokenChange=${(x, c) =>
                                     x.controller.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
@@ -494,12 +494,6 @@ export class App extends FASTElement {
     public appliedStyleModules: StyleModuleDisplayList = new Map();
 
     @observable
-    public designTokenValues: UIDesignTokenValue[] | null;
-
-    @observable
-    public availableDesignTokens: DesignTokenDefinition[] | null;
-
-    @observable
     public selectedNodes: PluginUINodeData[] | null;
     protected selectedNodesChanged(prev: PluginUINodeData[] | null, next: PluginUINodeData[] | null) {
         this.controller.setSelectedNodes(next);
@@ -531,14 +525,6 @@ export class App extends FASTElement {
         this.supportsDesignSystem = true;
 
         this.appliedStyleModules = this.controller.getAppliedStyleModules();
-
-        this.designTokenValues = this.controller.getDesignTokenValues();
-
-        // Get all design tokens that can be added, which is the full list except any already applied.
-        this.availableDesignTokens = this.controller.getDesignTokenDefinitions().filter(
-            (definition) =>
-                this.designTokenValues.find((appliedToken) => appliedToken.definition.id === definition.id) || true
-        );
     }
 
     constructor() {

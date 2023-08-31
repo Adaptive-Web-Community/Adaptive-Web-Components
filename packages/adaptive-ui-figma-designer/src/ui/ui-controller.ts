@@ -1,7 +1,7 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { calc } from '@csstools/css-calc';
 import { parseColorHexRGB } from "@microsoft/fast-colors";
-import { customElement, FASTElement, html } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type DesignToken, type StaticDesignTokenValue, type ValuesOf } from "@microsoft/fast-foundation";
 import { AppliedDesignToken, AppliedStyleValue, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
@@ -19,7 +19,7 @@ export interface UIDesignTokenValue {
     /**
      * Represents the design token value if all selected nodes have the same value.
      */
-    value?: string;
+    value: string;
 
     /**
      * If the selected nodes have multiple different values this will be a list for display.
@@ -118,6 +118,12 @@ export class UIController {
 
     private _selectedNodes: PluginUINodeData[] = [];
 
+    @observable
+    public designTokenValues: UIDesignTokenValue[] | null;
+
+    @observable
+    public availableDesignTokens: DesignTokenDefinition[] | null;
+
     /**
      * Create a new UI controller.
      * @param updateStateCallback Callback function to handle updated design token evaluation.
@@ -159,6 +165,8 @@ export class UIController {
         if (this.autoRefresh) {
             this.refreshSelectedNodes("setSelectedNodes");
         }
+
+        this.setupDesignTokenObservables();
     }
 
     public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
@@ -249,7 +257,7 @@ export class UIController {
      * Gets a display representation of design tokens applied to the selected nodes.
      * @returns Applied design tokens.
      */
-    public getDesignTokenValues(): UIDesignTokenValue[] {
+    private getDesignTokenValues(): UIDesignTokenValue[] {
         const tokenValues = new Map<string, Set<string>>();
         const designTokens: UIDesignTokenValue[] = [];
 
@@ -617,7 +625,7 @@ export class UIController {
         }
     }
 
-    public getDesignTokenDefinitions(): DesignTokenDefinition[] {
+    private getDesignTokenDefinitions(): DesignTokenDefinition[] {
         return this._designTokenRegistry.entries;
     }
 
@@ -659,6 +667,15 @@ export class UIController {
         this.setDesignTokenForElement(element, definition.token, value);
     }
 
+    private setupDesignTokenObservables() {
+        this.designTokenValues = this.getDesignTokenValues();
+
+        // Get all design tokens that can be added, which is the full list except any already applied.
+        this.availableDesignTokens = this.getDesignTokenDefinitions().filter((definition) =>
+            this.designTokenValues.find((appliedToken) => appliedToken.definition.id === definition.id) === undefined
+        );
+    }
+
     public setDesignToken(definition: DesignTokenDefinition, value: any): void {
         const nodes = this._selectedNodes;
 
@@ -669,6 +686,8 @@ export class UIController {
 
         // console.log("  Evaluating all design tokens for all selected nodes");
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
+
+        this.setupDesignTokenObservables();
 
         this.dispatchState("setDesignToken " + definition.id);
     }
@@ -683,6 +702,8 @@ export class UIController {
 
         // console.log("  Evaluating all design tokens for all selected nodes");
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
+
+        this.setupDesignTokenObservables();
 
         this.dispatchState("removeDesignToken");
     }
