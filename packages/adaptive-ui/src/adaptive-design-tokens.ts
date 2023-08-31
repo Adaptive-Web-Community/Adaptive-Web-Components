@@ -1,6 +1,7 @@
 import { cssDirective, htmlDirective } from "@microsoft/fast-element";
-import { applyMixins, CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
-import { StyleProperty } from "./index.js";
+import { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
+import { applyMixins } from './apply-mixins.js';
+import { StyleProperty } from "./modules/types.js";
 
 /**
  * Standard design token types from the community group and new types defined in Adaptive UI.

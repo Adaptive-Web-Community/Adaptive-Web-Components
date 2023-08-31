@@ -1,5 +1,5 @@
 import { css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
-import { twoWay } from "@microsoft/fast-element/binding/two-way";
+import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import { DesignTokenDefinition, FormControlId } from "../../../core/registry/design-token-registry.js";
 
 const tokenTemplatesByType = {
