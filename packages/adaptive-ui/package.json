@@ -35,7 +35,7 @@
     },
     "dependencies": {
         "@microsoft/fast-colors": "^5.3.1",
-        "@microsoft/fast-foundation": "3.0.0-alpha.28",
+        "@microsoft/fast-foundation": "3.0.0-alpha.31",
         "culori": "^3.2.0"
     },
     "devDependencies": {
