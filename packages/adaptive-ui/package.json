@@ -35,11 +35,13 @@
     },
     "dependencies": {
         "@microsoft/fast-colors": "^5.3.1",
-        "@microsoft/fast-foundation": "3.0.0-alpha.28"
+        "@microsoft/fast-foundation": "3.0.0-alpha.28",
+        "culori": "^3.2.0"
     },
     "devDependencies": {
         "@microsoft/api-extractor": "^7.34.4",
         "@types/chai": "^4.3.4",
+        "@types/culori": "^2.0.0",
         "@types/mocha": "^10.0.1",
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
