@@ -298,6 +298,14 @@ export class FigmaPluginNode extends PluginNode {
                         isShapeNode,
                         isLineNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
+                case StyleProperty.paddingTop:
+                case StyleProperty.paddingRight:
+                case StyleProperty.paddingBottom:
+                case StyleProperty.paddingLeft:
+                case StyleProperty.gap:
+                    return [
+                        isContainerNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));        
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
                 case StyleProperty.cornerRadiusBottomRight:
@@ -360,6 +368,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderThicknessRight:
                 case StyleProperty.borderThicknessBottom:
                 case StyleProperty.borderThicknessLeft:
+                    this.setBoxSizing();
                     this.paintStrokeWidth(value);
                     break;
                 case StyleProperty.cornerRadiusTopLeft:
@@ -407,15 +416,19 @@ export class FigmaPluginNode extends PluginNode {
                     }
                     break;
                 case StyleProperty.paddingTop:
+                    this.setBoxSizing();
                     (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingRight:
+                    this.setBoxSizing();
                     (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingBottom:
+                    this.setBoxSizing();
                     (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.paddingLeft:
+                    this.setBoxSizing();
                     (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
                     break;
                 case StyleProperty.gap:
@@ -510,6 +523,10 @@ export class FigmaPluginNode extends PluginNode {
     protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
         // console.log("    deletePluginData", this.debugInfo, key);
         this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
+    }
+
+    private setBoxSizing() {
+        (this._node as BaseFrameMixin).strokesIncludedInLayout = true;
     }
 
     private paintColor(target: StyleProperty, value: string): void {

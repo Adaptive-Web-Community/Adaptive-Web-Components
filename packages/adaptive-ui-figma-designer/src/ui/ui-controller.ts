@@ -364,8 +364,12 @@ export class UIController {
         }
 
         function appliedStyleModulesHandler(source: AppliedTokenSource): (moduleID: string) => void {
-            return function(moduleID) {
+            return function(moduleID: string) {
                 const styles = Styles.Shared.get(moduleID);
+                if (!styles) {
+                    console.error(`Style module not found: ${moduleID}`);
+                    return;
+                }
                 styles.effectiveProperties.forEach((value, target) => {
                     // TODO: Support other properties.
                     if (value instanceof CSSDesignToken) {

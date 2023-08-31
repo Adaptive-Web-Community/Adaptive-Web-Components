@@ -19,6 +19,8 @@ import {
     bodyFontFamily,
     cornerRadiusControl,
     cornerRadiusLayer,
+    densityControl,
+    densityItemContainer,
     fillColor,
     focusStrokeInner,
     focusStrokeOuter,
@@ -149,6 +151,13 @@ const strokeWidthTokens: DesignTokenStore = [
     focusStrokeThickness,
 ];
 
+const densityTokens: DesignTokenStore<string> = [
+    densityControl.horizontalGap,
+    densityControl.verticalGap,
+    densityItemContainer.horizontalGap,
+    densityItemContainer.verticalGap,
+];
+
 const cornerRadiusTokens: DesignTokenStore<string> = [
     cornerRadiusControl,
     cornerRadiusLayer,
@@ -225,6 +234,7 @@ export const registerTokens = (registry: DesignTokenRegistry) => {
 export const registerAppliableTokens = (registry: DesignTokenRegistry) => {
     registerStore(colorTokens, undefined, registry);
     registerStore(strokeWidthTokens, undefined, registry);
+    registerStore(densityTokens, undefined, registry);
     registerStore(cornerRadiusTokens, undefined, registry);
     registerStore(textTokens, undefined, registry);
 };
