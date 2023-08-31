@@ -34,10 +34,11 @@ import {
     neutralStrokeSubtle,
     neutralStrokeSubtleRest,
 } from "./color.js";
-import { densityControl, densityItemContainer } from "./density.js";
+import { densityControl, densityItemContainer, densityLayer } from "./density.js";
 import {
     fontFamily,
     fontWeight,
+    labelFontWeight,
     typeRampBaseFontSize,
     typeRampBaseFontVariations,
     typeRampBaseLineHeight,
@@ -104,7 +105,7 @@ export const layerShapeStyles: Styles = Styles.fromProperties(
  */
 export const roundShapeStyles: Styles = Styles.fromProperties(
     {
-        ...CornerRadius.all("50%"),
+        ...CornerRadius.all("999px"),
     },
     "shape.round",
 );
@@ -180,6 +181,21 @@ export const itemContainerDensityStyles: Styles = Styles.fromProperties(
         gap: densityItemContainer.horizontalGap,
     },
     "density.item-container",
+);
+
+/**
+ * Style module for the density and spacing of a layer.
+ *
+ * By default, sets the padding and gap, useful for cards, dialogs, etc.
+ *
+ * @public
+ */
+export const layerDensityStyles: Styles = Styles.fromProperties(
+    {
+        ...Padding.verticalHorizontal(densityLayer.verticalPadding, densityLayer.horizontalPadding),
+        gap: densityLayer.horizontalGap,
+    },
+    "density.layer",
 );
 
 /**
@@ -717,7 +733,7 @@ export const actionStyles: Styles = Styles.compose(
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
-        neutralFillSubtleControlStyles
+        neutralFillSubtleControlStyles,
     ],
     undefined,
     "styles.action-control",
@@ -732,7 +748,7 @@ export const inputStyles: Styles = Styles.compose(
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
-        neutralOutlineDiscernibleControlStyles
+        neutralOutlineDiscernibleControlStyles,
     ],
     undefined,
     "styles.input-control",
@@ -747,7 +763,7 @@ export const inputAutofillStyles: Styles = Styles.compose(
         controlShapeStyles,
         autofillOuterDensityStyles,
         typeRampBaseStyles,
-        neutralOutlineDiscernibleControlStyles
+        neutralOutlineDiscernibleControlStyles,
     ],
     undefined,
     "styles.input-autofill-control",
@@ -761,7 +777,7 @@ export const selectableSelectedStyles: Styles = Styles.compose(
         safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
-        highlightFillReadableControlStyles
+        highlightFillReadableControlStyles,
     ],
     undefined,
     "styles.selectable-control-selected",
@@ -775,7 +791,7 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
         safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
-        neutralOutlineDiscernibleControlStyles
+        neutralOutlineDiscernibleControlStyles,
     ],
     undefined,
     "styles.selectable-control-unselected",
@@ -790,7 +806,7 @@ export const itemStyles: Styles = Styles.compose(
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
-        neutralFillStealthControlStyles
+        neutralFillStealthControlStyles,
     ],
     undefined,
     "styles.item-control",
@@ -802,7 +818,7 @@ export const itemStyles: Styles = Styles.compose(
 export const plainTextStyles: Styles = Styles.compose(
     [
         typeRampBaseStyles,
-        neutralForegroundStrongElementStyles
+        neutralForegroundStrongElementStyles,
     ],
     undefined,
     "styles.text-plain",
@@ -814,8 +830,10 @@ export const plainTextStyles: Styles = Styles.compose(
 export const labelTextStyles: Styles = Styles.compose(
     [
         typeRampBaseStyles,
-        neutralForegroundStrongElementStyles
+        neutralForegroundStrongElementStyles,
     ],
-    undefined,
+    {
+        fontWeight: labelFontWeight,
+    },
     "styles.text-label",
 );

@@ -36,6 +36,12 @@ export const labelFontFamily = createTokenFontFamily("label-font-family").withDe
 /** @public */
 export const fontWeight = createTokenFontWeight("font-weight").withDefault(StandardFontWeight.Normal);
 
+/** @public */
+export const bodyFontWeight = createTokenFontWeight("body-font-weight").withDefault(fontWeight);
+
+/** @public */
+export const labelFontWeight = createTokenFontWeight("label-font-weight").withDefault(fontWeight);
+
 function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenResolver) => string {
     return (resolve: DesignTokenResolver): string => {
         return "";
