@@ -79,6 +79,7 @@ export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     public name: string;
+    public fillColor: ColorRGBA64 | null;
     private _node: BaseNode;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
@@ -201,11 +202,7 @@ export class FigmaPluginNode extends PluginNode {
         //     console.log("    final applied design tokens", this._appliedDesignTokens.serialize());
         // }
 
-        // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
-        // in the design tool could have a fixed color and provide that to the tokens, but the logic for _which_
-        // layers turns out to be pretty complicated.
-        // For now the requirement is basing the adaptive design with a "layer" recipe.
-        // this.setupFillColor();
+        this.fillColor = this.getFillColor();
     }
 
     public static get(node: BaseNode): FigmaPluginNode {
@@ -451,29 +448,24 @@ export class FigmaPluginNode extends PluginNode {
         return FigmaPluginNode.get(parent);
     }
 
-    public getEffectiveFillColor(): ColorRGBA64 | null {
-        let node: BaseNode | null = this._node;
+    private getFillColor(): ColorRGBA64 | null {
+        // console.log("FigmaPluginNode.getFillColor", this.debugInfo);
+        if ((this._node as GeometryMixin).fills) {
+            const fills = (this._node as GeometryMixin).fills;
 
-        while (node !== null) {
-            if ((node as GeometryMixin).fills) {
-                const fills = (node as GeometryMixin).fills;
+            if (Array.isArray(fills)) {
+                const paints: SolidPaint[] = fills.filter(
+                    (fill: Paint) => fill.type === "SOLID" && fill.visible
+                );
 
-                if (Array.isArray(fills)) {
-                    const paints: SolidPaint[] = fills.filter(
-                        (fill: Paint) => fill.type === "SOLID" && fill.visible
-                    );
-
-                    // TODO: how do we process multiple paints?
-                    if (paints.length === 1) {
-                        const parsed = ColorRGBA64.fromObject(paints[0].color);
-                        if (parsed instanceof ColorRGBA64) {
-                            return parsed;
-                        }
+                // TODO: how do we process multiple paints?
+                if (paints.length === 1) {
+                    const parsed = ColorRGBA64.fromObject(paints[0].color);
+                    if (parsed instanceof ColorRGBA64) {
+                        return parsed;
                     }
                 }
             }
-
-            node = node.parent;
         }
 
         return null;
@@ -486,7 +478,7 @@ export class FigmaPluginNode extends PluginNode {
             if (this._node.variantProperties) {
                 const currentDarkMode = this._node.variantProperties["Dark mode"];
                 if (currentDarkMode) {
-                    const color = this.getEffectiveFillColor();
+                    const color = this.parent?.fillColor;
                     if (color) {
                         const containerIsDark = rgbToRelativeLuminance(color) <= this.darkTarget;
                         // eslint-disable-next-line max-len

@@ -3,7 +3,8 @@ import { calc } from '@csstools/css-calc';
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type DesignToken, type StaticDesignTokenValue, type ValuesOf } from "@microsoft/fast-foundation";
-import { AppliedDesignToken, AppliedStyleValue, DesignTokenValue, PluginUINodeData, TOOL_FILL_COLOR_TOKEN } from "../core/model.js";
+import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { AppliedDesignToken, AppliedStyleValue, DesignTokenValue, PluginUINodeData, TOOL_PARENT_FILL_COLOR } from "../core/model.js";
 import { DesignTokenDefinition, DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { nameToTitle, registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 
@@ -420,6 +421,15 @@ export class UIController {
         // console.log("evaluateEffectiveAppliedStyleValues", nodes.length, nodes);
         nodes.forEach(node => {
             // console.log("  evaluateEffectiveAppliedStyleValues", node);
+
+            // See `evaluateEffectiveAppliedDesignToken` for a note on this.
+            const color = node.additionalData.get(TOOL_PARENT_FILL_COLOR);
+            if (color) {
+                const parentElement = this.getElementForNode(node).parentElement as FASTElement;
+                // console.log("    setting fill color token on parent element", color, parentElement.id);
+                this.setDesignTokenForElement(parentElement, fillColor, color);
+            }
+
             const allApplied = this.collectEffectiveAppliedStyles(node);
             allApplied.forEach((info, target) => {
                 if (info.value) {
@@ -431,7 +441,7 @@ export class UIController {
                         this.evaluateEffectiveAppliedDesignToken(target, info.value, node, info.source);
                     }
                 } else {
-                    // console.warn("Token not found in appliable tokens", info.token);
+                    console.warn("Token not found in appliable tokens", info.source);
                 }
             });
 
@@ -450,7 +460,7 @@ export class UIController {
         } else if (typeof value === "string") {
             if (value.startsWith("calc")) {
                 const ret = calc(value as string);
-                console.log(`    calc ${value} returns ${ret}`);
+                // console.log(`    calc ${value} returns ${ret}`);
                 value = ret;
             }
         }
@@ -464,18 +474,24 @@ export class UIController {
             node.appliedDesignTokens.set(target, appliedToken);
         }
 
-        // TODO: The fillColor context isn't working yet, so only use it for "fixed" layer backgrounds for now.
-        if (target === StyleProperty.backgroundFill && token.name.startsWith("layer-fill-fixed")) {
-            // console.log(`      Fill style property, setting '${TOOL_FILL_COLOR_TOKEN}' design token`);
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const def = this._designTokenRegistry.get(TOOL_FILL_COLOR_TOKEN)!;
-            const element = this.getElementForNode(node);
-            node.designTokens.set(TOOL_FILL_COLOR_TOKEN, { value: applied.value });
-            this.setDesignTokenForElement(element, def.token, applied.value);
-
-            // TODO: Optimize this, currently it will process children twice.
+        // This is necessary for representing nested elements in Figma, but does not realistically represent the way the tokens work.
+        // - A node will come in with the paren't fill color provided in `additionalData`. This accounts for relative color recipes,
+        //   but addressed the fact only selected nodes are processed going down the hierarchy.
+        // - If this node calculates a new background fill we need to update that value.
+        // - See `evaluateEffectiveAppliedStyleValues` where this value is set as a design token value.
+        // 
+        // This is perhaps still the most indirect interaction in Adaptive UI, where most color recipes are based on a container fill,
+        // but there's no way to resolve the _container_ color, so the color has to be on the _child_ node.
+        // This is further complicated by the fact that token values can only be set at the component level, not for a child element.
+        // This is also one of the primary motivations of the style modules and the creation of background/foreground color sets, because
+        // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
+        if (target === StyleProperty.backgroundFill) {
             if (node.children.length > 0) {
-                this.evaluateEffectiveAppliedStyleValues(node.children);
+                // console.log(`        Setting '${TOOL_PARENT_FILL_COLOR}' additional data on children`);
+                node.children.forEach(child => {
+                    // console.log("          Child", child.id, child.name);
+                    child.additionalData.set(TOOL_PARENT_FILL_COLOR, applied.value);
+                });
             }
         }
     }
@@ -516,15 +532,15 @@ export class UIController {
                 const color = parseColorHexRGB((value as unknown) as string);
                 if (color) {
                     // TODO fix this logic
-                    // console.log("    setting DesignToken value (color)", token.name, value);
+                    // console.log("        setting DesignToken value (color)", token.name, value);
                     if (token.name.indexOf("base-color") > -1) {
-                        // console.log("      raw value");
+                        // console.log("          raw value");
                         token.setValueFor(
                             nodeElement,
                             value as StaticDesignTokenValue<T>
                         );
                     } else {
-                        // console.log("      color object");
+                        // console.log("          color object");
                         token.setValueFor(
                             nodeElement,
                             (SwatchRGB.from(color) as unknown) as StaticDesignTokenValue<T>
@@ -533,13 +549,13 @@ export class UIController {
                 } else {
                     const num = Number.parseFloat((value as unknown) as string);
                     if (!Number.isNaN(num) && num.toString() === value) {
-                        // console.log("    setting DesignToken value (number)", token.name, value);
+                        // console.log("        setting DesignToken value (number)", token.name, value);
                         token.setValueFor(
                             nodeElement,
                             (num as unknown) as StaticDesignTokenValue<T>
                         );
                     } else {
-                        // console.log("    setting DesignToken value (unconverted)", token.name, value);
+                        // console.log("        setting DesignToken value (unconverted)", token.name, value);
                         token.setValueFor(nodeElement, value as StaticDesignTokenValue<T>);
                     }
                 }
@@ -547,7 +563,7 @@ export class UIController {
                 token.deleteValueFor(nodeElement);
             }
         } catch (e) {
-            console.warn("    token error", e);
+            console.warn("        token error", e);
             // Ignore, token not found
         }
     }
@@ -604,7 +620,8 @@ export class UIController {
         // console.log("    setting local tokens");
         node.designTokens.forEach(this.designTokenValuesHandler(nodeElement), this);
 
-        // Handle any additional data. Keys are provided as design token ids.
+        // Handle any additional data. Any keys that are for a design token will be set.
+        // console.log("    setting additional data");
         node.additionalData.forEach((value, key) => {
             const def = this._designTokenRegistry.get(key);
             if (def) {
@@ -646,6 +663,7 @@ export class UIController {
         const element = this.getElementForNode(node);
         const val = token.getValueFor(element);
         // console.log("      getDesignTokenValue", node.id, node.type, token.name, "value", this.valueToString(val));
+        // console.log("        fill color", fillColor.getValueFor(element)?.toColorString(), element);
         return val;
     }
 
