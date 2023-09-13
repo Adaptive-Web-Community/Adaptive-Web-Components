@@ -61,7 +61,7 @@ export function contrastAndDeltaSwatchSet(
     function getSwatch(index: number): Swatch {
         const swatch = palette.get(index) as SwatchRGB;
         if (zeroAsTransparent === true && index === referenceIndex) {
-            return SwatchRGB.asOverlay(swatch, swatch);
+            return swatch.toTransparent();
         } else {
             return swatch;
         }

@@ -1,6 +1,7 @@
 import { clampChroma, Color, interpolate, okhsl, parse, rgb, samples} from "culori";
 import { BasePalette } from "./palette.js";
 import { SwatchRGB } from "./swatch.js";
+import { _black, _white } from "./utilities/color-constants.js";
 
 const stepCount = 56;
 
@@ -47,6 +48,10 @@ export class PaletteOkhsl extends BasePalette<SwatchRGB> {
         const swatches = ramp.map((value) =>
             SwatchRGB.from(rgb(clampChroma(value, "okhsl")))
         );
+
+        // It's important that the ends are full white and black.
+        swatches[0] = _white;
+        swatches[swatches.length - 1] = _black;
 
         return new PaletteOkhsl(swatch, swatches);
     }

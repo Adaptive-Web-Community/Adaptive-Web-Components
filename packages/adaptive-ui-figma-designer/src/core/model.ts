@@ -152,7 +152,7 @@ export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyle
 /**
  * Map of additional data exchanged between the design tool and plugin. Not persisted.
  */
-export class AdditionalData extends SerializableMap<string, any> {}
+export class AdditionalData extends SerializableMap<string, string> {}
 
 /**
  * Defines the data stored by the plugin on a node instance.

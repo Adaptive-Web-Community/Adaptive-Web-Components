@@ -229,8 +229,8 @@ export abstract class PluginNode {
      */
     public get additionalData(): AdditionalData {
         if (!this._additionalData.has(TOOL_PARENT_FILL_COLOR) && this.parent?.fillColor) {
-            // console.log("PluginNode.get_additionalData - adding:", TOOL_PARENT_FILL_COLOR, this.parent?.fillColor.toStringHexRGB());
-            this._additionalData.set(TOOL_PARENT_FILL_COLOR, this.parent.fillColor.toStringHexRGB());
+            // console.log("PluginNode.get_additionalData - adding:", TOOL_PARENT_FILL_COLOR, this.debugInfo, this.parent?.fillColor.toStringHexARGB());
+            this._additionalData.set(TOOL_PARENT_FILL_COLOR, this.parent.fillColor.toStringHexARGB());
         }
         return this._additionalData;
     }

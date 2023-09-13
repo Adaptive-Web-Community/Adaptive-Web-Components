@@ -460,8 +460,9 @@ export class FigmaPluginNode extends PluginNode {
 
                 // TODO: how do we process multiple paints?
                 if (paints.length === 1) {
-                    const parsed = ColorRGBA64.fromObject(paints[0].color);
+                    const parsed = ColorRGBA64.fromObject(Object.assign({}, paints[0].color, {a: paints[0].opacity}));
                     if (parsed instanceof ColorRGBA64) {
+                        // console.log("FigmaPluginNode.getFillColor", this.debugInfo, parsed.toStringHexARGB());
                         return parsed;
                     }
                 }
@@ -518,7 +519,9 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private setBoxSizing() {
-        (this._node as BaseFrameMixin).strokesIncludedInLayout = true;
+        if (isContainerNode(this._node)) {
+            (this._node as BaseFrameMixin).strokesIncludedInLayout = true;
+        }
     }
 
     private paintColor(target: StyleProperty, value: string): void {

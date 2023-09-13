@@ -1,6 +1,6 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { calc } from '@csstools/css-calc';
-import { parseColorHexRGB } from "@microsoft/fast-colors";
+import { parseColorHexARGB, parseColorHexRGB } from "@microsoft/fast-colors";
 import { customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type DesignToken, type StaticDesignTokenValue, type ValuesOf } from "@microsoft/fast-foundation";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
@@ -365,10 +365,14 @@ export class UIController {
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
             return function(applied, target) {
                 const token = registry.get(applied.tokenID);
-                allApplied.set(target, {
-                    value: token.token as CSSDesignToken<any>,
-                    source,
-                });
+                if (token) {
+                    allApplied.set(target, {
+                        value: token.token as CSSDesignToken<any>,
+                        source,
+                    });
+                } else {
+                    console.error("Token not found:", applied.tokenID);
+                }
             }
         }
 
@@ -423,11 +427,12 @@ export class UIController {
             // console.log("  evaluateEffectiveAppliedStyleValues", node);
 
             // See `evaluateEffectiveAppliedDesignToken` for a note on this.
-            const color = node.additionalData.get(TOOL_PARENT_FILL_COLOR);
-            if (color) {
+            const colorHex = node.additionalData.get(TOOL_PARENT_FILL_COLOR);
+            if (colorHex) {
                 const parentElement = this.getElementForNode(node).parentElement as FASTElement;
-                // console.log("    setting fill color token on parent element", color, parentElement.id);
-                this.setDesignTokenForElement(parentElement, fillColor, color);
+                const color = parseColorHexARGB(colorHex);
+                // console.log("    setting fill color token on parent element", color, color?.toStringHexARGB(), parentElement.id);
+                this.setDesignTokenForElement(parentElement, fillColor, SwatchRGB.from(color));
             }
 
             const allApplied = this.collectEffectiveAppliedStyles(node);
@@ -454,23 +459,27 @@ export class UIController {
     }
 
     private evaluateEffectiveAppliedDesignToken(target: StyleProperty, token: CSSDesignToken<any>, node: PluginUINodeData, source: AppliedTokenSource) {
-        let value: any = this.getDesignTokenValue(node, token);
-        if (typeof (value as any).toColorString === "function") {
-            value = (value as any).toColorString();
-        } else if (typeof value === "string") {
-            if (value.startsWith("calc")) {
-                const ret = calc(value as string);
+        const valueOriginal: any = this.getDesignTokenValue(node, token);
+        let value: any = valueOriginal;
+        // let valueDebug: any;
+        if (valueOriginal instanceof SwatchRGB) {
+            const swatch = valueOriginal as SwatchRGB;
+            value = swatch.color.toStringHexARGB();
+            // valueDebug = swatch;
+        } else if (typeof valueOriginal === "string") {
+            if (valueOriginal.startsWith("calc")) {
+                const ret = calc(valueOriginal as string);
                 // console.log(`    calc ${value} returns ${ret}`);
                 value = ret;
             }
         }
-        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, `(from ${source})`);
+        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${source})`);
 
-        const applied = new AppliedStyleValue((value as unknown) as string);
+        const applied = new AppliedStyleValue(value);
         node.effectiveAppliedStyleValues.set(target, applied);
 
         if (source === AppliedTokenSource.local) {
-            const appliedToken = new AppliedDesignToken(token.name, (value as unknown) as string);
+            const appliedToken = new AppliedDesignToken(token.name, value);
             node.appliedDesignTokens.set(target, appliedToken);
         }
 
@@ -487,10 +496,10 @@ export class UIController {
         // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
         if (target === StyleProperty.backgroundFill) {
             if (node.children.length > 0) {
-                // console.log(`        Setting '${TOOL_PARENT_FILL_COLOR}' additional data on children`);
+                // console.log(`        Setting '${TOOL_PARENT_FILL_COLOR}' additional data on children`, value, valueOriginal);
                 node.children.forEach(child => {
                     // console.log("          Child", child.id, child.name);
-                    child.additionalData.set(TOOL_PARENT_FILL_COLOR, applied.value);
+                    child.additionalData.set(TOOL_PARENT_FILL_COLOR, value);
                 });
             }
         }
