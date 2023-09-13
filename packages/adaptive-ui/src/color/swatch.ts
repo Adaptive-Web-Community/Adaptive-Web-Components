@@ -82,7 +82,7 @@ export class SwatchRGB implements Swatch {
      * @returns The color value in string format
      */
     toColorString() {
-        return this.color.a === 0 ? "transparent" : this.color.a < 1 ? this.color.toStringWebRGBA() : this.color.toStringHexRGB();
+        return this.color.a < 1 ? this.color.toStringWebRGBA() : this.color.toStringHexRGB();
     }
 
     /**
@@ -98,6 +98,15 @@ export class SwatchRGB implements Swatch {
      * @returns The color value in a valid css string format
      */
     createCSS = this.toColorString;
+
+    /**
+     * Gets this color as full transparent.
+     *
+     * @returns The color with full transparency
+     */
+    toTransparent() {
+        return new SwatchRGB(this.r, this.g, this.b, 0, this);
+    }
 
     /**
      * Creates a new SwatchRGB from and object with R, G, and B values expressed as a number between 0 to 1.

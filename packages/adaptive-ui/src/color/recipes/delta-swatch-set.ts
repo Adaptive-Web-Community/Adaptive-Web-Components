@@ -34,7 +34,7 @@ export function deltaSwatchSet(
     function getSwatch(delta: number): Swatch {
         const swatch = palette.get(referenceIndex + dir * delta) as SwatchRGB;
         if (zeroAsTransparent === true && delta === 0) {
-            return SwatchRGB.asOverlay(swatch, swatch);
+            return swatch.toTransparent();
         } else {
             return swatch;
         }

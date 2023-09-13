@@ -2,9 +2,9 @@ import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
 
 /**
- * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lo more special handling.
+ * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lot more special handling.
  */
-export const TOOL_FILL_COLOR_TOKEN = "fill-color";
+export const TOOL_PARENT_FILL_COLOR = "tool-parent-fill-color";
 
 /**
  * A design token value.
@@ -152,7 +152,7 @@ export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyle
 /**
  * Map of additional data exchanged between the design tool and plugin. Not persisted.
  */
-export class AdditionalData extends SerializableMap<string, any> {}
+export class AdditionalData extends SerializableMap<string, string> {}
 
 /**
  * Defines the data stored by the plugin on a node instance.

@@ -9,7 +9,7 @@ import {
     ReadonlyAppliedDesignTokens,
     ReadonlyAppliedStyleModules,
     ReadonlyDesignTokenValues,
-    TOOL_FILL_COLOR_TOKEN,
+    TOOL_PARENT_FILL_COLOR,
 } from "./model.js";
 
 const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
@@ -91,7 +91,7 @@ export abstract class PluginNode {
             ]);
         }
 
-        // console.log("  PluginNode.inheritedDesignTokens", this.id, this.type, designTokens.entries());
+        // console.log("  PluginNode.inheritedDesignTokens", this.debugInfo, designTokens.entries());
 
         DesignTokenCache.set(this.id, designTokens);
 
@@ -137,9 +137,14 @@ export abstract class PluginNode {
     public abstract readonly type: string;
 
     /**
-     * The name of the node, useful for debugging.
+     * The name of this node, useful for debugging.
      */
     public abstract readonly name: string;
+
+    /**
+     * The fill color of this node.
+     */
+    public abstract readonly fillColor: ColorRGBA64 | null;
 
     /**
      * Gets whether this type of node can have children or not.
@@ -223,6 +228,10 @@ export abstract class PluginNode {
      * Gets additional data associated with this node.
      */
     public get additionalData(): AdditionalData {
+        if (!this._additionalData.has(TOOL_PARENT_FILL_COLOR) && this.parent?.fillColor) {
+            // console.log("PluginNode.get_additionalData - adding:", TOOL_PARENT_FILL_COLOR, this.debugInfo, this.parent?.fillColor.toStringHexARGB());
+            this._additionalData.set(TOOL_PARENT_FILL_COLOR, this.parent.fillColor.toStringHexARGB());
+        }
         return this._additionalData;
     }
 
@@ -234,42 +243,9 @@ export abstract class PluginNode {
     public abstract paint(target: StyleProperty, value: string): void;
 
     /**
-     * Gets the effective fill color for the node.
-     * This color is communicated to color recipes as the fillColor context for a node.
-     */
-    public abstract getEffectiveFillColor(): ColorRGBA64 | null;
-
-    /**
      * Handle components that have custom dark mode configuration, like logos or illustration.
      */
     public abstract handleManualDarkMode(): boolean;
-
-    /**
-     * Setup special handling for fill color. It should either be a design token or a fixed color applied in the design tool.
-     * Must be called after design tokens are loaded.
-     */
-    protected setupFillColor(): void {
-        if (this.canHaveChildren) {
-            // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
-            // If the fill color comes from a design token, don't pass it again.
-            let foundFill = false;
-            this._appliedDesignTokens.forEach((applied, target) => {
-                // console.log("    applied design token", target, "value", applied.value);
-                if (target === StyleProperty.backgroundFill) {
-                    foundFill = true;
-                }
-            });
-            if (!foundFill) {
-                const nodeFillColor = this.getEffectiveFillColor();
-                // console.log("    fill not found - effective color", nodeFillColor?.toStringHexRGB());
-                if (nodeFillColor) {
-                    // eslint-disable-next-line max-len
-                    // console.log("      PluginNode.setupFillColor - setting", TOOL_FILL_COLOR_TOKEN, this.id, this.type, nodeFillColor.toStringHexRGB());
-                    this._additionalData.set(TOOL_FILL_COLOR_TOKEN, nodeFillColor.toStringHexRGB());
-                }
-            }
-        }
-    }
 
     /**
      * Delete entries in the design token cache for this node and any child nodes.

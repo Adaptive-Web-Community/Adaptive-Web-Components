@@ -1,5 +1,4 @@
 import { InteractiveSwatchSet } from "../recipe.js";
-import { SwatchRGB } from "../swatch.js";
 import { _white } from "./color-constants.js";
 
 /**
@@ -17,7 +16,7 @@ export function conditionalSwatchSet(
         return set;
     }
 
-    const transparent = SwatchRGB.asOverlay(_white, _white);
+    const transparent = _white.toTransparent();
     return {
         rest: transparent,
         hover: transparent,
