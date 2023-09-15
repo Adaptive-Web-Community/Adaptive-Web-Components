@@ -1,6 +1,5 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { neutralForegroundHint } from "@adaptive-web/adaptive-ui/migration";
-import { neutralFillStealthHover } from "@adaptive-web/adaptive-ui/reference";
+import { neutralFillStealthHover, neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
 
 const template = html<CornerRadius>`
     <template
@@ -21,7 +20,7 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        color: ${neutralForegroundHint};
+        color: ${neutralStrokeReadableRest};
     }
 
     .indicator {

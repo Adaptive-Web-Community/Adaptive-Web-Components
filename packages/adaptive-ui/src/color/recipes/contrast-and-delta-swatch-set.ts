@@ -35,7 +35,7 @@ export function contrastAndDeltaSwatchSet(
     activeDelta: number,
     focusDelta: number,
     direction: PaletteDirection = directionByIsDark(reference),
-    zeroAsTransparent: boolean = true,
+    zeroAsTransparent: boolean = false,
 ): InteractiveSwatchSet {
     const dir = resolvePaletteDirection(direction);
 

@@ -26,7 +26,7 @@ export function deltaSwatchSet(
     activeDelta: number,
     focusDelta: number,
     direction: PaletteDirection = directionByIsDark(reference),
-    zeroAsTransparent: boolean = true,
+    zeroAsTransparent: boolean = false,
 ): InteractiveSwatchSet {
     const referenceIndex = palette.closestIndexOf(reference);
     const dir = resolvePaletteDirection(direction);

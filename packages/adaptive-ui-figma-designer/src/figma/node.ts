@@ -309,7 +309,9 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.cornerRadiusBottomLeft:
                     return [
                         isContainerNode,
-                        isShapeNode,
+                        isRectangleNode,
+                        // isShapeNode, // Shapes support a single corner radius, other support individual.
+                        // We're not really expecting star nodes here.
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.foregroundFill:
                     return [
@@ -413,23 +415,33 @@ export class FigmaPluginNode extends PluginNode {
                     }
                     break;
                 case StyleProperty.paddingTop:
-                    this.setBoxSizing();
-                    (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
+                    if (isFrameNode(this._node)) {
+                        this.setBoxSizing();
+                        (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
+                    }
                     break;
                 case StyleProperty.paddingRight:
-                    this.setBoxSizing();
-                    (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
+                    if (isFrameNode(this._node)) {
+                        this.setBoxSizing();
+                        (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
+                    }
                     break;
                 case StyleProperty.paddingBottom:
-                    this.setBoxSizing();
-                    (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
+                    if (isFrameNode(this._node)) {
+                        this.setBoxSizing();
+                        (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
+                    }
                     break;
                 case StyleProperty.paddingLeft:
-                    this.setBoxSizing();
-                    (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
+                    if (isFrameNode(this._node)) {
+                        this.setBoxSizing();
+                        (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
+                    }
                     break;
                 case StyleProperty.gap:
-                    (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(value); // Removes unit, so assumes px
+                    if (isFrameNode(this._node)) {
+                        (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(value); // Removes unit, so assumes px
+                    }
                     break;
                 default:
                     throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(value)}`);
@@ -519,7 +531,7 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private setBoxSizing() {
-        if (isContainerNode(this._node)) {
+        if (isFrameNode(this._node) && this._node.layoutMode !== "NONE") {
             (this._node as BaseFrameMixin).strokesIncludedInLayout = true;
         }
     }

@@ -519,6 +519,7 @@ export class SwatchRGB implements Swatch {
     readonly r: number;
     readonly relativeLuminance: number;
     toColorString(): string;
+    toTransparent(): SwatchRGB;
 }
 
 // @public

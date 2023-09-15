@@ -194,7 +194,9 @@ export const fillStealthRecipe = createTokenColorRecipeForPalette(
             resolve(fillStealthRestDelta),
             resolve(fillStealthHoverDelta),
             resolve(fillStealthActiveDelta),
-            resolve(fillStealthFocusDelta)
+            resolve(fillStealthFocusDelta),
+            undefined,
+            true
         )
 );
 
@@ -346,7 +348,9 @@ export const strokeStealthRecipe = createTokenColorRecipeForPalette(
             resolve(strokeStealthRestDelta),
             resolve(strokeStealthHoverDelta),
             resolve(strokeStealthActiveDelta),
-            resolve(strokeStealthFocusDelta)
+            resolve(strokeStealthFocusDelta),
+            undefined,
+            true
         )
 );
 

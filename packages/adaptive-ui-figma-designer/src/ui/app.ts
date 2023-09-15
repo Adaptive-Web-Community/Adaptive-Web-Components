@@ -1,7 +1,14 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
-import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { staticallyCompose } from "@microsoft/fast-foundation";
+import {
+    StyleProperty,
+    stylePropertyBorderFillAll,
+    stylePropertyBorderThicknessAll,
+    stylePropertyCornerRadiusAll
+} from "@adaptive-web/adaptive-ui";
 import { PluginUINodeData } from "../core/model.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
+import SubtractIcon from "./assets/subtract.svg";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList, UIController } from "./ui-controller.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
@@ -38,10 +45,10 @@ const appliedTokensTemplate = (
                         <span>${(x) => x.value}</span>
                         <adaptive-button
                             appearance="stealth"
-                            aria-label="Detach"
+                            aria-label="Remove design token"
                             @click=${(x, c) => c.parent.controller.removeAppliedDesignToken(x.target, x.tokenID)}
                         >
-                            Detach
+                            ${staticallyCompose(SubtractIcon)}
                         </adaptive-button>
                     </div>
                 `
@@ -51,13 +58,13 @@ const appliedTokensTemplate = (
 `;
 
 const availableTokensTemplate = (
-    tokenType: StyleProperty,
+    tokenType: StyleProperty[], // Changed to array to support _applying_ individual values like top/bottom, but only _checking_ the first one.
     title: string | null,
     tokenLayout: "stack" | "grid" = "stack",
     glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
 ) => html<App>`
     ${when(
-        (x) => x.selectedNodes?.some((node) => node.supports.includes(tokenType)),
+        (x) => x.selectedNodes?.some((node) => node.supports.includes(tokenType[0])),
         html<App>`
             ${when(
                 (x) => title,
@@ -65,7 +72,7 @@ const availableTokensTemplate = (
             )}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
-                    (x) => x.controller.appliableDesignTokenOptionsByType(tokenType),
+                    (x) => x.controller.appliableDesignTokenOptionsByType(tokenType[0]),
                     html<DesignTokenDefinition, App>`
                         <designer-token-glyph
                             circular
@@ -138,10 +145,10 @@ const template = html<App>`
                                                 </designer-token-glyph>
                                                 <adaptive-button
                                                     appearance="stealth"
-                                                    aria-label="Detach"
+                                                    aria-label="Remove style module"
                                                     @click=${(x, c) => c.parentContext.parent.controller.removeStyleModule(x.name)}
                                                 >
-                                                    Detach
+                                                    ${staticallyCompose(SubtractIcon)}
                                                 </adaptive-button>
                                             </div>
                                         `
@@ -185,15 +192,15 @@ const template = html<App>`
                                 ${(x) => appliedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
                             </div>
                             <div>
-                                ${(x) => availableTokensTemplate(StyleProperty.backgroundFill, "Fill")}
+                                ${(x) => availableTokensTemplate([StyleProperty.backgroundFill], "Fill")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.borderFillTop,
+                                        stylePropertyBorderFillAll,
                                         "Stroke",
                                         "stack",
                                         TokenGlyphType.borderSwatch
                                     )}
-                                ${(x) => availableTokensTemplate(StyleProperty.foregroundFill, "Foreground")}
+                                ${(x) => availableTokensTemplate([StyleProperty.foregroundFill], "Foreground")}
                             </div>
                         </designer-drawer>
                     `
@@ -208,7 +215,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.borderThicknessTop,
+                                        stylePropertyBorderThicknessAll,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -227,7 +234,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.gap,
+                                        [StyleProperty.gap],
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -246,7 +253,7 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.cornerRadiusTopLeft,
+                                        stylePropertyCornerRadiusAll,
                                         null,
                                         "stack",
                                         TokenGlyphType.icon
@@ -265,21 +272,21 @@ const template = html<App>`
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.fontFamily,
+                                        [StyleProperty.fontFamily],
                                         "Font family",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.fontSize,
+                                        [StyleProperty.fontSize],
                                         "Font size",
                                         "stack",
                                         TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        StyleProperty.lineHeight,
+                                        [StyleProperty.lineHeight],
                                         "Line height",
                                         "stack",
                                         TokenGlyphType.icon
