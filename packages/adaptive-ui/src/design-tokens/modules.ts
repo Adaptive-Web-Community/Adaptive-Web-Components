@@ -12,6 +12,7 @@ import {
     accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
+    fillColor,
     highlightFillDiscernible,
     highlightFillReadable,
     highlightFillStealth,
@@ -125,6 +126,23 @@ export const controlDensityStyles: Styles = Styles.fromProperties(
         gap: densityControl.horizontalGap,
     },
     "density.control",
+);
+
+/**
+ * Style module for the density and spacing of a *square* control.
+ *
+ * By default, sets the padding and gap, useful for icon-only buttons or other elements which should be square based on vertical size.
+ *
+ * See {@link autofillOuterDensityStyles} or {@link itemContainerDensityStyles}.
+ *
+ * @public
+ */
+export const controlSquareDensityStyles: Styles = Styles.fromProperties(
+    {
+        ...Padding.verticalHorizontal(densityControl.verticalPadding, densityControl.verticalPadding),
+        gap: densityControl.horizontalGap,
+    },
+    "density.control-square",
 );
 
 /**
@@ -288,7 +306,7 @@ export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
  * Convenience style module for an accent-outlined discernible control (interactive).
  *
  * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
- * - no background
+ * - fill color background
  * - accent readable foreground
  * - accent discernible border
  *
@@ -298,6 +316,7 @@ export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperti
     {
         ...BorderFill.all(accentStrokeDiscernible),
         foregroundFill: accentStrokeReadable,
+        backgroundFill: fillColor,
     },
     "color.accent-outline-discernible-control",
 );
@@ -393,7 +412,7 @@ export const highlightFillReadableControlStyles: Styles = Styles.fromProperties(
  * Convenience style module for an highlight-outlined discernible control (interactive).
  *
  * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
- * - no background
+ * - fill color background
  * - highlight readable foreground
  * - highlight discernible border
  *
@@ -403,6 +422,7 @@ export const highlightOutlineDiscernibleControlStyles: Styles = Styles.fromPrope
     {
         ...BorderFill.all(highlightStrokeDiscernible),
         foregroundFill: highlightStrokeReadable,
+        backgroundFill: fillColor,
     },
     "color.highlight-outline-discernible-control",
 );
@@ -498,7 +518,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
  * Convenience style module for a neutral-outlined discernible control (interactive).
  *
  * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
- * - no background
+ * - fill color background
  * - neutral strong foreground
  * - neutral discernible border
  *
@@ -508,6 +528,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
     {
         ...BorderFill.all(neutralStrokeDiscernible),
         foregroundFill: neutralStrokeStrongRest,
+        backgroundFill: fillColor,
     },
     "color.neutral-outline-discernible-control",
 );

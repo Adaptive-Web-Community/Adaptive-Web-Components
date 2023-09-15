@@ -227,9 +227,11 @@ export class UIController {
             // console.log("--------------------------------");
             // console.log("applying style module to node", name);
 
-            node.appliedStyleModules.push(name);
-            this.evaluateEffectiveAppliedStyleValues([node]);
-            // console.log("  node", node);
+            if (!node.appliedStyleModules.includes(name)) {
+                node.appliedStyleModules.push(name);
+                this.evaluateEffectiveAppliedStyleValues([node]);
+                // console.log("  node", node);
+            }
         });
 
         this.dispatchState("applyStyleModule");
@@ -521,12 +523,14 @@ export class UIController {
         this.dispatchState("removeAppliedDesignToken");
     }
 
-    public applyDesignToken(target: StyleProperty, token: DesignTokenDefinition): void {
+    public applyDesignToken(targets: StyleProperty[], token: DesignTokenDefinition): void {
         this._selectedNodes.forEach(node => {
             // console.log("--------------------------------");
-            // console.log("applying token to node", target, token);
+            // console.log("applying token to node", targets, token);
 
-            this.evaluateEffectiveAppliedDesignToken(target, token.token as CSSDesignToken<any>, node, AppliedTokenSource.local);
+            targets.forEach(target =>
+                this.evaluateEffectiveAppliedDesignToken(target, token.token as CSSDesignToken<any>, node, AppliedTokenSource.local)
+            );
 
             // console.log("  node", node);
         });
@@ -644,8 +648,9 @@ export class UIController {
 
     private valueToString(value: any): string {
         // TODO figure out a better way to handle storage data types
-        if (typeof value.toColorString === "function") {
-            return value.toColorString();
+
+        if (value instanceof SwatchRGB) {
+            return value.color.toStringHexARGB();
         } else {
             return "" + value;
         }

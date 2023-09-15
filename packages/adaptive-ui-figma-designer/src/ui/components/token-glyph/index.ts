@@ -1,11 +1,10 @@
-import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import {
-    neutralForegroundHint,
-} from "@adaptive-web/adaptive-ui/migration";
+import { attr, css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import {
     cornerRadiusControl,
     neutralFillStealthHover,
+    neutralStrokeReadableRest,
 } from "@adaptive-web/adaptive-ui/reference";
+import { parseColor } from "@microsoft/fast-colors";
 
 const template = html<TokenGlyph>`
     <template
@@ -15,7 +14,7 @@ const template = html<TokenGlyph>`
             ${x => (x.value === "none" ? "none" : "")}
             ${x => (x.interactive ? "interactive" : "")}
             ${x => (x.selected ? "selected" : "")}"
-        style="--swatch-value: ${x => (x.value === "none" ? "transparent" : x.value)}"
+        style="--swatch-value: ${x => (x.value === "none" ? "transparent" : x.valueColor)}"
         tabindex="${x => (x.interactive ? "0" : null)}"
         role="${x => (x.interactive ? "button" : null)}"
         aria-selected="${x => x.selected}"
@@ -33,7 +32,7 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        color: ${neutralForegroundHint};
+        color: ${neutralStrokeReadableRest};
     }
 
     .swatch {
@@ -140,6 +139,13 @@ export class TokenGlyph extends FASTElement {
 
     @attr
     public value: string | "none" = "none";
+    protected valueChanged(prev: string, next: string) {
+        const color = parseColor(next);
+        this.valueColor = color?.toStringWebRGBA();
+    }
+
+    @observable
+    public valueColor: string;
 
     @attr
     public icon?: string;

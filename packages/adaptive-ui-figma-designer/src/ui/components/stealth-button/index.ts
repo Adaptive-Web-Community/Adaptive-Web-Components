@@ -1,13 +1,10 @@
 import {
-    foregroundOnAccentRest,
-    neutralForegroundRest,
-    neutralStrokeRest,
-} from "@adaptive-web/adaptive-ui/migration";
-import {
     cornerRadiusControl,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralStrokeStrongRest,
+    neutralStrokeSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
@@ -36,13 +33,13 @@ const styles = css`
         border: none;
         border-radius: ${cornerRadiusControl};
         background: ${neutralFillStealthRest};
-        fill: ${neutralForegroundRest};
+        fill: ${neutralStrokeStrongRest};
         outline: none;
         font-size: inherit;
     }
 
     button:focus {
-        border-color: ${neutralStrokeRest};
+        border-color: ${neutralStrokeSubtleRest};
     }
     button:hover {
         background: ${neutralFillStealthHover};
@@ -54,7 +51,7 @@ const styles = css`
 
     :host([aria-expanded="true"]) button {
         background: #18a0fb;
-        fill: ${foregroundOnAccentRest};
+        fill: black;
     }
 `;
 

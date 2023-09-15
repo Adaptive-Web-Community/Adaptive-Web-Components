@@ -1,5 +1,6 @@
 import type { DesignToken } from "@microsoft/fast-foundation";
 import {
+    densityAdjustmentUnits,
     DesignTokenMetadata,
     DesignTokenType,
     Swatch,
@@ -107,6 +108,7 @@ const designTokens: DesignTokenStore = [
     layerFillBaseLuminance,
     fillColor,
     docBaseColor,
+    densityAdjustmentUnits,
     densityControl.horizontalPaddingUnits,
     densityControl.horizontalGapUnits,
     densityControl.verticalPaddingUnits,
@@ -226,8 +228,8 @@ const textTokens: DesignTokenStore = [
 ];
 
 export function nameToTitle(name: string): string {
-    const base = name.replace(/-/g, ' ');
-    return base.charAt(0).toUpperCase() + base.substr(1);
+    const base = name.replace(/-/g, ' ').replace(/density_/, '');
+    return base.charAt(0).toUpperCase() + base.substring(1);
 }
 
 function registerStore<T>(
