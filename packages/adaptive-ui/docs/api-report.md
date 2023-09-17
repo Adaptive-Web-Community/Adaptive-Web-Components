@@ -162,6 +162,9 @@ export function createTokenFontFamily(name: string): TypedCSSDesignToken<string>
 export function createTokenFontSize(name: string): TypedCSSDesignToken<string>;
 
 // @public
+export function createTokenFontStyle(name: string): TypedCSSDesignToken<string>;
+
+// @public
 export function createTokenFontVariations(name: string): TypedCSSDesignToken<string>;
 
 // @public

@@ -1,6 +1,6 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginNodeData } from "../core/model.js";
+import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
@@ -335,17 +335,132 @@ export class FigmaPluginNode extends PluginNode {
         }) as Array<StyleProperty>;
     }
 
-    public paint(target: StyleProperty, value: string): void {
+    /**
+     * Get the Figma style representation of the font weight.
+     *
+     * Style names with spaces may also match without the space or with hyphen instead.
+     * See {@link expandStyles}.
+     *
+     * @param value - A font weight numeric value
+     * @returns An array of potential font style names
+     */
+    private fontWeightToFigmaStyle(value: number) {
+        switch (value) {
+            case 100:
+                return ["Thin", "Hairline"];
+            case 200:
+                return this.expandStyles(["Extra Light", "Ultra Light"]);
+            case 300:
+                return ["Light"];
+            case 400:
+                return ["Regular", "Normal", "Book"];
+            case 500:
+                return ["Medium"];
+            case 600:
+                return this.expandStyles(["Semi Bold", "Demi Bold"]);
+            case 700:
+                return ["Bold"];
+            case 800:
+                return this.expandStyles(["Extra Bold", "Ultra Bold"]);
+            case 900:
+                return ["Black", "Heavy"];
+            case 950:
+                return this.expandStyles(["Extra Black", "Ultra Black"]);
+            default:
+                return ["Regular"];
+        }
+    }
+
+    /**
+     * Expand the Figma style names into possible variations.
+     * See {@link fontWeightToFigmaStyle}.
+     *
+     * @param styles - An array of font style names
+     * @returns An expanded array of font style names
+     */
+    private expandStyles(styles: string[]): string[] {
+        return styles.reduce<string[]>((prev: string[], cur: string) => {
+            const curArray = [cur]; // "Extra Light"
+            if (cur.indexOf(" ") > -1) {
+                curArray.push(cur.replace(/ /g, "-")); // "Extra-Light"
+                curArray.push(cur.charAt(0).toUpperCase() + cur.replace(/ /g, "").substring(1)); // "Extralight"
+            }
+            return prev.concat(curArray);
+        }, []);
+    }
+
+    /**
+     * Find the correct font that loads in Figma from possible variations of style names.
+     *
+     * @param family - The font family name
+     * @param styles - An array of font style possibilities
+     * @param italic - Added to the style for italic
+     * @param index - Index into the `styles` parameter
+     * @returns A successful font name or undefined
+     */
+    private async tryFont(family: string, styles: string[], italic: boolean, index: number): Promise<FontName | undefined> {
+        const style = (styles[index] === "Regular" && italic) ? "Italic" : styles[index] + (italic ? " Italic" : "");
+        const fontName = { family, style };
+        try {
+            await figma.loadFontAsync(fontName);
+            return fontName;
+        } catch (e) {
+            if (index < styles.length - 1) {
+                return this.tryFont(family, styles, italic, index + 1);
+            } else {
+                return undefined;
+            }
+        }
+    }
+
+    protected handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues) {
+        const fontFamily = values?.get(StyleProperty.fontFamily)?.value;
+        // We'll only set the font if the family is provided.
+        if (fontFamily) {
+            if (isTextNode(node._node)) {
+                const fontStyle = values?.get(StyleProperty.fontStyle)?.value; // For "italic"
+                const fontWeight: number = values?.get(StyleProperty.fontWeight)?.value || 400;
+                const families = fontFamily.split(",");
+                const family = families[0].replace(/['"]/g, ""); // Fallback is intended for the browser, in Figma just do the first
+                const styles = this.fontWeightToFigmaStyle(fontWeight);
+                // Append 'Regular' in case no other styles load
+                if (!styles.includes("Regular")) {
+                    styles.push("Regular");
+                }
+                const italic = fontStyle?.toLowerCase() === "italic";
+                this.tryFont(family, styles, italic, 0).then((fontName) => {
+                    if (fontName) {
+                        (node._node as TextNode).fontName = fontName;
+                    }
+                });
+            } else if (isContainerNode(node._node)) {
+                node.children.forEach((child) => {
+                    const figmaNode = (child as FigmaPluginNode);
+                    this.handleFontFamily(figmaNode, values);
+                });
+            }
+        }
+    }
+
+    public paint(values: AppliedStyleValues): void {
+        // Fonts are complicated in Figma, so pull them out of the normal loop.
+        this.handleFontFamily(this, values);
+
+        // Paint all applied design tokens on the node
+        values?.forEach((styleValue, target) => {
+            // console.log("applied design token eval", target, applied);
+            this.paintOne(target, styleValue.value);
+        });
+    }
+
+    public paintOne(target: StyleProperty, value: string): void {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
-            target === StyleProperty.fontFamily ||
             target === StyleProperty.fontSize ||
-            target === StyleProperty.fontStyle ||
-            target === StyleProperty.fontWeight ||
             target === StyleProperty.lineHeight))
         {
             this.children.forEach((child) => {
-                child.paint(target, value);
+                (child as FigmaPluginNode).paintOne(target, value);
             });
         } else {
             switch (target) {
@@ -377,14 +492,12 @@ export class FigmaPluginNode extends PluginNode {
                     this.paintCornerRadius(target, value);
                     break;
                 case StyleProperty.fontFamily:
-                    // TODO Handle font list better and font weight
-                    if (isTextNode(this._node)) {
-                        const families = value.split(",");
-                        const fontName = { family: families[0], style: "Regular" };
-                        figma.loadFontAsync(fontName).then(x => {
-                            (this._node as TextNode).fontName = fontName;
-                        });
-                    }
+                case StyleProperty.fontStyle:
+                case StyleProperty.fontWeight:
+                    // Ignore, handled in handleFontFamily.
+                    break;
+                case StyleProperty.fontVariationSettings:
+                    // TODO
                     break;
                 case StyleProperty.fontSize:
                     if (isTextNode(this._node)) {
@@ -393,15 +506,6 @@ export class FigmaPluginNode extends PluginNode {
                             textNode.fontSize = Number.parseFloat(value);
                         });
                     }
-                    break;
-                case StyleProperty.fontStyle:
-                    // Ignore, but don't throw an error.
-                    break;
-                case StyleProperty.fontWeight:
-                    // Ignore, but don't throw an error.
-                    break;
-                case StyleProperty.fontVariationSettings:
-                    // Ignore, but don't throw an error.
                     break;
                 case StyleProperty.lineHeight:
                     if (isTextNode(this._node)) {
