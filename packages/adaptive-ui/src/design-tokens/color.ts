@@ -22,7 +22,7 @@ import {
 } from "../token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { accentPalette, highlightPalette, neutralPalette } from "./palette.js";
+import { accentPalette, destructivePalette, highlightPalette, neutralPalette } from "./palette.js";
 
 /**
  * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
@@ -48,6 +48,19 @@ export function createTokenColorRecipeHighlight<T>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     return createTokenColorRecipeWithPalette(recipeToken, highlightPalette);
+}
+
+/**
+ * Creates a DesignToken that can be used for the _destructive_ palette configuration of a shared color recipe.
+ *
+ * @param recipeToken - The color recipe token.
+ *
+ * @public
+ */
+export function createTokenColorRecipeDestructive<T>(
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
+    return createTokenColorRecipeWithPalette(recipeToken, destructivePalette);
 }
 
 /**
@@ -876,6 +889,206 @@ export const highlightStrokeStrongActive = highlightStrokeStrong.active;
 
 /** @public */
 export const highlightStrokeStrongFocus = highlightStrokeStrong.focus;
+
+// Destructive Fill Stealth
+
+/** @public */
+export const destructiveFillStealthRecipe = createTokenColorRecipeDestructive(fillStealthRecipe);
+
+/** @public */
+export const destructiveFillStealth = createTokenColorSet(destructiveFillStealthRecipe);
+
+/** @public */
+export const destructiveFillStealthRest = destructiveFillStealth.rest;
+
+/** @public */
+export const destructiveFillStealthHover = destructiveFillStealth.hover;
+
+/** @public */
+export const destructiveFillStealthActive = destructiveFillStealth.active;
+
+/** @public */
+export const destructiveFillStealthFocus = destructiveFillStealth.focus;
+
+// Destructive Fill Subtle
+
+/** @public */
+export const destructiveFillSubtleRecipe = createTokenColorRecipeDestructive(fillSubtleRecipe);
+
+/** @public */
+export const destructiveFillSubtle = createTokenColorSet(destructiveFillSubtleRecipe);
+
+/** @public */
+export const destructiveFillSubtleRest = destructiveFillSubtle.rest;
+
+/** @public */
+export const destructiveFillSubtleHover = destructiveFillSubtle.hover;
+
+/** @public */
+export const destructiveFillSubtleActive = destructiveFillSubtle.active;
+
+/** @public */
+export const destructiveFillSubtleFocus = destructiveFillSubtle.focus;
+
+// Destructive Fill Discernible
+
+/** @public */
+export const destructiveFillDiscernibleRecipe = createTokenColorRecipeDestructive(fillDiscernibleRecipe);
+
+/** @public */
+export const destructiveFillDiscernible = createTokenColorSet(destructiveFillDiscernibleRecipe);
+
+/** @public */
+export const destructiveFillDiscernibleRest = destructiveFillDiscernible.rest;
+
+/** @public */
+export const destructiveFillDiscernibleHover = destructiveFillDiscernible.hover;
+
+/** @public */
+export const destructiveFillDiscernibleActive = destructiveFillDiscernible.active;
+
+/** @public */
+export const destructiveFillDiscernibleFocus = destructiveFillDiscernible.focus;
+
+// Destructive Fill Readable
+
+/** @public */
+export const destructiveFillReadableRecipe = createTokenColorRecipeDestructive(fillReadableRecipe);
+
+/** @public */
+export const destructiveFillReadable = createTokenColorSet(destructiveFillReadableRecipe);
+
+/** @public */
+export const destructiveFillReadableRest = destructiveFillReadable.rest;
+
+/** @public */
+export const destructiveFillReadableHover = destructiveFillReadable.hover;
+
+/** @public */
+export const destructiveFillReadableActive = destructiveFillReadable.active;
+
+/** @public */
+export const destructiveFillReadableFocus = destructiveFillReadable.focus;
+
+// Destructive Stroke Safety
+
+/** @public */
+export const destructiveStrokeSafetyRecipe = createTokenColorRecipeDestructive(strokeSafetyRecipe);
+
+/** @public */
+export const destructiveStrokeSafety = createTokenColorSet(destructiveStrokeSafetyRecipe);
+
+/** @public */
+export const destructiveStrokeSafetyRest = destructiveStrokeSafety.rest;
+
+/** @public */
+export const destructiveStrokeSafetyHover = destructiveStrokeSafety.hover;
+
+/** @public */
+export const destructiveStrokeSafetyActive = destructiveStrokeSafety.active;
+
+/** @public */
+export const destructiveStrokeSafetyFocus = destructiveStrokeSafety.focus;
+
+// Destructive Stroke Stealth
+
+/** @public */
+export const destructiveStrokeStealthRecipe = createTokenColorRecipeDestructive(strokeStealthRecipe);
+
+/** @public */
+export const destructiveStrokeStealth = createTokenColorSet(destructiveStrokeStealthRecipe);
+
+/** @public */
+export const destructiveStrokeStealthRest = destructiveStrokeStealth.rest;
+
+/** @public */
+export const destructiveStrokeStealthHover = destructiveStrokeStealth.hover;
+
+/** @public */
+export const destructiveStrokeStealthActive = destructiveStrokeStealth.active;
+
+/** @public */
+export const destructiveStrokeStealthFocus = destructiveStrokeStealth.focus;
+
+// Destructive Stroke Subtle
+
+/** @public */
+export const destructiveStrokeSubtleRecipe = createTokenColorRecipeDestructive(strokeSubtleRecipe);
+
+/** @public */
+export const destructiveStrokeSubtle = createTokenColorSet(destructiveStrokeSubtleRecipe);
+
+/** @public */
+export const destructiveStrokeSubtleRest = destructiveStrokeSubtle.rest;
+
+/** @public */
+export const destructiveStrokeSubtleHover = destructiveStrokeSubtle.hover;
+
+/** @public */
+export const destructiveStrokeSubtleActive = destructiveStrokeSubtle.active;
+
+/** @public */
+export const destructiveStrokeSubtleFocus = destructiveStrokeSubtle.focus;
+
+// Destructive Stroke Discernible
+
+/** @public */
+export const destructiveStrokeDiscernibleRecipe = createTokenColorRecipeDestructive(strokeDiscernibleRecipe);
+
+/** @public */
+export const destructiveStrokeDiscernible = createTokenColorSet(destructiveStrokeDiscernibleRecipe);
+
+/** @public */
+export const destructiveStrokeDiscernibleRest = destructiveStrokeDiscernible.rest;
+
+/** @public */
+export const destructiveStrokeDiscernibleHover = destructiveStrokeDiscernible.hover;
+
+/** @public */
+export const destructiveStrokeDiscernibleActive = destructiveStrokeDiscernible.active;
+
+/** @public */
+export const destructiveStrokeDiscernibleFocus = destructiveStrokeDiscernible.focus;
+
+// Destructive Stroke Readable
+
+/** @public */
+export const destructiveStrokeReadableRecipe = createTokenColorRecipeDestructive(strokeReadableRecipe);
+
+/** @public */
+export const destructiveStrokeReadable = createTokenColorSet(destructiveStrokeReadableRecipe);
+
+/** @public */
+export const destructiveStrokeReadableRest = destructiveStrokeReadable.rest;
+
+/** @public */
+export const destructiveStrokeReadableHover = destructiveStrokeReadable.hover;
+
+/** @public */
+export const destructiveStrokeReadableActive = destructiveStrokeReadable.active;
+
+/** @public */
+export const destructiveStrokeReadableFocus = destructiveStrokeReadable.focus;
+
+// Destructive Stroke Strong
+
+/** @public */
+export const destructiveStrokeStrongRecipe = createTokenColorRecipeDestructive(strokeStrongRecipe);
+
+/** @public */
+export const destructiveStrokeStrong = createTokenColorSet(destructiveStrokeStrongRecipe);
+
+/** @public */
+export const destructiveStrokeStrongRest = destructiveStrokeStrong.rest;
+
+/** @public */
+export const destructiveStrokeStrongHover = destructiveStrokeStrong.hover;
+
+/** @public */
+export const destructiveStrokeStrongActive = destructiveStrokeStrong.active;
+
+/** @public */
+export const destructiveStrokeStrongFocus = destructiveStrokeStrong.focus;
 
 // Neutral Fill Stealth
 

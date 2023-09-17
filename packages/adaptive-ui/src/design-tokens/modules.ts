@@ -12,6 +12,15 @@ import {
     accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
+    destructiveFillDiscernible,
+    destructiveFillReadable,
+    destructiveFillStealth,
+    destructiveFillSubtle,
+    destructiveStrokeDiscernible,
+    destructiveStrokeReadable,
+    destructiveStrokeReadableRecipe,
+    destructiveStrokeSafety,
+    destructiveStrokeSubtle,
     fillColor,
     highlightFillDiscernible,
     highlightFillReadable,
@@ -442,6 +451,112 @@ export const highlightForegroundReadableControlStyles: Styles = Styles.fromPrope
         foregroundFill: highlightStrokeReadable,
     },
     "color.highlight-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for an destructive-filled stealth control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - destructive stealth background
+ * - destructive readable foreground (a11y)
+ * - destructive safety border
+ *
+ * @public
+ */
+export const destructiveFillStealthControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(destructiveFillStealth, destructiveStrokeReadableRecipe),
+        ...BorderFill.all(destructiveStrokeSafety),
+    },
+    "color.destructive-fill-stealth-control",
+);
+
+/**
+ * Convenience style module for an destructive-filled subtle control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - destructive subtle background
+ * - destructive readable foreground (a11y)
+ * - destructive subtle border
+ *
+ * @public
+ */
+export const destructiveFillSubtleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(destructiveFillSubtle, destructiveStrokeReadableRecipe),
+        ...BorderFill.all(destructiveStrokeSubtle),
+    },
+    "color.destructive-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an destructive-filled discernible control (interactive).
+ *
+ * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
+ * - destructive discernible background (a11y)
+ * - destructive discernible foreground
+ * - no border
+ *
+ * @public
+ */
+export const destructiveFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(destructiveFillDiscernible, blackOrWhiteDiscernibleRecipe),
+    },
+    "color.destructive-fill-discernible-control",
+);
+
+/**
+ * Convenience style module for an destructive-filled readable control (interactive).
+ *
+ * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
+ * - destructive readable background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const destructiveFillReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(destructiveFillReadable, blackOrWhiteReadableRecipe),
+    },
+    "color.destructive-fill-readable-control",
+);
+
+/**
+ * Convenience style module for an destructive-outlined discernible control (interactive).
+ *
+ * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
+ * - fill color background
+ * - destructive readable foreground
+ * - destructive discernible border
+ *
+ * @public
+ */
+export const destructiveOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...BorderFill.all(destructiveStrokeDiscernible),
+        foregroundFill: destructiveStrokeReadable,
+        backgroundFill: fillColor,
+    },
+    "color.destructive-outline-discernible-control",
+);
+
+/**
+ * Convenience style module for an destructive-colored text or icon control (interactive).
+ *
+ * By default, the foreground color meets accessibility, useful for a button, link, or similar:
+ * - no background
+ * - destructive readable foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const destructiveForegroundReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        foregroundFill: destructiveStrokeReadable,
+    },
+    "color.destructive-foreground-readable-control",
 );
 
 /**
