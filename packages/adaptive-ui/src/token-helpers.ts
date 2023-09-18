@@ -70,6 +70,17 @@ export function createTokenFontSize(name: string): TypedCSSDesignToken<string> {
 }
 
 /**
+ * Creates a DesignToken that can be used for typography font style (normal, italic) in styles.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ *
+ * @public
+ */
+export function createTokenFontStyle(name: string): TypedCSSDesignToken<string> {
+    return TypedCSSDesignToken.createTyped<string>(name, DesignTokenType.fontStyle, StyleProperty.fontStyle);
+}
+
+/**
  * Creates a DesignToken that can be used for typography font variations in styles.
  *
  * @param name - The token name in `css-identifier` casing.

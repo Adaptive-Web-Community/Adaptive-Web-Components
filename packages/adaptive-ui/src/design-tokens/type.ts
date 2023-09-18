@@ -2,6 +2,7 @@ import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundatio
 import {
     createTokenFontFamily,
     createTokenFontSize,
+    createTokenFontStyle,
     createTokenFontVariations,
     createTokenFontWeight,
     createTokenLineHeight
@@ -41,6 +42,15 @@ export const bodyFontWeight = createTokenFontWeight("body-font-weight").withDefa
 
 /** @public */
 export const labelFontWeight = createTokenFontWeight("label-font-weight").withDefault(fontWeight);
+
+/** @public */
+export const fontStyle = createTokenFontStyle("font-style").withDefault("normal");
+
+/** @public */
+export const bodyFontStyle = createTokenFontStyle("body-font-style").withDefault(fontStyle);
+
+/** @public */
+export const labelFontStyle = createTokenFontStyle("label-font-style").withDefault(fontStyle);
 
 function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenResolver) => string {
     return (resolve: DesignTokenResolver): string => {

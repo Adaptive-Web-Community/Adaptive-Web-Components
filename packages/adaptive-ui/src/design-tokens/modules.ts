@@ -48,6 +48,8 @@ import { densityControl, densityItemContainer, densityLayer } from "./density.js
 import {
     fontFamily,
     fontWeight,
+    labelFontFamily,
+    labelFontStyle,
     labelFontWeight,
     typeRampBaseFontSize,
     typeRampBaseFontVariations,
@@ -969,6 +971,8 @@ export const labelTextStyles: Styles = Styles.compose(
         neutralForegroundStrongElementStyles,
     ],
     {
+        fontFamily: labelFontFamily,
+        fontStyle: labelFontStyle,
         fontWeight: labelFontWeight,
     },
     "styles.text-label",

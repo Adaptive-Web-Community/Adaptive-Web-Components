@@ -4,6 +4,7 @@ import {
     AdditionalData,
     AppliedDesignTokens,
     AppliedStyleModules,
+    AppliedStyleValues,
     DesignTokenValues,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
@@ -237,10 +238,9 @@ export abstract class PluginNode {
 
     /**
      * Updates the style property applied to this node.
-     * @param target The style property.
-     * @param value The applied value.
+     * @param values All applied style value.
      */
-    public abstract paint(target: StyleProperty, value: string): void;
+    public abstract paint(values: AppliedStyleValues): void;
 
     /**
      * Handle components that have custom dark mode configuration, like logos or illustration.

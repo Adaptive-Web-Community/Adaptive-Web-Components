@@ -26,7 +26,7 @@ export class AppliedDesignToken {
  * A value applied to a style property, possibly from a token evaluation or fixed value.
  */
 export class AppliedStyleValue {
-    constructor(public value: string) {
+    constructor(public value: any) {
     }
 }
 
