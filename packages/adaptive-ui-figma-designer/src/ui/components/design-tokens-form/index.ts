@@ -9,7 +9,7 @@ import {
 } from "@microsoft/fast-element";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import SubtractIcon from "../../assets/subtract.svg";
-import type { UIDesignTokenValue } from "../../ui-controller.js";
+import type { UIDesignTokenValue } from "../../ui-controller-tokens.js";
 import { DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;
