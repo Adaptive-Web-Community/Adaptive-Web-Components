@@ -519,31 +519,31 @@ export class FigmaPluginNode extends PluginNode {
                     }
                     break;
                 case StyleProperty.paddingTop:
-                    if (isFrameNode(this._node)) {
+                    if (isContainerNode(this._node)) {
                         this.setBoxSizing();
                         (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingRight:
-                    if (isFrameNode(this._node)) {
+                    if (isContainerNode(this._node)) {
                         this.setBoxSizing();
                         (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingBottom:
-                    if (isFrameNode(this._node)) {
+                    if (isContainerNode(this._node)) {
                         this.setBoxSizing();
                         (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingLeft:
-                    if (isFrameNode(this._node)) {
+                    if (isContainerNode(this._node)) {
                         this.setBoxSizing();
                         (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.gap:
-                    if (isFrameNode(this._node)) {
+                    if (isContainerNode(this._node)) {
                         (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(value); // Removes unit, so assumes px
                     }
                     break;
@@ -635,7 +635,7 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private setBoxSizing() {
-        if (isFrameNode(this._node) && this._node.layoutMode !== "NONE") {
+        if (isContainerNode(this._node) && this._node.layoutMode !== "NONE") {
             (this._node as BaseFrameMixin).strokesIncludedInLayout = true;
         }
     }
