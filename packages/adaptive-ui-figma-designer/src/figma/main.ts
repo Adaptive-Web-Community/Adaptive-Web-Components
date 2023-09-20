@@ -4,7 +4,8 @@ import { FigmaController } from "./controller.js";
 const controller = new FigmaController();
 
 // Ignore invisible nodes for performance, which means if someone turns them back to visible they may need to run the plugin again.
-figma.skipInvisibleInstanceChildren = true;
+// Update: With a reasonable number of invisible nodes the speed is no longer intolerable. Better to make sure styling is current.
+// figma.skipInvisibleInstanceChildren = true;
 
 figma.showUI(__html__, {
     height: 600,

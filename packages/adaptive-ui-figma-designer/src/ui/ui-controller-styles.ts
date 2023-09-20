@@ -10,6 +10,7 @@ import { UIController } from "./ui-controller.js";
 export type StyleModuleDisplay = {
     name: string;
     title: string;
+    styles: Styles;
 }
 
 /**
@@ -48,6 +49,7 @@ export class StylesController {
         modules.push({
             name: current[0],
             title: remaining.map((value) => nameToTitle(value)).join(" / "),
+            styles: current[1],
         });
         accumulated.set(topGroupFormatted, modules);
         return accumulated;
@@ -74,7 +76,7 @@ export class StylesController {
         this.controller.selectedNodes.forEach(node => {
             node.appliedStyleModules.forEach((name) => {
                 if (!allModules.has(name)) {
-                    allModules.set(name, null); // null Styles for now
+                    allModules.set(name, Styles.Shared.get(name));
                 }
             })
         });

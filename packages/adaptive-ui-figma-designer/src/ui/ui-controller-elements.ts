@@ -2,6 +2,7 @@ import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenValue, PluginUINodeData } from "../core/model.js";
 import { UIController } from "./ui-controller.js";
 
@@ -174,5 +175,17 @@ export class ElementsController {
         }, this);
 
         node.children.forEach(child => this.setupDesignTokenElement(nodeElement, child));
+    }
+
+    /**
+     * Resets the `fill-color` token value on the full element tree.
+     *
+     * @param element - The top element, recursive
+     */
+    public resetFillColor(element: FASTElement) {
+        this.setDesignTokenForElement(element, fillColor, null);
+        element.childNodes.forEach(child =>
+            this.resetFillColor(child as FASTElement)
+        );
     }
 }
