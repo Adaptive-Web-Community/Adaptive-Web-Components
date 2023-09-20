@@ -1,28 +1,24 @@
-import { attr, css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
-import {
-    cornerRadiusControl,
-    neutralFillStealthHover,
-    neutralStrokeReadableRest,
-} from "@adaptive-web/adaptive-ui/reference";
+import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
+import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
 import { parseColor } from "@microsoft/fast-colors";
+import { renderElementStyles, Styles } from "@adaptive-web/adaptive-ui";
+import { staticallyCompose } from "@microsoft/fast-foundation";
+import BlobIcon from "../../assets/blob.svg";
 
 const template = html<TokenGlyph>`
     <template
-        class="${x => x.orientation}
-            ${x => x.type}
-            ${x => (x.circular ? " circular" : "")}
-            ${x => (x.value === "none" ? "none" : "")}
-            ${x => (x.interactive ? "interactive" : "")}
-            ${x => (x.selected ? "selected" : "")}"
-        style="--swatch-value: ${x => (x.value === "none" ? "transparent" : x.valueColor)}"
-        tabindex="${x => (x.interactive ? "0" : null)}"
-        role="${x => (x.interactive ? "button" : null)}"
-        aria-selected="${x => x.selected}"
+        class=${x => (x.value === "none" && x.type !== TokenGlyphType.stylesSwatch ? "none" : "")}
+        tabindex=${x => (x.interactive ? "0" : null)}
+        role=${x => (x.interactive ? "button" : null)}
     >
-        <div class="${x => (x.type === TokenGlyphType.icon ? "icon" : "swatch")}">
-            ${x => x.icon || ""}
+        <div
+            part="swatch"
+            class="swatch"
+            style=${x => (!x.value || x.value === "none" ? "" : `--swatch-value: ${x.valueColor}`)}
+        >
+            <span class="text">Ag</span>
+            <span class="icon">${staticallyCompose(BlobIcon)}</span>
         </div>
-        <slot></slot>
     </template>
 `;
 
@@ -31,23 +27,34 @@ const styles = css`
         box-sizing: border-box;
         display: inline-flex;
         align-items: center;
-        text-align: center;
-        color: ${neutralStrokeReadableRest};
+        cursor: default;
     }
 
     .swatch {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         box-sizing: border-box;
         width: 32px;
         height: 32px;
         border-radius: calc(${cornerRadiusControl} * 2);
-        background: var(--swatch-value);
-        border: 1px solid var(--swatch-border-color, #e8e8e8);
-        position: relative;
     }
 
-    .swatch:before {
-        content: "";
+    .text,
+    .icon {
         display: none;
+    }
+
+    :host([type="background"]) .swatch,
+    :host([type="border"]) .swatch {
+        background-color: var(--swatch-value);
+        border: 1px solid #e8e8e8;
+    }
+
+    :host([type="border"]) .swatch::before {
+        display: block;
+        content: "";
         position: absolute;
         top: 6px;
         bottom: 6px;
@@ -55,13 +62,29 @@ const styles = css`
         right: 6px;
         box-sizing: border-box;
         background: var(--fill-color);
-        border: 1px solid var(--swatch-border-color, #e8e8e8);
+        border: 1px solid #e8e8e8;
         border-radius: calc(${cornerRadiusControl} * 2);
     }
 
-    .swatch::after {
+    :host([type="icon"]) .swatch {
+        position: relative;
+        width: 28px;
+        height: 28px;
+        overflow: hidden;
+        color: var(--swatch-value);
+    }
+
+    :host([type="icon"]) .icon {
+        display: block;
+    }
+
+    :host([type="icon"]) svg {
+        fill: currentcolor;
+    }
+
+    :host(.none) .swatch::after {
+        display: block;
         content: "";
-        display: none;
         width: 1px;
         height: 32px;
         background: #ff3366;
@@ -71,59 +94,33 @@ const styles = css`
         transform: rotate(45deg);
     }
 
-    .icon {
-        width: 28px;
-        height: 28px;
-        position: relative;
-        overflow: hidden;
+    :host([type="styles"]) .text {
+        display: block;
     }
 
-    :host(.vertical) {
-        flex-direction: column;
-        padding: 8px;
-    }
-
-    :host(.vertical) .swatch {
-        margin-bottom: 8px;
-    }
-
-    :host(.horizontal) .swatch {
-        margin-inline-end: 8px;
-    }
-
-    :host(.circular) .swatch,
-    :host(.circular) .swatch::before {
+    :host([circular]) .swatch,
+    :host([circular]) .swatch::before {
         border-radius: 50%;
     }
 
-    :host(.border) .swatch::before {
-        display: block;
-    }
-
-    :host(.none) .swatch::after {
-        display: block;
-    }
-
-    :host(.interactive) {
+    :host([interactive]) {
         outline: none;
-    }
-
-    :host(.interactive:hover) {
         cursor: pointer;
-        background: ${neutralFillStealthHover};
-    }
-
-    :host(.selected),
-    :host(.selected:hover) {
-        background: #daebf7;
     }
 `;
 
 export enum TokenGlyphType {
     backgroundSwatch = "background",
     borderSwatch = "border",
+    stylesSwatch = "styles",
     icon = "icon",
 }
+
+const params = {
+    interactivitySelector: "",
+    nonInteractivitySelector: "",
+    part: "swatch",
+};
 
 @customElement({
     name: "designer-token-glyph",
@@ -147,18 +144,21 @@ export class TokenGlyph extends FASTElement {
     @observable
     public valueColor: string;
 
-    @attr
-    public icon?: string;
-
-    @attr
-    public orientation: "horizontal" | "vertical" = "vertical";
-
-    @attr
-    public label?: string;
+    @observable
+    public styles?: Styles;
+    protected stylesChanged(prev: Styles, next: Styles) {
+        if (prev) {
+            this._addedStyles.forEach((s) => this.$fastController.removeStyles(s));
+        }
+        if (next) {
+            this._addedStyles = renderElementStyles(next, params);
+            this._addedStyles.forEach((s) => this.$fastController.addStyles(s));
+        }
+    }
 
     @attr({ mode: "boolean" })
     public interactive: boolean = false;
 
-    @attr({ mode: "boolean" })
-    public selected: boolean = false;
+    // Keep track of the styles we added so we can remove them without recreating.
+    private _addedStyles: ElementStyles[];
 }

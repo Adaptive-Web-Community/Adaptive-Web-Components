@@ -2,6 +2,7 @@ import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
+import { Controller } from "../core/controller.js";
 import { variantBooleanHelper } from "./utility.js";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
@@ -87,7 +88,7 @@ export class FigmaPluginNode extends PluginNode {
     private constructor(node: BaseNode) {
         super();
 
-        // Controller.nodeCount++;
+        Controller.nodeCount++;
 
         this._node = node;
         this.id = node.id;

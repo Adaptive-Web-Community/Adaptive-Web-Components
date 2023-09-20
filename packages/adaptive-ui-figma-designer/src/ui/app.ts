@@ -6,13 +6,20 @@ import {
     stylePropertyBorderThicknessAll,
     stylePropertyCornerRadiusAll
 } from "@adaptive-web/adaptive-ui";
+import {
+    cornerRadiusControl,
+    neutralFillStealthHover,
+    neutralStrokeReadableRest,
+    neutralStrokeStrongRest
+} from "@adaptive-web/adaptive-ui/reference";
 import { PluginUINodeData } from "../core/model.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
-import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
+import { DesignTokenAdd, DesignTokensForm, Drawer, StyleTokenItem, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
+StyleTokenItem;
 TokenGlyph;
 Drawer;
 DesignTokenAdd;
@@ -21,71 +28,65 @@ DesignTokensForm;
 const appliedTokensTemplate = (
     tokens: AppliedDesignTokenItem[] | null,
     title: string | null,
-    glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
+    glyphType?: TokenGlyphType
 ) => html<App>`
     ${when(
-        (x) => tokens?.length,
+        (_) => tokens?.length,
         html<App>`
             ${when(
-                (x) => title,
-                html`<p class="title inset">${(x) => title}</p>`
+                (_) => title,
+                html`<p class="title">${(_) => title}</p>`
             )}
-            ${repeat(
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                (x) => tokens!,
-                html<AppliedDesignTokenItem, App>`
-                    <div class="applied-design-token">
-                        <designer-token-glyph
-                            circular
+            <div class="swatch-stack">
+                ${repeat(
+                    (_) => tokens,
+                    html<AppliedDesignTokenItem, App>`
+                        <designer-style-token-item
+                            title=${(x, c) => c.parent.controller.styles.getAppliableDesignTokenDefinition(x.tokenID)?.title}
                             value=${(x) => x.value}
-                            orientation="horizontal"
-                            type=${(x) => glyphType}
+                            glyphType=${(_) => glyphType}
                         >
-                            ${(x, c) => c.parent.controller.styles.getAppliableDesignTokenDefinition(x.tokenID)?.title}
-                        </designer-token-glyph>
-                        <span>${(x) => x.value}</span>
-                        <adaptive-button
-                            appearance="stealth"
-                            aria-label="Remove design token"
-                            @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.target, x.tokenID)}
-                        >
-                            ${staticallyCompose(SubtractIcon)}
-                        </adaptive-button>
-                    </div>
-                `
-            )}
+                            <adaptive-button
+                                slot="actions"
+                                appearance="stealth"
+                                aria-label="Remove design token"
+                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.target, x.tokenID)}
+                            >
+                                ${staticallyCompose(SubtractIcon)}
+                            </adaptive-button>
+                        </designer-style-token-item>
+                    `
+                )}
+            </div>
         `
     )}
 `;
 
 const availableTokensTemplate = (
-    tokenType: StyleProperty[], // Changed to array to support _applying_ individual values like top/bottom, but only _checking_ the first one.
+    tokenType: StyleProperty[], // Changed to array for _applying_ individual values like top/bottom, but only _checking_ the first one.
     title: string | null,
     tokenLayout: "stack" | "grid" = "stack",
-    glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
+    glyphType?: TokenGlyphType
 ) => html<App>`
     ${when(
         (x) => x.selectedNodes?.some((node) => node.supports.includes(tokenType[0])),
         html<App>`
             ${when(
-                (x) => title,
-                html`<p class="title inset">${(x) => title}</p>`
+                (_) => title,
+                html`<p class="title">${(_) => title}</p>`
             )}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.styles.getAppliableDesignTokenOptionsByType(tokenType[0]),
                     html<DesignTokenDefinition, App>`
-                        <designer-token-glyph
-                            circular
+                        <designer-style-token-item
+                            title=${(x) => x.title}
                             value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x.token)}
-                            orientation="horizontal"
-                            type=${(x) => glyphType}
-                            interactive
-                            ?selected=${(x, c) => c.parent.controller.styles.getNodesWithDesignTokenApplied(x.id).length > 0}
+                            glyphType=${(_) => glyphType}
+                            content-button
                             @click=${(x, c) => c.parent.controller.styles.applyDesignToken(tokenType, x)}
                         >
-                            ${(x) => x.title}
-                        </designer-token-glyph>
+                        </designer-style-token-item>
                     `
                 )}
             </div>
@@ -132,17 +133,21 @@ const template = html<App>`
                         ${repeat(
                             (x) => new Array(...x.appliedStyleModules.entries()),
                             html<[string, StyleModuleDisplay[]], App>`
-                                <p class="title inset">${(x) => x[0]}</p>
+                                <p class="title">${(x) => x[0]}</p>
                                 <div class="swatch-stack">
                                     ${repeat(
                                         (x) => x[1],
                                         html<StyleModuleDisplay, App>`
-                                            <div class="applied-style-module">
-                                                <designer-token-glyph
-                                                    orientation="horizontal"
-                                                    type=${TokenGlyphType.icon}
-                                                >
+                                            <div class="style-module applied">
+                                                <span class="content">
                                                     ${(x) => x.title}
+                                                </span>
+                                                <designer-token-glyph
+                                                    circular
+                                                    type=${TokenGlyphType.stylesSwatch}
+                                                    :styles=${x => x.styles}
+                                                    interactive
+                                                >
                                                 </designer-token-glyph>
                                                 <adaptive-button
                                                     appearance="stealth"
@@ -162,19 +167,27 @@ const template = html<App>`
                         ${repeat(
                             (x) => new Array(...x.controller.styles.getAvailableStyleModules().entries()),
                             html<[string, StyleModuleDisplay[]], App>`
-                                <p class="title inset">${(x) => x[0]}</p>
+                                <p class="title">${(x) => x[0]}</p>
                                 <div class="swatch-stack">
                                     ${repeat(
                                         (x) => x[1],
                                         html<StyleModuleDisplay, App>`
-                                            <designer-token-glyph
-                                                orientation="horizontal"
-                                                type=${TokenGlyphType.icon}
-                                                interactive
-                                                @click=${(x, c) => c.parentContext.parent.controller.styles.applyStyleModule(x.name)}
-                                            >
-                                                ${(x) => x.title}
-                                            </designer-token-glyph>
+                                            <div class="style-module available">
+                                                <span
+                                                    class="content"
+                                                    role="button"
+                                                    @click=${(x, c) => c.parentContext.parent.controller.styles.applyStyleModule(x.name)}
+                                                >
+                                                    ${(x) => x.title}
+                                                </span>
+                                                <designer-token-glyph
+                                                    circular
+                                                    type=${TokenGlyphType.stylesSwatch}
+                                                    :styles=${x => x.styles}
+                                                    interactive
+                                                >
+                                                </designer-token-glyph>
+                                            </div>
                                         `
                                     )}
                                 </div>
@@ -187,13 +200,18 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.layerTokens, "Layer")}
-                                ${(x) => appliedTokensTemplate(x.backgroundTokens, "Background")}
-                                ${(x) => appliedTokensTemplate(x.foregroundTokens, "Foreground")}
+                                ${(x) => appliedTokensTemplate(x.layerTokens, "Layer", TokenGlyphType.backgroundSwatch)}
+                                ${(x) => appliedTokensTemplate(x.backgroundTokens, "Background", TokenGlyphType.backgroundSwatch)}
                                 ${(x) => appliedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
+                                ${(x) => appliedTokensTemplate(x.foregroundTokens, "Foreground", TokenGlyphType.icon)}
                             </div>
                             <div>
-                                ${(x) => availableTokensTemplate([StyleProperty.backgroundFill], "Fill")}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        [StyleProperty.backgroundFill],
+                                        "Fill",
+                                        "stack",
+                                        TokenGlyphType.backgroundSwatch)}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         stylePropertyBorderFillAll,
@@ -201,7 +219,13 @@ const template = html<App>`
                                         "stack",
                                         TokenGlyphType.borderSwatch
                                     )}
-                                ${(x) => availableTokensTemplate([StyleProperty.foregroundFill], "Foreground")}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        [StyleProperty.foregroundFill],
+                                        "Foreground",
+                                        "stack",
+                                        TokenGlyphType.icon
+                                    )}
                             </div>
                         </designer-drawer>
                     `
@@ -211,15 +235,13 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Stroke width">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.strokeWidthTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.strokeWidthTokens, null)}
                             </div>
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
                                         stylePropertyBorderThicknessAll,
                                         null,
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                             </div>
                         </designer-drawer>
@@ -230,15 +252,13 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Density">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.densityTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.densityTokens, null)}
                             </div>
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.gap],
                                         null,
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                             </div>
                         </designer-drawer>
@@ -249,15 +269,13 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Corner radius">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null)}
                             </div>
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
                                         stylePropertyCornerRadiusAll,
                                         null,
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                             </div>
                         </designer-drawer>
@@ -268,29 +286,23 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Text">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.textTokens, null, TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate(x.textTokens, null)}
                             </div>
                             <div>
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.fontFamily],
                                         "Font family",
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.fontSize],
                                         "Font size",
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.lineHeight],
                                         "Line height",
-                                        "stack",
-                                        TokenGlyphType.icon
                                     )}
                             </div>
                         </designer-drawer>
@@ -342,7 +354,7 @@ const styles = css`
     }
 
     adaptive-tabs::part(tablist) {
-        border-bottom: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-divider-rest);
+        border-bottom: var(--stroke-width) solid var(--neutral-stroke-divider-rest);
     }
 
     adaptive-tab-panel {
@@ -379,11 +391,11 @@ const styles = css`
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         justify-items: stretch;
-        margin-inline-end: calc(var(--design-unit) * 2px);
+        margin-inline-end: calc(var(--design-unit) * 2);
     }
 
     .swatch-grid > * {
-        margin-bottom: calc(var(--design-unit) * 3px);
+        margin-bottom: calc(var(--design-unit) * 3);
     }
 
     .swatch-stack {
@@ -392,34 +404,40 @@ const styles = css`
     }
 
     .swatch-stack > * {
-        padding: calc(var(--design-unit) * 2px) 0;
-        padding-inline-start: calc(var(--design-unit) * 4px);
-        padding-inline-end: calc(var(--design-unit) * 1px);
+        padding: var(--design-unit) 0;
+        padding-inline-start: calc(var(--design-unit) * 4);
+        padding-inline-end: var(--design-unit);
     }
 
-    .inset {
-        padding: 0 calc(var(--design-unit) * 2px);
+    .title {
+        padding: 0 calc(var(--design-unit) * 3);
+        color: ${neutralStrokeReadableRest}
     }
 
-    .applied-design-token,
-    .applied-style-module {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
+    .style-module {
+        display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 2px);
-        margin-bottom: 8px;
+        gap: 8px;
     }
 
-    .applied-style-module {
-        grid-template-columns: 1fr auto;
-    }
-
-    .applied-design-token > span {
-        margin: 0 8px;
+    .style-module .content {
+        display: flex;
+        justify-content: space-between;
+        flex-grow: 1;
+        border-radius: ${cornerRadiusControl};
+        color: ${neutralStrokeStrongRest};
+        padding: 8px 4px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        text-align: right;
+    }
+
+    .style-module .content[role="button"] {
+        cursor: pointer;
+    }
+
+    .style-module .content[role="button"]:hover {
+        background: ${neutralFillStealthHover};
     }
 
     .tokens-panel-content {
@@ -432,7 +450,7 @@ const styles = css`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px calc(var(--design-unit) * 2px) 4px calc(var(--design-unit) * 4px);
+        padding: 4px calc(var(--design-unit) * 2) 4px calc(var(--design-unit) * 4);
     }
 
     footer .selection-label {
