@@ -252,7 +252,7 @@ const textTokens: DesignTokenStore = [
 ];
 
 export function nameToTitle(name: string): string {
-    const base = name.replace(/-/g, ' ').replace(/density_/, '');
+    const base = name.replace(/-/g, ' ').replace(/density./, '');
     return base.charAt(0).toUpperCase() + base.substring(1);
 }
 
