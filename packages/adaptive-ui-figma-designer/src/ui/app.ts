@@ -9,7 +9,8 @@ import {
 import { PluginUINodeData } from "../core/model.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import SubtractIcon from "./assets/subtract.svg";
-import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList, UIController } from "./ui-controller.js";
+import { UIController } from "./ui-controller.js";
+import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
 import { DesignTokenAdd, DesignTokensForm, Drawer, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
 TokenGlyph;
@@ -40,13 +41,13 @@ const appliedTokensTemplate = (
                             orientation="horizontal"
                             type=${(x) => glyphType}
                         >
-                            ${(x, c) => c.parent.controller.getAppliableDesignTokenDefinition(x.tokenID)?.title}
+                            ${(x, c) => c.parent.controller.styles.getAppliableDesignTokenDefinition(x.tokenID)?.title}
                         </designer-token-glyph>
                         <span>${(x) => x.value}</span>
                         <adaptive-button
                             appearance="stealth"
                             aria-label="Remove design token"
-                            @click=${(x, c) => c.parent.controller.removeAppliedDesignToken(x.target, x.tokenID)}
+                            @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.target, x.tokenID)}
                         >
                             ${staticallyCompose(SubtractIcon)}
                         </adaptive-button>
@@ -72,16 +73,16 @@ const availableTokensTemplate = (
             )}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
-                    (x) => x.controller.appliableDesignTokenOptionsByType(tokenType[0]),
+                    (x) => x.controller.styles.getAppliableDesignTokenOptionsByType(tokenType[0]),
                     html<DesignTokenDefinition, App>`
                         <designer-token-glyph
                             circular
-                            value=${(x, c) => c.parent.controller.getDefaultDesignTokenValue(x.token)}
+                            value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x.token)}
                             orientation="horizontal"
                             type=${(x) => glyphType}
                             interactive
-                            ?selected=${(x, c) => c.parent.controller.getNodesWithDesignTokenApplied(x.id).length > 0}
-                            @click=${(x, c) => c.parent.controller.applyDesignToken(tokenType, x)}
+                            ?selected=${(x, c) => c.parent.controller.styles.getNodesWithDesignTokenApplied(x.id).length > 0}
+                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(tokenType, x)}
                         >
                             ${(x) => x.title}
                         </designer-token-glyph>
@@ -146,7 +147,7 @@ const template = html<App>`
                                                 <adaptive-button
                                                     appearance="stealth"
                                                     aria-label="Remove style module"
-                                                    @click=${(x, c) => c.parentContext.parent.controller.removeStyleModule(x.name)}
+                                                    @click=${(x, c) => c.parentContext.parent.controller.styles.removeStyleModule(x.name)}
                                                 >
                                                     ${staticallyCompose(SubtractIcon)}
                                                 </adaptive-button>
@@ -159,7 +160,7 @@ const template = html<App>`
                     </div>
                     <div>
                         ${repeat(
-                            (x) => new Array(...x.controller.getAvailableStyleModules().entries()),
+                            (x) => new Array(...x.controller.styles.getAvailableStyleModules().entries()),
                             html<[string, StyleModuleDisplay[]], App>`
                                 <p class="title inset">${(x) => x[0]}</p>
                                 <div class="swatch-stack">
@@ -170,7 +171,7 @@ const template = html<App>`
                                                 orientation="horizontal"
                                                 type=${TokenGlyphType.icon}
                                                 interactive
-                                                @click=${(x, c) => c.parentContext.parent.controller.applyStyleModule(x.name)}
+                                                @click=${(x, c) => c.parentContext.parent.controller.styles.applyStyleModule(x.name)}
                                             >
                                                 ${(x) => x.title}
                                             </designer-token-glyph>
@@ -304,9 +305,9 @@ const template = html<App>`
                     <div class="tokens-panel-content">
                         <div>
                             <designer-design-token-add
-                                :designTokens=${(x) => x.controller.availableDesignTokens}
+                                :designTokens=${(x) => x.controller.designTokens.availableDesignTokens}
                                 @add=${(x, c) =>
-                                    x.controller.setDesignToken(
+                                    x.controller.designTokens.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
                                         (c.event as CustomEvent).detail.value
                                     )}
@@ -315,13 +316,13 @@ const template = html<App>`
                         </div>
                         <div style="overflow-y: overlay;">
                             <designer-design-tokens-form
-                                :designTokens=${(x) => x.controller.designTokenValues}
+                                :designTokens=${(x) => x.controller.designTokens.designTokenValues}
                                 @tokenChange=${(x, c) =>
-                                    x.controller.setDesignToken(
+                                    x.controller.designTokens.setDesignToken(
                                         (c.event as CustomEvent).detail.definition,
                                         (c.event as CustomEvent).detail.value
                                     )}
-                                @detach=${(x, c) => x.controller.removeDesignToken((c.event as CustomEvent).detail)}
+                                @detach=${(x, c) => x.controller.designTokens.removeDesignToken((c.event as CustomEvent).detail)}
                             ></designer-design-tokens-form>
                         </div>
                     </div>
@@ -503,7 +504,7 @@ export class App extends FASTElement {
     @observable
     public selectedNodes: PluginUINodeData[] | null;
     protected selectedNodesChanged(prev: PluginUINodeData[] | null, next: PluginUINodeData[] | null) {
-        this.controller.setSelectedNodes(next);
+        this.controller.selectedNodes = next;
 
         this.supportsColor =
             this.selectedNodes?.some(
@@ -517,21 +518,9 @@ export class App extends FASTElement {
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
-        this.backgroundTokens = this.controller.appliedDesignTokens(StyleProperty.backgroundFill);
-        this.foregroundTokens = this.controller.appliedDesignTokens(StyleProperty.foregroundFill);
-        this.strokeTokens = this.controller.appliedDesignTokens(StyleProperty.borderFillTop);
-        this.strokeWidthTokens = this.controller.appliedDesignTokens(StyleProperty.borderThicknessTop);
-        this.densityTokens = this.controller.appliedDesignTokens(StyleProperty.gap);
-        this.cornerRadiusTokens = this.controller.appliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
-        this.textTokens = [
-            ...this.controller.appliedDesignTokens(StyleProperty.fontFamily),
-            ...this.controller.appliedDesignTokens(StyleProperty.fontSize),
-            ...this.controller.appliedDesignTokens(StyleProperty.lineHeight),
-        ];
-
         this.supportsDesignSystem = true;
 
-        this.appliedStyleModules = this.controller.getAppliedStyleModules();
+        this.refreshObservables();
     }
 
     constructor() {
@@ -540,7 +529,24 @@ export class App extends FASTElement {
         this.controller = new UIController((nodes) => this.dispatchState(nodes));
     }
 
+    private refreshObservables() {
+        this.backgroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.backgroundFill);
+        this.foregroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.foregroundFill);
+        this.strokeTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderFillTop);
+        this.strokeWidthTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderThicknessTop);
+        this.densityTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.gap);
+        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
+        this.textTokens = [
+            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontFamily),
+            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontSize),
+            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.lineHeight),
+        ];
+
+        this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
+    }
+
     private dispatchState(selectedNodes: PluginUINodeData[]): void {
+        this.refreshObservables();
         this.$emit("dispatch", selectedNodes);
     }
 }
