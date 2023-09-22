@@ -50,6 +50,7 @@ const styles = css`
         justify-content: space-between;
         align-items: center;
         font-weight: 600;
+        padding-left: 4px;
     }
 
     :host(.collapsed) .expanded-content,

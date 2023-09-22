@@ -36,7 +36,7 @@ const styles = css`
         width: 200%;
         height: 200%;
         border: 4px solid black;
-        border-radius: calc(var(--radius) * 3px);
+        border-radius: calc(var(--radius) * 3);
     }
 
     :host(.vertical) {

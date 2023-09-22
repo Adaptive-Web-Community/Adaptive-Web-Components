@@ -20,7 +20,7 @@ export abstract class Controller {
      */
     private _selectedNodeIds: string[] = [];
 
-    // public static nodeCount: number = 0;
+    public static nodeCount: number = 0;
 
     /**
      * Gets a Node from the design tool by ID.
@@ -41,7 +41,7 @@ export abstract class Controller {
      */
     public setSelectedNodes(ids: string[]): void {
         this._selectedNodeIds = ids;
-        // Controller.nodeCount = 0;
+        Controller.nodeCount = 0;
 
         // console.log("--------------------------------");
         // console.log("Controller.setSelectedNodes begin - selected nodes", ids);
