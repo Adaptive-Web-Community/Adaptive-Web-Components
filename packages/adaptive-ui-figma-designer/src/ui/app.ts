@@ -25,6 +25,72 @@ Drawer;
 DesignTokenAdd;
 DesignTokensForm;
 
+const appliedStylesTemplate = (
+    group: string
+) => html<App>`
+    ${when(
+        (x) => x.appliedStyleModules.get(group)?.length,
+        html<App>`
+            <p class="title">Styles</p>
+            <div class="swatch-stack">
+                ${repeat(
+                    (x) => x.appliedStyleModules.get(group),
+                    html<StyleModuleDisplay, App>`
+                        <div class="style-module applied">
+                            <span class="content">
+                                ${(x) => x.title}
+                            </span>
+                            <designer-token-glyph
+                                circular
+                                type=${TokenGlyphType.stylesSwatch}
+                                :styles=${x => x.styles}
+                                interactive
+                            >
+                            </designer-token-glyph>
+                            <adaptive-button
+                                appearance="stealth"
+                                aria-label="Remove style"
+                                @click=${(x, c) => c.parent.controller.styles.removeStyleModule(x.name)}
+                            >
+                                ${staticallyCompose(SubtractIcon)}
+                            </adaptive-button>
+                        </div>
+                    `
+                )}
+            </div>
+        `
+    )}
+`;
+
+const availableStylesTemplate = (
+    group: string
+) => html<App>`
+    <p class="title">Styles</p>
+    <div class="swatch-stack">
+        ${repeat(
+            (x) => x.controller.styles.getAvailableStyleModules().get(group),
+            html<StyleModuleDisplay, App>`
+                <div class="style-module available">
+                    <span
+                        class="content"
+                        role="button"
+                        @click=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
+                    >
+                        ${(x) => x.title}
+                    </span>
+                    <designer-token-glyph
+                        circular
+                        type=${TokenGlyphType.stylesSwatch}
+                        :styles=${x => x.styles}
+                        interactive
+                    >
+                    </designer-token-glyph>
+                </div>
+            `
+        )}
+    </div>
+`;
+
 const appliedTokensTemplate = (
     tokens: AppliedDesignTokenItem[] | null,
     title: string | null,
@@ -128,71 +194,12 @@ const template = html<App>`
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
-                <designer-drawer name="Style modules">
+                <designer-drawer name="Use cases">
                     <div slot="collapsed-content">
-                        ${repeat(
-                            (x) => new Array(...x.appliedStyleModules.entries()),
-                            html<[string, StyleModuleDisplay[]], App>`
-                                <p class="title">${(x) => x[0]}</p>
-                                <div class="swatch-stack">
-                                    ${repeat(
-                                        (x) => x[1],
-                                        html<StyleModuleDisplay, App>`
-                                            <div class="style-module applied">
-                                                <span class="content">
-                                                    ${(x) => x.title}
-                                                </span>
-                                                <designer-token-glyph
-                                                    circular
-                                                    type=${TokenGlyphType.stylesSwatch}
-                                                    :styles=${x => x.styles}
-                                                    interactive
-                                                >
-                                                </designer-token-glyph>
-                                                <adaptive-button
-                                                    appearance="stealth"
-                                                    aria-label="Remove style module"
-                                                    @click=${(x, c) => c.parentContext.parent.controller.styles.removeStyleModule(x.name)}
-                                                >
-                                                    ${staticallyCompose(SubtractIcon)}
-                                                </adaptive-button>
-                                            </div>
-                                        `
-                                    )}
-                                </div>
-                            `
-                        )}
+                        ${(x) => appliedStylesTemplate("Styles")}
                     </div>
                     <div>
-                        ${repeat(
-                            (x) => new Array(...x.controller.styles.getAvailableStyleModules().entries()),
-                            html<[string, StyleModuleDisplay[]], App>`
-                                <p class="title">${(x) => x[0]}</p>
-                                <div class="swatch-stack">
-                                    ${repeat(
-                                        (x) => x[1],
-                                        html<StyleModuleDisplay, App>`
-                                            <div class="style-module available">
-                                                <span
-                                                    class="content"
-                                                    role="button"
-                                                    @click=${(x, c) => c.parentContext.parent.controller.styles.applyStyleModule(x.name)}
-                                                >
-                                                    ${(x) => x.title}
-                                                </span>
-                                                <designer-token-glyph
-                                                    circular
-                                                    type=${TokenGlyphType.stylesSwatch}
-                                                    :styles=${x => x.styles}
-                                                    interactive
-                                                >
-                                                </designer-token-glyph>
-                                            </div>
-                                        `
-                                    )}
-                                </div>
-                            `
-                        )}
+                        ${(x) => availableStylesTemplate("Styles")}
                     </div>
                 </designer-drawer>
                 ${when(
@@ -200,12 +207,14 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Color")}
                                 ${(x) => appliedTokensTemplate(x.layerTokens, "Layer", TokenGlyphType.backgroundSwatch)}
                                 ${(x) => appliedTokensTemplate(x.backgroundTokens, "Background", TokenGlyphType.backgroundSwatch)}
-                                ${(x) => appliedTokensTemplate(x.strokeTokens, "Stroke", TokenGlyphType.borderSwatch)}
+                                ${(x) => appliedTokensTemplate(x.borderFillTokens, "Stroke", TokenGlyphType.borderSwatch)}
                                 ${(x) => appliedTokensTemplate(x.foregroundTokens, "Foreground", TokenGlyphType.icon)}
                             </div>
                             <div>
+                                ${(x) => availableStylesTemplate("Color")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.backgroundFill],
@@ -231,17 +240,24 @@ const template = html<App>`
                     `
                 )}
                 ${when(
-                    (x) => x.supportsStrokeWidth,
+                    (x) => x.supportsBorderThickness || x.supportsCornerRadius,
                     html<App>`
-                        <designer-drawer name="Stroke width">
+                        <designer-drawer name="Shape">
                             <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.strokeWidthTokens, null)}
+                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null)}
+                                ${(x) => appliedTokensTemplate(x.borderThicknessTokens, null)}
                             </div>
                             <div>
+                                ${(x) => availableStylesTemplate("Shape")}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        stylePropertyCornerRadiusAll,
+                                        "Corner radius",
+                                    )}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         stylePropertyBorderThicknessAll,
-                                        null,
+                                        "Stroke thickness",
                                     )}
                             </div>
                         </designer-drawer>
@@ -252,30 +268,15 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Density">
                             <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Density")}
                                 ${(x) => appliedTokensTemplate(x.densityTokens, null)}
                             </div>
                             <div>
+                                ${(x) => availableStylesTemplate("Density")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.gap],
-                                        null,
-                                    )}
-                            </div>
-                        </designer-drawer>
-                    `
-                )}
-                ${when(
-                    (x) => x.supportsCornerRadius,
-                    html<App>`
-                        <designer-drawer name="Corner radius">
-                            <div slot="collapsed-content">
-                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null)}
-                            </div>
-                            <div>
-                                ${(x) =>
-                                    availableTokensTemplate(
-                                        stylePropertyCornerRadiusAll,
-                                        null,
+                                        "Density",
                                     )}
                             </div>
                         </designer-drawer>
@@ -286,13 +287,26 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Text">
                             <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Text")}
+                                ${(x) => appliedStylesTemplate("Font") /* TODO legacy, remove */}
                                 ${(x) => appliedTokensTemplate(x.textTokens, null)}
                             </div>
                             <div>
+                                ${(x) => availableStylesTemplate("Text")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.fontFamily],
                                         "Font family",
+                                    )}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        [StyleProperty.fontStyle],
+                                        "Font style",
+                                    )}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        [StyleProperty.fontWeight],
+                                        "Font weight",
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
@@ -478,7 +492,7 @@ export class App extends FASTElement {
     public supportsColor: boolean = true;
 
     @observable
-    public supportsStrokeWidth: boolean;
+    public supportsBorderThickness: boolean;
 
     @observable
     public supportsDensity: boolean;
@@ -499,10 +513,10 @@ export class App extends FASTElement {
     public foregroundTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public strokeTokens: AppliedDesignTokenItem[] | null;
+    public borderFillTokens: AppliedDesignTokenItem[] | null;
 
     @observable
-    public strokeWidthTokens: AppliedDesignTokenItem[] | null;
+    public borderThicknessTokens: AppliedDesignTokenItem[] | null;
 
     @observable
     public densityTokens: AppliedDesignTokenItem[] | null;
@@ -531,7 +545,7 @@ export class App extends FASTElement {
                     node.supports.includes(StyleProperty.foregroundFill) ||
                     node.supports.includes(StyleProperty.borderFillTop)
             ) || false;
-        this.supportsStrokeWidth = this.controller.supports(StyleProperty.borderThicknessTop);
+        this.supportsBorderThickness = this.controller.supports(StyleProperty.borderThicknessTop);
         this.supportsDensity = this.controller.supports(StyleProperty.gap);
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
@@ -550,12 +564,14 @@ export class App extends FASTElement {
     private refreshObservables() {
         this.backgroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.backgroundFill);
         this.foregroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.foregroundFill);
-        this.strokeTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderFillTop);
-        this.strokeWidthTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderThicknessTop);
+        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderFillTop);
+        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderThicknessTop);
         this.densityTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.gap);
         this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
         this.textTokens = [
             ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontFamily),
+            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontStyle),
+            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontWeight),
             ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontSize),
             ...this.controller.styles.getAppliedDesignTokens(StyleProperty.lineHeight),
         ];
