@@ -154,6 +154,10 @@ export class Styles {
         public readonly name: string | undefined,
         propertiesOrStyles: StyleProperties | Styles[]
     ) {
+        if (name && Styles.Shared.has(name)) {
+            throw `Style '${name}' already created. Update it instead.`;
+        }
+
         if (Array.isArray(propertiesOrStyles)) {
             this._composed = propertiesOrStyles;
             this.createEffectiveProperties();

@@ -240,7 +240,7 @@ export const safetyBorderStyles: Styles = Styles.fromProperties(
         ...BorderStyle.all("solid"),
         ...BorderFill.all(neutralStrokeSafety),
     },
-    "shape.control",
+    "color.safety-border",
 );
 
 /**
