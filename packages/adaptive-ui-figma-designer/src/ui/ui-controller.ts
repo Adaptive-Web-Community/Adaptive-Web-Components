@@ -207,10 +207,20 @@ export class UIController {
 
         function appliedStyleModulesHandler(source: AppliedTokenSource): (moduleID: string) => void {
             return function(moduleID: string) {
-                const styles = Styles.Shared.get(moduleID);
+                let styles = Styles.Shared.get(moduleID);
                 if (!styles) {
-                    console.error(`Style module not found: ${moduleID}`);
-                    return;
+                    // TODO build more robust token/style rename capability (note this does not currently persist)
+                    // https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/issues/97
+                    if (moduleID.startsWith("font.")) {
+                        const prevID = moduleID;
+                        moduleID = moduleID.replace("font.", "text.");
+                        console.warn(`Renaming style ${prevID} to ${moduleID}`);
+                        styles = Styles.Shared.get(moduleID);
+                    }
+                    if (!styles) {
+                        console.error(`Style module not found: ${moduleID}`);
+                        return;
+                    }
                 }
                 styles.effectiveProperties.forEach((value, target) => {
                     // TODO: Support other properties.

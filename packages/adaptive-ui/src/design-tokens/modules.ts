@@ -731,7 +731,7 @@ export const typeRampBaseStyles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampBaseFontVariations,
     },
-    "font.type-ramp-base",
+    "text.type-ramp-base",
 );
 
 /**
@@ -747,7 +747,7 @@ export const typeRampMinus1Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampMinus1FontVariations,
     },
-    "font.type-ramp-minus-1",
+    "text.type-ramp-minus-1",
 );
 
 /**
@@ -763,7 +763,7 @@ export const typeRampMinus2Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampMinus2FontVariations,
     },
-    "font.type-ramp-minus-2",
+    "text.type-ramp-minus-2",
 );
 
 /**
@@ -779,7 +779,7 @@ export const typeRampPlus1Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus1FontVariations,
     },
-    "font.type-ramp-plus-1",
+    "text.type-ramp-plus-1",
 );
 
 /**
@@ -795,7 +795,7 @@ export const typeRampPlus2Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus2FontVariations,
     },
-    "font.type-ramp-plus-2",
+    "text.type-ramp-plus-2",
 );
 
 /**
@@ -811,7 +811,7 @@ export const typeRampPlus3Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus3FontVariations,
     },
-    "font.type-ramp-plus-3",
+    "text.type-ramp-plus-3",
 );
 
 /**
@@ -827,7 +827,7 @@ export const typeRampPlus4Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus4FontVariations,
     },
-    "font.type-ramp-plus-4",
+    "text.type-ramp-plus-4",
 );
 
 /**
@@ -843,7 +843,7 @@ export const typeRampPlus5Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus5FontVariations,
     },
-    "font.type-ramp-plus-5",
+    "text.type-ramp-plus-5",
 );
 
 /**
@@ -859,7 +859,7 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties(
         fontWeight: fontWeight,
         fontVariationSettings: typeRampPlus6FontVariations,
     },
-    "font.type-ramp-plus-6",
+    "text.type-ramp-plus-6",
 );
 
 /**
