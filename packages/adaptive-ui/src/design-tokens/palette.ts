@@ -31,10 +31,10 @@ export const highlightPalette = createNonCss<Palette>("highlight-palette").withD
 );
 
 /** @public */
-export const destructiveBaseColor = createTokenNonCss<string>("destructive-base-color", DesignTokenType.color).withDefault("#D92635");
+export const criticalBaseColor = createTokenNonCss<string>("critical-base-color", DesignTokenType.color).withDefault("#D92635");
 
 /** @public */
-export const destructivePalette = createNonCss<Palette>("destructive-palette").withDefault(
+export const criticalPalette = createNonCss<Palette>("critical-palette").withDefault(
     (resolve: DesignTokenResolver) =>
-        PaletteOkhsl.from(resolve(destructiveBaseColor))
+        PaletteOkhsl.from(resolve(criticalBaseColor))
 );

@@ -12,15 +12,15 @@ import {
     accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
-    destructiveFillDiscernible,
-    destructiveFillReadable,
-    destructiveFillStealth,
-    destructiveFillSubtle,
-    destructiveStrokeDiscernible,
-    destructiveStrokeReadable,
-    destructiveStrokeReadableRecipe,
-    destructiveStrokeSafety,
-    destructiveStrokeSubtle,
+    criticalFillDiscernible,
+    criticalFillReadable,
+    criticalFillStealth,
+    criticalFillSubtle,
+    criticalStrokeDiscernible,
+    criticalStrokeReadable,
+    criticalStrokeReadableRecipe,
+    criticalStrokeSafety,
+    criticalStrokeSubtle,
     fillColor,
     highlightFillDiscernible,
     highlightFillReadable,
@@ -456,109 +456,109 @@ export const highlightForegroundReadableControlStyles: Styles = Styles.fromPrope
 );
 
 /**
- * Convenience style module for an destructive-filled stealth control (interactive).
+ * Convenience style module for an critical-filled stealth control (interactive).
  *
  * By default, only the foreground color meets accessibility, useful for a button or similar:
- * - destructive stealth background
- * - destructive readable foreground (a11y)
- * - destructive safety border
+ * - critical stealth background
+ * - critical readable foreground (a11y)
+ * - critical safety border
  *
  * @public
  */
-export const destructiveFillStealthControlStyles: Styles = Styles.fromProperties(
+export const criticalFillStealthControlStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.backgroundAndForeground(destructiveFillStealth, destructiveStrokeReadableRecipe),
-        ...BorderFill.all(destructiveStrokeSafety),
+        ...Fill.backgroundAndForeground(criticalFillStealth, criticalStrokeReadableRecipe),
+        ...BorderFill.all(criticalStrokeSafety),
     },
-    "color.destructive-fill-stealth-control",
+    "color.critical-fill-stealth-control",
 );
 
 /**
- * Convenience style module for an destructive-filled subtle control (interactive).
+ * Convenience style module for an critical-filled subtle control (interactive).
  *
  * By default, only the foreground color meets accessibility, useful for a button or similar:
- * - destructive subtle background
- * - destructive readable foreground (a11y)
- * - destructive subtle border
+ * - critical subtle background
+ * - critical readable foreground (a11y)
+ * - critical subtle border
  *
  * @public
  */
-export const destructiveFillSubtleControlStyles: Styles = Styles.fromProperties(
+export const criticalFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.backgroundAndForeground(destructiveFillSubtle, destructiveStrokeReadableRecipe),
-        ...BorderFill.all(destructiveStrokeSubtle),
+        ...Fill.backgroundAndForeground(criticalFillSubtle, criticalStrokeReadableRecipe),
+        ...BorderFill.all(criticalStrokeSubtle),
     },
-    "color.destructive-fill-subtle-control",
+    "color.critical-fill-subtle-control",
 );
 
 /**
- * Convenience style module for an destructive-filled discernible control (interactive).
+ * Convenience style module for an critical-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
- * - destructive discernible background (a11y)
- * - destructive discernible foreground
+ * - critical discernible background (a11y)
+ * - critical discernible foreground
  * - no border
  *
  * @public
  */
-export const destructiveFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+export const criticalFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.backgroundAndForegroundBySet(destructiveFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...Fill.backgroundAndForegroundBySet(criticalFillDiscernible, blackOrWhiteDiscernibleRecipe),
     },
-    "color.destructive-fill-discernible-control",
+    "color.critical-fill-discernible-control",
 );
 
 /**
- * Convenience style module for an destructive-filled readable control (interactive).
+ * Convenience style module for an critical-filled readable control (interactive).
  *
  * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
- * - destructive readable background
+ * - critical readable background
  * - black or white foreground (a11y)
  * - no border
  *
  * @public
  */
-export const destructiveFillReadableControlStyles: Styles = Styles.fromProperties(
+export const criticalFillReadableControlStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.backgroundAndForegroundBySet(destructiveFillReadable, blackOrWhiteReadableRecipe),
+        ...Fill.backgroundAndForegroundBySet(criticalFillReadable, blackOrWhiteReadableRecipe),
     },
-    "color.destructive-fill-readable-control",
+    "color.critical-fill-readable-control",
 );
 
 /**
- * Convenience style module for an destructive-outlined discernible control (interactive).
+ * Convenience style module for an critical-outlined discernible control (interactive).
  *
  * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
  * - fill color background
- * - destructive readable foreground
- * - destructive discernible border
+ * - critical readable foreground
+ * - critical discernible border
  *
  * @public
  */
-export const destructiveOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+export const criticalOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...BorderFill.all(destructiveStrokeDiscernible),
-        foregroundFill: destructiveStrokeReadable,
+        ...BorderFill.all(criticalStrokeDiscernible),
+        foregroundFill: criticalStrokeReadable,
         backgroundFill: fillColor,
     },
-    "color.destructive-outline-discernible-control",
+    "color.critical-outline-discernible-control",
 );
 
 /**
- * Convenience style module for an destructive-colored text or icon control (interactive).
+ * Convenience style module for an critical-colored text or icon control (interactive).
  *
  * By default, the foreground color meets accessibility, useful for a button, link, or similar:
  * - no background
- * - destructive readable foreground (a11y)
+ * - critical readable foreground (a11y)
  * - no border
  *
  * @public
  */
-export const destructiveForegroundReadableControlStyles: Styles = Styles.fromProperties(
+export const criticalForegroundReadableControlStyles: Styles = Styles.fromProperties(
     {
-        foregroundFill: destructiveStrokeReadable,
+        foregroundFill: criticalStrokeReadable,
     },
-    "color.destructive-foreground-readable-control",
+    "color.critical-foreground-readable-control",
 );
 
 /**
