@@ -244,6 +244,7 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Shape">
                             <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Shape")}
                                 ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null)}
                                 ${(x) => appliedTokensTemplate(x.borderThicknessTokens, null)}
                             </div>

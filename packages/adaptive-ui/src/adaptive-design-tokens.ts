@@ -27,6 +27,7 @@ export const DesignTokenType = {
     fontStyle: "fontStyle",
     fontVariations: "fontVariations",
     recipe: "recipe",
+    string: "string",
 } as const;
 
 /**

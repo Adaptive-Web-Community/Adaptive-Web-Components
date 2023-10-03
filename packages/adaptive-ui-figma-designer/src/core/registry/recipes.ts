@@ -104,6 +104,7 @@ import {
     typeRampPlus5LineHeight,
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
+    wcagContrastLevel,
 } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenDefinition, DesignTokenRegistry, FormControlId } from "./design-token-registry.js";
 import { blackOrWhiteDiscernibleRest, blackOrWhiteReadableRest, docBaseColor, docFill, docForeground } from "./custom-recipes.js";
@@ -120,6 +121,7 @@ const designTokens: DesignTokenStore = [
     neutralBaseColor,
     layerFillBaseLuminance,
     docBaseColor,
+    wcagContrastLevel,
     densityAdjustmentUnits,
     densityControl.horizontalPaddingUnits,
     densityControl.horizontalGapUnits,

@@ -237,6 +237,7 @@ export const DesignTokenType: {
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
     readonly recipe: "recipe";
+    readonly string: "string";
 };
 
 // @public

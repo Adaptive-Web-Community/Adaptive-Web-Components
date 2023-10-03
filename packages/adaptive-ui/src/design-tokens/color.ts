@@ -102,7 +102,7 @@ export const WcagContrastLevel = {
 export type WcagContrastLevel = ValuesOf<typeof WcagContrastLevel>;
 
 /** @public */
-export const wcagContrastLevel = createNonCss<WcagContrastLevel>("wcag-contrast-level").withDefault("aa");
+export const wcagContrastLevel = createTokenNonCss<WcagContrastLevel>("wcag-contrast-level", DesignTokenType.string).withDefault("aa");
 
 /** @public */
 export const minContrastSafety = createTokenNonCss<number>("min-contrast-safety", DesignTokenType.number).withDefault(
