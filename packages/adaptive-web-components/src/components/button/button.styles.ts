@@ -21,6 +21,10 @@ export const templateStyles: ElementStyles = css`
         white-space: nowrap;
         outline: none;
         font: inherit;
+        /* reset */
+        border: none;
+        margin: 0;
+        padding: 0;
     }
 
     .control::-moz-focus-inner {

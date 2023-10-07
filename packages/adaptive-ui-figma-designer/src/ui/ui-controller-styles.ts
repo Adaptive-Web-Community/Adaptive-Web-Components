@@ -81,9 +81,13 @@ export class StylesController {
             })
         });
 
-        return new Array(...allModules.entries())
+        const modules = new Array(...allModules.entries())
             .sort(this.styleModuleSort)
             .reduce<StyleModuleDisplayList>(this.styleModuleReduce, new Map());
+
+        // console.log("getAppliedStyleModules", modules);
+        
+        return modules;
     }
 
     /**

@@ -1,4 +1,4 @@
-import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles } from "../modules/styles.js";
+import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles, StyleValue } from "../modules/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
@@ -9,7 +9,6 @@ import {
     accentStrokeReadable,
     accentStrokeReadableRecipe,
     accentStrokeSafety,
-    accentStrokeSubtle,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     criticalFillDiscernible,
@@ -20,7 +19,6 @@ import {
     criticalStrokeReadable,
     criticalStrokeReadableRecipe,
     criticalStrokeSafety,
-    criticalStrokeSubtle,
     fillColor,
     highlightFillDiscernible,
     highlightFillReadable,
@@ -30,7 +28,6 @@ import {
     highlightStrokeReadable,
     highlightStrokeReadableRecipe,
     highlightStrokeSafety,
-    highlightStrokeSubtle,
     neutralFillDiscernible,
     neutralFillReadable,
     neutralFillStealth,
@@ -227,21 +224,15 @@ export const layerDensityStyles: Styles = Styles.fromProperties(
     "density.layer",
 );
 
-/**
- * Style module for the safety border.
- *
- * By default, sets the border thickness and style. The color is set to the safety recipe, which will turn on for increased contrast.
- *
- * @public
- */
-export const safetyBorderStyles: Styles = Styles.fromProperties(
-    {
+// TODO: There's a bit of an overlap right now where density calculations assume a border thickness,
+// but setting the color is done elsewhere or not at all, producing inconsistent and unpredictable styling.
+const densityBorderStyles = (fillValue: StyleValue) => {
+    return {
         ...BorderThickness.all(strokeThickness),
         ...BorderStyle.all("solid"),
-        ...BorderFill.all(neutralStrokeSafety),
-    },
-    "color.safety-border",
-);
+        ...BorderFill.all(fillValue),
+    }
+};
 
 /**
  * Convenience style module for an accent-filled stealth control (interactive).
@@ -256,7 +247,7 @@ export const safetyBorderStyles: Styles = Styles.fromProperties(
 export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(accentFillStealth, accentStrokeReadableRecipe),
-        ...BorderFill.all(accentStrokeSafety),
+        ...densityBorderStyles(accentStrokeSafety),
     },
     "color.accent-fill-stealth-control",
 );
@@ -267,14 +258,14 @@ export const accentFillStealthControlStyles: Styles = Styles.fromProperties(
  * By default, only the foreground color meets accessibility, useful for a button or similar:
  * - accent subtle background
  * - accent readable foreground (a11y)
- * - accent subtle border
+ * - accent safety border
  *
  * @public
  */
 export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(accentFillSubtle, accentStrokeReadableRecipe),
-        ...BorderFill.all(accentStrokeSubtle),
+        ...densityBorderStyles(accentStrokeSafety),
     },
     "color.accent-fill-subtle-control",
 );
@@ -325,7 +316,7 @@ export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...BorderFill.all(accentStrokeDiscernible),
+        ...densityBorderStyles(accentStrokeDiscernible),
         foregroundFill: accentStrokeReadable,
         backgroundFill: fillColor,
     },
@@ -335,7 +326,7 @@ export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperti
 /**
  * Convenience style module for an accent-colored text or icon control (interactive).
  *
- * By default, the foreground color meets accessibility, useful for a button, link, or similar:
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
  * - no background
  * - accent readable foreground (a11y)
  * - no border
@@ -362,7 +353,7 @@ export const accentForegroundReadableControlStyles: Styles = Styles.fromProperti
 export const highlightFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(highlightFillStealth, highlightStrokeReadableRecipe),
-        ...BorderFill.all(highlightStrokeSafety),
+        ...densityBorderStyles(highlightStrokeSafety),
     },
     "color.highlight-fill-stealth-control",
 );
@@ -373,14 +364,14 @@ export const highlightFillStealthControlStyles: Styles = Styles.fromProperties(
  * By default, only the foreground color meets accessibility, useful for a button or similar:
  * - highlight subtle background
  * - highlight readable foreground (a11y)
- * - highlight subtle border
+ * - highlight safety border
  *
  * @public
  */
 export const highlightFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(highlightFillSubtle, highlightStrokeReadableRecipe),
-        ...BorderFill.all(highlightStrokeSubtle),
+        ...densityBorderStyles(highlightStrokeSafety),
     },
     "color.highlight-fill-subtle-control",
 );
@@ -431,7 +422,7 @@ export const highlightFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const highlightOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...BorderFill.all(highlightStrokeDiscernible),
+        ...densityBorderStyles(highlightStrokeDiscernible),
         foregroundFill: highlightStrokeReadable,
         backgroundFill: fillColor,
     },
@@ -441,7 +432,7 @@ export const highlightOutlineDiscernibleControlStyles: Styles = Styles.fromPrope
 /**
  * Convenience style module for an highlight-colored text or icon control (interactive).
  *
- * By default, the foreground color meets accessibility, useful for a button, link, or similar:
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
  * - no background
  * - highlight readable foreground (a11y)
  * - no border
@@ -468,7 +459,7 @@ export const highlightForegroundReadableControlStyles: Styles = Styles.fromPrope
 export const criticalFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(criticalFillStealth, criticalStrokeReadableRecipe),
-        ...BorderFill.all(criticalStrokeSafety),
+        ...densityBorderStyles(criticalStrokeSafety),
     },
     "color.critical-fill-stealth-control",
 );
@@ -479,14 +470,14 @@ export const criticalFillStealthControlStyles: Styles = Styles.fromProperties(
  * By default, only the foreground color meets accessibility, useful for a button or similar:
  * - critical subtle background
  * - critical readable foreground (a11y)
- * - critical subtle border
+ * - critical safety border
  *
  * @public
  */
 export const criticalFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(criticalFillSubtle, criticalStrokeReadableRecipe),
-        ...BorderFill.all(criticalStrokeSubtle),
+        ...densityBorderStyles(criticalStrokeSafety),
     },
     "color.critical-fill-subtle-control",
 );
@@ -537,7 +528,7 @@ export const criticalFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const criticalOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...BorderFill.all(criticalStrokeDiscernible),
+        ...densityBorderStyles(criticalStrokeDiscernible),
         foregroundFill: criticalStrokeReadable,
         backgroundFill: fillColor,
     },
@@ -547,7 +538,7 @@ export const criticalOutlineDiscernibleControlStyles: Styles = Styles.fromProper
 /**
  * Convenience style module for an critical-colored text or icon control (interactive).
  *
- * By default, the foreground color meets accessibility, useful for a button, link, or similar:
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
  * - no background
  * - critical readable foreground (a11y)
  * - no border
@@ -574,7 +565,7 @@ export const criticalForegroundReadableControlStyles: Styles = Styles.fromProper
 export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(neutralFillStealth, neutralStrokeStrongRecipe),
-        ...BorderFill.all(neutralStrokeSafety),
+        ...densityBorderStyles(neutralStrokeSafety),
     },
     "color.neutral-fill-stealth-control",
 );
@@ -585,14 +576,14 @@ export const neutralFillStealthControlStyles: Styles = Styles.fromProperties(
  * By default, only the foreground color meets accessibility, useful for a button or similar:
  * - neutral subtle background
  * - neutral strong foreground (a11y)
- * - neutral subtle border
+ * - neutral safety border
  *
  * @public
  */
 export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(neutralFillSubtle, neutralStrokeStrongRecipe),
-        ...BorderFill.all(neutralStrokeSubtle),
+        ...densityBorderStyles(neutralStrokeSafety),
     },
     "color.neutral-fill-subtle-control",
 );
@@ -643,7 +634,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
  */
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
-        ...BorderFill.all(neutralStrokeDiscernible),
+        ...densityBorderStyles(neutralStrokeDiscernible),
         foregroundFill: neutralStrokeStrongRest,
         backgroundFill: fillColor,
     },
@@ -867,13 +858,14 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties(
  */
 export const actionStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
         neutralFillSubtleControlStyles,
     ],
-    undefined,
+    {
+        ...densityBorderStyles(neutralStrokeSubtle),
+    },
     "styles.action-control",
 );
 
@@ -882,7 +874,6 @@ export const actionStyles: Styles = Styles.compose(
  */
 export const inputStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,
@@ -897,7 +888,6 @@ export const inputStyles: Styles = Styles.compose(
  */
 export const inputAutofillStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         autofillOuterDensityStyles,
         typeRampBaseStyles,
@@ -912,7 +902,6 @@ export const inputAutofillStyles: Styles = Styles.compose(
  */
 export const selectableSelectedStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
         highlightFillReadableControlStyles,
@@ -926,7 +915,6 @@ export const selectableSelectedStyles: Styles = Styles.compose(
  */
 export const selectableUnselectedStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         typeRampBaseStyles,
         neutralOutlineDiscernibleControlStyles,
@@ -940,7 +928,6 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
  */
 export const itemStyles: Styles = Styles.compose(
     [
-        safetyBorderStyles,
         controlShapeStyles,
         controlDensityStyles,
         typeRampBaseStyles,

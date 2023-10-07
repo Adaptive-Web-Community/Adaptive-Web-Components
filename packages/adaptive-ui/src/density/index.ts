@@ -139,7 +139,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc(((${resolve(this.horizontalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
+                `calc((${resolve(this.horizontalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
         );
 
         this.horizontalGapUnits = createTokenNonCss<number>(
@@ -165,7 +165,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc(((${resolve(this.verticalPaddingUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
+                `calc((${resolve(this.verticalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
         );
 
         this.verticalGapUnits = createTokenNonCss<number>(
