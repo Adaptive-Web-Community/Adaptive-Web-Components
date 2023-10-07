@@ -1,5 +1,5 @@
 import { FASTProgress } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./progress.styles.js";
@@ -14,7 +14,7 @@ export function composeProgress(
     ds: DesignSystem,
     options?: ComposeOptions<FASTProgress>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, ProgressAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ProgressAnatomy.interactivity, options);
 
     return FASTProgress.compose({
         name: `${ds.prefix}-progress`,

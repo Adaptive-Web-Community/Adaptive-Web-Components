@@ -1,4 +1,4 @@
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveMenuItem } from "./menu-item.js";
@@ -37,7 +37,7 @@ export function composeMenuItem(
         }
     }
 
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy.interactivity, options);
 
     return AdaptiveMenuItem.compose({
         name: `${ds.prefix}-menu-item`,

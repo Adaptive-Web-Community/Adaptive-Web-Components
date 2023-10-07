@@ -1,8 +1,9 @@
-import { renderElementStyles } from "@adaptive-web/adaptive-ui";
+import { ElementStylesRenderer } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
 import {
     css,
     customElement,
+    ElementStyles,
     ElementViewTemplate,
     FASTElement,
     html,
@@ -49,10 +50,15 @@ export class AdaptiveComponent extends FASTElement {
     @observable
     public styles?: Styles;
     protected stylesChanged(prev: Styles, next: Styles) {
-        // if (prev) {
-        //     prev.forEach((s) => this.$fastController.removeStyles(s));
-        // }
-        const elementStyles = renderElementStyles(next, params);
-        elementStyles.forEach((s) => this.$fastController.addStyles(s));
+        if (prev) {
+            this.$fastController.removeStyles(this._addedStyles);
+        }
+        if (next) {
+            this._addedStyles = new ElementStylesRenderer(next).render(params);
+            this.$fastController.addStyles(this._addedStyles);
+        }
     }
+
+    // Keep track of the styles we added so we can remove them without recreating.
+    private _addedStyles: ElementStyles;
 }

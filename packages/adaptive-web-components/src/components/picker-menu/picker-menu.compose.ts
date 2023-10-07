@@ -1,5 +1,5 @@
 import { FASTPickerMenu } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./picker-menu.styles.js";
@@ -14,7 +14,7 @@ export function composePickerMenu(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPickerMenu>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, PickerMenuAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, PickerMenuAnatomy.interactivity, options);
 
     return FASTPickerMenu.compose({
         name: `${ds.prefix}-picker-menu`,

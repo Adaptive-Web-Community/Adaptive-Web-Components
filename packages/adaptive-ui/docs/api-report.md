@@ -10,7 +10,7 @@ import { CSSDesignToken } from '@microsoft/fast-foundation';
 import type { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
-import type { ElementStyles } from '@microsoft/fast-element';
+import { ElementStyles } from '@microsoft/fast-element';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -247,6 +247,12 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
 
 // @public
+export class ElementStylesRenderer {
+    constructor(styles: Styles);
+    render(params: StyleModuleEvaluateParameters): ElementStyles;
+}
+
+// @public
 export type ElevationRecipe = Recipe<number, string>;
 
 // @public
@@ -392,9 +398,6 @@ export interface RecipeOptional<TParam, TResult> {
 export interface RelativeLuminance {
     readonly relativeLuminance: number;
 }
-
-// @public
-export function renderElementStyles(styles: Styles, params: StyleModuleEvaluateParameters): ElementStyles[];
 
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;

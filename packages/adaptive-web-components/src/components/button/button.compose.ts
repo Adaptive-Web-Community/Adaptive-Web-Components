@@ -1,4 +1,4 @@
-import type { ComposableStyles, FASTElementDefinition } from "@microsoft/fast-element";
+import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { AdaptiveButton } from "./button.js";
@@ -14,7 +14,7 @@ export function composeButton(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveButton>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, ButtonAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ButtonAnatomy.interactivity, options);
 
     return AdaptiveButton.compose({
         name: `${ds.prefix}-button`,
