@@ -1,5 +1,5 @@
 import { FASTTreeView } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./tree-view.styles.js";
@@ -14,7 +14,7 @@ export function composeTreeView(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTreeView>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, TreeViewAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TreeViewAnatomy.interactivity, options);
 
     return FASTTreeView.compose({
         name: `${ds.prefix}-tree-view`,

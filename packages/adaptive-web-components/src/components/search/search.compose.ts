@@ -1,5 +1,5 @@
 import { FASTSearch } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./search.styles.js";
@@ -14,7 +14,7 @@ export function composeSearch(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSearch>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, SearchAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, SearchAnatomy.interactivity, options);
 
     return FASTSearch.compose({
         name: `${ds.prefix}-search`,

@@ -1,5 +1,5 @@
 import { FASTDataGridCell } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./data-grid-cell.styles.js";
@@ -14,7 +14,7 @@ export function composeDataGridCell(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDataGridCell>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, DataGridCellAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, DataGridCellAnatomy.interactivity, options);
 
     return FASTDataGridCell.compose({
         name: `${ds.prefix}-data-grid-cell`,

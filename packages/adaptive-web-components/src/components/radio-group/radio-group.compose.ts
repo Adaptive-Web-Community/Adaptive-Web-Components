@@ -1,5 +1,5 @@
 import { FASTRadioGroup } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./radio-group.styles.js";
@@ -14,7 +14,7 @@ export function composeRadioGroup(
     ds: DesignSystem,
     options?: ComposeOptions<FASTRadioGroup>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, RadioGroupAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, RadioGroupAnatomy.interactivity, options);
 
     return FASTRadioGroup.compose({
         name: `${ds.prefix}-radio-group`,

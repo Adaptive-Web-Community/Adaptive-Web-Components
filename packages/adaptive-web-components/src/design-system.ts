@@ -1,6 +1,6 @@
 import {
     type ComposableStyles,
-    type ElementStyles,
+    ElementStyles,
     type ElementViewTemplate,
     FASTElementDefinition,
     type PartialFASTElementDefinition,
@@ -8,8 +8,8 @@ import {
 } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
+    ElementStylesRenderer,
     type InteractivityDefinition,
-    renderElementStyles,
     type StyleModuleEvaluateParameters,
     type StyleModuleTarget,
     Styles,
@@ -142,7 +142,7 @@ export class DesignSystem {
      */
     public static assembleStyles(
         defaultStyles: ComposableStyles[], interactivity?: InteractivityDefinition, options?: ComposeOptions<any>
-    ): ComposableStyles[] {
+    ): ElementStyles {
         const componentStyles: ComposableStyles[] = options?.styles ? 
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
@@ -150,14 +150,12 @@ export class DesignSystem {
         if (options?.styleModules) {
             for (const [target, styles] of options.styleModules) {
                 const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
-                const renderedStyles = renderElementStyles(styles, params);
-                for (const s of renderedStyles) {
-                    componentStyles.push(s);
-                }
+                const renderedStyles = new ElementStylesRenderer(styles).render(params);
+                componentStyles.push(renderedStyles);
             }
         }
 
-        return componentStyles;
+        return new ElementStyles(componentStyles);
     }
 }
 

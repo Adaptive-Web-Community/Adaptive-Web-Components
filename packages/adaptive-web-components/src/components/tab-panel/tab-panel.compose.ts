@@ -1,5 +1,5 @@
 import { FASTTabPanel } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./tab-panel.styles.js";
@@ -14,7 +14,7 @@ export function composeTabPanel(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTabPanel>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, TabPanelAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TabPanelAnatomy.interactivity, options);
 
     return FASTTabPanel.compose({
         name: `${ds.prefix}-tab-panel`,

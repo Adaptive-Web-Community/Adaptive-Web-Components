@@ -1,5 +1,5 @@
 import { FASTAvatar } from "@microsoft/fast-foundation";
-import type { ComposableStyles, FASTElementDefinition } from "@microsoft/fast-element";
+import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { aestheticStyles, templateStyles } from "./avatar.styles.js";
@@ -14,7 +14,7 @@ export function composeAvatar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAvatar>
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, AvatarAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, AvatarAnatomy.interactivity, options);
 
     return FASTAvatar.compose({
         name: `${ds.prefix}-avatar`,

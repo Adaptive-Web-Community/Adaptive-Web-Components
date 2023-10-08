@@ -1,7 +1,7 @@
 import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
 import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
 import { parseColor } from "@microsoft/fast-colors";
-import { renderElementStyles, Styles } from "@adaptive-web/adaptive-ui";
+import { ElementStylesRenderer, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import BlobIcon from "../../assets/blob.svg";
 
@@ -148,11 +148,11 @@ export class TokenGlyph extends FASTElement {
     public styles?: Styles;
     protected stylesChanged(prev: Styles, next: Styles) {
         if (prev) {
-            this._addedStyles.forEach((s) => this.$fastController.removeStyles(s));
+            this.$fastController.removeStyles(this._addedStyles);
         }
         if (next) {
-            this._addedStyles = renderElementStyles(next, params);
-            this._addedStyles.forEach((s) => this.$fastController.addStyles(s));
+            this._addedStyles = new ElementStylesRenderer(next).render(params);
+            this.$fastController.addStyles(this._addedStyles);
         }
     }
 
@@ -160,5 +160,5 @@ export class TokenGlyph extends FASTElement {
     public interactive: boolean = false;
 
     // Keep track of the styles we added so we can remove them without recreating.
-    private _addedStyles: ElementStyles[];
+    private _addedStyles: ElementStyles;
 }
