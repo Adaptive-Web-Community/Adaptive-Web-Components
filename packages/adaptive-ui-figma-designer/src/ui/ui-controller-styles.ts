@@ -2,7 +2,7 @@ import { StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
 import { nameToTitle } from "../core/registry/recipes.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import { AppliedDesignToken } from "../core/model.js";
-import { UIController } from "./ui-controller.js";
+import { STYLE_REMOVE, UIController } from "./ui-controller.js";
 
 /**
  * A display definition for a single style module.
@@ -22,7 +22,7 @@ export type StyleModuleDisplayList = Map<string, StyleModuleDisplay[]>;
  * A display representation of applied design tokens.
  */
 export interface AppliedDesignTokenItem {
-    target: StyleProperty;
+    targets: StyleProperty[];
     tokenID: string;
     value: string;
 }
@@ -121,7 +121,8 @@ export class StylesController {
 
             const foundIndex = node.appliedStyleModules.indexOf(name);
             if (foundIndex > -1) {
-                node.appliedStyleModules.splice(foundIndex, 1);
+                // Rename so we can process the removal
+                node.appliedStyleModules[foundIndex] = STYLE_REMOVE + name;
             }
             // console.log("  node", node);
         });
@@ -132,25 +133,41 @@ export class StylesController {
     /**
      * Gets a display representation of applied design tokens for the selected nodes.
      *
-     * @param target - Style property type
+     * @param targets - Style property types
      * @returns Applied design tokens
      */
-    public getAppliedDesignTokens(target: StyleProperty): AppliedDesignTokenItem[] {
+    public getAppliedDesignTokens(targets: StyleProperty[]): AppliedDesignTokenItem[] {
         const tokens: AppliedDesignTokenItem[] = [];
 
+        // Collect the individual tokens applied for the requested targets
         // TODO: Handle multiple values better
         this.controller.selectedNodes.forEach(node => {
-            const applied = node.appliedDesignTokens.get(target);
-            if (applied) {
-                tokens.push({
-                    target,
-                    tokenID: applied.tokenID,
-                    value: applied.value
-                });
-            }
+            targets.forEach((target) => {
+                const applied = node.appliedDesignTokens.get(target);
+                if (applied) {
+                    tokens.push({
+                        targets: [target],
+                        tokenID: applied.tokenID,
+                        value: applied.value
+                    });
+                }
+            });
         });
 
-        return tokens;
+        // Group by tokenID and value
+        return tokens.reduce((accumulated: AppliedDesignTokenItem[], current: AppliedDesignTokenItem): AppliedDesignTokenItem[] => {
+            const found = accumulated.find((item) => {
+                return item.tokenID === current.tokenID && item.value === current.value
+            });
+
+            if (found) {
+                found.targets.push(...current.targets);
+            } else {
+                accumulated.push(current);
+            }
+
+            return accumulated;
+        }, []);
     }
 
     /**
@@ -211,20 +228,23 @@ export class StylesController {
     /**
      * Removes an applied design token from the selected nodes.
      *
-     * @param target - The target style property type
+     * @param targets - The target style property types
      * @param tokenID - The design token ID
      */
-    public removeAppliedDesignToken(target: StyleProperty, tokenID: string): void {
+    public removeAppliedDesignToken(targets: StyleProperty[], tokenID: string): void {
         this.controller.selectedNodes.forEach(node => {
             // console.log("--------------------------------");
-            // console.log("StylesController.removeAppliedDesignToken - target", target, tokenID);
+            // console.log("StylesController.removeAppliedDesignToken - targets", targets, tokenID);
 
-            const applied = node.appliedDesignTokens.get(target);
-            if (applied?.tokenID === tokenID) {
-                node.appliedDesignTokens.delete(target);
-                // console.log("--------------------------------");
-                // console.log("  removed applied design token from node", target, node);
-            }
+            targets.forEach(target => {
+                const applied = node.appliedDesignTokens.get(target);
+                if (applied?.tokenID === tokenID) {
+                    // Set to null so we can process the removal
+                    node.appliedDesignTokens.set(target, null);
+                    // console.log("--------------------------------");
+                    // console.log("  removed applied design token from node", target, node);
+                }
+            });
         });
 
         this.controller.refreshSelectedNodes("removeAppliedDesignToken");

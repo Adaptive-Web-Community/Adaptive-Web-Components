@@ -4,6 +4,7 @@ import { FASTElement } from "@microsoft/fast-element";
 import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, PluginUINodeData, TOOL_PARENT_FILL_COLOR } from "../core/model.js";
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
@@ -193,20 +194,31 @@ export class UIController {
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
             return function(applied, target) {
-                const token = registry.get(applied.tokenID);
-                if (token) {
+                if (applied) {
+                    const token = registry.get(applied.tokenID);
+                    if (token) {
+                        allApplied.set(target, {
+                            value: token.token as CSSDesignToken<any>,
+                            source,
+                        });
+                    } else {
+                        console.error("Token not found:", applied.tokenID);
+                    }
+                } else { // Removed
                     allApplied.set(target, {
-                        value: token.token as CSSDesignToken<any>,
+                        value: STYLE_REMOVE,
                         source,
                     });
-                } else {
-                    console.error("Token not found:", applied.tokenID);
                 }
             }
         }
 
         function appliedStyleModulesHandler(source: AppliedTokenSource): (moduleID: string) => void {
             return function(moduleID: string) {
+                const remove = moduleID.startsWith(STYLE_REMOVE);
+                if (remove) {
+                    moduleID = moduleID.replace(STYLE_REMOVE, "");
+                }
                 let styles = Styles.Shared.get(moduleID);
                 if (!styles) {
                     // TODO build more robust token/style rename capability (note this does not currently persist)
@@ -223,29 +235,36 @@ export class UIController {
                     }
                 }
                 styles.effectiveProperties.forEach((value, target) => {
-                    // TODO: Support other properties.
-                    if (value instanceof CSSDesignToken) {
-                        // console.log("    applying token >", value);
+                    if (remove) {
                         allApplied.set(target, {
-                            value,
-                            source,
-                        });
-                    } else if (typeof value === "string") {
-                        // console.log("    applying string >", value);
-                        allApplied.set(target, {
-                            value,
+                            value: STYLE_REMOVE,
                             source,
                         });
                     } else {
-                        const group = (value as InteractiveTokenGroup<any>);
-                        if (group && group.rest) {
-                            // console.log("    applying group >", group);
+                        // TODO: Support other properties.
+                        if (value instanceof CSSDesignToken) {
+                            // console.log("    applying token >", value);
                             allApplied.set(target, {
-                                value: group.rest,
+                                value,
+                                source,
+                            });
+                        } else if (typeof value === "string") {
+                            // console.log("    applying string >", value);
+                            allApplied.set(target, {
+                                value,
                                 source,
                             });
                         } else {
-                            console.warn("    token type not supported >", typeof value, value);
+                            const group = (value as InteractiveTokenGroup<any>);
+                            if (group && group.rest) {
+                                // console.log("    applying group >", group);
+                                allApplied.set(target, {
+                                    value: group.rest,
+                                    source,
+                                });
+                            } else {
+                                console.warn("    token type not supported >", typeof value, value);
+                            }
                         }
                     }
                 });
@@ -256,6 +275,20 @@ export class UIController {
         node.componentAppliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
         node.appliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.localModules));
         node.appliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.local));
+
+        // Remove the applied styles which have been marked as removed.
+        for (let i = node.appliedStyleModules.length - 1; i >= 0; i--) {
+            if (node.appliedStyleModules[i].startsWith(STYLE_REMOVE)) {
+                node.appliedStyleModules.splice(i, 1);
+            }
+        }
+
+        // Remove the applied tokens which have been marked as removed.
+        node.appliedDesignTokens.forEach((value, key) => {
+            if (value === null) {
+                node.appliedDesignTokens.delete(key);
+            }
+        })
 
         return allApplied;
     }

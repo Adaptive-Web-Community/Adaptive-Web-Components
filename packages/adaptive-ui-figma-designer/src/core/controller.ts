@@ -2,6 +2,11 @@ import { pluginNodesToUINodes, PluginUINodeData } from "./model.js";
 import { PluginNode } from "./node.js";
 
 /**
+ * A constant used to remove a previously applied style or token.
+ */
+export const STYLE_REMOVE = "__REMOVE__";
+
+/**
  * The state object that is passed back and forth between the plugin UI and Controller portions.
  */
 export interface PluginUIState {
