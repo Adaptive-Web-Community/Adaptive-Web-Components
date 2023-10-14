@@ -216,6 +216,8 @@ const densityTokens: DesignTokenStore<string> = [
     densityControl.verticalGap,
     densityItemContainer.horizontalGap,
     densityItemContainer.verticalGap,
+    densityLayer.horizontalGap,
+    densityLayer.verticalGap,
 ];
 
 const cornerRadiusTokens: DesignTokenStore<string> = [

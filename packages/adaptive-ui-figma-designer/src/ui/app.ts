@@ -116,7 +116,7 @@ const appliedTokensTemplate = (
                                 slot="actions"
                                 appearance="stealth"
                                 aria-label="Remove design token"
-                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.target, x.tokenID)}
+                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.targets, x.tokenID)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
@@ -563,19 +563,19 @@ export class App extends FASTElement {
     }
 
     private refreshObservables() {
-        this.backgroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.backgroundFill);
-        this.foregroundTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.foregroundFill);
-        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderFillTop);
-        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.borderThicknessTop);
-        this.densityTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.gap);
-        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StyleProperty.cornerRadiusTopLeft);
-        this.textTokens = [
-            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontFamily),
-            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontStyle),
-            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontWeight),
-            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.fontSize),
-            ...this.controller.styles.getAppliedDesignTokens(StyleProperty.lineHeight),
-        ];
+        this.backgroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.backgroundFill]);
+        this.foregroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.foregroundFill]);
+        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderFillAll);
+        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderThicknessAll);
+        this.densityTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.gap]);
+        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyCornerRadiusAll);
+        this.textTokens = this.controller.styles.getAppliedDesignTokens([
+            StyleProperty.fontFamily,
+            StyleProperty.fontStyle,
+            StyleProperty.fontWeight,
+            StyleProperty.fontSize,
+            StyleProperty.lineHeight
+        ]);
 
         this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
     }

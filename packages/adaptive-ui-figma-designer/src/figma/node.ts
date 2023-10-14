@@ -1,9 +1,21 @@
 import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode } from "../core/node.js";
-import { Controller } from "../core/controller.js";
 import { variantBooleanHelper } from "./utility.js";
+
+const SOLID_BLACK: SolidPaint = {
+    type: "SOLID",
+    visible: true,
+    opacity: 1,
+    blendMode: "NORMAL",
+    color: {
+        r: 0,
+        g: 0,
+        b: 0,
+    },
+};
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -420,9 +432,12 @@ export class FigmaPluginNode extends PluginNode {
         if (fontFamily) {
             if (isTextNode(node._node)) {
                 const fontStyle = values?.get(StyleProperty.fontStyle)?.value; // For "italic"
-                const fontWeight: number = values?.get(StyleProperty.fontWeight)?.value || 400;
+                const fontWeight: number = this.safeNumber(values?.get(StyleProperty.fontWeight)?.value, 400);
                 const families = fontFamily.split(",");
-                const family = families[0].replace(/['"]/g, ""); // Fallback is intended for the browser, in Figma just do the first
+                let family = families[0].replace(/['"]/g, ""); // Fallback is intended for the browser, in Figma just do the first
+                if (family === STYLE_REMOVE) {
+                    family = "Inter";
+                }
                 const styles = this.fontWeightToFigmaStyle(fontWeight);
                 // Append 'Regular' in case no other styles load
                 if (!styles.includes("Regular")) {
@@ -441,6 +456,10 @@ export class FigmaPluginNode extends PluginNode {
                 });
             }
         }
+    }
+
+    protected safeNumber(value: string, defaultValue: number = 0) {
+        return value === STYLE_REMOVE ? defaultValue : Number.parseFloat(value);
     }
 
     public paint(values: AppliedStyleValues): void {
@@ -504,7 +523,7 @@ export class FigmaPluginNode extends PluginNode {
                     if (isTextNode(this._node)) {
                         const textNode = this._node as TextNode;
                         figma.loadFontAsync(textNode.fontName as FontName).then(x => {
-                            textNode.fontSize = Number.parseFloat(value);
+                            textNode.fontSize = this.safeNumber(value, 12);
                         });
                     }
                     break;
@@ -512,40 +531,47 @@ export class FigmaPluginNode extends PluginNode {
                     if (isTextNode(this._node)) {
                         const textNode = this._node as TextNode;
                         figma.loadFontAsync(textNode.fontName as FontName).then(x => {
-                            textNode.lineHeight = {
-                                value: Number.parseFloat(value),
-                                unit: "PIXELS",
-                            };
+                            const numValue = this.safeNumber(value);
+                            if (numValue > 0) {
+                                textNode.lineHeight = {
+                                    value: Number.parseFloat(value),
+                                    unit: "PIXELS",
+                                };
+                            } else {
+                                textNode.lineHeight = {
+                                    unit: "AUTO",
+                                };
+                            }
                         });
                     }
                     break;
                 case StyleProperty.paddingTop:
                     if (isContainerNode(this._node)) {
                         this.setBoxSizing();
-                        (this._node as BaseFrameMixin).paddingTop = Number.parseFloat(value); // Removes unit, so assumes px
+                        (this._node as BaseFrameMixin).paddingTop = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingRight:
                     if (isContainerNode(this._node)) {
                         this.setBoxSizing();
-                        (this._node as BaseFrameMixin).paddingRight = Number.parseFloat(value); // Removes unit, so assumes px
+                        (this._node as BaseFrameMixin).paddingRight = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingBottom:
                     if (isContainerNode(this._node)) {
                         this.setBoxSizing();
-                        (this._node as BaseFrameMixin).paddingBottom = Number.parseFloat(value); // Removes unit, so assumes px
+                        (this._node as BaseFrameMixin).paddingBottom = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.paddingLeft:
                     if (isContainerNode(this._node)) {
                         this.setBoxSizing();
-                        (this._node as BaseFrameMixin).paddingLeft = Number.parseFloat(value); // Removes unit, so assumes px
+                        (this._node as BaseFrameMixin).paddingLeft = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
                 case StyleProperty.gap:
                     if (isContainerNode(this._node)) {
-                        (this._node as BaseFrameMixin).itemSpacing = Number.parseFloat(value); // Removes unit, so assumes px
+                        (this._node as BaseFrameMixin).itemSpacing = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
                 default:
@@ -644,109 +670,112 @@ export class FigmaPluginNode extends PluginNode {
     private paintColor(target: StyleProperty, value: string): void {
         let paint: Paint | null = null;
 
-        if (value.startsWith("linear-gradient")) {
-            const linearMatch = /linear-gradient\((?<params>.+)\)/;
-            const matches = value.match(linearMatch);
-            if (matches && matches.groups) {
-                const array = matches.groups.params.split(",").map(p => p.trim());
+        if (value !== STYLE_REMOVE) {
+            if (value.startsWith("linear-gradient")) {
+                const linearMatch = /linear-gradient\((?<params>.+)\)/;
+                const matches = value.match(linearMatch);
+                if (matches && matches.groups) {
+                    const array = matches.groups.params.split(",").map(p => p.trim());
 
-                let degrees: number = 90;
-                if (array[0].endsWith("deg")) {
-                    const angle = array.shift()?.replace("deg", "") || "90";
-                    degrees = Number.parseFloat(angle);
-                }
-                const radians: number = degrees * (Math.PI / 180);
-
-                const paramMatch = /(?<color>#[\w\d]+)( (?<pos>.+))?/;
-                const stops = array.map((p, index, array) => {
-                    const paramMatches = p.match(paramMatch);
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    const color = parseColor(paramMatches?.groups?.color || "FF00FF")!;
-                    let position: number = 0;
-                    if (paramMatches?.groups && paramMatches?.groups?.pos) {
-                        if (paramMatches.groups.pos.endsWith("%")) {
-                            position = Number.parseFloat(paramMatches.groups.pos) / 100;
-                        } else if (paramMatches.groups.pos.startsWith("calc(100% - ")) {
-                            const px = Number.parseFloat(
-                                paramMatches.groups.pos
-                                    .replace("calc(100% - ", "")
-                                    .replace("px)", "")
-                            );
-                            const size = degrees === 90 || degrees === 270
-                                ? (this._node as LayoutMixin).height
-                                : (this._node as LayoutMixin).width;
-                            position = (size - px) / size;
-                        }
-                    } else if (index === array.length - 1) {
-                        position = 1;
+                    let degrees: number = 90;
+                    if (array[0].endsWith("deg")) {
+                        const angle = array.shift()?.replace("deg", "") || "90";
+                        degrees = Number.parseFloat(angle);
                     }
-                    const stop: ColorStop = {
-                        position,
-                        color: {
-                            r: color.r,
-                            g: color.g,
-                            b: color.b,
-                            a: color.a,
-                        },
+                    const radians: number = degrees * (Math.PI / 180);
+
+                    const paramMatch = /(?<color>#[\w\d]+)( (?<pos>.+))?/;
+                    const stops = array.map((p, index, array) => {
+                        const paramMatches = p.match(paramMatch);
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        const color = parseColor(paramMatches?.groups?.color || "FF00FF")!;
+                        let position: number = 0;
+                        if (paramMatches?.groups && paramMatches?.groups?.pos) {
+                            if (paramMatches.groups.pos.endsWith("%")) {
+                                position = Number.parseFloat(paramMatches.groups.pos) / 100;
+                            } else if (paramMatches.groups.pos.startsWith("calc(100% - ")) {
+                                const px = Number.parseFloat(
+                                    paramMatches.groups.pos
+                                        .replace("calc(100% - ", "")
+                                        .replace("px)", "")
+                                );
+                                const size = degrees === 90 || degrees === 270
+                                    ? (this._node as LayoutMixin).height
+                                    : (this._node as LayoutMixin).width;
+                                position = (size - px) / size;
+                            }
+                        } else if (index === array.length - 1) {
+                            position = 1;
+                        }
+                        const stop: ColorStop = {
+                            position,
+                            color: {
+                                r: color.r,
+                                g: color.g,
+                                b: color.b,
+                                a: color.a,
+                            },
+                        };
+                        return stop;
+                    });
+
+                    const gradientPaint: GradientPaint = {
+                        type: "GRADIENT_LINEAR",
+                        gradientStops: stops,
+                        gradientTransform: [
+                            [Math.cos(radians), Math.sin(radians), 0],
+                            [Math.sin(radians) * -1, Math.cos(radians), 1],
+                        ],
                     };
-                    return stop;
-                });
+                    paint = gradientPaint;
+                }
+            } else {
+                // Assume it's solid
+                const color = parseColor(value);
 
-                const gradientPaint: GradientPaint = {
-                    type: "GRADIENT_LINEAR",
-                    gradientStops: stops,
-                    gradientTransform: [
-                        [Math.cos(radians), Math.sin(radians), 0],
-                        [Math.sin(radians) * -1, Math.cos(radians), 1],
-                    ],
+                if (color === null) {
+                    throw new Error(
+                        `The value "${value}" could not be converted to a ColorRGBA64`
+                    );
+                }
+
+                const colorObject = color.toObject();
+                const solidPaint: SolidPaint = {
+                    type: "SOLID",
+                    visible: true,
+                    opacity: colorObject.a,
+                    blendMode: "NORMAL",
+                    color: {
+                        r: colorObject.r,
+                        g: colorObject.g,
+                        b: colorObject.b,
+                    },
                 };
-                paint = gradientPaint;
+                paint = solidPaint;
             }
-        } else {
-            // Assume it's solid
-            const color = parseColor(value);
-
-            if (color === null) {
-                throw new Error(
-                    `The value "${value}" could not be converted to a ColorRGBA64`
-                );
-            }
-
-            const colorObject = color.toObject();
-            const solidPaint: SolidPaint = {
-                type: "SOLID",
-                visible: true,
-                opacity: colorObject.a,
-                blendMode: "NORMAL",
-                color: {
-                    r: colorObject.r,
-                    g: colorObject.g,
-                    b: colorObject.b,
-                },
-            };
-            paint = solidPaint;
         }
 
-        if (paint) {
-            switch (target) {
-                case StyleProperty.backgroundFill:
-                case StyleProperty.foregroundFill:
-                    (this._node as MinimalFillsMixin).fills = [paint];
-                    break;
-                case StyleProperty.borderFillTop:
-                    // TODO: Figma only supports on border color, though it can be hacked using inner shadow.
-                    (this._node as MinimalStrokesMixin).strokes = [paint];
-                    break;
-            }
+        const paintValue = paint ? [paint] : [];
+        switch (target) {
+            case StyleProperty.backgroundFill:
+                (this._node as MinimalFillsMixin).fills = paintValue;
+                break;
+            case StyleProperty.foregroundFill:
+                (this._node as MinimalFillsMixin).fills = paint ? [paint] : [SOLID_BLACK];
+                break;
+            case StyleProperty.borderFillTop:
+                // TODO: Figma only supports one border color, though it can be hacked using inner shadow.
+                (this._node as MinimalStrokesMixin).strokes = paintValue;
+                break;
         }
     }
 
     private paintStrokeWidth(value: string): void {
-        (this._node as MinimalStrokesMixin).strokeWeight = Number.parseFloat(value);
+        (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
     }
 
     private paintCornerRadius(target: StyleProperty, value: string): void {
-        const numValue = Number.parseFloat(value);
+        const numValue = this.safeNumber(value);
         if (isContainerNode(this._node) || isRectangleNode(this._node)) {
             switch (target) {
                 case StyleProperty.cornerRadiusTopLeft:
