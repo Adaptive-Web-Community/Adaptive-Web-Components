@@ -1,8 +1,9 @@
 import { StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
 import { nameToTitle } from "../core/registry/recipes.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
+import { STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignToken } from "../core/model.js";
-import { STYLE_REMOVE, UIController } from "./ui-controller.js";
+import { UIController } from "./ui-controller.js";
 
 /**
  * A display definition for a single style module.
