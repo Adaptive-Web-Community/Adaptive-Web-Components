@@ -36,6 +36,7 @@ import {
     neutralStrokeDiscernibleRest,
     neutralStrokeReadableRest,
     neutralStrokeSafety,
+    neutralStrokeStrong,
     neutralStrokeStrongRecipe,
     neutralStrokeStrongRest,
     neutralStrokeSubtle,
@@ -635,7 +636,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...densityBorderStyles(neutralStrokeDiscernible),
-        foregroundFill: neutralStrokeStrongRest,
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrongRest, neutralStrokeStrong.disabled),
         backgroundFill: fillColor,
     },
     "color.neutral-outline-discernible-control",
@@ -653,7 +654,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties(
     {
-        foregroundFill: neutralStrokeReadableRest,
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadableRest, neutralStrokeStrong.disabled),
     },
     "color.neutral-foreground-readable-control",
 );
@@ -670,7 +671,7 @@ export const neutralForegroundReadableElementStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundStrongElementStyles: Styles = Styles.fromProperties(
     {
-        foregroundFill: neutralStrokeStrongRest,
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrongRest, neutralStrokeStrong.disabled),
     },
     "color.neutral-foreground-strong-element",
 );
@@ -687,7 +688,7 @@ export const neutralForegroundStrongElementStyles: Styles = Styles.fromPropertie
  */
 export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
     {
-        foregroundFill: neutralStrokeSubtleRest,
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeSubtleRest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-subtle-element",
 );
@@ -704,7 +705,7 @@ export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
  */
 export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromProperties(
     {
-        foregroundFill: neutralStrokeDiscernibleRest,
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeDiscernibleRest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-discernible-element",
 );
@@ -869,15 +870,31 @@ export const actionStyles: Styles = Styles.compose(
     "styles.action-control",
 );
 
+const inputCommonStyles = [
+    controlShapeStyles,
+    typeRampBaseStyles,
+    Styles.compose([
+        neutralOutlineDiscernibleControlStyles
+    ], {
+        backgroundFill: {
+            name: "color.input-common-background",
+            rest: fillColor,
+            hover: fillColor,
+            active: fillColor,
+            focus: fillColor,
+            disabled: neutralFillSubtle.disabled,
+        }
+    })
+    ,
+];
+
 /**
  * @public
  */
 export const inputStyles: Styles = Styles.compose(
     [
-        controlShapeStyles,
+        ...inputCommonStyles,
         controlDensityStyles,
-        typeRampBaseStyles,
-        neutralOutlineDiscernibleControlStyles,
     ],
     undefined,
     "styles.input-control",
@@ -888,10 +905,8 @@ export const inputStyles: Styles = Styles.compose(
  */
 export const inputAutofillStyles: Styles = Styles.compose(
     [
-        controlShapeStyles,
+        ...inputCommonStyles,
         autofillOuterDensityStyles,
-        typeRampBaseStyles,
-        neutralOutlineDiscernibleControlStyles,
     ],
     undefined,
     "styles.input-autofill-control",
@@ -963,4 +978,18 @@ export const labelTextStyles: Styles = Styles.compose(
         fontWeight: labelFontWeight,
     },
     "styles.text-label",
+);
+
+/**
+ * Style module for the disabled state.
+ *
+ * By default, sets the cursor to "not-allowed".
+ *
+ * @public
+ */
+export const disabledStyles: Styles = Styles.fromProperties(
+    {
+        cursor: "not-allowed",
+    },
+    "styles.disabled",
 );

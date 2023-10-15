@@ -15,7 +15,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     .label {
-        display: block;
+        display: inline-block;
         cursor: pointer;
     }
 
@@ -64,11 +64,6 @@ export const templateStyles: ElementStyles = css`
     ::slotted([slot="end"]) {
         display: flex;
     }
-
-    :host([disabled]) .label,
-    :host([disabled]) .control {
-        cursor: not-allowed;
-    }
 `;
 
 /**
@@ -95,9 +90,5 @@ export const aestheticStyles: ElementStyles = css`
     .step-up,
     .step-down {
         padding: 1px 10px;
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

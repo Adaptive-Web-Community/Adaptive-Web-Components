@@ -20,6 +20,9 @@ export class ControlPane extends FASTElement {
     @observable
     public wcagContrastLevel: WcagContrastLevel = "aa";
 
+    @observable
+    public disabledState: boolean = false;
+
     public updateFormValue(field: string, value: any) {
         this.$emit("formvaluechange", { field: field, value: value });
     }

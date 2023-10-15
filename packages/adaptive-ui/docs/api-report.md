@@ -34,7 +34,7 @@ export const _black: SwatchRGB;
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
 
 // @public
-export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
+export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, disabledReference: Swatch, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
 
 // @public (undocumented)
 export const BorderFill: {
@@ -102,7 +102,7 @@ export type ComponentParts = Record<string, string>;
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
 
 // @public
-export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
+export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
@@ -118,7 +118,7 @@ export const CornerRadius: {
 export const create: typeof DesignToken.create;
 
 // @public
-export function createForegroundSet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>, foregroundState: keyof InteractiveSet<any>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
+export function createForegroundSet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
 
 // @public
 export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Swatch>): InteractiveTokenGroup<Swatch>;
@@ -189,7 +189,7 @@ export function createTokenSwatch(name: string, intendedFor?: StyleProperty | St
 export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, direction?: PaletteDirection): Swatch;
 
 // @public
-export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
+export function deltaSwatchSet(palette: Palette, reference: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta?: number, disabledPalette?: Palette, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveSwatchSet;
 
 // @public
 export const densityAdjustmentUnits: TypedDesignToken<number>;
@@ -262,13 +262,14 @@ export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
 export const Fill: {
     backgroundAndForeground: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>) => StyleProperties;
     backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
+    foregroundNonInteractiveWithDisabled: (foreground: TypedCSSDesignToken<Swatch>, disabled: TypedCSSDesignToken<Swatch>) => StyleProperties;
 };
 
 // @public
 export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 
 // @public
-export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, direction?: PaletteDirection): InteractiveSwatchSet;
+export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveSwatchSet;
 
 // @public
 export type InteractiveColorRecipe = ColorRecipe<InteractiveSwatchSet>;
@@ -291,6 +292,7 @@ export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<I
 // @public
 export interface InteractiveSet<T> {
     active: T;
+    disabled: T;
     focus: T;
     hover: T;
     rest: T;
@@ -317,8 +319,8 @@ export const Interactivity: {
 
 // @public
 export interface InteractivityDefinition {
+    disabledSelector?: string;
     interactivitySelector?: string;
-    nonInteractivitySelector?: string;
 }
 
 // @public
@@ -403,7 +405,7 @@ export interface RelativeLuminance {
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
 
 // @public
-export type StateSelector = "hover" | "active" | FocusSelector;
+export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
 
 // @public
 export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
@@ -460,6 +462,7 @@ export const StyleProperty: {
     readonly width: "width";
     readonly layoutDirection: "layoutDirection";
     readonly opacity: "opacity";
+    readonly cursor: "cursor";
 };
 
 // @public

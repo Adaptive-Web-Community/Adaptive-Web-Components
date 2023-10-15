@@ -19,11 +19,6 @@ export const templateStyles: ElementStyles = css`
         outline: none;
     }
 
-    :host([disabled]) .label,
-    :host([disabled]) .switch {
-        cursor: not-allowed;
-    }
-
     .label {
         cursor: pointer;
     }
@@ -78,9 +73,5 @@ export const aestheticStyles: ElementStyles = css`
     :host([aria-checked="true"]:enabled:focus-visible) .switch {
         box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
         border-color: transparent;
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

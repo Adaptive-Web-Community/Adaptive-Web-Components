@@ -95,10 +95,6 @@ export const templateStyles: ElementStyles = css`
     :host(:focus-visible) {
         outline: none;
     }
-
-    :host([disabled]) .control {
-        cursor: not-allowed;
-    }
 `;
 
 /**
@@ -147,9 +143,5 @@ export const aestheticStyles: ElementStyles = css`
         height: calc((${heightNumber} / 2) * 1px);
         border-radius: calc(${cornerRadiusControl} * 1px);
         background: ${accentForegroundRest};
-    }
-
-    :host([disabled]) .control {
-        opacity: 0.3;
     }
 `;

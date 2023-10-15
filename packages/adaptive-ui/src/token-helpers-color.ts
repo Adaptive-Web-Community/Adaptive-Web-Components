@@ -53,7 +53,7 @@ export function createTokenMinContrast(
 }
 
 /**
- * Creates a DesignToken that can be used for a color recipe.
+ * Creates a DesignToken that can be used for a color recipe, optionally referencing a context color.
  *
  * @param baseName - The base token name in `css-identifier` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
@@ -72,7 +72,7 @@ export function createTokenColorRecipe<T = Swatch>(
 }
 
 /**
- * Creates a DesignToken that can be used for a color recipe, based on another interactive color set.
+ * Creates a DesignToken that can be used for a color recipe, referencing an interactive color set for context.
  *
  * @param baseName - The base token name in `css-identifier` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
@@ -165,6 +165,7 @@ export function createTokenColorSet(
         hover: createTokenColorSetState(valueToken, "hover"),
         active: createTokenColorSetState(valueToken, "active"),
         focus: createTokenColorSetState(valueToken, "focus"),
+        disabled: createTokenColorSetState(valueToken, "disabled"),
     };
 }
 
@@ -185,24 +186,24 @@ export function createTokenColorRecipeValue(
 }
 
 /**
- * Creates a TokenGroup of a single state from a set of foreground tokens to be applied over the interactive background tokens.
+ * Creates an {@link InteractiveTokenGroup} from the `rest` state of the foreground set
+ * to be applied over the interactive background tokens.
  *
  * @param foregroundRecipe - The recipe for the foreground.
- * @param foregroundState - The state from the foreground recipe, typically "rest".
  * @param background - The interactive token group for the background.
  *
  * @public
  */
 export function createForegroundSet(
     foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>,
-    foregroundState: keyof InteractiveSet<any>,
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
-    const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}-${foregroundState}`;
+    const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}`;
     const backgroundBaseName = background.rest.name.replace("-rest", "");
     const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
 
     function createState(
+        foregroundState: keyof InteractiveSet<any>,
         state: keyof InteractiveSet<any>,
     ): TypedCSSDesignToken<Swatch> {
         return createTokenSwatch(`${setName}-${state}`).withDefault(
@@ -217,10 +218,11 @@ export function createForegroundSet(
         name: setName,
         type: DesignTokenType.color,
         intendedFor: foregroundRecipe.intendedFor,
-        rest: createState("rest"),
-        hover: createState("hover"),
-        active: createState("active"),
-        focus: createState("focus")
+        rest: createState("rest", "rest"),
+        hover: createState("rest", "hover"),
+        active: createState("rest", "active"),
+        focus: createState("rest", "focus"),
+        disabled: createState("disabled", "disabled"),
     };
 }
 
@@ -248,6 +250,7 @@ export function createForegroundSetBySet(
                     hover: resolve(background.hover),
                     active: resolve(background.active),
                     focus: resolve(background.focus),
+                    disabled: resolve(background.disabled),
                 }
                 return resolve(foregroundRecipe).evaluate(resolve, backgroundSet);
             }
@@ -269,6 +272,7 @@ export function createForegroundSetBySet(
         rest: createState("rest"),
         hover: createState("hover"),
         active: createState("active"),
-        focus: createState("focus")
+        focus: createState("focus"),
+        disabled: createState("disabled"),
     };
 }

@@ -13,7 +13,7 @@ export type FocusSelector = "focus" | "focus-visible" | "focus-within";
  *
  * @public
  */
-export type StateSelector = "hover" | "active" | FocusSelector;
+export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
 
 /**
  * Type of the `conditions` for component {@link ComponentAnatomy}.
@@ -74,9 +74,9 @@ export interface InteractivityDefinition {
     interactivitySelector?: string;
 
     /**
-     * The selector indicating the component or element is not interactive, like `[disabled]`.
+     * The selector indicating the component or element is disabled, like `[disabled]`.
      */
-    nonInteractivitySelector?: string;
+    disabledSelector?: string;
 }
 
 /**
@@ -87,19 +87,19 @@ export interface InteractivityDefinition {
 export const Interactivity = {
     disabledAttribute: { 
         interactivitySelector: ":not([disabled])",
-        nonInteractivitySelector: "[disabled]",
+        disabledSelector: "[disabled]",
     } as InteractivityDefinition,
     hrefAttribute:  { 
         interactivitySelector: "[href]",
-        nonInteractivitySelector: ":not([href])",
+        disabledSelector: undefined,
     } as InteractivityDefinition,
     always: { 
         interactivitySelector: "",
-        nonInteractivitySelector: "",
+        disabledSelector: "",
     } as InteractivityDefinition,
     never: { 
         interactivitySelector: undefined,
-        nonInteractivitySelector: undefined,
+        disabledSelector: undefined,
     } as InteractivityDefinition,
 } as const;
 
@@ -150,6 +150,7 @@ export const StyleProperty = {
     width: "width",
     layoutDirection: "layoutDirection",
     opacity: "opacity",
+    cursor: "cursor",
 } as const;
 
 /**

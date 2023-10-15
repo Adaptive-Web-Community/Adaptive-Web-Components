@@ -49,6 +49,7 @@ const colorBlockTemplate = html<App>`
                 component="${(x, c) => c.parent.componentType}"
                 color="${(x) => x.color}"
                 layer-name="${(x) => x.title}"
+                :disabledState=${(x, c) => c.parent.disabledState}
             ></app-color-block>
         `
     )}
@@ -235,6 +236,9 @@ export class App extends FASTElement implements AppAttributes {
 
     @observable
     public backgrounds: SwatchInfo[];
+
+    @observable
+    public disabledState: boolean = false;
 
     public connectedCallback() {
         super.connectedCallback();

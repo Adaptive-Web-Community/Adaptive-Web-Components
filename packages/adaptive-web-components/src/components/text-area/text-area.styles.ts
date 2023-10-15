@@ -24,7 +24,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     .label {
-        display: block;
+        display: inline-block;
         cursor: pointer;
     }
 
@@ -43,11 +43,6 @@ export const templateStyles: ElementStyles = css`
 
     :host([resize="vertical"]) .control {
         resize: vertical;
-    }
-
-    :host([disabled]) .label,
-    :host([disabled]) .control {
-        cursor: not-allowed;
     }
 `;
 

@@ -22,5 +22,6 @@ export function conditionalSwatchSet(
         hover: transparent,
         active: transparent,
         focus: transparent,
+        disabled: transparent,
     };
 }

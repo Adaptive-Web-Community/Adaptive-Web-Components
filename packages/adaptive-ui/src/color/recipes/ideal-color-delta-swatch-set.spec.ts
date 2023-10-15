@@ -15,8 +15,8 @@ describe("idealColorDeltaSwatchSet", (): void => {
     const accentPalette = PaletteRGB.from(accentBase);
 
     it("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
-        const lightModeColors = idealColorDeltaSwatchSet(accentPalette, _white, 4.5, accentPalette.source, 0, 6, -4, 0);
-        const darkModeColors = idealColorDeltaSwatchSet(accentPalette, _black, 4.5, accentPalette.source, 0, 6, -4, 0);
+        const lightModeColors = idealColorDeltaSwatchSet(accentPalette, _white, 4.5, accentPalette.source, 0, 6, -4, 0, 1);
+        const darkModeColors = idealColorDeltaSwatchSet(accentPalette, _black, 4.5, accentPalette.source, 0, 6, -4, 0, 1);
 
         expect(lightModeColors.hover.contrast(_white)).to.be.greaterThan(lightModeColors.rest.contrast(_white));
         expect(darkModeColors.hover.contrast(_black)).to.be.greaterThan(darkModeColors.rest.contrast(_black));
@@ -43,7 +43,8 @@ describe("idealColorDeltaSwatchSet", (): void => {
                     0,
                     6,
                     -4,
-                    0
+                    0,
+                    1
                 );
                 const largeColors = idealColorDeltaSwatchSet(
                     accentPalette,
@@ -53,7 +54,8 @@ describe("idealColorDeltaSwatchSet", (): void => {
                     0,
                     6,
                     -4,
-                    0
+                    0,
+                    1
                 );
                 expect(
                     swatch.contrast(smallColors.rest)

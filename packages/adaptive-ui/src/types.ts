@@ -48,6 +48,11 @@ export interface InteractiveSet<T> {
      * The value to apply to the focus state.
      */
     focus: T;
+
+    /**
+     * The value to apply to the disabled state.
+     */
+    disabled: T;
 }
 
 /**

@@ -9,7 +9,7 @@ import {
 } from "../token-helpers.js";
 
 /**
- * Standard font wights.
+ * Standard font weights.
  *
  * @public
  */

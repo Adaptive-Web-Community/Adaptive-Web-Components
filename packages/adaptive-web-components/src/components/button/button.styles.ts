@@ -19,9 +19,9 @@ export const templateStyles: ElementStyles = css`
         justify-content: center;
         align-items: center;
         white-space: nowrap;
+        /* reset */
         outline: none;
         font: inherit;
-        /* reset */
         border: none;
         margin: 0;
         padding: 0;
@@ -39,10 +39,6 @@ export const templateStyles: ElementStyles = css`
     :host(:not([disabled])) .control {
         cursor: pointer;
     }
-
-    :host([disabled]) .control {
-        cursor: not-allowed;
-    }
 `;
 
 /**
@@ -51,7 +47,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .control {
-        white-space: nowrap;
         fill: currentcolor;
     }
 

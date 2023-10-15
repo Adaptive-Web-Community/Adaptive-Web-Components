@@ -45,7 +45,7 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
         <label>
             <input
                 type="checkbox"
-                checked="${(x) => x.showOnlyLayerBackgrounds}"
+                ?checked="${(x) => x.showOnlyLayerBackgrounds}"
                 @change="${(x, c) => {
                     x.updateFormValue("showOnlyLayerBackgrounds", c.eventTarget<HTMLInputElement>().checked);
                 }}"
@@ -92,5 +92,15 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                 `
             )}
         </div>
+        <label>
+            <input
+                type="checkbox"
+                ?checked="${(x) => x.disabledState}"
+                @change="${(x, c) => {
+                    x.updateFormValue("disabledState", c.eventTarget<HTMLInputElement>().checked);
+                }}"
+            />
+            <span>Disabled state</span>
+        </label>
     `;
 }
