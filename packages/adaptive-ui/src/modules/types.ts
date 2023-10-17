@@ -85,18 +85,41 @@ export interface InteractivityDefinition {
  * @public
  */
 export const Interactivity = {
+    /**
+     * Has interactive or disabled states based on the `disabled` attribute.
+     *
+     * For instance, a form control.
+     */
     disabledAttribute: { 
         interactivitySelector: ":not([disabled])",
         disabledSelector: "[disabled]",
     } as InteractivityDefinition,
+
+    /**
+     * Has interactive states based on the `href` attribute, but never a disabled state.
+     *
+     * For instance, an `<a>` should style as plain text when it doesn't have an `href` attribute.
+     */
     hrefAttribute:  { 
         interactivitySelector: "[href]",
         disabledSelector: undefined,
     } as InteractivityDefinition,
+
+    /**
+     * Is always interactive and never has a disabled state.
+     *
+     * For instance, cards or list items that are not able to be disabled.
+     */
     always: { 
         interactivitySelector: "",
-        disabledSelector: "",
+        disabledSelector: undefined,
     } as InteractivityDefinition,
+
+    /**
+     * Is never interactive or disabled, that is, a plain static element.
+     *
+     * For instance, body text, headings, illustrations, etc.
+     */
     never: { 
         interactivitySelector: undefined,
         disabledSelector: undefined,

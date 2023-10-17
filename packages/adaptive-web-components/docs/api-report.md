@@ -963,6 +963,9 @@ export const flipperTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTFlip
 export const flipperTemplateStyles: ElementStyles;
 
 // @public
+export function globalStyleModules(interactivity?: InteractivityDefinition): StyleModules;
+
+// @public
 export const horizontalScrollAestheticStyles: ElementStyles;
 
 // @public (undocumented)

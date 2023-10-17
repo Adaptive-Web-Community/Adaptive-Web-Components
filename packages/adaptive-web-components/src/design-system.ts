@@ -148,7 +148,7 @@ export class DesignSystem {
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
 
-        for (const [target, styles] of globalStyleModules) {
+        for (const [target, styles] of globalStyleModules(interactivity)) {
             const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
             const renderedStyles = new ElementStylesRenderer(styles).render(params);
             componentStyles.push(renderedStyles);
