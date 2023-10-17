@@ -1,8 +1,29 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Sat, 01 Jul 2023 03:28:44 GMT and should not be manually modified.
+This log was last generated on Tue, 17 Oct 2023 16:10:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.1
+
+Tue, 17 Oct 2023 16:10:46 GMT
+
+### Patches
+
+- Designer - Fix the fill color evaluation (47367562+bheston@users.noreply.github.com)
+- Added `destructive` color palette and recipes (47367562+bheston@users.noreply.github.com)
+- Rename "font" styles to "text" (47367562+bheston@users.noreply.github.com)
+- Fix corner radius style not applying (47367562+bheston@users.noreply.github.com)
+- Adaptive UI - Updated color palette based on okhsl (47367562+bheston@users.noreply.github.com)
+- Add a few styles and tokens to Adaptive UI reference (47367562+bheston@users.noreply.github.com)
+- update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
+- Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
+- Adaptive UI - Improve density support (47367562+bheston@users.noreply.github.com)
+- Added support for setting font weight and italic style (47367562+bheston@users.noreply.github.com)
+- Renamed "destructive" palette to "critical" (47367562+bheston@users.noreply.github.com)
+- Added support for `disabled` state colors - Added deltas to base semantic recipes - Added a disabled palette to enable neutral disabled states - Added support for global styles - Added disabled cursor to global styles (47367562+bheston@users.noreply.github.com)
+- Adjusted adaptive density styles (47367562+bheston@users.noreply.github.com)
+- Swapped default setting for transparent output from delta rules, added square density modifier, and update outline modules to include fillColor (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.0
 

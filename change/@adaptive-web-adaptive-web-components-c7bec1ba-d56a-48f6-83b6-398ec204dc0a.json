@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Designer: Added missing highlight color",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

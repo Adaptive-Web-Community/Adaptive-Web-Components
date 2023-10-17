@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "text field control resizing",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
-}

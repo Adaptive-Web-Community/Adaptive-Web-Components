@@ -2,6 +2,99 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Tue, 17 Oct 2023 16:10:46 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Designer - Fix the fill color evaluation"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Added `destructive` color palette and recipes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Rename \"font\" styles to \"text\""
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Fix corner radius style not applying"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Adaptive UI - Updated color palette based on okhsl"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Add a few styles and tokens to Adaptive UI reference"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "update fast dependencies"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Adaptive UI: Consolidate css selectors"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Adaptive UI - Improve density support"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Added support for setting font weight and italic style"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Renamed \"destructive\" palette to \"critical\""
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Added support for `disabled` state colors - Added deltas to base semantic recipes - Added a disabled palette to enable neutral disabled states - Added support for global styles - Added disabled cursor to global styles"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Adjusted adaptive density styles"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Swapped default setting for transparent output from delta rules, added square density modifier, and update outline modules to include fillColor"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 01 Jul 2023 03:28:44 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.2.0",
       "version": "0.2.0",

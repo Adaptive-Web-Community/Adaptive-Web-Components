@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update fast dependencies",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

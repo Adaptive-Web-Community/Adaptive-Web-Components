@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Rename \"font\" styles to \"text\"",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,25 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Wed, 19 Jul 2023 04:28:43 GMT and should not be manually modified.
+This log was last generated on Tue, 17 Oct 2023 16:10:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Tue, 17 Oct 2023 16:10:46 GMT
+
+### Patches
+
+- picker styles (stephcomeau@msn.com)
+- update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
+- fix sticky header styles (stephcomeau@msn.com)
+- Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
+- Button style reset (47367562+bheston@users.noreply.github.com)
+- select control width (stephcomeau@msn.com)
+- Designer: Added missing highlight color (47367562+bheston@users.noreply.github.com)
+- Added support for `disabled` state colors and cursor (47367562+bheston@users.noreply.github.com)
+- text field control resizing (stephcomeau@msn.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.1
 
 ## 0.4.0
 

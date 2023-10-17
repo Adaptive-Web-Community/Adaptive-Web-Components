@@ -1,191 +1,260 @@
 {
-    "name": "@adaptive-web/adaptive-web-components",
-    "entries": [
-        {
-            "date": "Wed, 19 Jul 2023 04:28:43 GMT",
-            "tag": "@adaptive-web/adaptive-web-components_v0.4.0",
-            "version": "0.4.0",
-            "comments": {
-                "minor": [
-                    {
-                        "author": "32497422+KingOfTac@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "a7d6406762b066cf575224b503889643c3cb7b22",
-                        "comment": "enable prefix changing for composed definitions"
-                    }
-                ]
-            }
-        },
-        {
-            "date": "Sat, 01 Jul 2023 03:28:44 GMT",
-            "tag": "@adaptive-web/adaptive-web-components_v0.3.0",
-            "version": "0.3.0",
-            "comments": {
-                "minor": [
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "ca899f4011a84821519a7b182f5f5a65169554e9",
-                        "comment": "Update styles to normalize to `border-box` sizing"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "797a1abaaadc7f974f105d4e5ac0ee998cb2b732",
-                        "comment": "Added `migration` export for deprecated design tokens"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "5c6f92995bd836a0c3130505a26046263bb45e0a",
-                        "comment": "Designer: add style module support"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "d1cf04f9e38e5d4bb5b7b69778e86696b855ac44",
-                        "comment": "Update compound properties (padding, border, etc.)"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "6cf1409031aaf6440e55a0aa3fc8eb4b54ecca97",
-                        "comment": "Adaptive UI: Formalized `Recipe` structure to enable better composition"
-                    },
-                    {
-                        "author": "beachball",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "comment": "Bump @adaptive-web/adaptive-ui to v0.2.0",
-                        "commit": "3c5cfa0444531ec74ccce4da0e6247e559dd466f"
-                    }
-                ],
-                "patch": [
-                    {
-                        "author": "nbrown414@outlook.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "f1a5ef4b356c494d96a21c5ba4455e21544c0748",
-                        "comment": "updated all token imports from adaptive-ui and updated FAST to latest versions"
-                    }
-                ]
-            }
-        },
-        {
-            "date": "Sat, 03 Jun 2023 04:25:41 GMT",
-            "tag": "@adaptive-web/adaptive-web-components_v0.2.0",
-            "version": "0.2.0",
-            "comments": {
-                "minor": [
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "c00ce0f41ed43bb75f5d60e684774bc092be8950",
-                        "comment": "Clean up style module definition"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "cf2d33176776734b2f28e79a8fff80b3df01ebca",
-                        "comment": "Add start and end icon args in Storybook"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "d3d911a4f99a0cf302eb78647f1b193980260940",
-                        "comment": "Finish semantic color recipe system and foundation style modules"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "66d7aba5d887baa87e72f56aa58704c344e98e41",
-                        "comment": "Migrated type ramp to style modules"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "797753dd638d6aeda991e22142c98ab1f6efdc16",
-                        "comment": "Update to latest FAST"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "1aec7830f48e8255ffd0d6aa5e8cde94d070621a",
-                        "comment": "Migrate density related styles to style modules"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "9a0be2b2db7dcdc2dcd7d6feb021fb321e36e72d",
-                        "comment": "Setup style module pattern for remaining components"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "c4ae2a58c02496a5ae7346dc8bcc47863e278d60",
-                        "comment": "Renamed `perceivable` colors to `discernible`"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "ab56d080c5c2a3c631bf568327a8d00ab23962ff",
-                        "comment": "Migrated interactive color styles to style modules"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "e7cc8b600a8d2c84ce13857a6410100bc448246a",
-                        "comment": "Update Anchor to illustrate initial migration to style modules for components"
-                    },
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "ea5e7e49dfad8b0248d062048716b448a029a079",
-                        "comment": "Migrate border styling to modules"
-                    },
-                    {
-                        "author": "beachball",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "comment": "Bump @adaptive-web/adaptive-ui to v0.1.0",
-                        "commit": "a3d503d1785dc4a06c4dca4fae086fd029ea348e"
-                    }
-                ],
-                "patch": [
-                    {
-                        "author": "47367562+bheston@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "43a7718bf969894d7d87acd99dc1770089a97630",
-                        "comment": "Fix API docs"
-                    },
-                    {
-                        "author": "stephcomeau@msn.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "043b3dbcf62e68eced67696cfdb9a1df1d3aa2c3",
-                        "comment": "hide unused labels"
-                    }
-                ]
-            }
-        },
-        {
-            "date": "Wed, 15 Mar 2023 23:46:48 GMT",
-            "tag": "@adaptive-web/adaptive-web-components_v0.1.2",
-            "version": "0.1.2",
-            "comments": {
-                "none": [
-                    {
-                        "author": "32497422+KingOfTac@users.noreply.github.com",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "commit": "8f53f679b6d70310122a08ddc6d5d4e73af8296f",
-                        "comment": "add beachball and api-extractor"
-                    }
-                ],
-                "patch": [
-                    {
-                        "author": "beachball",
-                        "package": "@adaptive-web/adaptive-web-components",
-                        "comment": "Bump @adaptive-web/adaptive-ui to v0.0.3",
-                        "commit": "d6b7c7dd02142cad321be2dda74d193bfd2dea1f"
-                    }
-                ]
-            }
-        }
-    ]
+  "name": "@adaptive-web/adaptive-web-components",
+  "entries": [
+    {
+      "date": "Tue, 17 Oct 2023 16:10:46 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "picker styles"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "update fast dependencies"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "fix sticky header styles"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Adaptive UI: Consolidate css selectors"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Button style reset"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "select control width"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Designer: Added missing highlight color"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "Added support for `disabled` state colors and cursor"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e",
+            "comment": "text field control resizing"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.2.1",
+            "commit": "f9e8704d8dc263db9a666bb2a7ae512b872aac2e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 19 Jul 2023 04:28:43 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "a7d6406762b066cf575224b503889643c3cb7b22",
+            "comment": "enable prefix changing for composed definitions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 01 Jul 2023 03:28:44 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "ca899f4011a84821519a7b182f5f5a65169554e9",
+            "comment": "Update styles to normalize to `border-box` sizing"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "797a1abaaadc7f974f105d4e5ac0ee998cb2b732",
+            "comment": "Added `migration` export for deprecated design tokens"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "5c6f92995bd836a0c3130505a26046263bb45e0a",
+            "comment": "Designer: add style module support"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "d1cf04f9e38e5d4bb5b7b69778e86696b855ac44",
+            "comment": "Update compound properties (padding, border, etc.)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "6cf1409031aaf6440e55a0aa3fc8eb4b54ecca97",
+            "comment": "Adaptive UI: Formalized `Recipe` structure to enable better composition"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.2.0",
+            "commit": "3c5cfa0444531ec74ccce4da0e6247e559dd466f"
+          }
+        ],
+        "patch": [
+          {
+            "author": "nbrown414@outlook.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "f1a5ef4b356c494d96a21c5ba4455e21544c0748",
+            "comment": "updated all token imports from adaptive-ui and updated FAST to latest versions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 03 Jun 2023 04:25:41 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c00ce0f41ed43bb75f5d60e684774bc092be8950",
+            "comment": "Clean up style module definition"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "cf2d33176776734b2f28e79a8fff80b3df01ebca",
+            "comment": "Add start and end icon args in Storybook"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "d3d911a4f99a0cf302eb78647f1b193980260940",
+            "comment": "Finish semantic color recipe system and foundation style modules"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "66d7aba5d887baa87e72f56aa58704c344e98e41",
+            "comment": "Migrated type ramp to style modules"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "797753dd638d6aeda991e22142c98ab1f6efdc16",
+            "comment": "Update to latest FAST"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "1aec7830f48e8255ffd0d6aa5e8cde94d070621a",
+            "comment": "Migrate density related styles to style modules"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "9a0be2b2db7dcdc2dcd7d6feb021fb321e36e72d",
+            "comment": "Setup style module pattern for remaining components"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c4ae2a58c02496a5ae7346dc8bcc47863e278d60",
+            "comment": "Renamed `perceivable` colors to `discernible`"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "ab56d080c5c2a3c631bf568327a8d00ab23962ff",
+            "comment": "Migrated interactive color styles to style modules"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "e7cc8b600a8d2c84ce13857a6410100bc448246a",
+            "comment": "Update Anchor to illustrate initial migration to style modules for components"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "ea5e7e49dfad8b0248d062048716b448a029a079",
+            "comment": "Migrate border styling to modules"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.1.0",
+            "commit": "a3d503d1785dc4a06c4dca4fae086fd029ea348e"
+          }
+        ],
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "43a7718bf969894d7d87acd99dc1770089a97630",
+            "comment": "Fix API docs"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "043b3dbcf62e68eced67696cfdb9a1df1d3aa2c3",
+            "comment": "hide unused labels"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Mar 2023 23:46:48 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "none": [
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "8f53f679b6d70310122a08ddc6d5d4e73af8296f",
+            "comment": "add beachball and api-extractor"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.0.3",
+            "commit": "d6b7c7dd02142cad321be2dda74d193bfd2dea1f"
+          }
+        ]
+      }
+    }
+  ]
 }
