@@ -1,6 +1,7 @@
-import { ElementStylesRenderer } from "@adaptive-web/adaptive-ui";
+import { ElementStylesRenderer, Interactivity } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
 import {
+    attr,
     css,
     customElement,
     ElementStyles,
@@ -28,18 +29,10 @@ const styles = css`
         box-sizing: border-box;
         font-size: 14px;
         justify-items: start;
-        border-width: 1px;
-        border-style: solid;
         border-radius: 4px;
         cursor: pointer;
     }
-
 `;
-
-const params = {
-    interactivitySelector: "",
-    nonInteractivitySelector: "",
-};
 
 @customElement({
     name: "app-adaptive-component",
@@ -47,6 +40,9 @@ const params = {
     styles
 })
 export class AdaptiveComponent extends FASTElement {
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
     @observable
     public styles?: Styles;
     protected stylesChanged(prev: Styles, next: Styles) {
@@ -54,7 +50,7 @@ export class AdaptiveComponent extends FASTElement {
             this.$fastController.removeStyles(this._addedStyles);
         }
         if (next) {
-            this._addedStyles = new ElementStylesRenderer(next).render(params);
+            this._addedStyles = new ElementStylesRenderer(next).render(Interactivity.disabledAttribute);
             this.$fastController.addStyles(this._addedStyles);
         }
     }

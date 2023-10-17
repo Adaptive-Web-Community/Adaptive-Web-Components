@@ -50,11 +50,6 @@ export const templateStyles: ElementStyles = css`
         display: none;
         visibility: hidden;
     }
-
-    :host([disabled]) .label,
-    :host([disabled]) .control {
-        cursor: not-allowed;
-    }
 `;
 
 /**
@@ -79,9 +74,5 @@ export const aestheticStyles: ElementStyles = css`
 
     .label {
         padding-inline-start: calc((${designUnit} * 2) + 2px);
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

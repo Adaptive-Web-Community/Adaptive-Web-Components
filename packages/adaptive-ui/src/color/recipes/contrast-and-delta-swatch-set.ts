@@ -20,6 +20,8 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  * @param hoverDelta - The hover state offset from the base color
  * @param activeDelta - The active state offset from the base color
  * @param focusDelta - The focus state offset from the base color
+ * @param disabledDelta - The disabled state offset from the base color
+ * @param disabledPalette - The Palette for the disabled Swatch
  * @param direction - The direction the deltas move on the `palette`, defaults to {@link directionByIsDark} based on `reference`
  * @param zeroAsTransparent - Treat a zero offset as transparent, defaults to true
  * @returns The interactive set of Swatches
@@ -34,6 +36,8 @@ export function contrastAndDeltaSwatchSet(
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number,
+    disabledDelta: number,
+    disabledPalette: Palette = palette,
     direction: PaletteDirection = directionByIsDark(reference),
     zeroAsTransparent: boolean = false,
 ): InteractiveSwatchSet {
@@ -58,7 +62,7 @@ export function contrastAndDeltaSwatchSet(
         hoverIndex = accessibleIndex1;
     }
 
-    function getSwatch(index: number): Swatch {
+    function getSwatch(palette: Palette, index: number): Swatch {
         const swatch = palette.get(index) as SwatchRGB;
         if (zeroAsTransparent === true && index === referenceIndex) {
             return swatch.toTransparent();
@@ -68,9 +72,10 @@ export function contrastAndDeltaSwatchSet(
     }
 
     return {
-        rest: getSwatch(restIndex),
-        hover: getSwatch(hoverIndex),
-        active: getSwatch(restIndex + dir * activeDelta),
-        focus: getSwatch(restIndex + dir * focusDelta),
+        rest: getSwatch(palette, restIndex),
+        hover: getSwatch(palette, hoverIndex),
+        active: getSwatch(palette, restIndex + dir * activeDelta),
+        focus: getSwatch(palette, restIndex + dir * focusDelta),
+        disabled: getSwatch(disabledPalette, referenceIndex + dir * disabledDelta),
     };
 }

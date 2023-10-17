@@ -38,6 +38,7 @@ export function interactiveSwatchSetAsOverlay(
             hover: swatchAsOverlay(set.hover, reference, asOverlay),
             active: swatchAsOverlay(set.active, reference, asOverlay),
             focus: swatchAsOverlay(set.focus, reference, asOverlay),
+            disabled: swatchAsOverlay(set.disabled, reference, asOverlay),
         };
     }
     return set;

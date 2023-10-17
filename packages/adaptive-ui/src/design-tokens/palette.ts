@@ -38,3 +38,14 @@ export const criticalPalette = createNonCss<Palette>("critical-palette").withDef
     (resolve: DesignTokenResolver) =>
         PaletteOkhsl.from(resolve(criticalBaseColor))
 );
+
+/**
+ * The {@link Palette} to use for disabled state.
+ *
+ * @remarks
+ * By default this maps to the {@link neutralPalette}.
+ * Use a custom palette like `disabledPalette.withDefault(PaletteOkhsl.from("#[HEX_COLOR]"))`.
+ *
+ * @public
+ */
+export const disabledPalette = createNonCss<Palette>("disabled-palette").withDefault(neutralPalette);

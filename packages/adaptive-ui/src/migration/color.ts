@@ -14,6 +14,7 @@ import {
     createTokenMinContrast
 } from "../token-helpers-color.js";
 import {
+    accentFillReadable,
     accentFillReadableActive,
     accentFillReadableFocus,
     accentFillReadableHover,
@@ -116,6 +117,7 @@ export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(
             resolve(accentFillReadableHover),
             resolve(accentFillReadableActive),
             resolve(accentFillReadableFocus),
+            resolve(accentFillReadable.disabled),
             resolve(minContrastReadable),
             false
         )
@@ -425,7 +427,8 @@ export const neutralFillInputRecipe = createTokenColorRecipe(
                 resolve(neutralFillInputRestDelta),
                 resolve(neutralFillInputHoverDelta),
                 resolve(neutralFillInputActiveDelta),
-                resolve(neutralFillInputFocusDelta)
+                resolve(neutralFillInputFocusDelta),
+                1,
             ),
             params?.reference || resolve(fillColor),
             resolve(neutralAsOverlay)
@@ -475,7 +478,8 @@ export const neutralFillSecondaryRecipe = createTokenColorRecipe(
                 resolve(neutralFillSecondaryRestDelta),
                 resolve(neutralFillSecondaryHoverDelta),
                 resolve(neutralFillSecondaryActiveDelta),
-                resolve(neutralFillSecondaryFocusDelta)
+                resolve(neutralFillSecondaryFocusDelta),
+                1,
             ),
             params?.reference || resolve(fillColor),
             resolve(neutralAsOverlay)
@@ -605,7 +609,8 @@ export const neutralStrokeInputRecipe = createTokenColorRecipe(
                 resolve(neutralStrokeInputRestDelta),
                 resolve(neutralStrokeInputHoverDelta),
                 resolve(neutralStrokeInputActiveDelta),
-                resolve(neutralStrokeInputFocusDelta)
+                resolve(neutralStrokeInputFocusDelta),
+                1,
             ),
             params?.reference || resolve(fillColor),
             resolve(neutralAsOverlay)

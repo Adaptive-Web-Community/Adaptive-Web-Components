@@ -22,7 +22,7 @@ import {
 } from "../token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { accentPalette, criticalPalette, highlightPalette, neutralPalette } from "./palette.js";
+import { accentPalette, criticalPalette, disabledPalette, highlightPalette, neutralPalette } from "./palette.js";
 
 /**
  * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
@@ -152,8 +152,9 @@ export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<Interac
             reference.hover,
             reference.active,
             reference.focus,
+            reference.disabled,
             resolve(minContrastDiscernible),
-            false
+            false,
         )
 );
 
@@ -175,8 +176,9 @@ export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<Interactiv
             reference.hover,
             reference.active,
             reference.focus,
+            reference.disabled,
             resolve(minContrastReadable),
-            false
+            false,
         )
 );
 
@@ -197,6 +199,9 @@ export const fillStealthActiveDelta = createTokenDelta(fillStealthName, "active"
 export const fillStealthFocusDelta = createTokenDelta(fillStealthName, "focus", 0);
 
 /** @public */
+export const fillStealthDisabledDelta = createTokenDelta(fillStealthName, "disabled", 0);
+
+/** @public */
 export const fillStealthRecipe = createTokenColorRecipeForPalette(
     fillStealthName,
     StyleProperty.backgroundFill,
@@ -208,8 +213,10 @@ export const fillStealthRecipe = createTokenColorRecipeForPalette(
             resolve(fillStealthHoverDelta),
             resolve(fillStealthActiveDelta),
             resolve(fillStealthFocusDelta),
+            resolve(fillStealthDisabledDelta),
+            resolve(disabledPalette),
             undefined,
-            true
+            true,
         )
 );
 
@@ -228,6 +235,9 @@ export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 
 export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, "focus", 2);
 
 /** @public */
+export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, "disabled", 2);
+
+/** @public */
 export const fillSubtleRecipe = createTokenColorRecipeForPalette(
     fillSubtleName,
     StyleProperty.backgroundFill,
@@ -238,7 +248,9 @@ export const fillSubtleRecipe = createTokenColorRecipeForPalette(
             resolve(fillSubtleRestDelta),
             resolve(fillSubtleHoverDelta),
             resolve(fillSubtleActiveDelta),
-            resolve(fillSubtleFocusDelta)
+            resolve(fillSubtleFocusDelta),
+            resolve(fillSubtleDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -257,6 +269,9 @@ export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, 
 export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, "focus", 0);
 
 /** @public */
+export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, "disabled", 2);
+
+/** @public */
 export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
     fillDiscernibleName,
     StyleProperty.backgroundFill,
@@ -268,7 +283,9 @@ export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
             resolve(fillDiscernibleRestDelta),
             resolve(fillDiscernibleHoverDelta),
             resolve(fillDiscernibleActiveDelta),
-            resolve(fillDiscernibleFocusDelta)
+            resolve(fillDiscernibleFocusDelta),
+            resolve(fillDiscernibleDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -287,6 +304,9 @@ export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "activ
 export const fillReadableFocusDelta = createTokenDelta(fillReadableName, "focus", 0);
 
 /** @public */
+export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, "disabled", 2);
+
+/** @public */
 export const fillReadableRecipe = createTokenColorRecipeForPalette(
     fillReadableName,
     StyleProperty.backgroundFill,
@@ -298,7 +318,9 @@ export const fillReadableRecipe = createTokenColorRecipeForPalette(
             resolve(fillReadableRestDelta),
             resolve(fillReadableHoverDelta),
             resolve(fillReadableActiveDelta),
-            resolve(fillReadableFocusDelta)
+            resolve(fillReadableFocusDelta),
+            resolve(fillReadableDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -317,6 +339,9 @@ export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, "activ
 export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, "focus", 0);
 
 /** @public */
+export const strokeSafetyDisabledDelta = createTokenDelta(strokeSafetyName, "disabled", 0);
+
+/** @public */
 export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
     strokeSafetyName,
     stylePropertyBorderFillAll,
@@ -329,7 +354,9 @@ export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
                 resolve(strokeSafetyRestDelta),
                 resolve(strokeSafetyHoverDelta),
                 resolve(strokeSafetyActiveDelta),
-                resolve(strokeSafetyFocusDelta)
+                resolve(strokeSafetyFocusDelta),
+                resolve(strokeSafetyDisabledDelta),
+                resolve(disabledPalette),
             ),
             resolve(minContrastSafety) > 0
         )
@@ -350,6 +377,9 @@ export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, "act
 export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, "focus", 0);
 
 /** @public */
+export const strokeStealthDisabledDelta = createTokenDelta(strokeStealthName, "disabled", 0);
+
+/** @public */
 export const strokeStealthRecipe = createTokenColorRecipeForPalette(
     strokeStealthName,
     stylePropertyBorderFillAll,
@@ -362,6 +392,8 @@ export const strokeStealthRecipe = createTokenColorRecipeForPalette(
             resolve(strokeStealthHoverDelta),
             resolve(strokeStealthActiveDelta),
             resolve(strokeStealthFocusDelta),
+            resolve(strokeStealthDisabledDelta),
+            resolve(disabledPalette),
             undefined,
             true
         )
@@ -382,6 +414,9 @@ export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, "activ
 export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, "focus", 0);
 
 /** @public */
+export const strokeSubtleDisabledDelta = createTokenDelta(strokeSubtleName, "disabled", 8);
+
+/** @public */
 export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
     strokeSubtleName,
     stylePropertyBorderFillAll,
@@ -393,7 +428,9 @@ export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
             resolve(strokeSubtleRestDelta),
             resolve(strokeSubtleHoverDelta),
             resolve(strokeSubtleActiveDelta),
-            resolve(strokeSubtleFocusDelta)
+            resolve(strokeSubtleFocusDelta),
+            resolve(strokeSubtleDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -412,6 +449,9 @@ export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleNa
 export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, "focus", 0);
 
 /** @public */
+export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernibleName, "disabled", 8);
+
+/** @public */
 export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
     strokeDiscernibleName,
     stylePropertyBorderFillAll,
@@ -423,7 +463,9 @@ export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
             resolve(strokeDiscernibleRestDelta),
             resolve(strokeDiscernibleHoverDelta),
             resolve(strokeDiscernibleActiveDelta),
-            resolve(strokeDiscernibleFocusDelta)
+            resolve(strokeDiscernibleFocusDelta),
+            resolve(strokeDiscernibleDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -442,6 +484,9 @@ export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, "a
 export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, "focus", 0);
 
 /** @public */
+export const strokeReadableDisabledDelta = createTokenDelta(strokeReadableName, "disabled", 8);
+
+/** @public */
 export const strokeReadableRecipe = createTokenColorRecipeForPalette(
     strokeReadableName,
     [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
@@ -453,7 +498,9 @@ export const strokeReadableRecipe = createTokenColorRecipeForPalette(
             resolve(strokeReadableRestDelta),
             resolve(strokeReadableHoverDelta),
             resolve(strokeReadableActiveDelta),
-            resolve(strokeReadableFocusDelta)
+            resolve(strokeReadableFocusDelta),
+            resolve(strokeReadableDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 
@@ -475,6 +522,9 @@ export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, "activ
 export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, "focus", 0);
 
 /** @public */
+export const strokeStrongDisabledDelta = createTokenDelta(strokeStrongName, "disabled", 8);
+
+/** @public */
 export const strokeStrongRecipe = createTokenColorRecipeForPalette(
     strokeStrongName,
     [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
@@ -486,7 +536,9 @@ export const strokeStrongRecipe = createTokenColorRecipeForPalette(
             resolve(strokeStrongRestDelta),
             resolve(strokeStrongHoverDelta),
             resolve(strokeStrongActiveDelta),
-            resolve(strokeStrongFocusDelta)
+            resolve(strokeStrongFocusDelta),
+            resolve(strokeStrongDisabledDelta),
+            resolve(disabledPalette),
         )
 );
 

@@ -69,8 +69,4 @@ export const aestheticStyles: ElementStyles = css`
     .mark {
         background: ${neutralStrokeSubtleRest};
     }
-
-    :host([disabled]) {
-        opacity: 0.3;
-    }
 `;

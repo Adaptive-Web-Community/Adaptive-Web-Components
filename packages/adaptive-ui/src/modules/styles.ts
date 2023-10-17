@@ -2,7 +2,7 @@ import type { CSSDirective } from "@microsoft/fast-element";
 import type { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
-import { TypedDesignToken } from "../adaptive-design-tokens.js";
+import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveTokenGroup } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
 import { StyleProperty } from "./types.js";
@@ -41,7 +41,7 @@ export const Fill = {
     ): StyleProperties {
         return {
             backgroundFill: background,
-            foregroundFill: createForegroundSet(foregroundRecipe, "rest",  background),
+            foregroundFill: createForegroundSet(foregroundRecipe, background),
         };
     },
 
@@ -51,9 +51,25 @@ export const Fill = {
     ): StyleProperties {
         return {
             backgroundFill: background,
-            foregroundFill: createForegroundSetBySet(foregroundRecipe,  background),
+            foregroundFill: createForegroundSetBySet(foregroundRecipe, background),
         };
     },
+
+    foregroundNonInteractiveWithDisabled: function(
+        foreground: TypedCSSDesignToken<Swatch>,
+        disabled: TypedCSSDesignToken<Swatch>,
+    ): StyleProperties {
+        return {
+            foregroundFill: {
+                name: `${foreground.name}-with-disabled-value`,
+                rest: foreground,
+                hover: foreground,
+                active: foreground,
+                focus: foreground,
+                disabled,
+            },
+        }
+    }
 }
 
 /**
@@ -124,6 +140,7 @@ export const Padding = {
             paddingLeft: value,
         };
     },
+
     verticalHorizontal: function(valueVertical: StyleValue, valueHorizontal: StyleValue): StyleProperties {
         return {
             paddingTop: valueVertical,

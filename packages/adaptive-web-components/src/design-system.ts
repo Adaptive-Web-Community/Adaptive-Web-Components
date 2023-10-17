@@ -26,6 +26,7 @@ import type {
     SelectStatics,
     TreeItemStatics
 } from "./components/index.js";
+import { globalStyleModules } from './global.styles.modules.js';
 
 type ComponentStatics =
     AccordionItemStatics
@@ -146,6 +147,12 @@ export class DesignSystem {
         const componentStyles: ComposableStyles[] = options?.styles ? 
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
+
+        for (const [target, styles] of globalStyleModules(interactivity)) {
+            const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
+            const renderedStyles = new ElementStylesRenderer(styles).render(params);
+            componentStyles.push(renderedStyles);
+        }
 
         if (options?.styleModules) {
             for (const [target, styles] of options.styleModules) {

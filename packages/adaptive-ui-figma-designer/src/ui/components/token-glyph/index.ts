@@ -1,7 +1,7 @@
 import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
 import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
 import { parseColor } from "@microsoft/fast-colors";
-import { ElementStylesRenderer, Styles } from "@adaptive-web/adaptive-ui";
+import { ElementStylesRenderer, Interactivity, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import BlobIcon from "../../assets/blob.svg";
 
@@ -117,8 +117,7 @@ export enum TokenGlyphType {
 }
 
 const params = {
-    interactivitySelector: "",
-    nonInteractivitySelector: "",
+    ...Interactivity.always,
     part: "swatch",
 };
 

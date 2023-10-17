@@ -22,12 +22,14 @@ export const templateStyles: ElementStyles = css`
     .control {
         display: flex;
         align-items: center;
-        cursor: pointer;
         outline: none;
         white-space: nowrap;
     }
 
-    :host(:not([href])),
+    :host([href]) .control {
+        cursor: pointer;
+    }
+
     :host([aria-current]) .control {
         cursor: default;
     }
@@ -53,7 +55,7 @@ export const aestheticStyles: ElementStyles = css`
         position: relative;
     }
 
-    .control .content::before {
+    :host([href]) .control .content::before {
         content: "";
         display: block;
         height: ${strokeThickness};

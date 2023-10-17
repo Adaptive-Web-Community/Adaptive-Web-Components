@@ -37,19 +37,13 @@ export const templateStyles: ElementStyles = css`
     }
 
     .label {
-        display: block;
+        display: inline-block;
         cursor: pointer;
     }
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
-    }
-
-    :host([disabled]) .label,
-    :host([disabled]) .root,
-    :host([disabled]) .control {
-        cursor: not-allowed;
     }
 `;
 

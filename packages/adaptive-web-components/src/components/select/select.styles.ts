@@ -68,7 +68,6 @@ export const templateStyles: ElementStyles = css`
     }
 
     :host([disabled]) .control {
-        cursor: not-allowed;
         user-select: none;
     }
 `;
@@ -98,9 +97,5 @@ export const aestheticStyles: ElementStyles = css`
 
     :host([aria-haspopup]) .listbox {
         box-shadow: ${elevationFlyout};
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

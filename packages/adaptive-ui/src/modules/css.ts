@@ -77,5 +77,7 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "flex-direction";
         case StyleProperty.opacity:
             return "opacity";
+        case StyleProperty.cursor:
+            return "cursor";
     }
 };

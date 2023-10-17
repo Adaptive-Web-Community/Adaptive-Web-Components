@@ -38,6 +38,7 @@ export const templateStyles: ElementStyles = css`
         touch-action: pan-x;
     }
 
+    /* Keep for now, show on full component not just children */
     :host([disabled]) {
         cursor: not-allowed;
     }
@@ -158,9 +159,5 @@ export const aestheticStyles: ElementStyles = css`
 
     .track {
         background: ${neutralStrokeDiscernibleRest};
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

@@ -67,6 +67,10 @@ export class ElementStylesRenderer {
                 selectors.set(makeSelector(params, focusSelector), css.partial`${property}: ${values.focus};`);
             }
 
+            if (params.disabledSelector !== undefined && values.disabled) {
+                selectors.set(makeSelector(params, "disabled"), css.partial`${property}: ${values.disabled};`);
+            }
+
             return selectors;
         }
     }

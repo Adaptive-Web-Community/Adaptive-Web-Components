@@ -103,8 +103,4 @@ export const aestheticStyles: ElementStyles = css`
     .icon {
         fill: currentcolor;
     }
-
-    :host([disabled]) {
-        opacity: 0.3;
-    }
 `;

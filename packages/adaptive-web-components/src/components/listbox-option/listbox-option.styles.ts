@@ -18,6 +18,7 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
+    /* Keep for now, show on full component not just children */
     :host([disabled]) {
         cursor: not-allowed;
     }
@@ -41,10 +42,6 @@ export const aestheticStyles: ElementStyles = css`
 
     :host(:focus-visible) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 
     ::slotted([slot="start"]),

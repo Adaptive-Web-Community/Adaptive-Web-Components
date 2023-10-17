@@ -94,6 +94,13 @@ export const layerFillActiveDelta = createTokenNonCss<number>("layer-fill-active
 export const layerFillFocusDelta = createTokenNonCss<number>("layer-fill-focus-delta", DesignTokenType.number).withDefault(-3);
 
 /**
+ * The offset from the container for "Interactive" disabled state, {@link layerFillInteractiveDisabled}.
+ *
+ * @public
+ */
+export const layerFillDisabledDelta = createTokenNonCss<number>("layer-fill-disabled-delta", DesignTokenType.number).withDefault(-1);
+
+/**
  * The "Fixed" layers represent background fills commonly used to define app structure.
  *
  * @remarks
@@ -249,7 +256,9 @@ export const layerFillInteractiveRecipe = createNonCss<InteractiveColorRecipe>("
             resolve(layerFillHoverDelta),
             resolve(layerFillActiveDelta),
             resolve(layerFillFocusDelta),
-            PaletteDirectionValue.darker
+            resolve(layerFillDisabledDelta),
+            undefined,
+            PaletteDirectionValue.darker,
         ),
 });
 
@@ -305,6 +314,19 @@ export const layerFillInteractiveFocus = createTokenSwatch("layer-fill-interacti
         resolve(layerFillInteractiveRecipe).evaluate(resolve).focus
 );
 
+/**
+ * The fill of an interactive layer while disabled.
+ *
+ * @remarks
+ * See {@link layerFillDisabledDelta}.
+ *
+ * @public
+ */
+export const layerFillInteractiveDisabled = createTokenSwatch("layer-fill-interactive-disabled", StyleProperty.backgroundFill).withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(layerFillInteractiveRecipe).evaluate(resolve).disabled
+);
+
 /** @public */
 export const layerFillInteractive: InteractiveTokenGroup<Swatch> = {
     name: "layer-fill-interactive",
@@ -312,4 +334,5 @@ export const layerFillInteractive: InteractiveTokenGroup<Swatch> = {
     hover: layerFillInteractiveHover,
     active: layerFillInteractiveActive,
     focus: layerFillInteractiveFocus,
+    disabled: layerFillInteractiveDisabled,
 };

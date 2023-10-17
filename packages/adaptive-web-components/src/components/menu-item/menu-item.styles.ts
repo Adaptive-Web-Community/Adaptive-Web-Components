@@ -113,6 +113,7 @@ export const templateStyles: ElementStyles = css`
         z-index: 1;
     }
 
+    /* Keep for now, show on full component not just children */
     :host([disabled]) {
         cursor: not-allowed;
     }
@@ -139,9 +140,5 @@ export const aestheticStyles: ElementStyles = css`
 
     ::slotted([slot="end"]:not(svg)) {
         color: ${neutralStrokeReadableRest};
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

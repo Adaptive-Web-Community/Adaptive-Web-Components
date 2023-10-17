@@ -1,5 +1,5 @@
 import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch } from "../swatch.js";
+import { Swatch, SwatchRGB } from "../swatch.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
 /**
@@ -26,6 +26,7 @@ export function blackOrWhiteByContrastSet(
     hoverReference: Swatch,
     activeReference: Swatch,
     focusReference: Swatch,
+    disabledReference: Swatch,
     minContrast: number,
     defaultBlack: boolean
 ): InteractiveSwatchSet {
@@ -41,11 +42,16 @@ export function blackOrWhiteByContrastSet(
             ? restForeground
             : defaultRule(activeReference);
     const focusForeground = defaultRule(focusReference);
+    const disabled = defaultRule(disabledReference) as SwatchRGB;
+    // TODO: Reasonable disabled opacity, but not configurable.
+    // Considering replacing these recipes anyway.
+    const disabledForeground = new SwatchRGB(disabled.r, disabled.g, disabled.b, 0.3);
 
     return {
         rest: restForeground,
         hover: hoverForeground,
         active: activeForeground,
         focus: focusForeground,
+        disabled: disabledForeground,
     };
 }

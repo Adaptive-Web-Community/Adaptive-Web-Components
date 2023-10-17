@@ -34,8 +34,4 @@ export const aestheticStyles: ElementStyles = css`
     :host(:focus-visible) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
-
-    :host([disabled]) {
-        opacity: 0.3;
-    }
 `;

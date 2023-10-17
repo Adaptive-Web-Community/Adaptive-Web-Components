@@ -40,7 +40,7 @@ AdaptiveDesignSystem.defineComponents({
 const accentOutlineReadableControlStyles: Styles = Styles.fromProperties({
     backgroundFill: neutralFillSubtle,
     ...BorderFill.all(accentStrokeReadable),
-    foregroundFill: createForegroundSet(accentStrokeReadableRecipe, "rest", neutralFillSubtle),
+    foregroundFill: createForegroundSet(accentStrokeReadableRecipe, neutralFillSubtle),
 });
 
 const myDS = new DesignSystem("my");

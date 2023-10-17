@@ -61,7 +61,6 @@ export const templateStyles: ElementStyles = css`
 
     :host([disabled]) .control,
     :host([disabled]) .selected-value {
-        cursor: not-allowed;
         user-select: none;
     }
 
@@ -102,9 +101,5 @@ export const aestheticStyles: ElementStyles = css`
     .listbox {
         background: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
     }
 `;

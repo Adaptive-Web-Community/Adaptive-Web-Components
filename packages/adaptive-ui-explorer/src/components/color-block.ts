@@ -31,6 +31,7 @@ import {
     customElement,
     FASTElement,
     html,
+    observable,
     Updates,
     ViewTemplate,
     when,
@@ -41,91 +42,91 @@ import "./style-example.js";
 import "./swatch.js";
 
 const backplateComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => accentFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillReadableControlStyles}">
         Accent readable
     </app-style-example>
 
-    <app-style-example :styles="${x => accentFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillStealthControlStyles}">
         Accent stealth
     </app-style-example>
 
-    <app-style-example :styles="${x => accentFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillSubtleControlStyles}">
         Accent subtle
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillReadableControlStyles}">
         Neutral readable
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillStealthControlStyles}">
         Neutral stealth
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillSubtleControlStyles}">
         Neutral subtle
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillReadableControlStyles}">
         Highlight readable
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillStealthControlStyles}">
         Highlight stealth
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillSubtleControlStyles}">
         Highlight subtle
     </app-style-example>
 `;
 
 const textComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => accentForegroundReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentForegroundReadableControlStyles}">
         Accent control
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralForegroundStrongElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralForegroundStrongElementStyles}">
         Neutral element
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralForegroundReadableElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralForegroundReadableElementStyles}">
         Hint / placeholder element
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightForegroundReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightForegroundReadableControlStyles}">
         Highlight control
     </app-style-example>
 `;
 
 const formComponents = html<ColorBlock>`
-    <app-style-example :styles="${x => accentOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentOutlineDiscernibleControlStyles}">
         Accent outline
     </app-style-example>
 
-    <app-style-example :styles="${x => accentFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillDiscernibleControlStyles}">
         Accent discernible
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralOutlineDiscernibleControlStyles}">
         Neutral outline
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillDiscernibleControlStyles}">
         Neutral discernible
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralDividerSubtleElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralDividerSubtleElementStyles}">
         Divider subtle
     </app-style-example>
 
-    <app-style-example :styles="${x => neutralDividerDiscernibleElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralDividerDiscernibleElementStyles}">
         Divider discernible
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightOutlineDiscernibleControlStyles}">
         Highlight outline
     </app-style-example>
 
-    <app-style-example :styles="${x => highlightFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillDiscernibleControlStyles}">
         Highlight discernible
     </app-style-example>
 `;
@@ -203,6 +204,9 @@ export class ColorBlock extends FASTElement {
 
     @attr({ attribute: "layer-name" })
     public layerName: string;
+
+    @observable
+    public disabledState: boolean = false;
 
     public componentTypeTemplate(): ViewTemplate<ColorBlock, any> {
         switch (this.component) {

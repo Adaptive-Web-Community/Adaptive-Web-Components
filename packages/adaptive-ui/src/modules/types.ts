@@ -13,7 +13,7 @@ export type FocusSelector = "focus" | "focus-visible" | "focus-within";
  *
  * @public
  */
-export type StateSelector = "hover" | "active" | FocusSelector;
+export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
 
 /**
  * Type of the `conditions` for component {@link ComponentAnatomy}.
@@ -74,9 +74,9 @@ export interface InteractivityDefinition {
     interactivitySelector?: string;
 
     /**
-     * The selector indicating the component or element is not interactive, like `[disabled]`.
+     * The selector indicating the component or element is disabled, like `[disabled]`.
      */
-    nonInteractivitySelector?: string;
+    disabledSelector?: string;
 }
 
 /**
@@ -85,21 +85,44 @@ export interface InteractivityDefinition {
  * @public
  */
 export const Interactivity = {
+    /**
+     * Has interactive or disabled states based on the `disabled` attribute.
+     *
+     * For instance, a form control.
+     */
     disabledAttribute: { 
         interactivitySelector: ":not([disabled])",
-        nonInteractivitySelector: "[disabled]",
+        disabledSelector: "[disabled]",
     } as InteractivityDefinition,
+
+    /**
+     * Has interactive states based on the `href` attribute, but never a disabled state.
+     *
+     * For instance, an `<a>` should style as plain text when it doesn't have an `href` attribute.
+     */
     hrefAttribute:  { 
         interactivitySelector: "[href]",
-        nonInteractivitySelector: ":not([href])",
+        disabledSelector: undefined,
     } as InteractivityDefinition,
+
+    /**
+     * Is always interactive and never has a disabled state.
+     *
+     * For instance, cards or list items that are not able to be disabled.
+     */
     always: { 
         interactivitySelector: "",
-        nonInteractivitySelector: "",
+        disabledSelector: undefined,
     } as InteractivityDefinition,
+
+    /**
+     * Is never interactive or disabled, that is, a plain static element.
+     *
+     * For instance, body text, headings, illustrations, etc.
+     */
     never: { 
         interactivitySelector: undefined,
-        nonInteractivitySelector: undefined,
+        disabledSelector: undefined,
     } as InteractivityDefinition,
 } as const;
 
@@ -150,6 +173,7 @@ export const StyleProperty = {
     width: "width",
     layoutDirection: "layoutDirection",
     opacity: "opacity",
+    cursor: "cursor",
 } as const;
 
 /**

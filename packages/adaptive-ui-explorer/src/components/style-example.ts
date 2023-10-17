@@ -8,7 +8,7 @@ import "./swatch.js";
 const template = html<StyleExample>`
     <template>
         <div class="example">
-            <app-adaptive-component :styles="${x => x.styles}">
+            <app-adaptive-component ?disabled=${x => x.disabledState} :styles=${x => x.styles}>
                 <slot></slot>
             </app-adaptive-component>
         </div>
@@ -54,6 +54,9 @@ interface StyleValue {
     styles,
 })
 export class StyleExample extends FASTElement {
+    @observable
+    public disabledState: boolean = false;
+
     @observable
     public styles?: Styles;
     
