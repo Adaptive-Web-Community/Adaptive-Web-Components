@@ -30,7 +30,7 @@ export function composeCheckbox(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy, options);
 
     return FASTCheckbox.compose({
         name: `${ds.prefix}-checkbox`,

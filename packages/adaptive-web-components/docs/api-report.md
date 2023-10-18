@@ -60,7 +60,6 @@ import { FASTTooltip } from '@microsoft/fast-foundation';
 import { FASTTreeItem } from '@microsoft/fast-foundation';
 import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
-import { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
 import { StyleModules } from '@adaptive-web/adaptive-ui';
@@ -831,7 +830,7 @@ export const dataGridTemplateStyles: ElementStyles;
 export class DesignSystem {
     // Warning: (ae-forgotten-export) The symbol "ElementStaticMap" needs to be exported by the entry point index.d.ts
     constructor(_prefix: string, _registry?: CustomElementRegistry, _statics?: ElementStaticMap);
-    static assembleStyles(defaultStyles: ComposableStyles[], interactivity?: InteractivityDefinition, options?: ComposeOptions<any>): ElementStyles;
+    static assembleStyles(defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>): ElementStyles;
     // Warning: (ae-forgotten-export) The symbol "PartialDesignSystem" needs to be exported by the entry point index.d.ts
     configure(options: PartialDesignSystem): this;
     defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>): void;
@@ -963,7 +962,7 @@ export const flipperTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTFlip
 export const flipperTemplateStyles: ElementStyles;
 
 // @public
-export function globalStyleModules(interactivity?: InteractivityDefinition): StyleModules;
+export const globalStyleModules: (anatomy?: ComponentAnatomy<any, any>) => StyleModules;
 
 // @public
 export const horizontalScrollAestheticStyles: ElementStyles;

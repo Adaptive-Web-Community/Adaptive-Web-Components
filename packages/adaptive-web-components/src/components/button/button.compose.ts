@@ -14,7 +14,7 @@ export function composeButton(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveButton>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ButtonAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ButtonAnatomy, options);
 
     return AdaptiveButton.compose({
         name: `${ds.prefix}-button`,

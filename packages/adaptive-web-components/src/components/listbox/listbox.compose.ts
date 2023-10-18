@@ -14,7 +14,7 @@ export function composeListbox(
     ds: DesignSystem,
     options?: ComposeOptions<FASTListboxElement>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ListboxAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ListboxAnatomy, options);
 
     return FASTListboxElement.compose({
         name: `${ds.prefix}-listbox`,

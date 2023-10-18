@@ -23,7 +23,7 @@ export function composeBreadcrumbItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbItemAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbItemAnatomy, options);
 
     return FASTBreadcrumbItem.compose({
         name: `${ds.prefix}-breadcrumb-item`,

@@ -14,7 +14,7 @@ export function composeSkeleton(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSkeleton>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, SkeletonAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, SkeletonAnatomy, options);
 
     return FASTSkeleton.compose({
         name: `${ds.prefix}-skeleton`,

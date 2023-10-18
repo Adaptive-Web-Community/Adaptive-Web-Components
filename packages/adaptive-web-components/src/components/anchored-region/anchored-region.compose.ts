@@ -14,7 +14,7 @@ export function composeAnchoredRegion(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAnchoredRegion>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, AnchoredRegionAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, AnchoredRegionAnatomy, options);
 
     return FASTAnchoredRegion.compose({
         name: `${ds.prefix}-anchored-region`,

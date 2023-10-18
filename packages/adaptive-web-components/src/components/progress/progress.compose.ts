@@ -14,7 +14,7 @@ export function composeProgress(
     ds: DesignSystem,
     options?: ComposeOptions<FASTProgress>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ProgressAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ProgressAnatomy, options);
 
     return FASTProgress.compose({
         name: `${ds.prefix}-progress`,

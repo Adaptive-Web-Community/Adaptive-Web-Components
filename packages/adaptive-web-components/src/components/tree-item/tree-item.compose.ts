@@ -23,7 +23,7 @@ export function composeTreeItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, TreeItemAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TreeItemAnatomy, options);
 
     return FASTTreeItem.compose({
         name: `${ds.prefix}-tree-item`,

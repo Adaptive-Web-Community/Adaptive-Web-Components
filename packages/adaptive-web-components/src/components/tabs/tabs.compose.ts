@@ -14,7 +14,7 @@ export function composeTabs(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTabs>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TabsAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TabsAnatomy, options);
 
     return FASTTabs.compose({
         name: `${ds.prefix}-tabs`,

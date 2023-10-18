@@ -30,7 +30,7 @@ export function composeFlipper(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, FlipperAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, FlipperAnatomy, options);
 
     return FASTFlipper.compose({
         name: `${ds.prefix}-flipper`,

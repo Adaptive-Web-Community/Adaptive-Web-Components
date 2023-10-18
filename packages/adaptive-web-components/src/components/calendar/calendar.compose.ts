@@ -14,7 +14,7 @@ export function composeCalendar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCalendar>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, CalendarAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, CalendarAnatomy, options);
 
     return FASTCalendar.compose({
         name: `${ds.prefix}-calendar`,

@@ -8,8 +8,8 @@ import {
 } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
+    type ComponentAnatomy,
     ElementStylesRenderer,
-    type InteractivityDefinition,
     type StyleModuleEvaluateParameters,
     type StyleModuleTarget,
     Styles,
@@ -142,21 +142,21 @@ export class DesignSystem {
      * @beta
      */
     public static assembleStyles(
-        defaultStyles: ComposableStyles[], interactivity?: InteractivityDefinition, options?: ComposeOptions<any>
+        defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>
     ): ElementStyles {
         const componentStyles: ComposableStyles[] = options?.styles ? 
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
 
-        for (const [target, styles] of globalStyleModules(interactivity)) {
-            const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
+        for (const [target, styles] of globalStyleModules(anatomy)) {
+            const params: StyleModuleEvaluateParameters = Object.assign({}, anatomy?.interactivity, target);
             const renderedStyles = new ElementStylesRenderer(styles).render(params);
             componentStyles.push(renderedStyles);
         }
 
         if (options?.styleModules) {
             for (const [target, styles] of options.styleModules) {
-                const params: StyleModuleEvaluateParameters = Object.assign({}, interactivity, target);
+                const params: StyleModuleEvaluateParameters = Object.assign({}, anatomy?.interactivity, target);
                 const renderedStyles = new ElementStylesRenderer(styles).render(params);
                 componentStyles.push(renderedStyles);
             }

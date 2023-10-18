@@ -14,7 +14,7 @@ export function composePickerMenuOption(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPickerMenuOption>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, PickerMenuOptionAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, PickerMenuOptionAnatomy, options);
 
     return FASTPickerMenuOption.compose({
         name: `${ds.prefix}-picker-menu-option`,

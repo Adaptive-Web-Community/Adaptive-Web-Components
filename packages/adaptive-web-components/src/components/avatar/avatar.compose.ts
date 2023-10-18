@@ -14,7 +14,7 @@ export function composeAvatar(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAvatar>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, AvatarAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, AvatarAnatomy, options);
 
     return FASTAvatar.compose({
         name: `${ds.prefix}-avatar`,

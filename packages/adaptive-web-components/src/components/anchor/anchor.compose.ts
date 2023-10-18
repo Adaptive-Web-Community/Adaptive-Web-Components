@@ -14,7 +14,7 @@ export function composeAnchor(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveAnchor>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, AnchorAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, AnchorAnatomy, options);
 
     return AdaptiveAnchor.compose({
         name: `${ds.prefix}-anchor`,
