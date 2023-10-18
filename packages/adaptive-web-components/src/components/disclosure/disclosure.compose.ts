@@ -14,7 +14,7 @@ export function composeDisclosure(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDisclosure>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, DisclosureAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, DisclosureAnatomy, options);
 
     return FASTDisclosure.compose({
         name: `${ds.prefix}-disclosure`,

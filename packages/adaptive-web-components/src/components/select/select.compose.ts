@@ -23,7 +23,7 @@ export function composeSelect(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, SelectAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, SelectAnatomy, options);
 
     return AdaptiveSelect.compose({
         name: `${ds.prefix}-select`,

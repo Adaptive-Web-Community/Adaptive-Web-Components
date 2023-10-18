@@ -14,7 +14,7 @@ export function composeSliderLabel(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSliderLabel>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, SliderLabelAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, SliderLabelAnatomy, options);
 
     return FASTSliderLabel.compose({
         name: `${ds.prefix}-slider-label`,

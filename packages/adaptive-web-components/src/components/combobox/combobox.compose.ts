@@ -23,7 +23,7 @@ export function composeCombobox(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, ComboboxAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, ComboboxAnatomy, options);
 
     return FASTCombobox.compose({
         name: `${ds.prefix}-combobox`,

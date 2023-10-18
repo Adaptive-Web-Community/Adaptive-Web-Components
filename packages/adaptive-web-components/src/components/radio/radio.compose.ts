@@ -23,7 +23,7 @@ export function composeRadio(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, RadioAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, RadioAnatomy, options);
 
     return FASTRadio.compose({
         name: `${ds.prefix}-radio`,

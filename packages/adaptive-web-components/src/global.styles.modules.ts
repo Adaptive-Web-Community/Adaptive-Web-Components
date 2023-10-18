@@ -1,4 +1,4 @@
-import { InteractivityDefinition, StyleModules, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, StyleModules, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
 import { disabledStyles } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -6,15 +6,15 @@ import { disabledStyles } from "@adaptive-web/adaptive-ui/reference";
  * 
  * @public
  */
-export function globalStyleModules(interactivity?: InteractivityDefinition): StyleModules {
+export const globalStyleModules = (anatomy?: ComponentAnatomy<any, any>): StyleModules => {
     const styles = new Array<[StyleModuleTarget, Styles]>();
 
     // If this component can be disabled, apply the style to all children.
-    if (interactivity?.disabledSelector !== undefined) {
+    if (anatomy?.interactivity?.disabledSelector !== undefined) {
         styles.push(
             [
                 {
-                    hostCondition: interactivity.disabledSelector,
+                    hostCondition: anatomy.interactivity.disabledSelector,
                     part: "*",
                 },
                 disabledStyles,
@@ -23,4 +23,4 @@ export function globalStyleModules(interactivity?: InteractivityDefinition): Sty
     }
 
     return styles;
-}
+};

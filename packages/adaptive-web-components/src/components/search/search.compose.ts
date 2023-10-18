@@ -14,7 +14,7 @@ export function composeSearch(
     ds: DesignSystem,
     options?: ComposeOptions<FASTSearch>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, SearchAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, SearchAnatomy, options);
 
     return FASTSearch.compose({
         name: `${ds.prefix}-search`,

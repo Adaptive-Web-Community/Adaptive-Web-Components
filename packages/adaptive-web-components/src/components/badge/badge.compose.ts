@@ -14,7 +14,7 @@ export function composeBadge(
     ds: DesignSystem,
     options?: ComposeOptions<FASTBadge>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, BadgeAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, BadgeAnatomy, options);
 
     return FASTBadge.compose({
         name: `${ds.prefix}-badge`,

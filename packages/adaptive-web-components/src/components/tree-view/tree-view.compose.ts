@@ -14,7 +14,7 @@ export function composeTreeView(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTreeView>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TreeViewAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TreeViewAnatomy, options);
 
     return FASTTreeView.compose({
         name: `${ds.prefix}-tree-view`,

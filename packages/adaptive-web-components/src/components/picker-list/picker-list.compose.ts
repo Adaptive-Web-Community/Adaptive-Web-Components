@@ -14,7 +14,7 @@ export function composePickerList(
     ds: DesignSystem,
     options?: ComposeOptions<FASTPickerList>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, PickerListAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, PickerListAnatomy, options);
 
     return FASTPickerList.compose({
         name: `${ds.prefix}-picker-list`,

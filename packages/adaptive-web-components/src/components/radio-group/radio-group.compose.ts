@@ -14,7 +14,7 @@ export function composeRadioGroup(
     ds: DesignSystem,
     options?: ComposeOptions<FASTRadioGroup>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, RadioGroupAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, RadioGroupAnatomy, options);
 
     return FASTRadioGroup.compose({
         name: `${ds.prefix}-radio-group`,

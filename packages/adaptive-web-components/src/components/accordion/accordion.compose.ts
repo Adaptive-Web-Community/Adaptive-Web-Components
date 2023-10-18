@@ -14,7 +14,7 @@ export function composeAccordion(
     ds: DesignSystem,
     options?: ComposeOptions<FASTAccordion>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, AccordionAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, AccordionAnatomy, options);
 
     return FASTAccordion.compose({
         name: `${ds.prefix}-accordion`,

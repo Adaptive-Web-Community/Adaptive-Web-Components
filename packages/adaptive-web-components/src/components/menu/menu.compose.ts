@@ -14,7 +14,7 @@ export function composeMenu(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveMenu>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, MenuAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, MenuAnatomy, options);
 
     return AdaptiveMenu.compose({
         name: `${ds.prefix}-menu`,

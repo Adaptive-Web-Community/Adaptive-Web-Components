@@ -14,7 +14,7 @@ export function composeDialog(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDialog>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, DialogAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, DialogAnatomy, options);
 
     return FASTDialog.compose({
         name: `${ds.prefix}-dialog`,

@@ -14,7 +14,7 @@ export function composeDivider(
     ds: DesignSystem,
     options?: ComposeOptions<FASTDivider>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, DividerAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, DividerAnatomy, options);
 
     return FASTDivider.compose({
         name: `${ds.prefix}-divider`,

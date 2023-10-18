@@ -14,7 +14,7 @@ export function composeBreadcrumb(
     ds: DesignSystem,
     options?: ComposeOptions<FASTBreadcrumb>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbAnatomy, options);
 
     return FASTBreadcrumb.compose({
         name: `${ds.prefix}-breadcrumb`,

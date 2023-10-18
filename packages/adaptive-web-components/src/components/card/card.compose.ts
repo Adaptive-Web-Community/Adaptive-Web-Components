@@ -14,7 +14,7 @@ export function composeCard(
     ds: DesignSystem,
     options?: ComposeOptions<FASTCard>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, CardAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, CardAnatomy, options);
 
     return FASTCard.compose({
         name: `${ds.prefix}-card`,

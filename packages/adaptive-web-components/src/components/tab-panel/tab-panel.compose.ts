@@ -14,7 +14,7 @@ export function composeTabPanel(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTabPanel>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TabPanelAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TabPanelAnatomy, options);
 
     return FASTTabPanel.compose({
         name: `${ds.prefix}-tab-panel`,

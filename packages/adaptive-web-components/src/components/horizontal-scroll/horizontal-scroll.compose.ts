@@ -14,7 +14,7 @@ export function composeHorizontalScroll(
     ds: DesignSystem,
     options?: ComposeOptions<AdaptiveHorizontalScroll>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, HorizontalScrollAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, HorizontalScrollAnatomy, options);
 
     return AdaptiveHorizontalScroll.compose({
         name: `${ds.prefix}-horizontal-scroll`,

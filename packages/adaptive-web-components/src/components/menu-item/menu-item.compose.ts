@@ -37,7 +37,7 @@ export function composeMenuItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy, options);
 
     return AdaptiveMenuItem.compose({
         name: `${ds.prefix}-menu-item`,

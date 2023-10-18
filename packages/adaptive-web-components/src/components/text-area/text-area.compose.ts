@@ -14,7 +14,7 @@ export function composeTextArea(
     ds: DesignSystem,
     options?: ComposeOptions<FASTTextArea>
 ): FASTElementDefinition {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TextAreaAnatomy.interactivity, options);
+    const styles = DesignSystem.assembleStyles(defaultStyles, TextAreaAnatomy, options);
 
     return FASTTextArea.compose({
         name: `${ds.prefix}-text-area`,
