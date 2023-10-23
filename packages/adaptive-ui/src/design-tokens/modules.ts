@@ -33,14 +33,11 @@ import {
     neutralFillStealth,
     neutralFillSubtle,
     neutralStrokeDiscernible,
-    neutralStrokeDiscernibleRest,
-    neutralStrokeReadableRest,
+    neutralStrokeReadable,
     neutralStrokeSafety,
     neutralStrokeStrong,
     neutralStrokeStrongRecipe,
-    neutralStrokeStrongRest,
     neutralStrokeSubtle,
-    neutralStrokeSubtleRest,
 } from "./color.js";
 import { densityControl, densityItemContainer, densityLayer } from "./density.js";
 import {
@@ -636,7 +633,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...densityBorderStyles(neutralStrokeDiscernible),
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrongRest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
         backgroundFill: fillColor,
     },
     "color.neutral-outline-discernible-control",
@@ -654,7 +651,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadableRest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadable.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-foreground-readable-control",
 );
@@ -671,7 +668,7 @@ export const neutralForegroundReadableElementStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundStrongElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrongRest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-foreground-strong-element",
 );
@@ -688,7 +685,7 @@ export const neutralForegroundStrongElementStyles: Styles = Styles.fromPropertie
  */
 export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeSubtleRest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeSubtle.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-subtle-element",
 );
@@ -705,7 +702,7 @@ export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
  */
 export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeDiscernibleRest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeDiscernible.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-discernible-element",
 );

@@ -11,7 +11,7 @@ import { Swatch, SwatchRGB } from "../swatch.js";
  *
  * @public
  */
-export function swatchAsOverlay(swatch: Swatch, reference: Swatch, asOverlay: boolean): Swatch {
+export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null {
     return swatch instanceof SwatchRGB && asOverlay
         ? SwatchRGB.asOverlay(swatch as SwatchRGB, reference as SwatchRGB)
         : swatch;

@@ -26,6 +26,7 @@ export const DesignTokenType = {
     // Added in Adaptive UI
     fontStyle: "fontStyle",
     fontVariations: "fontVariations",
+    palette: "palette",
     recipe: "recipe",
     string: "string",
 } as const;

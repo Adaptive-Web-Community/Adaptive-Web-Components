@@ -22,27 +22,23 @@ import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
  * @public
  */
 export function blackOrWhiteByContrastSet(
-    restReference: Swatch,
-    hoverReference: Swatch,
-    activeReference: Swatch,
-    focusReference: Swatch,
-    disabledReference: Swatch,
+    set: InteractiveSwatchSet,
     minContrast: number,
     defaultBlack: boolean
 ): InteractiveSwatchSet {
-    const defaultRule: (reference: Swatch) => Swatch = (reference) =>
-        blackOrWhiteByContrast(reference, minContrast, defaultBlack);
+    const defaultRule: (reference: Swatch | null) => Swatch | null = (reference) =>
+        reference ? blackOrWhiteByContrast(reference, minContrast, defaultBlack) : null;
 
-    const restForeground = defaultRule(restReference);
-    const hoverForeground = defaultRule(hoverReference);
+    const restForeground = defaultRule(set.rest);
+    const hoverForeground = defaultRule(set.hover);
     // Active does not have contrast requirements, so if rest and hover use the same color, use that for active
     // even if it would not have passed the contrast check.
     const activeForeground =
-        restForeground.relativeLuminance === hoverForeground.relativeLuminance
+        restForeground && hoverForeground && restForeground.relativeLuminance === hoverForeground.relativeLuminance
             ? restForeground
-            : defaultRule(activeReference);
-    const focusForeground = defaultRule(focusReference);
-    const disabled = defaultRule(disabledReference) as SwatchRGB;
+            : defaultRule(set.active);
+    const focusForeground = defaultRule(set.focus);
+    const disabled = defaultRule(set.disabled) as SwatchRGB;
     // TODO: Reasonable disabled opacity, but not configurable.
     // Considering replacing these recipes anyway.
     const disabledForeground = new SwatchRGB(disabled.r, disabled.g, disabled.b, 0.3);

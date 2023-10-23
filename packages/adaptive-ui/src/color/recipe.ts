@@ -12,7 +12,7 @@ export type ColorRecipeParams = {
     /**
      * The reference color, implementation defaults to `fillColor`, but allows for overriding for nested color recipes.
      */
-    reference?: Swatch,
+    reference: Swatch | null,
 };
 
 /**
@@ -87,7 +87,7 @@ export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<I
  *
  * @public
  */
-export interface InteractiveSwatchSet extends InteractiveSet<Swatch> {}
+export interface InteractiveSwatchSet extends InteractiveSet<Swatch | null> {}
 
 /**
  * A recipe that evaluates based on an interactive set of color values.

@@ -1,8 +1,8 @@
 import { css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import type { StyleProperty } from "../modules/types.js";
-import type { InteractiveTokenGroup } from "../types.js";
+import { type StyleProperty } from "../modules/types.js";
+import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
 import type { FocusSelector, StyleModuleEvaluateParameters } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
@@ -49,14 +49,15 @@ export class ElementStylesRenderer {
 
     private static propertyInteractive(
         property: string,
-        values: InteractiveTokenGroup<any>,
+        values: InteractiveSet<any>,
         focusSelector: FocusSelector = "focus-visible",
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): Map<string, CSSDirective> => {
-            const selectors = new Map([
-                [makeSelector(params), css.partial`${property}: ${values.rest};`]
-            ]);
+            const selectors = new Map();
 
+            if (values.rest) {
+                selectors.set(makeSelector(params), css.partial`${property}: ${values.rest};`);
+            }
             if (params.interactivitySelector !== undefined && values.hover) {
                 selectors.set(makeSelector(params, "hover"), css.partial`${property}: ${values.hover};`);
             }
@@ -83,7 +84,7 @@ export class ElementStylesRenderer {
             } else if (value && typeof (value as any).createCSS === "function") {
                 return ElementStylesRenderer.propertySingle(property, value as CSSDirective);
             } else {
-                return ElementStylesRenderer.propertyInteractive(property, value as InteractiveTokenGroup<any>);
+                return ElementStylesRenderer.propertyInteractive(property, value as InteractiveSet<any>);
             }
         });
         return modules;

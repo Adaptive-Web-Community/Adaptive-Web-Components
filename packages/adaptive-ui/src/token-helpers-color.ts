@@ -138,7 +138,7 @@ function createTokenColorSetState(
 ): TypedCSSDesignToken<Swatch> {
     return createTokenSwatch(`${valueToken.name.replace("-value", "")}-${state}`, valueToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
-            resolve(valueToken)[state]
+            resolve(valueToken)[state] as any
     );
 }
 
@@ -199,8 +199,7 @@ export function createForegroundSet(
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
     const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}`;
-    const backgroundBaseName = background.rest.name.replace("-rest", "");
-    const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
+    const setName = `${foregroundBaseName}-on-${background.name}`;
 
     function createState(
         foregroundState: keyof InteractiveSet<any>,
@@ -210,7 +209,7 @@ export function createForegroundSet(
             (resolve: DesignTokenResolver) =>
                 resolve(foregroundRecipe).evaluate(resolve, {
                     reference: resolve(background[state])
-                })[foregroundState]
+                })[foregroundState] as any
         );
     }
 
@@ -239,8 +238,7 @@ export function createForegroundSetBySet(
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
     const foregroundBaseName = foregroundRecipe.name.replace("-recipe", "");
-    const backgroundBaseName = background.rest.name.replace("-rest", "");
-    const setName = `${foregroundBaseName}-on-${backgroundBaseName}`;
+    const setName = `${foregroundBaseName}-on-${background.name}`;
 
     const set = createTokenNonCss<InteractiveSwatchSet>(`${setName}-value`, DesignTokenType.color).withDefault(
         (resolve: DesignTokenResolver) =>
@@ -261,7 +259,7 @@ export function createForegroundSetBySet(
     ): TypedCSSDesignToken<Swatch> {
         return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
-                resolve(set)[state]
+                resolve(set)[state] as any
         );
     }
 

@@ -2,6 +2,7 @@ import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
+import { Recipe, RecipeEvaluate } from "./recipes.js";
 
 /** @internal @deprecated Use one of the typed `createTokenX` functions instead */
 export const { create } = DesignToken;
@@ -33,6 +34,25 @@ export function createTokenColor(name: string, intendedFor?: StyleProperty | Sty
  */
 export function createTokenNonCss<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T> {
     return TypedDesignToken.createTyped<T>(name, type, intendedFor);
+}
+
+/**
+ * Creates a DesignToken that can be used for a recipe.
+ *
+ * @param baseName - The base token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ * @param evaluate - The function to call when the derived token needs to be evaluated.
+ *
+ * @public
+ */
+export function createTokenRecipe<TParam, TResult>(
+    baseName: string,
+    intendedFor: StyleProperty | StyleProperty[],
+    evaluate: RecipeEvaluate<TParam, TResult>,
+): TypedDesignToken<Recipe<TParam, TResult>> {
+    return createTokenNonCss<Recipe<TParam, TResult>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+        evaluate
+    });
 }
 
 /**

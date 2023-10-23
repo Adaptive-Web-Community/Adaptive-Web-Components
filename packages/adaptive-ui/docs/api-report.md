@@ -34,7 +34,7 @@ export const _black: SwatchRGB;
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
 
 // @public
-export function blackOrWhiteByContrastSet(restReference: Swatch, hoverReference: Swatch, activeReference: Swatch, focusReference: Swatch, disabledReference: Swatch, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
+export function blackOrWhiteByContrastSet(set: InteractiveSwatchSet, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
 
 // @public (undocumented)
 export const BorderFill: {
@@ -76,7 +76,7 @@ export type ColorRecipePaletteParams = ColorRecipeParams & {
 
 // @public
 export type ColorRecipeParams = {
-    reference?: Swatch;
+    reference: Swatch | null;
 };
 
 // @public
@@ -183,6 +183,9 @@ export function createTokenNonCss<T>(name: string, type: DesignTokenType, intend
 export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
 
 // @public
+export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
+
+// @public
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
 
 // @public
@@ -236,6 +239,7 @@ export const DesignTokenType: {
     readonly typography: "typography";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
+    readonly palette: "palette";
     readonly recipe: "recipe";
     readonly string: "string";
 };
@@ -299,7 +303,7 @@ export interface InteractiveSet<T> {
 }
 
 // @public
-export interface InteractiveSwatchSet extends InteractiveSet<Swatch> {
+export interface InteractiveSwatchSet extends InteractiveSet<Swatch | null> {
 }
 
 // @public
@@ -500,7 +504,7 @@ export class Styles {
 }
 
 // @public
-export type StyleValue = CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string;
+export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string;
 
 // @public
 export interface Swatch extends RelativeLuminance {
@@ -509,7 +513,7 @@ export interface Swatch extends RelativeLuminance {
 }
 
 // @public
-export function swatchAsOverlay(swatch: Swatch, reference: Swatch, asOverlay: boolean): Swatch;
+export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null;
 
 // @public
 export class SwatchRGB implements Swatch {
