@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTListboxElement, listboxTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -22,6 +22,7 @@ export const ListboxAnatomy: ComponentAnatomy<typeof ListboxConditions, typeof L
     interactivity: Interactivity.disabledAttribute,
     conditions: ListboxConditions,
     parts: ListboxParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

@@ -21,8 +21,5 @@ export const numberFieldDefinition = composeNumberField(
             [NumberFieldStatics.stepUp]: chevronUpIcon
         },
         styleModules,
-        shadowOptions: {
-            delegatesFocus: true
-        }
     }
 );

@@ -1,7 +1,5 @@
 import {
     designUnit,
-    focusStrokeOuter,
-    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
@@ -92,14 +90,6 @@ export const aestheticStyles: ElementStyles = css`
     .root {
         /*position: relative;*/
         fill: currentcolor;
-    }
-
-    :host(:not([disabled]):focus-within) .root {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-    }
-
-    .control:focus-visible {
-        outline: none;
     }
 
     .clear-button {

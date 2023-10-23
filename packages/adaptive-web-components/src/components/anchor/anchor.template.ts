@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { anchorTemplate, FASTAnchor } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -25,6 +25,7 @@ export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof Anc
     interactivity: Interactivity.hrefAttribute,
     conditions: AnchorConditions,
     parts: AnchorParts,
+    focus: Focus.partFocused("control"),
 };
 
 /**

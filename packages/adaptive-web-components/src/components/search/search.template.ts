@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTSearch, searchTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -26,6 +26,7 @@ export const SearchAnatomy: ComponentAnatomy<typeof SearchConditions, typeof Sea
     interactivity: Interactivity.disabledAttribute,
     conditions: SearchConditions,
     parts: SearchParts,
+    focus: Focus.partWithin("root", "control"),
 };
 
 /**

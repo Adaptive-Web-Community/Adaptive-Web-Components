@@ -18,7 +18,6 @@ const storyTemplate = html<StoryArgs<FASTTextField>>`
         resize="${(x) => x.resize}"
         size="${(x) => x.size}"
         ?spellcheck="${(x) => x.spellcheck}"
-        tabindex="${(x) => (x.disabled ? null : "0")}"
         type="${(x) => x.type}"
         value="${(x) => x.value}"
         :ariaAtomic="${(x) => x.ariaAtomic}"

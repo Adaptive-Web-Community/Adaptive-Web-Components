@@ -43,7 +43,7 @@ export const storyTemplate = html<StoryArgs<AdaptiveAnchor>>`
 
 export default {
     title: "Components/Anchor",
-    includeStories: ["Anchor"],
+    includeStories: ["Anchor", "AnchorWithoutHref"],
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
@@ -84,3 +84,9 @@ export default {
 } as Meta<AdaptiveAnchor>;
 
 export const Anchor: Story<AdaptiveAnchor> = renderComponent(storyTemplate).bind({});
+
+export const AnchorWithoutHref: Story<AdaptiveAnchor> = Anchor.bind({});
+AnchorWithoutHref.args = {
+    storyContent: "Anchor without href attribute",
+    href: undefined,
+};

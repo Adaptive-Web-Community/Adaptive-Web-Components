@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTSelect, selectTemplate } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -22,6 +22,8 @@ export type SelectStatics = ValuesOf<typeof SelectStatics>;
  * @public
  */
 export const SelectConditions = {
+    isDropdown: "[aria-haspopup]",
+    isListbox: ":not([aria-haspopup])",
 };
 
 /**
@@ -41,6 +43,7 @@ export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof Sel
     interactivity: Interactivity.disabledAttribute,
     conditions: SelectConditions,
     parts: SelectParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

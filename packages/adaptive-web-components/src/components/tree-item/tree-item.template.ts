@@ -1,7 +1,7 @@
 import { children, elements, ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, staticallyCompose, TreeItemOptions } from "@microsoft/fast-foundation";
 import type { FASTTreeItem, ValuesOf } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -42,6 +42,7 @@ export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: TreeItemConditions,
     parts: TreeItemParts,
+    focus: Focus.hostChildFocused("control"),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

@@ -79,5 +79,13 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "opacity";
         case StyleProperty.cursor:
             return "cursor";
+        case StyleProperty.outlineColor:
+            return "outline-color";
+        case StyleProperty.outlineOffset:
+            return "outline-offset";
+        case StyleProperty.outlineStyle:
+            return "outline-style";
+        case StyleProperty.outlineWidth:
+            return "outline-width";
     }
 };

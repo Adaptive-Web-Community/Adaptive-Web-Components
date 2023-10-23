@@ -21,6 +21,8 @@ export default {
         endSlotIcon: false,
         storyContent: html`
             <button slot="start">Start Slot Button</button>
+            <adaptive-button>Adaptive Button</adaptive-button>
+            <adaptive-anchor href="javascript:void;">Adaptive Anchor</adaptive-anchor>
             <button>Button</button>
             <select>
                 <option>Option 1</option>

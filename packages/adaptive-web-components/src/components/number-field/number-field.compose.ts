@@ -2,6 +2,7 @@ import { FASTNumberField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { AdaptiveNumberField } from "./number-field.js";
 import { aestheticStyles, templateStyles } from "./number-field.styles.js";
 import { NumberFieldAnatomy, NumberFieldStatics, template } from "./number-field.template.js";
 
@@ -32,7 +33,7 @@ export function composeNumberField(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, NumberFieldAnatomy, options);
 
-    return FASTNumberField.compose({
+    return AdaptiveNumberField.compose({
         name: `${ds.prefix}-number-field`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

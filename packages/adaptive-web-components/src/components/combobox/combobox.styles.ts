@@ -1,7 +1,5 @@
 import {
     elevationFlyout,
-    focusStrokeOuter,
-    focusStrokeThickness,
     layerFillFixedPlus1,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -39,10 +37,6 @@ export const templateStyles: ElementStyles = css`
         padding: unset;
     }
 
-    .selected-value:focus-visible {
-        outline: none;
-    }
-
     :host(:active) .selected-value {
         user-select: none;
     }
@@ -78,15 +72,6 @@ export const aestheticStyles: ElementStyles = css`
         min-width: 250px;
         fill: currentcolor;
     }
-
-    :host(:focus-within) .control {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-    }
-
-    /* ideally the option can take care of itself
-    :host(:focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-    } */
 
     .control {
         min-height: 100%;

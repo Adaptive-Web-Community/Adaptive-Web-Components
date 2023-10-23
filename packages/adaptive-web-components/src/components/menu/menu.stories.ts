@@ -168,6 +168,12 @@ MenuWithEverything.args = {
                 },
             ],
         },
+        {
+            storyContent: html`
+                Menu Item 3 (disabled)
+            `,
+            disabled: true,
+        },
         { template: dividerStoryTemplate },
         {
             storyContent: html`

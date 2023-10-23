@@ -2,6 +2,7 @@ import { FASTCombobox } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { AdaptiveCombobox } from "./combobox.js";
 import { aestheticStyles, templateStyles } from "./combobox.styles.js";
 import { ComboboxAnatomy, ComboboxStatics, template } from "./combobox.template.js";
 
@@ -25,7 +26,7 @@ export function composeCombobox(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, ComboboxAnatomy, options);
 
-    return FASTCombobox.compose({
+    return AdaptiveCombobox.compose({
         name: `${ds.prefix}-combobox`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

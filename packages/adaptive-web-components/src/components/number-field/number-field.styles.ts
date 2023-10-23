@@ -1,7 +1,3 @@
-import {
-    focusStrokeOuter,
-    focusStrokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -41,10 +37,6 @@ export const templateStyles: ElementStyles = css`
         border: none;
     }
 
-    .control:focus-visible {
-        outline: none;
-    }
-
     .controls {
         opacity: 0;
     }
@@ -77,10 +69,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .root {
         fill: currentcolor;
-    }
-
-    :host(:enabled:focus-within) .root {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .control {

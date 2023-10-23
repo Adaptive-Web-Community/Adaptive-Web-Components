@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTTextField, textFieldTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -25,6 +25,7 @@ export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, type
     interactivity: Interactivity.disabledAttribute,
     conditions: TextFieldConditions,
     parts: TextFieldParts,
+    focus: Focus.partWithin("root", "control"),
 };
 
 /**

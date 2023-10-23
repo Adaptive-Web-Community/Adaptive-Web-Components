@@ -11,11 +11,8 @@ import { styleModules } from "./search.styles.modules.js";
  * @public
  */
 export const searchDefinition = composeSearch(
-	DefaultDesignSystem,
-	{
-		styleModules,
-		shadowOptions: {
-			delegatesFocus: true
-		}
-	}
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
 );

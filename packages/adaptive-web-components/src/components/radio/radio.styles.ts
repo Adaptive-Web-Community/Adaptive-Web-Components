@@ -1,7 +1,5 @@
 import {
     designUnit,
-    focusStrokeOuter,
-    focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -15,10 +13,6 @@ export const templateStyles: ElementStyles = css`
         display: inline-flex;
         align-items: center;
         user-select: none;
-    }
-
-    :host(:focus-visible) {
-        outline: none;
     }
 
     .control {
@@ -57,19 +51,11 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        /* outline: none; */
-    }
-
     .control {
         width: calc((${heightNumber} / 2) * 1px + ${designUnit});
         height: calc((${heightNumber} / 2) * 1px + ${designUnit});
         border-radius: 50% !important;
         fill: currentcolor;
-    }
-
-    :host(:focus-visible) .control {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .label {

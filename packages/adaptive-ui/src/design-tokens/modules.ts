@@ -1,5 +1,5 @@
 import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles, StyleValue } from "../modules/styles.js";
-import { cornerRadiusControl, cornerRadiusLayer, strokeThickness } from "./appearance.js";
+import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
     accentFillReadable,
@@ -20,6 +20,7 @@ import {
     criticalStrokeReadableRecipe,
     criticalStrokeSafety,
     fillColor,
+    focusStrokeOuter,
     highlightFillDiscernible,
     highlightFillReadable,
     highlightFillStealth,
@@ -989,4 +990,17 @@ export const disabledStyles: Styles = Styles.fromProperties(
         cursor: "not-allowed",
     },
     "styles.disabled",
+);
+
+/**
+ * @public
+ */
+export const focusIndicatorStyles: Styles = Styles.fromProperties(
+    {
+        outlineColor: focusStrokeOuter,
+        outlineOffset: "1px",
+        outlineStyle: "solid",
+        outlineWidth: focusStrokeThickness,
+    },
+    "styles.focus-indicator",
 );

@@ -1,10 +1,10 @@
 import { css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import { type StyleProperty } from "../modules/types.js";
+import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, type StyleProperty } from "../modules/types.js";
 import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { FocusSelector, StyleModuleEvaluateParameters } from "./types.js";
+import type { StyleModuleEvaluateParameters } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { Styles } from "./styles.js";
 
@@ -50,7 +50,6 @@ export class ElementStylesRenderer {
     private static propertyInteractive(
         property: string,
         values: InteractiveSet<any>,
-        focusSelector: FocusSelector = "focus-visible",
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): Map<string, CSSDirective> => {
             const selectors = new Map();
@@ -65,7 +64,7 @@ export class ElementStylesRenderer {
                 selectors.set(makeSelector(params, "active"), css.partial`${property}: ${values.active};`);
             }
             if (params.interactivitySelector !== undefined && values.focus) {
-                selectors.set(makeSelector(params, focusSelector), css.partial`${property}: ${values.focus};`);
+                selectors.set(makeSelector(params, params.focusSelector || "focus-visible"), css.partial`${property}: ${values.focus};`);
             }
 
             if (params.disabledSelector !== undefined && values.disabled) {
@@ -102,10 +101,15 @@ export class ElementStylesRenderer {
     /**
      * Convert style definitions to `ElementStyles`.
      *
-     * @param params - Parameters for creating the selectors for component states.
+     * @param target - Parameters for creating the selectors for component states.
+     * @param interactivity - The interactivity configuration for the component.
      * @returns The rendered `ElementStyles`.
      */
-    public render(params: StyleModuleEvaluateParameters): ElementStyles {
+    public render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles {
+        // Construct the evaluation params, not including interactivity if requested
+        const effectiveInteractivity = (target.ignoreInteractivity === true) ? Interactivity.always : interactivity;
+        const params: StyleModuleEvaluateParameters = Object.assign({}, effectiveInteractivity, target);
+
         // Combine the selectors
         this._evaluateFunctions.forEach((module) => {
             const map = module(params);

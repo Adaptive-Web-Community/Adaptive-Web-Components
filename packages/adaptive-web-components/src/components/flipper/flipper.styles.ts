@@ -1,7 +1,3 @@
-import {
-    focusStrokeOuter,
-    focusStrokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 
@@ -15,10 +11,6 @@ export const templateStyles: ElementStyles = css`
         justify-content: center;
         align-items: center;
         cursor: pointer;
-    }
-
-    :host::-moz-focus-inner {
-        border: 0;
     }
 
     .next,
@@ -42,10 +34,6 @@ export const aestheticStyles: ElementStyles = css`
         border-radius: 50% !important;
         padding: 0 !important;
         fill: currentcolor;
-    }
-
-    :host(:focus-visible) {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     :host([disabled]) {

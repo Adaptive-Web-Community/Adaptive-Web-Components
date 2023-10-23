@@ -55,8 +55,11 @@ export const templateStyles: ElementStyles = css`
         z-index: 1;
         display: flex;
         flex-direction: column;
-        position: fixed;
         overflow-y: auto;
+    }
+
+    :host([aria-haspopup]) .listbox {
+        position: fixed;
     }
 
     .listbox[hidden] {
@@ -81,14 +84,11 @@ export const aestheticStyles: ElementStyles = css`
         fill: currentcolor;
     }
 
-    :host(:focus-visible) {
+    :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
+    :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+        outline-offset: 1px;
     }
-
-    /* ideally the option can take care of itself
-    :host(:focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-    } */
 
     .listbox {
         max-height: calc((var(--size, 0) * ${heightNumber}) * 1px + (${designUnit} + ${strokeThickness} * 2));

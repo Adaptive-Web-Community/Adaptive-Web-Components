@@ -10,7 +10,6 @@ import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
     type ComponentAnatomy,
     ElementStylesRenderer,
-    type StyleModuleEvaluateParameters,
     type StyleModuleTarget,
     Styles,
 } from "@adaptive-web/adaptive-ui";
@@ -148,18 +147,14 @@ export class DesignSystem {
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
 
-        for (const [target, styles] of globalStyleModules(anatomy)) {
-            const params: StyleModuleEvaluateParameters = Object.assign({}, anatomy?.interactivity, target);
-            const renderedStyles = new ElementStylesRenderer(styles).render(params);
-            componentStyles.push(renderedStyles);
-        }
+        const allStyleModules = [
+            ...globalStyleModules(anatomy),
+            ...(options && options.styleModules ? options.styleModules : [])
+        ];
 
-        if (options?.styleModules) {
-            for (const [target, styles] of options.styleModules) {
-                const params: StyleModuleEvaluateParameters = Object.assign({}, anatomy?.interactivity, target);
-                const renderedStyles = new ElementStylesRenderer(styles).render(params);
-                componentStyles.push(renderedStyles);
-            }
+        for (const [target, styles] of allStyleModules) {
+            const renderedStyles = new ElementStylesRenderer(styles).render(target, anatomy?.interactivity);
+            componentStyles.push(renderedStyles);
         }
 
         return new ElementStyles(componentStyles);

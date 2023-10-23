@@ -1,7 +1,7 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
 // import { sliderTemplate } from "@microsoft/fast-foundation";
 import { FASTSlider, staticallyCompose } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -30,6 +30,7 @@ export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof Sli
     interactivity: Interactivity.never,
     conditions: SliderConditions,
     parts: SliderParts,
+    focus: Focus.hostFocused(),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

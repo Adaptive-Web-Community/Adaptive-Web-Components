@@ -2,7 +2,6 @@ import { Swatch } from"@adaptive-web/adaptive-ui";
 import { accentForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 import {
     cornerRadiusControl,
-    focusStrokeOuter,
     focusStrokeThickness,
     neutralFillStealthRecipe,
     neutralFillSubtleRecipe,
@@ -35,7 +34,7 @@ export const templateStyles: ElementStyles = css`
     :host {
         position: relative;
         display: block;
-        contain: content;
+        contain: layout style;
         cursor: pointer;
     }
 
@@ -91,10 +90,6 @@ export const templateStyles: ElementStyles = css`
     ::slotted(adaptive-tree-item) {
         --tree-item-nested-width: var(--tree-item-nested-width-slotted, 0px);
     }
-
-    :host(:focus-visible) {
-        outline: none;
-    }
 `;
 
 /**
@@ -108,11 +103,6 @@ export const aestheticStyles: ElementStyles = css`
 
     .control {
         fill: currentcolor;
-    }
-
-    :host(:focus-visible) .control {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-        outline-offset: calc(${focusStrokeThickness} * -1px);
     }
 
     .expand-collapse-button {

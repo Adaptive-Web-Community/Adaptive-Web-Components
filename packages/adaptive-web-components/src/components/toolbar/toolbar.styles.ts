@@ -1,5 +1,4 @@
 import { neutralForegroundRest } from "@adaptive-web/adaptive-ui/migration";
-import { focusStrokeOuter, focusStrokeThickness } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -44,10 +43,6 @@ export const aestheticStyles: ElementStyles = css`
         gap: 8px;
         color: ${neutralForegroundRest};
         fill: currentcolor;
-    }
-
-    :host(:focus-visible) {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     .positioning-region {

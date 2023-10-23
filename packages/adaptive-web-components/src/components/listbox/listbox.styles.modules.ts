@@ -1,12 +1,11 @@
 import {
-    BorderFill,
     StyleModules,
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
     itemContainerDensityStyles,
-    neutralStrokeSubtleRest
+    neutralOutlineDiscernibleControlStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -22,10 +21,8 @@ export const styleModules: StyleModules = [
             [
                 controlShapeStyles,
                 itemContainerDensityStyles,
+                neutralOutlineDiscernibleControlStyles,
             ],
-            {
-                ...BorderFill.all(neutralStrokeSubtleRest),
-            },
         )
     ],
 ];

@@ -35,9 +35,25 @@ export type ComponentParts = Record<string, string>;
  * @public
  */
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
+    /**
+     * Description of the conditions for when the component is interactive or not.
+     */
     interactivity?: InteractivityDefinition;
+
+    /**
+     * List of conditions a component supports, like being selected or changing orientation.
+     */
     conditions: TConditions;
+
+    /**
+     * List of parts exposed by the component.
+     */
     parts: TParts;
+
+    /**
+     * Description of the focus structure of the component.
+     */
+    focus?: FocusDefinition<TParts>;
 }
 
 /**
@@ -52,6 +68,12 @@ export interface StyleModuleTarget {
     hostCondition?: string;
 
     /**
+     * Normally the state applies to the host, or if specified, the part. This option forces the state to the
+     * apply to the host, useful for styling the host state in only a portion of the child elements.
+     */
+    stateOnHost?: boolean;
+
+    /**
      * The component part name to apply this style module.
      */
     part?: string;
@@ -60,6 +82,23 @@ export interface StyleModuleTarget {
      * The condition to match at the part element level.
      */
     partCondition?: string;
+
+    /**
+     * Informs the style generator to ignore the interactivity configuration of the component.
+     *
+     * @beta
+     * @remarks
+     * The `StyleModuleTarget` and `InteractivityDefinition` together makeup the evaluation parameters for
+     * generating the styles. In some edge case scenarios the default behavior of considering both of these
+     * together is not desireable (ex: Menu items which should show focus when disabled). This is an
+     * exploration into a way to describe this, but perhaps there's a more extensible pattern.
+     */
+    ignoreInteractivity?: boolean;
+
+    /**
+     * The state selector for focus indication.
+     */
+    focusSelector?: FocusSelector;
 }
 
 /**
@@ -127,6 +166,94 @@ export const Interactivity = {
 } as const;
 
 /**
+ * Defines the focus indicator structure for the component, including which part will naturally receive focus
+ * and which part should indicate it.
+ *
+ * @public
+ */
+export interface FocusDefinition<TParts> {
+    /**
+     * The focus indication element.
+     */
+    focusTarget: StyleModuleTarget,
+
+    /**
+     * The focusable element to reset browser default styles, for instance, a native input element or an element with a `tabindex`.
+     */
+    resetTarget: StyleModuleTarget,
+}
+
+/**
+ * Common patterns for {@link FocusDefinition}.
+ *
+ * @public
+ */
+export const Focus = {
+    /**
+     * The simple case of the host element accepting and indicating focus.
+     */
+    hostFocused: () => {
+        return {
+            focusTarget: {
+                ignoreInteractivity: true,
+            },
+        } as FocusDefinition<any>;
+    },
+
+    /**
+     * The host has focus, but a child element is the indicator.
+     *
+     * @param indicatorPart - The part name of where to indicate focus.
+     */
+    hostChildFocused: <TParts>(indicatorPart: keyof TParts & string) => {
+        return {
+            focusTarget: {
+                stateOnHost: true,
+                part: indicatorPart,
+                ignoreInteractivity: true,
+            },
+            resetTarget: {
+                ignoreInteractivity: true,
+            }
+        } as FocusDefinition<TParts>;
+    },
+
+    /**
+     * A child element is focusable and will indicate focus itself.
+     *
+     * @param part - The part name of the focusable part.
+     */
+    partFocused: <TParts>(part: keyof TParts & string) => {
+        return {
+            focusTarget: {
+                part,
+                ignoreInteractivity: true,
+            },
+        } as FocusDefinition<TParts>;
+    },
+
+    /**
+     * A child element is focusable, but an ancestor will display the indicator.
+     *
+     * @param indicatorPart - The part name of the wrapper of the focusable element.
+     * @param focusablePart - The element that accepts focus.
+     */
+    partWithin: <TParts>(indicatorPart: keyof TParts & string, focusablePart: keyof TParts & string) => {
+        return {
+            focusTarget: {
+                part: indicatorPart,
+                focusSelector: "focus-within",
+                ignoreInteractivity: true,
+            },
+            resetTarget: {
+                part: focusablePart,
+                ignoreInteractivity: true,
+            }
+        } as FocusDefinition<TParts>;
+    },
+} as const;
+
+/**
  * Parameters used to evaluate style modules for a component.
  *
  * @public
@@ -174,6 +301,10 @@ export const StyleProperty = {
     layoutDirection: "layoutDirection",
     opacity: "opacity",
     cursor: "cursor",
+    outlineColor: "outlineColor",
+    outlineOffset: "outlineOffset",
+    outlineStyle: "outlineStyle",
+    outlineWidth: "outlineWidth",
 } as const;
 
 /**

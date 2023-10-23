@@ -18,4 +18,8 @@ export class AdaptiveButton extends FASTButton {
             this.control.classList.remove("icon-only");
         }
     }
+
+    public focus(options?: FocusOptions): void {
+        this.control.focus(options);
+    }
 }
