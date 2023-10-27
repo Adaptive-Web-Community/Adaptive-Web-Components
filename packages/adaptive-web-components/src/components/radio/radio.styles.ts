@@ -55,7 +55,6 @@ export const aestheticStyles: ElementStyles = css`
         width: calc((${heightNumber} / 2) * 1px + ${designUnit});
         height: calc((${heightNumber} / 2) * 1px + ${designUnit});
         border-radius: 50% !important;
-        fill: currentcolor;
     }
 
     .label {

@@ -48,17 +48,12 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        fill: currentcolor;
-    }
-
     .label {
         margin-bottom: 4px;
     }
 
     .root {
         /*position: relative;*/
-        fill: currentcolor;
     }
 
     .control {

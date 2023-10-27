@@ -70,7 +70,6 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     :host {
         min-width: 250px;
-        fill: currentcolor;
     }
 
     .control {

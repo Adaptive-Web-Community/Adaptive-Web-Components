@@ -67,10 +67,6 @@ export const aestheticStyles: ElementStyles = css`
         margin-bottom: 4px;
     }
 
-    .root {
-        fill: currentcolor;
-    }
-
     .control {
         height: calc(100% - 4px);
     }

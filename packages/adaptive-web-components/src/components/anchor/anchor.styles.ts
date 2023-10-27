@@ -31,10 +31,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .control {
-        fill: currentcolor;
-    }
-
     .control.icon-only {
         padding: 0;
         line-height: 0;

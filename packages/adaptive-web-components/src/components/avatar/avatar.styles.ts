@@ -48,7 +48,6 @@ export const aestheticStyles: ElementStyles = css`
     .backplate {
         border-radius: 100%;
         min-width: 100%;
-        fill: currentcolor;
     }
 
     ::slotted([slot="badge"]) {

@@ -16,7 +16,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        fill: currentcolor;
         white-space: nowrap;
     }
 

@@ -53,7 +53,6 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         width: calc((${heightNumber} / 2) * 1px + ${designUnit});
         height: calc((${heightNumber} / 2) * 1px + ${designUnit});
-        fill: currentcolor;
     }
 
     .label {
