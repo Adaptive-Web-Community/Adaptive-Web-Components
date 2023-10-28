@@ -1,4 +1,4 @@
-import { SerializableUIState } from "../core/serialization.js";
+import { PluginMessage } from "../core/model.js";
 import { FigmaController } from "./controller.js";
 
 const controller = new FigmaController();
@@ -62,7 +62,8 @@ function debounceSelection() {
 
 figma.on("selectionchange", debounceSelection);
 
-figma.ui.onmessage = (message: SerializableUIState): void => {
+// Comes from ../ui/index.ts parent.postMessage
+figma.ui.onmessage = (message: PluginMessage): void => {
     notifyProcessing(() => {
         controller.handleMessage(message);
     });

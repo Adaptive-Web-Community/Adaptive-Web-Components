@@ -5,8 +5,9 @@ import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { deserializeUINodes, SerializableUIState, serializeUINodes } from "../core/serialization.js";
+import { deserializeUINodes, SerializableUIState } from "../core/serialization.js";
 import { App } from "./app.js";
+import { PluginMessage } from '../core/model.js';
 
 AdaptiveDesignSystem.defineComponents({
     buttonDefinition,
@@ -24,16 +25,15 @@ window.onload = () => {
     const app: App = document.querySelector("designer-app") as App;
 
     // Send a message from the UI to the Controller 
-    app.addEventListener("dispatch", (e: Event): void => {
-        const message: SerializableUIState = {
-            selectedNodes: serializeUINodes((e as CustomEvent).detail)
-        }
+    app.addEventListener("dispatch", (e: CustomEvent<PluginMessage>): void => {
+        // Goes to ../figma/main.ts figma.ui.onmessage
         parent.postMessage({
-            pluginMessage: message
+            pluginMessage: e.detail
         }, "*");
     });
 
     // Update UI from Controller's message
+    // Comes from ../figma/controller.ts figma.ui.postMessage
     window.onmessage = (e: MessageEvent): void => {
         const message: SerializableUIState = e.data.pluginMessage;
         const nodes = message.selectedNodes;

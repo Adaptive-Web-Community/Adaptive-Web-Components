@@ -1,10 +1,29 @@
+import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
+import { SerializableNodeData } from "./serialization.js";
 
+export const AdditionalDataKeys = {
 /**
- * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lot more special handling.
+    * A key for passing the fill color from the tool to the plugin.
+    *
+    * @remarks
+    * Keeping it out of main design tokens to avoid a lot more special handling.
  */
-export const TOOL_PARENT_FILL_COLOR = "tool-parent-fill-color";
+    toolParentFillColor: "tool-parent-fill-color",
+
+    /**
+     * The state of interactive state configuration. Applies to component sets.
+     */
+    states: "states",
+
+    /**
+     * The interactive state of the node. Applies to all nodes.
+     */
+    state: "state",
+} as const;
+
+export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
 
 /**
  * A design token value.
@@ -269,3 +288,15 @@ export const pluginNodesToUINodes = (
 
     return convertedNodes;
 }
+
+export interface CreateStatesMessage {
+    readonly type: 'CREATE_STATES';
+    id: string;
+}
+
+export interface NodeDataMessage {
+    readonly type: 'NODE_DATA';
+    nodes: SerializableNodeData[];
+}
+
+export type PluginMessage = CreateStatesMessage | NodeDataMessage;

@@ -1,4 +1,5 @@
 import { Controller, PluginUIState } from "../core/controller.js";
+import type { PluginMessage } from "../core/model.js";
 import { deserializeUINodes, SerializableUIState, serializeUINodes } from "../core/serialization.js";
 import { FigmaPluginNode } from "./node.js";
 
@@ -12,13 +13,22 @@ export class FigmaController extends Controller {
         }
     }
 
-    public handleMessage(state: SerializableUIState): void {
-        const pluginNodes = deserializeUINodes(state.selectedNodes);
-        super.receiveStateFromUI({
-            selectedNodes: pluginNodes
-        })
+    public handleMessage(message: PluginMessage): void {
+        if (message.type === "NODE_DATA") {
+            const pluginNodes = deserializeUINodes(message.nodes);
+            super.receiveStateFromUI({
+                selectedNodes: pluginNodes
+            });
 
-        FigmaPluginNode.clearCache();
+            FigmaPluginNode.clearCache();
+        } else if (message.type === "CREATE_STATES") {
+            const node = this.getNode(message.id);
+            // Create the interactive state components
+            node?.createStates();
+            // Resend the nodes to the plugin UI
+            FigmaPluginNode.clearCache();
+            this.setSelectedNodes([message.id]);
+        }
     }
 
     public sendStateToUI(state: PluginUIState): void {
@@ -26,6 +36,7 @@ export class FigmaController extends Controller {
             selectedNodes: serializeUINodes(state.selectedNodes),
         };
 
+        // Goes to ../ui/index.ts window.onmessage
         figma.ui.postMessage(message);
     }
 }

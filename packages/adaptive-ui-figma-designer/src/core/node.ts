@@ -1,7 +1,9 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
+import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import {
     AdditionalData,
+    AdditionalDataKeys,
     AppliedDesignTokens,
     AppliedStyleModules,
     AppliedStyleValues,
@@ -10,10 +12,17 @@ import {
     ReadonlyAppliedDesignTokens,
     ReadonlyAppliedStyleModules,
     ReadonlyDesignTokenValues,
-    TOOL_PARENT_FILL_COLOR,
 } from "./model.js";
 
 const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
+
+export const StatesState = {
+    notAvailable: "notAvailable",
+    available: "available",
+    configured: "configured",
+} as const;
+
+export type StatesState = ValuesOf<typeof StatesState>;
 
 /**
  * The abstract class the plugin Controller interacts with.
@@ -148,6 +157,16 @@ export abstract class PluginNode {
     public abstract readonly fillColor: ColorRGBA64 | null;
 
     /**
+     * The state of stateful component capabilities for this node.
+     */
+    public abstract readonly states: StatesState;
+
+    /**
+     * The interactive state of the node.
+     */
+    public abstract get state(): string | null;
+
+    /**
      * Gets whether this type of node can have children or not.
      */
     public abstract get canHaveChildren(): boolean;
@@ -229,10 +248,17 @@ export abstract class PluginNode {
      * Gets additional data associated with this node.
      */
     public get additionalData(): AdditionalData {
-        if (!this._additionalData.has(TOOL_PARENT_FILL_COLOR) && this.parent?.fillColor) {
-            // console.log("PluginNode.get_additionalData - adding:", TOOL_PARENT_FILL_COLOR, this.debugInfo, this.parent?.fillColor.toStringHexARGB());
-            this._additionalData.set(TOOL_PARENT_FILL_COLOR, this.parent.fillColor.toStringHexARGB());
+        this._additionalData.set(AdditionalDataKeys.states, this.states);
+
+        if (this.state) {
+            this._additionalData.set(AdditionalDataKeys.state, this.state);
         }
+
+        if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.fillColor) {
+            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, this.parent?.fillColor.toStringHexARGB());
+            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, this.parent.fillColor.toStringHexARGB());
+        }
+
         return this._additionalData;
     }
 
