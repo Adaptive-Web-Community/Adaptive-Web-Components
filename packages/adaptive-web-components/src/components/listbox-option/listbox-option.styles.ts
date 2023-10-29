@@ -32,10 +32,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        fill: currentcolor;
-    }
-
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;

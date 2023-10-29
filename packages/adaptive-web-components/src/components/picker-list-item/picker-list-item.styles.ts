@@ -21,7 +21,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        fill: currentcolor;
-    }
 `;

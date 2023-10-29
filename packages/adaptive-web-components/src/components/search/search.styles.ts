@@ -79,17 +79,12 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        fill: currentcolor;
-    }
-
     .label {
         margin-bottom: 4px;
     }
 
     .root {
         /*position: relative;*/
-        fill: currentcolor;
     }
 
     .clear-button {
@@ -97,6 +92,5 @@ export const aestheticStyles: ElementStyles = css`
         height: calc(100% - 2px);
         min-width: calc(${heightNumber} * 1px);
         padding: 0 calc(10px + (${designUnit} * (2 * ${density})));
-        fill: currentcolor;
     }
 `;

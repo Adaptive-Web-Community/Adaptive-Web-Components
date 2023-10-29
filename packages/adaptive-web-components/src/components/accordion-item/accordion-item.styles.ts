@@ -99,8 +99,4 @@ export const aestheticStyles: ElementStyles = css`
     :host(:not([disabled])) .button:focus-visible::before {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
-
-    .icon {
-        fill: currentcolor;
-    }
 `;

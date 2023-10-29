@@ -101,10 +101,6 @@ export const aestheticStyles: ElementStyles = css`
         --expand-collapse-button-size: calc((12 + 6 + 6) * 1px);
     }
 
-    .control {
-        fill: currentcolor;
-    }
-
     .expand-collapse-button {
         width: var(--expand-collapse-button-size);
         height: var(--expand-collapse-button-size);

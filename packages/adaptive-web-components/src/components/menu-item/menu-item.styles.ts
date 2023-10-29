@@ -125,7 +125,6 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         --col-width: minmax(20px, auto);
         overflow: visible;
-        fill: currentcolor;
     }
 
     :host([aria-expanded="true"]) {

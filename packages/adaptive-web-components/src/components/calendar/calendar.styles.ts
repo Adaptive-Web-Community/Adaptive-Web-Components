@@ -42,7 +42,6 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit});
         --calendar-gap: 2px;
-        fill: currentcolor;
     }
 
     .title {

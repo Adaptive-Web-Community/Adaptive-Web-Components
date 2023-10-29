@@ -41,17 +41,9 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .control {
-        fill: currentcolor;
-    }
-
     :host(:not([href])),
     :host([aria-current]) .control {
         color: ${neutralForegroundRest} !important;
-        fill: currentcolor;
-    }
-
-    .separator {
         fill: currentcolor;
     }
 `;

@@ -32,7 +32,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        fill: currentcolor;
         gap: ${densityControl.horizontalGap};
     }
 

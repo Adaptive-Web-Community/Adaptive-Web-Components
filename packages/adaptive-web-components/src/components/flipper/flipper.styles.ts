@@ -33,7 +33,6 @@ export const aestheticStyles: ElementStyles = css`
         height: calc(${heightNumber} * 1px);
         border-radius: 50% !important;
         padding: 0 !important;
-        fill: currentcolor;
     }
 
     :host([disabled]) {

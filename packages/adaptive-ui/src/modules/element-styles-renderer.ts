@@ -4,11 +4,24 @@ import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, type StyleProperty } from "../modules/types.js";
 import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { StyleModuleEvaluateParameters } from "./types.js";
+import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { Styles } from "./styles.js";
 
-type StyleModuleEvaluate = (params: StyleModuleEvaluateParameters) => Map<string, CSSDirective>;
+/**
+ * The properties and values of a css declaration.
+ */
+type DeclarationMap = Map<string, string | CSSDirective>;
+
+/**
+ * The selector and set of declarations for a css rule.
+ */
+type RuleMap = Map<string, DeclarationMap>;
+
+/**
+ * A function that converts style definitions to rules.
+ */
+type StyleModuleEvaluate = (params: StyleModuleEvaluateParameters) => RuleMap;
 
 /**
  * Renders Adaptive UI Styles as ElementStyles.
@@ -19,7 +32,7 @@ export class ElementStylesRenderer {
     private readonly _evaluateFunctions: StyleModuleEvaluate[];
 
     /**
-     * The key is the css selector and the value is an array of properties. 
+     * The rules produced by evaluating the provided `Styles`.
      */
     private readonly _rules: Map<string, Array<CSSDirective>> = new Map();
 
@@ -36,39 +49,57 @@ export class ElementStylesRenderer {
     // inject other logic to produce more complicated or dependent css.
     // Perhaps these static functions turn into a registration mechanism.
 
+    private static declaration(
+        property: StyleProperty,
+        value: string | CSSDirective,
+        state?: StateSelector,
+    ): DeclarationMap {
+        const cssProperty = stylePropertyToCssProperty(property);
+        const map = new Map([[cssProperty, value]]);
+
+        // TODO: This belongs in a plugin as described above.
+        if (state === undefined) {
+            if (property === "foregroundFill") {
+                map.set("fill", "currentcolor");
+            }
+        }
+        return map;
+    }
+
     private static propertySingle(
-        property: string,
+        property: StyleProperty,
         value: string | CSSDirective,
     ): StyleModuleEvaluate {
-        return (params: StyleModuleEvaluateParameters): Map<string, CSSDirective> => {
+        return (params: StyleModuleEvaluateParameters): RuleMap => {
             return new Map([
-                [makeSelector(params), css.partial`${property}: ${value};`]
+                [makeSelector(params), ElementStylesRenderer.declaration(property, value)]
             ]);
         }
     }
 
     private static propertyInteractive(
-        property: string,
+        property: StyleProperty,
         values: InteractiveSet<any>,
     ): StyleModuleEvaluate {
-        return (params: StyleModuleEvaluateParameters): Map<string, CSSDirective> => {
-            const selectors = new Map();
+        return (params: StyleModuleEvaluateParameters): RuleMap => {
+            const selectors: RuleMap = new Map();
 
             if (values.rest) {
-                selectors.set(makeSelector(params), css.partial`${property}: ${values.rest};`);
+                selectors.set(makeSelector(params), ElementStylesRenderer.declaration(property, values.rest));
             }
             if (params.interactivitySelector !== undefined && values.hover) {
-                selectors.set(makeSelector(params, "hover"), css.partial`${property}: ${values.hover};`);
+                selectors.set(makeSelector(params, "hover"), ElementStylesRenderer.declaration(property, values.hover, "hover"));
             }
             if (params.interactivitySelector !== undefined && values.active) {
-                selectors.set(makeSelector(params, "active"), css.partial`${property}: ${values.active};`);
+                selectors.set(makeSelector(params, "active"), ElementStylesRenderer.declaration(property, values.active, "active"));
             }
             if (params.interactivitySelector !== undefined && values.focus) {
-                selectors.set(makeSelector(params, params.focusSelector || "focus-visible"), css.partial`${property}: ${values.focus};`);
+                const selector = params.focusSelector || "focus-visible";
+                selectors.set(makeSelector(params, selector), ElementStylesRenderer.declaration(property, values.focus, selector));
             }
 
             if (params.disabledSelector !== undefined && values.disabled) {
-                selectors.set(makeSelector(params, "disabled"), css.partial`${property}: ${values.disabled};`);
+                selectors.set(makeSelector(params, "disabled"), ElementStylesRenderer.declaration(property, values.disabled, "disabled"));
             }
 
             return selectors;
@@ -76,8 +107,7 @@ export class ElementStylesRenderer {
     }
 
     private createStyleModules(styles: Styles): StyleModuleEvaluate[] {
-        const modules: StyleModuleEvaluate[] = new Array(...styles.effectiveProperties.entries()).map(([key, value]) => {
-            const property = stylePropertyToCssProperty(key as StyleProperty);
+        const modules: StyleModuleEvaluate[] = new Array(...styles.effectiveProperties.entries()).map(([property, value]) => {
             if (typeof value === "string" || value instanceof CSSDesignToken) {
                 return ElementStylesRenderer.propertySingle(property, value);
             } else if (value && typeof (value as any).createCSS === "function") {
@@ -89,12 +119,15 @@ export class ElementStylesRenderer {
         return modules;
     }
 
-    private appendRule(selector: string, property: CSSDirective) {
+    private appendRule(selector: string, declarations: DeclarationMap) {
+        const cssProperties = new Array(...declarations.entries()).map(([property, value]) => {
+            return css.partial`${property}: ${value};`;
+        });
         if (this._rules.has(selector)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this._rules.get(selector)!.push(property);
+            this._rules.get(selector)!.push(...cssProperties);
         } else {
-            this._rules.set(selector, [property]);
+            this._rules.set(selector, cssProperties);
         }
     }
 
@@ -112,9 +145,9 @@ export class ElementStylesRenderer {
 
         // Combine the selectors
         this._evaluateFunctions.forEach((module) => {
-            const map = module(params);
-            for (const entry of map) {
-                this.appendRule(entry[0], entry[1]);
+            const rule = module(params);
+            for (const ruleEntry of rule) {
+                this.appendRule(ruleEntry[0], ruleEntry[1]);
             }
         });
 

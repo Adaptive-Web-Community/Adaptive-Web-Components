@@ -23,6 +23,5 @@ export const aestheticStyles: ElementStyles = css`
         padding:
             calc(((${designUnit} * 0.5) - ${strokeThickness}) * 1)
             calc((${designUnit} - ${strokeThickness}) * 1);
-        fill: currentcolor;
     }
 `;
