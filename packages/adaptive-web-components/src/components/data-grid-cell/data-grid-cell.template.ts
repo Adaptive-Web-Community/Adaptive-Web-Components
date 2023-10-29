@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { dataGridCellTemplate, DataGridCellTypes, FASTDataGridCell } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -25,6 +25,7 @@ export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions
     interactivity: Interactivity.never,
     conditions: DataGridCellConditions,
     parts: DataGridCellParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTPickerListItem, pickerListItemTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -22,6 +22,7 @@ export const PickerListItemAnatomy: ComponentAnatomy<typeof PickerListItemCondit
     interactivity: Interactivity.always,
     conditions: PickerListItemConditions,
     parts: PickerListItemParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

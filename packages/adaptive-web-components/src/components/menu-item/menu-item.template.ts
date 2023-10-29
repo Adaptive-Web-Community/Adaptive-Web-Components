@@ -8,7 +8,7 @@ import {
      staticallyCompose,
 } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -49,6 +49,7 @@ export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: MenuItemConditions,
     parts: MenuItemParts,
+    focus: Focus.hostFocused(),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

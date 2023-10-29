@@ -50,7 +50,7 @@ export class AdaptiveComponent extends FASTElement {
             this.$fastController.removeStyles(this._addedStyles);
         }
         if (next) {
-            this._addedStyles = new ElementStylesRenderer(next).render(Interactivity.disabledAttribute);
+            this._addedStyles = new ElementStylesRenderer(next).render({}, Interactivity.disabledAttribute);
             this.$fastController.addStyles(this._addedStyles);
         }
     }

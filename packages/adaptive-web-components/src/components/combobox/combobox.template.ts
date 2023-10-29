@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { comboboxTemplate, FASTCombobox } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -41,6 +41,7 @@ export const ComboboxAnatomy: ComponentAnatomy<typeof ComboboxConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: ComboboxConditions,
     parts: ComboboxParts,
+    focus: Focus.partWithin("control", "selected-value" as any),
 };
 
 /**

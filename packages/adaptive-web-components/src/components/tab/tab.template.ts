@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTTab, tabTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -22,6 +22,7 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
     interactivity: Interactivity.disabledAttribute,
     conditions: TabConditions,
     parts: TabParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

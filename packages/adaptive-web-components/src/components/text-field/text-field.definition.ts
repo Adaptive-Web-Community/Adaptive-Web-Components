@@ -11,11 +11,8 @@ import { styleModules } from "./text-field.styles.modules.js";
  * @public
  */
 export const textFieldDefinition = composeTextField(
-	DefaultDesignSystem,
-	{
-		styleModules,
-		shadowOptions: {
-			delegatesFocus: true
-		}
-	}
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
 );

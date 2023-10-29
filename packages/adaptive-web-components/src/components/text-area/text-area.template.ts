@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTTextArea, textAreaTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -24,6 +24,7 @@ export const TextAreaAnatomy: ComponentAnatomy<typeof TextAreaConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: TextAreaConditions,
     parts: TextAreaParts,
+    focus: Focus.partFocused("control"),
 };
 
 /**

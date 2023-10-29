@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTSwitch, switchTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -26,6 +26,7 @@ export const SwitchAnatomy: ComponentAnatomy<typeof SwitchConditions, typeof Swi
     interactivity: Interactivity.disabledAttribute,
     conditions: SwitchConditions,
     parts: SwitchParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

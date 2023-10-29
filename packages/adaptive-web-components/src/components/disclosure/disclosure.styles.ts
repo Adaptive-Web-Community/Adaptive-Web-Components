@@ -27,7 +27,6 @@ export const templateStyles: ElementStyles = css`
         display: flex;
         align-items: center;
         list-style-type: none;
-        outline: none;
         cursor: pointer;
     }
 

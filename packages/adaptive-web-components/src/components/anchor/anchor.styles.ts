@@ -1,7 +1,3 @@
-import {
-    focusStrokeOuter,
-    focusStrokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 
@@ -20,13 +16,8 @@ export const templateStyles: ElementStyles = css`
         justify-content: center;
         align-items: center;
         white-space: nowrap;
-        outline: none;
         font: inherit;
         text-decoration: none;
-    }
-
-    .control::-moz-focus-inner {
-        border: 0;
     }
 
     ::slotted([slot="start"]),
@@ -47,9 +38,5 @@ export const aestheticStyles: ElementStyles = css`
     .control.icon-only {
         padding: 0;
         line-height: 0;
-    }
-
-    .control:focus-visible {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 `;

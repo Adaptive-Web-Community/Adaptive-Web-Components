@@ -25,7 +25,9 @@ export const aestheticStyles: ElementStyles = css`
         background: ${layerFillFixedPlus1};
     }
 
-    :host(:not([disabled]):focus-within) {
+    :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
+    :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+        outline-offset: 1px;
     }
 `;

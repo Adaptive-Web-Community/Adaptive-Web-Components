@@ -12,6 +12,9 @@ import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
 export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string {
     const selectors: string[] = [];
 
+    // `disabled` is a `state`, but it's not a css pseudo selector.
+    const statePseudo = state && state !== "disabled" ? ":" + state : "";
+
     if (params.hostCondition ||
         (state && state !== "disabled" && params.interactivitySelector !== undefined) ||
         (state && state === "disabled" && params.disabledSelector !== undefined)
@@ -24,9 +27,9 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
                 // Add any interactive condition like `:not([disabled])`.
                 hostCondition += (params.interactivitySelector || "");
 
-                // If this is not targeting a part, apply the state at the `:host`.
-                if (!params.part) {
-                    hostCondition += ":" + state;
+                // If this is not targeting a part, or if configured, apply the state at the `:host`.
+                if (!params.part || params.stateOnHost === true) {
+                    hostCondition += statePseudo;
                 }
             } else {
                 // Add the non-interactive condition like `[disabled]`.
@@ -47,7 +50,7 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
             selectors.push("*");
         } else {
             // Using class selector notation for now.
-            selectors.push(`.${params.part}${params.partCondition || ""}${state && state !== "disabled" ? ":" + state : ""}`);
+            selectors.push(`.${params.part}${params.partCondition || ""}${params.stateOnHost !== true ? statePseudo : ""}`);
         }
     }
     const ret = selectors.join(" ");

@@ -81,11 +81,9 @@ export type ColorRecipeParams = {
 
 // @public
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
-    // (undocumented)
     conditions: TConditions;
-    // (undocumented)
+    focus?: FocusDefinition<TParts>;
     interactivity?: InteractivityDefinition;
-    // (undocumented)
     parts: TParts;
 }
 
@@ -253,7 +251,7 @@ export function directionByIsDark(color: RelativeLuminance): PaletteDirectionVal
 // @public
 export class ElementStylesRenderer {
     constructor(styles: Styles);
-    render(params: StyleModuleEvaluateParameters): ElementStyles;
+    render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles;
 }
 
 // @public
@@ -268,6 +266,20 @@ export const Fill: {
     backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Swatch>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
     foregroundNonInteractiveWithDisabled: (foreground: TypedCSSDesignToken<Swatch>, disabled: TypedCSSDesignToken<Swatch>) => StyleProperties;
 };
+
+// @public
+export const Focus: {
+    readonly hostFocused: () => FocusDefinition<any>;
+    readonly hostChildFocused: <TParts>(indicatorPart: keyof TParts & string) => FocusDefinition<TParts>;
+    readonly partFocused: <TParts_1>(part: keyof TParts_1 & string) => FocusDefinition<TParts_1>;
+    readonly partWithin: <TParts_2>(indicatorPart: keyof TParts_2 & string, focusablePart: keyof TParts_2 & string) => FocusDefinition<TParts_2>;
+};
+
+// @public
+export interface FocusDefinition<TParts> {
+    focusTarget: StyleModuleTarget;
+    resetTarget: StyleModuleTarget;
+}
 
 // @public
 export type FocusSelector = "focus" | "focus-visible" | "focus-within";
@@ -419,9 +431,13 @@ export type StyleModules = Iterable<readonly [StyleModuleTarget, Styles]>;
 
 // @public
 export interface StyleModuleTarget {
+    focusSelector?: FocusSelector;
     hostCondition?: string;
+    // @beta
+    ignoreInteractivity?: boolean;
     part?: string;
     partCondition?: string;
+    stateOnHost?: boolean;
 }
 
 // @public
@@ -467,6 +483,10 @@ export const StyleProperty: {
     readonly layoutDirection: "layoutDirection";
     readonly opacity: "opacity";
     readonly cursor: "cursor";
+    readonly outlineColor: "outlineColor";
+    readonly outlineOffset: "outlineOffset";
+    readonly outlineStyle: "outlineStyle";
+    readonly outlineWidth: "outlineWidth";
 };
 
 // @public

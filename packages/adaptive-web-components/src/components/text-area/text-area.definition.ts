@@ -11,11 +11,8 @@ import { styleModules } from "./text-area.styles.modules.js";
  * @public
  */
 export const textAreaDefinition = composeTextArea(
-	DefaultDesignSystem,
-	{
-		styleModules,
-		shadowOptions: {
-			delegatesFocus: true
-		}
-	}
+    DefaultDesignSystem,
+    {
+        styleModules,
+    }
 );

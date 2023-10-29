@@ -19,8 +19,5 @@ export const breadcrumbItemDefinition = composeBreadcrumbItem(
             [BreadcrumbItemStatics.separator]: chevronRightIcon
         },
         styleModules,
-        shadowOptions: {
-            delegatesFocus: true
-        }
     }
 );

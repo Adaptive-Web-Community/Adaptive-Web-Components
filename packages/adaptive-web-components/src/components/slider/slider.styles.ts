@@ -4,8 +4,6 @@ import {
 } from "@adaptive-web/adaptive-ui/migration";
 import {
     designUnit,
-    focusStrokeOuter,
-    focusStrokeThickness,
     neutralStrokeDiscernibleRest,
     neutralStrokeSubtleActive,
     neutralStrokeSubtleHover,
@@ -22,7 +20,6 @@ export const templateStyles: ElementStyles = css`
         display: inline-grid;
         align-items: center;
         user-select: none;
-        outline: none;
         cursor: pointer;
     }
 
@@ -146,11 +143,6 @@ export const aestheticStyles: ElementStyles = css`
     .thumb:active {
         border-color: ${neutralStrokeSubtleActive};
         background: ${neutralForegroundRest};
-    }
-
-    :host(:focus-visible) .thumb {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-        outline-offset: 2px;
     }
 
     .track-start {

@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTNumberField, numberFieldTemplate } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -44,6 +44,7 @@ export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, 
     interactivity: Interactivity.disabledAttribute,
     conditions: NumberFieldConditions,
     parts: NumberFieldParts,
+    focus: Focus.partWithin("root", "control"), // How to make this `NumberFieldParts.root` instead of a string?
 };
 
 /**

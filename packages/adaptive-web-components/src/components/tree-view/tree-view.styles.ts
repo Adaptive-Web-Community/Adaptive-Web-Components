@@ -8,7 +8,6 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: flex;
         flex-direction: column;
-        align-items: stretch;
         min-width: fit-content;
     }
 `;

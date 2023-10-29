@@ -14,8 +14,5 @@ export const anchorDefinition = composeAnchor(
     DefaultDesignSystem,
     {
         styleModules,
-        shadowOptions: {
-            delegatesFocus: true
-        },
     }
 );

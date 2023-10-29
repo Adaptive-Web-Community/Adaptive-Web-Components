@@ -19,8 +19,5 @@ export const comboboxDefinition = composeCombobox(
             [ComboboxStatics.indicator]: chevronDownIcon
         },
         styleModules,
-        shadowOptions: {
-            delegatesFocus: true
-        }
     }
 );

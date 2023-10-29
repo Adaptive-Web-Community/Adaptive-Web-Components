@@ -133,11 +133,15 @@ export const accordionTemplateStyles: ElementStyles;
 // @public
 export class AdaptiveAnchor extends FASTAnchor {
     protected defaultSlottedContentChanged(): void;
+    // (undocumented)
+    focus(options?: FocusOptions): void;
 }
 
 // @public
 export class AdaptiveButton extends FASTButton {
     protected defaultSlottedContentChanged(): void;
+    // (undocumented)
+    focus(options?: FocusOptions): void;
 }
 
 // @beta
@@ -1426,7 +1430,10 @@ export const selectAestheticStyles: ElementStyles;
 export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof SelectParts>;
 
 // @public (undocumented)
-export const SelectConditions: {};
+export const SelectConditions: {
+    isDropdown: string;
+    isListbox: string;
+};
 
 // @public (undocumented)
 export const SelectParts: {

@@ -1,7 +1,7 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { checkboxTemplate, FASTCheckbox } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -42,6 +42,7 @@ export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: CheckboxConditions,
     parts: CheckboxParts,
+    focus: Focus.hostFocused(),
 };
 
 /**

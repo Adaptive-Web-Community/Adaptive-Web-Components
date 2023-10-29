@@ -1,6 +1,4 @@
 import {
-    focusStrokeOuter,
-    focusStrokeThickness,
     neutralFillStealthActive,
     neutralStrokeReadableRest,
 } from "@adaptive-web/adaptive-ui/reference";
@@ -132,10 +130,6 @@ export const aestheticStyles: ElementStyles = css`
 
     :host([aria-expanded="true"]) {
         background: ${neutralFillStealthActive};
-    }
-
-    :host(:focus-visible) {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }
 
     ::slotted([slot="end"]:not(svg)) {
