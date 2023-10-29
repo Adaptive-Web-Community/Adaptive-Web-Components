@@ -148,11 +148,7 @@ export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<Interac
     StyleProperty.foregroundFill,
     (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
         blackOrWhiteByContrastSet(
-            reference.rest,
-            reference.hover,
-            reference.active,
-            reference.focus,
-            reference.disabled,
+            reference,
             resolve(minContrastDiscernible),
             false,
         )
@@ -172,11 +168,7 @@ export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<Interactiv
     StyleProperty.foregroundFill,
     (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
         blackOrWhiteByContrastSet(
-            reference.rest,
-            reference.hover,
-            reference.active,
-            reference.focus,
-            reference.disabled,
+            reference,
             resolve(minContrastReadable),
             false,
         )

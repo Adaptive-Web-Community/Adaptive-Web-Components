@@ -18,8 +18,8 @@ describe("idealColorDeltaSwatchSet", (): void => {
         const lightModeColors = idealColorDeltaSwatchSet(accentPalette, _white, 4.5, accentPalette.source, 0, 6, -4, 0, 1);
         const darkModeColors = idealColorDeltaSwatchSet(accentPalette, _black, 4.5, accentPalette.source, 0, 6, -4, 0, 1);
 
-        expect(lightModeColors.hover.contrast(_white)).to.be.greaterThan(lightModeColors.rest.contrast(_white));
-        expect(darkModeColors.hover.contrast(_black)).to.be.greaterThan(darkModeColors.rest.contrast(_black));
+        expect(lightModeColors.hover!.contrast(_white)).to.be.greaterThan(lightModeColors.rest!.contrast(_white));
+        expect(darkModeColors.hover!.contrast(_black)).to.be.greaterThan(darkModeColors.rest!.contrast(_black));
     });
 
     it("should have accessible rest and hover colors against the background color", (): void => {

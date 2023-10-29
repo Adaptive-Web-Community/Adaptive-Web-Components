@@ -113,11 +113,13 @@ export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(
     StyleProperty.foregroundFill,
     (resolve: DesignTokenResolver): InteractiveSwatchSet =>
         blackOrWhiteByContrastSet(
-            resolve(accentFillReadableRest),
-            resolve(accentFillReadableHover),
-            resolve(accentFillReadableActive),
-            resolve(accentFillReadableFocus),
-            resolve(accentFillReadable.disabled),
+            {
+                rest: resolve(accentFillReadable.rest),
+                hover: resolve(accentFillReadable.hover),
+                active: resolve(accentFillReadable.active),
+                focus: resolve(accentFillReadable.focus),
+                disabled: resolve(accentFillReadable.disabled),
+            },
             resolve(minContrastReadable),
             false
         )
@@ -575,7 +577,7 @@ export const neutralStrokeDividerRecipe = createTokenColorRecipe(
             ),
             params?.reference || resolve(fillColor),
             resolve(neutralAsOverlay)
-        )
+        )!
 );
 
 /** @public @deprecated Use "Subtle" instead */

@@ -3,7 +3,7 @@ import type { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { InteractiveTokenGroup } from "../types.js";
+import { InteractiveSet, InteractiveTokenGroup } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
 import { StyleProperty } from "./types.js";
 
@@ -12,7 +12,7 @@ import { StyleProperty } from "./types.js";
  *
  * @public
  */
-export type StyleValue = CSSDesignToken<any> | InteractiveTokenGroup<any> | CSSDirective | string;
+export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string;
 
 /**
  * An object of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
@@ -67,7 +67,7 @@ export const Fill = {
                 active: foreground,
                 focus: foreground,
                 disabled,
-            },
+            } as InteractiveTokenGroup<Swatch>,
         }
     }
 }

@@ -15,7 +15,7 @@ import { heightNumber } from "../../styles/index.js";
 const expandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collapse-hover").withDefault(
     (resolve: DesignTokenResolver) => {
         const recipe = resolve(neutralFillStealthRecipe);
-        return recipe.evaluate(resolve, { reference: recipe.evaluate(resolve).hover }).hover;
+        return recipe.evaluate(resolve, { reference: recipe.evaluate(resolve).hover }).hover as any;
     }
 );
 
@@ -23,7 +23,7 @@ const selectedExpandCollapseHover = DesignToken.create<Swatch>("tree-item-expand
     (resolve: DesignTokenResolver) => {
         const baseRecipe = resolve(neutralFillSubtleRecipe);
         const buttonRecipe = resolve(neutralFillStealthRecipe);
-        return buttonRecipe.evaluate(resolve, { reference: baseRecipe.evaluate(resolve).rest }).hover;
+        return buttonRecipe.evaluate(resolve, { reference: baseRecipe.evaluate(resolve).rest }).hover as any;
     }
 );
 
