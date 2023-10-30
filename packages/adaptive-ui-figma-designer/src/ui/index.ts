@@ -5,9 +5,9 @@ import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
 import { DesignToken } from "@microsoft/fast-foundation";
+import { PluginMessage } from '../core/model.js';
 import { deserializeUINodes, SerializableUIState } from "../core/serialization.js";
 import { App } from "./app.js";
-import { PluginMessage } from '../core/model.js';
 
 AdaptiveDesignSystem.defineComponents({
     buttonDefinition,
