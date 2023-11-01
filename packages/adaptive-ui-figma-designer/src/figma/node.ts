@@ -2,10 +2,11 @@ import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
-import { PluginNode, StatesState } from "../core/node.js";
+import { PluginNode, State, StatesState } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
 const stateVariant = "State";
+const disabledVariant = "Disabled";
 
 const SOLID_BLACK: SolidPaint = {
     type: "SOLID",
@@ -97,7 +98,7 @@ export class FigmaPluginNode extends PluginNode {
     public fillColor: ColorRGBA64 | null;
     public states: StatesState;
     private _node: BaseNode;
-    private _state: string | null = null;
+    private _state: State | null = null;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
 
@@ -228,9 +229,13 @@ export class FigmaPluginNode extends PluginNode {
             StatesState.notAvailable;
 
         if (this._node.type === "COMPONENT") {
-            this._state = this._node.variantProperties ? this._node.variantProperties[stateVariant] : null;
+            const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant] : null;
+            const state: State | null = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : null;
+            this._state = disabled === "true" ? "Disabled" : state;
         } else if (this._node.type === "INSTANCE") {
-            this._state = this._node.componentProperties[stateVariant]?.value as string;
+            const disabled: string | null = this._node.componentProperties[disabledVariant]?.value as string;
+            const state: State = this._node.componentProperties[stateVariant]?.value as State;
+            this._state = disabled === "true" ? "Disabled" : state;
         }
     }
 
@@ -824,6 +829,7 @@ export class FigmaPluginNode extends PluginNode {
     public createStates() {
         if (this._node.type === "COMPONENT_SET" && this.states === StatesState.available) {
             this._node.addComponentProperty(stateVariant, "VARIANT", "Rest");
+            this._node.addComponentProperty(disabledVariant, "VARIANT", "false");
 
             // Lots of numbers to track laying components out in a grid
             let paddingTop = 16;
@@ -859,13 +865,25 @@ export class FigmaPluginNode extends PluginNode {
             // Create states
             let hoverComponent: ComponentNode;
 
-            this._node.children.forEach((restComponent) => {
+            this._node.children.forEach((restComponent, setIndex, setChildren) => {
                 x = paddingLeft + maxWidth + spacing;
-                ["Hover", "Active", "Focus", "Disabled"].forEach((state) => {
+                const states: State[] = ["Hover", "Active", "Focus", "Disabled"];
+                states.forEach((state, stateIndex) => {
                     const stateComponent = restComponent.clone() as ComponentNode;
-                    (this._node as ComponentSetNode).appendChild(stateComponent);
+
+                    // Keep the layer order consistent with the layout
+                    if (setIndex < setChildren.length - 1) {
+                        (this._node as ComponentSetNode).insertChild((setIndex * (states.length + 1)) + stateIndex + 1, stateComponent);
+                    } else {
+                        (this._node as ComponentSetNode).appendChild(stateComponent);
+                    }
+
                     // Confusing "API" from Figma here, just rename the layer to adjust variant values:
-                    stateComponent.name = stateComponent.name.replace("Rest", state);
+                    if (state === "Disabled") {
+                        stateComponent.name = stateComponent.name.replace("Disabled=false", "Disabled=true");
+                    } else {
+                        stateComponent.name = stateComponent.name.replace("Rest", state);
+                    }
 
                     stateComponent.x = x;
                     stateComponent.y = y;

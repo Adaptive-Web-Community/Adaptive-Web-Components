@@ -24,6 +24,8 @@ export const StatesState = {
 
 export type StatesState = ValuesOf<typeof StatesState>;
 
+export type State = "Rest" | "Hover" | "Active" | "Focus" | "Disabled";
+
 /**
  * The abstract class the plugin Controller interacts with.
  * Acts as a basic intermediary for node structure and data storage only.

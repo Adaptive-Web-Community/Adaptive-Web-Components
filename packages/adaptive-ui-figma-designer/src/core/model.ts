@@ -4,12 +4,12 @@ import { PluginNode } from "./node.js";
 import { SerializableNodeData } from "./serialization.js";
 
 export const AdditionalDataKeys = {
-/**
-    * A key for passing the fill color from the tool to the plugin.
-    *
-    * @remarks
-    * Keeping it out of main design tokens to avoid a lot more special handling.
- */
+    /**
+     * A key for passing the fill color from the tool to the plugin.
+     *
+     * @remarks
+     * Keeping it out of main design tokens to avoid a lot more special handling.
+     */
     toolParentFillColor: "tool-parent-fill-color",
 
     /**
