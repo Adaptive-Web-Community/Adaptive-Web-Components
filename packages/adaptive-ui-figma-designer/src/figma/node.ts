@@ -2,8 +2,11 @@ import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
-import { PluginNode } from "../core/node.js";
+import { PluginNode, State, StatesState } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
+
+const stateVariant = "State";
+const disabledVariant = "Disabled";
 
 const SOLID_BLACK: SolidPaint = {
     type: "SOLID",
@@ -93,7 +96,9 @@ export class FigmaPluginNode extends PluginNode {
     public type: string;
     public name: string;
     public fillColor: ColorRGBA64 | null;
+    public states: StatesState;
     private _node: BaseNode;
+    private _state: State | null = null;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
 
@@ -216,6 +221,22 @@ export class FigmaPluginNode extends PluginNode {
         // }
 
         this.fillColor = this.getFillColor();
+
+        this.states = this._node.type === "COMPONENT_SET" ?
+            this._node.componentPropertyDefinitions[stateVariant] === undefined ?
+                StatesState.available :
+                StatesState.configured :
+            StatesState.notAvailable;
+
+        if (this._node.type === "COMPONENT") {
+            const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant] : null;
+            const state: State | null = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : null;
+            this._state = disabled === "true" ? "Disabled" : state;
+        } else if (this._node.type === "INSTANCE") {
+            const disabled: string | null = this._node.componentProperties[disabledVariant]?.value as string;
+            const state: State = this._node.componentProperties[stateVariant]?.value as State;
+            this._state = disabled === "true" ? "Disabled" : state;
+        }
     }
 
     public static get(node: BaseNode): FigmaPluginNode {
@@ -263,6 +284,16 @@ export class FigmaPluginNode extends PluginNode {
         return value;
     }
 
+    public get state(): string | null {
+        if (this._state) {
+            return this._state;
+        }
+        if (this.parent) {
+            return this.parent.state;
+        }
+        return null;
+    }
+
     public get canHaveChildren(): boolean {
         return canHaveChildren(this._node);
     }
@@ -287,7 +318,6 @@ export class FigmaPluginNode extends PluginNode {
             switch (key) {
                 case StyleProperty.backgroundFill:
                     return [
-                        isPageNode,
                         isContainerNode,
                         isShapeNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
@@ -793,6 +823,109 @@ export class FigmaPluginNode extends PluginNode {
             }
         } else {
             (this._node as CornerMixin).cornerRadius = numValue;
+        }
+    }
+
+    public createStates() {
+        if (this._node.type === "COMPONENT_SET" && this.states === StatesState.available) {
+            this._node.addComponentProperty(stateVariant, "VARIANT", "Rest");
+            this._node.addComponentProperty(disabledVariant, "VARIANT", "false");
+
+            // Lots of numbers to track laying components out in a grid
+            let paddingTop = 16;
+            let paddingRight = 16;
+            let paddingBottom = 16;
+            let paddingLeft = 16;
+            let spacing = 16;
+
+            // Turn off auto layout
+            if (this._node.layoutMode !== "NONE") {
+                paddingTop = this._node.paddingTop;
+                paddingRight = this._node.paddingRight;
+                paddingBottom = this._node.paddingBottom;
+                paddingLeft = this._node.paddingLeft;
+                spacing = this._node.itemSpacing;
+                this._node.layoutMode = "NONE";
+            }
+
+            let x = paddingLeft;
+            let y = paddingTop;
+            let maxWidth = 0;
+
+            // Initial layout
+            this._node.children.forEach((componentNode) => {
+                componentNode.x = x;
+                componentNode.y = y;
+                maxWidth = Math.max(maxWidth, componentNode.width);
+                y += componentNode.height + spacing;
+            });
+
+            y = paddingTop;
+
+            // Create states
+            let hoverComponent: ComponentNode;
+
+            this._node.children.forEach((restComponent, setIndex, setChildren) => {
+                x = paddingLeft + maxWidth + spacing;
+                const states: State[] = ["Hover", "Active", "Focus", "Disabled"];
+                states.forEach((state, stateIndex) => {
+                    const stateComponent = restComponent.clone() as ComponentNode;
+
+                    // Keep the layer order consistent with the layout
+                    if (setIndex < setChildren.length - 1) {
+                        (this._node as ComponentSetNode).insertChild((setIndex * (states.length + 1)) + stateIndex + 1, stateComponent);
+                    } else {
+                        (this._node as ComponentSetNode).appendChild(stateComponent);
+                    }
+
+                    // Confusing "API" from Figma here, just rename the layer to adjust variant values:
+                    if (state === "Disabled") {
+                        stateComponent.name = stateComponent.name.replace("Disabled=false", "Disabled=true");
+                    } else {
+                        stateComponent.name = stateComponent.name.replace("Rest", state);
+                    }
+
+                    stateComponent.x = x;
+                    stateComponent.y = y;
+
+                    if (state === "Hover") {
+                        // Save it for later
+                        hoverComponent = stateComponent;
+                    } else if (state === "Active") {
+                        (hoverComponent as ComponentNode).reactions = [{
+                            trigger: {
+                                type: "ON_PRESS",
+                            },
+                            actions: [{
+                                type: "NODE",
+                                navigation: "CHANGE_TO",
+                                destinationId: stateComponent.id,
+                                transition: null,
+                                preserveScrollPosition: true,
+                            }]
+                        }];
+                    }
+
+                    x += maxWidth + spacing;
+                });
+
+                (restComponent as ComponentNode).reactions = [{
+                    trigger: {
+                        type: "ON_HOVER",
+                    },
+                    actions: [{
+                        type: "NODE",
+                        navigation: "CHANGE_TO",
+                        destinationId: hoverComponent.id,
+                        transition: null,
+                        preserveScrollPosition: true,
+                    }]
+                }];
+
+                y += restComponent.height + spacing;    
+            });
+
+            this._node.resize(x - spacing + paddingRight, y - spacing + paddingBottom);
         }
     }
 }

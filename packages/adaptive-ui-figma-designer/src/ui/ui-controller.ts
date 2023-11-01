@@ -5,10 +5,12 @@ import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { STYLE_REMOVE } from "../core/controller.js";
-import { AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, PluginUINodeData, TOOL_PARENT_FILL_COLOR } from "../core/model.js";
+import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, type PluginMessage, type PluginUINodeData } from "../core/model.js";
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
+import { serializeUINodes } from '../core/serialization.js';
 import { ElementsController } from "./ui-controller-elements.js";
+import { StatesController } from './ui-controller-states.js';
 import { StylesController } from "./ui-controller-styles.js";
 import { DesignTokenController } from "./ui-controller-tokens.js";
 
@@ -57,8 +59,8 @@ type AppliedStyleValueInfo = {
  * setting or applying design tokens and evaluating the changes for the selected nodes.
  */
 export class UIController {
-    private readonly _updateStateCallback: (
-        selectedNodes: PluginUINodeData[]
+    private readonly _messageCallback: (
+        message: PluginMessage,
     ) => void | undefined;
 
     /**
@@ -78,6 +80,11 @@ export class UIController {
      */
     public readonly styles: StylesController;
 
+    /**
+     * A sub-controller responsible for creating stateful components.
+     */
+    public readonly states: StatesController;
+
     // This is adapting the new token model to the previous plugin structure.
     // What was previously a "recipe" is now an "applied design token".
     // The separation is useful for now in that "setting" a token is for overriding a value at a node,
@@ -90,14 +97,15 @@ export class UIController {
     /**
      * Create a new UI controller.
      *
-     * @param updateStateCallback - Callback function to handle updated design token evaluation
+     * @param messageCallback - Callback function to handle message from UI.
      */
-    constructor(updateStateCallback: (selectedNodes: PluginUINodeData[]) => void) {
-        this._updateStateCallback = updateStateCallback;
+    constructor(messageCallback: (message: PluginMessage) => void) {
+        this._messageCallback = messageCallback;
 
         this._elements = new ElementsController(this);
         this.designTokens = new DesignTokenController(this, this._elements);
         this.styles = new StylesController(this);
+        this.states = new StatesController(this);
 
         registerTokens(this.designTokenRegistry);
         registerAppliableTokens(this.appliableDesignTokenRegistry);
@@ -153,7 +161,11 @@ export class UIController {
         // console.log("  Evaluating all design tokens for all selected nodes");
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
 
-        this.dispatchState(reason);
+        const message: PluginMessage = {
+            type: 'NODE_DATA',
+            nodes: serializeUINodes(this._selectedNodes),
+        };
+        this.dispatchMessage(message, reason);
     }
 
     /**
@@ -190,6 +202,7 @@ export class UIController {
      */
     private collectEffectiveAppliedStyles(node: PluginUINodeData): Map<StyleProperty, AppliedStyleValueInfo> {
         const allApplied = new Map<StyleProperty, AppliedStyleValueInfo>();
+        const state = node.additionalData.get(AdditionalDataKeys.state)?.toLowerCase() || "rest";
 
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
@@ -256,10 +269,10 @@ export class UIController {
                             });
                         } else {
                             const group = (value as InteractiveTokenGroup<any>);
-                            if (group && group.rest) {
-                                // console.log("    applying group >", group);
+                            if (group && group[state]) {
+                                // console.log("    applying group >", state, group);
                                 allApplied.set(target, {
-                                    value: group.rest,
+                                    value: group[state],
                                     source,
                                 });
                             } else {
@@ -299,7 +312,7 @@ export class UIController {
             // console.log("  evaluateEffectiveAppliedStyleValues", node);
 
             // See `evaluateEffectiveAppliedDesignToken` for a note on this.
-            const colorHex = node.additionalData.get(TOOL_PARENT_FILL_COLOR);
+            const colorHex = node.additionalData.get(AdditionalDataKeys.toolParentFillColor);
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
                 const color = parseColorHexARGB(colorHex);
@@ -369,17 +382,17 @@ export class UIController {
         // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
         if (target === StyleProperty.backgroundFill) {
             if (node.children.length > 0) {
-                // console.log(`        Setting '${TOOL_PARENT_FILL_COLOR}' additional data on children`, value, valueOriginal);
+                // console.log(`        Setting '${AdditionalDataKeys.toolParentFillColor}' additional data on children`, value, valueOriginal);
                 node.children.forEach(child => {
                     // console.log("          Child", child.id, child.name);
-                    child.additionalData.set(TOOL_PARENT_FILL_COLOR, value);
+                    child.additionalData.set(AdditionalDataKeys.toolParentFillColor, value);
                 });
             }
         }
     }
 
-    private dispatchState(reason: string): void {
-        // console.log("UIController.dispatchState", reason);
-        this._updateStateCallback(this._selectedNodes);
+    public dispatchMessage(message: PluginMessage, reason: string): void {
+        // console.log("UIController.dispatchMessage", reason);
+        this._messageCallback(message);
     }
 }

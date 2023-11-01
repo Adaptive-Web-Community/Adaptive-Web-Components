@@ -12,7 +12,8 @@ import {
     neutralStrokeReadableRest,
     neutralStrokeStrongRest
 } from "@adaptive-web/adaptive-ui/reference";
-import { PluginUINodeData } from "../core/model.js";
+import type { PluginMessage, PluginUINodeData } from "../core/model.js";
+import { StatesState } from "../core/node.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
@@ -165,8 +166,8 @@ const revertLabel = "Remove all plugin data from the current selection.";
 
 const footerTemplate = html<App>`
     <footer>
-        <p class="selection-label">
-            ${(x) => x.selectedNodes?.map((node) => `${node.type}`).join(" | ") || "No selection"}
+        <p class="selection-label" title=${(x) => x.selectionDescription}>
+            ${(x) => x.selectionDescription}
         </p>
         <div class="buttons">
             <adaptive-button
@@ -194,14 +195,44 @@ const template = html<App>`
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
-                <designer-drawer name="Use cases">
-                    <div slot="collapsed-content">
-                        ${(x) => appliedStylesTemplate("Styles")}
-                    </div>
-                    <div>
-                        ${(x) => availableStylesTemplate("Styles")}
-                    </div>
-                </designer-drawer>
+                ${when(
+                    (x) => x.statesState !== StatesState.notAvailable,
+                    html<App>`
+                        ${when(
+                            (x) => x.statesState === StatesState.configured,
+                            html<App>`
+                                <p>Interactive states are already configured for this component set.</p>
+                            `,
+                            html<App>`
+                                <p>Automatically create interactive states for this component set.</p>
+                                <p>This will use the existing components for rest state, and create hover, active, focus, and disabled variants.</p>
+                                <p>Prototype interactions will also be created.</p>
+                                <button @click=${(x) => x.controller.states.createStates()}>Create States</button>
+                            `
+                        )}
+                    `
+                )}
+                ${when(
+                    (x) => x.supportsStyling,
+                    html<App>`
+                        <designer-drawer name="Use cases">
+                            <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Styles")}
+                            </div>
+                            <div>
+                                ${(x) => availableStylesTemplate("Styles")}
+                            </div>
+                        </designer-drawer>
+                    `,
+                    html`
+                        ${when(
+                            (x) => x.statesState === StatesState.notAvailable,
+                            html<App>`
+                                <p>Selected layers don't support styling</p>
+                            `
+                        )}
+                    `
+                )}
                 ${when(
                     (x) => x.supportsColor,
                     html<App>`
@@ -462,8 +493,9 @@ const styles = css`
     }
 
     footer {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
         align-items: center;
         padding: 4px calc(var(--design-unit) * 2) 4px calc(var(--design-unit) * 4);
     }
@@ -490,7 +522,10 @@ export class App extends FASTElement {
     public readonly controller: UIController;
 
     @observable
-    public supportsColor: boolean = true;
+    public supportsStyling: boolean;
+
+    @observable
+    public supportsColor: boolean;
 
     @observable
     public supportsBorderThickness: boolean;
@@ -535,9 +570,17 @@ export class App extends FASTElement {
     public appliedStyleModules: StyleModuleDisplayList = new Map();
 
     @observable
+    public statesState: StatesState;
+
+    @observable
+    public selectionDescription: string;
+
+    @observable
     public selectedNodes: PluginUINodeData[] | null;
     protected selectedNodesChanged(prev: PluginUINodeData[] | null, next: PluginUINodeData[] | null) {
         this.controller.selectedNodes = next;
+
+        this.selectionDescription = this.selectedNodes?.map((node) => `${node.type}`).join(" | ") || "No selection";
 
         this.supportsColor =
             this.selectedNodes?.some(
@@ -551,6 +594,13 @@ export class App extends FASTElement {
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
 
+        this.supportsStyling =
+            this.supportsColor ||
+            this.supportsBorderThickness ||
+            this.supportsDensity ||
+            this.supportsCornerRadius ||
+            this.supportsText;
+
         this.supportsDesignSystem = true;
 
         this.refreshObservables();
@@ -559,7 +609,7 @@ export class App extends FASTElement {
     constructor() {
         super();
 
-        this.controller = new UIController((nodes) => this.dispatchState(nodes));
+        this.controller = new UIController((message) => this.dispatchMessage(message));
     }
 
     private refreshObservables() {
@@ -578,10 +628,12 @@ export class App extends FASTElement {
         ]);
 
         this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
+
+        this.statesState = this.controller.states.getState();
     }
 
-    private dispatchState(selectedNodes: PluginUINodeData[]): void {
+    private dispatchMessage(message: PluginMessage): void {
         this.refreshObservables();
-        this.$emit("dispatch", selectedNodes);
+        this.$emit("dispatch", message);
     }
 }
