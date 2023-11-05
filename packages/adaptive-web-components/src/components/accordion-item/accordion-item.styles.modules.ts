@@ -1,5 +1,5 @@
 import {
-    StyleModules,
+    type StyleModules,
     Styles,
 } from "@adaptive-web/adaptive-ui";
 import {

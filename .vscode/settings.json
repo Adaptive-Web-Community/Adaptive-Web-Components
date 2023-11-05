@@ -6,7 +6,8 @@
         "editor.defaultFormatter": "vscode.html-language-features"
     },
     "[javascript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "javascript.preferences.quoteStyle": "double"
     },
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
@@ -15,7 +16,8 @@
         "editor.defaultFormatter": "vscode.json-language-features"
     },
     "[typescript]": {
-        "editor.defaultFormatter": "vscode.typescript-language-features"
+        "editor.defaultFormatter": "vscode.typescript-language-features",
+        "typescript.preferences.quoteStyle": "double"
     },
     "cSpell.words": [
         "Appliable",
@@ -26,5 +28,5 @@
     ],
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
 }

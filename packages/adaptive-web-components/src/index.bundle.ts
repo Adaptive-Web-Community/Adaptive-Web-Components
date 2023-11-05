@@ -1,8 +1,9 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
+import { fillColor, layerFillFixedBase } from "@adaptive-web/adaptive-ui/reference";
 import type { DesignSystem } from './design-system.js';
-import { AllComponents } from './custom-elements.js';
-import { DefaultDesignSystem } from './design-system.js';
+import { allComponents } from './custom-elements.js';
+import { adaptiveDesignSystem } from './design-system.js';
 
 declare global {
 	// eslint-disable-next-line no-var
@@ -11,12 +12,12 @@ declare global {
 
 interface AWC {
 	designSystem: DesignSystem;
-	allComponents: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>;
+	allComponents: Record<string, FASTElementDefinition>;
 }
 
 const AWC: AWC = {
-	designSystem: DefaultDesignSystem,
-	allComponents: AllComponents,
+	designSystem: adaptiveDesignSystem,
+	allComponents,
 }
 
 if (globalThis.AWC === void 0) {
@@ -30,5 +31,6 @@ if (globalThis.AWC === void 0) {
 
 (() => {
 	DesignToken.registerDefaultStyleTarget();
+    fillColor.withDefault(layerFillFixedBase);
 	AWC.designSystem.defineComponents(AWC.allComponents);
 })();

@@ -1,4 +1,4 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css, type ElementStyles } from "@microsoft/fast-element";
 import {
     focusStrokeOuter,
     focusStrokeThickness,

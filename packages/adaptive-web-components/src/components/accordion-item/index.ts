@@ -1,4 +1,5 @@
-export { composeAccordionItem } from "./accordion-item.compose.js";
+import accordionItemOptions from "./accordion-item.options.js";
+
 export {
     templateStyles as accordionItemTemplateStyles,
     aestheticStyles as accordionItemAestheticStyles,
@@ -7,9 +8,10 @@ export {
     styleModules as accordionItemStyleModules,
 } from "./accordion-item.styles.modules.js";
 export {
-    template as accordionItemTemplate,
+    accordionItemTemplate,
     AccordionItemAnatomy,
     AccordionItemConditions,
     AccordionItemParts,
     AccordionItemStatics
 } from "./accordion-item.template.js";
+export { accordionItemOptions };

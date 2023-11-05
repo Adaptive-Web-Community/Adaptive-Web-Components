@@ -1,10 +1,13 @@
-import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
-import subtractIcon from "@fluentui/svg-icons/icons/subtract_16_regular.svg";
-import { DefaultDesignSystem } from "../../design-system.js";
-import { composeCheckbox } from './checkbox.compose.js';
-import { CheckboxStatics } from "./checkbox.template.js";
+import { FASTCheckbox } from "@microsoft/fast-foundation";
+import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
+import { adaptiveDesignSystem, DesignSystem } from "../../design-system.js";
 import { styleModules } from "./checkbox.styles.modules.js";
+import { aestheticStyles, templateStyles } from "./checkbox.styles.js";
+import { CheckboxAnatomy, checkboxTemplate } from "./checkbox.template.js";
+import checkboxOptions from "./checkbox.options.js";
 
+const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+ 
 /**
  * The Checkbox custom element definition. Implements {@link @microsoft/fast-foundation#FASTCheckbox}.
  *
@@ -13,13 +16,8 @@ import { styleModules } from "./checkbox.styles.modules.js";
  *
  * @public
  */
-export const checkboxDefinition = composeCheckbox(
-    DefaultDesignSystem,
-    {
-        statics: {
-            [CheckboxStatics.checked]: checkmarkIcon,
-            [CheckboxStatics.indeterminate]: subtractIcon
-        },
-        styleModules,
-    }
-);
+export const checkboxDefinition = FASTCheckbox.compose({
+    name: `${adaptiveDesignSystem.prefix}-${checkboxOptions.basename}`,
+    template: checkboxTemplate(checkboxOptions.templateOptions),
+    styles: DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy, styleModules)
+});

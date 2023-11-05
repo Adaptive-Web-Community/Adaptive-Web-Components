@@ -1,6 +1,6 @@
 export {
 	DesignSystem,
-	DefaultDesignSystem as AdaptiveDesignSystem,
+	adaptiveDesignSystem,
 } from "./design-system.js";
 export * from "./global.styles.modules.js";
 export * from "./components/index.js";

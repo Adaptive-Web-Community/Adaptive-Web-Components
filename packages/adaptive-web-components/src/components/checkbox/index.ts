@@ -1,4 +1,3 @@
-export { composeCheckbox } from "./checkbox.compose.js";
 export {
     templateStyles as checkboxTemplateStyles,
     aestheticStyles as checkboxAestheticStyles,
@@ -6,4 +5,4 @@ export {
 export {
     styleModules as checkboxStyleModules,
 } from "./checkbox.styles.modules.js";
-export { template as checkboxTemplate, CheckboxAnatomy, CheckboxConditions, CheckboxParts, CheckboxStatics } from "./checkbox.template.js";
+export { checkboxTemplate, CheckboxAnatomy, CheckboxConditions, CheckboxParts } from "./checkbox.template.js";

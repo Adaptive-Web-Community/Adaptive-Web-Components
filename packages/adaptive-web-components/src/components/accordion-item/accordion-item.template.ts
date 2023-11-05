@@ -1,8 +1,6 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { accordionItemTemplate, FASTAccordionItem } from "@microsoft/fast-foundation";
+import { accordionItemTemplate } from "@microsoft/fast-foundation";
 import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
-import { DesignSystem } from "../../design-system.js";
+import { type ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the accordion item collapsed icon.
@@ -50,9 +48,6 @@ export const AccordionItemAnatomy: ComponentAnatomy<typeof AccordionItemConditio
  * Default Accordion Item template, {@link @microsoft/fast-foundation#accordionItemTemplate}.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAccordionItem> =
-    (ds: DesignSystem) =>
-        accordionItemTemplate({
-            collapsedIcon: ds.statics.get(AccordionItemStatics.collapsed),
-            expandedIcon: ds.statics.get(AccordionItemStatics.expanded),
-        });
+export {
+    accordionItemTemplate
+};

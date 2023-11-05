@@ -49,7 +49,7 @@ import { tooltipDefinition } from './components/tooltip/tooltip.definition.js';
 import { treeItemDefinition } from './components/tree-item/tree-item.definition.js';
 import { treeViewDefinition } from './components/tree-view/tree-view.definition.js';
 
-export const AllComponents = {
+export const allComponents = {
 	accordionDefinition,
 	accordionItemDefinition,
 	anchorDefinition,
