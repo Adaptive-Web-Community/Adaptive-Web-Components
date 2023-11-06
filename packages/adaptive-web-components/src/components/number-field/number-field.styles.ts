@@ -6,12 +6,12 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
-        display: inline-block;
-        user-select: none;
+        display: inline-flex;
+        flex-direction: column;
     }
 
     .label {
-        display: inline-block;
+        align-self: start;
         cursor: pointer;
     }
 
@@ -26,15 +26,13 @@ export const templateStyles: ElementStyles = css`
     }
 
     .control {
-        -webkit-appearance: none;
         width: 100%;
-        font: inherit;
+        /* reset */
         background: transparent;
-        border: 0;
-        color: inherit;
-        margin-top: auto;
-        margin-bottom: auto;
         border: none;
+        color: inherit;
+        font: inherit;
+        padding: unset;
     }
 
     .controls {
@@ -63,16 +61,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .label {
-        margin-bottom: 4px;
-    }
-
-    .control {
-        height: calc(100% - 4px);
-    }
-
-    .step-up,
-    .step-down {
-        padding: 1px 10px;
-    }
 `;

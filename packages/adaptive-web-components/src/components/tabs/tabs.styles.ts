@@ -1,7 +1,7 @@
 import {
-    accentStrokeReadableRest,
     cornerRadiusControl,
     focusStrokeThickness,
+    highlightStrokeReadableRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
@@ -76,7 +76,7 @@ export const aestheticStyles: ElementStyles = css`
         display: block;
         position: absolute;
         border-radius: ${cornerRadiusControl};
-        background: ${accentStrokeReadableRest};
+        background: ${highlightStrokeReadableRest};
     }
 
     :host([orientation="horizontal"]) ::slotted([role="tab"][aria-selected="true"])::after {

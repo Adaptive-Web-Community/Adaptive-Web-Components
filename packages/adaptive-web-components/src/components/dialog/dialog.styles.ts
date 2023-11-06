@@ -7,6 +7,8 @@ import { elevationDialog, fillColor } from "@adaptive-web/adaptive-ui/reference"
  */
 export const templateStyles: ElementStyles = css`
     :host {
+        --dialog-height: 480px;
+        --dialog-width: 640px;
         display: flex;
         align-items: center;
         position: fixed;
@@ -15,6 +17,7 @@ export const templateStyles: ElementStyles = css`
         bottom: 0;
         left: 0;
         overflow: auto;
+        justify-content: center;
     }
 
     .overlay {
@@ -29,6 +32,10 @@ export const templateStyles: ElementStyles = css`
     .control {
         position: relative;
         z-index: 1;
+        margin-top: auto;
+        margin-bottom: auto;
+        width: var(--dialog-width);
+        height: var(--dialog-height);
     }
 `;
 
@@ -37,22 +44,12 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        --dialog-height: 480px;
-        --dialog-width: 640px;
-        justify-content: center;
-    }
-
     .overlay {
-        background: rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
     }
 
     .control {
-        margin-top: auto;
-        margin-bottom: auto;
-        width: var(--dialog-width);
-        height: var(--dialog-height);
-        background: ${fillColor};
+        background-color: ${fillColor};
         box-shadow: ${elevationDialog};
     }
 `;

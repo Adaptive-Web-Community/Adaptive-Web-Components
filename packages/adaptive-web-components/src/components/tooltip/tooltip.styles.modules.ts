@@ -4,6 +4,7 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    controlDensityStyles,
     controlShapeStyles,
     neutralStrokeSubtleRest,
     plainTextStyles
@@ -21,6 +22,7 @@ export const styleModules: StyleModules = [
         Styles.compose(
             [
                 controlShapeStyles,
+                controlDensityStyles,
                 plainTextStyles,
             ],
             {

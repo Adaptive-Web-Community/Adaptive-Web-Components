@@ -1,5 +1,6 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
+    densityControl,
     labelTextStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles
@@ -12,6 +13,13 @@ import { CheckboxAnatomy } from "./checkbox.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
+    [
+        {
+        },
+        Styles.fromProperties({
+            gap: densityControl.horizontalGap,
+        })
+    ],
     [
         {
             part: CheckboxAnatomy.parts.label,

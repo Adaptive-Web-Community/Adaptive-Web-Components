@@ -176,6 +176,7 @@ export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof Anc
 // @public (undocumented)
 export const AnchorConditions: {
     iconOnly: string;
+    noHref: string;
 };
 
 // @public
@@ -286,7 +287,10 @@ export const breadcrumbItemAestheticStyles: ElementStyles;
 export const BreadcrumbItemAnatomy: ComponentAnatomy<typeof BreadcrumbItemConditions, typeof BreadcrumbItemParts>;
 
 // @public (undocumented)
-export const BreadcrumbItemConditions: {};
+export const BreadcrumbItemConditions: {
+    noHref: string;
+    current: string;
+};
 
 // @public (undocumented)
 export const BreadcrumbItemParts: {
@@ -1223,7 +1227,9 @@ export const pickerMenuOptionAestheticStyles: ElementStyles;
 export const PickerMenuOptionAnatomy: ComponentAnatomy<typeof PickerMenuOptionConditions, typeof PickerMenuOptionParts>;
 
 // @public (undocumented)
-export const PickerMenuOptionConditions: {};
+export const PickerMenuOptionConditions: {
+    selected: string;
+};
 
 // @public (undocumented)
 export const PickerMenuOptionParts: {};

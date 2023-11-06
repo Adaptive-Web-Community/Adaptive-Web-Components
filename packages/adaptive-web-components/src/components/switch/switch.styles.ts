@@ -39,15 +39,10 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        gap: 8px;
-    }
-
     .switch {
         position: relative;
         width: calc(((${heightNumber} / 2)) * 2px + (${designUnit} * 2));
         height: calc(((${heightNumber} / 2)) * 1px + ${designUnit});
-        border-radius: calc(${heightNumber} * 1px) !important;
         padding: 4px;
     }
 
@@ -58,7 +53,6 @@ export const aestheticStyles: ElementStyles = css`
         top: ${designUnit};
         background: currentcolor;
         fill: currentcolor;
-        border-radius: 50%;
         transition: all 0.2s ease-in-out;
     }
 `;

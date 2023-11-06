@@ -1,5 +1,4 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -8,7 +7,6 @@ import { heightNumber } from "../../styles/index.js";
 export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
-        justify-content: center;
         align-items: center;
         cursor: pointer;
     }
@@ -17,10 +15,6 @@ export const templateStyles: ElementStyles = css`
     .previous {
         display: flex;
     }
-
-    :host([disabled]) {
-        cursor: not-allowed;
-    }
 `;
 
 /**
@@ -28,14 +22,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        width: calc(${heightNumber} * 1px);
-        height: calc(${heightNumber} * 1px);
-        border-radius: 50% !important;
-        padding: 0 !important;
-    }
-
-    :host([disabled]) {
-        opacity: 0.3;
-    }
 `;

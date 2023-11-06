@@ -10,15 +10,14 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
+        height: fit-content;
+        width: fit-content;
+        white-space: nowrap;
         visibility: hidden;
     }
 
     :host([visible]) {
         visibility: visible;
-    }
-    
-    :host(:not([visible])) {
-        visibility: hidden;
     }
 `;
 
@@ -28,12 +27,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        position: fixed;
-        height: fit-content;
-        width: fit-content;
-        padding: 4px 12px;
         background: ${neutralFillSubtleRest};
-        white-space: nowrap;
         box-shadow: ${elevationTooltip};
     }
 

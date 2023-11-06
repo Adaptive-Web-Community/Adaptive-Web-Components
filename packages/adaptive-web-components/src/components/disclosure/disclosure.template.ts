@@ -21,7 +21,7 @@ export const DisclosureParts = {
  * @public
  */
 export const DisclosureAnatomy: ComponentAnatomy<typeof DisclosureConditions, typeof DisclosureParts> = {
-    interactivity: Interactivity.never,
+    interactivity: Interactivity.always,
     conditions: DisclosureConditions,
     parts: DisclosureParts,
     focus: Focus.partFocused("invoker"),

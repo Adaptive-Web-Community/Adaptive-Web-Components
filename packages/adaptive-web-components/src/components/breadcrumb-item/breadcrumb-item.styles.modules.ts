@@ -6,6 +6,7 @@ import {
     accentForegroundReadableControlStyles,
     controlDensityStyles,
     controlShapeStyles,
+    neutralForegroundStrongElementStyles,
     plainTextStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { BreadcrumbItemAnatomy } from "./breadcrumb-item.template.js";
@@ -31,6 +32,21 @@ export const styleModules: StyleModules = [
                 controlDensityStyles,
             ],
         )
+    ],
+    [
+        {
+            hostCondition: BreadcrumbItemAnatomy.conditions.noHref,
+            part: BreadcrumbItemAnatomy.parts.control,
+        },
+        neutralForegroundStrongElementStyles,
+    ],
+    [
+        {
+            hostCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
+            part: BreadcrumbItemAnatomy.parts.control,
+            partCondition: BreadcrumbItemAnatomy.conditions.current,
+        },
+        neutralForegroundStrongElementStyles,
     ],
     [
         {

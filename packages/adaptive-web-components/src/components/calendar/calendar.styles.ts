@@ -1,10 +1,11 @@
-import { foregroundOnAccentRest } from "@adaptive-web/adaptive-ui/migration";
 import {
     accentFillReadableRest,
     cornerRadiusControl,
     designUnit,
     fillColor,
+    neutralFillSubtleRest,
     neutralStrokeReadableRest,
+    neutralStrokeStrongRest,
     strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -106,12 +107,12 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .today.disabled::before {
-        color: ${foregroundOnAccentRest};
+        color: ${neutralStrokeStrongRest};
     }
 
     .today .date {
-        color: ${foregroundOnAccentRest};
-        background: ${accentFillReadableRest};
+        color: ${neutralStrokeStrongRest};
+        background: ${neutralFillSubtleRest};
         border-radius: 50%;
         position: relative;
     }

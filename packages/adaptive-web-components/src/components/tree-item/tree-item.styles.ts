@@ -1,8 +1,8 @@
 import { Swatch } from"@adaptive-web/adaptive-ui";
-import { accentForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 import {
     cornerRadiusControl,
     focusStrokeThickness,
+    highlightStrokeReadableRest,
     neutralFillStealthRecipe,
     neutralFillSubtleRecipe,
     neutralFillSubtleRest,
@@ -127,7 +127,7 @@ export const aestheticStyles: ElementStyles = css`
         left: ${focusStrokeThickness};
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
-        border-radius: calc(${cornerRadiusControl} * 1px);
-        background: ${accentForegroundRest};
+        border-radius: ${cornerRadiusControl};
+        background: ${highlightStrokeReadableRest};
     }
 `;

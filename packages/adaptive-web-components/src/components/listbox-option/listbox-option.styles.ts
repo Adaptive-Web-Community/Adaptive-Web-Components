@@ -25,6 +25,11 @@ export const templateStyles: ElementStyles = css`
         text-overflow: ellipsis;
         flex-grow: 1;
     }
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+    }
 `;
 
 /**
@@ -32,8 +37,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    ::slotted([slot="start"]),
-    ::slotted([slot="end"]) {
-        display: flex;
-    }
 `;

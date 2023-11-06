@@ -12,7 +12,6 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
         align-items: center;
-        user-select: none;
     }
 
     .control {
@@ -53,9 +52,5 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         width: calc((${heightNumber} / 2) * 1px + ${designUnit});
         height: calc((${heightNumber} / 2) * 1px + ${designUnit});
-    }
-
-    .label {
-        padding-inline-start: calc((${designUnit} * 2) + 2px);
     }
 `;

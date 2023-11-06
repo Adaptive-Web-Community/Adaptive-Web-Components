@@ -1,4 +1,4 @@
-import { neutralFillSubtleHover, neutralFillSubtleRest } from "@adaptive-web/adaptive-ui/reference";
+import { neutralFillSubtleHover } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -11,10 +11,6 @@ export const templateStyles: ElementStyles = css`
         display: block;
         width: 100%;
         overflow: hidden;
-    }
-
-    :host([shape="circle"]) {
-        border-radius: 100%;
     }
 
     object {
@@ -52,10 +48,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        background-color: ${neutralFillSubtleRest};
-    }
-
     .shimmer {
         background-image: linear-gradient(
             90deg,

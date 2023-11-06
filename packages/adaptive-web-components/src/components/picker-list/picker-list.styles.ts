@@ -31,10 +31,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        gap: ${densityControl.horizontalGap};
-    }
-
     :host(:not([disabled]):focus-within) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
     }

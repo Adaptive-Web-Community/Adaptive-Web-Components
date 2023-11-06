@@ -8,6 +8,7 @@ import { DesignSystem } from "../../design-system.js";
  */
 export const AnchorConditions = {
     iconOnly: ".icon-only",
+    noHref: ":not([href])",
 };
 
 /**

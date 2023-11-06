@@ -1,6 +1,4 @@
-import { designUnit, neutralStrokeSubtleRest } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -42,17 +40,15 @@ export const templateStyles: ElementStyles = css`
         align-self: center;
         white-space: nowrap;
         max-width: 30px;
-        margin: 2px 0;
+        margin-top: 4px;
     }
 
     :host([orientation="vertical"]) .content {
-        margin-left: calc((${designUnit} / 2) * 2);
+        margin-left: 4px;
     }
 
     .mark {
         justify-self: center;
-        height: calc(${heightNumber} * 0.25 * 1px);
-        width: calc(${designUnit} / 2);
     }
 
     :host([orientation="vertical"]) .mark {
@@ -66,7 +62,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .mark {
-        background: ${neutralStrokeSubtleRest};
-    }
 `;

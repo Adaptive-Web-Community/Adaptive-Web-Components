@@ -33,9 +33,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .scroll-view {
-        padding: 4px;
-    }
 `;
 
 /**

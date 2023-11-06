@@ -1,9 +1,4 @@
-import {
-    StyleModules,
-    Styles,
-} from "@adaptive-web/adaptive-ui";
-import { densityControl } from "@adaptive-web/adaptive-ui/reference";
-import { HorizontalScrollAnatomy } from "./horizontal-scroll.template.js";
+import { StyleModules } from "@adaptive-web/adaptive-ui";
 
 /**
  * Visual styles composed by modules.
@@ -11,12 +6,4 @@ import { HorizontalScrollAnatomy } from "./horizontal-scroll.template.js";
  * @public
  */
 export const styleModules: StyleModules = [
-    [
-        {
-            part: HorizontalScrollAnatomy.parts.content
-        },
-        Styles.fromProperties({
-            gap: densityControl.horizontalGap,
-        })
-    ],
 ];
