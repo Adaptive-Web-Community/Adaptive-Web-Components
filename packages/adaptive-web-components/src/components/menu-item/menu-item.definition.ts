@@ -1,6 +1,4 @@
-import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
-import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
-import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
+import { checkboxIcon, chevronRightIcon, radioIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenuItem } from "./menu-item.compose.js";
 import { MenuItemStatics } from "./menu-item.template.js";
@@ -18,9 +16,9 @@ export const menuItemDefinition = composeMenuItem(
     DefaultDesignSystem,
     {
         statics: {
-            [MenuItemStatics.checkbox]: checkmarkIcon,
-            [MenuItemStatics.radio]: circleIcon,
-            [MenuItemStatics.submenu]: chevronRightIcon
+            [MenuItemStatics.checkbox]: checkboxIcon,
+            [MenuItemStatics.radio]: radioIcon,
+            [MenuItemStatics.submenu]: chevronRightIcon,
         },
         styleModules,
     }

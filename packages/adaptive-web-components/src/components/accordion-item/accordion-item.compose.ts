@@ -1,11 +1,11 @@
 import { FASTAccordionItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./accordion-item.styles.js";
 import { AccordionItemAnatomy, AccordionItemStatics, template } from "./accordion-item.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public

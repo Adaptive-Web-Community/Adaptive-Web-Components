@@ -1,11 +1,11 @@
 import { FASTCheckbox } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./checkbox.styles.js";
 import { CheckboxAnatomy, CheckboxStatics, template } from "./checkbox.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public

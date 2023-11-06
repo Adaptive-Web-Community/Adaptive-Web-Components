@@ -1,12 +1,12 @@
 import { FASTNumberField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from '../../styles/styles.js';
 import { AdaptiveNumberField } from "./number-field.js";
 import { aestheticStyles, templateStyles } from "./number-field.styles.js";
 import { NumberFieldAnatomy, NumberFieldStatics, template } from "./number-field.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public

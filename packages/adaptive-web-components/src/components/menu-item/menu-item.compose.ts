@@ -1,11 +1,11 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from '../../styles/styles.js';
 import { AdaptiveMenuItem } from "./menu-item.js";
 import { aestheticStyles, templateStyles } from "./menu-item.styles.js";
 import { MenuItemAnatomy, MenuItemStatics, template } from "./menu-item.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public
