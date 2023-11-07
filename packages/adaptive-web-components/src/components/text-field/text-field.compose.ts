@@ -1,7 +1,7 @@
 import { FASTTextField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles } from "../../styles/styles.js";
 import { AdaptiveTextField } from "./text-field.js";
 import { aestheticStyles, templateStyles } from "./text-field.styles.js";
 import { template, TextFieldAnatomy } from "./text-field.template.js";

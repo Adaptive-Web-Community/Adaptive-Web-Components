@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@adaptive-web/adaptive-ui": "0.2.1",
-    "@fluentui/svg-icons": "^1.1.192",
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31",
     "@microsoft/fast-web-utilities": "6.0.0",

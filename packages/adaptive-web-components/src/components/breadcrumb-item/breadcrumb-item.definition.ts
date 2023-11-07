@@ -1,4 +1,4 @@
-import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
+import { chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 import { BreadcrumbItemStatics } from "./breadcrumb-item.template.js";
@@ -16,7 +16,7 @@ export const breadcrumbItemDefinition = composeBreadcrumbItem(
     DefaultDesignSystem,
     {
         statics: {
-            [BreadcrumbItemStatics.separator]: chevronRightIcon
+            [BreadcrumbItemStatics.separator]: chevronRightIcon,
         },
         styleModules,
     }

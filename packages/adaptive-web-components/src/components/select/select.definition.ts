@@ -1,4 +1,4 @@
-import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import { chevronDownIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSelect } from "./select.compose.js";
 import { SelectStatics } from "./select.template.js";
@@ -16,7 +16,7 @@ export const selectDefinition = composeSelect(
     DefaultDesignSystem,
     {
         statics: {
-            [SelectStatics.indicator]: chevronDownIcon
+            [SelectStatics.indicator]: chevronDownIcon,
         },
         styleModules,
     }

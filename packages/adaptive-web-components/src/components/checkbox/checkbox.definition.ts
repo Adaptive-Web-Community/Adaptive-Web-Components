@@ -1,5 +1,4 @@
-import checkmarkIcon from "@fluentui/svg-icons/icons/checkmark_16_regular.svg";
-import subtractIcon from "@fluentui/svg-icons/icons/subtract_16_regular.svg";
+import { checkboxIcon, checkboxIndeterminateIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCheckbox } from './checkbox.compose.js';
 import { CheckboxStatics } from "./checkbox.template.js";
@@ -17,8 +16,8 @@ export const checkboxDefinition = composeCheckbox(
     DefaultDesignSystem,
     {
         statics: {
-            [CheckboxStatics.checked]: checkmarkIcon,
-            [CheckboxStatics.indeterminate]: subtractIcon
+            [CheckboxStatics.checked]: checkboxIcon,
+            [CheckboxStatics.indeterminate]: checkboxIndeterminateIcon,
         },
         styleModules,
     }

@@ -14,3 +14,5 @@ export const density: CSSDirective = css.partial`0`;
  * @deprecated
  */
 export const heightNumber: CSSDirective = css.partial`32`;
+
+export * from "./styles.js";

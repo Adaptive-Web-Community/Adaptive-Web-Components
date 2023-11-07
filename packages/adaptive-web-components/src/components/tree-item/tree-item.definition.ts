@@ -1,4 +1,4 @@
-import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_12_regular.svg";
+import { chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTreeItem } from "./tree-item.compose.js";
 import { TreeItemStatics } from "./tree-item.template.js";
@@ -16,7 +16,7 @@ export const treeItemDefinition = composeTreeItem(
     DefaultDesignSystem,
     {
         statics: {
-            [TreeItemStatics.expandCollapse]: chevronRightIcon
+            [TreeItemStatics.expandCollapse]: chevronRightIcon,
         },
         styleModules,
     }
