@@ -1,6 +1,5 @@
 import resolve from "@rollup/plugin-node-resolve";
 import filesize from "rollup-plugin-filesize";
-import svgo from 'rollup-plugin-svgo'
 import { terser } from "rollup-plugin-terser";
 import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
 import {
@@ -15,9 +14,6 @@ const parserOptions = {
 
 const plugins = [
 	resolve(),
-	svgo({
-		raw: true
-	}),
 	transformTaggedTemplate({
 		tagsToProcess: ["css","css.partial"],
 		transformer: transformCSSFragment,
