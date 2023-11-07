@@ -1,6 +1,6 @@
 import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles } from "../../styles/styles.js";
 import { AdaptiveAnchor } from "./anchor.js";
 import { aestheticStyles, templateStyles } from "./anchor.styles.js";
 import { AnchorAnatomy, template } from "./anchor.template.js";

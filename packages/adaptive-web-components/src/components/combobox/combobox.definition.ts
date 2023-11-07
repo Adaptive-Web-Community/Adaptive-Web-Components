@@ -1,4 +1,4 @@
-import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
+import { chevronDownIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCombobox } from "./combobox.compose.js";
 import { ComboboxStatics } from "./combobox.template.js";
@@ -16,7 +16,7 @@ export const comboboxDefinition = composeCombobox(
     DefaultDesignSystem,
     {
         statics: {
-            [ComboboxStatics.indicator]: chevronDownIcon
+            [ComboboxStatics.indicator]: chevronDownIcon,
         },
         styleModules,
     }

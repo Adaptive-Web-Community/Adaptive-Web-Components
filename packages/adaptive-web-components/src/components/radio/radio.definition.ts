@@ -1,4 +1,4 @@
-import circleIcon from "@fluentui/svg-icons/icons/circle_12_filled.svg";
+import { radioIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeRadio } from "./radio.compose.js";
 import { RadioStatics } from "./radio.template.js";
@@ -16,7 +16,7 @@ export const radioDefinition = composeRadio(
     DefaultDesignSystem,
     {
         statics: {
-            [RadioStatics.checked]: circleIcon
+            [RadioStatics.checked]: radioIcon,
         },
         styleModules,
     }

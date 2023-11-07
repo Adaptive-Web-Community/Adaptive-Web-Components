@@ -1,5 +1,4 @@
-import chevronLeftIcon from "@fluentui/svg-icons/icons/chevron_left_16_regular.svg";
-import chevronRightIcon from "@fluentui/svg-icons/icons/chevron_right_16_regular.svg";
+import { chevronLeftIcon, chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeFlipper } from "./flipper.compose.js";
 import { FlipperStatics } from "./flipper.template.js";
@@ -18,7 +17,7 @@ export const flipperDefinition = composeFlipper(
     {
         statics: {
             [FlipperStatics.previous]: chevronLeftIcon,
-            [FlipperStatics.next]: chevronRightIcon
+            [FlipperStatics.next]: chevronRightIcon,
         },
         styleModules,
     }

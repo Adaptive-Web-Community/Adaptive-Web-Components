@@ -1,5 +1,4 @@
-import chevronDownIcon from "@fluentui/svg-icons/icons/chevron_down_12_regular.svg";
-import chevronUpIcon from "@fluentui/svg-icons/icons/chevron_up_12_regular.svg";
+import { chevronDownIcon, chevronUpIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordionItem } from "./accordion-item.compose.js";
 import { AccordionItemStatics } from './accordion-item.template.js';
@@ -18,7 +17,7 @@ export const accordionItemDefinition = composeAccordionItem(
     {
         statics: {
             [AccordionItemStatics.collapsed]: chevronDownIcon,
-            [AccordionItemStatics.expanded]: chevronUpIcon
+            [AccordionItemStatics.expanded]: chevronUpIcon,
         },
         styleModules,
     }

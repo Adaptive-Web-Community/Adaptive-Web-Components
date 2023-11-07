@@ -104,7 +104,7 @@ export const aestheticStyles: ElementStyles = css`
     .expand-collapse-button {
         width: var(--expand-collapse-button-size);
         height: var(--expand-collapse-button-size);
-        padding: 6px;
+        padding: 4px;
     }
 
     .expand-collapse-button:hover {

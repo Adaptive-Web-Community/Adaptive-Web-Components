@@ -18,3 +18,19 @@ export const componentBaseStyles = /* css */`
         box-sizing: inherit;
     }
 `;
+
+/**
+ * Styles for default svg icons.
+ * 
+ * @public
+ * @remarks
+ * Temporary rule to be migrated to style modules structure.
+ */
+export const svgIconStyles = /* css */`
+    .stroked {
+        stroke: currentcolor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1px;
+    }
+`;

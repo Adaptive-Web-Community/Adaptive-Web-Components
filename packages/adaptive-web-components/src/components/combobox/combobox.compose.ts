@@ -1,12 +1,12 @@
 import { FASTCombobox } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
 import { AdaptiveCombobox } from "./combobox.js";
 import { aestheticStyles, templateStyles } from "./combobox.styles.js";
 import { ComboboxAnatomy, ComboboxStatics, template } from "./combobox.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public

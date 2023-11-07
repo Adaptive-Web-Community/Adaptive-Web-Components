@@ -1,12 +1,12 @@
 import { FASTBreadcrumbItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-ui";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
 import { AdaptiveBreadcrumbItem } from "./breadcrumb-item.js";
 import { aestheticStyles, templateStyles } from "./breadcrumb-item.styles.js";
 import { BreadcrumbItemAnatomy, BreadcrumbItemStatics, template } from "./breadcrumb-item.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public
