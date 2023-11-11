@@ -218,10 +218,10 @@ const fillSubtleName = "fill-subtle";
 export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, "rest", 2);
 
 /** @public */
-export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, "hover", 1);
+export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, "hover", 3);
 
 /** @public */
-export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 0);
+export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 1);
 
 /** @public */
 export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, "focus", 2);
@@ -252,10 +252,10 @@ const fillDiscernibleName = "fill-discernible";
 export const fillDiscernibleRestDelta = createTokenDelta(fillDiscernibleName, "rest", 0);
 
 /** @public */
-export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, "hover", 8);
+export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, "hover", 6);
 
 /** @public */
-export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, "active", -5);
+export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, "active", 3);
 
 /** @public */
 export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, "focus", 0);
@@ -290,7 +290,7 @@ export const fillReadableRestDelta = createTokenDelta(fillReadableName, "rest", 
 export const fillReadableHoverDelta = createTokenDelta(fillReadableName, "hover", -2);
 
 /** @public */
-export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "active", -5);
+export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "active", 2);
 
 /** @public */
 export const fillReadableFocusDelta = createTokenDelta(fillReadableName, "focus", 0);
