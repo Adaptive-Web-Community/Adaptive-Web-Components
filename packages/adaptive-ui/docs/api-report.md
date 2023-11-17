@@ -4,7 +4,7 @@
 
 ```ts
 
-import { Color } from 'culori';
+import { Color } from 'culori/fn';
 import { ColorRGBA64 } from '@microsoft/fast-colors';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import type { CSSDirective } from '@microsoft/fast-element';
