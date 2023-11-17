@@ -1,0 +1,41 @@
+{
+  "name": "@adaptive-web/example-custom-icons",
+  "version": "0.0.1",
+  "description": "An example of including custom icons from different sources",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+    "directory": "examples/custom-icons"
+  },
+  "scripts": {
+    "build": "tsc && vite build --minify false",
+    "clean": "rimraf dist",
+    "start": "vite --open"
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "0.2.1",
+    "@adaptive-web/adaptive-web-components": "0.4.1",
+    "@microsoft/fast-colors": "^5.3.1",
+    "@microsoft/fast-element": "2.0.0-beta.26",
+    "@microsoft/fast-foundation": "3.0.0-alpha.31",
+    "@primer/octicons": "^19.8.0"
+  },
+  "devDependencies": {
+    "@types/primer__octicons": "^19.6.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.0",
+    "vite": "^4.1.5",
+    "vite-plugin-svgo": "^1.3.0"
+  }
+}
