@@ -1,4 +1,4 @@
-import { Swatch, SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 
 /**
  * Create a grey {@link Swatch} for the specified `luminance`. Note this is absolute luminance not 'relative' luminance.
@@ -9,5 +9,5 @@ import { Swatch, SwatchRGB } from "../swatch.js";
  * @public
  */
 export function luminanceSwatch(luminance: number): Swatch {
-    return new SwatchRGB(luminance, luminance, luminance);
+    return Swatch.fromRgb(luminance, luminance, luminance);
 }

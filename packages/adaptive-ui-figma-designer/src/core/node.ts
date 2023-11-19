@@ -1,6 +1,6 @@
-import { ColorRGBA64 } from "@microsoft/fast-colors";
 import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { Color, formatHex8 } from "culori";
 import {
     AdditionalData,
     AdditionalDataKeys,
@@ -156,7 +156,7 @@ export abstract class PluginNode {
     /**
      * The fill color of this node.
      */
-    public abstract readonly fillColor: ColorRGBA64 | null;
+    public abstract readonly fillColor: Color | null;
 
     /**
      * The state of stateful component capabilities for this node.
@@ -257,8 +257,8 @@ export abstract class PluginNode {
         }
 
         if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.fillColor) {
-            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, this.parent?.fillColor.toStringHexARGB());
-            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, this.parent.fillColor.toStringHexARGB());
+            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(this.parent?.fillColor));
+            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(this.parent.fillColor));
         }
 
         return this._additionalData;

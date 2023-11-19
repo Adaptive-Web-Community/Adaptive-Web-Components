@@ -1,6 +1,8 @@
 import { InteractiveSwatchSet } from "../recipe.js";
 import { _white } from "./color-constants.js";
 
+const transparentWhite = _white.toTransparent();
+
 /**
  * Return an interactive set of the provided tokens or a no-op "transparent" set of tokens.
  *
@@ -16,12 +18,11 @@ export function conditionalSwatchSet(
         return set;
     }
 
-    const transparent = _white.toTransparent();
     return {
-        rest: transparent,
-        hover: transparent,
-        active: transparent,
-        focus: transparent,
-        disabled: transparent,
+        rest: transparentWhite,
+        hover: transparentWhite,
+        active: transparentWhite,
+        focus: transparentWhite,
+        disabled: transparentWhite,
     };
 }

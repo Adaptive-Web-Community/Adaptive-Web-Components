@@ -4,8 +4,7 @@
 
 ```ts
 
-import { Color } from 'culori/fn';
-import { ColorRGBA64 } from '@microsoft/fast-colors';
+import { Color as Color_2 } from 'culori';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import type { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
@@ -15,7 +14,7 @@ import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
-    constructor(source: T, swatches: ReadonlyArray<T>);
+    constructor(source: Color, swatches: ReadonlyArray<T>);
     readonly closestIndexCache: Map<number, number>;
     closestIndexOf(reference: RelativeLuminance): number;
     colorContrast(reference: RelativeLuminance, contrastTarget: number, initialSearchIndex?: number, direction?: PaletteDirection): T;
@@ -23,12 +22,12 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
     get(index: number): T;
     readonly lastIndex: number;
     readonly reversedSwatches: ReadonlyArray<T>;
-    readonly source: T;
+    readonly source: Color;
     readonly swatches: ReadonlyArray<T>;
 }
 
 // @internal
-export const _black: SwatchRGB;
+export const _black: Swatch;
 
 // @public
 export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, defaultBlack: boolean): Swatch;
@@ -50,6 +49,23 @@ export const BorderStyle: {
 export const BorderThickness: {
     all: (value: StyleValue) => StyleProperties;
 };
+
+// @public
+export class Color implements RelativeLuminance {
+    protected constructor(color: Color_2);
+    readonly color: Color_2;
+    contrast: any;
+    createCSS: () => string;
+    static from(obj: {
+        r: number;
+        g: number;
+        b: number;
+    }): Color;
+    static fromRgb(r: number, g: number, b: number): Color;
+    static parse(color: string): Color | undefined;
+    get relativeLuminance(): number;
+    toColorString(): string;
+}
 
 // @public
 export type ColorRecipe<T = Swatch> = RecipeOptional<ColorRecipeParams, T>;
@@ -282,7 +298,7 @@ export interface FocusDefinition<TParts> {
 export type FocusSelector = "focus" | "focus-visible" | "focus-within";
 
 // @public
-export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Swatch, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveSwatchSet;
+export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Color, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveSwatchSet;
 
 // @public
 export type InteractiveColorRecipe = ColorRecipe<InteractiveSwatchSet>;
@@ -357,7 +373,7 @@ export interface Palette<T extends Swatch = Swatch> {
     colorContrast(reference: RelativeLuminance, minContrast: number, initialIndex?: number, direction?: PaletteDirection): T;
     delta(reference: RelativeLuminance, delta: number, direction: PaletteDirection): T;
     get(index: number): T;
-    readonly source: T;
+    readonly source: Color;
     readonly swatches: ReadonlyArray<T>;
 }
 
@@ -374,16 +390,14 @@ export const PaletteDirectionValue: Readonly<{
 export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
 
 // @public
-export class PaletteOkhsl extends BasePalette<SwatchRGB> {
+export class PaletteOkhsl extends BasePalette<Swatch> {
     // (undocumented)
-    static from(source: SwatchRGB | string): PaletteOkhsl;
-    // (undocumented)
-    static swatchToColor(swatch: SwatchRGB): Color;
+    static from(source: Color | string): PaletteOkhsl;
 }
 
 // @public
-export class PaletteRGB extends BasePalette<SwatchRGB> {
-    static from(source: SwatchRGB | string, options?: Partial<PaletteRGBOptions>): PaletteRGB;
+export class PaletteRGB extends BasePalette<Swatch> {
+    static from(source: Swatch | string, options?: Partial<PaletteRGBOptions>): PaletteRGB;
 }
 
 // @public
@@ -524,34 +538,23 @@ export class Styles {
 export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string;
 
 // @public
-export interface Swatch extends RelativeLuminance {
-    contrast(target: RelativeLuminance): number;
-    toColorString(): string;
-}
-
-// @public
-export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null;
-
-// @public
-export class SwatchRGB implements Swatch {
-    constructor(red: number, green: number, blue: number, alpha?: number, intendedColor?: SwatchRGB);
-    static asOverlay(intendedColor: SwatchRGB, reference: SwatchRGB): SwatchRGB;
-    readonly b: number;
-    readonly color: ColorRGBA64;
-    contrast: any;
-    createCSS: () => string;
+export class Swatch extends Color {
+    protected constructor(color: Color_2, intendedColor?: Swatch);
+    static asOverlay(intendedColor: Swatch, reference: Swatch): Swatch;
     static from(obj: {
         r: number;
         g: number;
         b: number;
-    }): SwatchRGB;
-    readonly g: number;
-    readonly intendedColor?: SwatchRGB;
-    readonly r: number;
-    readonly relativeLuminance: number;
-    toColorString(): string;
-    toTransparent(): SwatchRGB;
+    }): Swatch;
+    static fromColor(color: Color): Swatch;
+    static fromRgb(r: number, g: number, b: number): Swatch;
+    static parse(color: string): Swatch | undefined;
+    get relativeLuminance(): number;
+    toTransparent(alpha?: number): Swatch;
 }
+
+// @public
+export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null;
 
 // @public
 export interface TokenGroup {
@@ -587,7 +590,7 @@ export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
 
 // @internal
-export const _white: SwatchRGB;
+export const _white: Swatch;
 
 // (No @packageDocumentation comment for this package)
 

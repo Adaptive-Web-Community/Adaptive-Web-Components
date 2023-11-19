@@ -1,7 +1,6 @@
 import {
     Palette,
     Swatch,
-    SwatchRGB
 } from "@adaptive-web/adaptive-ui";
 import {
     accentBaseColor,
@@ -188,7 +187,7 @@ export class App extends FASTElement implements AppAttributes {
             neutralBaseColor.setValueFor(this.canvas, next);
 
             this.neutralPalette = neutralPalette.getValueFor(this.canvas);
-            this.neutralColors = this.neutralPalette.swatches.map((x: SwatchRGB) => x.toColorString());
+            this.neutralColors = this.neutralPalette.swatches.map((x) => x.toColorString());
 
             this.updateBackgrounds();
         }

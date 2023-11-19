@@ -1,53 +1,38 @@
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import chai from "chai";
-import { SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
 const { expect } = chai;
 
-const middleGrey = SwatchRGB.from(parseColorHexRGB("#808080")!);
+const middleGrey = Swatch.parse("#808080")!;
 
 describe("blackOrWhiteByContrast", (): void => {
     it("should return black when background does not meet contrast ratio with white", (): void => {
-        const small = blackOrWhiteByContrast(_white, 4.5, false) as SwatchRGB;
-        const large = blackOrWhiteByContrast(_white, 3, false) as SwatchRGB;
+        const small = blackOrWhiteByContrast(_white, 4.5, false);
+        const large = blackOrWhiteByContrast(_white, 3, false);
 
-        expect(small.r).to.equal(_black.r);
-        expect(small.g).to.equal(_black.g);
-        expect(small.b).to.equal(_black.b);
-
-        expect(large.r).to.equal(_black.r);
-        expect(large.g).to.equal(_black.g);
-        expect(large.b).to.equal(_black.b);
+        expect(small.color).to.equal(_black.color);
+        expect(large.color).to.equal(_black.color);
     });
 
     it("should return black when default if either pass", (): void => {
-        const result = blackOrWhiteByContrast(middleGrey, 3, true) as SwatchRGB;
+        const result = blackOrWhiteByContrast(middleGrey, 3, true);
 
-        expect(result.r).to.equal(_black.r);
-        expect(result.g).to.equal(_black.g);
-        expect(result.b).to.equal(_black.b);
+        expect(result.color).to.equal(_black.color);
     });
 
     it("should return white when default if either pass", (): void => {
-        const result = blackOrWhiteByContrast(middleGrey, 3, false) as SwatchRGB;
+        const result = blackOrWhiteByContrast(middleGrey, 3, false);
 
-        expect(result.r).to.equal(_white.r);
-        expect(result.g).to.equal(_white.g);
-        expect(result.b).to.equal(_white.b);
+        expect(result.color).to.equal(_white.color);
     });
 
     it("should return highest contrast when neither black nor white pass", (): void => {
-        const resultDefaultWhite = blackOrWhiteByContrast(middleGrey, 7, false) as SwatchRGB;
-        const resultDefaultBlack = blackOrWhiteByContrast(middleGrey, 7, true) as SwatchRGB;
+        const resultDefaultWhite = blackOrWhiteByContrast(middleGrey, 7, false);
+        const resultDefaultBlack = blackOrWhiteByContrast(middleGrey, 7, true);
 
-        expect(resultDefaultWhite.r).to.equal(_black.r);
-        expect(resultDefaultWhite.g).to.equal(_black.g);
-        expect(resultDefaultWhite.b).to.equal(_black.b);
-
-        expect(resultDefaultBlack.r).to.equal(_black.r);
-        expect(resultDefaultBlack.g).to.equal(_black.g);
-        expect(resultDefaultBlack.b).to.equal(_black.b);
+        expect(resultDefaultWhite.color).to.equal(_black.color);
+        expect(resultDefaultBlack.color).to.equal(_black.color);
     });
 });

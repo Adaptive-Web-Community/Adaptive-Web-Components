@@ -1,4 +1,4 @@
-import { clamp } from "@microsoft/fast-colors";
+import { Color } from "./color.js";
 import { Swatch } from "./swatch.js";
 import { binarySearch } from "./utilities/binary-search.js";
 import { directionByIsDark } from "./utilities/direction-by-is-dark.js";
@@ -60,7 +60,7 @@ export interface Palette<T extends Swatch = Swatch> {
     /**
      * The Swatch used to create the full palette.
      */
-    readonly source: T;
+    readonly source: Color;
 
     /**
      * The array of all Swatches from light to dark.
@@ -122,7 +122,8 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
     /**
      * {@inheritdoc Palette.source}
      */
-    readonly source: T;
+    readonly source: Color;
+
     /**
      * {@inheritdoc Palette.swatches}
      */
@@ -149,7 +150,7 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
      * @param source - The source color for the Palette
      * @param swatches - All Swatches in the Palette
      */
-    constructor(source: T, swatches: ReadonlyArray<T>) {
+    constructor(source: Color, swatches: ReadonlyArray<T>) {
         this.source = source;
         this.swatches = swatches;
 
@@ -222,9 +223,25 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
     }
 
     /**
+     * Ensures that an input number does not exceed a max value and is not less than a min value.
+     *
+     * @param i - the number to clamp
+     * @param min - the maximum (inclusive) value
+     * @param max - the minimum (inclusive) value
+     */
+    private clamp(i: number, min: number, max: number): number {
+        if (isNaN(i) || i <= min) {
+            return min;
+        } else if (i >= max) {
+            return max;
+        }
+        return i;
+    }
+
+    /**
      * {@inheritdoc Palette.get}
      */
     get(index: number): T {
-        return this.swatches[index] || this.swatches[clamp(index, 0, this.lastIndex)];
+        return this.swatches[index] || this.swatches[this.clamp(index, 0, this.lastIndex)];
     }
 }

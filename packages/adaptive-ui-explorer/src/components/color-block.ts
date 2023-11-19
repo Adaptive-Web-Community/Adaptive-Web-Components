@@ -1,4 +1,4 @@
-import { SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { Swatch } from "@adaptive-web/adaptive-ui";
 import {
     accentFillDiscernibleControlStyles,
     accentFillReadableControlStyles,
@@ -24,7 +24,6 @@ import {
     neutralOutlineDiscernibleControlStyles,
     neutralStrokeReadableRest
 } from '@adaptive-web/adaptive-ui/reference';
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import {
     attr,
     css,
@@ -223,9 +222,9 @@ export class ColorBlock extends FASTElement {
 
     private updateColor(): void {
         if (this.color && this.$fastController.isConnected) {
-            const color = parseColorHexRGB(this.color);
-            if (color) {
-                fillColor.setValueFor(this, SwatchRGB.from(color));
+            const swatch =Swatch.parse(this.color)
+            if (swatch) {
+                fillColor.setValueFor(this, swatch);
             }
         }
     }

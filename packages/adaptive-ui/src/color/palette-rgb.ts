@@ -1,24 +1,14 @@
-import {
-    ColorHSL,
-    ColorLAB,
-    ColorRGBA64,
-    hslToRGB,
-    interpolateRGB,
-    labToRGB,
-    parseColorHexRGB,
-    rgbToHSL,
-    rgbToLAB,
-    roundToPrecisionSmall,
-} from "@microsoft/fast-colors";
+import { clampRgb, hsl, Hsl, interpolate, lab, rgb, Rgb } from "culori";
 import { BasePalette } from "./palette.js";
-import { SwatchRGB } from "./swatch.js";
+import { Swatch } from "./swatch.js";
 import { contrast } from "./utilities/relative-luminance.js";
+import { _black, _white } from "./utilities/color-constants.js";
 
 /**
  * A utility Palette that generates many Swatches used for selection in the actual Palette.
  * The algorithm uses the LAB color space and keeps the saturation from the source color throughout.
  */
-class HighResolutionPaletteRGB extends BasePalette<SwatchRGB> {
+class HighResolutionPaletteRGB extends BasePalette<Swatch> {
     /**
      * Bump the saturation if it falls below the reference color saturation.
      *
@@ -26,13 +16,13 @@ class HighResolutionPaletteRGB extends BasePalette<SwatchRGB> {
      * @param color - Color to check and bump if below target saturation
      * @returns Original or adjusted color
      */
-    private static saturationBump(reference: ColorRGBA64, color: ColorRGBA64): ColorRGBA64 {
-        const hslReference = rgbToHSL(reference);
+    private static saturationBump(reference: Rgb, color: Rgb): Rgb {
+        const hslReference = hsl(reference);
         const saturationTarget = hslReference.s;
-        const hslColor = rgbToHSL(color);
+        const hslColor = hsl(color);
         if (hslColor.s < saturationTarget) {
-            const hslNew = new ColorHSL(hslColor.h, saturationTarget, hslColor.l);
-            return hslToRGB(hslNew);
+            const hslNew: Hsl = { mode: "hsl", h: hslColor.h, s: saturationTarget, l: hslColor.l };
+            return rgb(hslNew);
         }
         return color;
     }
@@ -55,46 +45,42 @@ class HighResolutionPaletteRGB extends BasePalette<SwatchRGB> {
      * @param source - The source color
      * @returns The Palette based on the `source` color
      */
-    static from(source: SwatchRGB): HighResolutionPaletteRGB {
-        const swatches: SwatchRGB[] = [];
+    static from(source: Swatch): HighResolutionPaletteRGB {
+        const swatches: Swatch[] = [];
 
-        const rgb = ColorRGBA64.fromObject(source);
-        if (rgb === null) {
-            throw new Error("Unable to create Color from Swatch.");
-        }
-        const labSource = rgbToLAB(rgb.roundToPrecision(4));
-        const lab0 = labToRGB(new ColorLAB(0, labSource.a, labSource.b)).clamp().roundToPrecision(4);
-        const lab50 = labToRGB(new ColorLAB(50, labSource.a, labSource.b)).clamp().roundToPrecision(4);
-        const lab100 = labToRGB(new ColorLAB(100, labSource.a, labSource.b)).clamp().roundToPrecision(4);
-        const rgbMin = new ColorRGBA64(0, 0, 0);
-        const rgbMax = new ColorRGBA64(1, 1, 1);
+        const labSource = lab(source.color);
+        const lab0 = clampRgb(rgb({ mode: "lab", l: 0, a: labSource.a, b: labSource.b }));
+        const lab50 = clampRgb(rgb({ mode: "lab", l: 50, a: labSource.a, b: labSource.b }));
+        const lab100 = clampRgb(rgb({ mode: "lab", l: 100, a: labSource.a, b: labSource.b }));
+        const rgbMin = _black.color;
+        const rgbMax = _white.color;
 
-        const lAbove = lab100.equalValue(rgbMax) ? 0 : 14;
-        const lBelow = lab0.equalValue(rgbMin) ? 0 : 14;
+        const lAbove = lab100 === rgbMax ? 0 : 14;
+        const lBelow = lab0 === rgbMin ? 0 : 14;
 
         // 257 levels max, depending on whether lab0 or lab100 are black or white respectively.
         for (let l = 100 + lAbove; l >= 0 - lBelow; l -= 0.5) {
-            let rgb: ColorRGBA64;
+            let rgb: Rgb;
 
             if (l < 0) {
                 // For L less than 0, scale from black to L=0
                 const percentFromRgbMinToLab0 = l / lBelow + 1;
-                rgb = interpolateRGB(percentFromRgbMinToLab0, rgbMin, lab0);
+                rgb = interpolate([rgbMin, lab0])(percentFromRgbMinToLab0);
             } else if (l <= 50) {
                 // For L less than 50, we scale from L=0 to the base color
-                rgb = interpolateRGB(HighResolutionPaletteRGB.ramp(l), lab0, lab50);
+                rgb = interpolate([lab0, lab50])(HighResolutionPaletteRGB.ramp(l));
             } else if (l <= 100) {
                 // For L less than 100, scale from the base color to L=100
-                rgb = interpolateRGB(HighResolutionPaletteRGB.ramp(l), lab50, lab100);
+                rgb = interpolate([lab50, lab100])(HighResolutionPaletteRGB.ramp(l));
             } else {
                 // For L greater than 100, scale from L=100 to white
                 const percentFromLab100ToRgbMax = (l - 100.0) / lAbove;
-                rgb = interpolateRGB(percentFromLab100ToRgbMax, lab100, rgbMax);
+                rgb = interpolate([lab100, rgbMax])(percentFromLab100ToRgbMax);
             }
 
-            rgb = HighResolutionPaletteRGB.saturationBump(lab50, rgb).roundToPrecision(4);
+            rgb = HighResolutionPaletteRGB.saturationBump(lab50, rgb);
 
-            swatches.push(SwatchRGB.from(rgb));
+            swatches.push(Swatch.from(rgb));
         }
 
         return new HighResolutionPaletteRGB(source, swatches);
@@ -149,7 +135,7 @@ const defaultPaletteRGBOptions: PaletteRGBOptions = {
  *
  * @public
  */
-export class PaletteRGB extends BasePalette<SwatchRGB> {
+export class PaletteRGB extends BasePalette<Swatch> {
     /**
      * Adjust one end of the contrast-based palette so it doesn't abruptly fall to black (or white).
      *
@@ -159,14 +145,14 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
      * @param direction - The end to adjust
      */
     private static adjustEnd(
-        swatchContrast: (swatch: SwatchRGB) => number,
+        swatchContrast: (swatch: Swatch) => number,
         referencePalette: HighResolutionPaletteRGB,
-        targetPalette: SwatchRGB[],
+        targetPalette: Swatch[],
         direction: 1 | -1
     ) {
         // Careful with the use of referencePalette as only the refSwatches is reversed.
         const refSwatches = direction === -1 ? referencePalette.swatches : referencePalette.reversedSwatches;
-        const refIndex = (swatch: SwatchRGB) => {
+        const refIndex = (swatch: Swatch) => {
             const index = referencePalette.closestIndexOf(swatch);
             return direction === 1 ? referencePalette.lastIndex - index : index;
         };
@@ -177,10 +163,7 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
         }
 
         const targetContrast = swatchContrast(targetPalette[targetPalette.length - 2]);
-        const actualContrast = roundToPrecisionSmall(
-            contrast(targetPalette[targetPalette.length - 1], targetPalette[targetPalette.length - 2]),
-            2
-        );
+        const actualContrast = contrast(targetPalette[targetPalette.length - 1], targetPalette[targetPalette.length - 2]);
         if (actualContrast < targetContrast) {
             // Remove last swatch if not sufficient contrast
             targetPalette.pop();
@@ -217,17 +200,15 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
      * @param options - Palette generation options
      * @returns A Palette meeting the requested contrast between Swatches.
      */
-    private static createColorPaletteByContrast(source: SwatchRGB, options: PaletteRGBOptions): SwatchRGB[] {
+    private static createColorPaletteByContrast(source: Swatch, options: PaletteRGBOptions): Swatch[] {
         const referencePalette = HighResolutionPaletteRGB.from(source);
 
         // Ramp function to increase contrast as the swatches get darker
-        const nextContrast = (swatch: SwatchRGB) => {
-            const c =
-                options.stepContrast + options.stepContrast * (1 - swatch.relativeLuminance) * options.stepContrastRamp;
-            return roundToPrecisionSmall(c, 2);
+        const nextContrast = (swatch: Swatch) => {
+            return options.stepContrast + options.stepContrast * (1 - swatch.relativeLuminance) * options.stepContrastRamp;
         };
 
-        const swatches: SwatchRGB[] = [];
+        const swatches: Swatch[] = [];
 
         // Start with the source color (when preserving) or the light end color
         let ref = options.preserveSource ? source : referencePalette.swatches[0];
@@ -269,20 +250,13 @@ export class PaletteRGB extends BasePalette<SwatchRGB> {
      * @param options - Options to specify details of palette generation
      * @returns The PaletteRGB with Swatches based on `source`
      */
-    static from(source: SwatchRGB | string, options?: Partial<PaletteRGBOptions>): PaletteRGB {
-        let swatch;
-        if (source instanceof SwatchRGB) {
-            swatch = source;
-        } else {
-            const rgb = parseColorHexRGB(source);
-            if (rgb === null) {
-                throw new Error(`Unable to parse Color as hex string: ${source}`);
-            }
-            swatch = SwatchRGB.from(rgb);
+    static from(source: Swatch | string, options?: Partial<PaletteRGBOptions>): PaletteRGB {
+        const swatch = source instanceof Swatch ? source : Swatch.parse(source);
+        if (!swatch) {
+            throw new Error(`Unable to parse Color as hex string: ${source}`);
         }
 
-        const opts =
-            options === void 0 || null ? defaultPaletteRGBOptions : { ...defaultPaletteRGBOptions, ...options };
+        const opts = options === void 0 || null ? defaultPaletteRGBOptions : { ...defaultPaletteRGBOptions, ...options };
 
         return new PaletteRGB(swatch, Object.freeze(PaletteRGB.createColorPaletteByContrast(swatch, opts)));
     }

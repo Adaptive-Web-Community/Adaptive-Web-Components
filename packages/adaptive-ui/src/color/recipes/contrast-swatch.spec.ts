@@ -1,13 +1,12 @@
 import chai from "chai";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { PaletteRGB } from "../palette-rgb.js";
-import { SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 import { contrastSwatch } from "./contrast-swatch.js";
 
 const { expect } = chai;
 
-const neutralBase = SwatchRGB.from(parseColorHexRGB("#808080")!);
-const accentBase = SwatchRGB.from(parseColorHexRGB("#80DEEA")!);
+const neutralBase = Swatch.parse("#808080")!;
+const accentBase = Swatch.parse("#80DEEA")!;
 
 describe("contrastSwatch", (): void => {
     const neutralPalette = PaletteRGB.from(neutralBase);
@@ -16,7 +15,7 @@ describe("contrastSwatch", (): void => {
     neutralPalette.swatches.concat(accentPalette.swatches).forEach((swatch): void => {
         it(`${swatch.toColorString()} should resolve a color from the neutral palette`, (): void => {
             expect(
-                neutralPalette.swatches.indexOf(contrastSwatch(neutralPalette, swatch, 4.5) as SwatchRGB)
+                neutralPalette.swatches.indexOf(contrastSwatch(neutralPalette, swatch, 4.5))
             ).not.to.equal(-1);
         });
     });

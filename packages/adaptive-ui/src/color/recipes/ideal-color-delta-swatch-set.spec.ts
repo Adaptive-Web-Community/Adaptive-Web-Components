@@ -1,14 +1,13 @@
 import chai from "chai";
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { PaletteRGB } from "../palette-rgb.js";
-import { SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { idealColorDeltaSwatchSet } from "./ideal-color-delta-swatch-set.js";
 
 const { expect } = chai;
 
-const neutralBase = SwatchRGB.from(parseColorHexRGB("#808080")!);
-const accentBase = SwatchRGB.from(parseColorHexRGB("#80DEEA")!);
+const neutralBase = Swatch.parse("#808080")!;
+const accentBase = Swatch.parse("#80DEEA")!;
 
 describe("idealColorDeltaSwatchSet", (): void => {
     const neutralPalette = PaletteRGB.from(neutralBase);
@@ -24,11 +23,11 @@ describe("idealColorDeltaSwatchSet", (): void => {
 
     it("should have accessible rest and hover colors against the background color", (): void => {
         const accentColors = [
-            SwatchRGB.from(parseColorHexRGB("#0078D4")!),
-            SwatchRGB.from(parseColorHexRGB("#107C10")!),
-            SwatchRGB.from(parseColorHexRGB("#5C2D91")!),
-            SwatchRGB.from(parseColorHexRGB("#D83B01")!),
-            SwatchRGB.from(parseColorHexRGB("#F2C812")!),
+            Swatch.parse("#0078D4")!,
+            Swatch.parse("#107C10")!,
+            Swatch.parse("#5C2D91")!,
+            Swatch.parse("#D83B01")!,
+            Swatch.parse("#F2C812")!,
         ];
 
         accentColors.forEach((accent): void => {

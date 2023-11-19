@@ -1,7 +1,6 @@
 import { Swatch } from "@adaptive-web/adaptive-ui";
 import { neutralForegroundHint } from "@adaptive-web/adaptive-ui/migration";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
-import { contrastRatio, parseColor } from "@microsoft/fast-colors";
 import {
     attr,
     css,
@@ -12,6 +11,7 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { DesignToken } from "@microsoft/fast-foundation";
+import { parse, wcagContrast } from "culori";
 
 export enum SwatchType {
     fill = "fill",
@@ -163,9 +163,11 @@ export class AppSwatch extends FASTElement {
 
     private formatContrast(a?: DesignToken<Swatch>, b?: DesignToken<Swatch>): string {
         return a && b
-            ? contrastRatio(
-                  parseColor(this.evaluateToken(a))!,
-                  parseColor(this.evaluateToken(b))!
+            ? wcagContrast(
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  parse(this.evaluateToken(a))!,
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  parse(this.evaluateToken(b))!
               ).toFixed(2)
             : "";
     }

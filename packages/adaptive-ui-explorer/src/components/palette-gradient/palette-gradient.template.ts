@@ -1,8 +1,8 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { isDark, Swatch } from "@adaptive-web/adaptive-ui";
+import { Color, isDark, Swatch } from "@adaptive-web/adaptive-ui";
 import { PaletteGradient } from "./palette-gradient.js";
 
-function getClass(swatch: Swatch, source?: Swatch, closestSource?: Swatch) {
+function getClass(swatch: Swatch, source?: Color, closestSource?: Swatch) {
     return swatch.toColorString() === source?.toColorString()
         ? "source"
         : swatch.toColorString() === closestSource?.toColorString()

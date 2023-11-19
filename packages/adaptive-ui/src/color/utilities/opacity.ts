@@ -1,5 +1,5 @@
 import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch, SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 
 /**
  * Returns an opaque {@link Swatch} or a {@link Swatch} with opacity relative to the reference color.
@@ -12,8 +12,8 @@ import { Swatch, SwatchRGB } from "../swatch.js";
  * @public
  */
 export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null {
-    return swatch instanceof SwatchRGB && asOverlay
-        ? SwatchRGB.asOverlay(swatch as SwatchRGB, reference as SwatchRGB)
+    return swatch && asOverlay
+        ? Swatch.asOverlay(swatch, reference)
         : swatch;
 }
 
