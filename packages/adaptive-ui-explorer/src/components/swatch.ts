@@ -11,7 +11,7 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { parse, wcagContrast } from "culori";
+import { parse, wcagContrast } from "culori/fn";
 
 export enum SwatchType {
     fill = "fill",

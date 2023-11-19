@@ -1,5 +1,7 @@
-import { type Color as CuloriColor, parse, rgb, type Rgb } from "culori";
+import { type Color as CuloriColor, modeRgb, parse, type Rgb, useMode } from "culori/fn";
 import { Color } from "./color.js";
+
+const rgb = useMode(modeRgb);
 
 const rgbBlack: Rgb = { mode: "rgb", r: 0, g: 0, b: 0 };
 const rgbWhite: Rgb = { mode: "rgb", r: 1, g: 1, b: 1 };
@@ -26,10 +28,8 @@ function calcRgbOverlay(rgbMatch: Rgb, rgbBackground: Rgb, rgbOverlay: Rgb): num
  * @param rgbMatch - The solid color the overlay should match in appearance when placed over the rgbBackground
  * @param rgbBackground - The background on which the overlay rests
  * @returns The rgba (rgb + alpha) color of the overlay
- *
- * @public
  */
-function calculateOverlayColor(rgbMatch: Rgb, rgbBackground: Rgb,): Rgb {
+function calculateOverlayColor(rgbMatch: Rgb, rgbBackground: Rgb): Rgb {
     let overlay = rgbBlack;
     let alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
     if (alpha <= 0) {
@@ -86,11 +86,11 @@ export class Swatch extends Color {
     /**
      * Creates a new Swatch from and object with R, G, and B values expressed as a number between 0 to 1.
      *
-     * @param obj - An object with `r`, `g`, and `b` values expressed as a number between 0 and 1.
+     * @param obj - An object with `r`, `g`, and `b`, and optional `alpha` values expressed as a number between 0 and 1.
      * @returns A new Swatch
      */
-    public static from(obj: { r: number; g: number; b: number }): Swatch {
-        const color: Rgb = { mode: "rgb", r: obj.r, g: obj.g, b: obj.b };
+    public static from(obj: { r: number; g: number; b: number, alpha?: number }): Swatch {
+        const color: Rgb = { mode: "rgb", ...obj };
         return new Swatch(color);
     }
 
@@ -100,10 +100,11 @@ export class Swatch extends Color {
      * @param r - Red channel expressed as a number between 0 and 1.
      * @param g - Green channel expressed as a number between 0 and 1.
      * @param b - Blue channel expressed as a number between 0 and 1.
+     * @param alpha - Alpha channel expressed as a number between 0 and 1.
      * @returns A new Swatch
      */
-    public static fromRgb(r: number, g: number, b: number): Swatch {
-        const color: Rgb = { mode: "rgb", r, g, b };
+    public static fromRgb(r: number, g: number, b: number, alpha?: number): Swatch {
+        const color: Rgb = { mode: "rgb", r, g, b, alpha };
         return new Swatch(color);
     }
 

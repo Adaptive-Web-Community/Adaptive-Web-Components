@@ -2,7 +2,7 @@ import { attr, css, customElement, ElementStyles, FASTElement, html, observable 
 import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
 import { ElementStylesRenderer, Interactivity, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
-import { formatHex8, parse } from "culori";
+import { formatHex8, parse } from "culori/fn";
 import BlobIcon from "../../assets/blob.svg";
 
 const template = html<TokenGlyph>`

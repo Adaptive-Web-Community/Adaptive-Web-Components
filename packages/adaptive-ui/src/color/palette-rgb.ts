@@ -1,8 +1,12 @@
-import { clampRgb, hsl, Hsl, interpolate, lab, rgb, Rgb } from "culori";
+import { clampRgb, type Hsl, interpolate, modeHsl, modeLab, modeRgb, type Rgb, useMode } from "culori/fn";
 import { BasePalette } from "./palette.js";
 import { Swatch } from "./swatch.js";
 import { contrast } from "./utilities/relative-luminance.js";
 import { _black, _white } from "./utilities/color-constants.js";
+
+const hsl = useMode(modeHsl);
+const lab = useMode(modeLab);
+const rgb = useMode(modeRgb);
 
 /**
  * A utility Palette that generates many Swatches used for selection in the actual Palette.

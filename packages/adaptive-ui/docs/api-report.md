@@ -4,7 +4,7 @@
 
 ```ts
 
-import { Color as Color_2 } from 'culori';
+import { Color as Color_2 } from 'culori/fn';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import type { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
@@ -60,8 +60,9 @@ export class Color implements RelativeLuminance {
         r: number;
         g: number;
         b: number;
+        alpha?: number;
     }): Color;
-    static fromRgb(r: number, g: number, b: number): Color;
+    static fromRgb(r: number, g: number, b: number, alpha?: number): Color;
     static parse(color: string): Color | undefined;
     get relativeLuminance(): number;
     toColorString(): string;
@@ -545,9 +546,10 @@ export class Swatch extends Color {
         r: number;
         g: number;
         b: number;
+        alpha?: number;
     }): Swatch;
     static fromColor(color: Color): Swatch;
-    static fromRgb(r: number, g: number, b: number): Swatch;
+    static fromRgb(r: number, g: number, b: number, alpha?: number): Swatch;
     static parse(color: string): Swatch | undefined;
     get relativeLuminance(): number;
     toTransparent(alpha?: number): Swatch;

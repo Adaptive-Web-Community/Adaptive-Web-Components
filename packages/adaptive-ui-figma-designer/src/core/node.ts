@@ -1,6 +1,6 @@
 import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { Color, formatHex8 } from "culori";
+import { type Color, formatHex8 } from "culori/fn";
 import {
     AdditionalData,
     AdditionalDataKeys,

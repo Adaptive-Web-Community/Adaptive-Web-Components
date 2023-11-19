@@ -1,5 +1,5 @@
-import { Color as CuloriColor, formatHex, formatRgb, parse, Rgb, wcagLuminance } from "culori";
-import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
+import { type Color as CuloriColor, formatHex, formatRgb, parse, type Rgb, wcagLuminance } from "culori/fn";
+import { contrast, type RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
  * Represents a color.
@@ -57,11 +57,13 @@ export class Color implements RelativeLuminance {
     /**
      * Creates a new Color from and object with R, G, and B values expressed as a number between 0 to 1.
      *
-     * @param obj - An object with `r`, `g`, and `b` values expressed as a number between 0 and 1.
+     * @param obj - An object with `r`, `g`, and `b`, and optional `alpha` values expressed as a number between 0 and 1.
      * @returns A new Color
      */
-    public static from(obj: { r: number; g: number; b: number }): Color {
-        const color: Rgb = { mode: "rgb", r: obj.r, g: obj.g, b: obj.b };
+    public static from(obj: { r: number; g: number; b: number, alpha?: number }): Color {
+        const color: Rgb = { mode: "rgb", ...obj };
+        console.log("from", color);
+        
         return new Color(color);
     }
 
@@ -71,10 +73,12 @@ export class Color implements RelativeLuminance {
      * @param r - Red channel expressed as a number between 0 and 1.
      * @param g - Green channel expressed as a number between 0 and 1.
      * @param b - Blue channel expressed as a number between 0 and 1.
+     * @param alpha - Alpha channel expressed as a number between 0 and 1.
      * @returns A new Color
      */
-    public static fromRgb(r: number, g: number, b: number): Color {
-        const color: Rgb = { mode: "rgb", r, g, b };
+    public static fromRgb(r: number, g: number, b: number, alpha?: number): Color {
+        const color: Rgb = { mode: "rgb", r, g, b, alpha };
+        console.log("fromRgb", color);
         return new Color(color);
     }
 
