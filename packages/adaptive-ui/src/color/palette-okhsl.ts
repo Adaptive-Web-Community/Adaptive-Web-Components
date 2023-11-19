@@ -1,7 +1,10 @@
-import { clampChroma, Color, interpolate, okhsl, parse, rgb, samples} from "culori";
+import { clampChroma, Color, interpolate, modeOkhsl, modeRgb, parse, samples, useMode} from "culori/fn";
 import { BasePalette } from "./palette.js";
 import { SwatchRGB } from "./swatch.js";
 import { _black, _white } from "./utilities/color-constants.js";
+
+const okhsl = useMode(modeOkhsl);
+const rgb = useMode(modeRgb);
 
 const stepCount = 56;
 
