@@ -41,7 +41,7 @@ export class Color implements RelativeLuminance {
      * @returns The color value in string format
      */
     public toColorString(): string {
-        return this.color.alpha && this.color.alpha < 1 ? formatRgb(this.color) : formatHex(this.color);
+        return this.color.alpha !== undefined && this.color.alpha < 1 ? formatRgb(this.color) : formatHex(this.color);
     }
 
     /**
