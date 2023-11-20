@@ -1,5 +1,9 @@
-import { type Color as CuloriColor, formatHex, formatRgb, parse, type Rgb, wcagLuminance } from "culori/fn";
+import { type Color as CuloriColor, formatHex, formatRgb, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { contrast, type RelativeLuminance } from "./utilities/relative-luminance.js";
+
+useMode(modeRgb);
+// For luminance
+useMode(modeLrgb);
 
 /**
  * Represents a color.
