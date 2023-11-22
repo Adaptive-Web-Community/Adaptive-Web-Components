@@ -1,11 +1,13 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { type Color, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode, State, StatesState } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
 const rgb = useMode(modeRgb);
+// For luminance
+useMode(modeLrgb);
 
 const stateVariant = "State";
 const disabledVariant = "Disabled";
