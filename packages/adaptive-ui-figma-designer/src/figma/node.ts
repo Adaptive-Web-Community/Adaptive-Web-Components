@@ -1,9 +1,13 @@
-import { ColorRGBA64, parseColor, rgbToRelativeLuminance } from "@microsoft/fast-colors";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { PluginNode, State, StatesState } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
+
+const rgb = useMode(modeRgb);
+// For luminance
+useMode(modeLrgb);
 
 const stateVariant = "State";
 const disabledVariant = "Disabled";
@@ -95,7 +99,7 @@ export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     public name: string;
-    public fillColor: ColorRGBA64 | null;
+    public fillColor: Color | null;
     public states: StatesState;
     private _node: BaseNode;
     private _state: State | null = null;
@@ -621,7 +625,7 @@ export class FigmaPluginNode extends PluginNode {
         return FigmaPluginNode.get(parent);
     }
 
-    private getFillColor(): ColorRGBA64 | null {
+    private getFillColor(): Color | null {
         // console.log("FigmaPluginNode.getFillColor", this.debugInfo);
         if ((this._node as GeometryMixin).fills) {
             const fills = (this._node as GeometryMixin).fills;
@@ -633,11 +637,10 @@ export class FigmaPluginNode extends PluginNode {
 
                 // TODO: how do we process multiple paints?
                 if (paints.length === 1) {
-                    const parsed = ColorRGBA64.fromObject(Object.assign({}, paints[0].color, {a: paints[0].opacity}));
-                    if (parsed instanceof ColorRGBA64) {
-                        // console.log("FigmaPluginNode.getFillColor", this.debugInfo, parsed.toStringHexARGB());
-                        return parsed;
-                    }
+                    const rgb = paints[0].color;
+                    const color: Rgb = { mode: "rgb", r: rgb.r, g: rgb.g, b: rgb.b, alpha: paints[0].opacity };
+                    // console.log("FigmaPluginNode.getFillColor", this.debugInfo, formatHex8(color));
+                    return color;
                 }
             }
         }
@@ -654,7 +657,7 @@ export class FigmaPluginNode extends PluginNode {
                 if (currentDarkMode) {
                     const color = this.parent?.fillColor;
                     if (color) {
-                        const containerIsDark = rgbToRelativeLuminance(color) <= this.darkTarget;
+                        const containerIsDark = wcagLuminance(color) <= this.darkTarget;
                         // eslint-disable-next-line max-len
                         // console.log("handleManualDarkMode", this._node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
                         const value = variantBooleanHelper(currentDarkMode, containerIsDark);
@@ -718,7 +721,7 @@ export class FigmaPluginNode extends PluginNode {
                     const stops = array.map((p, index, array) => {
                         const paramMatches = p.match(paramMatch);
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        const color = parseColor(paramMatches?.groups?.color || "FF00FF")!;
+                        const color = rgb(parse(paramMatches?.groups?.color || "FF00FF")!);
                         let position: number = 0;
                         if (paramMatches?.groups && paramMatches?.groups?.pos) {
                             if (paramMatches.groups.pos.endsWith("%")) {
@@ -743,7 +746,7 @@ export class FigmaPluginNode extends PluginNode {
                                 r: color.r,
                                 g: color.g,
                                 b: color.b,
-                                a: color.a,
+                                a: color.alpha || 1,
                             },
                         };
                         return stop;
@@ -761,24 +764,23 @@ export class FigmaPluginNode extends PluginNode {
                 }
             } else {
                 // Assume it's solid
-                const color = parseColor(value);
-
-                if (color === null) {
+                const color = parse(value);
+                if (!color) {
                     throw new Error(
-                        `The value "${value}" could not be converted to a ColorRGBA64`
+                        `The value "${value}" could not be parsed`
                     );
                 }
 
-                const colorObject = color.toObject();
+                const rgbColor = rgb(color);
                 const solidPaint: SolidPaint = {
                     type: "SOLID",
                     visible: true,
-                    opacity: colorObject.a,
+                    opacity: rgbColor.alpha,
                     blendMode: "NORMAL",
                     color: {
-                        r: colorObject.r,
-                        g: colorObject.g,
-                        b: colorObject.b,
+                        r: rgbColor.r,
+                        g: rgbColor.g,
+                        b: rgbColor.b,
                     },
                 };
                 paint = solidPaint;

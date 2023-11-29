@@ -1,8 +1,8 @@
 import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
 import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
-import { parseColor } from "@microsoft/fast-colors";
 import { ElementStylesRenderer, Interactivity, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
+import { formatHex8, parse } from "culori/fn";
 import BlobIcon from "../../assets/blob.svg";
 
 const template = html<TokenGlyph>`
@@ -136,8 +136,8 @@ export class TokenGlyph extends FASTElement {
     @attr
     public value: string | "none" = "none";
     protected valueChanged(prev: string, next: string) {
-        const color = parseColor(next);
-        this.valueColor = color?.toStringWebRGBA();
+        const color = parse(next);
+        this.valueColor = formatHex8(color);
     }
 
     @observable

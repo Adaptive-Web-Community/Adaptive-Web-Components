@@ -21,7 +21,7 @@
   "scripts": {
     "build": "npm run build:ui -- --minify esbuild && npm run build:figma -- --minify",
     "build:debug": "npm run build:ui && npm run build:figma",
-    "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --outfile=dist/main.js",
+    "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --target=ES2017 --outfile=dist/main.js",
     "build:ui": "npx vite build --emptyOutDir=false --minify false",
     "build:watch": "concurrently -n figma,ui \"npm run build:figma -- --watch\" \"npm run build:ui -- --watch\"",
     "compile": "npm run compile:figma && npm run compile:ui",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@adaptive-web/adaptive-web-components": "0.4.1",
-    "@microsoft/fast-colors": "^5.3.1"
+    "culori": "^3.2.0"
   },
   "peerDependencies": {
     "@adaptive-web/adaptive-ui": "0.2.1",

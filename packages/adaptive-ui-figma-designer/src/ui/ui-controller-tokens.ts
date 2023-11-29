@@ -1,7 +1,8 @@
 import { calc } from '@csstools/css-calc';
 import { observable } from "@microsoft/fast-element";
 import { type DesignToken } from "@microsoft/fast-foundation";
-import { SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { Color } from "@adaptive-web/adaptive-ui";
+import { formatHex8 } from 'culori';
 import { DesignTokenValue, PluginUINodeData } from "../core/model.js";
 import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
 import { UIController } from "./ui-controller.js";
@@ -110,8 +111,8 @@ export class DesignTokenController {
     private valueToString(value: any): string {
         // TODO figure out a better way to handle storage data types
         // Reconcile with similar block in evaluateEffectiveAppliedDesignToken
-        if (value instanceof SwatchRGB) {
-            return value.color.toStringHexARGB();
+        if (value instanceof Color) {
+            return formatHex8(value.color);
         } else if (typeof value === "string") {
             if (value.startsWith("calc")) {
                 return calc(value);

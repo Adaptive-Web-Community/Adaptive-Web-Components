@@ -1,3 +1,4 @@
+import { Color } from "../color.js";
 import { Palette, PaletteDirection, PaletteDirectionValue, resolvePaletteDirection } from "../palette.js";
 import { InteractiveSwatchSet } from "../recipe.js";
 import { Swatch } from "../swatch.js";
@@ -36,7 +37,7 @@ export function idealColorDeltaSwatchSet(
     palette: Palette,
     reference: Swatch,
     minContrast: number,
-    idealColor: Swatch,
+    idealColor: Color,
     restDelta: number,
     hoverDelta: number,
     activeDelta: number,

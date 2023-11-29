@@ -1,138 +1,151 @@
-import { calculateOverlayColor, ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
-import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
+import { type Color as CuloriColor, modeRgb, parse, type Rgb, useMode } from "culori/fn";
+import { Color } from "./color.js";
 
-/**
- * Represents a color in a {@link Palette}.
- *
- * @public
- */
-export interface Swatch extends RelativeLuminance {
-    /**
-     * Gets a string representation of the color.
-     */
-    toColorString(): string;
+const rgb = useMode(modeRgb);
 
-    /**
-     * Gets the contrast between this Swatch and another one.
-     * @param target - The relative luminance for comparison
-     */
-    contrast(target: RelativeLuminance): number;
+const rgbBlack: Rgb = { mode: "rgb", r: 0, g: 0, b: 0 };
+const rgbWhite: Rgb = { mode: "rgb", r: 1, g: 1, b: 1 };
+
+function calcChannelOverlay(match: number, background: number, overlay: number): number {
+    if (overlay - background === 0) {
+        return 0;
+    } else {
+        return (match - background) / (overlay - background);
+    }
+}
+
+function calcRgbOverlay(rgbMatch: Rgb, rgbBackground: Rgb, rgbOverlay: Rgb): number {
+    const rChannel: number = calcChannelOverlay(rgbMatch.r, rgbBackground.r, rgbOverlay.r);
+    const gChannel: number = calcChannelOverlay(rgbMatch.g, rgbBackground.g, rgbOverlay.g);
+    const bChannel: number = calcChannelOverlay(rgbMatch.b, rgbBackground.b, rgbOverlay.b);
+    return (rChannel + gChannel + bChannel) / 3;
 }
 
 /**
- * Represents a color in a {@link Palette} using RGB.
+ * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appearance of a given solid color
+ * when placed on the same background.
+ *
+ * @param rgbMatch - The solid color the overlay should match in appearance when placed over the rgbBackground
+ * @param rgbBackground - The background on which the overlay rests
+ * @returns The rgba (rgb + alpha) color of the overlay
+ */
+function calculateOverlayColor(rgbMatch: Rgb, rgbBackground: Rgb): Rgb {
+    let overlay = rgbBlack;
+    let alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
+    if (alpha <= 0) {
+        overlay = rgbWhite;
+        alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
+    }
+    alpha = Math.round(alpha * 1000) / 1000;
+
+    return Object.assign({}, overlay, { alpha });
+}
+
+/**
+ * Extends {@link Color} adding support for relative opacity.
  *
  * @public
  */
-export class SwatchRGB implements Swatch {
+export class Swatch extends Color {
     /**
-     * Red channel expressed as a number between 0 and 1.
+     * The opaque value this Swatch represents if opacity is used.
      */
-    readonly r: number;
+    private readonly _intendedColor?: Swatch;
 
     /**
-     * Green channel expressed as a number between 0 and 1.
+     * Creates a new Swatch.
+     *
+     * @param color - The underlying Color value
+     * @param intendedColor - If `color.alpha` &lt; 1 this tracks the intended opaque color value for dependent calculations
      */
-    readonly g: number;
-
-    /**
-     * Blue channel expressed as a number between 0 and 1.
-     */
-    readonly b: number;
-
-    /**
-     * The opaque color this Swatch represents if opacity is used.
-     */
-    readonly intendedColor?: SwatchRGB;
+    protected constructor(color: CuloriColor, intendedColor?: Swatch) {
+        super(color);
+        this._intendedColor = intendedColor;
+    }
 
     /**
      * {@inheritdoc RelativeLuminance.relativeLuminance}
      */
-    readonly relativeLuminance: number;
-
-    /**
-     * Internal representation of the Swatch in the format used by fast-colors.
-     */
-    readonly color: ColorRGBA64;
-
-    /**
-     * Creates a new SwatchRGB.
-     *
-     * @param red - Red channel expressed as a number between 0 and 1
-     * @param green - Green channel expressed as a number between 0 and 1
-     * @param blue - Blue channel expressed as a number between 0 and 1
-     * @param alpha - Alpha channel expressed as a number between 0 and 1, default 1
-     * @param intendedColor - If `alpha` &lt; 1 this tracks the intended opaque color value for dependent calculations
-     */
-    constructor(red: number, green: number, blue: number, alpha: number = 1, intendedColor?: SwatchRGB) {
-        this.r = red;
-        this.g = green;
-        this.b = blue;
-        this.color = new ColorRGBA64(red, green, blue, alpha);
-
-        this.intendedColor = intendedColor;
-        this.relativeLuminance = intendedColor
-            ? rgbToRelativeLuminance(intendedColor.color)
-            : rgbToRelativeLuminance(this.color);
+    public get relativeLuminance(): number {
+        return this._intendedColor
+            ? this._intendedColor.relativeLuminance
+            : super.relativeLuminance;
     }
 
     /**
-     * Gets this color value as a string.
-     *
-     * @returns The color value in string format
-     */
-    toColorString() {
-        return this.color.a < 1 ? this.color.toStringWebRGBA() : this.color.toStringHexRGB();
-    }
-
-    /**
-     * Gets the contrast between this Swatch and another.
-     *
-     * @returns The contrast between the two luminance values, for example, 4.54
-     */
-    contrast = contrast.bind(null, this);
-
-    /**
-     * Gets this color value as a string for use in css.
-     *
-     * @returns The color value in a valid css string format
-     */
-    createCSS = this.toColorString;
-
-    /**
-     * Gets this color as full transparent.
+     * Gets this color with transparency.
      *
      * @returns The color with full transparency
      */
-    toTransparent() {
-        return new SwatchRGB(this.r, this.g, this.b, 0, this);
+    public toTransparent(alpha: number = 0): Swatch {
+        const transparentColor = { ...this.color };
+        transparentColor.alpha = alpha;
+        return new Swatch(transparentColor, this);
     }
 
     /**
-     * Creates a new SwatchRGB from and object with R, G, and B values expressed as a number between 0 to 1.
+     * Creates a new Swatch from and object with R, G, and B values expressed as a number between 0 to 1.
      *
-     * @param obj - An object with `r`, `g`, and `b` values expressed as a number between 0 and 1
-     * @returns A new SwatchRGB
+     * @param obj - An object with `r`, `g`, and `b`, and optional `alpha` values expressed as a number between 0 and 1.
+     * @returns A new Swatch
      */
-    static from(obj: { r: number; g: number; b: number }): SwatchRGB {
-        return new SwatchRGB(obj.r, obj.g, obj.b);
+    public static from(obj: { r: number; g: number; b: number, alpha?: number }): Swatch {
+        const color: Rgb = { mode: "rgb", ...obj };
+        return new Swatch(color);
     }
 
     /**
-     * Creates a new SwatchRGB as an overlay representation of the `intendedColor` over `reference`.
+     * Creates a new Swatch from R, G, and B values expressed as a number between 0 to 1.
+     *
+     * @param r - Red channel expressed as a number between 0 and 1.
+     * @param g - Green channel expressed as a number between 0 and 1.
+     * @param b - Blue channel expressed as a number between 0 and 1.
+     * @param alpha - Alpha channel expressed as a number between 0 and 1.
+     * @returns A new Swatch
+     */
+    public static fromRgb(r: number, g: number, b: number, alpha?: number): Swatch {
+        const color: Rgb = { mode: "rgb", r, g, b, alpha };
+        return new Swatch(color);
+    }
+
+    /**
+     * Creates a new Swatch from a Color.
+     *
+     * @param color - A Color
+     * @returns A new Swatch
+     */
+    public static fromColor(color: Color): Swatch {
+        return new Swatch(color.color);
+    }
+
+    /**
+     * Creates a new Swatch from a parsable string.
+     *
+     * @param color - A string representation of the Swatch.
+     * @returns The Swatch object or undefined.
+     */
+    public static parse(color: string): Swatch | undefined {
+        const parsedColor = parse(color);
+        if (parsedColor) {
+            return new Swatch(parsedColor);
+        }
+    }
+
+    /**
+     * Creates a new Swatch as an overlay representation of the `intendedColor` over `reference`.
      *
      * Currently the overlay will only be black or white, so this works best with a plain grey neutral palette.
      * Otherwise it will attempt to match the luminance value of the Swatch, so it will likely be close, but not an
      * exact match to the color from another palette.
      *
-     * @param intendedColor - The color the overlay should look like over the `reference` color
-     * @param reference - The color under the overlay color
-     * @returns A semitransparent color that implies the `intendedColor` over the `reference` color.
+     * @param intendedColor - The Swatch the overlay should look like over the `reference` Swatch.
+     * @param reference - The Swatch under the overlay color.
+     * @returns A semitransparent Swatch that represents the `intendedColor` over the `reference` Swatch.
      */
-    static asOverlay(intendedColor: SwatchRGB, reference: SwatchRGB): SwatchRGB {
-        const refColor = reference.intendedColor ?? reference;
-        const colorWithAlpha = calculateOverlayColor(intendedColor.color, refColor.color);
+    public static asOverlay(intendedColor: Swatch, reference: Swatch): Swatch {
+        const refColor = reference._intendedColor ? reference._intendedColor.color : reference.color;
+        const colorWithAlpha = calculateOverlayColor(rgb(intendedColor.color), rgb(refColor));
 
-        return new SwatchRGB(colorWithAlpha.r, colorWithAlpha.g, colorWithAlpha.b, colorWithAlpha.a, intendedColor);
+        return new Swatch(colorWithAlpha, intendedColor);
     }
 }

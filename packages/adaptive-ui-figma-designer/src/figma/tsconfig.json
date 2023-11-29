@@ -1,12 +1,14 @@
 {
     "compilerOptions": {
         "outDir": "../../dist",
-        "moduleResolution": "node16",
-        "target": "ES2018",
+        "moduleResolution": "Node16",
         "module": "ESNext",
+        "target": "ES2018",
         "lib": ["ES2018"],
         "strict": true,
         "skipLibCheck": true,
-        "typeRoots": ["../../../../node_modules/@figma"]
+        "typeRoots": [
+            "../../../../node_modules/@figma"
+        ]
     }
 }

@@ -1,9 +1,9 @@
 import { calc } from '@csstools/css-calc';
-import { parseColorHexARGB } from "@microsoft/fast-colors";
 import { FASTElement } from "@microsoft/fast-element";
 import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
-import { InteractiveTokenGroup, StyleProperty, Styles, SwatchRGB } from "@adaptive-web/adaptive-ui";
+import { Color, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { formatHex8 } from 'culori';
 import { STYLE_REMOVE } from "../core/controller.js";
 import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, type PluginMessage, type PluginUINodeData } from "../core/model.js";
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
@@ -315,9 +315,8 @@ export class UIController {
             const colorHex = node.additionalData.get(AdditionalDataKeys.toolParentFillColor);
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
-                const color = parseColorHexARGB(colorHex);
-                // console.log("    setting fill color token on parent element", color, color?.toStringHexARGB(), parentElement.id);
-                this._elements.setDesignTokenForElement(parentElement, fillColor, SwatchRGB.from(color));
+                // console.log("    setting fill color token on parent element", colorHex, parentElement.id);
+                this._elements.setDesignTokenForElement(parentElement, fillColor, Swatch.parse(colorHex));
             }
 
             const allApplied = this.collectEffectiveAppliedStyles(node);
@@ -347,9 +346,9 @@ export class UIController {
         const valueOriginal: any = this._elements.getDesignTokenValue(node, token);
         let value: any = valueOriginal;
         // let valueDebug: any;
-        if (valueOriginal instanceof SwatchRGB) {
-            const swatch = valueOriginal as SwatchRGB;
-            value = swatch.color.toStringHexARGB();
+        if (valueOriginal instanceof Color) {
+            const swatch = valueOriginal;
+            value = formatHex8(swatch.color);
             // valueDebug = swatch;
         } else if (typeof valueOriginal === "string") {
             if (valueOriginal.startsWith("calc")) {

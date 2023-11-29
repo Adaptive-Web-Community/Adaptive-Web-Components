@@ -1,13 +1,12 @@
-import { parseColorHexRGB } from "@microsoft/fast-colors";
 import chai from "chai";
 import { PaletteRGB, PaletteRGBOptions } from "./palette-rgb.js";
-import { SwatchRGB } from "./swatch.js";
+import { Swatch } from "./swatch.js";
 import { contrast } from "./utilities/relative-luminance.js";
 
 const { expect } = chai;
 
 const greyHex = "#808080";
-const greySwatch: SwatchRGB = SwatchRGB.from(parseColorHexRGB(greyHex)!);
+const greySwatch = Swatch.parse(greyHex)!;
 
 describe("PaletteRGB.from", () => {
     it("should create a palette from the provided swatch", () => {

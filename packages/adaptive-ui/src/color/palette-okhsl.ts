@@ -1,6 +1,7 @@
-import { clampChroma, Color, interpolate, modeOkhsl, modeRgb, parse, samples, useMode} from "culori/fn";
+import { clampChroma, interpolate, modeOkhsl, modeRgb, samples, useMode} from "culori/fn";
+import { Color } from "./color.js";
 import { BasePalette } from "./palette.js";
-import { SwatchRGB } from "./swatch.js";
+import { Swatch } from "./swatch.js";
 import { _black, _white } from "./utilities/color-constants.js";
 
 const okhsl = useMode(modeOkhsl);
@@ -14,25 +15,14 @@ const stepCount = 56;
  *
  * @public
  */
-export class PaletteOkhsl extends BasePalette<SwatchRGB> {
-    static swatchToColor(swatch: SwatchRGB): Color {
-        return {mode: "rgb", r: swatch.r, g: swatch.g, b: swatch.b};
-    }
-
-    static from(source: SwatchRGB | string): PaletteOkhsl {
-        let swatch;
-        if (source instanceof SwatchRGB) {
-            swatch = source;
-        } else {
-            const color = parse(source);
-            if (color === undefined) {
-                throw new Error(`Unable to parse Color as hex string: ${source}`);
-            }
-            swatch = SwatchRGB.from(rgb(color));
+export class PaletteOkhsl extends BasePalette<Swatch> {
+    public static from(source: Color | string): PaletteOkhsl {
+        const color = source instanceof Color ? source : Color.parse(source);
+        if (!color) {
+            throw new Error(`Unable to parse source: ${source}`);
         }
 
-        const sourceRgb = this.swatchToColor(swatch);
-        const sourceHsl = okhsl(sourceRgb);
+        const sourceHsl = okhsl(color.color);
 
         const lo = Object.assign({}, sourceHsl, {l: 0.01});
         const hi = Object.assign({}, sourceHsl, {l: 0.99});
@@ -49,13 +39,13 @@ export class PaletteOkhsl extends BasePalette<SwatchRGB> {
 
         const ramp = [...samplesLeft, ...samplesRight.slice(1)];
         const swatches = ramp.map((value) =>
-            SwatchRGB.from(rgb(clampChroma(value, "okhsl")))
+            Swatch.from(rgb(clampChroma(value, "okhsl")))
         );
 
         // It's important that the ends are full white and black.
         swatches[0] = _white;
         swatches[swatches.length - 1] = _black;
 
-        return new PaletteOkhsl(swatch, swatches);
+        return new PaletteOkhsl(color, swatches);
     }
 }

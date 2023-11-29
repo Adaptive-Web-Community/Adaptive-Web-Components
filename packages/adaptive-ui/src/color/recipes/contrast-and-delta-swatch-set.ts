@@ -1,6 +1,6 @@
 import { Palette, PaletteDirection, PaletteDirectionValue, resolvePaletteDirection } from "../palette.js";
 import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch, SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /**
@@ -63,7 +63,7 @@ export function contrastAndDeltaSwatchSet(
     }
 
     function getSwatch(palette: Palette, index: number): Swatch {
-        const swatch = palette.get(index) as SwatchRGB;
+        const swatch = palette.get(index);
         if (zeroAsTransparent === true && index === referenceIndex) {
             return swatch.toTransparent();
         } else {

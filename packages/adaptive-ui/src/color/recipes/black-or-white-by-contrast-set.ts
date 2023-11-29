@@ -1,5 +1,5 @@
 import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch, SwatchRGB } from "../swatch.js";
+import { Swatch } from "../swatch.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
 /**
@@ -38,10 +38,10 @@ export function blackOrWhiteByContrastSet(
             ? restForeground
             : defaultRule(set.active);
     const focusForeground = defaultRule(set.focus);
-    const disabled = defaultRule(set.disabled) as SwatchRGB;
+    const disabled = defaultRule(set.disabled);
     // TODO: Reasonable disabled opacity, but not configurable.
     // Considering replacing these recipes anyway.
-    const disabledForeground = new SwatchRGB(disabled.r, disabled.g, disabled.b, 0.3);
+    const disabledForeground = disabled?.toTransparent(0.3) ?? null;
 
     return {
         rest: restForeground,
