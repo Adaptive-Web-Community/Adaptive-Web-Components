@@ -315,7 +315,7 @@ export class UIController {
             const colorHex = node.additionalData.get(AdditionalDataKeys.toolParentFillColor);
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
-                // console.log("    setting fill color token on parent element", colorHex, parentElement.id);
+                // console.log("    setting fill color token on parent element", colorHex, parentElement.id, parentElement.title);
                 this._elements.setDesignTokenForElement(parentElement, fillColor, Swatch.parse(colorHex));
             }
 

@@ -20,7 +20,7 @@ import {
     criticalStrokeReadableRecipe,
     criticalStrokeSafety,
     fillColor,
-    focusStrokeOuter,
+    focusStroke,
     highlightFillDiscernible,
     highlightFillReadable,
     highlightFillStealth,
@@ -997,7 +997,7 @@ export const disabledStyles: Styles = Styles.fromProperties(
  */
 export const focusIndicatorStyles: Styles = Styles.fromProperties(
     {
-        outlineColor: focusStrokeOuter,
+        outlineColor: focusStroke,
         outlineOffset: "1px",
         outlineStyle: "solid",
         outlineWidth: focusStrokeThickness,

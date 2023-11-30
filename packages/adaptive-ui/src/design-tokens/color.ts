@@ -1,7 +1,9 @@
 import type { DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
+import { Palette } from "../color/palette.js";
 import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveSwatchSet } from "../color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";
+import { contrastSwatch } from "../color/recipes/contrast-swatch.js";
 import { contrastAndDeltaSwatchSet } from "../color/recipes/contrast-and-delta-swatch-set.js";
 import { deltaSwatchSet } from "../color/recipes/delta-swatch-set.js";
 import { Swatch } from "../color/swatch.js";
@@ -1333,6 +1335,46 @@ export const neutralStrokeStrongActive = neutralStrokeStrong.active;
 
 /** @public */
 export const neutralStrokeStrongFocus = neutralStrokeStrong.focus;
+
+/**
+ * The {@link Palette} to use for focus stroke recipes.
+ *
+ * @remarks
+ * By default this maps to the {@link accentPalette}.
+ * Use a custom palette like `focusStrokePalette.withDefault(PaletteRGB.from("#[HEX_COLOR]"))`.
+ *
+ * @public
+ */
+export const focusStrokePalette = createTokenNonCss<Palette>("focus-stroke-palette", DesignTokenType.palette).withDefault(accentPalette);
+
+/**
+ * The minimum contrast for the focus stroke recipe.
+ *
+ * @remarks
+ * By default this maps to the {@link minContrastDiscernible}, which by default meets 3:1 contrast recommendation.
+ *
+ * @public
+ */
+export const focusStrokeMinContrast = createTokenNonCss<number>("focus-stroke-min-contrast", DesignTokenType.number).withDefault(minContrastDiscernible);
+
+// Focus Stroke
+
+const focusStrokeName = "focus-stroke";
+
+/** @public */
+export const focusStrokeRecipe = createTokenColorRecipe(
+    focusStrokeName,
+    [...stylePropertyBorderFillAll, StyleProperty.outlineColor],
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
+        contrastSwatch(
+            resolve(focusStrokePalette),
+            params?.reference || resolve(fillColor),
+            resolve(focusStrokeMinContrast)
+        )
+);
+
+/** @public */
+export const focusStroke = createTokenColorRecipeValue(focusStrokeRecipe);
 
 // Focus Stroke Outer
 

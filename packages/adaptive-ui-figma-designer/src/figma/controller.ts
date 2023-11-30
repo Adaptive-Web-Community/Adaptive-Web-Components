@@ -7,7 +7,7 @@ export class FigmaController extends Controller {
     public getNode(id: string): FigmaPluginNode | null {
         const node = figma.getNodeById(id);
         if (node) {
-            return FigmaPluginNode.get(node);
+            return FigmaPluginNode.get(node, true);
         } else {
             return null;
         }

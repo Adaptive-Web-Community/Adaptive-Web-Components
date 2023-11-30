@@ -2,7 +2,7 @@ import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
-import { PluginNode, State, StatesState } from "../core/node.js";
+import { focusIndicatorNodeName, PluginNode, State, StatesState } from "../core/node.js";
 import { variantBooleanHelper } from "./utility.js";
 
 const rgb = useMode(modeRgb);
@@ -170,7 +170,7 @@ export class FigmaPluginNode extends PluginNode {
         // Reconcile plugin data with the main component.
         if (mainComponentNode) {
             // console.log("    get main");
-            const mainFigmaNode = FigmaPluginNode.get(mainComponentNode);
+            const mainFigmaNode = FigmaPluginNode.get(mainComponentNode, false);
             // console.log("      is instance node", this.debugInfo, mainFigmaNode);
 
             this._componentDesignTokens = mainFigmaNode.localDesignTokens;
@@ -243,13 +243,17 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public static get(node: BaseNode): FigmaPluginNode {
+    public static get(node: BaseNode, deep: boolean): FigmaPluginNode {
         if (FigmaPluginNode.NodeCache.has(node.id)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return FigmaPluginNode.NodeCache.get(node.id)!;
         } else {
             const pluginNode = new FigmaPluginNode(node);
             FigmaPluginNode.NodeCache.set(node.id, pluginNode);
+            if (deep) {
+                // Load the children for initial processing - added to support focusIndicator promotion
+                pluginNode.children;
+            }
             return pluginNode;
         }
     }
@@ -298,22 +302,50 @@ export class FigmaPluginNode extends PluginNode {
         return null;
     }
 
+    /**
+     * Special handling for focus indicator node, which logically belongs to its Figma parent's _parent_.
+     */
+    public focusIndicatorNode: FigmaPluginNode | null = null;
+
     public get canHaveChildren(): boolean {
         return canHaveChildren(this._node);
     }
 
-    public get children(): PluginNode[] {
-        if (canHaveChildren(this._node)) {
-            const children: FigmaPluginNode[] = [];
+    private _childrenLoaded: boolean = false;
+    private _children: PluginNode[] = [];
 
-            // console.log("    get children");
+    /**
+     * Get all logical children of this node.
+     */
+    public get children(): PluginNode[] {
+        if (canHaveChildren(this._node) && !this._childrenLoaded) {
+            // console.log("    get children", this.debugInfo);
             for (const child of this._node.children) {
-                children.push(FigmaPluginNode.get(child));
+                const childNode = FigmaPluginNode.get(child, true);
+                // Promote the focus indicator node to the parent's parent (`this` is the parent here)
+                if (childNode.name === focusIndicatorNodeName && childNode._node.type === "INSTANCE") {
+                    // console.log("      Found focus indicator node", childNode.debugInfo);
+                    if (this.parent) {
+                        // console.log("        Promoting to parent", this.parent.debugInfo);
+                        this.parent.focusIndicatorNode = childNode;
+                        childNode.focusIndicatorParentNode = this.parent;
+                        // Force load the children since this node is outside of the typical parent/children relationship
+                        childNode.children;
+                    }
+                } else {
+                    this._children.push(childNode);
+                }
             }
 
-            return children;
+            this._childrenLoaded = true;
+        }
+
+        // If this node has a promoted focus indicator, return that first followed by actual children
+        if (this.focusIndicatorNode !== null) {
+            // console.log("      Prepending focus indicator to children", this.debugInfo);
+            return [this.focusIndicatorNode, ...this._children];
         } else {
-            return [];
+            return this._children;
         }
     }
 
@@ -427,10 +459,10 @@ export class FigmaPluginNode extends PluginNode {
      */
     private expandStyles(styles: string[]): string[] {
         return styles.reduce<string[]>((prev: string[], cur: string) => {
-            const curArray = [cur]; // "Extra Light"
+            const curArray = [cur]; // "Ultra Light"
             if (cur.indexOf(" ") > -1) {
-                curArray.push(cur.replace(/ /g, "-")); // "Extra-Light"
-                curArray.push(cur.charAt(0).toUpperCase() + cur.replace(/ /g, "").substring(1)); // "Extralight"
+                curArray.push(cur.replace(/ /g, "-")); // "Ultra-Light"
+                curArray.push(cur.charAt(0).toUpperCase() + cur.replace(/ /g, "").substring(1)); // "Ultralight"
             }
             return prev.concat(curArray);
         }, []);
@@ -501,20 +533,20 @@ export class FigmaPluginNode extends PluginNode {
         this.handleFontFamily(this, values);
 
         // Paint all applied design tokens on the node
-        values?.forEach((styleValue, target) => {
+        values.forEach((styleValue, target) => {
             // console.log("applied design token eval", target, applied);
-            this.paintOne(target, styleValue.value);
+            this.paintOne(target, styleValue.value, false);
         });
     }
 
-    public paintOne(target: StyleProperty, value: string): void {
+    private paintOne(target: StyleProperty, value: string, inherited: boolean): void {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
             target === StyleProperty.fontSize ||
             target === StyleProperty.lineHeight))
         {
             this.children.forEach((child) => {
-                (child as FigmaPluginNode).paintOne(target, value);
+                (child as FigmaPluginNode).paintOne(target, value, true);
             });
         } else {
             switch (target) {
@@ -524,7 +556,12 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderFillLeft:
                 case StyleProperty.backgroundFill:
                 case StyleProperty.foregroundFill:
-                    this.paintColor(target, value);
+                    // I'd like to describe this better, but for now don't pass `foregroundFill`
+                    // to children other than vector nodes (for icon support)
+                    if (this.supports.includes(target) &&
+                        (inherited ? isVectorNode(this._node) : true)) {
+                        this.paintColor(target, value);
+                    }
                     break;
                 case StyleProperty.borderStyleTop:
                 case StyleProperty.borderStyleRight:
@@ -614,7 +651,16 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
+    /**
+     * The logical parent for the focus indicator node when promoted.
+     */
+    public focusIndicatorParentNode: FigmaPluginNode | null = null;
+
     public get parent(): FigmaPluginNode | null {
+        if (this.focusIndicatorParentNode !== null) {
+            return this.focusIndicatorParentNode;
+        }
+
         const parent = this._node.parent;
 
         if (parent === null) {
@@ -622,7 +668,7 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         // console.log("    get parent");
-        return FigmaPluginNode.get(parent);
+        return FigmaPluginNode.get(parent, false);
     }
 
     private getFillColor(): Color | null {
