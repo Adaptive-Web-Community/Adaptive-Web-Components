@@ -557,9 +557,9 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.backgroundFill:
                 case StyleProperty.foregroundFill:
                     // I'd like to describe this better, but for now don't pass `foregroundFill`
-                    // to children other than vector nodes (for icon support)
+                    // to children other than text and vector nodes (for icon support)
                     if (this.supports.includes(target) &&
-                        (inherited ? isVectorNode(this._node) : true)) {
+                        (inherited ? isTextNode(this._node) || isVectorNode(this._node) : true)) {
                         this.paintColor(target, value);
                     }
                     break;
