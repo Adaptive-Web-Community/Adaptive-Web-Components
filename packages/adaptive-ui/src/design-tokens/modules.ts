@@ -223,6 +223,8 @@ export const layerDensityStyles: Styles = Styles.fromProperties(
     "density.layer",
 );
 
+const transparent = "transparent";
+
 // TODO: There's a bit of an overlap right now where density calculations assume a border thickness,
 // but setting the color is done elsewhere or not at all, producing inconsistent and unpredictable styling.
 const densityBorderStyles = (fillValue: StyleValue) => {
@@ -282,6 +284,7 @@ export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(accentFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.accent-fill-discernible-control",
 );
@@ -299,6 +302,7 @@ export const accentFillDiscernibleControlStyles: Styles = Styles.fromProperties(
 export const accentFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(accentFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.accent-fill-readable-control",
 );
@@ -388,6 +392,7 @@ export const highlightFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const highlightFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(highlightFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.highlight-fill-discernible-control",
 );
@@ -405,6 +410,7 @@ export const highlightFillDiscernibleControlStyles: Styles = Styles.fromProperti
 export const highlightFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(highlightFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.highlight-fill-readable-control",
 );
@@ -494,6 +500,7 @@ export const criticalFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const criticalFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(criticalFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.critical-fill-discernible-control",
 );
@@ -511,6 +518,7 @@ export const criticalFillDiscernibleControlStyles: Styles = Styles.fromPropertie
 export const criticalFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(criticalFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.critical-fill-readable-control",
 );
@@ -600,6 +608,7 @@ export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
 export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForegroundBySet(neutralFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.neutral-fill-discernible-control",
 );
@@ -617,6 +626,7 @@ export const neutralFillDiscernibleControlStyles: Styles = Styles.fromProperties
 export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
     {
         ...Fill.backgroundAndForeground(neutralFillReadable, neutralStrokeStrongRecipe),
+        ...densityBorderStyles(transparent),
     },
     "color.neutral-fill-readable-control",
 );
