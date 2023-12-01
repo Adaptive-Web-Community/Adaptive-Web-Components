@@ -1,6 +1,8 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
+    densityControl,
     labelTextStyles,
+    roundShapeStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles
 } from "@adaptive-web/adaptive-ui/reference";
@@ -14,6 +16,13 @@ import { RadioAnatomy } from "./radio.template.js";
 export const styleModules: StyleModules = [
     [
         {
+        },
+        Styles.fromProperties({
+            gap: densityControl.horizontalGap,
+        })
+    ],
+    [
+        {
             part: RadioAnatomy.parts.label,
         },
         labelTextStyles
@@ -22,13 +31,19 @@ export const styleModules: StyleModules = [
         {
             part: RadioAnatomy.parts.control,
         },
-        selectableUnselectedStyles
+        Styles.compose([
+            selectableUnselectedStyles,
+            roundShapeStyles,
+        ]),
     ],
     [
         {
             hostCondition: RadioAnatomy.conditions.checked,
             part: RadioAnatomy.parts.control,
         },
-        selectableSelectedStyles
+        Styles.compose([
+            selectableSelectedStyles,
+            roundShapeStyles,
+        ]),
     ],
 ];

@@ -42,12 +42,3 @@ BreadcrumbsWithTextSeparators.args = {
         </adaptive-breadcrumb-item>
     `,
 };
-
-export const BreadcrumbsWithAnchors: Story<FASTBreadcrumb> = renderComponent(storyTemplate).bind({});
-BreadcrumbsWithAnchors.args = {
-    storyContent: html`
-        <a href="#">Breadcrumb Item 1</a>
-        <a href="#">Breadcrumb Item 2</a>
-        <a href="#">Breadcrumb Item 3</a>
-    `,
-};

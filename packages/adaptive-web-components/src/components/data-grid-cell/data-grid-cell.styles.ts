@@ -7,6 +7,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 export const templateStyles: ElementStyles = css`
     :host {
         overflow: hidden;
+        white-space: nowrap;
     }
 `;
 
@@ -15,12 +16,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        white-space: nowrap;
-    }
-
-    :host([cell-type="columnheader"]),
-    :host([cell-type="rowheader"]) {
-        font-weight: 600;
-    }
 `;

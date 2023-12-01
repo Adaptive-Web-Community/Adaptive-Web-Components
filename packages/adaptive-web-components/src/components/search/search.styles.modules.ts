@@ -4,6 +4,7 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
+    densityControl,
     inputStyles,
     labelTextStyles,
     neutralFillStealthControlStyles,
@@ -20,7 +21,14 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        typeRampBaseStyles
+        Styles.compose(
+            [
+                typeRampBaseStyles,
+            ],
+            {
+                gap: densityControl.verticalGap,
+            }
+        ),
     ],
     [
         {

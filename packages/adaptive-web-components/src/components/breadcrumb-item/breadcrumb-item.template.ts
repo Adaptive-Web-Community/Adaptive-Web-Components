@@ -21,7 +21,10 @@ export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 /**
  * @public
  */
-export const BreadcrumbItemConditions = {};
+export const BreadcrumbItemConditions = {
+    noHref: ":not([href])",
+    current: "[aria-current]",
+};
 
 /**
  * @public

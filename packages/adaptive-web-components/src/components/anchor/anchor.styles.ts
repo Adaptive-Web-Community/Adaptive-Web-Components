@@ -11,13 +11,12 @@ export const templateStyles: ElementStyles = css`
     }
 
     .control {
-        display: inline-flex;
-        flex-grow: 1;
-        justify-content: center;
+        display: flex;
         align-items: center;
         white-space: nowrap;
-        font: inherit;
-        text-decoration: none;
+        /* explicit width */
+        flex-grow: 1;
+        justify-content: center;
     }
 
     ::slotted([slot="start"]),
@@ -31,8 +30,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .control.icon-only {
-        padding: 0;
-        line-height: 0;
-    }
 `;

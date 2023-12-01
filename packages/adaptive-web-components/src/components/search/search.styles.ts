@@ -10,24 +10,34 @@ import { density, heightNumber } from "../../styles/index.js";
  */
 export const templateStyles: ElementStyles = css`
     :host {
-        display: inline-block;
-        user-select: none;
-        /* position: relative; */
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .label {
+        align-self: start;
+        cursor: pointer;
+    }
+
+    .label.label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     .root,
     .input-wrapper {
         display: flex;
+        align-items: center;
     }
 
     .control {
         -webkit-appearance: none;
-        margin: 0;
-        padding: unset;
-        border: none;
+        /* reset */
         background: transparent;
+        border: none;
         color: inherit;
         font: inherit;
+        padding: unset;
     }
 
     .control::-webkit-search-cancel-button {
@@ -58,16 +68,6 @@ export const templateStyles: ElementStyles = css`
         opacity: 0;
     }
 
-    .label.label__hidden {
-        display: none;
-        visibility: hidden;
-    }
-
-    .label {
-        display: inline-block;
-        cursor: pointer;
-    }
-
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
@@ -79,14 +79,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .label {
-        margin-bottom: 4px;
-    }
-
-    .root {
-        /*position: relative;*/
-    }
-
     .clear-button {
         margin: 1px;
         height: calc(100% - 2px);

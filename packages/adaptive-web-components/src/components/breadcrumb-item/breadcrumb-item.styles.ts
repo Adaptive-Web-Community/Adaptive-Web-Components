@@ -1,5 +1,4 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { neutralForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -25,8 +24,8 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    :host([aria-current]) .control {
-        cursor: default;
+    .control[aria-current] {
+        text-decoration: none;
     }
 
     ::slotted([slot="start"]),
@@ -41,9 +40,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host(:not([href])),
-    :host([aria-current]) .control {
-        color: ${neutralForegroundRest} !important;
-        fill: currentcolor;
-    }
 `;

@@ -1,8 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    accentStrokeReadableRest,
     cornerRadiusControl,
     focusStrokeThickness,
+    highlightStrokeReadableRest,
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
@@ -28,12 +28,8 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        padding: 1px 0;
-    }
-
     :host([row-type="sticky-header"]) {
-        background: ${neutralFillSubtleRest};
+        background-color: ${neutralFillSubtleRest};
     }
 
     :host([aria-selected="true"])::after {
@@ -41,7 +37,7 @@ export const aestheticStyles: ElementStyles = css`
         display: block;
         position: absolute;
         border-radius: ${cornerRadiusControl};
-        background: ${accentStrokeReadableRest};
+        background-color: ${highlightStrokeReadableRest};
         align-self: center;
         left: ${focusStrokeThickness};
         width: 3px;

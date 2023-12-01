@@ -1,5 +1,6 @@
 import { StyleModules } from "@adaptive-web/adaptive-ui";
-import { itemStyles } from "@adaptive-web/adaptive-ui/reference";
+import { highlightFillReadableControlStyles, itemStyles } from "@adaptive-web/adaptive-ui/reference";
+import { PickerMenuOptionAnatomy } from "./picker-menu-option.template.js";
 
 /**
  * Visual styles composed by modules.
@@ -10,6 +11,12 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        itemStyles
+        itemStyles,
+    ],
+    [
+        {
+            hostCondition: PickerMenuOptionAnatomy.conditions.selected,
+        },
+        highlightFillReadableControlStyles,
     ],
 ];

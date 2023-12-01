@@ -56,6 +56,17 @@ export default {
                         max-width: 620px;
                         margin: 20px;
                     }
+
+                    .scroll-view
+                    /*TODO part selectors outside of component*/
+                    /*adaptive-horizontal-scroll::part(scroll-view)*/ {
+                        padding: 4px;
+                    }
+
+                    .content
+                    /*adaptive-horizontal-scroll::part(content)*/ {
+                        gap: 4px;
+                    }
                 `);
             });
 

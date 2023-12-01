@@ -1,9 +1,3 @@
-import {
-    foregroundOnAccentRest,
-} from "@adaptive-web/adaptive-ui/migration";
-import {
-    accentFillReadableRest,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -27,8 +21,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host([aria-selected="true"]) {
-        background: ${accentFillReadableRest};
-        color: ${foregroundOnAccentRest};
-    }
 `;

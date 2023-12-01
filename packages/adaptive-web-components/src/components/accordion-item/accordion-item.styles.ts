@@ -22,7 +22,6 @@ export const templateStyles: ElementStyles = css`
     }
 
     .button {
-        appearance: none;
         border: none;
         background: none;
         text-align: left;

@@ -1,4 +1,3 @@
-import { neutralForegroundRest } from "@adaptive-web/adaptive-ui/migration";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -16,7 +15,7 @@ export const templateStyles: ElementStyles = css`
     }
 
     .positioning-region {
-        display: inline-flex;
+        display: flex;
         flex-grow: 1;
         flex-wrap: wrap;
         align-items: center;
@@ -39,13 +38,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        gap: 8px;
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
-    }
-
-    .positioning-region {
-        gap: 8px;
-    }
 `;

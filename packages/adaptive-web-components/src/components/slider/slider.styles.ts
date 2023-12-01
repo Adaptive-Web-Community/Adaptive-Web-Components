@@ -1,15 +1,5 @@
-import {
-    accentForegroundRest,
-    neutralForegroundRest,
-} from "@adaptive-web/adaptive-ui/migration";
-import {
-    designUnit,
-    neutralStrokeDiscernibleRest,
-    neutralStrokeSubtleActive,
-    neutralStrokeSubtleHover,
-} from "@adaptive-web/adaptive-ui/reference";
+import { designUnit } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -106,7 +96,6 @@ export const templateStyles: ElementStyles = css`
         height: 100%;
         width: var(--track-width);
     }
-
 `;
 
 /**
@@ -115,7 +104,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        --thumb-size: calc((${heightNumber} * 0.5) * 1px);
+        --thumb-size: 16px;
         --track-width: ${designUnit};
         --track-overhang: calc((${designUnit} / 2) * -1);
         margin: ${designUnit} 0;
@@ -127,29 +116,5 @@ export const aestheticStyles: ElementStyles = css`
 
     :host([orientation="vertical"]) .positioning-region {
         margin: 0 8px;
-    }
-
-    .thumb {
-        border: none;
-        border-radius: 50%;
-        background: ${neutralForegroundRest};
-    }
-
-    .thumb:hover {
-        border-color: ${neutralStrokeSubtleHover};
-        background: ${neutralForegroundRest};
-    }
-
-    .thumb:active {
-        border-color: ${neutralStrokeSubtleActive};
-        background: ${neutralForegroundRest};
-    }
-
-    .track-start {
-        background: ${accentForegroundRest};
-    }
-
-    .track {
-        background: ${neutralStrokeDiscernibleRest};
     }
 `;

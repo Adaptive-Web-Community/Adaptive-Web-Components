@@ -6,9 +6,18 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
-        display: inline-block;
-        user-select: none;
-        /* position: relative; */
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .label {
+        align-self: start;
+        cursor: pointer;
+    }
+
+    .label.label__hidden {
+        display: none;
+        visibility: hidden;
     }
 
     .root {
@@ -17,25 +26,15 @@ export const templateStyles: ElementStyles = css`
     }
 
     .control {
-        -webkit-appearance: none;
         width: 100%;
-        margin: 0;
-        padding: unset;
-        border: none;
+        /* reset */
         background: transparent;
+        border: none;
         color: inherit;
         font: inherit;
+        padding: unset;
     }
 
-    .label.label__hidden {
-        display: none;
-        visibility: hidden;
-    }
-
-    .label {
-        display: inline-block;
-        cursor: pointer;
-    }
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
@@ -48,15 +47,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .label {
-        margin-bottom: 4px;
-    }
-
-    .root {
-        /*position: relative;*/
-    }
-
-    .control {
-        height: 100%;
-    }
 `;

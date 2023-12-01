@@ -1,7 +1,6 @@
 import {
     focusStrokeOuter,
     focusStrokeThickness,
-    layerFillFixedPlus1,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -21,10 +20,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        background: ${layerFillFixedPlus1};
-    }
-
     :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
     :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};

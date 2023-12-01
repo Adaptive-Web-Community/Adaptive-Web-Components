@@ -12,7 +12,6 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
         position: relative;
-        user-select: none;
         vertical-align: top;
     }
 
@@ -29,16 +28,13 @@ export const templateStyles: ElementStyles = css`
     }
 
     .selected-value {
-        -webkit-appearance: none;
+        width: 100%;
+        /* reset */
         background: transparent;
         border: none;
         color: inherit;
         font: inherit;
         padding: unset;
-    }
-
-    :host(:active) .selected-value {
-        user-select: none;
     }
 
     .listbox {
@@ -53,11 +49,6 @@ export const templateStyles: ElementStyles = css`
         display: none;
     }
 
-    :host([disabled]) .control,
-    :host([disabled]) .selected-value {
-        user-select: none;
-    }
-
     ::slotted([role="option"]) {
         flex: 0 0 auto;
     }
@@ -68,22 +59,8 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        min-width: 250px;
-    }
-
-    .control {
-        min-height: 100%;
-        width: 100%;
-    }
-
-    .selected-value {
-        flex: 1 1 auto;
-        text-align: start;
-    }
-
     .listbox {
-        background: ${layerFillFixedPlus1};
+        background-color: ${layerFillFixedPlus1};
         box-shadow: ${elevationFlyout};
     }
 `;

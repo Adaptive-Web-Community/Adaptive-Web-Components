@@ -7,6 +7,8 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 export const templateStyles: ElementStyles = css`
     :host {
         display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .positioning-region {
@@ -24,12 +26,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .positioning-region {
-        gap: 8px;
-    }
 `;

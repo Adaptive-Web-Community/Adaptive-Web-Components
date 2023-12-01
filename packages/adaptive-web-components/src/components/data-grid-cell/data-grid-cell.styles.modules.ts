@@ -7,6 +7,7 @@ import {
     controlShapeStyles,
     plainTextStyles
 } from "@adaptive-web/adaptive-ui/reference";
+import { DataGridCellAnatomy } from "./data-grid-cell.template.js";
 
 /**
  * Visual styles composed by modules.
@@ -24,5 +25,21 @@ export const styleModules: StyleModules = [
                 plainTextStyles,
             ],
         )
+    ],
+    [
+        {
+            hostCondition: DataGridCellAnatomy.conditions.cellTypeColumnHeader,
+        },
+        Styles.fromProperties({
+            fontWeight: "600",
+        }),
+    ],
+    [
+        {
+            hostCondition: DataGridCellAnatomy.conditions.cellTypeRowHeader,
+        },
+        Styles.fromProperties({
+            fontWeight: "600",
+        }),
     ],
 ];

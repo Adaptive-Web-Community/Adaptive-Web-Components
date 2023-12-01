@@ -10,13 +10,13 @@ export const templateStyles: ElementStyles = css`
     }
 
     .control {
-        display: inline-flex;
-        flex-grow: 1;
-        justify-content: center;
+        display: flex;
         align-items: center;
         white-space: nowrap;
+        /* explicit width */
+        flex-grow: 1;
+        justify-content: center;
         /* reset */
-        font: inherit;
         border: none;
         margin: 0;
         padding: 0;
@@ -37,8 +37,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .control.icon-only {
-        padding: 0;
-        line-height: 0;
-    }
 `;

@@ -12,7 +12,6 @@ const storyTemplate = html<StoryArgs<FASTSlider>>`
         orientation="${(x) => x.orientation}"
         step="${(x) => x.step}"
         value="${(x) => x.value}"
-        style="min-height: 200px;"
     >
         ${(x) => x.storyContent}
     </adaptive-slider>
@@ -81,3 +80,13 @@ export const SliderVertical: Story<FASTSlider> = renderComponent(
 SliderVertical.args = {
     orientation: Orientation.vertical,
 };
+
+export const SliderVerticalWithLabels: Story<FASTSlider> = renderComponent(
+    html<StoryArgs<FASTSlider>>`
+        <div style="height: 300px;">
+            ${storyTemplate}
+        </div>
+    `
+).bind({});
+SliderVerticalWithLabels.args =
+    Object.assign({}, SliderWithLabels.args, { orientation: Orientation.vertical });

@@ -7,6 +7,7 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const PickerMenuOptionConditions = {
+    selected: "[aria-selected='true']",
 };
 
 /**

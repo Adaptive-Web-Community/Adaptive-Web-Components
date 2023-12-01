@@ -1,6 +1,8 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
+    densityControl,
     labelTextStyles,
+    roundShapeStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles
 } from "@adaptive-web/adaptive-ui/reference";
@@ -14,21 +16,40 @@ import { SwitchAnatomy } from "./switch.template.js";
 export const styleModules: StyleModules = [
     [
         {
+        },
+        Styles.fromProperties({
+            gap: densityControl.horizontalGap,
+        }),
+    ],
+    [
+        {
             part: SwitchAnatomy.parts.label,
         },
-        labelTextStyles
+        labelTextStyles,
     ],
     [
         {
             part: SwitchAnatomy.parts.switch,
         },
-        selectableUnselectedStyles
+        Styles.compose([
+            selectableUnselectedStyles,
+            roundShapeStyles,
+        ]),
     ],
     [
         {
             hostCondition: SwitchAnatomy.conditions.checked,
             part: SwitchAnatomy.parts.switch,
         },
-        selectableSelectedStyles
+        Styles.compose([
+            selectableSelectedStyles,
+            roundShapeStyles,
+        ]),
     ],
+    [
+        {
+            part: SwitchAnatomy.parts.thumb,
+        },
+        roundShapeStyles,
+    ]
 ];

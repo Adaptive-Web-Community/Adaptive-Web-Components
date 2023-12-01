@@ -1,5 +1,6 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
+    densityControl,
     inputStyles,
     labelTextStyles,
     typeRampBaseStyles
@@ -15,7 +16,14 @@ export const styleModules: StyleModules = [
     [
         {
         },
-        typeRampBaseStyles
+        Styles.compose(
+            [
+                typeRampBaseStyles,
+            ],
+            {
+                gap: densityControl.verticalGap,
+            }
+        ),
     ],
     [
         {

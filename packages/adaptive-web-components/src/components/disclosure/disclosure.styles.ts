@@ -1,13 +1,3 @@
-import {
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-} from "@adaptive-web/adaptive-ui/migration";
-import {
-    accentFillReadableActive,
-    accentFillReadableHover,
-    accentFillReadableRest,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -19,14 +9,9 @@ export const templateStyles: ElementStyles = css`
         display: block;
     }
 
-    .invoker::-webkit-details-marker {
-        display: none;
-    }
-
     .invoker {
         display: flex;
         align-items: center;
-        list-style-type: none;
         cursor: pointer;
     }
 
@@ -50,19 +35,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .invoker {
-        background: ${accentFillReadableRest};
-        color: ${foregroundOnAccentRest};
-        fill: currentcolor;
         max-width: max-content;
-    }
-
-    .invoker:hover {
-        background: ${accentFillReadableHover};
-        color: ${foregroundOnAccentHover};
-    }
-
-    .invoker:active {
-        background: ${accentFillReadableActive};
-        color: ${foregroundOnAccentActive};
     }
 `;

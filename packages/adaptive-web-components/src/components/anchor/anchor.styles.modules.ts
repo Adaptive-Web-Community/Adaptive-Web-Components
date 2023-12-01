@@ -1,5 +1,11 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
-import { actionStyles } from "@adaptive-web/adaptive-ui/reference";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import {
+    accentForegroundReadableControlStyles,
+    controlShapeStyles,
+    densityControl,
+    neutralForegroundStrongElementStyles,
+    typeRampBaseStyles
+} from "@adaptive-web/adaptive-ui/reference";
 import { AnchorAnatomy } from "./anchor.template.js";
 
 /**
@@ -12,6 +18,20 @@ export const styleModules: StyleModules = [
         {
             part: AnchorAnatomy.parts.control,
         },
-        actionStyles
+        Styles.compose([
+            controlShapeStyles,
+            typeRampBaseStyles,
+            accentForegroundReadableControlStyles,
+        ],
+        {
+            gap: densityControl.horizontalGap,
+        }),
+    ],
+    [
+        {
+            hostCondition: AnchorAnatomy.conditions.noHref,
+            part: AnchorAnatomy.parts.control,
+        },
+        neutralForegroundStrongElementStyles,
     ],
 ];

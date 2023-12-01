@@ -1,5 +1,5 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
-import { controlShapeStyles } from "@adaptive-web/adaptive-ui/reference";
+import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { controlShapeStyles, neutralFillSubtleRest, roundShapeStyles } from "@adaptive-web/adaptive-ui/reference";
 import { SkeletonAnatomy } from "./skeleton.template.js";
 
 /**
@@ -10,8 +10,21 @@ import { SkeletonAnatomy } from "./skeleton.template.js";
 export const styleModules: StyleModules = [
     [
         {
-            hostCondition: SkeletonAnatomy.conditions.rectangle
         },
-        controlShapeStyles
+        Styles.fromProperties({
+            backgroundFill: neutralFillSubtleRest,
+        })
+    ],
+    [
+        {
+            hostCondition: SkeletonAnatomy.conditions.rectangle,
+        },
+        controlShapeStyles,
+    ],
+    [
+        {
+            hostCondition: SkeletonAnatomy.conditions.circle,
+        },
+        roundShapeStyles,
     ]
 ];

@@ -54,10 +54,5 @@ export const aestheticStyles: ElementStyles = css`
     .control {
         width: calc((${heightNumber} / 2) * 1px + ${designUnit});
         height: calc((${heightNumber} / 2) * 1px + ${designUnit});
-        border-radius: 50% !important;
-    }
-
-    .label {
-        padding-inline-start: calc((${designUnit} * 2) + 2px);
     }
 `;
