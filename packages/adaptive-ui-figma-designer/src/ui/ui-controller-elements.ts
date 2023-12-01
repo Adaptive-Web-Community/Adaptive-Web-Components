@@ -143,6 +143,7 @@ export class ElementsController {
         // Create an element representing this node in our local dom.
         const nodeElement = document.createElement(providerElementName) as FASTElement;
         nodeElement.id = node.id;
+        nodeElement.title = node.name;
         element.appendChild(nodeElement);
 
         // Set all the inherited design token values for the local element.

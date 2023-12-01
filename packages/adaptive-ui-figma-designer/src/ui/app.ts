@@ -570,7 +570,7 @@ export class App extends FASTElement {
     public appliedStyleModules: StyleModuleDisplayList = new Map();
 
     @observable
-    public statesState: StatesState;
+    public statesState: StatesState | "unknown" = "unknown";
 
     @observable
     public selectionDescription: string;

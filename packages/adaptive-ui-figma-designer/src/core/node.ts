@@ -14,6 +14,16 @@ import {
     ReadonlyDesignTokenValues,
 } from "./model.js";
 
+/**
+ * Layer name for special handling of the focus indicator in design tools.
+ */
+export const focusIndicatorNodeName = "Focus indicator";
+// This is not ideal, but Figma doesn't support `outline` and there's no great way to approximate it.
+// The best option is to include the indicator as a _child_ of element it indicates. The problem with
+// this is it then picks up the colors and token values of that parent, when instead those values
+// should come from the parent's parent.
+// We'll re-parent the focus indicator for the purposes of evaluating styling definitions.
+
 const DesignTokenCache: Map<string, ReadonlyDesignTokenValues> = new Map();
 
 export const StatesState = {

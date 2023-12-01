@@ -18,9 +18,13 @@
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "cSpell.words": [
+        "activeid",
         "Appliable",
         "culori",
+        "Demi",
+        "Lrgb",
         "okhsl",
+        "tablist",
         "Unregisters"
     ],
     "editor.insertSpaces": true,

@@ -39,6 +39,7 @@ import {
     fillReadableRestDelta,
     fillStealthRestDelta,
     fillSubtleRestDelta,
+    focusStroke,
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeThickness,
@@ -177,6 +178,7 @@ const colorTokens: DesignTokenStore<Swatch> = [
     neutralFillDiscernibleRest,
     neutralFillReadableRest,
     // Stroke
+    focusStroke,
     focusStrokeOuter,
     focusStrokeInner,
     accentStrokeSafetyRest,
