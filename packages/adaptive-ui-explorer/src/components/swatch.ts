@@ -1,6 +1,5 @@
 import { Swatch } from "@adaptive-web/adaptive-ui";
-import { neutralForegroundHint } from "@adaptive-web/adaptive-ui/migration";
-import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { fillColor, neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
 import {
     attr,
     css,
@@ -40,7 +39,7 @@ const styles = css`
         width: 100%;
         padding: 4px 0;
         box-sizing: border-box;
-        color: ${neutralForegroundHint};
+        color: ${neutralStrokeReadableRest};
         font-size: 12px;
         grid-column-gap: 16px;
         justify-items: start;

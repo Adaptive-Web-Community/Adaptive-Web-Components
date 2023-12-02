@@ -1,9 +1,11 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
 import { fillColor } from '@adaptive-web/adaptive-ui/reference';
 import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
-import { SwatchType } from "./swatch.js";
-import "./adaptive-component.js";
-import "./swatch.js";
+import { AdaptiveComponent } from "./adaptive-component.js";
+import { AppSwatch, SwatchType } from "./swatch.js";
+
+AdaptiveComponent;
+AppSwatch;
 
 const template = html<StyleExample>`
     <template>

@@ -30,13 +30,24 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DesignToken } from "@microsoft/fast-foundation";
+import { AdaptiveDesignSystem, componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { AllComponents } from "@adaptive-web/adaptive-web-components/all-components";
 import { ComponentType } from "./component-type.js";
-import "./components/color-block.js";
-import "./components/control-pane/index.js";
-import "./components/layer-background/index.js";
-import "./components/palette-gradient/palette-gradient.js";
+import { ColorBlock } from "./components/color-block.js";
+import { ControlPane } from "./components/control-pane/index.js";
+import { LayerBackground } from "./components/layer-background/index.js";
+import { PaletteGradient } from "./components/palette-gradient/palette-gradient.js";
+import { SampleApp } from "./sample/index.js";
+
+AdaptiveDesignSystem.defineComponents(AllComponents);
 
 DesignToken.registerDefaultStyleTarget();
+
+ColorBlock;
+ControlPane;
+LayerBackground;
+PaletteGradient;
+SampleApp;
 
 const colorBlockTemplate = html<App>`
     ${repeat(
@@ -52,6 +63,27 @@ const colorBlockTemplate = html<App>`
             ></app-color-block>
         `
     )}
+`;
+
+const sampleTemplate = html<App>`
+    <app-design-system-provider style="display: flex;">
+        <app-layer-background
+            id="light-mode"
+            base-layer-luminance="${LayerBaseLuminance.LightMode}"
+            background-layer-recipe="-3"
+            style="flex-grow: 1; padding: 100px;"
+        >
+            <app-sample-app></app-sample-app>
+        </app-layer-background>
+        <app-layer-background
+            id="dark-mode"
+            base-layer-luminance="${LayerBaseLuminance.DarkMode}"
+            background-layer-recipe="-3"
+            style="flex-grow: 1; padding: 100px;"
+        >
+            <app-sample-app></app-sample-app>
+        </app-layer-background>
+    </app-design-system-provider>
 `;
 
 const template = html<App>`
@@ -79,7 +111,6 @@ const template = html<App>`
                     id="control-pane"
                     class="control-pane-container"
                     base-layer-luminance="${LayerBaseLuminance.DarkMode}"
-                    background-layer-recipe="-1"
                 >
                     <app-control-pane
                         :componentType="${(x) => x.componentType}"
@@ -154,6 +185,7 @@ export interface SwatchInfo {
 
 @customElement({
     name: `app-design-system-provider`,
+    styles: componentBaseStyles,
     template: html`
         <slot></slot>
     `,
@@ -249,7 +281,11 @@ export class App extends FASTElement implements AppAttributes {
     public designSystemElement: FASTElement;
 
     public componentTypeTemplate(): ViewTemplate<App, any> {
-        return colorBlockTemplate;
+        if (this.componentType === ComponentType.sample) {
+            return sampleTemplate;
+        } else {
+            return colorBlockTemplate;
+        }
     }
 
     private updateBackgrounds(): void {

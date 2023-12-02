@@ -36,9 +36,13 @@ import {
     when,
 } from "@microsoft/fast-element";
 import { ComponentType } from "../component-type.js";
-import "./adaptive-component.js";
-import "./style-example.js";
-import "./swatch.js";
+import { AdaptiveComponent } from "./adaptive-component.js";
+import { StyleExample } from "./style-example.js";
+import { AppSwatch } from "./swatch.js";
+
+AdaptiveComponent;
+StyleExample;
+AppSwatch;
 
 const backplateComponents = html<ColorBlock>`
     <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillReadableControlStyles}">
