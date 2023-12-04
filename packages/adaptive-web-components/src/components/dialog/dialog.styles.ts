@@ -1,5 +1,4 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { elevationDialog, fillColor } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -44,12 +43,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .overlay {
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-
-    .control {
-        background-color: ${fillColor};
-        box-shadow: ${elevationDialog};
-    }
 `;

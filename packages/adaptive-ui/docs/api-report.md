@@ -6,7 +6,7 @@
 
 import { Color as Color_2 } from 'culori/fn';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
-import type { CSSDirective } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
@@ -51,8 +51,8 @@ export const BorderThickness: {
 };
 
 // @public
-export class Color implements RelativeLuminance {
-    protected constructor(color: Color_2);
+export class Color implements RelativeLuminance, CSSDirective {
+    constructor(color: Color_2);
     readonly color: Color_2;
     contrast: any;
     createCSS: () => string;
@@ -201,6 +201,9 @@ export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
 
 // @public
+export const createTyped: typeof TypedCSSDesignToken.createTyped;
+
+// @public
 export function deltaSwatch(palette: Palette, reference: Swatch, delta: number, direction?: PaletteDirection): Swatch;
 
 // @public
@@ -232,6 +235,12 @@ export class DesignTokenMetadata {
     protected set intendedFor(value: StyleProperty[] | undefined);
     get type(): DesignTokenType;
     protected set type(value: DesignTokenType);
+}
+
+// @public
+export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
+    // (undocumented)
+    createCSS(): string;
 }
 
 // @public
@@ -499,6 +508,7 @@ export const StyleProperty: {
     readonly outlineOffset: "outlineOffset";
     readonly outlineStyle: "outlineStyle";
     readonly outlineWidth: "outlineWidth";
+    readonly shadow: "shadow";
 };
 
 // @public

@@ -1,7 +1,3 @@
-import {
-    elevationFlyout,
-    layerFillFixedPlus1,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -63,8 +59,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .listbox {
-        background-color: ${layerFillFixedPlus1};
-        box-shadow: ${elevationFlyout};
-    }
 `;

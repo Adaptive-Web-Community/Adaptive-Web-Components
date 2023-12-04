@@ -4,6 +4,7 @@ import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./card.styles.js";
 import { CardAnatomy, template } from "./card.template.js";
+import { AdaptiveCard } from "./card.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -16,7 +17,7 @@ export function composeCard(
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, CardAnatomy, options);
 
-    return FASTCard.compose({
+    return AdaptiveCard.compose({
         name: `${ds.prefix}-card`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

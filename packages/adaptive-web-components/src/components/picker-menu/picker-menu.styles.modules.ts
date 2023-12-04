@@ -4,7 +4,9 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     itemContainerDensityStyles,
-    layerShapeStyles
+    layerFillFixedPlus1,
+    layerShapeStyles,
+    shadowFlyoutStyles
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -20,7 +22,10 @@ export const styleModules: StyleModules = [
             [
                 layerShapeStyles,
                 itemContainerDensityStyles,
-            ],
+                shadowFlyoutStyles,
+            ], {
+                backgroundFill: layerFillFixedPlus1,
+            }
         )
     ],
 ];

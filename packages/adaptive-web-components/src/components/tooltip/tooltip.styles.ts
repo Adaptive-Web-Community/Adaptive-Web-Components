@@ -1,7 +1,3 @@
-import {
-    elevationTooltip,
-    neutralFillSubtleRest,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -26,11 +22,6 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        background: ${neutralFillSubtleRest};
-        box-shadow: ${elevationTooltip};
-    }
-
     :host([visible]) {
         transition: visibility 0s 0s linear, opacity 50ms 0.5s linear;
         opacity: 1;

@@ -1,4 +1,5 @@
 import { type Color as CuloriColor, formatHex, formatRgb, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { CSSDirective, cssDirective } from "@microsoft/fast-element";
 import { contrast, type RelativeLuminance } from "./utilities/relative-luminance.js";
 
 useMode(modeRgb);
@@ -10,7 +11,8 @@ useMode(modeLrgb);
  *
  * @public
  */
-export class Color implements RelativeLuminance {
+@cssDirective()
+export class Color implements RelativeLuminance, CSSDirective {
     /**
      * The underlying Color value.
      */
@@ -23,7 +25,7 @@ export class Color implements RelativeLuminance {
      *
      * @param color - The underlying Color value
      */
-    protected constructor(color: CuloriColor) {
+    constructor(color: CuloriColor) {
         this.color = Object.freeze(color);
         this._relativeLuminance = wcagLuminance(this.color);
     }

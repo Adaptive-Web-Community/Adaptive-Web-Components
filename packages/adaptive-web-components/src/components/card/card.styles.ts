@@ -1,11 +1,3 @@
-import {
-    elevationCardFocus,
-    elevationCardHover,
-    elevationCardRest,
-    layerFillInteractiveActive,
-    layerFillInteractiveHover,
-    layerFillInteractiveRest,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -16,6 +8,10 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: block;
     }
+
+    :host([interactive]) {
+        cursor: pointer;
+    }
 `;
 
 /**
@@ -23,20 +19,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host {
-        height: 100%;
-        width: 100%;
-        background: ${layerFillInteractiveRest};
-        box-shadow: ${elevationCardRest}
-    }
-
-    :host(:hover) {
-        background: ${layerFillInteractiveHover};
-        box-shadow: ${elevationCardHover}
-    }
-
-    :host(:focus-within) {
-        background: ${layerFillInteractiveActive};
-        box-shadow: ${elevationCardFocus}
-    }
 `;

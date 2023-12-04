@@ -1,7 +1,3 @@
-import {
-    elevationFlyout,
-    layerFillFixedPlus1,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -26,8 +22,6 @@ export const aestheticStyles: ElementStyles = css`
     :host {
         max-width: 368px;
         min-width: 64px;
-        background: ${layerFillFixedPlus1};
-        box-shadow: ${elevationFlyout};
     }
 
     ::slotted(adaptive-divider) {

@@ -4,8 +4,10 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     itemContainerDensityStyles,
+    layerFillFixedPlus1,
     layerShapeStyles,
-    plainTextStyles
+    plainTextStyles,
+    shadowFlyoutStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
@@ -14,7 +16,10 @@ const menuStyles = Styles.compose(
         plainTextStyles,
         layerShapeStyles,
         itemContainerDensityStyles,
-    ],
+        shadowFlyoutStyles,
+    ], {
+        backgroundFill: layerFillFixedPlus1,
+    }
 );
 
 /**
