@@ -2,9 +2,7 @@ import { css } from "@microsoft/fast-element";
 import {
     bodyFontFamily,
     cornerRadiusLayer,
-    elevationCardRest,
     fillColor,
-    layerFillInteractiveRest,
     neutralStrokeStrongRest,
     typeRampPlus3FontSize,
     typeRampPlus3LineHeight
@@ -86,11 +84,6 @@ export const sampleAppStyles = css`
         flex-grow: 1;
         height: unset;
         width: unset;
-    }
-
-    adaptive-card:hover {
-        background: ${layerFillInteractiveRest};
-        box-shadow: ${elevationCardRest};
     }
 
     .content .heading {
