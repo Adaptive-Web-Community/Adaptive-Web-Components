@@ -1,7 +1,7 @@
 import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
-    labelTextStyles,
+    plainTextStyles,
     roundShapeStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles
@@ -25,7 +25,7 @@ export const styleModules: StyleModules = [
         {
             part: SwitchAnatomy.parts.label,
         },
-        labelTextStyles,
+        plainTextStyles,
     ],
     [
         {

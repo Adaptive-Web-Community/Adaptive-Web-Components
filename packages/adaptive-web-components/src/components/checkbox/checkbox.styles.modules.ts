@@ -1,7 +1,7 @@
 import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
-    labelTextStyles,
+    plainTextStyles,
     selectableSelectedStyles,
     selectableUnselectedStyles
 } from "@adaptive-web/adaptive-ui/reference";
@@ -24,7 +24,7 @@ export const styleModules: StyleModules = [
         {
             part: CheckboxAnatomy.parts.label,
         },
-        labelTextStyles
+        plainTextStyles
     ],
     [
         {
