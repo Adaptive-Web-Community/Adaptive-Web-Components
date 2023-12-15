@@ -42,6 +42,10 @@ export const templateStyles: ElementStyles = css`
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        /* For Floating UI to calc default position */
+        position: fixed;
+        top: 0;
+        left: 0;
     }
 
     :host(:empty) .listbox,
