@@ -1,9 +1,12 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
 import { typeRampPlus1FontSize, typeRampPlus1LineHeight } from "@adaptive-web/adaptive-ui/reference";
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 
 export const controlPaneStyles = css`
-    ${display("flex")} :host {
+    ${componentBaseStyles}
+
+    :host {
+        display: flex;
         flex: 0 1 auto;
         flex-direction: column;
         gap: 24px;

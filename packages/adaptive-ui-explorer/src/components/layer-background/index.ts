@@ -16,12 +16,13 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from '@adaptive-web/adaptive-web-components';
 import { attr, css, customElement, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
-import { DesignToken, DesignTokenChangeRecord, display } from "@microsoft/fast-foundation";
+import { DesignToken, DesignTokenChangeRecord } from "@microsoft/fast-foundation";
 
 const layerBackgroundStyles = css`
     ${componentBaseStyles}
 
-    ${display("block")} :host {
+    :host {
+        display: block;
         background: ${fillColor};
         color: ${neutralStrokeStrongRest};
     }

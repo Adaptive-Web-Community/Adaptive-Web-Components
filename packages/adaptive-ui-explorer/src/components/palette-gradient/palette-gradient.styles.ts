@@ -1,16 +1,16 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 
 export const paletteGradientStyles = css`
-    ${display("flex")} :host {
+    ${componentBaseStyles}
+
+    :host {
         display: flex;
-        width: 100%;
     }
 
     a {
         display: flex;
         flex: 1;
-        height: 100%;
     }
 
     a.source {

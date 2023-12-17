@@ -1,5 +1,6 @@
 import { Swatch } from "@adaptive-web/adaptive-ui";
-import { fillColor, neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
+import { densityControl, fillColor, neutralStrokeReadableRest, typeRampMinus1FontSize } from "@adaptive-web/adaptive-ui/reference";
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
     css,
@@ -31,24 +32,21 @@ function template<T extends AppSwatch>(): ElementViewTemplate<T> {
 }
 
 const styles = css`
+    ${componentBaseStyles}
+
     :host {
         display: grid;
         grid-template-columns: auto 1fr auto;
-        grid-template-rows: auto;
         align-items: center;
-        width: 100%;
-        padding: 4px 0;
-        box-sizing: border-box;
-        color: ${neutralStrokeReadableRest};
-        font-size: 12px;
-        grid-column-gap: 16px;
         justify-items: start;
+        grid-column-gap: ${densityControl.horizontalGap};
+        color: ${neutralStrokeReadableRest};
+        font-size: ${typeRampMinus1FontSize};
     }
 
     :host([type="foreground"]) .icon::before {
         font-size: 13px;
         content: "A";
-        font-weight: 400;
     }
 
     .icon {
@@ -63,7 +61,6 @@ const styles = css`
 
     .recipe-name {
         grid-column: 2;
-        grid-row: 1;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -73,7 +70,6 @@ const styles = css`
 
     .hex-code {
         grid-column: 3;
-        grid-row: 1;
     }
 `;
 
