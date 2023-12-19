@@ -1,6 +1,6 @@
 import { ElementViewTemplate } from "@microsoft/fast-element";
 import { cardTemplate, FASTCard } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 
 /**
@@ -20,13 +20,9 @@ export const CardParts = {
  * @public
  */
 export const CardAnatomy: ComponentAnatomy<typeof CardConditions, typeof CardParts> = {
-    interactivity: { 
-        interactivitySelector: "[interactive]:not([disabled])",
-        disabledSelector: "[interactive][disabled]",
-    },
+    interactivity: Interactivity.never,
     conditions: CardConditions,
     parts: CardParts,
-    focus: Focus.hostFocused(),
 };
 
 /**

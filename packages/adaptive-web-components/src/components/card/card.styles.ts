@@ -8,10 +8,6 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: block;
     }
-
-    :host([interactive]) {
-        cursor: pointer;
-    }
 `;
 
 /**
