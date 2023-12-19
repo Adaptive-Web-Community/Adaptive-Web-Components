@@ -42,6 +42,7 @@ import {
 } from "./color.js";
 import { densityControl, densityItemContainer, densityLayer } from "./density.js";
 import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
+import { layerFillFixedPlus1 } from "./layer.js";
 import {
     fontFamily,
     fontWeight,
@@ -1037,6 +1038,19 @@ export const labelTextStyles: Styles = Styles.compose(
         fontWeight: labelFontWeight,
     },
     "styles.text-label",
+);
+
+/**
+ * @public
+ */
+export const flyoutStyles: Styles = Styles.compose(
+    [
+        layerShapeStyles,
+        shadowFlyoutStyles,
+    ], {
+        backgroundFill: layerFillFixedPlus1,
+    },
+    "styles.flyout",
 );
 
 /**

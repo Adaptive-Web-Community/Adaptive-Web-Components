@@ -3,10 +3,8 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    flyoutStyles,
     itemContainerDensityStyles,
-    layerFillFixedPlus1,
-    layerShapeStyles,
-    shadowFlyoutStyles
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -20,12 +18,9 @@ export const styleModules: StyleModules = [
         },
         Styles.compose(
             [
-                layerShapeStyles,
                 itemContainerDensityStyles,
-                shadowFlyoutStyles,
-            ], {
-                backgroundFill: layerFillFixedPlus1
-            },
+                flyoutStyles,
+            ],
         )
     ],
 ];

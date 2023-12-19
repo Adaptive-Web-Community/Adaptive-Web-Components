@@ -3,11 +3,9 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    flyoutStyles,
     inputStyles,
     itemContainerDensityStyles,
-    layerFillFixedPlus1,
-    layerShapeStyles,
-    shadowFlyoutStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { ComboboxAnatomy } from "./combobox.template.js";
 
@@ -29,12 +27,9 @@ export const styleModules: StyleModules = [
         },
         Styles.compose(
             [
-                layerShapeStyles,
                 itemContainerDensityStyles,
-                shadowFlyoutStyles,
-            ], {
-                backgroundFill: layerFillFixedPlus1,
-            }
+                flyoutStyles,
+            ],
         )
     ],
 ];

@@ -4,12 +4,10 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
+    flyoutStyles,
     inputStyles,
     itemContainerDensityStyles,
-    layerFillFixedPlus1,
-    layerShapeStyles,
     neutralOutlineDiscernibleControlStyles,
-    shadowFlyoutStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { SelectAnatomy } from "./select.template.js";
 
@@ -52,13 +50,6 @@ export const styleModules: StyleModules = [
             hostCondition: SelectAnatomy.conditions.isDropdown,
             part: SelectAnatomy.parts.listbox
         },
-        Styles.compose(
-            [
-                layerShapeStyles,
-                shadowFlyoutStyles,
-            ], {
-                backgroundFill: layerFillFixedPlus1,
-            }
-        )
+        flyoutStyles,
     ],
 ];
