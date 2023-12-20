@@ -7,7 +7,6 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const CardConditions = {
-    interactive: "[interactive]",
 };
 
 /**

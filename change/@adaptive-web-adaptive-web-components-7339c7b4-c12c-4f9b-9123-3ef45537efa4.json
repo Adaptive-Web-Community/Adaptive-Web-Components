@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Updated elevation styling, added support for interactive Card",
+  "comment": "Updated elevation styling",
   "packageName": "@adaptive-web/adaptive-web-components",
   "email": "47367562+bheston@users.noreply.github.com",
   "dependentChangeType": "patch"

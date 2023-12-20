@@ -404,9 +404,7 @@ export const cardAestheticStyles: ElementStyles;
 export const CardAnatomy: ComponentAnatomy<typeof CardConditions, typeof CardParts>;
 
 // @public (undocumented)
-export const CardConditions: {
-    interactive: string;
-};
+export const CardConditions: {};
 
 // @public (undocumented)
 export const CardParts: {};
