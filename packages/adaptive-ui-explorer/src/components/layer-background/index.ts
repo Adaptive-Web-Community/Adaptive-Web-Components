@@ -1,8 +1,5 @@
 import { Swatch } from '@adaptive-web/adaptive-ui';
 import {
-    neutralForegroundRest,
-} from "@adaptive-web/adaptive-ui/migration";
-import {
     fillColor,
     layerFillBaseLuminance,
     layerFillFixedBase,
@@ -15,13 +12,35 @@ import {
     layerFillFixedPlus3,
     layerFillFixedPlus4,
     layerPalette,
+    neutralStrokeStrongRest,
 } from "@adaptive-web/adaptive-ui/reference";
-import { attr, css, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
+import { componentBaseStyles } from '@adaptive-web/adaptive-web-components';
+import { attr, css, customElement, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenChangeRecord, display } from "@microsoft/fast-foundation";
 
+const layerBackgroundStyles = css`
+    ${componentBaseStyles}
+
+    ${display("block")} :host {
+        background: ${fillColor};
+        color: ${neutralStrokeStrongRest};
+    }
+`;
+
+function layerBackgroundTemplate<T extends LayerBackground>(): ElementViewTemplate<T> {
+    return html<T>`
+        <slot></slot>
+    `;
+}
+
+@customElement({
+    name: "app-layer-background",
+    styles: layerBackgroundStyles,
+    template: layerBackgroundTemplate(),
+})
 export class LayerBackground extends FASTElement {
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
-    public baseLayerLuminance: number = 1;
+    public baseLayerLuminance: number;
     protected baseLayerLuminanceChanged(prev: number, next: number): void {
         layerFillBaseLuminance.setValueFor(this, this.baseLayerLuminance);
         this.updateBackgroundColor();
@@ -96,22 +115,3 @@ export class LayerBackground extends FASTElement {
         layerPalette.unsubscribe(this);
     }
 }
-
-export function layerBackgroundTemplate<T extends LayerBackground>(): ElementViewTemplate<T> {
-    return html<T>`
-        <slot></slot>
-    `;
-}
-
-export const layerBackgroundStyles = css`
-    ${display("block")} :host {
-        background: ${fillColor};
-        color: ${neutralForegroundRest};
-    }
-`;
-
-LayerBackground.define({
-    name: "app-layer-background",
-    styles: layerBackgroundStyles,
-    template: layerBackgroundTemplate(),
-});

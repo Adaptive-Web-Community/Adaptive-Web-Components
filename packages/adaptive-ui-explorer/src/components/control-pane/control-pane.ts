@@ -1,6 +1,13 @@
 import type { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { customElement, FASTElement, observable } from "@microsoft/fast-element";
+import { controlPaneStyles as styles } from "./control-pane.styles.js";
+import { controlPaneTemplate as template } from "./control-pane.template.js";
 
+@customElement({
+    name: "app-control-pane",
+    styles,
+    template: template(),
+})
 export class ControlPane extends FASTElement {
     @observable
     public componentType: string;
