@@ -1,3 +1,4 @@
+import { css, type CSSDirective } from "@microsoft/fast-element";
 import type { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
@@ -180,5 +181,17 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
         );
+    }
+
+    /**
+     * Convenience accessor for vertical and horizontal padding, adjusted for border thickness.
+     *
+     * @remarks
+     * Convenience combination of `verticalPadding` and `horizontalPadding`.
+     *
+     * @public
+     */
+    public get padding(): CSSDirective {
+        return css.partial`${this.verticalPadding} ${this.horizontalPadding}`;
     }
 }

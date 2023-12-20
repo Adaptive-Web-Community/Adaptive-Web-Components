@@ -221,6 +221,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
     readonly horizontalPaddingUnits: TypedDesignToken<number>;
     // (undocumented)
     readonly name: string;
+    get padding(): CSSDirective;
     readonly verticalGap: TypedCSSDesignToken<string>;
     readonly verticalGapUnits: TypedDesignToken<number>;
     readonly verticalPadding: TypedCSSDesignToken<string>;

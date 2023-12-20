@@ -6,6 +6,7 @@
 
 import { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
 import { ComposableStyles } from '@microsoft/fast-element';
+import { CSSDirective } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTAccordion } from '@microsoft/fast-foundation';
@@ -271,6 +272,9 @@ export const badgeTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTBadge>
 // @public
 export const badgeTemplateStyles: ElementStyles;
 
+// @public @deprecated (undocumented)
+export const baseHeightMultiplier: CSSDirective;
+
 // @public
 export const breadcrumbAestheticStyles: ElementStyles;
 
@@ -493,6 +497,9 @@ export const comboboxTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTCom
 
 // @public
 export const comboboxTemplateStyles: ElementStyles;
+
+// @public
+export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n\n    :host {\n        box-sizing: border-box;\n    }\n\n    *, *:before, *:after {\n        box-sizing: inherit;\n    }\n";
 
 // Warning: (ae-forgotten-export) The symbol "ComposeOptions" needs to be exported by the entry point index.d.ts
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordion" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
@@ -834,6 +841,9 @@ export const dataGridTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTDat
 // @public
 export const dataGridTemplateStyles: ElementStyles;
 
+// @public @deprecated (undocumented)
+export const density: CSSDirective;
+
 // @beta
 export class DesignSystem {
     // Warning: (ae-forgotten-export) The symbol "ElementStaticMap" needs to be exported by the entry point index.d.ts
@@ -971,6 +981,9 @@ export const flipperTemplateStyles: ElementStyles;
 
 // @public
 export const globalStyleModules: (anatomy?: ComponentAnatomy<any, any>) => StyleModules;
+
+// @public @deprecated (undocumented)
+export const heightNumber: CSSDirective;
 
 // @public
 export const horizontalScrollAestheticStyles: ElementStyles;
@@ -1555,6 +1568,9 @@ export const sliderTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTSlide
 
 // @public
 export const sliderTemplateStyles: ElementStyles;
+
+// @public
+export const svgIconStyles = "\n    .stroked {\n        stroke: currentcolor;\n        stroke-linecap: round;\n        stroke-linejoin: round;\n        stroke-width: 1px;\n    }\n";
 
 // @public
 export const switchAestheticStyles: ElementStyles;
