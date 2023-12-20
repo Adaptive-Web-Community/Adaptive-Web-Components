@@ -305,6 +305,7 @@ export const StyleProperty = {
     outlineOffset: "outlineOffset",
     outlineStyle: "outlineStyle",
     outlineWidth: "outlineWidth",
+    shadow: "shadow",
 } as const;
 
 /**

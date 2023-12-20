@@ -2,5 +2,8 @@
     "colors": true,
     "recursive": true,
     "timeout": 5000,
-    "spec": "dist/**/*.spec.js"
+    "spec": "dist/**/*.spec.js",
+    "require": [
+        "jsdom-global/register"
+    ]
 }

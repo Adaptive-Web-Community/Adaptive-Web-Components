@@ -1,4 +1,4 @@
-import { cssDirective, htmlDirective } from "@microsoft/fast-element";
+import { CSSDirective, cssDirective, htmlDirective } from "@microsoft/fast-element";
 import { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { applyMixins } from './apply-mixins.js';
 import { StyleProperty } from "./modules/types.js";
@@ -145,3 +145,23 @@ export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignT
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {}
 applyMixins(TypedCSSDesignToken, DesignTokenMetadata);
+
+/**
+ * A design token value for css properties which can have multiple values, like `box-shadow`.
+ *
+ * @public
+ */
+export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
+    /**
+     * {@inheritdoc @microsoft/fast-element#CSSDirective.createCSS}
+     */
+    public createCSS(): string {
+        const stringValues = this.map((value) =>
+            value && typeof (value as any).createCSS === "function"
+                ? (value as any).createCSS()
+                : value
+        );
+
+        return stringValues.join(", ");
+    }
+}

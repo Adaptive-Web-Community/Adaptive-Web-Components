@@ -6,8 +6,10 @@ import {
 import {
     controlDensityStyles,
     controlShapeStyles,
+    neutralFillSubtleRest,
     neutralStrokeSubtleRest,
-    plainTextStyles
+    plainTextStyles,
+    shadowTooltipStyles
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -24,9 +26,11 @@ export const styleModules: StyleModules = [
                 controlShapeStyles,
                 controlDensityStyles,
                 plainTextStyles,
+                shadowTooltipStyles,
             ],
             {
                 ...BorderFill.all(neutralStrokeSubtleRest),
+                backgroundFill: neutralFillSubtleRest,
             },
         )
     ],

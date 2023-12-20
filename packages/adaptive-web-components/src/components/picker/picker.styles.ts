@@ -1,5 +1,4 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { elevationFlyout, layerFillFixedPlus1 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -43,9 +42,4 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .loading-display,
-    .no-options-display {
-        background: ${layerFillFixedPlus1};
-        box-shadow: ${elevationFlyout};
-    }
 `;

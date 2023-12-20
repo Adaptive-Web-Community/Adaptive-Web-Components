@@ -1,12 +1,16 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { ElevationRecipe } from "../elevation/recipe.js";
-import { create, createNonCss } from "../token-helpers.js";
+import { StyleProperty } from "../modules/types.js";
+import { DesignTokenMultiValue, DesignTokenType } from "../adaptive-design-tokens.js";
+import { createTokenNonCss, createTokenRecipe } from "../token-helpers.js";
+import { createTokenShadow, Shadow, ShadowValue } from "../shadow/index.js";
+import { _black } from "../color/utilities/color-constants.js";
+import { InteractiveTokenGroup } from "../types.js";
 
 /**
  * @public
  */
-export const elevationRecipe = createNonCss<ElevationRecipe>("elevation-recipe").withDefault({
-    evaluate: (resolve: DesignTokenResolver, size: number): string => {
+export const elevationRecipe = createTokenRecipe<number, ShadowValue>("elevation-recipe", StyleProperty.shadow,
+    (resolve: DesignTokenResolver, size: number): ShadowValue => {
         let ambientOpacity = 0.12;
         let directionalOpacity = 0.14;
 
@@ -15,71 +19,92 @@ export const elevationRecipe = createNonCss<ElevationRecipe>("elevation-recipe")
             directionalOpacity = 0.24;
         }
 
-        const ambient = `0 0 2px rgba(0, 0, 0, ${ambientOpacity})`;
-        const directional = `0 calc(${size} * 0.5px) calc((${size} * 1px)) rgba(0, 0, 0, ${directionalOpacity})`;
-        return `${ambient}, ${directional}`;
+        const ambient = new Shadow(_black.toTransparent(ambientOpacity), 0, 0, 2);
+        const directional = new Shadow(_black.toTransparent(directionalOpacity), 0, size * 0.5, size);
+        return new DesignTokenMultiValue(ambient, directional);
     },
-});
+);
 
 /** @public */
-export const elevationCardRestSize = createNonCss<number>("elevation-card-rest-size").withDefault(4);
+export const elevationCardRestSize = createTokenNonCss<number>("elevation-card-rest-size", DesignTokenType.number).withDefault(4);
 
 /** @public */
-export const elevationCardHoverSize = createNonCss<number>("elevation-card-hover-size").withDefault(8);
+export const elevationCardHoverSize = createTokenNonCss<number>("elevation-card-hover-size", DesignTokenType.number).withDefault(8);
 
 /** @public */
-export const elevationCardActiveSize = createNonCss<number>("elevation-card-active-size").withDefault(2);
+export const elevationCardActiveSize = createTokenNonCss<number>("elevation-card-active-size", DesignTokenType.number).withDefault(2);
 
 /** @public */
-export const elevationCardFocusSize = createNonCss<number>("elevation-card-focus-size").withDefault(4);
+export const elevationCardFocusSize = createTokenNonCss<number>("elevation-card-focus-size", DesignTokenType.number).withDefault(4);
 
 /** @public */
-export const elevationCardRest = create<string>("elevation-card-rest").withDefault(
+export const elevationCardDisabledSize = createTokenNonCss<number>("elevation-card-disabled-size", DesignTokenType.number).withDefault(0);
+
+/** @public */
+export const elevationCardRest = createTokenShadow("elevation-card-rest").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardRestSize))
 );
 
 /** @public */
-export const elevationCardHover = create<string>("elevation-card-hover").withDefault(
+export const elevationCardHover = createTokenShadow("elevation-card-hover").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardHoverSize))
 );
 
 /** @public */
-export const elevationCardActive = create<string>("elevation-card-active").withDefault(
+export const elevationCardActive = createTokenShadow("elevation-card-active").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardActiveSize))
 );
 
 /** @public */
-export const elevationCardFocus = create<string>("elevation-card-focus").withDefault(
+export const elevationCardFocus = createTokenShadow("elevation-card-focus").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardFocusSize))
 );
 
 /** @public */
-export const elevationTooltipSize = createNonCss<number>("elevation-tooltip-size").withDefault(16);
+export const elevationCardDisabled = createTokenShadow("elevation-card-disabled").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardDisabledSize))
+);
 
 /** @public */
-export const elevationTooltip = create<string>("elevation-tooltip").withDefault(
+export const elevationCardInteractive: InteractiveTokenGroup<ShadowValue> = {
+    name: "elevation-card",
+    type: DesignTokenType.shadow,
+    intendedFor: StyleProperty.shadow,
+    rest: elevationCardRest,
+    hover: elevationCardHover,
+    active: elevationCardActive,
+    focus: elevationCardFocus,
+    disabled: elevationCardDisabled,
+};
+
+/** @public */
+export const elevationTooltipSize = createTokenNonCss<number>("elevation-tooltip-size", DesignTokenType.number).withDefault(16);
+
+/** @public */
+export const elevationTooltip = createTokenShadow("elevation-tooltip").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationTooltipSize))
 );
 
 /** @public */
-export const elevationFlyoutSize = createNonCss<number>("elevation-flyout-size").withDefault(32);
+export const elevationFlyoutSize = createTokenNonCss<number>("elevation-flyout-size", DesignTokenType.number).withDefault(32);
 
 /** @public */
-export const elevationFlyout = create<string>("elevation-flyout").withDefault(
+export const elevationFlyout = createTokenShadow("elevation-flyout").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationFlyoutSize))
 );
 
 /** @public */
-export const elevationDialogSize = createNonCss<number>("elevation-dialog-size").withDefault(128);
+export const elevationDialogSize = createTokenNonCss<number>("elevation-dialog-size", DesignTokenType.number).withDefault(128);
 
 /** @public */
-export const elevationDialog = create<string>("elevation-dialog").withDefault(
+export const elevationDialog = createTokenShadow("elevation-dialog").withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(elevationRecipe).evaluate(resolve, resolve(elevationDialogSize))
 );

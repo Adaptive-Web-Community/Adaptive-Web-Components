@@ -13,6 +13,13 @@ export function createNonCss<T>(name: string): DesignToken<T> {
 }
 
 /**
+ * Creates a typed design token of a custom type. Use one of `createTokenX` if exists instead.
+ *
+ * @public
+ */
+export const { createTyped } = TypedCSSDesignToken;
+
+/**
  * Creates a DesignToken that can be used for color value.
  *
  * @param name - The token name in `css-identifier` casing.

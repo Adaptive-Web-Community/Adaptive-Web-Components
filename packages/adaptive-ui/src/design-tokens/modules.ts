@@ -41,6 +41,8 @@ import {
     neutralStrokeSubtle,
 } from "./color.js";
 import { densityControl, densityItemContainer, densityLayer } from "./density.js";
+import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
+import { layerFillFixedPlus1 } from "./layer.js";
 import {
     fontFamily,
     fontWeight,
@@ -865,6 +867,56 @@ export const typeRampPlus6Styles: Styles = Styles.fromProperties(
 /**
  * @public
  */
+export const shadowCardStyles: Styles = Styles.fromProperties(
+    {
+        shadow: elevationCardRest,
+    },
+    "shadow.card",
+);
+
+/**
+ * @public
+ */
+export const shadowCardInteractiveStyles: Styles = Styles.fromProperties(
+    {
+        shadow: elevationCardInteractive,
+    },
+    "shadow.card-interactive",
+);
+
+/**
+ * @public
+ */
+export const shadowTooltipStyles: Styles = Styles.fromProperties(
+    {
+        shadow: elevationTooltip,
+    },
+    "shadow.tooltip",
+);
+
+/**
+ * @public
+ */
+export const shadowFlyoutStyles: Styles = Styles.fromProperties(
+    {
+        shadow: elevationFlyout,
+    },
+    "shadow.flyout",
+);
+
+/**
+ * @public
+ */
+export const shadowDialogStyles: Styles = Styles.fromProperties(
+    {
+        shadow: elevationDialog,
+    },
+    "shadow.dialog",
+);
+
+/**
+ * @public
+ */
 export const actionStyles: Styles = Styles.compose(
     [
         controlShapeStyles,
@@ -986,6 +1038,19 @@ export const labelTextStyles: Styles = Styles.compose(
         fontWeight: labelFontWeight,
     },
     "styles.text-label",
+);
+
+/**
+ * @public
+ */
+export const flyoutStyles: Styles = Styles.compose(
+    [
+        layerShapeStyles,
+        shadowFlyoutStyles,
+    ], {
+        backgroundFill: layerFillFixedPlus1,
+    },
+    "styles.flyout",
 );
 
 /**

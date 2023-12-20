@@ -3,8 +3,10 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    layerFillInteractiveRest,
     layerShapeStyles,
-    plainTextStyles
+    plainTextStyles,
+    shadowCardStyles
 } from "@adaptive-web/adaptive-ui/reference";
 /**
  * Visual styles composed by modules.
@@ -19,7 +21,10 @@ export const styleModules: StyleModules = [
             [
                 layerShapeStyles,
                 plainTextStyles,
-            ],
+                shadowCardStyles,
+            ], {
+                backgroundFill: layerFillInteractiveRest,
+            }
         )
     ],
 ];

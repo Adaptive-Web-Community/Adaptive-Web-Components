@@ -1,9 +1,7 @@
 import {
     designUnit,
-    elevationFlyout,
     focusStrokeOuter,
     focusStrokeThickness,
-    layerFillFixedPlus1,
     strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -88,10 +86,5 @@ export const aestheticStyles: ElementStyles = css`
 
     .listbox {
         max-height: calc((var(--size, 0) * ${heightNumber}) * 1px + (${designUnit} + ${strokeThickness} * 2));
-        background: ${layerFillFixedPlus1};
-    }
-
-    :host([aria-haspopup]) .listbox {
-        box-shadow: ${elevationFlyout};
     }
 `;

@@ -3,18 +3,18 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    flyoutStyles,
     itemContainerDensityStyles,
-    layerShapeStyles,
-    plainTextStyles
+    plainTextStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
 const menuStyles = Styles.compose(
     [
         plainTextStyles,
-        layerShapeStyles,
         itemContainerDensityStyles,
-    ],
+        flyoutStyles,
+    ]
 );
 
 /**

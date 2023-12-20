@@ -3,8 +3,8 @@ import {
     Styles
 } from "@adaptive-web/adaptive-ui";
 import {
+    flyoutStyles,
     itemContainerDensityStyles,
-    layerShapeStyles
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
@@ -18,8 +18,8 @@ export const styleModules: StyleModules = [
         },
         Styles.compose(
             [
-                layerShapeStyles,
                 itemContainerDensityStyles,
+                flyoutStyles,
             ],
         )
     ],
