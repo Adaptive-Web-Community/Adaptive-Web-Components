@@ -6,7 +6,7 @@ import {
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
-import { DataGridRow } from './data-grid-row.js';
+import { DataGridRow } from "./data-grid-row.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.

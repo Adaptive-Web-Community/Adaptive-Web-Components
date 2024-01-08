@@ -4,7 +4,7 @@ import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./data-grid-row.styles.js";
 import { DataGridRowAnatomy, template } from "./data-grid-row.template.js";
-import { DataGridRow } from './data-grid-row.js';
+import { DataGridRow } from "./data-grid-row.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
