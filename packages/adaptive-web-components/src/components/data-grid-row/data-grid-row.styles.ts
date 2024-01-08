@@ -6,14 +6,18 @@ import {
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
+import { DataGridRow } from './data-grid-row.js';
 
 /**
  * Basic layout styling associated with the anatomy of the template.
  * @public
  */
-export const templateStyles: ElementStyles = css`
+export const templateStyles: ElementStyles = css<DataGridRow>/* CSS */`
     :host {
         display: grid;
+        grid-template-columns: subgrid;
+        grid-column: span ${x => x.columnDefinitions?.length ?? 1 };
+        grid-auto-flow: row;
         width: 100%;
     }
 
