@@ -5,18 +5,18 @@ import {
     highlightStrokeReadableRest,
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
+import type { FASTDataGridRow } from "@microsoft/fast-foundation";
 import { heightNumber } from "../../styles/index.js";
-import { DataGridRow } from "./data-grid-row.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
  * @public
  */
-export const templateStyles: ElementStyles = css<DataGridRow>/* CSS */`
+export const templateStyles: ElementStyles = css`
     :host {
         display: grid;
         grid-template-columns: subgrid;
-        grid-column: span ${x => x.columnDefinitions?.length ?? 1 };
+        grid-column: 1 / span all;
         grid-auto-flow: row;
         width: 100%;
     }

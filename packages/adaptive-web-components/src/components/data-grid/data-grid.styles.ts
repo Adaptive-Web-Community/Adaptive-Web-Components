@@ -10,7 +10,7 @@ export const templateStyles: ElementStyles = css<FASTDataGrid>/* CSS */`
         display: grid;
         position: relative;
         grid-auto-flow: row;
-        grid-template-columns: ${x => x.gridTemplateColumns};
+        grid-template-columns: repeat(${x => x.columnDefinitions?.length ?? 1}, 1fr);
     }
 
     :host([selection-mode="multi-row"]) {
