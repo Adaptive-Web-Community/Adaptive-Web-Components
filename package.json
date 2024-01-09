@@ -26,8 +26,7 @@
         "./packages/adaptive-ui",
         "./packages/adaptive-web-components",
         "./packages/adaptive-ui-explorer",
-        "./packages/adaptive-ui-figma-designer",
-        "./examples/*"
+        "./packages/adaptive-ui-figma-designer"
     ],
     "engines": {
         "node": ">=18.12.0",
