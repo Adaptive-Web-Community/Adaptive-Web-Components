@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { FASTDataGrid } from '@microsoft/fast-foundation';
+import { FASTDataGrid } from "@microsoft/fast-foundation";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
