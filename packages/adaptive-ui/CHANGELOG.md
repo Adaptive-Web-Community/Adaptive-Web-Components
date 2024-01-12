@@ -1,8 +1,26 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Tue, 17 Oct 2023 16:10:46 GMT and should not be manually modified.
+This log was last generated on Fri, 12 Jan 2024 00:16:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.2
+
+Fri, 12 Jan 2024 00:16:08 GMT
+
+### Patches
+
+- Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
+- Updated elevation tokens to work with Adaptive Styles - Fixed an issue with objects converting to css values (47367562+bheston@users.noreply.github.com)
+- Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
+- Fixed border not getting set on fill styles (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Update culori imports for tree shaking (47367562+bheston@users.noreply.github.com)
+- Migrated from fast-colors to culori (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Adjust color deltas (47367562+bheston@users.noreply.github.com)
+- Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
+- Updated focus stroke recipes for more control (47367562+bheston@users.noreply.github.com)
+- Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
+- Added support for focus styling and css outline properties (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.1
 

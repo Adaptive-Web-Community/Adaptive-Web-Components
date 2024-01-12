@@ -2,6 +2,81 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Fri, 12 Jan 2024 00:16:08 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.4.2",
+      "version": "0.4.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Added density and component styling helpers"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated color recipes to allow null interactive states"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Migrated the focus styling to style modules - Change `delegatesFocus` usage to override `focus` instead - Select includes additional style fixes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated the style assembly function to get the full anatomy definition"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Added support for setting `fill` when `color` is set"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Export default component styles"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Components: Migrate default icons to local svgs"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Component style cleanup"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Component cleanup - Adjust small control label style - Fix position issue on combobox - Fix shortcut issue in Storybook"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated elevation styling"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.2.2",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Oct 2023 16:10:46 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.4.1",
       "version": "0.4.1",

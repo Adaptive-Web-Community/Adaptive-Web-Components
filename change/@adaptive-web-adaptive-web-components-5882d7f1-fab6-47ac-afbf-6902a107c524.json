@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Export default component styles",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

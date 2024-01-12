@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added density and component styling helpers",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

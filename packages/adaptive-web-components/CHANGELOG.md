@@ -1,8 +1,26 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Tue, 17 Oct 2023 16:10:46 GMT and should not be manually modified.
+This log was last generated on Fri, 12 Jan 2024 00:16:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.2
+
+Fri, 12 Jan 2024 00:16:08 GMT
+
+### Patches
+
+- Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
+- Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
+- Migrated the focus styling to style modules - Change `delegatesFocus` usage to override `focus` instead - Select includes additional style fixes (47367562+bheston@users.noreply.github.com)
+- Updated the style assembly function to get the full anatomy definition (47367562+bheston@users.noreply.github.com)
+- Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
+- Export default component styles (47367562+bheston@users.noreply.github.com)
+- Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
+- Component style cleanup (47367562+bheston@users.noreply.github.com)
+- Component cleanup - Adjust small control label style - Fix position issue on combobox - Fix shortcut issue in Storybook (47367562+bheston@users.noreply.github.com)
+- Updated elevation styling (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.2
 
 ## 0.4.1
 

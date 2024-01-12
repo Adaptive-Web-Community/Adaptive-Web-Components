@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Updated elevation tokens to work with Adaptive Styles - Fixed an issue with objects converting to css values",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,81 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 12 Jan 2024 00:16:08 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.2.2",
+      "version": "0.2.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Added density and component styling helpers"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated elevation tokens to work with Adaptive Styles - Fixed an issue with objects converting to css values"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Components: Migrate default icons to local svgs"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Fixed border not getting set on fill styles"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Adaptive UI: Update culori imports for tree shaking"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Migrated from fast-colors to culori"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Adaptive UI: Adjust color deltas"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Added support for setting `fill` when `color` is set"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated focus stroke recipes for more control"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Updated color recipes to allow null interactive states"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "4ad29409958dcb46e0d6bb093dc8862fe076644e",
+            "comment": "Added support for focus styling and css outline properties"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Oct 2023 16:10:46 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.2.1",
       "version": "0.2.1",
