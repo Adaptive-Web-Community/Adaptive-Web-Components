@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { AdaptiveButton } from "./main.js";
+import { Accordion, AccordionItem, Badge, Button, Menu, MenuItem } from "./main.js";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,7 +16,27 @@ function App() {
             count is: {count}
           </button>
         </p>
-        <AdaptiveButton onClick={() => setCount((count) => count + 1)}>Adaptive Button</AdaptiveButton>
+        <div className="horizontal">
+            <Button onClick={() => setCount((count) => count + 1)}>Normal Button</Button>
+            <Button purpose="primary" onClick={() => setCount((count) => count + 1)}>Primary Button</Button>
+            <Button purpose="critical" onClick={() => setCount((count) => count + 1)}>Critical Button</Button>
+        </div>
+        <Menu>
+            <MenuItem>Menu item 1</MenuItem>
+            <MenuItem>Menu item 2</MenuItem>
+            <MenuItem>Menu item 3</MenuItem>
+        </Menu>
+        <Accordion>
+            <AccordionItem>
+                <span slot="heading">Accordion Item 1 Heading</span>
+                <Badge slot="start">1</Badge>
+                Accordion Item 1 Content
+            </AccordionItem>
+            <AccordionItem>
+                <span slot="heading">Accordion Item 2 Heading</span>
+                Accordion Item 2 Content
+            </AccordionItem>
+        </Accordion>
         <p>
           Edit <code>App.tsx</code> and save to test HMR updates.
         </p>
