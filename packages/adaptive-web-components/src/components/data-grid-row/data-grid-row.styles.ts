@@ -5,6 +5,7 @@ import {
     highlightStrokeReadableRest,
     neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
+import type { FASTDataGridRow } from "@microsoft/fast-foundation";
 import { heightNumber } from "../../styles/index.js";
 
 /**
@@ -14,6 +15,9 @@ import { heightNumber } from "../../styles/index.js";
 export const templateStyles: ElementStyles = css`
     :host {
         display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / span all;
+        grid-auto-flow: row;
         width: 100%;
     }
 
