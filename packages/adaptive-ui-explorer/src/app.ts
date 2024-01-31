@@ -19,29 +19,27 @@ import {
     wcagContrastLevel
 } from "@adaptive-web/adaptive-ui/reference";
 import {
-    attr,
     css,
     customElement,
     FASTElement,
     html,
+    Notifier,
+    Observable,
     observable,
     ref,
     repeat,
+    Subscriber,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { AdaptiveDesignSystem, componentBaseStyles } from "@adaptive-web/adaptive-web-components";
-import { AllComponents } from "@adaptive-web/adaptive-web-components/all-components";
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import { ComponentType } from "./component-type.js";
 import { ColorBlock } from "./components/color-block.js";
 import { ControlPane } from "./components/control-pane/index.js";
 import { LayerBackground } from "./components/layer-background/index.js";
 import { PaletteGradient } from "./components/palette-gradient/palette-gradient.js";
 import { SampleApp } from "./sample/index.js";
-
-AdaptiveDesignSystem.defineComponents(AllComponents);
-
-DesignToken.registerDefaultStyleTarget();
+import { State } from "./state.js";
 
 ColorBlock;
 ControlPane;
@@ -54,12 +52,12 @@ const colorBlockTemplate = html<App>`
         (x) => x.backgrounds,
         html<SwatchInfo, App>`
             <app-color-block
-                id="${(x) => x.color.toUpperCase().replace("#", "")}"
-                index="${(x, c) => x.index}"
-                component="${(x, c) => c.parent.componentType}"
-                color="${(x) => x.color}"
-                layer-name="${(x) => x.title}"
-                :disabledState=${(x, c) => c.parent.disabledState}
+                id=${(x) => x.color.toUpperCase().replace("#", "")}
+                index=${(x) => x.index}
+                component=${(_, c) => c.parent.state.componentType}
+                color=${(x) => x.color}
+                layer-name=${(x) => x.title}
+                :disabledState=${(_, c) => c.parent.state.disabledState}
             ></app-color-block>
         `
     )}
@@ -93,13 +91,13 @@ const template = html<App>`
                 <app-design-system-provider ${ref("designSystemElement")}></app-design-system-provider>
                 <div class="container fill">
                     <div class="row gradient">
-                        <app-palette-gradient :palette="${(x) => x.neutralPalette}"></app-palette-gradient>
+                        <app-palette-gradient :palette=${(x) => x.neutralPalette}></app-palette-gradient>
                     </div>
                     <div class="row gradient">
-                        <app-palette-gradient :palette="${(x) => x.accentPalette}"></app-palette-gradient>
+                        <app-palette-gradient :palette=${(x) => x.accentPalette}></app-palette-gradient>
                     </div>
                     <div class="row gradient">
-                        <app-palette-gradient :palette="${(x) => x.highlightPalette}"></app-palette-gradient>
+                        <app-palette-gradient :palette=${(x) => x.highlightPalette}></app-palette-gradient>
                     </div>
                     <div class="row fill">
                         <div style="display: flex; overflow: auto;">${(x) => x.componentTypeTemplate()}</div>
@@ -108,18 +106,10 @@ const template = html<App>`
             </app-design-system-provider>
             <div>
                 <app-layer-background
-                    id="control-pane"
                     class="control-pane-container"
-                    base-layer-luminance="${LayerBaseLuminance.DarkMode}"
+                    base-layer-luminance=${LayerBaseLuminance.DarkMode}
                 >
-                    <app-control-pane
-                        :componentType="${(x) => x.componentType}"
-                        :neutralColor="${(x) => x.neutralColor}"
-                        :accentColor="${(x) => x.accentColor}"
-                        :highlightColor="${(x) => x.highlightColor}"
-                        :showOnlyLayerBackgrounds="${(x) => x.showOnlyLayerBackgrounds}"
-                        @formvaluechange="${(x, c) => x.controlPaneHandler(c.event as CustomEvent)}"
-                    ></app-control-pane>
+                    <app-control-pane></app-control-pane>
                 </app-layer-background>
             </div>
         </div>
@@ -158,8 +148,9 @@ const styles = css`
         flex-grow: 1;
     }
 
-    .gradient {
+    app-palette-gradient {
         height: 20px;
+        flex: 1;
     }
 
     .control-pane-container {
@@ -167,9 +158,8 @@ const styles = css`
         z-index: 1;
         padding: 40px;
         position: relative;
-        overflow: auto;
+        overflow-y: auto;
         width: 320px;
-        box-sizing: border-box;
     }
 
     app-color-block {
@@ -193,37 +183,10 @@ export interface SwatchInfo {
 class DesignSystemProvider extends FASTElement {}
 DesignSystemProvider;
 
-export interface AppAttributes {
-    componentType: ComponentType;
-    neutralColor: string;
-    accentColor: string;
-    highlightColor: string;
-    showOnlyLayerBackgrounds: boolean;
-}
-
-@customElement({
-    name: "app-main",
-    template,
-    styles,
-})
-export class App extends FASTElement implements AppAttributes {
+export class App extends FASTElement {
     public canvas: DesignSystemProvider;
 
-    @attr({ attribute: "component-type" })
-    public componentType: ComponentType = ComponentType.backplate;
-
-    @attr({ attribute: "neutral-color" })
-    public neutralColor: string;
-    protected neutralColorChanged(prev?: string, next?: string) {
-        if (this.$fastController.isConnected && next) {
-            neutralBaseColor.setValueFor(this.canvas, next);
-
-            this.neutralPalette = neutralPalette.getValueFor(this.canvas);
-            this.neutralColors = this.neutralPalette.swatches.map((x) => x.toColorString());
-
-            this.updateBackgrounds();
-        }
-    }
+    @State state!: State;
 
     @observable
     public neutralPalette: Palette;
@@ -231,57 +194,76 @@ export class App extends FASTElement implements AppAttributes {
     @observable
     public neutralColors: string[] = [];
 
-    @attr({ attribute: "accent-color" })
-    public accentColor: string;
-    protected accentColorChanged(prev?: string, next?: string) {
-        if (this.$fastController.isConnected && next) {
-            accentBaseColor.setValueFor(this.canvas, next);
-
-            this.accentPalette = accentPalette.getValueFor(this.canvas);
-        }
-    }
-
     @observable
     public accentPalette: Palette;
-
-    @attr({ attribute: "highlight-color" })
-    public highlightColor: string;
-    protected highlightColorChanged(prev?: string, next?: string) {
-        if (this.$fastController.isConnected && next) {
-            highlightBaseColor.setValueFor(this.canvas, next);
-
-            this.highlightPalette = highlightPalette.getValueFor(this.canvas);
-        }
-    }
 
     @observable
     public highlightPalette: Palette;
 
     @observable
-    public showOnlyLayerBackgrounds: boolean = true;
-    protected showOnlyLayerBackgroundsChanged() {
-        if (this.$fastController.isConnected) {
-            this.updateBackgrounds();
-        }
-    }
-
-    @observable
     public backgrounds: SwatchInfo[];
 
-    @observable
-    public disabledState: boolean = false;
+    private _stateNotifier: Notifier | null;
+    private _stateHandler: Subscriber | null;
 
-    public connectedCallback() {
+    public connectedCallback(): void {
         super.connectedCallback();
-        this.neutralColor = "#808080";
-        this.accentColor = "#F26C0D";
-        this.highlightColor = "#0DA1F2";
+
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const app = this;
+        this._stateNotifier = Observable.getNotifier(this.state);
+        this._stateHandler = {
+            handleChange(source: State, propertyName: keyof State) {
+                if (app.$fastController.isConnected) {
+                    switch (propertyName) {
+                        case "neutralColor":
+                            neutralBaseColor.setValueFor(app.canvas, source.neutralColor);
+
+                            app.neutralPalette = neutralPalette.getValueFor(app.canvas);
+                            app.neutralColors = app.neutralPalette.swatches.map((x) => x.toColorString());
+
+                            app.updateBackgrounds();
+                            break;
+                        case "accentColor":
+                            accentBaseColor.setValueFor(app.canvas, source.accentColor);
+
+                            app.accentPalette = accentPalette.getValueFor(app.canvas);
+                            break;
+                        case "highlightColor":
+                            highlightBaseColor.setValueFor(app.canvas, source.highlightColor);
+
+                            app.highlightPalette = highlightPalette.getValueFor(app.canvas);
+                            break;
+                        case "showOnlyLayerBackgrounds":
+                            app.updateBackgrounds();
+                            break;
+                        case "wcagContrastLevel":
+                            wcagContrastLevel.setValueFor(app.canvas, source.wcagContrastLevel);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            },
+        };
+        this._stateNotifier.subscribe(this._stateHandler);
+
+        this.state.neutralColor = neutralBaseColor.getValueFor(this);
+        this.state.accentColor = accentBaseColor.getValueFor(this);
+        this.state.highlightColor = highlightBaseColor.getValueFor(this);
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        if (this._stateHandler) {
+            this._stateNotifier?.unsubscribe(this._stateHandler);
+        }
     }
 
     public designSystemElement: FASTElement;
 
     public componentTypeTemplate(): ViewTemplate<App, any> {
-        if (this.componentType === ComponentType.sample) {
+        if (this.state.componentType === ComponentType.sample) {
             return sampleTemplate;
         } else {
             return colorBlockTemplate;
@@ -291,7 +273,7 @@ export class App extends FASTElement implements AppAttributes {
     private updateBackgrounds(): void {
         const layers: SwatchInfo[] = this.lightModeLayers.concat(this.darkModeLayers);
 
-        this.backgrounds = this.showOnlyLayerBackgrounds
+        this.backgrounds = this.state.showOnlyLayerBackgrounds
             ? layers
             : this.neutralColors.map((color: string, index: number): SwatchInfo => {
                   const neutralLayerIndex: number = layers.findIndex(
@@ -354,15 +336,10 @@ export class App extends FASTElement implements AppAttributes {
     private get darkModeLayers(): SwatchInfo[] {
         return this.resolveLayerRecipes(LayerBaseLuminance.DarkMode);
     }
-
-    public controlPaneHandler(e: CustomEvent) {
-        const detail: { field: string; value: any } = e.detail;
-        if (detail.field === "wcagContrastLevel") {
-            if (this.$fastController.isConnected) {
-                wcagContrastLevel.setValueFor(this.canvas, detail.value);
-            }
-        } else {
-            (this as any)[detail.field] = detail.value;
-        }
-    }
 }
+
+export const app = App.compose({
+    name: "app-main",
+    template,
+    styles,
+});

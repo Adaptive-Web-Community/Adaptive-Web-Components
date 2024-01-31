@@ -24,6 +24,7 @@ import {
     neutralOutlineDiscernibleControlStyles,
     neutralStrokeReadableRest
 } from '@adaptive-web/adaptive-ui/reference';
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
     css,
@@ -135,24 +136,23 @@ const formComponents = html<ColorBlock>`
 `;
 
 const template = html<ColorBlock>`
-    <p class="title">
-        SWATCH ${x => x.index} - ${x => x.color.toUpperCase()}
-        ${when(
-            x => x.layerName,
-            html`
-                <p>
-                    <code>Layer: ${x => x.layerName}</code>
-                </p>
-            `
-        )}
-    </p>
-
-    <div class="content">
-        ${x => x.componentTypeTemplate()}
+    <div class="title">
+        <p class="swatch">${x => `Swatch ${x.index} - ${x.color}`}</p>
+        <p class="layerName">
+            ${when(
+                x => x.layerName,
+                html`
+                    Layer: ${x => x.layerName}
+                `
+            )}
+        </p>
     </div>
+    ${x => x.componentTypeTemplate()}
 `;
 
 const styles = css`
+    ${componentBaseStyles}
+
     :host {
         display: flex;
         flex-direction: column;
@@ -163,27 +163,29 @@ const styles = css`
         transition: opacity 0.1s linear;
         height: max-content;
         min-height: 100%;
+        padding: 36px;
+        gap: 24px;
         background-color: ${fillColor};
         color: ${neutralStrokeReadableRest};
     }
 
     .title {
-        margin: 16px auto 4px;
-        font-weight: 600;
-        height: 34px;
-        color: ${neutralStrokeReadableRest};
-    }
-
-    .title code {
-        font-weight: normal;
-    }
-
-    .content {
-        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        padding: 0 36px 36px;
+        gap: 4px;
+    }
+
+    .title p {
+        margin: 0;
+    }
+
+    .swatch {
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .layerName {
+        font-weight: normal;
     }
 `;
 

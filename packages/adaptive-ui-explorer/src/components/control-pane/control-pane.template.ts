@@ -1,5 +1,6 @@
-import { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
 import { ElementViewTemplate, html, repeat } from "@microsoft/fast-element";
+import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
 import { ComponentType } from "../../component-type.js";
 import { ControlPane } from "./control-pane.js";
 
@@ -12,95 +13,76 @@ function titleCase(str: string): string {
 export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplate<T> {
     return html<T>`
         <p class="title">Settings</p>
-        <div class="radio-group">
-            <label>Component type</label>
+
+        <adaptive-radio-group
+            id="componentType"
+            orientation="vertical"
+            :value=${twoWay((x) => x.state.componentType)}
+        >
+            <label slot="label">Component type</label>
             ${repeat(
-                (x) => Object.keys(ComponentType),
+                (_) => Object.keys(ComponentType),
                 html<string, T>`
-                    <label>
-                        <input
-                            type="radio"
-                            name="componentType"
-                            value="${(x) => x}"
-                            ?checked="${(x, c) => c.parent.componentType === x}"
-                            @change="${(x, c) => {
-                                c.parent.updateFormValue("componentType", c.eventTarget<HTMLInputElement>().value);
-                            }}"
-                        />
-                        <span>${(x) => titleCase(x)}</span>
-                    </label>
+                    <adaptive-radio value=${(x) => x}>${(x) => titleCase(x)}</adaptive-radio>
                 `
             )}
-        </div>
+        </adaptive-radio-group>
+
         <div>
             <label>Neutral base color</label>
             <input
                 type="color"
-                value="${(x) => x.neutralColor}"
-                @change="${(x, c) => {
-                    x.updateFormValue("neutralColor", c.eventTarget<HTMLInputElement>().value);
-                }}"
+                value=${(x) => x.state.neutralColor}
+                @change=${(x, c) =>
+                    x.state.neutralColor = c.eventTarget<HTMLInputElement>().value
+                }
             />
         </div>
-        <label>
-            <input
-                type="checkbox"
-                ?checked="${(x) => x.showOnlyLayerBackgrounds}"
-                @change="${(x, c) => {
-                    x.updateFormValue("showOnlyLayerBackgrounds", c.eventTarget<HTMLInputElement>().checked);
-                }}"
-            />
-            <span>Show layer backgrounds only</span>
-        </label>
+
+        <adaptive-switch
+            id="showOnlyLayerBackgrounds"
+            :checked=${twoWay((x) => x.state.showOnlyLayerBackgrounds)}
+        >Show layer backgrounds only</adaptive-switch>
+
         <div>
             <label>Accent base color</label>
             <input
                 type="color"
-                value="${(x) => x.accentColor}"
-                @change="${(x, c) => {
-                    x.updateFormValue("accentColor", c.eventTarget<HTMLInputElement>().value);
-                }}"
+                value=${(x) => x.state.accentColor}
+                @change=${(x, c) =>
+                    x.state.accentColor = c.eventTarget<HTMLInputElement>().value
+                }
             />
         </div>
+
         <div>
             <label>Highlight base color</label>
             <input
                 type="color"
-                value="${(x) => x.highlightColor}"
-                @change="${(x, c) => {
-                    x.updateFormValue("highlightColor", c.eventTarget<HTMLInputElement>().value);
-                }}"
+                value=${(x) => x.state.highlightColor}
+                @change=${(x, c) =>
+                    x.state.highlightColor = c.eventTarget<HTMLInputElement>().value
+                }
             />
         </div>
-        <div class="radio-group">
-            <label>WCAG Contrast Level</label>
+
+        <adaptive-radio-group
+            id="wcagContrastLevel"
+            orientation="vertical"
+            :value=${twoWay((x) => x.state.wcagContrastLevel)}
+        >
+            <label slot="label">WCAG Contrast Level</label>
             ${repeat(
-                (x) => Object.keys(WcagContrastLevel),
+                (_) => Object.keys(WcagContrastLevel),
                 html<string, T>`
-                    <label>
-                        <input
-                            type="radio"
-                            name="wcagContrastLevel"
-                            value="${(x) => x}"
-                            ?checked="${(x, c) => c.parent.wcagContrastLevel === x}"
-                            @change="${(x, c) => {
-                                c.parent.updateFormValue("wcagContrastLevel", c.eventTarget<HTMLInputElement>().value);
-                            }}"
-                        />
-                        <span>${(x) => x.toUpperCase()}</span>
-                    </label>
+                    <adaptive-radio value=${(x) => x}>${(x) => x.toUpperCase()}</adaptive-radio>
                 `
             )}
-        </div>
-        <label>
-            <input
-                type="checkbox"
-                ?checked="${(x) => x.disabledState}"
-                @change="${(x, c) => {
-                    x.updateFormValue("disabledState", c.eventTarget<HTMLInputElement>().checked);
-                }}"
-            />
-            <span>Disabled state</span>
-        </label>
+        </adaptive-radio-group>
+
+        <adaptive-switch
+            id="disabledState"
+            :checked=${twoWay((x) => x.state.disabledState)}
+        >Disabled state</adaptive-switch>
     `;
 }

@@ -1,5 +1,6 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
-import { fillColor } from '@adaptive-web/adaptive-ui/reference';
+import { densityControl, fillColor } from '@adaptive-web/adaptive-ui/reference';
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
 import { AdaptiveComponent } from "./adaptive-component.js";
 import { AppSwatch, SwatchType } from "./swatch.js";
@@ -27,18 +28,18 @@ const template = html<StyleExample>`
 `;
 
 const styles = css`
+    ${componentBaseStyles}
+
     :host {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        gap: ${densityControl.verticalGap};
     }
 
     .example {
-        height: 60px;
         display: flex;
-        align-items: center;
         justify-content: center;
-        margin-top: 24px;
+        padding: 24px 0;
     }
 `;
 

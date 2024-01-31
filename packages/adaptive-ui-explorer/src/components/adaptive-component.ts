@@ -1,5 +1,7 @@
 import { ElementStylesRenderer, Interactivity } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
+import { cornerRadiusControl, densityControl, typeRampBaseFontSize } from "@adaptive-web/adaptive-ui/reference";
+import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
     css,
@@ -22,14 +24,15 @@ function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
 }
 
 const styles = css`
+    ${componentBaseStyles}
+
     :host {
         display: flex;
         align-items: center;
-        padding: 6px 12px;
-        box-sizing: border-box;
-        font-size: 14px;
         justify-items: start;
-        border-radius: 4px;
+        border-radius: ${cornerRadiusControl};
+        padding: ${densityControl.padding};
+        font-size: ${typeRampBaseFontSize};
         cursor: pointer;
     }
 `;
