@@ -272,7 +272,9 @@ export const badgeTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTBadge>
 // @public
 export const badgeTemplateStyles: ElementStyles;
 
-// @public @deprecated (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "baseHeightMultiplier" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
 export const baseHeightMultiplier: CSSDirective;
 
 // @public
@@ -841,7 +843,9 @@ export const dataGridTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTDat
 // @public
 export const dataGridTemplateStyles: ElementStyles;
 
-// @public @deprecated (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "density" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
 export const density: CSSDirective;
 
 // @beta
@@ -982,7 +986,9 @@ export const flipperTemplateStyles: ElementStyles;
 // @public
 export const globalStyleModules: (anatomy?: ComponentAnatomy<any, any>) => StyleModules;
 
-// @public @deprecated (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "heightNumber" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal @deprecated (undocumented)
 export const heightNumber: CSSDirective;
 
 // @public

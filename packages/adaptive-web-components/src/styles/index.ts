@@ -1,17 +1,20 @@
 import { css, CSSDirective } from "@microsoft/fast-element";
 
 /**
- * @deprecated
+ * @internal
+ * @deprecated Replaced with Adaptive UI density system
  */
 export const baseHeightMultiplier: CSSDirective = css.partial`8`;
 
 /**
- * @deprecated
+ * @internal
+ * @deprecated Replaced with Adaptive UI density system
  */
 export const density: CSSDirective = css.partial`0`;
 
 /**
- * @deprecated
+ * @internal
+ * @deprecated Replaced with Adaptive UI density system
  */
 export const heightNumber: CSSDirective = css.partial`32`;
 
