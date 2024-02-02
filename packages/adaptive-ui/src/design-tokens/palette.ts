@@ -39,6 +39,24 @@ export const criticalPalette = createTokenNonCss<Palette>("critical-palette", De
         PaletteOkhsl.from(resolve(criticalBaseColor))
 );
 
+/** @public */
+export const warningBaseColor = createTokenNonCss<string>("warning-base-color", DesignTokenType.color).withDefault("#D526D9");
+
+/** @public */
+export const warningPalette = createTokenNonCss<Palette>("warning-palette", DesignTokenType.palette).withDefault(
+    (resolve: DesignTokenResolver) =>
+        PaletteOkhsl.from(resolve(warningBaseColor))
+);
+
+/** @public */
+export const successBaseColor = createTokenNonCss<string>("success-base-color", DesignTokenType.color).withDefault("#6AD926");
+
+/** @public */
+export const successPalette = createTokenNonCss<Palette>("success-palette", DesignTokenType.palette).withDefault(
+    (resolve: DesignTokenResolver) =>
+        PaletteOkhsl.from(resolve(successBaseColor))
+);
+
 /**
  * The {@link Palette} to use for disabled state.
  *
