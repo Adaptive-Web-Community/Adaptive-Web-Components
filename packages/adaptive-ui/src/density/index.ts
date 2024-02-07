@@ -137,7 +137,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
 
         this.horizontalPadding = createTokenDimension(
             `${name}-horizontal-padding`,
-            [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
+            [StyleProperty.paddingRight, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.horizontalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
@@ -163,7 +163,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
 
         this.verticalPadding = createTokenDimension(
             `${name}-vertical-padding`,
-            [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft],
+            [StyleProperty.paddingTop, StyleProperty.paddingBottom],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.verticalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`

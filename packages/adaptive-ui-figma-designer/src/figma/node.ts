@@ -24,6 +24,18 @@ const SOLID_BLACK: SolidPaint = {
     },
 };
 
+const SOLID_TRANSPARENT: SolidPaint = {
+    type: "SOLID",
+    visible: true,
+    opacity: 0,
+    blendMode: "NORMAL",
+    color: {
+        r: 1,
+        g: 1,
+        b: 1,
+    },
+};
+
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
 }
@@ -850,6 +862,9 @@ export class FigmaPluginNode extends PluginNode {
 
     private paintStrokeWidth(value: string): void {
         (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
+        if ((this._node as MinimalStrokesMixin).strokes.length === 0) {
+            (this._node as MinimalStrokesMixin).strokes = [SOLID_TRANSPARENT];
+        }
     }
 
     private paintCornerRadius(target: StyleProperty, value: string): void {

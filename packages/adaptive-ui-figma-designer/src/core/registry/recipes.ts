@@ -250,10 +250,16 @@ const strokeWidthTokens: DesignTokenStore = [
 ];
 
 const densityTokens: DesignTokenStore<string> = [
+    densityControl.horizontalPadding,
+    densityControl.verticalPadding,
     densityControl.horizontalGap,
     densityControl.verticalGap,
+    densityItemContainer.horizontalPadding,
+    densityItemContainer.verticalPadding,
     densityItemContainer.horizontalGap,
     densityItemContainer.verticalGap,
+    densityLayer.horizontalPadding,
+    densityLayer.verticalPadding,
     densityLayer.horizontalGap,
     densityLayer.verticalGap,
 ];

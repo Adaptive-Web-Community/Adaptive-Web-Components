@@ -132,7 +132,7 @@ export class StylesController {
     }
 
     /**
-     * Gets a display representation of applied design tokens for the selected nodes.
+     * Gets a display representation of applied design tokens for the style property types.
      *
      * @param targets - Style property types
      * @returns Applied design tokens
@@ -172,14 +172,35 @@ export class StylesController {
     }
 
     /**
-     * Gets a list of appliable design tokens for the style property type.
+     * Gets a list of appliable design tokens for the style property types.
      *
-     * @param target - Style property type
+     * @param targets - Style property types
      * @returns List of available appliable design tokens
      */
-    public getAppliableDesignTokenOptionsByType(target: StyleProperty): DesignTokenDefinition[] {
-        const val = this.controller.appliableDesignTokenRegistry.find(target);
-        return val;
+    public getAppliableDesignTokenOptions(targets: StyleProperty[]): DesignTokenDefinition[] {
+        const tokens: DesignTokenDefinition[] = [];
+
+        // Collect the individual tokens available for the requested targets
+        // TODO: Handle multiple values better
+        targets.forEach(target => {
+            const appliable = this.controller.appliableDesignTokenRegistry.find(target);
+            if (appliable) {
+                tokens.push(...appliable);
+            }
+        });
+
+        // Group by token name
+        return tokens.reduce((accumulated: DesignTokenDefinition[], current: DesignTokenDefinition): DesignTokenDefinition[] => {
+            const found = accumulated.find((item) => {
+                return item.token.name === current.token.name
+            });
+
+            if (!found) {
+                accumulated.push(current);
+            }
+
+            return accumulated;
+        }, []).sort((a, b): number => a.title.localeCompare(b.title));
     }
 
     /**
