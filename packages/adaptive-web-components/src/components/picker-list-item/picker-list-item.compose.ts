@@ -1,9 +1,9 @@
-import { FASTPickerListItem } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./picker-list-item.styles.js";
 import { PickerListItemAnatomy, template } from "./picker-list-item.template.js";
+import { PickerListItem } from "./picker-list-item.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composePickerListItem(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTPickerListItem>
+    options?: ComposeOptions<PickerListItem>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, PickerListItemAnatomy, options);
 
-    return FASTPickerListItem.compose({
+    return PickerListItem.compose({
         name: `${ds.prefix}-picker-list-item`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

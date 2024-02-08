@@ -1,9 +1,9 @@
-import { FASTDisclosure } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./disclosure.styles.js";
 import { DisclosureAnatomy, template } from "./disclosure.template.js";
+import { Disclosure } from "./disclosure.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeDisclosure(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTDisclosure>
+    options?: ComposeOptions<Disclosure>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, DisclosureAnatomy, options);
 
-    return FASTDisclosure.compose({
+    return Disclosure.compose({
         name: `${ds.prefix}-disclosure`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

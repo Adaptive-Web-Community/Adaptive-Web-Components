@@ -7,3 +7,4 @@ export {
     styleModules as pickerMenuStyleModules,
 } from "./picker-menu.styles.modules.js";
 export { template as pickerMenuTemplate, PickerMenuAnatomy, PickerMenuConditions, PickerMenuParts } from "./picker-menu.template.js";
+export { PickerMenu } from "./picker-menu.js";

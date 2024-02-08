@@ -7,3 +7,4 @@ export {
     styleModules as searchStyleModules,
 } from "./search.styles.modules.js";
 export { template as searchTemplate, SearchAnatomy, SearchConditions, SearchParts } from "./search.template.js";
+export { Search } from "./search.js";

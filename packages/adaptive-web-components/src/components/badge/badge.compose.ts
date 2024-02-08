@@ -1,9 +1,9 @@
-import { FASTBadge } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./badge.styles.js";
 import { BadgeAnatomy, template } from "./badge.template.js";
+import { Badge } from "./badge.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeBadge(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTBadge>
+    options?: ComposeOptions<Badge>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, BadgeAnatomy, options);
 
-    return FASTBadge.compose({
+    return Badge.compose({
         name: `${ds.prefix}-badge`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

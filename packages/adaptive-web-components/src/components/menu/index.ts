@@ -7,4 +7,4 @@ export {
     styleModules as menuStyleModules,
 } from "./menu.styles.modules.js";
 export { template as menuTemplate, MenuAnatomy, MenuConditions, MenuParts } from "./menu.template.js";
-export { AdaptiveMenu } from "./menu.js";
+export { Menu } from "./menu.js";

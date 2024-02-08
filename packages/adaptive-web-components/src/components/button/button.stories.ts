@@ -2,7 +2,6 @@ import { html } from "@microsoft/fast-element";
 import { ButtonType, FASTButton } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import { AdaptiveButton } from "./button.js";
 
 export const storyTemplate = html<StoryArgs<FASTButton>>`
     <adaptive-button
@@ -93,7 +92,7 @@ export default {
 
 export const Button: Story<FASTButton> = renderComponent(storyTemplate).bind({});
 
-export const ButtonIconOnly: Story<AdaptiveButton> = Button.bind({});
+export const ButtonIconOnly: Story<FASTButton> = Button.bind({});
 ButtonIconOnly.args = {
     storyContent: html`
         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">

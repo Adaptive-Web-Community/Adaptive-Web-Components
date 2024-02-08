@@ -7,3 +7,4 @@ export {
     styleModules as textFieldStyleModules,
 } from "./text-field.styles.modules.js";
 export { template as textFieldTemplate, TextFieldAnatomy, TextFieldConditions, TextFieldParts } from "./text-field.template.js";
+export { TextField } from "./text-field.js";

@@ -7,3 +7,4 @@ export {
     styleModules as comboboxStyleModules,
 } from "./combobox.styles.modules.js";
 export { template as comboboxTemplate, ComboboxAnatomy, ComboboxConditions, ComboboxParts, ComboboxStatics } from "./combobox.template.js";
+export { Combobox } from "./combobox.js";

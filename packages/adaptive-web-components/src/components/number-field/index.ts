@@ -13,3 +13,4 @@ export {
     NumberFieldParts,
     NumberFieldStatics
 } from "./number-field.template.js";
+export { NumberField } from "./number-field.js";

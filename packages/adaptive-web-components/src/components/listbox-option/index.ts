@@ -12,3 +12,4 @@ export {
     ListboxOptionConditions,
     ListboxOptionParts
 } from "./listbox-option.template.js";
+export { ListboxOption } from "./listbox-option.js";

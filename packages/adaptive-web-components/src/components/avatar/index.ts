@@ -7,3 +7,4 @@ export {
     styleModules as avatarStyleModules,
 } from "./avatar.styles.modules.js";
 export { template as avatarTemplate, AvatarAnatomy, AvatarConditions, AvatarParts } from "./avatar.template.js";
+export { Avatar } from "./avatar.js";

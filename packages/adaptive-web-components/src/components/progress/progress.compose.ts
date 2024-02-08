@@ -1,9 +1,9 @@
-import { FASTProgress } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./progress.styles.js";
 import { ProgressAnatomy, template } from "./progress.template.js";
+import { Progress } from "./progress.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeProgress(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTProgress>
+    options?: ComposeOptions<Progress>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, ProgressAnatomy, options);
 
-    return FASTProgress.compose({
+    return Progress.compose({
         name: `${ds.prefix}-progress`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

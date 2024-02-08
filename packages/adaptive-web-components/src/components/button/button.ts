@@ -5,7 +5,7 @@ import { FASTButton } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveButton extends FASTButton {
+export class Button extends FASTButton {
     /**
      * Applies 'icon-only' class when there is only an SVG in the default slot.
      */

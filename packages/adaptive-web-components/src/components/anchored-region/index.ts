@@ -12,3 +12,4 @@ export {
     AnchoredRegionConditions,
     AnchoredRegionParts
 } from "./anchored-region.template.js";
+export { AnchoredRegion } from "./anchored-region.js";

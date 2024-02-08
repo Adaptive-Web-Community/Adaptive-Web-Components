@@ -1,9 +1,9 @@
-import { FASTFlipper } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./flipper.styles.js";
 import { FlipperAnatomy, FlipperStatics, template } from "./flipper.template.js";
+import { Flipper } from "./flipper.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
@@ -12,7 +12,7 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeFlipper(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTFlipper, FlipperStatics>
+    options?: ComposeOptions<Flipper, FlipperStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
         if (!ds.statics.has(FlipperStatics.previous)) {
@@ -32,7 +32,7 @@ export function composeFlipper(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, FlipperAnatomy, options);
 
-    return FASTFlipper.compose({
+    return Flipper.compose({
         name: `${ds.prefix}-flipper`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

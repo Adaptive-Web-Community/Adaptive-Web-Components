@@ -7,3 +7,4 @@ export {
     styleModules as treeViewStyleModules,
 } from "./tree-view.styles.modules.js";
 export { template as treeViewTemplate, TreeViewAnatomy, TreeViewConditions, TreeViewParts } from "./tree-view.template.js";
+export { TreeView } from "./tree-view.js";

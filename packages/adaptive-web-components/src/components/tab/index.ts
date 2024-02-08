@@ -7,3 +7,4 @@ export {
     styleModules as tabStyleModules,
 } from "./tab.styles.modules.js";
 export { template as tabTemplate, TabAnatomy, TabConditions, TabParts } from "./tab.template.js";
+export { Tab } from "./tab.js";

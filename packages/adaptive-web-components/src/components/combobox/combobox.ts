@@ -5,7 +5,7 @@ import { FASTCombobox } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveCombobox extends FASTCombobox {
+export class Combobox extends FASTCombobox {
     public connectedCallback() {
         super.connectedCallback();
 

@@ -12,4 +12,4 @@ export {
     HorizontalScrollConditions,
     HorizontalScrollParts
 } from "./horizontal-scroll.template.js";
-export { AdaptiveHorizontalScroll } from "./horizontal-scroll.js";
+export { HorizontalScroll } from "./horizontal-scroll.js";

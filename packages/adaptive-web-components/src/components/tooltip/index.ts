@@ -7,3 +7,4 @@ export {
     styleModules as tooltipStyleModules,
 } from "./tooltip.styles.modules.js";
 export { template as tooltipTemplate, TooltipAnatomy, TooltipConditions, TooltipParts } from "./tooltip.template.js";
+export { Tooltip } from "./tooltip.js";

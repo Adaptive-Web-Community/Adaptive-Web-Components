@@ -7,3 +7,4 @@ export {
     styleModules as textAreaStyleModules,
 } from "./text-area.styles.modules.js";
 export { template as textAreaTemplate, TextAreaAnatomy, TextAreaConditions, TextAreaParts } from "./text-area.template.js";
+export { TextArea } from "./text-area.js";

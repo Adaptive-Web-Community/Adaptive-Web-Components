@@ -7,3 +7,4 @@ export {
     styleModules as dialogStyleModules,
 } from "./dialog.styles.modules.js";
 export { template as dialogTemplate, DialogAnatomy, DialogConditions, DialogParts } from "./dialog.template.js";
+export { Dialog } from "./dialog.js";

@@ -5,7 +5,7 @@ import { FASTNumberField } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveNumberField extends FASTNumberField {
+export class NumberField extends FASTNumberField {
     public focus(options?: FocusOptions): void {
         this.control.focus(options);
     }

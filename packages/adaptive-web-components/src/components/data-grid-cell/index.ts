@@ -12,3 +12,4 @@ export {
     DataGridCellConditions,
     DataGridCellParts
 } from "./data-grid-cell.template.js";
+export { DataGridCell } from "./data-grid-cell.js";

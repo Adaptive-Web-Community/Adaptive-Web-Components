@@ -13,3 +13,4 @@ export {
     AccordionItemParts,
     AccordionItemStatics
 } from "./accordion-item.template.js";
+export { AccordionItem } from "./accordion-item.js";

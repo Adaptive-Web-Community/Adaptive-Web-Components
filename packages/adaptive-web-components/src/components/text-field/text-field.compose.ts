@@ -1,8 +1,7 @@
-import { FASTTextField } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
-import { AdaptiveTextField } from "./text-field.js";
+import { TextField } from "./text-field.js";
 import { aestheticStyles, templateStyles } from "./text-field.styles.js";
 import { template, TextFieldAnatomy } from "./text-field.template.js";
 
@@ -13,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeTextField(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTTextField>
+    options?: ComposeOptions<TextField>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, TextFieldAnatomy, options);
 
-    return AdaptiveTextField.compose({
+    return TextField.compose({
         name: `${ds.prefix}-text-field`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

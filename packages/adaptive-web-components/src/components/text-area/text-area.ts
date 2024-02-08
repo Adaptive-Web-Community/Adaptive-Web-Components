@@ -5,7 +5,7 @@ import { FASTTextArea } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveTextArea extends FASTTextArea {
+export class TextArea extends FASTTextArea {
     public focus(options?: FocusOptions): void {
         this.control.focus(options);
     }

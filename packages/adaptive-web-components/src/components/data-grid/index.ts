@@ -7,3 +7,4 @@ export {
     styleModules as dataGridStyleModules,
 } from "./data-grid.styles.modules.js";
 export { template as dataGridTemplate, DataGridAnatomy, DataGridConditions, DataGridParts } from "./data-grid.template.js";
+export { DataGrid } from "./data-grid.js";

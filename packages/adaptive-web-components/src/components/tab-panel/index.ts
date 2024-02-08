@@ -7,3 +7,4 @@ export {
     styleModules as tabPanelStyleModules,
 } from "./tab-panel.styles.modules.js";
 export { template as tabPanelTemplate, TabPanelAnatomy,TabPanelConditions, TabPanelParts } from "./tab-panel.template.js";
+export { TabPanel } from "./tab-panel.js";

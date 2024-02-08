@@ -3,8 +3,10 @@ import { FASTSelect } from "@microsoft/fast-foundation";
 
 /**
  * The Adaptive version of Select. Extends {@link @microsoft/fast-foundation#FASTSelect}.
+ * 
+ * @public
  */
-export class AdaptiveSelect extends FASTSelect {
+export class Select extends FASTSelect {
     private computedStylesheet?: ElementStyles;
 
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
