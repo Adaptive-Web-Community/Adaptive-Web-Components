@@ -7,3 +7,4 @@ export {
     styleModules as selectStyleModules,
 } from "./select.styles.modules.js";
 export { template as selectTemplate, SelectAnatomy, SelectConditions, SelectParts, SelectStatics } from "./select.template.js";
+export { Select } from "./select.js";

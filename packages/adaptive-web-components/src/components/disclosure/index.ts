@@ -7,3 +7,4 @@ export {
     styleModules as disclosureStyleModules,
 } from "./disclosure.styles.modules.js";
 export { template as disclosureTemplate, DisclosureAnatomy, DisclosureConditions, DisclosureParts } from "./disclosure.template.js";
+export { Disclosure } from "./disclosure.js";

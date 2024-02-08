@@ -12,3 +12,4 @@ export {
     PickerMenuOptionConditions,
     PickerMenuOptionParts
 } from "./picker-menu-option.template.js";
+export { PickerMenuOption } from "./picker-menu-option.js";

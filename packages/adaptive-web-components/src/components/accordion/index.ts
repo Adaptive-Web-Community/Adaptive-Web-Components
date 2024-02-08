@@ -7,3 +7,4 @@ export {
     styleModules as accordionStyleModules,
 } from "./accordion.styles.modules.js";
 export { template as accordionTemplate, AccordionAnatomy, AccordionConditions, AccordionParts } from "./accordion.template.js";
+export { Accordion } from "./accordion.js";

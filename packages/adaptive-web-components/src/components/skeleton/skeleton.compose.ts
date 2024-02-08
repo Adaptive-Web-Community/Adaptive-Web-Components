@@ -1,9 +1,9 @@
-import { FASTSkeleton } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./skeleton.styles.js";
 import { SkeletonAnatomy, template } from "./skeleton.template.js";
+import { Skeleton } from "./skeleton.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeSkeleton(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTSkeleton>
+    options?: ComposeOptions<Skeleton>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, SkeletonAnatomy, options);
 
-    return FASTSkeleton.compose({
+    return Skeleton.compose({
         name: `${ds.prefix}-skeleton`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -7,4 +7,4 @@ export {
     styleModules as anchorStyleModules,
 } from "./anchor.styles.modules.js";
 export { template as anchorTemplate, AnchorAnatomy, AnchorConditions, AnchorParts } from "./anchor.template.js";
-export { AdaptiveAnchor } from "./anchor.js";
+export { Anchor } from "./anchor.js";

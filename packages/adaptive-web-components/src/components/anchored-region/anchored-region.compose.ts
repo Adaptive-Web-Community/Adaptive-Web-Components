@@ -1,9 +1,9 @@
-import { FASTAnchoredRegion } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./anchored-region.styles.js";
 import { AnchoredRegionAnatomy, template } from "./anchored-region.template.js";
+import { AnchoredRegion } from "./anchored-region.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeAnchoredRegion(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTAnchoredRegion>
+    options?: ComposeOptions<AnchoredRegion>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, AnchoredRegionAnatomy, options);
 
-    return FASTAnchoredRegion.compose({
+    return AnchoredRegion.compose({
         name: `${ds.prefix}-anchored-region`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -1,10 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import { AnchorTarget } from "@microsoft/fast-foundation";
+import { AnchorTarget, FASTAnchor } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import { AdaptiveAnchor } from "./anchor.js";
 
-export const storyTemplate = html<StoryArgs<AdaptiveAnchor>>`
+export const storyTemplate = html<StoryArgs<FASTAnchor>>`
     <adaptive-anchor
         download="${(x) => x.download}"
         href="${(x) => x.href}"
@@ -81,11 +80,11 @@ export default {
         ariaRelevant: { control: "text" },
         ariaRoledescription: { control: "text" },
     },
-} as Meta<AdaptiveAnchor>;
+} as Meta<FASTAnchor>;
 
-export const Anchor: Story<AdaptiveAnchor> = renderComponent(storyTemplate).bind({});
+export const Anchor: Story<FASTAnchor> = renderComponent(storyTemplate).bind({});
 
-export const AnchorIconOnly: Story<AdaptiveAnchor> = Anchor.bind({});
+export const AnchorIconOnly: Story<FASTAnchor> = Anchor.bind({});
 AnchorIconOnly.args = {
     storyContent: html`
         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +93,7 @@ AnchorIconOnly.args = {
     `,
 };
 
-export const AnchorWithoutHref: Story<AdaptiveAnchor> = Anchor.bind({});
+export const AnchorWithoutHref: Story<FASTAnchor> = Anchor.bind({});
 AnchorWithoutHref.args = {
     storyContent: "Anchor without href attribute",
     href: undefined,

@@ -69,6 +69,10 @@ import { Styles } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
+export class Accordion extends FASTAccordion {
+}
+
+// @public
 export const accordionAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -76,6 +80,10 @@ export const AccordionAnatomy: ComponentAnatomy<typeof AccordionConditions, type
 
 // @public (undocumented)
 export const AccordionConditions: {};
+
+// @public
+export class AccordionItem extends FASTAccordionItem {
+}
 
 // @public
 export const accordionItemAestheticStyles: ElementStyles;
@@ -131,41 +139,14 @@ export const accordionTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTAc
 // @public
 export const accordionTemplateStyles: ElementStyles;
 
-// @public
-export class AdaptiveAnchor extends FASTAnchor {
-    protected defaultSlottedContentChanged(): void;
-    // (undocumented)
-    focus(options?: FocusOptions): void;
-}
-
-// @public
-export class AdaptiveButton extends FASTButton {
-    protected defaultSlottedContentChanged(): void;
-    // (undocumented)
-    focus(options?: FocusOptions): void;
-}
-
 // @beta
 export const AdaptiveDesignSystem: DesignSystem;
 
 // @public
-export class AdaptiveHorizontalScroll extends FASTHorizontalScroll {
+export class Anchor extends FASTAnchor {
+    protected defaultSlottedContentChanged(): void;
     // (undocumented)
-    connectedCallback(): void;
-    // (undocumented)
-    protected viewChanged(prev?: HorizontalScrollView, next?: HorizontalScrollView): void;
-}
-
-// @public
-export class AdaptiveMenu extends FASTMenu {
-    // (undocumented)
-    protected setItems(): void;
-}
-
-// @public
-export class AdaptiveMenuItem extends FASTMenuItem {
-    // Warning: (ae-forgotten-export) The symbol "AdaptiveMenuItemColumnCount" needs to be exported by the entry point index.d.ts
-    startColumnCount: AdaptiveMenuItemColumnCount;
+    focus(options?: FocusOptions): void;
 }
 
 // @public
@@ -179,6 +160,10 @@ export const AnchorConditions: {
     iconOnly: string;
     noHref: string;
 };
+
+// @public
+export class AnchoredRegion extends FASTAnchoredRegion {
+}
 
 // @public
 export const anchoredRegionAestheticStyles: ElementStyles;
@@ -223,6 +208,10 @@ export const anchorTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTAncho
 export const anchorTemplateStyles: ElementStyles;
 
 // @public
+export class Avatar extends FASTAvatar {
+}
+
+// @public
 export const avatarAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -246,6 +235,10 @@ export const avatarTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTAvata
 
 // @public
 export const avatarTemplateStyles: ElementStyles;
+
+// @public
+export class Badge extends FASTBadge {
+}
 
 // @public
 export const badgeAestheticStyles: ElementStyles;
@@ -278,6 +271,10 @@ export const badgeTemplateStyles: ElementStyles;
 export const baseHeightMultiplier: CSSDirective;
 
 // @public
+export class Breadcrumb extends FASTBreadcrumb {
+}
+
+// @public
 export const breadcrumbAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -285,6 +282,12 @@ export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, ty
 
 // @public (undocumented)
 export const BreadcrumbConditions: {};
+
+// @public
+export class BreadcrumbItem extends FASTBreadcrumbItem {
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
 
 // @public
 export const breadcrumbItemAestheticStyles: ElementStyles;
@@ -342,6 +345,13 @@ export const breadcrumbTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTB
 export const breadcrumbTemplateStyles: ElementStyles;
 
 // @public
+export class Button extends FASTButton {
+    protected defaultSlottedContentChanged(): void;
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
+
+// @public
 export const buttonAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -368,6 +378,10 @@ export const buttonTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTButto
 
 // @public
 export const buttonTemplateStyles: ElementStyles;
+
+// @public
+export class Calendar extends FASTCalendar {
+}
 
 // @public
 export const calendarAestheticStyles: ElementStyles;
@@ -404,6 +418,10 @@ export const calendarTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTCal
 export const calendarTemplateStyles: ElementStyles;
 
 // @public
+export class Card extends FASTCard {
+}
+
+// @public
 export const cardAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -425,6 +443,10 @@ export const cardTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTCard>;
 
 // @public
 export const cardTemplateStyles: ElementStyles;
+
+// @public
+export class Checkbox extends FASTCheckbox {
+}
 
 // @public
 export const checkboxAestheticStyles: ElementStyles;
@@ -463,6 +485,16 @@ export const checkboxTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTChe
 
 // @public
 export const checkboxTemplateStyles: ElementStyles;
+
+// @public
+export class Combobox extends FASTCombobox {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+    // @internal
+    focusinHandler(e: FocusEvent): void;
+}
 
 // @public
 export const comboboxAestheticStyles: ElementStyles;
@@ -507,269 +539,276 @@ export const componentBaseStyles = "\n    :host([hidden]) {\n        display: no
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordion" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeAccordion(ds: DesignSystem, options?: ComposeOptions<FASTAccordion>): FASTElementDefinition;
+export function composeAccordion(ds: DesignSystem, options?: ComposeOptions<Accordion>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "AccordionItemStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeAccordionItem(ds: DesignSystem, options?: ComposeOptions<FASTAccordionItem, AccordionItemStatics>): FASTElementDefinition;
+export function composeAccordionItem(ds: DesignSystem, options?: ComposeOptions<AccordionItem, AccordionItemStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeAnchor" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeAnchor(ds: DesignSystem, options?: ComposeOptions<AdaptiveAnchor>): FASTElementDefinition;
+export function composeAnchor(ds: DesignSystem, options?: ComposeOptions<Anchor>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeAnchoredRegion" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeAnchoredRegion(ds: DesignSystem, options?: ComposeOptions<FASTAnchoredRegion>): FASTElementDefinition;
+export function composeAnchoredRegion(ds: DesignSystem, options?: ComposeOptions<AnchoredRegion>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeAvatar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeAvatar(ds: DesignSystem, options?: ComposeOptions<FASTAvatar>): FASTElementDefinition;
+export function composeAvatar(ds: DesignSystem, options?: ComposeOptions<Avatar>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeBadge" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeBadge(ds: DesignSystem, options?: ComposeOptions<FASTBadge>): FASTElementDefinition;
+export function composeBadge(ds: DesignSystem, options?: ComposeOptions<Badge>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumb" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeBreadcrumb(ds: DesignSystem, options?: ComposeOptions<FASTBreadcrumb>): FASTElementDefinition;
+export function composeBreadcrumb(ds: DesignSystem, options?: ComposeOptions<Breadcrumb>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "BreadcrumbItemStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeBreadcrumbItem(ds: DesignSystem, options?: ComposeOptions<FASTBreadcrumbItem, BreadcrumbItemStatics>): FASTElementDefinition;
+export function composeBreadcrumbItem(ds: DesignSystem, options?: ComposeOptions<BreadcrumbItem, BreadcrumbItemStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeButton" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeButton(ds: DesignSystem, options?: ComposeOptions<AdaptiveButton>): FASTElementDefinition;
+export function composeButton(ds: DesignSystem, options?: ComposeOptions<Button>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCalendar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeCalendar(ds: DesignSystem, options?: ComposeOptions<FASTCalendar>): FASTElementDefinition;
+export function composeCalendar(ds: DesignSystem, options?: ComposeOptions<Calendar>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCard" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeCard(ds: DesignSystem, options?: ComposeOptions<FASTCard>): FASTElementDefinition;
+export function composeCard(ds: DesignSystem, options?: ComposeOptions<Card>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "CheckboxStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeCheckbox(ds: DesignSystem, options?: ComposeOptions<FASTCheckbox, CheckboxStatics>): FASTElementDefinition;
+export function composeCheckbox(ds: DesignSystem, options?: ComposeOptions<Checkbox, CheckboxStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeCombobox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeCombobox" is marked as @public, but its signature references "ComboboxStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeCombobox(ds: DesignSystem, options?: ComposeOptions<FASTCombobox, ComboboxStatics>): FASTElementDefinition;
+export function composeCombobox(ds: DesignSystem, options?: ComposeOptions<Combobox, ComboboxStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDataGrid" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDataGrid(ds: DesignSystem, options?: ComposeOptions<FASTDataGrid>): FASTElementDefinition;
+export function composeDataGrid(ds: DesignSystem, options?: ComposeOptions<DataGrid>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDataGridCell" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDataGridCell(ds: DesignSystem, options?: ComposeOptions<FASTDataGridCell>): FASTElementDefinition;
+export function composeDataGridCell(ds: DesignSystem, options?: ComposeOptions<DataGridCell>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDataGridRow" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDataGridRow(ds: DesignSystem, options?: ComposeOptions<FASTDataGridRow>): FASTElementDefinition;
+export function composeDataGridRow(ds: DesignSystem, options?: ComposeOptions<DataGridRow>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDialog" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDialog(ds: DesignSystem, options?: ComposeOptions<FASTDialog>): FASTElementDefinition;
+export function composeDialog(ds: DesignSystem, options?: ComposeOptions<Dialog>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDisclosure" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDisclosure(ds: DesignSystem, options?: ComposeOptions<FASTDisclosure>): FASTElementDefinition;
+export function composeDisclosure(ds: DesignSystem, options?: ComposeOptions<Disclosure>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeDivider" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeDivider(ds: DesignSystem, options?: ComposeOptions<FASTDivider>): FASTElementDefinition;
+export function composeDivider(ds: DesignSystem, options?: ComposeOptions<Divider>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeFlipper" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeFlipper" is marked as @public, but its signature references "FlipperStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeFlipper(ds: DesignSystem, options?: ComposeOptions<FASTFlipper, FlipperStatics>): FASTElementDefinition;
+export function composeFlipper(ds: DesignSystem, options?: ComposeOptions<Flipper, FlipperStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeHorizontalScroll" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeHorizontalScroll(ds: DesignSystem, options?: ComposeOptions<AdaptiveHorizontalScroll>): FASTElementDefinition;
+export function composeHorizontalScroll(ds: DesignSystem, options?: ComposeOptions<HorizontalScroll>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeListbox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeListbox(ds: DesignSystem, options?: ComposeOptions<FASTListboxElement>): FASTElementDefinition;
+export function composeListbox(ds: DesignSystem, options?: ComposeOptions<Listbox>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeListboxOption" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeListboxOption(ds: DesignSystem, options?: ComposeOptions<FASTListboxOption>): FASTElementDefinition;
+export function composeListboxOption(ds: DesignSystem, options?: ComposeOptions<ListboxOption>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeMenu" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeMenu(ds: DesignSystem, options?: ComposeOptions<AdaptiveMenu>): FASTElementDefinition;
+export function composeMenu(ds: DesignSystem, options?: ComposeOptions<Menu>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "MenuItemStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeMenuItem(ds: DesignSystem, options?: ComposeOptions<AdaptiveMenuItem, MenuItemStatics>): FASTElementDefinition;
+export function composeMenuItem(ds: DesignSystem, options?: ComposeOptions<MenuItem, MenuItemStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "NumberFieldStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeNumberField(ds: DesignSystem, options?: ComposeOptions<FASTNumberField, NumberFieldStatics>): FASTElementDefinition;
+export function composeNumberField(ds: DesignSystem, options?: ComposeOptions<NumberField, NumberFieldStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composePicker" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composePicker(ds: DesignSystem, options?: ComposeOptions<FASTPicker>): FASTElementDefinition;
+export function composePicker(ds: DesignSystem, options?: ComposeOptions<Picker>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composePickerList" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composePickerList(ds: DesignSystem, options?: ComposeOptions<FASTPickerList>): FASTElementDefinition;
+export function composePickerList(ds: DesignSystem, options?: ComposeOptions<PickerList>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composePickerListItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composePickerListItem(ds: DesignSystem, options?: ComposeOptions<FASTPickerListItem>): FASTElementDefinition;
+export function composePickerListItem(ds: DesignSystem, options?: ComposeOptions<PickerListItem>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composePickerMenu" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composePickerMenu(ds: DesignSystem, options?: ComposeOptions<FASTPickerMenu>): FASTElementDefinition;
+export function composePickerMenu(ds: DesignSystem, options?: ComposeOptions<PickerMenu>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composePickerMenuOption" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composePickerMenuOption(ds: DesignSystem, options?: ComposeOptions<FASTPickerMenuOption>): FASTElementDefinition;
+export function composePickerMenuOption(ds: DesignSystem, options?: ComposeOptions<PickerMenuOption>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeProgress" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeProgress(ds: DesignSystem, options?: ComposeOptions<FASTProgress>): FASTElementDefinition;
+export function composeProgress(ds: DesignSystem, options?: ComposeOptions<Progress>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeProgressRing" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeProgressRing(ds: DesignSystem, options?: ComposeOptions<FASTProgressRing>): FASTElementDefinition;
+export function composeProgressRing(ds: DesignSystem, options?: ComposeOptions<ProgressRing>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "RadioStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeRadio(ds: DesignSystem, options?: ComposeOptions<FASTRadio, RadioStatics>): FASTElementDefinition;
+export function composeRadio(ds: DesignSystem, options?: ComposeOptions<Radio, RadioStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeRadioGroup" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeRadioGroup(ds: DesignSystem, options?: ComposeOptions<FASTRadioGroup>): FASTElementDefinition;
+export function composeRadioGroup(ds: DesignSystem, options?: ComposeOptions<RadioGroup>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeSearch" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSearch(ds: DesignSystem, options?: ComposeOptions<FASTSearch>): FASTElementDefinition;
+export function composeSearch(ds: DesignSystem, options?: ComposeOptions<Search>): FASTElementDefinition;
 
-// Warning: (ae-forgotten-export) The symbol "AdaptiveSelect" needs to be exported by the entry point index.d.ts
 // Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "SelectStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSelect(ds: DesignSystem, options?: ComposeOptions<AdaptiveSelect, SelectStatics>): FASTElementDefinition;
+export function composeSelect(ds: DesignSystem, options?: ComposeOptions<Select, SelectStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeSkeleton" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSkeleton(ds: DesignSystem, options?: ComposeOptions<FASTSkeleton>): FASTElementDefinition;
+export function composeSkeleton(ds: DesignSystem, options?: ComposeOptions<Skeleton>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeSlider" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSlider(ds: DesignSystem, options?: ComposeOptions<FASTSlider>): FASTElementDefinition;
+export function composeSlider(ds: DesignSystem, options?: ComposeOptions<Slider>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeSliderLabel" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSliderLabel(ds: DesignSystem, options?: ComposeOptions<FASTSliderLabel>): FASTElementDefinition;
+export function composeSliderLabel(ds: DesignSystem, options?: ComposeOptions<SliderLabel>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeSwitch" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeSwitch(ds: DesignSystem, options?: ComposeOptions<FASTSwitch>): FASTElementDefinition;
+export function composeSwitch(ds: DesignSystem, options?: ComposeOptions<Switch>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTab" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTab(ds: DesignSystem, options?: ComposeOptions<FASTTab>): FASTElementDefinition;
+export function composeTab(ds: DesignSystem, options?: ComposeOptions<Tab>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTabPanel" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTabPanel(ds: DesignSystem, options?: ComposeOptions<FASTTabPanel>): FASTElementDefinition;
+export function composeTabPanel(ds: DesignSystem, options?: ComposeOptions<TabPanel>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTabs" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTabs(ds: DesignSystem, options?: ComposeOptions<FASTTabs>): FASTElementDefinition;
+export function composeTabs(ds: DesignSystem, options?: ComposeOptions<Tabs>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTextArea" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTextArea(ds: DesignSystem, options?: ComposeOptions<FASTTextArea>): FASTElementDefinition;
+export function composeTextArea(ds: DesignSystem, options?: ComposeOptions<TextArea>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTextField" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTextField(ds: DesignSystem, options?: ComposeOptions<FASTTextField>): FASTElementDefinition;
+export function composeTextField(ds: DesignSystem, options?: ComposeOptions<TextField>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeToolbar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeToolbar(ds: DesignSystem, options?: ComposeOptions<FASTToolbar>): FASTElementDefinition;
+export function composeToolbar(ds: DesignSystem, options?: ComposeOptions<Toolbar>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTooltip" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTooltip(ds: DesignSystem, options?: ComposeOptions<FASTTooltip>): FASTElementDefinition;
+export function composeTooltip(ds: DesignSystem, options?: ComposeOptions<Tooltip>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 // Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "TreeItemStatics" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTreeItem(ds: DesignSystem, options?: ComposeOptions<FASTTreeItem, TreeItemStatics>): FASTElementDefinition;
+export function composeTreeItem(ds: DesignSystem, options?: ComposeOptions<TreeItem, TreeItemStatics>): FASTElementDefinition;
 
 // Warning: (ae-incompatible-release-tags) The symbol "composeTreeView" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
-export function composeTreeView(ds: DesignSystem, options?: ComposeOptions<FASTTreeView>): FASTElementDefinition;
+export function composeTreeView(ds: DesignSystem, options?: ComposeOptions<TreeView>): FASTElementDefinition;
+
+// @public
+export class DataGrid extends FASTDataGrid {
+}
 
 // @public
 export const dataGridAestheticStyles: ElementStyles;
 
 // @public (undocumented)
 export const DataGridAnatomy: ComponentAnatomy<typeof DataGridConditions, typeof DataGridParts>;
+
+// @public
+export class DataGridCell extends FASTDataGridCell {
+}
 
 // @public
 export const dataGridCellAestheticStyles: ElementStyles;
@@ -803,6 +842,10 @@ export const DataGridConditions: {};
 
 // @public (undocumented)
 export const DataGridParts: {};
+
+// @public
+export class DataGridRow extends FASTDataGridRow {
+}
 
 // @public
 export const dataGridRowAestheticStyles: ElementStyles;
@@ -866,6 +909,10 @@ export class DesignSystem {
 }
 
 // @public
+export class Dialog extends FASTDialog {
+}
+
+// @public
 export const dialogAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -891,6 +938,10 @@ export const dialogTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTDialo
 
 // @public
 export const dialogTemplateStyles: ElementStyles;
+
+// @public
+export class Disclosure extends FASTDisclosure {
+}
 
 // @public
 export const disclosureAestheticStyles: ElementStyles;
@@ -920,6 +971,10 @@ export const disclosureTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTD
 export const disclosureTemplateStyles: ElementStyles;
 
 // @public
+export class Divider extends FASTDivider {
+}
+
+// @public
 export const dividerAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -944,6 +999,10 @@ export const dividerTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTDivi
 
 // @public
 export const dividerTemplateStyles: ElementStyles;
+
+// @public
+export class Flipper extends FASTFlipper {
+}
 
 // @public
 export const flipperAestheticStyles: ElementStyles;
@@ -992,6 +1051,14 @@ export const globalStyleModules: (anatomy?: ComponentAnatomy<any, any>) => Style
 export const heightNumber: CSSDirective;
 
 // @public
+export class HorizontalScroll extends FASTHorizontalScroll {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    protected viewChanged(prev?: HorizontalScrollView, next?: HorizontalScrollView): void;
+}
+
+// @public
 export const horizontalScrollAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1023,6 +1090,10 @@ export const horizontalScrollTemplate: (ds: DesignSystem) => ElementViewTemplate
 export const horizontalScrollTemplateStyles: ElementStyles;
 
 // @public
+export class Listbox extends FASTListboxElement {
+}
+
+// @public
 export const listboxAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1030,6 +1101,10 @@ export const ListboxAnatomy: ComponentAnatomy<typeof ListboxConditions, typeof L
 
 // @public (undocumented)
 export const ListboxConditions: {};
+
+// @public
+export class ListboxOption extends FASTListboxOption {
+}
 
 // @public
 export const listboxOptionAestheticStyles: ElementStyles;
@@ -1074,6 +1149,12 @@ export const listboxTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTList
 export const listboxTemplateStyles: ElementStyles;
 
 // @public
+export class Menu extends FASTMenu {
+    // (undocumented)
+    protected setItems(): void;
+}
+
+// @public
 export const menuAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1083,6 +1164,12 @@ export const MenuAnatomy: ComponentAnatomy<typeof MenuConditions, typeof MenuPar
 export const MenuConditions: {
     submenu: string;
 };
+
+// @public
+export class MenuItem extends FASTMenuItem {
+    // Warning: (ae-forgotten-export) The symbol "MenuItemColumnCount" needs to be exported by the entry point index.d.ts
+    startColumnCount: MenuItemColumnCount;
+}
 
 // @public
 export const menuItemAestheticStyles: ElementStyles;
@@ -1137,6 +1224,12 @@ export const menuTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTMenu>;
 export const menuTemplateStyles: ElementStyles;
 
 // @public
+export class NumberField extends FASTNumberField {
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
+
+// @public
 export const numberFieldAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1176,6 +1269,10 @@ export const numberFieldTemplate: (ds: DesignSystem) => ElementViewTemplate<FAST
 export const numberFieldTemplateStyles: ElementStyles;
 
 // @public
+export class Picker extends FASTPicker {
+}
+
+// @public
 export const pickerAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1185,6 +1282,10 @@ export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof Pic
 export const PickerConditions: {};
 
 // @public
+export class PickerList extends FASTPickerList {
+}
+
+// @public
 export const pickerListAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1192,6 +1293,10 @@ export const PickerListAnatomy: ComponentAnatomy<typeof PickerListConditions, ty
 
 // @public (undocumented)
 export const PickerListConditions: {};
+
+// @public
+export class PickerListItem extends FASTPickerListItem {
+}
 
 // @public
 export const pickerListItemAestheticStyles: ElementStyles;
@@ -1231,6 +1336,10 @@ export const pickerListTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTP
 export const pickerListTemplateStyles: ElementStyles;
 
 // @public
+export class PickerMenu extends FASTPickerMenu {
+}
+
+// @public
 export const pickerMenuAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1238,6 +1347,10 @@ export const PickerMenuAnatomy: ComponentAnatomy<typeof PickerMenuConditions, ty
 
 // @public (undocumented)
 export const PickerMenuConditions: {};
+
+// @public
+export class PickerMenuOption extends FASTPickerMenuOption {
+}
 
 // @public
 export const pickerMenuOptionAestheticStyles: ElementStyles;
@@ -1303,6 +1416,10 @@ export const pickerTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTPicke
 export const pickerTemplateStyles: ElementStyles;
 
 // @public
+export class Progress extends FASTProgress {
+}
+
+// @public
 export const progressAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1317,6 +1434,10 @@ export const ProgressParts: {
     determinate: string;
     indeterminate: string;
 };
+
+// @public
+export class ProgressRing extends FASTProgressRing {
+}
 
 // @public
 export const progressRingAestheticStyles: ElementStyles;
@@ -1357,6 +1478,10 @@ export const progressTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTPro
 export const progressTemplateStyles: ElementStyles;
 
 // @public
+export class Radio extends FASTRadio {
+}
+
+// @public
 export const radioAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1366,6 +1491,10 @@ export const RadioAnatomy: ComponentAnatomy<typeof RadioConditions, typeof Radio
 export const RadioConditions: {
     checked: string;
 };
+
+// @public
+export class RadioGroup extends FASTRadioGroup {
+}
 
 // @public
 export const radioGroupAestheticStyles: ElementStyles;
@@ -1421,6 +1550,12 @@ export const radioTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTRadio>
 export const radioTemplateStyles: ElementStyles;
 
 // @public
+export class Search extends FASTSearch {
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
+
+// @public
 export const searchAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1447,6 +1582,16 @@ export const searchTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTSearc
 
 // @public
 export const searchTemplateStyles: ElementStyles;
+
+// @public
+export class Select extends FASTSelect {
+    // (undocumented)
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    protected sizeChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
+}
 
 // @public
 export const selectAestheticStyles: ElementStyles;
@@ -1488,6 +1633,10 @@ export const selectTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTSelec
 export const selectTemplateStyles: ElementStyles;
 
 // @public
+export class Skeleton extends FASTSkeleton {
+}
+
+// @public
 export const skeletonAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1514,6 +1663,10 @@ export const skeletonTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTSke
 export const skeletonTemplateStyles: ElementStyles;
 
 // @public
+export class Slider extends FASTSlider {
+}
+
+// @public
 export const sliderAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1524,6 +1677,10 @@ export const SliderConditions: {
     horizontal: string;
     vertical: string;
 };
+
+// @public
+export class SliderLabel extends FASTSliderLabel {
+}
 
 // @public
 export const sliderLabelAestheticStyles: ElementStyles;
@@ -1579,6 +1736,10 @@ export const sliderTemplateStyles: ElementStyles;
 export const svgIconStyles = "\n    .stroked {\n        stroke: currentcolor;\n        stroke-linecap: round;\n        stroke-linejoin: round;\n        stroke-width: 1px;\n    }\n";
 
 // @public
+export class Switch extends FASTSwitch {
+}
+
+// @public
 export const switchAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1608,6 +1769,10 @@ export const switchTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTSwitc
 export const switchTemplateStyles: ElementStyles;
 
 // @public
+export class Tab extends FASTTab {
+}
+
+// @public
 export const tabAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1615,6 +1780,10 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
 
 // @public (undocumented)
 export const TabConditions: {};
+
+// @public
+export class TabPanel extends FASTTabPanel {
+}
 
 // @public
 export const tabPanelAestheticStyles: ElementStyles;
@@ -1641,6 +1810,10 @@ export const tabPanelTemplateStyles: ElementStyles;
 
 // @public (undocumented)
 export const TabParts: {};
+
+// @public
+export class Tabs extends FASTTabs {
+}
 
 // @public
 export const tabsAestheticStyles: ElementStyles;
@@ -1683,6 +1856,12 @@ export const tabTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTab>;
 export const tabTemplateStyles: ElementStyles;
 
 // @public
+export class TextArea extends FASTTextArea {
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
+
+// @public
 export const textAreaAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1707,6 +1886,12 @@ export const textAreaTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTex
 
 // @public
 export const textAreaTemplateStyles: ElementStyles;
+
+// @public
+export class TextField extends FASTTextField {
+    // (undocumented)
+    focus(options?: FocusOptions): void;
+}
 
 // @public
 export const textFieldAestheticStyles: ElementStyles;
@@ -1734,6 +1919,10 @@ export const textFieldTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTe
 
 // @public
 export const textFieldTemplateStyles: ElementStyles;
+
+// @public
+export class Toolbar extends FASTToolbar {
+}
 
 // @public
 export const toolbarAestheticStyles: ElementStyles;
@@ -1764,6 +1953,10 @@ export const toolbarTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTool
 export const toolbarTemplateStyles: ElementStyles;
 
 // @public
+export class Tooltip extends FASTTooltip {
+}
+
+// @public
 export const tooltipAestheticStyles: ElementStyles;
 
 // @public (undocumented)
@@ -1788,6 +1981,10 @@ export const tooltipTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTool
 
 // @public
 export const tooltipTemplateStyles: ElementStyles;
+
+// @public
+export class TreeItem extends FASTTreeItem {
+}
 
 // @public
 export const treeItemAestheticStyles: ElementStyles;
@@ -1826,6 +2023,10 @@ export const treeItemTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTre
 
 // @public
 export const treeItemTemplateStyles: ElementStyles;
+
+// @public
+export class TreeView extends FASTTreeView {
+}
 
 // @public
 export const treeViewAestheticStyles: ElementStyles;

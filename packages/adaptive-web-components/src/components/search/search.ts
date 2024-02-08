@@ -5,7 +5,7 @@ import { FASTSearch } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveSearch extends FASTSearch {
+export class Search extends FASTSearch {
     public focus(options?: FocusOptions): void {
         this.control.focus(options);
     }

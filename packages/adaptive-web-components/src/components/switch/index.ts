@@ -7,3 +7,4 @@ export {
     styleModules as switchStyleModules,
 } from "./switch.styles.modules.js";
 export { template as switchTemplate, SwitchAnatomy, SwitchConditions, SwitchParts } from "./switch.template.js";
+export { Switch } from "./switch.js";

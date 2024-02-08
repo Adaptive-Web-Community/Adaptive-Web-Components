@@ -5,7 +5,7 @@ import { FASTAnchor } from "@microsoft/fast-foundation";
  *
  * @public
  */
-export class AdaptiveAnchor extends FASTAnchor {
+export class Anchor extends FASTAnchor {
     /**
      * Applies 'icon-only' class when there is only an SVG in the default slot.
      */

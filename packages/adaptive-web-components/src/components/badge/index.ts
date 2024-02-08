@@ -7,3 +7,4 @@ export {
     styleModules as badgeStyleModules,
 } from "./badge.styles.modules.js";
 export { template as badgeTemplate, BadgeAnatomy, BadgeConditions, BadgeParts } from "./badge.template.js";
+export { Badge } from "./badge.js";

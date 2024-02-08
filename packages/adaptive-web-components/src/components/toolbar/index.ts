@@ -7,3 +7,4 @@ export {
     styleModules as toolbarStyleModules,
 } from "./toolbar.styles.modules.js";
 export { template as toolbarTemplate, ToolbarAnatomy, ToolbarConditions, ToolbarParts } from "./toolbar.template.js";
+export { Toolbar } from "./toolbar.js";

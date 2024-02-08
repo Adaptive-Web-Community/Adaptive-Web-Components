@@ -1,9 +1,9 @@
-import { FASTSwitch } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./switch.styles.js";
 import { SwitchAnatomy, template } from "./switch.template.js";
+import { Switch } from "./switch.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeSwitch(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTSwitch>
+    options?: ComposeOptions<Switch>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, SwitchAnatomy, options);
 
-    return FASTSwitch.compose({
+    return Switch.compose({
         name: `${ds.prefix}-switch`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -12,3 +12,4 @@ export {
     PickerListItemConditions,
     PickerListItemParts
 } from "./picker-list-item.template.js";
+export { PickerListItem } from "./picker-list-item.js";

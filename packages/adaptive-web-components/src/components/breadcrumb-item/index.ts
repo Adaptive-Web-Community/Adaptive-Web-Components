@@ -13,3 +13,4 @@ export {
     BreadcrumbItemParts,
     BreadcrumbItemStatics
 } from "./breadcrumb-item.template.js";
+export { BreadcrumbItem } from "./breadcrumb-item.js";

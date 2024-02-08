@@ -1,7 +1,7 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from '../../styles/styles.js';
-import { AdaptiveSelect } from "./select.js";
+import { Select } from "./select.js";
 import { aestheticStyles, templateStyles } from "./select.styles.js";
 import { SelectAnatomy, SelectStatics, template } from "./select.template.js";
 
@@ -12,7 +12,7 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeSelect(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveSelect, SelectStatics>
+    options?: ComposeOptions<Select, SelectStatics>
 ): FASTElementDefinition {
     if (options?.statics) {
         if (!ds.statics.has(SelectStatics.indicator)) {
@@ -25,7 +25,7 @@ export function composeSelect(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, SelectAnatomy, options);
 
-    return AdaptiveSelect.compose({
+    return Select.compose({
         name: `${ds.prefix}-select`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

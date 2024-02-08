@@ -7,3 +7,4 @@ export {
     styleModules as cardStyleModules,
 } from "./card.styles.modules.js";
 export { template as cardTemplate, CardAnatomy, CardConditions, CardParts } from "./card.template.js";
+export { Card } from "./card.js";

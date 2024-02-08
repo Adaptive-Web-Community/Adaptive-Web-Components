@@ -12,3 +12,4 @@ export {
     ProgressRingConditions,
     ProgressRingParts
 } from "./progress-ring.template.js";
+export { ProgressRing } from "./progress-ring.js";

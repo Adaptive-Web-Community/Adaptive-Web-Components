@@ -7,3 +7,4 @@ export {
     styleModules as radioStyleModules,
 } from "./radio.styles.modules.js";
 export { template as radioTemplate, RadioAnatomy, RadioConditions, RadioParts, RadioStatics } from "./radio.template.js";
+export { Radio } from "./radio.js";

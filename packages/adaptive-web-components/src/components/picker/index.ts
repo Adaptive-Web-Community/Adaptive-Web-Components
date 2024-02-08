@@ -7,3 +7,4 @@ export {
     styleModules as pickerStyleModules,
 } from "./picker.styles.modules.js";
 export { template as pickerTemplate, PickerAnatomy, PickerConditions, PickerParts } from "./picker.template.js";
+export { Picker } from "./picker.js";

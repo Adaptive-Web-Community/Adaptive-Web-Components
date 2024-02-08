@@ -1,9 +1,9 @@
-import { FASTTabs } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./tabs.styles.js";
 import { TabsAnatomy, template } from "./tabs.template.js";
+import { Tabs } from "./tabs.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeTabs(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTTabs>
+    options?: ComposeOptions<Tabs>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, TabsAnatomy, options);
 
-    return FASTTabs.compose({
+    return Tabs.compose({
         name: `${ds.prefix}-tabs`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

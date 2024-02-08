@@ -7,3 +7,4 @@ export {
     styleModules as breadcrumbStyleModules,
 } from "./breadcrumb.styles.modules.js";
 export { template as breadcrumbTemplate, BreadcrumbAnatomy, BreadcrumbConditions, BreadcrumbParts } from "./breadcrumb.template.js";
+export { Breadcrumb } from "./breadcrumb.js";

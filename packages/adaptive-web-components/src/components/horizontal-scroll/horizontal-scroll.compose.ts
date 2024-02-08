@@ -3,7 +3,7 @@ import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./horizontal-scroll.styles.js";
 import { HorizontalScrollAnatomy, template } from "./horizontal-scroll.template.js";
-import { AdaptiveHorizontalScroll } from "./horizontal-scroll.js";
+import { HorizontalScroll } from "./horizontal-scroll.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeHorizontalScroll(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveHorizontalScroll>
+    options?: ComposeOptions<HorizontalScroll>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, HorizontalScrollAnatomy, options);
 
-    return AdaptiveHorizontalScroll.compose({
+    return HorizontalScroll.compose({
         name: `${ds.prefix}-horizontal-scroll`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

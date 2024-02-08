@@ -6,7 +6,7 @@ import { actionsStyles } from "./horizontal-scroll.styles.js";
  *
  * @public
  */
-export class AdaptiveHorizontalScroll extends FASTHorizontalScroll {
+export class HorizontalScroll extends FASTHorizontalScroll {
     public connectedCallback(): void {
         super.connectedCallback();
 

@@ -1,9 +1,9 @@
-import { FASTAccordion } from "@microsoft/fast-foundation";
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
 import { aestheticStyles, templateStyles } from "./accordion.styles.js";
 import { AccordionAnatomy, template } from "./accordion.template.js";
+import { Accordion } from "./accordion.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeAccordion(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTAccordion>
+    options?: ComposeOptions<Accordion>
 ): FASTElementDefinition {
     const styles = DesignSystem.assembleStyles(defaultStyles, AccordionAnatomy, options);
 
-    return FASTAccordion.compose({
+    return Accordion.compose({
         name: `${ds.prefix}-accordion`,
         template: options?.template?.(ds) ?? template(ds),
         styles,
