@@ -4,7 +4,8 @@ import {
     StyleProperty,
     stylePropertyBorderFillAll,
     stylePropertyBorderThicknessAll,
-    stylePropertyCornerRadiusAll
+    stylePropertyCornerRadiusAll,
+    stylePropertyPaddingAll
 } from "@adaptive-web/adaptive-ui";
 import {
     cornerRadiusControl,
@@ -130,13 +131,13 @@ const appliedTokensTemplate = (
 `;
 
 const availableTokensTemplate = (
-    tokenType: StyleProperty[], // Changed to array for _applying_ individual values like top/bottom, but only _checking_ the first one.
+    tokenTypes: StyleProperty[],
     title: string | null,
     tokenLayout: "stack" | "grid" = "stack",
     glyphType?: TokenGlyphType
 ) => html<App>`
     ${when(
-        (x) => x.selectedNodes?.some((node) => node.supports.includes(tokenType[0])),
+        (x) => x.selectedNodes?.some((node) => tokenTypes.some((prop) => node.supports.includes(prop))),
         html<App>`
             ${when(
                 (_) => title,
@@ -144,14 +145,14 @@ const availableTokensTemplate = (
             )}
             <div class="swatch-${tokenLayout}">
                 ${repeat(
-                    (x) => x.controller.styles.getAppliableDesignTokenOptionsByType(tokenType[0]),
+                    (x) => x.controller.styles.getAppliableDesignTokenOptions(tokenTypes),
                     html<DesignTokenDefinition, App>`
                         <designer-style-token-item
                             title=${(x) => x.title}
                             value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x.token)}
                             glyphType=${(_) => glyphType}
                             content-button
-                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(tokenType, x)}
+                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor, x)}
                         >
                         </designer-style-token-item>
                     `
@@ -307,7 +308,7 @@ const template = html<App>`
                                 ${(x) => availableStylesTemplate("Density")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        [StyleProperty.gap],
+                                        [...stylePropertyPaddingAll, StyleProperty.gap],
                                         "Density",
                                     )}
                             </div>
@@ -617,7 +618,7 @@ export class App extends FASTElement {
         this.foregroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.foregroundFill]);
         this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderFillAll);
         this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderThicknessAll);
-        this.densityTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.gap]);
+        this.densityTokens = this.controller.styles.getAppliedDesignTokens([...stylePropertyPaddingAll, StyleProperty.gap]);
         this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyCornerRadiusAll);
         this.textTokens = this.controller.styles.getAppliedDesignTokens([
             StyleProperty.fontFamily,
