@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     flyoutStyles,
@@ -10,26 +9,24 @@ import {
 import { ComboboxAnatomy } from "./combobox.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-            part: ComboboxAnatomy.parts.control
+export const styleModules: StyleRules = [
+    {
+        target : {
+            part: ComboboxAnatomy.parts.control,
         },
-        inputStyles
-    ],
-    [
-        {
-            part: ComboboxAnatomy.parts.listbox
+        styles: inputStyles,
+    },
+    {
+        target : {
+            part: ComboboxAnatomy.parts.listbox,
         },
-        Styles.compose(
-            [
-                itemContainerDensityStyles,
-                flyoutStyles,
-            ],
-        )
-    ],
+        styles: [
+            itemContainerDensityStyles,
+            flyoutStyles,
+        ],
+    },
 ];

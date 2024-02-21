@@ -1,37 +1,32 @@
 import {
     BorderFill,
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlDensityStyles,
     controlShapeStyles,
-    neutralFillSubtleRest,
-    neutralStrokeSubtleRest,
+    neutralFillSubtle,
+    neutralStrokeSubtle,
     plainTextStyles,
     shadowTooltipStyles
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            controlShapeStyles,
+            controlDensityStyles,
+            plainTextStyles,
+            shadowTooltipStyles,
+        ],
+        properties: {
+            ...BorderFill.all(neutralStrokeSubtle.rest),
+            backgroundFill: neutralFillSubtle.rest,
         },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                controlDensityStyles,
-                plainTextStyles,
-                shadowTooltipStyles,
-            ],
-            {
-                ...BorderFill.all(neutralStrokeSubtleRest),
-                backgroundFill: neutralFillSubtleRest,
-            },
-        )
-    ],
+    },
 ];

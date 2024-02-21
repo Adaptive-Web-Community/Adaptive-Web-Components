@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
@@ -13,44 +12,36 @@ import {
 import { SearchAnatomy } from "./search.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampBaseStyles,
+        properties: {
+            gap: densityControl.verticalGap,
         },
-        Styles.compose(
-            [
-                typeRampBaseStyles,
-            ],
-            {
-                gap: densityControl.verticalGap,
-            }
-        ),
-    ],
-    [
-        {
-            part: SearchAnatomy.parts.label
+    },
+    {
+        target : {
+            part: SearchAnatomy.parts.label,
         },
-        labelTextStyles
-    ],
-    [
-        {
-            part: SearchAnatomy.parts.root
+        styles: labelTextStyles,
+    },
+    {
+        target : {
+            part: SearchAnatomy.parts.root,
         },
-        inputStyles
-    ],
-    [
-        {
-            part: SearchAnatomy.parts.clearButton
+        styles: inputStyles,
+    },
+    {
+        target : {
+            part: SearchAnatomy.parts.clearButton,
         },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                neutralFillStealthControlStyles,
-            ],
-        )
-    ],
+        styles: [
+            controlShapeStyles,
+            neutralFillStealthControlStyles,
+        ],
+    },
 ];

@@ -2,9 +2,9 @@ import { CSSDesignToken } from "@microsoft/fast-foundation";
 import {
     ComponentAnatomy,
     InteractiveSet,
-    StyleModules,
-    StyleModuleTarget,
     StyleProperties,
+    StyleRule,
+    StyleRules,
     Styles,
     StyleValue
 } from "@adaptive-web/adaptive-ui";
@@ -59,19 +59,19 @@ const focusResetStyles = convertToFocusState(Styles.fromProperties({
  * 
  * @public
  */
-export const globalStyleModules = (anatomy?: ComponentAnatomy<any, any>): StyleModules => {
-    const styles = new Array<[StyleModuleTarget, Styles]>();
+export const globalStyleRules = (anatomy?: ComponentAnatomy<any, any>): StyleRules => {
+    const styles = new Array<StyleRule>();
 
     // If this component can be disabled, apply the style to all children.
     if (anatomy?.interactivity?.disabledSelector !== undefined) {
         styles.push(
-            [
-                {
+            {
+                target : {
                     hostCondition: anatomy.interactivity.disabledSelector,
                     part: "*",
                 },
-                disabledStyles,
-            ]
+                styles: disabledStyles,
+            },
         );
     }
 
@@ -79,19 +79,19 @@ export const globalStyleModules = (anatomy?: ComponentAnatomy<any, any>): StyleM
     if (anatomy?.focus) {
         if (anatomy.focus?.resetTarget) {
             styles.push(
-                [
-                    anatomy.focus?.resetTarget,
-                    focusResetStyles,
-                ],
+                {
+                    target: anatomy.focus?.resetTarget,
+                    styles: focusResetStyles,
+                }
             );
         }
 
         // Set intentional focus styles
         styles.push(
-            [
-                anatomy.focus.focusTarget,
-                focusStateStyles,
-            ]
+            {
+                target: anatomy.focus.focusTarget,
+                styles: focusStateStyles,
+            }
         );
     }
 

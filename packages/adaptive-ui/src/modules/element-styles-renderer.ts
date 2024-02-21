@@ -1,10 +1,10 @@
-import { css, HostBehavior } from "@microsoft/fast-element";
+import { ComposableStyles, css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, type StyleProperty } from "../modules/types.js";
+import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
 import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
+import type { ComponentAnatomy, StateSelector, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { Styles } from "./styles.js";
 
@@ -50,16 +50,18 @@ export class ElementStylesRenderer {
     // Perhaps these static functions turn into a registration mechanism.
 
     private static declaration(
-        property: StyleProperty,
+        property: StylePropertyCss,
         value: string | CSSDirective,
         state?: StateSelector,
     ): DeclarationMap {
-        const cssProperty = stylePropertyToCssProperty(property);
+        const cssProperty = property in StyleProperty ?
+            stylePropertyToCssProperty(property as keyof typeof StyleProperty) :
+            property;
         const map = new Map([[cssProperty, value]]);
 
         // TODO: This belongs in a plugin as described above.
         if (state === undefined) {
-            if (property === "foregroundFill") {
+            if (property === StyleProperty.foregroundFill) {
                 map.set("fill", "currentcolor");
             }
         }
@@ -67,7 +69,7 @@ export class ElementStylesRenderer {
     }
 
     private static propertySingle(
-        property: StyleProperty,
+        property: StylePropertyCss,
         value: string | CSSDirective,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
@@ -78,7 +80,7 @@ export class ElementStylesRenderer {
     }
 
     private static propertyInteractive(
-        property: StyleProperty,
+        property: StylePropertyCss,
         values: InteractiveSet<any>,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
@@ -169,5 +171,23 @@ export class ElementStylesRenderer {
         // https://github.com/microsoft/fast/blob/b78c921ec4e49ec9d7ec980f079ec114045df42e/packages/web-components/fast-element/src/styles/css.ts#L112
         const styles = new ElementStyles(strings);
         return behaviors.length > 0 ? styles.withBehaviors(...behaviors) : styles;
+    }
+
+    /**
+     * Convert style rule definitions to `ElementStyles`.
+     *
+     * @param baseStyles - Any base styles to append style rules to.
+     * @param styleRules - Adaptive UI style rules.
+     * @param anatomy - Optional component anatomy for features including interactivity and focus definition.
+     * @returns The rendered `ElementStyles`.
+     */
+    public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
+        for (const rule of styleRules) {
+            const styles = Styles.fromDeclaration(rule);
+            const renderedStyles = new ElementStylesRenderer(styles).render(rule.target || {}, anatomy?.interactivity);
+            baseStyles.push(renderedStyles);
+        }
+
+        return new ElementStyles(baseStyles);
     }
 }

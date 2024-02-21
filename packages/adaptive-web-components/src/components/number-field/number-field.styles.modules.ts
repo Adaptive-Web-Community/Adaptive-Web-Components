@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     autofillInnerDensityStyles,
     densityControl,
@@ -9,39 +9,33 @@ import {
 import { NumberFieldAnatomy } from "./number-field.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampBaseStyles,
+        properties: {
+            gap: densityControl.verticalGap,
         },
-        Styles.compose(
-            [
-                typeRampBaseStyles,
-            ],
-            {
-                gap: densityControl.verticalGap,
-            }
-        ),
-    ],
-    [
-        {
-            part: NumberFieldAnatomy.parts.label
+    },
+    {
+        target : {
+            part: NumberFieldAnatomy.parts.label,
         },
-        labelTextStyles
-    ],
-    [
-        {
-            part: NumberFieldAnatomy.parts.root
+        styles: labelTextStyles,
+    },
+    {
+        target : {
+            part: NumberFieldAnatomy.parts.root,
         },
-        inputAutofillStyles
-    ],
-    [
-        {
-            part: NumberFieldAnatomy.parts.control
+        styles: inputAutofillStyles,
+    },
+    {
+        target : {
+            part: NumberFieldAnatomy.parts.control,
         },
-        autofillInnerDensityStyles
-    ],
+        styles: autofillInnerDensityStyles,
+    },
 ];

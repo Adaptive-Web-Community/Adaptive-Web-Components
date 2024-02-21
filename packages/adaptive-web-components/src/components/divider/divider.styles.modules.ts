@@ -1,35 +1,31 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
-import { neutralStrokeSubtleRest, strokeThickness } from "@adaptive-web/adaptive-ui/reference";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
+import { neutralStrokeSubtle, strokeThickness } from "@adaptive-web/adaptive-ui/reference";
 import { DividerAnatomy } from "./divider.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        target : {
             hostCondition: DividerAnatomy.conditions.horizontal,
         },
-        Styles.fromProperties(
-            {
-                borderFillTop: neutralStrokeSubtleRest,
-                borderStyleTop: "solid",
-                borderThicknessTop: strokeThickness,
-            }
-        ),
-    ],
-    [
-        {
+        properties: {
+            borderFillTop: neutralStrokeSubtle.rest,
+            borderStyleTop: "solid",
+            borderThicknessTop: strokeThickness,
+        },
+    },
+    {
+        target : {
             hostCondition: DividerAnatomy.conditions.vertical,
         },
-        Styles.fromProperties(
-            {
-                borderFillLeft: neutralStrokeSubtleRest,
-                borderStyleLeft: "solid",
-                borderThicknessLeft: strokeThickness,
-            }
-        ),
-    ],
+        properties: {
+            borderFillLeft: neutralStrokeSubtle.rest,
+            borderStyleLeft: "solid",
+            borderThicknessLeft: strokeThickness,
+        },
+    },
 ];

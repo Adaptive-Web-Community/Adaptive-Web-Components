@@ -1,27 +1,25 @@
 import { css } from "@microsoft/fast-element";
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
-import { designUnit, neutralStrokeSubtleRest, typeRampMinus1Styles } from "@adaptive-web/adaptive-ui/reference";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
+import { designUnit, neutralStrokeSubtle, typeRampMinus1Styles } from "@adaptive-web/adaptive-ui/reference";
 import { SliderLabelAnatomy } from "./slider-label.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        typeRampMinus1Styles,
-    ],
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampMinus1Styles,
+    },
+    {
+        target : {
             part: SliderLabelAnatomy.parts.mark,
         },
-        Styles.fromProperties({
-            backgroundFill: neutralStrokeSubtleRest,
+        properties: {
+            backgroundFill: neutralStrokeSubtle.rest,
             height: css.partial`calc(${designUnit} *2)`, 
             width: css.partial`calc(${designUnit} / 2)`,
-        }),
-    ]
+        },
+    },
 ];

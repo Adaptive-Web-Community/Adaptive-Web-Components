@@ -1,5 +1,5 @@
 import {
-    StyleModules,
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     itemStyles,
@@ -8,20 +8,18 @@ import {
 import { ListboxOptionAnatomy } from "./listbox-option.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        itemStyles
-    ],
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: itemStyles,
+    },
+    {
+        target : {
             hostCondition: ListboxOptionAnatomy.conditions.selected,
         },
-        selectableSelectedStyles
-    ],
+        styles: selectableSelectedStyles,
+    },
 ];

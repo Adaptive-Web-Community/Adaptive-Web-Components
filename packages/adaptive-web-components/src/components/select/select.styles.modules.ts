@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
@@ -12,44 +11,38 @@ import {
 import { SelectAnatomy } from "./select.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-            part: SelectAnatomy.parts.control
+export const styleModules: StyleRules = [
+    {
+        target : {
+            part: SelectAnatomy.parts.control,
         },
-        inputStyles
-    ],
-    [
-        {
-            part: SelectAnatomy.parts.listbox
+        styles: inputStyles,
+    },
+    {
+        target : {
+            part: SelectAnatomy.parts.listbox,
         },
-        Styles.compose(
-            [
-                itemContainerDensityStyles,
-            ],
-        )
-    ],
-    [
-        {
+        styles: itemContainerDensityStyles,
+    },
+    {
+        target : {
             hostCondition: SelectAnatomy.conditions.isListbox,
-            part: SelectAnatomy.parts.listbox
+            part: SelectAnatomy.parts.listbox,
         },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                neutralOutlineDiscernibleControlStyles,
-            ],
-        )
-    ],
-    [
-        {
+        styles: [
+            controlShapeStyles,
+            neutralOutlineDiscernibleControlStyles,
+        ],
+    },
+    {
+        target : {
             hostCondition: SelectAnatomy.conditions.isDropdown,
-            part: SelectAnatomy.parts.listbox
+            part: SelectAnatomy.parts.listbox,
         },
-        flyoutStyles,
-    ],
+        styles: flyoutStyles,
+    },
 ];
