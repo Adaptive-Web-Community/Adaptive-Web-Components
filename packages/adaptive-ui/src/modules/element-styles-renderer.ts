@@ -11,7 +11,7 @@ import { Styles } from "./styles.js";
 /**
  * The properties and values of a css declaration.
  */
-type DeclarationMap = Map<string, string | CSSDirective>;
+type DeclarationMap = Map<string, string | number | CSSDirective>;
 
 /**
  * The selector and set of declarations for a css rule.
@@ -51,7 +51,7 @@ export class ElementStylesRenderer {
 
     private static declaration(
         property: StylePropertyCss,
-        value: string | CSSDirective,
+        value: string | number | CSSDirective,
         state?: StateSelector,
     ): DeclarationMap {
         const cssProperty = property in StyleProperty ?
@@ -70,7 +70,7 @@ export class ElementStylesRenderer {
 
     private static propertySingle(
         property: StylePropertyCss,
-        value: string | CSSDirective,
+        value: string | number | CSSDirective,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
             return new Map([
@@ -110,7 +110,7 @@ export class ElementStylesRenderer {
 
     private createStyleModules(styles: Styles): StyleModuleEvaluate[] {
         const modules: StyleModuleEvaluate[] = new Array(...styles.effectiveProperties.entries()).map(([property, value]) => {
-            if (typeof value === "string" || value instanceof CSSDesignToken) {
+            if (typeof value === "string" || typeof value === "number" || value instanceof CSSDesignToken) {
                 return ElementStylesRenderer.propertySingle(property, value);
             } else if (value && typeof (value as any).createCSS === "function") {
                 return ElementStylesRenderer.propertySingle(property, value as CSSDirective);
@@ -123,7 +123,8 @@ export class ElementStylesRenderer {
 
     private appendRule(selector: string, declarations: DeclarationMap) {
         const cssProperties = new Array(...declarations.entries()).map(([property, value]) => {
-            return css.partial`${property}: ${value};`;
+            const valueToUse = typeof value === "number" ? value.toString() : value;
+            return css.partial`${property}: ${valueToUse};`;
         });
         if (this._rules.has(selector)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
