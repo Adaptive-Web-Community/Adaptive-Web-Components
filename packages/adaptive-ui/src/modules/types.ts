@@ -1,5 +1,5 @@
 import type { ValuesOf } from "@microsoft/fast-foundation";
-import { Styles } from "./styles.js";
+import { StyleRule } from "./styles.js";
 
 /**
  * Selectors for focus state.
@@ -261,7 +261,10 @@ export const Focus = {
 export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
 
 /**
- * The style property, like background color or border thickness.
+ * Supported style properties for design-to-code with Adaptive UI.
+ *
+ * Generalizes CSS properties which are also commonly supported in design tools (Figma) so the recipes can
+ * be applied in tooling or in the browser.
  *
  * @public
  */
@@ -309,38 +312,85 @@ export const StyleProperty = {
 } as const;
 
 /**
- * @public
- */
-export const stylePropertyBorderFillAll = [StyleProperty.borderFillTop, StyleProperty.borderFillRight, StyleProperty.borderFillBottom, StyleProperty.borderFillLeft];
-
-/**
- * @public
- */
-export const stylePropertyBorderThicknessAll = [StyleProperty.borderThicknessTop, StyleProperty.borderThicknessRight, StyleProperty.borderThicknessBottom, StyleProperty.borderThicknessLeft];
-
-/**
- * @public
- */
-export const stylePropertyBorderStyleAll = [StyleProperty.borderStyleTop, StyleProperty.borderStyleRight, StyleProperty.borderStyleBottom, StyleProperty.borderStyleLeft];
-
-/**
- * @public
- */
-export const stylePropertyCornerRadiusAll = [StyleProperty.cornerRadiusTopLeft, StyleProperty.cornerRadiusTopRight, StyleProperty.cornerRadiusBottomRight, StyleProperty.cornerRadiusBottomLeft];
-
-/**
- * @public
- */
-export const stylePropertyPaddingAll = [StyleProperty.paddingTop, StyleProperty.paddingRight, StyleProperty.paddingBottom, StyleProperty.paddingLeft];
-
-/**
- * The style property, like background color or border thickness.
+ * Supported style properties for design-to-code with Adaptive UI.
+ *
+ * Generalizes CSS properties which are also commonly supported in design tools (Figma) so the recipes can
+ * be applied in tooling or in the browser.
  *
  * @public
  */
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
 /**
+ * Any style property, either an {@link (StyleProperty:type)} or a string for any other CSS property.
+ *
  * @public
  */
-export type StyleModules = Iterable<readonly [StyleModuleTarget, Styles]>;
+export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
+
+/**
+ * A convenience shorthand for all border fill {@link (StyleProperty:type)} values.
+ *
+ * @public
+ */
+export const stylePropertyBorderFillAll = [
+    StyleProperty.borderFillTop,
+    StyleProperty.borderFillRight,
+    StyleProperty.borderFillBottom,
+    StyleProperty.borderFillLeft
+];
+
+/**
+ * A convenience shorthand for all border thickness {@link (StyleProperty:type)} values.
+ *
+ * @public
+ */
+export const stylePropertyBorderThicknessAll = [
+    StyleProperty.borderThicknessTop,
+    StyleProperty.borderThicknessRight,
+    StyleProperty.borderThicknessBottom,
+    StyleProperty.borderThicknessLeft
+];
+
+/**
+ * A convenience shorthand for all border style {@link (StyleProperty:type)} values.
+ *
+ * @public
+ */
+export const stylePropertyBorderStyleAll = [
+    StyleProperty.borderStyleTop,
+    StyleProperty.borderStyleRight,
+    StyleProperty.borderStyleBottom,
+    StyleProperty.borderStyleLeft
+];
+
+/**
+ * A convenience shorthand for all corner radius {@link (StyleProperty:type)} values.
+ *
+ * @public
+ */
+export const stylePropertyCornerRadiusAll = [
+    StyleProperty.cornerRadiusTopLeft,
+    StyleProperty.cornerRadiusTopRight,
+    StyleProperty.cornerRadiusBottomRight,
+    StyleProperty.cornerRadiusBottomLeft
+];
+
+/**
+ * A convenience shorthand for all padding {@link (StyleProperty:type)} values.
+ *
+ * @public
+ */
+export const stylePropertyPaddingAll = [
+    StyleProperty.paddingTop,
+    StyleProperty.paddingRight,
+    StyleProperty.paddingBottom,
+    StyleProperty.paddingLeft
+];
+
+/**
+ * A list of {@link StyleRule}s in the context of a component.
+ *
+ * @public
+ */
+export type StyleRules = Iterable<StyleRule>;

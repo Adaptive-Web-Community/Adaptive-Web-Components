@@ -247,7 +247,7 @@ export class UIController {
                         return;
                     }
                 }
-                styles.effectiveProperties.forEach((value, target) => {
+                styles.effectiveAdaptiveProperties.forEach((value, target) => {
                     if (remove) {
                         allApplied.set(target, {
                             value: STYLE_REMOVE,

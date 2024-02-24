@@ -38,7 +38,7 @@ export const aestheticStyles: ElementStyles = css`
 
     .indicator {
         stroke: currentcolor;
-        fill: none;
+        fill: none !important;
         stroke-width: 2px;
         stroke-linecap: round;
         transform-origin: 50% 50%;

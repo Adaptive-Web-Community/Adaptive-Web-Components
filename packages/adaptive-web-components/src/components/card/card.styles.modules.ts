@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     layerFillInteractiveRest,
@@ -9,22 +8,19 @@ import {
     shadowCardStyles
 } from "@adaptive-web/adaptive-ui/reference";
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            layerShapeStyles,
+            plainTextStyles,
+            shadowCardStyles,
+        ],
+        properties: {
+            backgroundFill: layerFillInteractiveRest,
         },
-        Styles.compose(
-            [
-                layerShapeStyles,
-                plainTextStyles,
-                shadowCardStyles,
-            ], {
-                backgroundFill: layerFillInteractiveRest,
-            }
-        )
-    ],
+    },
 ];

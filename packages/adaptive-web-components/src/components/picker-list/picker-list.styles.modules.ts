@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
     neutralOutlineDiscernibleControlStyles,
@@ -6,20 +6,16 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                typeRampBaseStyles,
-                neutralOutlineDiscernibleControlStyles
-            ],
-        )
-    ],
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            controlShapeStyles,
+            typeRampBaseStyles,
+            neutralOutlineDiscernibleControlStyles
+        ],
+    },
 ];

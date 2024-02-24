@@ -1,17 +1,17 @@
-import { css, HostBehavior } from "@microsoft/fast-element";
+import { ComposableStyles, css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, type StyleProperty } from "../modules/types.js";
+import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
 import type { InteractiveSet } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
+import type { ComponentAnatomy, StateSelector, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { Styles } from "./styles.js";
 
 /**
  * The properties and values of a css declaration.
  */
-type DeclarationMap = Map<string, string | CSSDirective>;
+type DeclarationMap = Map<string, string | number | CSSDirective>;
 
 /**
  * The selector and set of declarations for a css rule.
@@ -50,16 +50,18 @@ export class ElementStylesRenderer {
     // Perhaps these static functions turn into a registration mechanism.
 
     private static declaration(
-        property: StyleProperty,
-        value: string | CSSDirective,
+        property: StylePropertyCss,
+        value: string | number | CSSDirective,
         state?: StateSelector,
     ): DeclarationMap {
-        const cssProperty = stylePropertyToCssProperty(property);
+        const cssProperty = property in StyleProperty ?
+            stylePropertyToCssProperty(property as keyof typeof StyleProperty) :
+            property;
         const map = new Map([[cssProperty, value]]);
 
         // TODO: This belongs in a plugin as described above.
         if (state === undefined) {
-            if (property === "foregroundFill") {
+            if (property === StyleProperty.foregroundFill) {
                 map.set("fill", "currentcolor");
             }
         }
@@ -67,8 +69,8 @@ export class ElementStylesRenderer {
     }
 
     private static propertySingle(
-        property: StyleProperty,
-        value: string | CSSDirective,
+        property: StylePropertyCss,
+        value: string | number | CSSDirective,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
             return new Map([
@@ -78,7 +80,7 @@ export class ElementStylesRenderer {
     }
 
     private static propertyInteractive(
-        property: StyleProperty,
+        property: StylePropertyCss,
         values: InteractiveSet<any>,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
@@ -108,7 +110,7 @@ export class ElementStylesRenderer {
 
     private createStyleModules(styles: Styles): StyleModuleEvaluate[] {
         const modules: StyleModuleEvaluate[] = new Array(...styles.effectiveProperties.entries()).map(([property, value]) => {
-            if (typeof value === "string" || value instanceof CSSDesignToken) {
+            if (typeof value === "string" || typeof value === "number" || value instanceof CSSDesignToken) {
                 return ElementStylesRenderer.propertySingle(property, value);
             } else if (value && typeof (value as any).createCSS === "function") {
                 return ElementStylesRenderer.propertySingle(property, value as CSSDirective);
@@ -121,7 +123,8 @@ export class ElementStylesRenderer {
 
     private appendRule(selector: string, declarations: DeclarationMap) {
         const cssProperties = new Array(...declarations.entries()).map(([property, value]) => {
-            return css.partial`${property}: ${value};`;
+            const valueToUse = typeof value === "number" ? value.toString() : value;
+            return css.partial`${property}: ${valueToUse};`;
         });
         if (this._rules.has(selector)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -169,5 +172,23 @@ export class ElementStylesRenderer {
         // https://github.com/microsoft/fast/blob/b78c921ec4e49ec9d7ec980f079ec114045df42e/packages/web-components/fast-element/src/styles/css.ts#L112
         const styles = new ElementStyles(strings);
         return behaviors.length > 0 ? styles.withBehaviors(...behaviors) : styles;
+    }
+
+    /**
+     * Convert style rule definitions to `ElementStyles`.
+     *
+     * @param baseStyles - Any base styles to append style rules to.
+     * @param styleRules - Adaptive UI style rules.
+     * @param anatomy - Optional component anatomy for features including interactivity and focus definition.
+     * @returns The rendered `ElementStyles`.
+     */
+    public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
+        for (const rule of styleRules) {
+            const styles = Styles.fromDeclaration(rule);
+            const renderedStyles = new ElementStylesRenderer(styles).render(rule.target || {}, anatomy?.interactivity);
+            baseStyles.push(renderedStyles);
+        }
+
+        return new ElementStyles(baseStyles);
     }
 }

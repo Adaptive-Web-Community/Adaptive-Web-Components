@@ -10,8 +10,7 @@ import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
     type ComponentAnatomy,
     ElementStylesRenderer,
-    type StyleModuleTarget,
-    Styles,
+    StyleRule,
 } from "@adaptive-web/adaptive-ui";
 import type {
     AccordionItemStatics,
@@ -25,7 +24,7 @@ import type {
     SelectStatics,
     TreeItemStatics
 } from "./components/index.js";
-import { globalStyleModules } from './global.styles.modules.js';
+import { globalStyleRules } from './global.styles.modules.js';
 
 type ComponentStatics =
     AccordionItemStatics
@@ -148,16 +147,11 @@ export class DesignSystem {
             defaultStyles;
 
         const allStyleModules = [
-            ...globalStyleModules(anatomy),
+            ...globalStyleRules(anatomy),
             ...(options && options.styleModules ? options.styleModules : [])
         ];
 
-        for (const [target, styles] of allStyleModules) {
-            const renderedStyles = new ElementStylesRenderer(styles).render(target, anatomy?.interactivity);
-            componentStyles.push(renderedStyles);
-        }
-
-        return new ElementStyles(componentStyles);
+        return ElementStylesRenderer.renderStyleRules(componentStyles, allStyleModules, anatomy);
     }
 }
 
@@ -176,7 +170,7 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 export type ComposeOptions<TSource, TStatics extends string = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
     styles?: ElementStyles | ElementStyles[];
-    styleModules?: Iterable<readonly [StyleModuleTarget, Styles]>;
+    styleModules?: Iterable<StyleRule>;
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
     statics?: Record<TStatics, StaticallyComposableHTML>;

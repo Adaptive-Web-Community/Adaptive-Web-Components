@@ -1,30 +1,29 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import { controlShapeStyles, neutralFillSubtleRest, roundShapeStyles } from "@adaptive-web/adaptive-ui/reference";
 import { SkeletonAnatomy } from "./skeleton.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
+export const styleModules: StyleRules = [
+    {
+        properties: {
             backgroundFill: neutralFillSubtleRest,
-        })
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             hostCondition: SkeletonAnatomy.conditions.rectangle,
         },
-        controlShapeStyles,
-    ],
-    [
-        {
+        styles: controlShapeStyles,
+    },
+    
+    {
+        target : {
             hostCondition: SkeletonAnatomy.conditions.circle,
         },
-        roundShapeStyles,
-    ]
+        styles: roundShapeStyles,
+    },
 ];

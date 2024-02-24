@@ -1,52 +1,46 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
     highlightFillReadableControlStyles,
-    neutralStrokeDiscernibleRest,
+    neutralStrokeDiscernible,
     roundShapeStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { SliderAnatomy } from "./slider.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        controlShapeStyles,
-    ],
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: controlShapeStyles,
+    },
+    {
+        target : {
             part: SliderAnatomy.parts.track,
         },
-        Styles.compose([
-            controlShapeStyles,
-        ],
-        {
-            backgroundFill: neutralStrokeDiscernibleRest,
-        })
-    ],
-    [
-        {
+        styles: controlShapeStyles,
+        properties: {
+            backgroundFill: neutralStrokeDiscernible.rest,
+        },
+    },
+    {
+        target : {
             part: SliderAnatomy.parts.trackStart,
         },
-        Styles.compose([
+        styles: [
             controlShapeStyles,
             highlightFillReadableControlStyles,
-        ]),
-    ],
-    [
-        {
+        ],
+    },
+    {
+        target : {
             part: SliderAnatomy.parts.thumb,
         },
-        Styles.compose(
-            [
-                roundShapeStyles,
-                highlightFillReadableControlStyles,
-            ],
-        )
-    ],
+        styles: [
+            roundShapeStyles,
+            highlightFillReadableControlStyles,
+        ],
+    },
 ];

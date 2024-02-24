@@ -1,32 +1,29 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
-    accentFillReadableRest,
-    neutralFillSubtleRest
+    accentFillReadable,
+    neutralFillSubtle,
 } from "@adaptive-web/adaptive-ui/reference";
 import { ProgressRingAnatomy } from "./progress-ring.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        properties: {
+            foregroundFill: neutralFillSubtle.rest
         },
-        Styles.fromProperties({
-            foregroundFill: neutralFillSubtleRest
-        })
-    ],
-    [
-        {
-            part: ProgressRingAnatomy.parts.indicator
+    },
+    {
+        target : {
+            part: ProgressRingAnatomy.parts.indicator,
         },
-        Styles.fromProperties({
-            foregroundFill: accentFillReadableRest
-        })
-    ],
+        properties: {
+            foregroundFill: accentFillReadable.rest
+        },
+    },
 ];

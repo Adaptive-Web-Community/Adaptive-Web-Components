@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
     plainTextStyles,
@@ -8,35 +8,33 @@ import {
 import { CheckboxAnatomy } from "./checkbox.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
+export const styleModules: StyleRules = [
+    {
+        properties: {
             gap: densityControl.horizontalGap,
-        })
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             part: CheckboxAnatomy.parts.label,
         },
-        plainTextStyles
-    ],
-    [
-        {
+        styles: plainTextStyles,
+    },
+    {
+        target : {
             part: CheckboxAnatomy.parts.control,
         },
-        selectableUnselectedStyles
-    ],
-    [
-        {
+        styles: selectableUnselectedStyles,
+    },
+    {
+        target : {
             hostCondition: CheckboxAnatomy.conditions.checked,
             part: CheckboxAnatomy.parts.control,
         },
-        selectableSelectedStyles
-    ],
+        styles: selectableSelectedStyles,
+    },
 ];

@@ -1,36 +1,33 @@
 import {
     CornerRadius,
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
-    accentFillReadableRest,
+    accentFillReadable,
     designUnit,
-    neutralFillSubtleRest
+    neutralFillSubtle,
 } from "@adaptive-web/adaptive-ui/reference";
 import { ProgressAnatomy } from "./progress.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
-            backgroundFill: neutralFillSubtleRest,
+export const styleModules: StyleRules = [
+    {
+        properties: {
+            backgroundFill: neutralFillSubtle.rest,
             ...CornerRadius.all(designUnit),
-        })
-    ],
-    [
-        {
-            part: ProgressAnatomy.parts.indicator
         },
-        Styles.fromProperties({
-            backgroundFill: accentFillReadableRest,
+    },
+    {
+        target : {
+            part: ProgressAnatomy.parts.indicator,
+        },
+        properties: {
+            backgroundFill: accentFillReadable.rest,
             ...CornerRadius.all(designUnit),
-        })
-    ],
+        },
+    },
 ];

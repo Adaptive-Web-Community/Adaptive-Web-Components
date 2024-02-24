@@ -5,31 +5,71 @@ import { Swatch } from "../color/swatch.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveSet, InteractiveTokenGroup } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
-import { StyleProperty } from "./types.js";
+import { StyleModuleTarget, StyleProperty, StylePropertyCss } from "./types.js";
 
 /**
  * Supported values for a style property.
  *
  * @public
  */
-export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string;
+export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string | number;
 
 /**
- * An object of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
+ * An object of style definitions, where the key is the {@link (StylePropertyCss:type)} and the value is the token or final value.
  *
  * @remarks
  * The `Record` format is a convenience for manual authoring of style modules (instead of a `Map`).
  *
  * @public
  */
-export type StyleProperties = Partial<Record<StyleProperty, StyleValue>>;
+export type StyleProperties = Partial<Record<StylePropertyCss, StyleValue>>;
 
 /**
- * A `Map` of style definitions, where the key is the {@link (StyleProperty:type)} and the value is the token or final value.
+ * A `Map` of style definitions, where the key is the {@link (StylePropertyCss:type)} and the value is the token or final value.
  *
  * @public
  */
-export type StylePropertiesMap = Map<StyleProperty, StyleValue>;
+export type StylePropertiesMap = Map<StylePropertyCss, StyleValue>;
+
+/**
+ * The properties and values for a {@link StyleRule} definition.
+ *
+ * A declaration should have `styles` and/or `properties` - `styles` are applied before `properties`.
+ *
+ * @public
+ */
+export type StyleDeclaration = {
+    /**
+     * The {@link Styles} for this rule.
+     * 
+     * @remarks
+     * Optional. If not applicable, provide `properties`.
+     */
+    styles?: Styles | Iterable<Styles>;
+
+    /**
+     * A collection of properties to define a new {@link Styles} or augment those provided as `styles`.
+     *
+     * @remarks
+     * Optional. If not applicable, provide `styles`.
+     */
+    properties?: StyleProperties;
+};
+
+/**
+ * Definition for a single Adaptive UI style rule, which maps to a rule in a normal CSS style sheet.
+ *
+ * @public
+ */
+export type StyleRule = {
+    /**
+     * The target for the style rule, used to build the CSS selector.
+     * 
+     * @remarks
+     * Optional. If not supplied defaults to the host element for web components.
+     */
+    target?: StyleModuleTarget;
+} & StyleDeclaration;
 
 /**
  * @public
@@ -239,6 +279,15 @@ export class Styles {
         }
     }
 
+    /**
+     * Gets the set of effective properties that support Adaptive UI design-to-code.
+     */
+    public get effectiveAdaptiveProperties(): Map<StyleProperty, StyleValue> {
+        const entries = [...this.effectiveProperties];
+        const filtered = entries.filter(([styleProperty]) => { return styleProperty in StyleProperty}) as [StyleProperty, StyleValue][];
+        return new Map(filtered);
+    }
+
     private createEffectiveProperties() {
         if (this._composed) {
             const map: StylePropertiesMap = new Map();
@@ -260,6 +309,8 @@ export class Styles {
      * Creates a new Styles object for the composed styles.
      *
      * @param styles - An array of styles to compose.
+     * @param properties - Individual properties to append to the styles.
+     * @param name - A name for the styles used for lookup.
      * @returns A new Styles object representing the composed styles.
      */
     public static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles {
@@ -273,9 +324,25 @@ export class Styles {
      * Creates a new Styles object for the individual properties.
      *
      * @param properties - Individual properties for the new style module.
+     * @param name - A name for the styles used for lookup.
      * @returns A new Styles object representing the properties.
      */
     public static fromProperties(properties: StyleProperties, name?: string): Styles {
         return new Styles(name, properties);
+    }
+
+    /**
+     * Creates a new Styles object for the declared styles.
+     *
+     * @param declaration - The style declaration
+     * @param name - A name for the styles used for lookup.
+     * @returns A new Styles object representing the declared styles.
+     */
+    public static fromDeclaration(declaration: StyleDeclaration, name?: string) {
+        const styles: Array<Styles> = declaration.styles ?
+            (Array.isArray(declaration.styles) ? declaration.styles : [declaration.styles]) :
+            [];
+        const composed = Styles.compose(styles, declaration.properties, name);
+        return composed;
     }
 }

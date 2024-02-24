@@ -1,27 +1,25 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import { densityControl, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
 import { ToolbarAnatomy } from "./toolbar.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
+export const styleModules: StyleRules = [
+    {
+        properties: {
             foregroundFill: neutralStrokeStrong,
             gap: densityControl.horizontalGap,
-        }),
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             part: ToolbarAnatomy.parts.positioningRegion,
         },
-        Styles.fromProperties({
+        properties: {
             gap: densityControl.horizontalGap,
-        }),
-    ],
+        },
+    },
 ];

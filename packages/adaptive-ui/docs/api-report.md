@@ -5,6 +5,7 @@
 ```ts
 
 import { Color as Color_2 } from 'culori/fn';
+import { ComposableStyles } from '@microsoft/fast-element';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
@@ -276,6 +277,7 @@ export function directionByIsDark(color: RelativeLuminance): PaletteDirectionVal
 export class ElementStylesRenderer {
     constructor(styles: Styles);
     render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles;
+    static renderStyleRules(baseStyles: ComposableStyles[] | undefined, styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>): ElementStyles;
 }
 
 // @public
@@ -446,10 +448,13 @@ export function resolvePaletteDirection(direction: PaletteDirection): PaletteDir
 export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
 
 // @public
-export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
+export type StyleDeclaration = {
+    styles?: Styles | Iterable<Styles>;
+    properties?: StyleProperties;
+};
 
-// @public (undocumented)
-export type StyleModules = Iterable<readonly [StyleModuleTarget, Styles]>;
+// @public
+export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
 
 // @public
 export interface StyleModuleTarget {
@@ -463,10 +468,10 @@ export interface StyleModuleTarget {
 }
 
 // @public
-export type StyleProperties = Partial<Record<StyleProperty, StyleValue>>;
+export type StyleProperties = Partial<Record<StylePropertyCss, StyleValue>>;
 
 // @public
-export type StylePropertiesMap = Map<StyleProperty, StyleValue>;
+export type StylePropertiesMap = Map<StylePropertyCss, StyleValue>;
 
 // @public
 export const StyleProperty: {
@@ -515,20 +520,31 @@ export const StyleProperty: {
 // @public
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
-// @public (undocumented)
+// @public
 export const stylePropertyBorderFillAll: ("borderFillTop" | "borderFillRight" | "borderFillBottom" | "borderFillLeft")[];
 
-// @public (undocumented)
+// @public
 export const stylePropertyBorderStyleAll: ("borderStyleTop" | "borderStyleRight" | "borderStyleBottom" | "borderStyleLeft")[];
 
-// @public (undocumented)
+// @public
 export const stylePropertyBorderThicknessAll: ("borderThicknessTop" | "borderThicknessRight" | "borderThicknessBottom" | "borderThicknessLeft")[];
 
-// @public (undocumented)
+// @public
 export const stylePropertyCornerRadiusAll: ("cornerRadiusTopLeft" | "cornerRadiusTopRight" | "cornerRadiusBottomRight" | "cornerRadiusBottomLeft")[];
 
-// @public (undocumented)
+// @public
+export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
+
+// @public
 export const stylePropertyPaddingAll: ("paddingBottom" | "paddingLeft" | "paddingRight" | "paddingTop")[];
+
+// @public
+export type StyleRule = {
+    target?: StyleModuleTarget;
+} & StyleDeclaration;
+
+// @public
+export type StyleRules = Iterable<StyleRule>;
 
 // @public
 export class Styles {
@@ -537,7 +553,9 @@ export class Styles {
     clearComposed(): void;
     static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles;
     get composed(): Styles[] | undefined;
+    get effectiveAdaptiveProperties(): Map<StyleProperty, StyleValue>;
     get effectiveProperties(): StylePropertiesMap;
+    static fromDeclaration(declaration: StyleDeclaration, name?: string): Styles;
     static fromProperties(properties: StyleProperties, name?: string): Styles;
     readonly name: string | undefined;
     get properties(): StylePropertiesMap | undefined;
@@ -547,7 +565,7 @@ export class Styles {
 }
 
 // @public
-export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string;
+export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string | number;
 
 // @public
 export class Swatch extends Color {
