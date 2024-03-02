@@ -17,7 +17,7 @@ export function composeListboxOption(
     const styles = DesignSystem.assembleStyles(defaultStyles, ListboxOptionAnatomy, options);
 
     return ListboxOption.compose({
-        name: `${ds.prefix}-option`,
+        name: `${ds.prefix}-listbox-option`,
         template: options?.template?.(ds) ?? template(ds),
         styles,
         registry: ds.registry,

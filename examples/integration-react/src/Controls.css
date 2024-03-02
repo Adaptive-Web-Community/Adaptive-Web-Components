@@ -1,0 +1,12 @@
+/* Hand-coded css while building out the details of integrating with Adaptive UI */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+}

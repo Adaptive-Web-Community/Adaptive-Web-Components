@@ -10,5 +10,5 @@ export default defineConfig({
             //external: [/@adaptive-web\/adaptive-web-components\/.*/]
         }
     },
-    plugins: [nodeResolve(), svg({plugins:[]}), react()]
+    plugins: [nodeResolve(), /*svg({plugins:[]}),*/ react()]
 })

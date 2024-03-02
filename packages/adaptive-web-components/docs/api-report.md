@@ -7,6 +7,7 @@
 import { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
+import { DesignToken } from '@microsoft/fast-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTAccordion } from '@microsoft/fast-foundation';
@@ -28,6 +29,7 @@ import { FASTDataGridRow } from '@microsoft/fast-foundation';
 import { FASTDialog } from '@microsoft/fast-foundation';
 import { FASTDisclosure } from '@microsoft/fast-foundation';
 import { FASTDivider } from '@microsoft/fast-foundation';
+import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { FASTFlipper } from '@microsoft/fast-foundation';
 import { FASTHorizontalScroll } from '@microsoft/fast-foundation';
@@ -65,6 +67,7 @@ import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
 import { StyleRule } from '@adaptive-web/adaptive-ui';
 import { StyleRules } from '@adaptive-web/adaptive-ui';
+import { Swatch } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -619,6 +622,11 @@ export function composeDataGridCell(ds: DesignSystem, options?: ComposeOptions<D
 // @public (undocumented)
 export function composeDataGridRow(ds: DesignSystem, options?: ComposeOptions<DataGridRow>): FASTElementDefinition;
 
+// Warning: (ae-incompatible-release-tags) The symbol "composeDesignTokenContext" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public (undocumented)
+export function composeDesignTokenContext(ds: DesignSystem, options?: ComposeOptions<DesignTokenContext>): FASTElementDefinition;
+
 // Warning: (ae-incompatible-release-tags) The symbol "composeDialog" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
 // @public (undocumented)
@@ -906,6 +914,30 @@ export class DesignSystem {
     get statics(): ElementStaticMap;
     withPrefix(prefix: string): this;
 }
+
+// @public
+export class DesignTokenContext extends FASTElement {
+    fillColor: DesignToken<Swatch> | null;
+    // @internal (undocumented)
+    fillColorChanged(prev: DesignToken<Swatch> | null, next: DesignToken<Swatch> | null): void;
+}
+
+// @public (undocumented)
+export const DesignTokenContextAnatomy: ComponentAnatomy<typeof DesignTokenContextConditions, typeof DesignTokenContextParts>;
+
+// @public (undocumented)
+export const DesignTokenContextConditions: {};
+
+// @public (undocumented)
+export const DesignTokenContextParts: {};
+
+// @public
+export const designTokenContextStyleModules: StyleRules;
+
+// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
+//
+// @public
+export const designTokenContextTemplate: (ds: DesignSystem) => ElementViewTemplate<DesignTokenContext>;
 
 // @public
 export class Dialog extends FASTDialog {

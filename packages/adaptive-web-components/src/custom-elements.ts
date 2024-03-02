@@ -14,6 +14,7 @@ import { comboboxDefinition } from './components/combobox/combobox.definition.js
 import { dataGridDefinition } from './components/data-grid/data-grid.definition.js';
 import { dataGridCellDefinition } from './components/data-grid-cell/data-grid-cell.definition.js';
 import { dataGridRowDefinition } from './components/data-grid-row/data-grid-row.definition.js';
+import { designTokenContextDefinition } from './components/design-token-context/design-token-context.definition.js';
 import { dialogDefinition } from './components/dialog/dialog.definition.js';
 import { disclosureDefinition } from './components/disclosure/disclosure.definition.js';
 import { dividerDefinition } from './components/divider/divider.definition.js';
@@ -66,6 +67,7 @@ export const AllComponents = {
 	dataGridDefinition,
 	dataGridCellDefinition,
 	dataGridRowDefinition,
+    designTokenContextDefinition,
 	dialogDefinition,
 	disclosureDefinition,
 	dividerDefinition,

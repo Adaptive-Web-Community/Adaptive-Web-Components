@@ -310,3 +310,5 @@ export const layerFillInteractiveFocus = layerFillInteractive.focus;
  * @public
  */
 export const layerFillInteractiveDisabled = layerFillInteractive.disabled;
+
+fillColor.withDefault(layerFillFixedBase);

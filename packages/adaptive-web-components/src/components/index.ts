@@ -17,6 +17,7 @@ export * from "./combobox/index.js";
 export * from "./data-grid/index.js";
 export * from "./data-grid-cell/index.js";
 export * from "./data-grid-row/index.js";
+export * from "./design-token-context/index.js";
 export * from "./dialog/index.js";
 export * from "./disclosure/index.js";
 export * from "./divider/index.js";
