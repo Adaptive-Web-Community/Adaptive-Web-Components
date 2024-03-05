@@ -29,6 +29,14 @@ import {
     highlightStrokeReadable,
     highlightStrokeReadableRecipe,
     highlightStrokeSafety,
+    infoFillDiscernible,
+    infoFillReadable,
+    infoFillStealth,
+    infoFillSubtle,
+    infoStrokeDiscernible,
+    infoStrokeReadable,
+    infoStrokeReadableRecipe,
+    infoStrokeSafety,
     neutralFillDiscernible,
     neutralFillReadable,
     neutralFillStealth,
@@ -39,6 +47,22 @@ import {
     neutralStrokeStrong,
     neutralStrokeStrongRecipe,
     neutralStrokeSubtle,
+    successFillDiscernible,
+    successFillReadable,
+    successFillStealth,
+    successFillSubtle,
+    successStrokeDiscernible,
+    successStrokeReadable,
+    successStrokeReadableRecipe,
+    successStrokeSafety,
+    warningFillDiscernible,
+    warningFillReadable,
+    warningFillStealth,
+    warningFillSubtle,
+    warningStrokeDiscernible,
+    warningStrokeReadable,
+    warningStrokeReadableRecipe,
+    warningStrokeSafety,
 } from "./color.js";
 import { densityControl, densityItemContainer, densityLayer } from "./density.js";
 import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
@@ -451,6 +475,329 @@ export const highlightForegroundReadableControlStyles: Styles = Styles.fromPrope
         foregroundFill: highlightStrokeReadable,
     },
     "color.highlight-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for an info-filled stealth control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - info stealth background
+ * - info readable foreground (a11y)
+ * - info safety border
+ *
+ * @public
+ */
+export const infoFillStealthControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(infoFillStealth, infoStrokeReadableRecipe),
+        ...densityBorderStyles(infoStrokeSafety),
+    },
+    "color.info-fill-stealth-control",
+);
+
+/**
+ * Convenience style module for an info-filled subtle control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - info subtle background
+ * - info readable foreground (a11y)
+ * - info safety border
+ *
+ * @public
+ */
+export const infoFillSubtleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(infoFillSubtle, infoStrokeReadableRecipe),
+        ...densityBorderStyles(infoStrokeSafety),
+    },
+    "color.info-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an info-filled discernible control (interactive).
+ *
+ * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
+ * - info discernible background (a11y)
+ * - info discernible foreground
+ * - no border
+ *
+ * @public
+ */
+export const infoFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(infoFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.info-fill-discernible-control",
+);
+
+/**
+ * Convenience style module for an info-filled readable control (interactive).
+ *
+ * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
+ * - info readable background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const infoFillReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(infoFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.info-fill-readable-control",
+);
+
+/**
+ * Convenience style module for an info-outlined discernible control (interactive).
+ *
+ * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
+ * - fill color background
+ * - info readable foreground
+ * - info discernible border
+ *
+ * @public
+ */
+export const infoOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...densityBorderStyles(infoStrokeDiscernible),
+        foregroundFill: infoStrokeReadable,
+        backgroundFill: fillColor,
+    },
+    "color.info-outline-discernible-control",
+);
+
+/**
+ * Convenience style module for an info-colored text or icon control (interactive).
+ *
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
+ * - no background
+ * - info readable foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const infoForegroundReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        foregroundFill: infoStrokeReadable,
+    },
+    "color.info-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for an success-filled stealth control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - success stealth background
+ * - success readable foreground (a11y)
+ * - success safety border
+ *
+ * @public
+ */
+export const successFillStealthControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(successFillStealth, successStrokeReadableRecipe),
+        ...densityBorderStyles(successStrokeSafety),
+    },
+    "color.success-fill-stealth-control",
+);
+
+/**
+ * Convenience style module for an success-filled subtle control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - success subtle background
+ * - success readable foreground (a11y)
+ * - success safety border
+ *
+ * @public
+ */
+export const successFillSubtleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(successFillSubtle, successStrokeReadableRecipe),
+        ...densityBorderStyles(successStrokeSafety),
+    },
+    "color.success-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an success-filled discernible control (interactive).
+ *
+ * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
+ * - success discernible background (a11y)
+ * - success discernible foreground
+ * - no border
+ *
+ * @public
+ */
+export const successFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(successFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.success-fill-discernible-control",
+);
+
+/**
+ * Convenience style module for an success-filled readable control (interactive).
+ *
+ * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
+ * - success readable background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const successFillReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(successFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.success-fill-readable-control",
+);
+
+/**
+ * Convenience style module for an success-outlined discernible control (interactive).
+ *
+ * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
+ * - fill color background
+ * - success readable foreground
+ * - success discernible border
+ *
+ * @public
+ */
+export const successOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...densityBorderStyles(successStrokeDiscernible),
+        foregroundFill: successStrokeReadable,
+        backgroundFill: fillColor,
+    },
+    "color.success-outline-discernible-control",
+);
+
+/**
+ * Convenience style module for an success-colored text or icon control (interactive).
+ *
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
+ * - no background
+ * - success readable foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const successForegroundReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        foregroundFill: successStrokeReadable,
+    },
+    "color.success-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for an warning-filled stealth control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - warning stealth background
+ * - warning readable foreground (a11y)
+ * - warning safety border
+ *
+ * @public
+ */
+export const warningFillStealthControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(warningFillStealth, warningStrokeReadableRecipe),
+        ...densityBorderStyles(warningStrokeSafety),
+    },
+    "color.warning-fill-stealth-control",
+);
+
+/**
+ * Convenience style module for an warning-filled subtle control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - warning subtle background
+ * - warning readable foreground (a11y)
+ * - warning safety border
+ *
+ * @public
+ */
+export const warningFillSubtleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(warningFillSubtle, warningStrokeReadableRecipe),
+        ...densityBorderStyles(warningStrokeSafety),
+    },
+    "color.warning-fill-subtle-control",
+);
+/**
+ * Convenience style module for an warning-filled discernible control (interactive).
+ *
+ * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
+ * - warning discernible background (a11y)
+ * - warning discernible foreground
+ * - no border
+ *
+ * @public
+ */
+export const warningFillDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(warningFillDiscernible, blackOrWhiteDiscernibleRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.warning-fill-discernible-control",
+);
+
+/**
+ * Convenience style module for an warning-filled readable control (interactive).
+ *
+ * By default, the fill meets accessibility for text elements, producing an inverted foreground, useful for a button or similar:
+ * - warning readable background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const warningFillReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(warningFillReadable, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.warning-fill-readable-control",
+);
+
+/**
+ * Convenience style module for an warning-outlined discernible control (interactive).
+ *
+ * By default, the outline meets accessibility for non-text elements, useful for an unchecked checkbox:
+ * - fill color background
+ * - warning readable foreground
+ * - warning discernible border
+ *
+ * @public
+ */
+export const warningOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
+    {
+        ...densityBorderStyles(warningStrokeDiscernible),
+        foregroundFill: warningStrokeReadable,
+        backgroundFill: fillColor,
+    },
+    "color.warning-outline-discernible-control",
+);
+
+/**
+ * Convenience style module for an warning-colored text or icon control (interactive).
+ *
+ * By default, the foreground color meets accessibility, useful for a link, or similar:
+ * - no background
+ * - warning readable foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const warningForegroundReadableControlStyles: Styles = Styles.fromProperties(
+    {
+        foregroundFill: warningStrokeReadable,
+    },
+    "color.warning-foreground-readable-control",
 );
 
 /**

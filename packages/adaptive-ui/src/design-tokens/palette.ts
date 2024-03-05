@@ -57,6 +57,15 @@ export const successPalette = createTokenNonCss<Palette>("success-palette", Desi
         PaletteOkhsl.from(resolve(successBaseColor))
 );
 
+/** @public */
+export const infoBaseColor = createTokenNonCss<string>("info-base-color", DesignTokenType.color).withDefault("#0DA1F2");
+
+/** @public */
+export const infoPalette = createTokenNonCss<Palette>("info-palette", DesignTokenType.palette).withDefault(
+    (resolve: DesignTokenResolver) =>
+        PaletteOkhsl.from(resolve(infoBaseColor))
+);
+
 /**
  * The {@link Palette} to use for disabled state.
  *
