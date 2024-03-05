@@ -1,6 +1,6 @@
 import { clampChroma, interpolate, modeOkhsl, modeRgb, samples, useMode} from "culori/fn";
 import { Color } from "./color.js";
-import { BasePalette } from "./palette.js";
+import { BasePalette } from "./palette-base.js";
 import { Swatch } from "./swatch.js";
 import { _black, _white } from "./utilities/color-constants.js";
 
