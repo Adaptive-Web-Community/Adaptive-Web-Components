@@ -1,0 +1,10 @@
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: var(--fill-color);
+    color: var(--neutral-stroke-strong-rest);
+    font-family: var(--font-family);
+}
