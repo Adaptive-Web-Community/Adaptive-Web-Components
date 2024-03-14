@@ -7,7 +7,7 @@ import { globalStyleRules } from '@adaptive-web/adaptive-web-components';
 import { MuiButtonAuiStylesAnatomy } from './MuiButtonAuiStyles.js';
 
 
-export abstract class MuiButtonAuiStyles {
+export abstract class MuiButtonAuiStyle {
     private static _styles: ElementStyles | null = null;
 
     private static initStyles() {
@@ -56,27 +56,27 @@ export abstract class MuiButtonAuiStyles {
         ];
 
         // Turn the definitions into a stylesheet. This is the part that could happen at build time as mentioned above.
-        MuiButtonAuiStyles._styles = MuiButtonAuiStyles.renderStyles(styleRules, MuiButtonAuiStylesAnatomy);
+        MuiButtonAuiStyle._styles = MuiButtonAuiStyle.renderStyles(styleRules, MuiButtonAuiStylesAnatomy);
     }
 
     // This belongs as a helper function in Adaptive UI, here for illustration purposes.
-    private static renderStyles(styleRules: StyleRules, anatomy: ComponentAnatomy<any, any>): ElementStyles { 
+    private static renderStyles(styleRules: StyleRules, anatomy: ComponentAnatomy<any, any>): ElementStyles {
         const allStyleRules = [
             ...globalStyleRules(anatomy),
             ...styleRules,
         ];
-        const renderStyles = ElementStylesRenderer.renderStyleRules([], allStyleRules, anatomy); 
+        const renderStyles = ElementStylesRenderer.renderStyleRules([], allStyleRules, anatomy);
         console.log(' renderStyles ', renderStyles);
         return renderStyles
     }
 
     public static get styles() {
-        if (MuiButtonAuiStyles._styles === null) {
-            MuiButtonAuiStyles.initStyles();
+        if (MuiButtonAuiStyle._styles === null) {
+            MuiButtonAuiStyle.initStyles();
         }
 
         console.log("MuiButtonAuiStyles: getting styles (called for each instance)");
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return MuiButtonAuiStyles._styles!;
+        return MuiButtonAuiStyle._styles!;
     }
 }

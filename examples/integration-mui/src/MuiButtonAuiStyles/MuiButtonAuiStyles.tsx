@@ -5,7 +5,7 @@ import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-u
 import { Button as MuiButton } from "@mui/material";
 import { Button as BaseButton } from "@mui/base/Button";
 
-import { MuiThemeStyles } from "./MuiButtonAuiStyles.styles.js";
+import { MuiButtonAuiStyle } from "./MuiButtonAuiStyles.styles.js";
 import { StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material/styles";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
@@ -57,7 +57,7 @@ export default function MuiButtonAuiStyles(props: MuiButtonAuiStylesProps) {
     useEffect(() => {
         if (containerRef.current) {
             // Attach the styles when the component loads
-            const styles = MuiThemeStyles.styles;
+            const styles = MuiButtonAuiStyle.styles;
 
             styles.addStylesTo(containerRef.current);
         }
