@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import root from 'react-shadow';
+import root from "react-shadow";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { layerFillInteractiveRest } from "@adaptive-web/adaptive-ui/reference";
 import { Badge } from "../react/Badge.js";
@@ -14,8 +14,7 @@ import { ContentItemStyles } from "./ContentItem.styles.js";
 /**
  * Conditions the ContentItem component supports. (Potentially `selected`, `viewType`, etc.)
  */
-export const ContentItemConditions = {
-};
+export const ContentItemConditions = {};
 
 /**
  * Parts of the ContentItem anatomy.
@@ -30,6 +29,7 @@ export const ContentItemParts = {
     badge: "badge",
     metadata: "metadata",
     actions: "actions",
+    root: "MuiButton-root",
 };
 
 /**
@@ -46,7 +46,7 @@ export const ContentItemAnatomy: ComponentAnatomy<typeof ContentItemConditions, 
  * ContentItem React component props.
  */
 export type ContentItemProps = {
-    ref?: React.RefObject<any>
+    ref?: React.RefObject<any>;
     title?: string;
     description?: string;
     badge?: string;
@@ -63,6 +63,7 @@ export default function ContentItem(props: ContentItemProps) {
         if (containerRef.current) {
             // Attach the styles when the component loads
             const styles = ContentItemStyles.styles;
+            debugger;
             styles.addStylesTo(containerRef.current);
         }
     });
@@ -78,26 +79,34 @@ export default function ContentItem(props: ContentItemProps) {
     // I have an idea to make this better but it requires an update in fast-foundation (in process).
     return (
         <root.div ref={containerRef}>
-            <DesignTokenContext className={ContentItemParts.container} fillColor={layerFillInteractiveRest} tabIndex="0">
-                <img className={ContentItemParts.thumbnail} src={background}/>
+            <DesignTokenContext
+                className={ContentItemParts.container}
+                fillColor={layerFillInteractiveRest}
+                tabIndex="0"
+            >
+                <img className={ContentItemParts.thumbnail} src={background} />
                 <div className={ContentItemParts.details}>
                     <div className={ContentItemParts.title}>{props.title}</div>
                     <div className={ContentItemParts.description}>{props.description}</div>
                     <div className={ContentItemParts.properties}>
                         <Badge className={ContentItemParts.badge}>{props.badge}</Badge>
                         <div className={ContentItemParts.metadata}>
-                            <BlobIcon/>
+                            <BlobIcon />
                             <span>Feb 8, 2024</span>
                         </div>
                         <div className={ContentItemParts.actions}>
-                            <Button><BookmarkIcon/></Button>
-                            <Button><ActionsIcon/></Button>
+                            <Button>
+                                <BookmarkIcon />
+                            </Button>
+                            <Button>
+                                <ActionsIcon />
+                            </Button>
                         </div>
                     </div>
                 </div>
             </DesignTokenContext>
         </root.div>
-    )
+    );
 }
 
 ContentItem.defaultProps = {

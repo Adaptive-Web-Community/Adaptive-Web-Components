@@ -9,7 +9,7 @@ import { ButtonAnatomy } from "./button.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        target : {
+        target: {
             part: ButtonAnatomy.parts.control,
         },
         styles: actionStyles,

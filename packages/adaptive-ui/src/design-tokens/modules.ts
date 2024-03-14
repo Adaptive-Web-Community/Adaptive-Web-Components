@@ -1048,8 +1048,8 @@ export const flyoutStyles: Styles = Styles.compose(
         layerShapeStyles,
         shadowFlyoutStyles,
     ], {
-        backgroundFill: layerFillFixedPlus1,
-    },
+    backgroundFill: layerFillFixedPlus1,
+},
     "styles.flyout",
 );
 

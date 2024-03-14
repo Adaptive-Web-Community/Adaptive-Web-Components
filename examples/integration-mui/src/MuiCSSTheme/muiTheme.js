@@ -1,22 +1,37 @@
 
-export const actionStyles = {
+// packages/adaptive-ui/src/design-tokens/modules.ts
+// packages/adaptive-ui/src/design-tokens/README.md
+
+export const typeRampBaseStyles = {
+    fontFamily: "var(--font-family)",
+    fontSize: "var(--type-ramp-base-font-size)",
+    lineHeight: "var(--type-ramp-base-line-height)",
+    fontWeight: "var(--font-weight)",
+    fontVariationSettings: "var(--type-ramp-base-font-variations)",
+}
+export const typeRampMinus1Styles = {
+    fontFamily: "var(--font-family)",
+    fontSize: "var(--type-ramp-minus-1-font-size)",
+    lineHeight: "var(--type-ramp-minus-1-line-height)",
+    fontWeight: "var(--font-weight)",
+    fontVariationSettings: "var(--type-ramp-minus-1-font-variations)",
+}
+
+
+export const controlShapeStyles = {
     borderTopLeftRadius: "var(--corner-radius-control)",
     borderTopRightRadius: "var(--corner-radius-control)",
     borderBottomRightRadius: "var(--corner-radius-control)",
     borderBottomLeftRadius: "var(--corner-radius-control)",
+
+};
+
+export const controlDensityStyles = {
     paddingTop: "var(--density_control-vertical-padding)",
     paddingRight: "var(--density_control-horizontal-padding)",
     paddingBottom: "var(--density_control-vertical-padding)",
     paddingLeft: "var(--density_control-horizontal-padding)",
     gap: "var(--density_control-horizontal-gap)",
-    borderTopWidth: "var(--stroke-thickness)",
-    borderRightWidth: "var(--stroke-thickness)",
-    borderBottomWidth: "var(--stroke-thickness)",
-    borderLeftWidth: "var(--stroke-thickness)",
-    borderTopStyle: "solid",
-    borderRightStyle: "solid",
-    borderBottomStyle: "solid",
-    borderLeftStyle: "solid",
 };
 
 
@@ -31,13 +46,71 @@ export const structureStyles = {
     padding: "0",
 };
 
-export const baseStyles = {
-    fontFamily: "var(--font-family)",
-    fontSize: "var(--type-ramp-base-font-size)",
-    lineHeight: "var(--type-ramp-base-line-height)",
-    fontWeight: "var(--font-weight)",
-    fontVariationSettings: "var(--type-ramp-base-font-variations)",
+export const densityBorderStyles = {
+    borderTopWidth: "var(--stroke-thickness)",
+    borderRightWidth: "var(--stroke-thickness)",
+    borderBottomWidth: "var(--stroke-thickness)",
+    borderLeftWidth: "var(--stroke-thickness)",
+    borderTopStyle: "solid",
+    borderRightStyle: "solid",
+    borderBottomStyle: "solid",
+    borderLeftStyle: "solid",
+
+    // Border fill color changes. 
 }
+
+export const actionStyles = {
+    ...controlShapeStyles,
+    ...controlDensityStyles,
+    ...densityBorderStyles,
+};
+
+
+
+// MENU Styles
+
+export const layerShapeStyles = {
+    borderTopLeftRadius: 'var(--corner-radius-layer)',
+    borderTopRightRadius: 'var(--corner-radius-layer)',
+    borderBottomRightRadius: 'var(--corner-radius-layer)',
+    borderBottomLeftRadius: 'var(--corner-radius-layer)',
+};
+
+
+export const flyoutStyles = {
+    ...layerShapeStyles,
+    boxShadow: 'var(--elevation-flyout)',
+
+    backgroundColor: 'var(--layer-fill-fixed-plus-1)',
+
+};
+
+export const itemContainerDensityStyles = {
+    paddingTop: 'var(--density_item-container-vertical-padding)',
+    paddingRight: 'var(--density_item-container-horizontal-padding)',
+    paddingBottom: 'var(--density_item-container-vertical-padding)',
+    paddingLeft: 'var(--density_item-container-horizontal-padding)',
+    gap: 'var(--density_item-container-horizontal-gap)',
+};
+
+// Menu Item Styles
+
+export const menuItemStyles = {
+    ...controlShapeStyles,
+    ...controlDensityStyles,
+    ...typeRampBaseStyles,
+};
+
+
+// Input Styles
+
+export const inputStyles = {
+    ...controlShapeStyles,
+    ...densityBorderStyles,
+};
+
+
+
 
 export const muiCSSTheme = {
 
@@ -50,7 +123,7 @@ export const muiCSSTheme = {
             },
             styleOverrides: {
                 root: {
-                    ...baseStyles,
+                    ...typeRampBaseStyles,
 
                     '&:focus-visible': {
                         backgroundColor: 'var(--neutral-fill-subtle-focus)',
@@ -69,16 +142,26 @@ export const muiCSSTheme = {
                 disableElevation: true,
             },
             styleOverrides: {
-                root: ({ theme, ownerState }) => ({
-
-                    // structure styles:
-                    ...structureStyles,
-                    // Action control overrides
-                    ...actionStyles,
+                root: ({ ownerState }) => ({
 
                     // MUI overrides
                     // buttons have text-transform: uppercase by default
                     textTransform: 'none ',
+
+                    // // button structure styles:
+                    display: "flex",
+                    alignItems: "center",
+                    whiteSpace: "nowrap",
+                    flexgrow: "1",
+                    justifyContent: "center",
+                    border: "none",
+                    margin: "0",
+                    padding: "0",
+
+                    // Action control overrides
+                    ...actionStyles,
+
+
 
                     // Variants
                     ...(ownerState.variant === "critical" && {
@@ -145,46 +228,21 @@ export const muiCSSTheme = {
                     maxWidth: "368px",
                     minWidth: "64px",
 
-                    paddingTop: 'var(--density_item-container-vertical-padding)',
-                    paddingRight: 'var(--density_item-container-horizontal-padding)',
-                    paddingBottom: 'var(--density_item-container-vertical-padding)',
-                    paddingLeft: 'var(--density_item-container-horizontal-padding)',
-                    gap: 'var(--density_item-container-horizontal-gap)',
-                    borderTopLeftRadius: 'var(--corner-radius-layer)',
-                    borderTopRightRadius: 'var(--corner-radius-layer)',
-                    borderBottomRightRadius: 'var(--corner-radius-layer)',
-                    borderBottomLeftRadius: 'var(--corner-radius-layer)',
-                    boxShadow: 'var(--elevation-flyout)',
-                    backgroundColor: 'var(--layer-fill-fixed-plus-1)',
+                    ...flyoutStyles,
+                    ...itemContainerDensityStyles,
                 }
             }
         },
         MuiMenuItem: {
             styleOverrides: {
                 root: {
-                    ...baseStyles,
+                    ...menuItemStyles,
 
-                    borderTopLeftRadius: 'var(--corner-radius-control)',
-                    borderTopRightRadius: 'var(--corner-radius-control)',
-                    borderBottomRightRadius: 'var(--corner-radius-control)',
-                    borderBottomLeftRadius: 'var(--corner-radius-control)',
-                    paddingTop: 'var(--density_control-vertical-padding)',
-                    paddingRight: 'var(--density_control-horizontal-padding)',
-                    paddingBottom: 'var(--density_control-vertical-padding)',
-                    paddingLeft: 'var(--density_control-horizontal-padding)',
-                    gap: 'var(--density_control-horizontal-gap)',
 
                     backgroundColor: 'var(--neutral-fill-stealth-rest)',
                     color: 'var(--neutral-stroke-strong-on-neutral-fill-stealth-rest)',
                     fill: 'currentcolor',
-                    borderTopWidth: 'var(--stroke-thickness)',
-                    borderRightWidth: 'var(--stroke-thickness)',
-                    borderBottomWidth: 'var(--stroke-thickness)',
-                    borderLeftWidth: 'var(--stroke-thickness)',
-                    borderTopStyle: 'solid',
-                    borderRightStyle: 'solid',
-                    borderBottomStyle: 'solid',
-                    borderLeftStyle: 'solid',
+
                     borderTopColor: 'var(--neutral-stroke-safety-rest)',
                     borderRightColor: 'var(--neutral-stroke-safety-rest)',
                     borderBottomColor: 'var(--neutral-stroke-safety-rest)',
@@ -227,20 +285,9 @@ export const muiCSSTheme = {
             styleOverrides: {
                 root: {
 
-                    ...baseStyles,
-                    borderTopLeftRadius: 'var(--corner-radius-control)',
-                    borderTopRightRadius: 'var(--corner-radius-control)',
-                    borderBottomRightRadius: 'var(--corner-radius-control)',
-                    borderBottomLeftRadius: 'var(--corner-radius-control)',
+                    ...typeRampBaseStyles,
+                    ...inputStyles,
 
-                    borderTopWidth: 'var(--stroke-thickness)',
-                    borderRightWidth: 'var(--stroke-thickness)',
-                    borderBottomWidth: 'var(--stroke-thickness)',
-                    borderLeftWidth: 'var(--stroke-thickness)',
-                    borderTopStyle: 'solid',
-                    borderRightStyle: 'solid',
-                    borderBottomStyle: 'solid',
-                    borderLeftStyle: 'solid',
                     borderTopColor: 'var(--neutral-stroke-discernible-rest)',
                     borderRightColor: 'var(--neutral-stroke-discernible-rest)',
                     borderBottomColor: 'var(--neutral-stroke-discernible-rest)',
@@ -249,13 +296,19 @@ export const muiCSSTheme = {
                     fill: 'currentcolor',
                     backgroundColor: 'var(--fill-color)',
 
+
                     gap: 'var(--density_control-horizontal-gap)',
 
-                    // control
-                    paddingTop: 'var(--density_control- vertical - padding)',
-                    paddingRight: '0',
-                    paddingBottom: 'var(--density_control - vertical - padding)',
-                    paddingLeft: '0',
+                    '.MuiInputBase-input': {
+
+
+                        paddingTop: 'var(--density_control-vertical-padding);',
+                        paddingRight: 'var(--density_control-horizontal-padding)',
+                        paddingBottom: 'var(--density_control-vertical-padding)',
+                        paddingLeft: 'var(--density_control-horizontal-padding)',
+
+                    }
+
                 }
             }
 
@@ -265,7 +318,7 @@ export const muiCSSTheme = {
         MuiAccordion: {
             styleOverrides: {
                 root: {
-                    ...baseStyles,
+                    ...typeRampBaseStyles,
                     // host
                     display: 'flex',
                     flexDirection: 'column',
@@ -305,7 +358,7 @@ export const muiCSSTheme = {
             styleOverrides: {
                 root: {
                     '.MuiTypography-root': {
-                        ...baseStyles,
+                        ...typeRampBaseStyles,
                         color: 'var(--neutral-stroke-strong-rest)',
                     },
 
@@ -320,9 +373,10 @@ export const muiCSSTheme = {
         MuiBadge: {
             styleOverrides: {
                 root: {
-
+                    ...typeRampMinus1Styles,
 
                     '.MuiBadge-badge': {
+                        // padding: 'calc(((var(--design-unit) * 0.5) - var(--stroke-thickness)) * 1) calc((var(--design-unit) - var(--stroke-thickness)) * 1)',
                         borderRadius: 'var(--corner-radius-control)',
                         // borderTopLeftRadius: 'var(--corner-radius-control',
                         // borderTopRightRadius: 'var(--corner-radius-control)',

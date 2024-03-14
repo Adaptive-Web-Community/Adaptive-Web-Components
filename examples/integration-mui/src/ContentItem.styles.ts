@@ -13,6 +13,12 @@ import { cardStyles, itemTitleStyles, layerContainerVertical } from './styles.js
  *
  * The evolution of this (already in PoC) is to generate styles at build time for zero runtime hit.
  */
+
+/**
+ *    target: {
+                    part: 'MuiButton-root'
+                },
+ */
 export abstract class ContentItemStyles {
     private static _styles: ElementStyles | null = null;
 
@@ -22,7 +28,9 @@ export abstract class ContentItemStyles {
         // Think of these like regular css rules. The `target` creates the css selector.
         // The `styles` render all the properties from the set and `properties` are typically more fine-grained than the styles.
         const styleRules: StyleRules = [
-            {
+            {  // target: css selector .container
+                // part = class (think of it like a css class)
+             
                 target: {
                     part: ContentItemAnatomy.parts.container,
                 },
