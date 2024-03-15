@@ -35,6 +35,8 @@ import {
     DesignTokenContext,
     Menu,
     MenuItem,
+    Slider,
+    SliderLabel,
     TextField,
 } from "../react/index.js";
 import ContentItem from "./ContentItem.js";
@@ -42,6 +44,7 @@ import "./App.css";
 import Controls from "./Controls.js";
 import { muiCSSTheme } from "./MuiCSSTheme/muiTheme.js";
 import MuiButtonAuiStyles from "./MuiButtonAuiStyles/MuiButtonAuiStyles.js";
+import MuiSliderAuiStyles from "./MuiSliderAuiStyles/MuiSliderAuiStyles.js";
 
 // Register the components with the browser
 // Planning to look into another CEM plugin to just-in-time load this in the React wrappers.
@@ -101,6 +104,12 @@ export default function App() {
                         </AccordionItem>
                     </Accordion>
                     <Checkbox>Check me</Checkbox>
+                    <Slider valueAsNumber={5} max={100}>
+                        <SliderLabel position="0">0℃</SliderLabel>
+                        <SliderLabel position="10">10℃</SliderLabel>
+                        <SliderLabel position="90">90℃</SliderLabel>
+                        <SliderLabel position="100">100℃</SliderLabel>
+                    </Slider>
 
                     <CssVarsProvider theme={theme}>
                         <header className="App-header">
@@ -151,6 +160,10 @@ export default function App() {
 
                     <div className="horizontal">
                         <MuiButtonAuiStyles  />
+                    </div>
+
+                    <div className="horizontal">
+                        <MuiSliderAuiStyles />
                     </div>
                 </main>
                 <aside style={{ width: 200 }}>

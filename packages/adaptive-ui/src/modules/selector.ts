@@ -1,5 +1,7 @@
 import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
 
+const defaultHost = ":host";
+
 /**
  * Creates a single css selector for the provided `params` and optional `state`.
  *
@@ -14,6 +16,7 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
 
     // `disabled` is a `state`, but it's not a css pseudo selector.
     const statePseudo = state && state !== "disabled" ? ":" + state : "";
+    const host = params.host && params.host !== defaultHost ? `.${params.host}` : defaultHost;
 
     if (params.hostCondition ||
         (state && state !== "disabled" && params.interactivitySelector !== undefined) ||
@@ -38,11 +41,12 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
         }
 
         if (hostCondition !== "") {
-            selectors.push(`:host(${hostCondition})`);
+            const hostSelector = host === defaultHost ? `${host}(${hostCondition})` : `${host}${hostCondition}`;
+            selectors.push(hostSelector);
         }
     } else if (!params.part) {
         // There wasn't a host condition, and there isn't a part, so basic host selector.
-        selectors.push(":host");
+        selectors.push(host);
     }
 
     if (params.part) {

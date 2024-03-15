@@ -62,5 +62,5 @@ ReactDOM.createRoot(domNode).render(
     <React.StrictMode>
         <App />
     </React.StrictMode>,
-    document.getElementById("root")
+    // document.getElementById("root")
 );

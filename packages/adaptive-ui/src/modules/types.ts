@@ -36,6 +36,11 @@ export type ComponentParts = Record<string, string>;
  */
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     /**
+     * The host element selector. Implementation defaults to `:host` if not provided.
+     */
+    host?: string;
+
+    /**
      * Description of the conditions for when the component is interactive or not.
      */
     interactivity?: InteractivityDefinition;
@@ -62,6 +67,11 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
  * @public
  */
 export interface StyleModuleTarget {
+    /**
+     * The host element selector. Implementation defaults to `:host` if not provided.
+     */
+    host?: string;
+
     /**
      * The condition to match at the host element level.
      */

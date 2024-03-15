@@ -101,6 +101,7 @@ export type ColorRecipeParams = {
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     conditions: TConditions;
     focus?: FocusDefinition<TParts>;
+    host?: string;
     interactivity?: InteractivityDefinition;
     parts: TParts;
 }
@@ -459,6 +460,7 @@ export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDef
 // @public
 export interface StyleModuleTarget {
     focusSelector?: FocusSelector;
+    host?: string;
     hostCondition?: string;
     // @beta
     ignoreInteractivity?: boolean;

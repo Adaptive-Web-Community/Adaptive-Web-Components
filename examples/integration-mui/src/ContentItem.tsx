@@ -63,7 +63,7 @@ export default function ContentItem(props: ContentItemProps) {
         if (containerRef.current) {
             // Attach the styles when the component loads
             const styles = ContentItemStyles.styles;
-            debugger;
+            // debugger;
             styles.addStylesTo(containerRef.current);
         }
     });
