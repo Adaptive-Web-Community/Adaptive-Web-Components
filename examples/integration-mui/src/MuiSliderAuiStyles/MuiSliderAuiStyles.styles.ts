@@ -100,7 +100,8 @@ export abstract class MuiSliderAuiStyle {
         ];
 
         // Turn the definitions into a stylesheet. This is the part that could happen at build time as mentioned above.
-        MuiSliderAuiStyle._styles = MuiSliderAuiStyle.renderStyles(styleRules, MuiSliderAuiStylesAnatomy);
+        const allRules = [...resetStyleRules, ...styleRules];
+        MuiSliderAuiStyle._styles = MuiSliderAuiStyle.renderStyles(allRules, MuiSliderAuiStylesAnatomy);
     }
 
     // This belongs as a helper function in Adaptive UI, here for illustration purposes.
