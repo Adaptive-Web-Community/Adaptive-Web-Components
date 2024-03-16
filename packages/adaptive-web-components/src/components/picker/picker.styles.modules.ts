@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     flyoutStyles,
@@ -9,30 +8,28 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
-const menuStyles = Styles.compose(
-    [
-        plainTextStyles,
-        itemContainerDensityStyles,
-        flyoutStyles,
-    ]
-);
+const menuStyles = [
+    plainTextStyles,
+    itemContainerDensityStyles,
+    flyoutStyles,
+];
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-            part: PickerAnatomy.parts.loadingDisplay
+export const styleModules: StyleRules = [
+    {
+        target : {
+            part: PickerAnatomy.parts.loadingDisplay,
         },
-        menuStyles
-    ],
-    [
-        {
-            part: PickerAnatomy.parts.noOptionsDisplay
+        styles: menuStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.noOptionsDisplay,
         },
-        menuStyles
-    ],
+        styles: menuStyles,
+    },
 ];

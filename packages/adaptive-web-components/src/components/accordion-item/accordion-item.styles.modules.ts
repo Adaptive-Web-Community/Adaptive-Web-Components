@@ -1,65 +1,56 @@
 import {
-    StyleModules,
-    Styles,
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     accentForegroundReadableControlStyles,
     controlDensityStyles,
     controlShapeStyles,
     neutralForegroundStrongElementStyles,
-    neutralStrokeSubtleRest,
+    neutralStrokeSubtle,
     plainTextStyles,
     strokeThickness
 } from "@adaptive-web/adaptive-ui/reference";
 import { AccordionItemAnatomy } from "./accordion-item.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: plainTextStyles,
+        properties: {
+            borderFillBottom: neutralStrokeSubtle.rest,
+            borderStyleBottom: "solid",
+            borderThicknessBottom: strokeThickness,
         },
-        Styles.compose(
-            [
-                plainTextStyles
-            ],
-            {
-                borderFillBottom: neutralStrokeSubtleRest,
-                borderStyleBottom: "solid",
-                borderThicknessBottom: strokeThickness,
-            }
-        ),
-    ],
-    [
-        {
+    },
+    {
+        target : {
             part: AccordionItemAnatomy.parts.heading,
         },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                controlDensityStyles,
-            ],
-        )
-    ],
-    [
-        {
+        styles: [
+            controlShapeStyles,
+            controlDensityStyles,
+        ],
+    },
+    {
+        target : {
             part: AccordionItemAnatomy.parts.button,
         },
-        neutralForegroundStrongElementStyles
-    ],
-    [
-        {
+        styles: neutralForegroundStrongElementStyles,
+    },
+    {
+        target : {
             part: AccordionItemAnatomy.parts.icon,
         },
-        accentForegroundReadableControlStyles
-    ],
-    [
-        {
+        styles: accentForegroundReadableControlStyles,
+    },
+    {
+        target : {
             part: AccordionItemAnatomy.parts.region,
         },
-        controlDensityStyles
-    ],
+        styles: controlDensityStyles,
+    },
 ];

@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
     plainTextStyles,
@@ -9,41 +9,39 @@ import {
 import { RadioAnatomy } from "./radio.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
+export const styleModules: StyleRules = [
+    {
+        properties: {
             gap: densityControl.horizontalGap,
-        })
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             part: RadioAnatomy.parts.label,
         },
-        plainTextStyles
-    ],
-    [
-        {
+        styles: plainTextStyles,
+    },
+    {
+        target : {
             part: RadioAnatomy.parts.control,
         },
-        Styles.compose([
+        styles: [
             selectableUnselectedStyles,
             roundShapeStyles,
-        ]),
-    ],
-    [
-        {
+        ],
+    },
+    {
+        target : {
             hostCondition: RadioAnatomy.conditions.checked,
             part: RadioAnatomy.parts.control,
         },
-        Styles.compose([
+        styles: [
             selectableSelectedStyles,
             roundShapeStyles,
-        ]),
-    ],
+        ],
+    },
 ];

@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
@@ -9,20 +8,16 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                itemContainerDensityStyles,
-                neutralOutlineDiscernibleControlStyles,
-            ],
-        )
-    ],
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            controlShapeStyles,
+            itemContainerDensityStyles,
+            neutralOutlineDiscernibleControlStyles,
+        ],
+    },
 ];

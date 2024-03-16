@@ -1,16 +1,13 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import { itemStyles } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules
- = [
-    [
-        {
-        },
-        itemStyles
-    ],
+export const styleModules: StyleRules = [
+    {
+        styles: itemStyles,
+    },
 ];

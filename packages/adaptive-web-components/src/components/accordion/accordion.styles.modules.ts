@@ -1,31 +1,24 @@
 import {
-    StyleModules,
-    Styles,
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
-    neutralStrokeSubtleRest,
+    neutralStrokeSubtle,
     plainTextStyles,
     strokeThickness
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.compose(
-            [
-                plainTextStyles
-            ],
-            {
-                borderFillTop: neutralStrokeSubtleRest,
-                borderStyleTop: "solid",
-                borderThicknessTop: strokeThickness,
-            }
-        ),
-    ],
+export const styleModules: StyleRules = [
+    {
+        styles: plainTextStyles,
+        properties : {
+            borderFillTop: neutralStrokeSubtle.rest,
+            borderStyleTop: "solid",
+            borderThicknessTop: strokeThickness,
+        }
+    },
 ];

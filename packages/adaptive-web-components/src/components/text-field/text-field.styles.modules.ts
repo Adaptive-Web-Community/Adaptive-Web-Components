@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     autofillInnerDensityStyles,
     densityControl,
@@ -9,39 +9,33 @@ import {
 import { TextFieldAnatomy } from "./text-field.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampBaseStyles,
+        properties: {
+            gap: densityControl.verticalGap,
+        }
+    },
+    {
+        target : {
+            part: TextFieldAnatomy.parts.label,
         },
-        Styles.compose(
-            [
-                typeRampBaseStyles,
-            ],
-            {
-                gap: densityControl.verticalGap,
-            }
-        ),
-    ],
-    [
-        {
-            part: TextFieldAnatomy.parts.label
+        styles: labelTextStyles,
+    },
+    {
+        target : {
+            part: TextFieldAnatomy.parts.root,
         },
-        labelTextStyles
-    ],
-    [
-        {
-            part: TextFieldAnatomy.parts.root
+        styles: inputAutofillStyles,
+    },
+    {
+        target : {
+            part: TextFieldAnatomy.parts.control,
         },
-        inputAutofillStyles
-    ],
-    [
-        {
-            part: TextFieldAnatomy.parts.control
-        },
-        autofillInnerDensityStyles
-    ],
+        styles: autofillInnerDensityStyles,
+    },
 ];

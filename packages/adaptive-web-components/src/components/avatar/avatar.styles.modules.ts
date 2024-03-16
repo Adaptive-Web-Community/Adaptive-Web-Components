@@ -1,4 +1,4 @@
-import { StyleModules } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     accentFillReadableControlStyles,
     typeRampBaseStyles,
@@ -6,20 +6,18 @@ import {
 import { AvatarAnatomy } from "./avatar.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        typeRampBaseStyles
-    ],
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampBaseStyles,
+    },
+    {
+        target : {
             part: AvatarAnatomy.parts.backplate,
         },
-        accentFillReadableControlStyles
-    ],
+        styles: accentFillReadableControlStyles,
+    },
 ];

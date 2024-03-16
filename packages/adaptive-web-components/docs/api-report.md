@@ -63,9 +63,8 @@ import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
-import { StyleModules } from '@adaptive-web/adaptive-ui';
-import { StyleModuleTarget } from '@adaptive-web/adaptive-ui';
-import { Styles } from '@adaptive-web/adaptive-ui';
+import { StyleRule } from '@adaptive-web/adaptive-ui';
+import { StyleRules } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -107,7 +106,7 @@ export const AccordionItemStatics: {
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
 // @public
-export const accordionItemStyleModules: StyleModules;
+export const accordionItemStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -121,7 +120,7 @@ export const accordionItemTemplateStyles: ElementStyles;
 export const AccordionParts: {};
 
 // @public
-export const accordionStyleModules: StyleModules;
+export const accordionStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -195,7 +194,7 @@ export const AnchoredRegionConditions: {
 export const AnchoredRegionParts: {};
 
 // @public
-export const anchoredRegionStyleModules: StyleModules;
+export const anchoredRegionStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -212,7 +211,7 @@ export const AnchorParts: {
 };
 
 // @public
-export const anchorStyleModules: StyleModules;
+export const anchorStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -237,7 +236,7 @@ export const AvatarParts: {
 };
 
 // @public
-export const avatarStyleModules: StyleModules;
+export const avatarStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -262,7 +261,7 @@ export const BadgeParts: {
 };
 
 // @public
-export const badgeStyleModules: StyleModules;
+export const badgeStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -315,7 +314,7 @@ export const BreadcrumbItemStatics: {
 export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 
 // @public
-export const breadcrumbItemStyleModules: StyleModules;
+export const breadcrumbItemStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -331,7 +330,7 @@ export const BreadcrumbParts: {
 };
 
 // @public
-export const breadcrumbStyleModules: StyleModules;
+export const breadcrumbStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -359,7 +358,7 @@ export const ButtonParts: {
 };
 
 // @public
-export const buttonStyleModules: StyleModules;
+export const buttonStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -393,7 +392,7 @@ export const CalendarParts: {
 };
 
 // @public
-export const calendarStyleModules: StyleModules;
+export const calendarStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -416,7 +415,7 @@ export const CardConditions: {};
 export const CardParts: {};
 
 // @public
-export const cardStyleModules: StyleModules;
+export const cardStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -454,7 +453,7 @@ export const CheckboxStatics: {
 export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 
 // @public
-export const checkboxStyleModules: StyleModules;
+export const checkboxStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -490,7 +489,7 @@ export const ComboboxStatics: {
 export type ComboboxStatics = ValuesOf<typeof ComboboxStatics>;
 
 // @public
-export const comboboxStyleModules: StyleModules;
+export const comboboxStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -788,7 +787,7 @@ export const DataGridCellConditions: {
 export const DataGridCellParts: {};
 
 // @public
-export const dataGridCellStyleModules: StyleModules;
+export const dataGridCellStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -822,7 +821,7 @@ export const DataGridRowConditions: {
 export const DataGridRowParts: {};
 
 // @public
-export const dataGridRowStyleModules: StyleModules;
+export const dataGridRowStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -833,7 +832,7 @@ export const dataGridRowTemplate: (ds: DesignSystem) => ElementViewTemplate<FAST
 export const dataGridRowTemplateStyles: ElementStyles;
 
 // @public
-export const dataGridStyleModules: StyleModules;
+export const dataGridStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -882,7 +881,7 @@ export const DialogParts: {
 };
 
 // @public
-export const dialogStyleModules: StyleModules;
+export const dialogStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -909,7 +908,7 @@ export const DisclosureParts: {
 };
 
 // @public
-export const disclosureStyleModules: StyleModules;
+export const disclosureStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -935,7 +934,7 @@ export const DividerConditions: {
 export const DividerParts: {};
 
 // @public
-export const dividerStyleModules: StyleModules;
+export const dividerStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -973,7 +972,7 @@ export const FlipperStatics: {
 export type FlipperStatics = ValuesOf<typeof FlipperStatics>;
 
 // @public
-export const flipperStyleModules: StyleModules;
+export const flipperStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -984,7 +983,7 @@ export const flipperTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTFlip
 export const flipperTemplateStyles: ElementStyles;
 
 // @public
-export const globalStyleModules: (anatomy?: ComponentAnatomy<any, any>) => StyleModules;
+export const globalStyleRules: (anatomy?: ComponentAnatomy<any, any>) => StyleRules;
 
 // Warning: (ae-internal-missing-underscore) The name "heightNumber" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1012,7 +1011,7 @@ export const HorizontalScrollParts: {
 };
 
 // @public
-export const horizontalScrollStyleModules: StyleModules;
+export const horizontalScrollStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1049,7 +1048,7 @@ export const ListboxOptionParts: {
 };
 
 // @public
-export const listboxOptionStyleModules: StyleModules;
+export const listboxOptionStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1063,7 +1062,7 @@ export const listboxOptionTemplateStyles: ElementStyles;
 export const ListboxParts: {};
 
 // @public
-export const listboxStyleModules: StyleModules;
+export const listboxStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1112,7 +1111,7 @@ export const MenuItemStatics: {
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 
 // @public
-export const menuItemStyleModules: StyleModules;
+export const menuItemStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1126,7 +1125,7 @@ export const menuItemTemplateStyles: ElementStyles;
 export const MenuParts: {};
 
 // @public
-export const menuStyleModules: StyleModules;
+export const menuStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1165,7 +1164,7 @@ export const NumberFieldStatics: {
 export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 
 // @public
-export const numberFieldStyleModules: StyleModules;
+export const numberFieldStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1206,7 +1205,7 @@ export const PickerListItemConditions: {};
 export const PickerListItemParts: {};
 
 // @public
-export const pickerListItemStyleModules: StyleModules;
+export const pickerListItemStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1220,7 +1219,7 @@ export const pickerListItemTemplateStyles: ElementStyles;
 export const PickerListParts: {};
 
 // @public
-export const pickerListStyleModules: StyleModules;
+export const pickerListStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1254,7 +1253,7 @@ export const PickerMenuOptionConditions: {
 export const PickerMenuOptionParts: {};
 
 // @public
-export const pickerMenuOptionStyleModules: StyleModules;
+export const pickerMenuOptionStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1273,7 +1272,7 @@ export const PickerMenuParts: {
 };
 
 // @public
-export const pickerMenuStyleModules: StyleModules;
+export const pickerMenuStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1292,7 +1291,7 @@ export const PickerParts: {
 };
 
 // @public
-export const pickerStyleModules: StyleModules;
+export const pickerStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1335,7 +1334,7 @@ export const ProgressRingParts: {
 };
 
 // @public
-export const progressRingStyleModules: StyleModules;
+export const progressRingStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1346,7 +1345,7 @@ export const progressRingTemplate: (ds: DesignSystem) => ElementViewTemplate<FAS
 export const progressRingTemplateStyles: ElementStyles;
 
 // @public
-export const progressStyleModules: StyleModules;
+export const progressStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1385,7 +1384,7 @@ export const RadioGroupParts: {
 };
 
 // @public
-export const radioGroupStyleModules: StyleModules;
+export const radioGroupStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1410,7 +1409,7 @@ export const RadioStatics: {
 export type RadioStatics = ValuesOf<typeof RadioStatics>;
 
 // @public
-export const radioStyleModules: StyleModules;
+export const radioStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1438,7 +1437,7 @@ export const SearchParts: {
 };
 
 // @public
-export const searchStyleModules: StyleModules;
+export const searchStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1477,7 +1476,7 @@ export const SelectStatics: {
 export type SelectStatics = ValuesOf<typeof SelectStatics>;
 
 // @public
-export const selectStyleModules: StyleModules;
+export const selectStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1503,7 +1502,7 @@ export const SkeletonConditions: {
 export const SkeletonParts: {};
 
 // @public
-export const skeletonStyleModules: StyleModules;
+export const skeletonStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1545,7 +1544,7 @@ export const SliderLabelParts: {
 };
 
 // @public
-export const sliderLabelStyleModules: StyleModules;
+export const sliderLabelStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1565,7 +1564,7 @@ export const SliderParts: {
 };
 
 // @public
-export const sliderStyleModules: StyleModules;
+export const sliderStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1597,7 +1596,7 @@ export const SwitchParts: {
 };
 
 // @public
-export const switchStyleModules: StyleModules;
+export const switchStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1629,7 +1628,7 @@ export const TabPanelConditions: {};
 export const TabPanelParts: {};
 
 // @public
-export const tabPanelStyleModules: StyleModules;
+export const tabPanelStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1661,7 +1660,7 @@ export const TabsParts: {
 };
 
 // @public
-export const tabsStyleModules: StyleModules;
+export const tabsStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1672,7 +1671,7 @@ export const tabsTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTTabs>;
 export const tabsTemplateStyles: ElementStyles;
 
 // @public
-export const tabStyleModules: StyleModules;
+export const tabStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1698,7 +1697,7 @@ export const TextAreaParts: {
 };
 
 // @public
-export const textAreaStyleModules: StyleModules;
+export const textAreaStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1725,7 +1724,7 @@ export const TextFieldParts: {
 };
 
 // @public
-export const textFieldStyleModules: StyleModules;
+export const textFieldStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1753,7 +1752,7 @@ export const ToolbarParts: {
 };
 
 // @public
-export const toolbarStyleModules: StyleModules;
+export const toolbarStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1779,7 +1778,7 @@ export const TooltipConditions: {
 export const TooltipParts: {};
 
 // @public
-export const tooltipStyleModules: StyleModules;
+export const tooltipStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1817,7 +1816,7 @@ export const TreeItemStatics: {
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 
 // @public
-export const treeItemStyleModules: StyleModules;
+export const treeItemStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1840,7 +1839,7 @@ export const TreeViewConditions: {};
 export const TreeViewParts: {};
 
 // @public
-export const treeViewStyleModules: StyleModules;
+export const treeViewStyleModules: StyleRules;
 
 // Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //

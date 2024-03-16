@@ -1,45 +1,37 @@
 import {
-    StyleModules,
-    Styles,
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlDensityStyles,
     controlShapeStyles,
+    labelTextStyles,
     plainTextStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { DataGridCellAnatomy } from "./data-grid-cell.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.compose(
-            [
-                controlShapeStyles,
-                controlDensityStyles,
-                plainTextStyles,
-            ],
-        )
-    ],
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            controlShapeStyles,
+            controlDensityStyles,
+            plainTextStyles,
+        ],
+    },
+    {
+        target : {
             hostCondition: DataGridCellAnatomy.conditions.cellTypeColumnHeader,
         },
-        Styles.fromProperties({
-            fontWeight: "600",
-        }),
-    ],
-    [
-        {
+        styles: labelTextStyles,
+    },
+    {
+        target : {
             hostCondition: DataGridCellAnatomy.conditions.cellTypeRowHeader,
         },
-        Styles.fromProperties({
-            fontWeight: "600",
-        }),
-    ],
+        styles: labelTextStyles,
+    },
 ];

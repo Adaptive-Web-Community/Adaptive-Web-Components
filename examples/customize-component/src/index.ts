@@ -55,33 +55,33 @@ const myCheckboxDefinition = composeCheckbox(
         },
         // Custom modular styles.
         styleModules: [
-            [
-                {
+            {
+                target: {
                     part: CheckboxAnatomy.parts.control,
                 },
-                accentOutlineReadableControlStyles
-            ],
-            [
-                {
+                styles: accentOutlineReadableControlStyles,
+            },
+            {
+                target: {
                     hostCondition: CheckboxAnatomy.conditions.checked,
                     part: CheckboxAnatomy.parts.control,
                 },
-                accentFillReadableControlStyles
-            ],
-            [
-                {
+                styles: accentFillReadableControlStyles,
+            },
+            {
+                target: {
                     part: CheckboxAnatomy.parts.label,
                 },
-                Styles.fromProperties({
+                properties: {
                     fontFamily: "Times",
                     fontSize: "20px",
-                })
-            ],
+                },
+            },
         ],
     }
 );
 
-AdaptiveDesignSystem.defineComponents({
+myDS.defineComponents({
     myCheckboxDefinition,
 });
 

@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
     plainTextStyles,
@@ -9,47 +9,45 @@ import {
 import { SwitchAnatomy } from "./switch.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.fromProperties({
+export const styleModules: StyleRules = [
+    {
+        properties: {
             gap: densityControl.horizontalGap,
-        }),
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             part: SwitchAnatomy.parts.label,
         },
-        plainTextStyles,
-    ],
-    [
-        {
+        styles: plainTextStyles,
+    },
+    {
+        target : {
             part: SwitchAnatomy.parts.switch,
         },
-        Styles.compose([
+        styles: [
             selectableUnselectedStyles,
             roundShapeStyles,
-        ]),
-    ],
-    [
-        {
+        ],
+    },
+    {
+        target : {
             hostCondition: SwitchAnatomy.conditions.checked,
             part: SwitchAnatomy.parts.switch,
         },
-        Styles.compose([
+        styles: [
             selectableSelectedStyles,
             roundShapeStyles,
-        ]),
-    ],
-    [
-        {
+        ],
+    },
+    {
+        target : {
             part: SwitchAnatomy.parts.thumb,
         },
-        roundShapeStyles,
-    ]
+        styles: roundShapeStyles,
+    },
 ];

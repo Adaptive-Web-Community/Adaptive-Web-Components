@@ -1,6 +1,5 @@
 import {
-    StyleModules,
-    Styles
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
     controlDensityStyles,
@@ -8,19 +7,15 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
-        },
-        Styles.compose(
-            [
-                plainTextStyles,
-                controlDensityStyles,
-            ],
-        )
-    ],
+export const styleModules: StyleRules = [
+    {
+        styles: [
+            plainTextStyles,
+            controlDensityStyles,
+        ],
+    },
 ];

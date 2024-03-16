@@ -1,4 +1,4 @@
-import { StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     densityControl,
     inputStyles,
@@ -8,33 +8,27 @@ import {
 import { TextAreaAnatomy } from "./text-area.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        styles: typeRampBaseStyles,
+        properties: {
+            gap: densityControl.verticalGap,
         },
-        Styles.compose(
-            [
-                typeRampBaseStyles,
-            ],
-            {
-                gap: densityControl.verticalGap,
-            }
-        ),
-    ],
-    [
-        {
-            part: TextAreaAnatomy.parts.label
+    },
+    {
+        target : {
+            part: TextAreaAnatomy.parts.label,
         },
-        labelTextStyles
-    ],
-    [
-        {
-            part: TextAreaAnatomy.parts.control
+        styles: labelTextStyles,
+    },
+    {
+        target : {
+            part: TextAreaAnatomy.parts.control,
         },
-        inputStyles
-    ],
+        styles: inputStyles,
+    },
 ];

@@ -1,30 +1,31 @@
-import { Color, StyleModules, Styles } from "@adaptive-web/adaptive-ui";
+import { Color, StyleRules } from "@adaptive-web/adaptive-ui";
 import { layerFillFixedPlus1, layerShapeStyles, shadowDialogStyles } from "@adaptive-web/adaptive-ui/reference";
 import { DialogAnatomy } from "./dialog.template.js";
 
 /**
- * Visual styles composed by modules.
+ * Visual styles composed by style rules.
  * 
  * @public
  */
-export const styleModules: StyleModules = [
-    [
-        {
+export const styleModules: StyleRules = [
+    {
+        target : {
             part: DialogAnatomy.parts.control,
         },
-        Styles.compose([
+        styles: [
             layerShapeStyles,
             shadowDialogStyles,
-        ], {
+        ],
+        properties: {
             backgroundFill: layerFillFixedPlus1
-        }),
-    ],
-    [
-        {
+        },
+    },
+    {
+        target : {
             part: DialogAnatomy.parts.overlay,
         },
-        Styles.fromProperties({
+        properties: {
             backgroundFill: Color.fromRgb(0, 0, 0, 0.3),
-        })
-    ]
+        },
+    },
 ];
