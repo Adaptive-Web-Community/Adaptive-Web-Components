@@ -24,7 +24,7 @@ import {
 } from "../token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { accentPalette, criticalPalette, disabledPalette, highlightPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
+import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
 
 /**
  * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
@@ -89,6 +89,19 @@ export function createTokenColorRecipeSuccess<T>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     return createTokenColorRecipeWithPalette(recipeToken, successPalette);
+}
+
+/**
+ * Creates a DesignToken that can be used for the _info_ palette configuration of a shared color recipe.
+ *
+ * @param recipeToken - The color recipe token.
+ *
+ * @public
+ */
+export function createTokenColorRecipeInfo<T>(
+    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
+): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
+    return createTokenColorRecipeWithPalette(recipeToken, infoPalette);
 }
 
 /**
@@ -1285,6 +1298,68 @@ export const successStrokeStrongRecipe = createTokenColorRecipeSuccess(strokeStr
 
 /** @public */
 export const successStrokeStrong = createTokenColorSet(successStrokeStrongRecipe);
+
+// Info color recipes
+
+/** @public */
+export const infoFillStealthRecipe = createTokenColorRecipeInfo(fillStealthRecipe);
+
+/** @public */
+export const infoFillStealth = createTokenColorSet(infoFillStealthRecipe);
+
+/** @public */
+export const infoFillSubtleRecipe = createTokenColorRecipeInfo(fillSubtleRecipe);
+
+/** @public */
+export const infoFillSubtle = createTokenColorSet(infoFillSubtleRecipe);
+
+/** @public */
+export const infoFillDiscernibleRecipe = createTokenColorRecipeInfo(fillDiscernibleRecipe);
+
+/** @public */
+export const infoFillDiscernible = createTokenColorSet(infoFillDiscernibleRecipe);
+
+/** @public */
+export const infoFillReadableRecipe = createTokenColorRecipeInfo(fillReadableRecipe);
+
+/** @public */
+export const infoFillReadable = createTokenColorSet(infoFillReadableRecipe);
+
+/** @public */
+export const infoStrokeSafetyRecipe = createTokenColorRecipeInfo(strokeSafetyRecipe);
+
+/** @public */
+export const infoStrokeSafety = createTokenColorSet(infoStrokeSafetyRecipe);
+
+/** @public */
+export const infoStrokeStealthRecipe = createTokenColorRecipeInfo(strokeStealthRecipe);
+
+/** @public */
+export const infoStrokeStealth = createTokenColorSet(infoStrokeStealthRecipe);
+
+/** @public */
+export const infoStrokeSubtleRecipe = createTokenColorRecipeInfo(strokeSubtleRecipe);
+
+/** @public */
+export const infoStrokeSubtle = createTokenColorSet(infoStrokeSubtleRecipe);
+
+/** @public */
+export const infoStrokeDiscernibleRecipe = createTokenColorRecipeInfo(strokeDiscernibleRecipe);
+
+/** @public */
+export const infoStrokeDiscernible = createTokenColorSet(infoStrokeDiscernibleRecipe);
+
+/** @public */
+export const infoStrokeReadableRecipe = createTokenColorRecipeInfo(strokeReadableRecipe);
+
+/** @public */
+export const infoStrokeReadable = createTokenColorSet(infoStrokeReadableRecipe);
+
+/** @public */
+export const infoStrokeStrongRecipe = createTokenColorRecipeInfo(strokeStrongRecipe);
+
+/** @public */
+export const infoStrokeStrong = createTokenColorSet(infoStrokeStrongRecipe);
 
 // Neutral Fill Stealth
 
