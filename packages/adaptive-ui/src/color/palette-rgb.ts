@@ -1,5 +1,5 @@
 import { clampRgb, type Hsl, interpolate, modeHsl, modeLab, modeRgb, type Rgb, useMode } from "culori/fn";
-import { BasePalette } from "./palette.js";
+import { BasePalette } from "./palette-base.js";
 import { Swatch } from "./swatch.js";
 import { contrast } from "./utilities/relative-luminance.js";
 import { _black, _white } from "./utilities/color-constants.js";
