@@ -22,6 +22,10 @@ export const templateStyles: ElementStyles = css`
         padding: 0;
     }
 
+    .content-TEST {
+        display: contents;
+    }
+
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;

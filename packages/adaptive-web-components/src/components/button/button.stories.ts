@@ -14,6 +14,7 @@ export const storyTemplate = html<StoryArgs<FASTButton>>`
         formmethod="${(x) => x.formmethod}"
         ?formnovalidate="${(x) => x.formnovalidate}"
         formtarget="${(x) => x.formtarget}"
+        icon-only="${(x) => x.iconOnly}"
         name="${(x) => x.name}"
         type="${(x) => x.type}"
         value="${(x) => x.value}"
@@ -64,6 +65,7 @@ export default {
         formmethod: { control: "text" },
         formnovalidate: { control: "boolean" },
         formtarget: { control: "text" },
+        iconOnly: { control: "boolean" },
         name: { control: "text" },
         type: { control: "select", options: Object.values(ButtonType) },
         value: { control: "text" },

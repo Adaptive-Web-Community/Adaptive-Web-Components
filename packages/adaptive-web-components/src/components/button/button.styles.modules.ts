@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { actionStyles } from "@adaptive-web/adaptive-ui/reference";
+import { actionStyles, controlSquareDensityStyles } from "@adaptive-web/adaptive-ui/reference";
 import { ButtonAnatomy } from "./button.template.js";
 
 /**
@@ -13,5 +13,12 @@ export const styleModules: StyleRules = [
             part: ButtonAnatomy.parts.control,
         },
         styles: actionStyles,
+    },
+    {
+        target: {
+            part: ButtonAnatomy.parts.control,
+            partCondition: ButtonAnatomy.conditions.iconOnly,
+        },
+        styles: controlSquareDensityStyles,
     },
 ];
