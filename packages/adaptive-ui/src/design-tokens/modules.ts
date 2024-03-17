@@ -1,3 +1,4 @@
+import { MediaQuery } from "../modules/css.js";
 import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles, StyleValue } from "../modules/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
 import {
@@ -101,6 +102,7 @@ import {
     typeRampPlus6FontVariations,
     typeRampPlus6LineHeight,
 } from "./type.js";
+import { forcedColorsButtonStyles, forcedColorsHighlightStyles, forcedColorsTextStyles } from "./modules.forced-colors.js";
 
 /**
  * Style module for the shape of a control.
@@ -1330,6 +1332,9 @@ export const selectableSelectedStyles: Styles = Styles.compose(
     ],
     undefined,
     "styles.selectable-control-selected",
+).withMediaQuery(
+    MediaQuery.ForcedColors,
+    forcedColorsHighlightStyles,
 );
 
 /**
@@ -1343,6 +1348,9 @@ export const selectableUnselectedStyles: Styles = Styles.compose(
     ],
     undefined,
     "styles.selectable-control-unselected",
+).withMediaQuery(
+    MediaQuery.ForcedColors,
+    forcedColorsButtonStyles,
 );
 
 /**
@@ -1369,6 +1377,9 @@ export const plainTextStyles: Styles = Styles.compose(
     ],
     undefined,
     "styles.text-plain",
+).withMediaQuery(
+    MediaQuery.ForcedColors,
+    forcedColorsTextStyles,
 );
 
 /**

@@ -1,6 +1,15 @@
 import { StyleProperty } from "./types.js";
 
 /**
+ * Convenience media queries for {@link Styles} variations.
+ */
+export const MediaQuery = {
+    ForcedColors: "(forced-colors)",
+    ColorsDark: "(prefers-color-scheme: dark)",
+    ColorsLight: "(prefers-color-scheme: light)",
+} as const;
+
+/**
  * Converts a {@link StyleProperty} to a css property name.
  *
  * @param usage - The StyleProperty key.
