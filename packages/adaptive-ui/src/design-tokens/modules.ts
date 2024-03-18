@@ -5,6 +5,7 @@ import {
     accentFillReadable,
     accentFillStealth,
     accentFillSubtle,
+    accentFillSubtleInverse,
     accentStrokeDiscernible,
     accentStrokeReadable,
     accentStrokeReadableRecipe,
@@ -15,6 +16,7 @@ import {
     criticalFillReadable,
     criticalFillStealth,
     criticalFillSubtle,
+    criticalFillSubtleInverse,
     criticalStrokeDiscernible,
     criticalStrokeReadable,
     criticalStrokeReadableRecipe,
@@ -25,6 +27,7 @@ import {
     highlightFillReadable,
     highlightFillStealth,
     highlightFillSubtle,
+    highlightFillSubtleInverse,
     highlightStrokeDiscernible,
     highlightStrokeReadable,
     highlightStrokeReadableRecipe,
@@ -33,6 +36,7 @@ import {
     infoFillReadable,
     infoFillStealth,
     infoFillSubtle,
+    infoFillSubtleInverse,
     infoStrokeDiscernible,
     infoStrokeReadable,
     infoStrokeReadableRecipe,
@@ -41,6 +45,7 @@ import {
     neutralFillReadable,
     neutralFillStealth,
     neutralFillSubtle,
+    neutralFillSubtleInverse,
     neutralStrokeDiscernible,
     neutralStrokeReadable,
     neutralStrokeSafety,
@@ -51,6 +56,7 @@ import {
     successFillReadable,
     successFillStealth,
     successFillSubtle,
+    successFillSubtleInverse,
     successStrokeDiscernible,
     successStrokeReadable,
     successStrokeReadableRecipe,
@@ -59,6 +65,7 @@ import {
     warningFillReadable,
     warningFillStealth,
     warningFillSubtle,
+    warningFillSubtleInverse,
     warningStrokeDiscernible,
     warningStrokeReadable,
     warningStrokeReadableRecipe,
@@ -298,6 +305,24 @@ export const accentFillSubtleControlStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Convenience style module for an accent-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - accent subtle inverse background
+ * - accent readable foreground (a11y)
+ * - accent safety border
+ *
+ * @public
+ */
+export const accentFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(accentFillSubtleInverse, accentStrokeReadableRecipe),
+        ...densityBorderStyles(accentStrokeSafety),
+    },
+    "color.accent-fill-subtle-inverse-control",
+);
+
+/**
  * Convenience style module for an accent-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
@@ -403,6 +428,24 @@ export const highlightFillSubtleControlStyles: Styles = Styles.fromProperties(
         ...densityBorderStyles(highlightStrokeSafety),
     },
     "color.highlight-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an highlight-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - highlight subtle inverse background
+ * - highlight readable foreground (a11y)
+ * - highlight safety border
+ *
+ * @public
+ */
+export const highlightFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(highlightFillSubtleInverse, highlightStrokeReadableRecipe),
+        ...densityBorderStyles(highlightStrokeSafety),
+    },
+    "color.highlight-fill-subtle-inverse-control",
 );
 
 /**
@@ -514,6 +557,24 @@ export const infoFillSubtleControlStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Convenience style module for an info-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - info subtle inverse background
+ * - info readable foreground (a11y)
+ * - info safety border
+ *
+ * @public
+ */
+export const infoFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(infoFillSubtleInverse, infoStrokeReadableRecipe),
+        ...densityBorderStyles(infoStrokeSafety),
+    },
+    "color.info-fill-subtle-inverse-control",
+);
+
+/**
  * Convenience style module for an info-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
@@ -619,6 +680,24 @@ export const successFillSubtleControlStyles: Styles = Styles.fromProperties(
         ...densityBorderStyles(successStrokeSafety),
     },
     "color.success-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for an success-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - success subtle inverse background
+ * - success readable foreground (a11y)
+ * - success safety border
+ *
+ * @public
+ */
+export const successFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(successFillSubtleInverse, successStrokeReadableRecipe),
+        ...densityBorderStyles(successStrokeSafety),
+    },
+    "color.success-fill-subtle-inverse-control",
 );
 
 /**
@@ -728,6 +807,25 @@ export const warningFillSubtleControlStyles: Styles = Styles.fromProperties(
     },
     "color.warning-fill-subtle-control",
 );
+
+/**
+ * Convenience style module for an warning-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - warning subtle inverse background
+ * - warning readable foreground (a11y)
+ * - warning safety border
+ *
+ * @public
+ */
+export const warningFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(warningFillSubtleInverse, warningStrokeReadableRecipe),
+        ...densityBorderStyles(warningStrokeSafety),
+    },
+    "color.warning-fill-subtle-inverse-control",
+);
+
 /**
  * Convenience style module for an warning-filled discernible control (interactive).
  *
@@ -837,6 +935,24 @@ export const criticalFillSubtleControlStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Convenience style module for an critical-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - critical subtle inverse background
+ * - critical readable foreground (a11y)
+ * - critical safety border
+ *
+ * @public
+ */
+export const criticalFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(criticalFillSubtleInverse, criticalStrokeReadableRecipe),
+        ...densityBorderStyles(criticalStrokeSafety),
+    },
+    "color.critical-fill-subtle-inverse-control",
+);
+
+/**
  * Convenience style module for an critical-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
@@ -942,6 +1058,24 @@ export const neutralFillSubtleControlStyles: Styles = Styles.fromProperties(
         ...densityBorderStyles(neutralStrokeSafety),
     },
     "color.neutral-fill-subtle-control",
+);
+
+/**
+ * Convenience style module for a neutral-filled subtle inverse control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - neutral subtle inverse background
+ * - neutral strong foreground (a11y)
+ * - neutral safety border
+ *
+ * @public
+ */
+export const neutralFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(neutralFillSubtleInverse, neutralStrokeStrongRecipe),
+        ...densityBorderStyles(neutralStrokeSafety),
+    },
+    "color.neutral-fill-subtle-inverse-control",
 );
 
 /**
@@ -1277,30 +1411,27 @@ export const actionStyles: Styles = Styles.compose(
     "styles.action-control",
 );
 
-const inputCommonStyles = [
-    controlShapeStyles,
-    typeRampBaseStyles,
-    Styles.compose([
-        neutralOutlineDiscernibleControlStyles
-    ], {
-        backgroundFill: {
-            name: "color.input-common-background",
-            rest: fillColor,
-            hover: fillColor,
-            active: fillColor,
-            focus: fillColor,
-            disabled: neutralFillSubtle.disabled,
-        }
-    })
-    ,
-];
+/**
+ * @public
+ */
+export const inputBaseStyles = Styles.compose(
+    [
+        controlShapeStyles,
+        typeRampBaseStyles,
+        neutralFillSubtleInverseControlStyles,
+    ],
+    {
+        ...densityBorderStyles(neutralStrokeDiscernible),
+    },
+    "styles.input-base",
+);
 
 /**
  * @public
  */
 export const inputStyles: Styles = Styles.compose(
     [
-        ...inputCommonStyles,
+        inputBaseStyles,
         controlDensityStyles,
     ],
     undefined,
@@ -1312,7 +1443,7 @@ export const inputStyles: Styles = Styles.compose(
  */
 export const inputAutofillStyles: Styles = Styles.compose(
     [
-        ...inputCommonStyles,
+        inputBaseStyles,
         autofillOuterDensityStyles,
     ],
     undefined,

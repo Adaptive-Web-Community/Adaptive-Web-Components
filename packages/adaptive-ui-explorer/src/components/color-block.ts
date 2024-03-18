@@ -4,6 +4,7 @@ import {
     accentFillReadableControlStyles,
     accentFillStealthControlStyles,
     accentFillSubtleControlStyles,
+    accentFillSubtleInverseControlStyles,
     accentForegroundReadableControlStyles,
     accentOutlineDiscernibleControlStyles,
     fillColor,
@@ -11,6 +12,7 @@ import {
     highlightFillReadableControlStyles,
     highlightFillStealthControlStyles,
     highlightFillSubtleControlStyles,
+    highlightFillSubtleInverseControlStyles,
     highlightForegroundReadableControlStyles,
     highlightOutlineDiscernibleControlStyles,
     neutralDividerDiscernibleElementStyles,
@@ -19,10 +21,11 @@ import {
     neutralFillReadableControlStyles,
     neutralFillStealthControlStyles,
     neutralFillSubtleControlStyles,
+    neutralFillSubtleInverseControlStyles,
     neutralForegroundReadableElementStyles,
     neutralForegroundStrongElementStyles,
     neutralOutlineDiscernibleControlStyles,
-    neutralStrokeReadableRest
+    neutralStrokeReadable,
 } from '@adaptive-web/adaptive-ui/reference';
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
@@ -58,6 +61,10 @@ const backplateComponents = html<ColorBlock>`
         Accent subtle
     </app-style-example>
 
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillSubtleInverseControlStyles}">
+        Accent subtle inverse
+    </app-style-example>
+
     <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillReadableControlStyles}">
         Neutral readable
     </app-style-example>
@@ -70,6 +77,10 @@ const backplateComponents = html<ColorBlock>`
         Neutral subtle
     </app-style-example>
 
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillSubtleInverseControlStyles}">
+        Neutral subtle inverse
+    </app-style-example>
+
     <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillReadableControlStyles}">
         Highlight readable
     </app-style-example>
@@ -80,6 +91,10 @@ const backplateComponents = html<ColorBlock>`
 
     <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillSubtleControlStyles}">
         Highlight subtle
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillSubtleInverseControlStyles}">
+        Highlight subtle inverse
     </app-style-example>
 `;
 
@@ -166,7 +181,7 @@ const styles = css`
         padding: 36px;
         gap: 24px;
         background-color: ${fillColor};
-        color: ${neutralStrokeReadableRest};
+        color: ${neutralStrokeReadable.rest};
     }
 
     .title {
