@@ -287,6 +287,23 @@ export const fillSubtleRecipe = createTokenColorRecipeForPalette(
         )
 );
 
+/** @public */
+export const fillSubtleInverseRecipe = createTokenColorRecipeForPalette(
+    `${fillSubtleName}-inverse`,
+    StyleProperty.backgroundFill,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        deltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(fillSubtleRestDelta) * -1,
+            resolve(fillSubtleHoverDelta) * -1,
+            resolve(fillSubtleActiveDelta) * -1,
+            resolve(fillSubtleFocusDelta) * -1,
+            resolve(fillSubtleDisabledDelta) * -1,
+            resolve(disabledPalette),
+        )
+);
+
 const fillDiscernibleName = "fill-discernible";
 
 /** @public */
@@ -615,6 +632,14 @@ export const accentFillSubtleActive = accentFillSubtle.active;
 /** @public @deprecated Use baseColorSet.state format instead */
 export const accentFillSubtleFocus = accentFillSubtle.focus;
 
+// Accent Fill Subtle Inverse
+
+/** @public */
+export const accentFillSubtleInverseRecipe = createTokenColorRecipeAccent(fillSubtleInverseRecipe);
+
+/** @public */
+export const accentFillSubtleInverse = createTokenColorSet(accentFillSubtleInverseRecipe);
+
 // Accent Fill Discernible
 
 /** @public */
@@ -814,6 +839,14 @@ export const highlightFillSubtleActive = highlightFillSubtle.active;
 
 /** @public @deprecated Use baseColorSet.state format instead */
 export const highlightFillSubtleFocus = highlightFillSubtle.focus;
+
+// Highlight Fill Subtle Inverse
+
+/** @public */
+export const highlightFillSubtleInverseRecipe = createTokenColorRecipeHighlight(fillSubtleInverseRecipe);
+
+/** @public */
+export const highlightFillSubtleInverse = createTokenColorSet(highlightFillSubtleInverseRecipe);
 
 // Highlight Fill Discernible
 
@@ -1015,6 +1048,14 @@ export const criticalFillSubtleActive = criticalFillSubtle.active;
 /** @public @deprecated Use baseColorSet.state format instead */
 export const criticalFillSubtleFocus = criticalFillSubtle.focus;
 
+// Critical Fill Subtle Inverse
+
+/** @public */
+export const criticalFillSubtleInverseRecipe = createTokenColorRecipeCritical(fillSubtleInverseRecipe);
+
+/** @public */
+export const criticalFillSubtleInverse = createTokenColorSet(criticalFillSubtleInverseRecipe);
+
 // Critical Fill Discernible
 
 /** @public */
@@ -1190,6 +1231,12 @@ export const warningFillSubtleRecipe = createTokenColorRecipeWarning(fillSubtleR
 export const warningFillSubtle = createTokenColorSet(warningFillSubtleRecipe);
 
 /** @public */
+export const warningFillSubtleInverseRecipe = createTokenColorRecipeWarning(fillSubtleInverseRecipe);
+
+/** @public */
+export const warningFillSubtleInverse = createTokenColorSet(warningFillSubtleInverseRecipe);
+
+/** @public */
 export const warningFillDiscernibleRecipe = createTokenColorRecipeWarning(fillDiscernibleRecipe);
 
 /** @public */
@@ -1252,6 +1299,12 @@ export const successFillSubtleRecipe = createTokenColorRecipeSuccess(fillSubtleR
 export const successFillSubtle = createTokenColorSet(successFillSubtleRecipe);
 
 /** @public */
+export const successFillSubtleInverseRecipe = createTokenColorRecipeSuccess(fillSubtleInverseRecipe);
+
+/** @public */
+export const successFillSubtleInverse = createTokenColorSet(successFillSubtleInverseRecipe);
+
+/** @public */
 export const successFillDiscernibleRecipe = createTokenColorRecipeSuccess(fillDiscernibleRecipe);
 
 /** @public */
@@ -1312,6 +1365,12 @@ export const infoFillSubtleRecipe = createTokenColorRecipeInfo(fillSubtleRecipe)
 
 /** @public */
 export const infoFillSubtle = createTokenColorSet(infoFillSubtleRecipe);
+
+/** @public */
+export const infoFillSubtleInverseRecipe = createTokenColorRecipeInfo(fillSubtleInverseRecipe);
+
+/** @public */
+export const infoFillSubtleInverse = createTokenColorSet(infoFillSubtleInverseRecipe);
 
 /** @public */
 export const infoFillDiscernibleRecipe = createTokenColorRecipeInfo(fillDiscernibleRecipe);
@@ -1400,6 +1459,14 @@ export const neutralFillSubtleActive = neutralFillSubtle.active;
 
 /** @public @deprecated Use baseColorSet.state format instead */
 export const neutralFillSubtleFocus = neutralFillSubtle.focus;
+
+// Neutral Fill Subtle Inverse
+
+/** @public */
+export const neutralFillSubtleInverseRecipe = createTokenColorRecipeNeutral(fillSubtleInverseRecipe);
+
+/** @public */
+export const neutralFillSubtleInverse = createTokenColorSet(neutralFillSubtleInverseRecipe);
 
 // Neutral Fill Discernible (previously "Strong")
 
