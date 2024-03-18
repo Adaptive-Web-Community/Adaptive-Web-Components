@@ -11,6 +11,7 @@ import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
+import { TypedCSSDesignToken as TypedCSSDesignToken_2 } from '../adaptive-design-tokens.js';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -197,6 +198,9 @@ export function createTokenNumber(name: string, intendedFor?: StyleProperty | St
 
 // @public
 export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
+
+// @public
+export const createTokenShadow: (name: string) => TypedCSSDesignToken_2<ShadowValue>;
 
 // @public
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
@@ -443,6 +447,26 @@ export interface RelativeLuminance {
 
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
+
+// @public
+export class Shadow implements CSSDirective {
+    constructor(color: Swatch, xOffset: number, yOffset: number, blurRadius?: number | undefined, spread?: number | undefined);
+    // (undocumented)
+    blurRadius?: number | undefined;
+    // (undocumented)
+    color: Swatch;
+    // (undocumented)
+    createCSS(): string;
+    // (undocumented)
+    spread?: number | undefined;
+    // (undocumented)
+    xOffset: number;
+    // (undocumented)
+    yOffset: number;
+}
+
+// @public
+export type ShadowValue = Shadow | DesignTokenMultiValue<Shadow> | string;
 
 // @public
 export type StateSelector = "hover" | "active" | FocusSelector | "disabled";

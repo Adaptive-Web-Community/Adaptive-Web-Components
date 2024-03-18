@@ -1,9 +1,9 @@
-import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
 import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
 import { focusIndicatorNodeName, PluginNode, State, StatesState } from "../core/node.js";
-import { variantBooleanHelper } from "./utility.js";
+import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
 const rgb = useMode(modeRgb);
 // For luminance
@@ -420,6 +420,13 @@ export class FigmaPluginNode extends PluginNode {
                         isContainerNode, // Applies to children (for style module support)
                         isTextNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this._node));
+                case StyleProperty.shadow:
+                    return [
+                        isContainerNode,
+                        isShapeNode,
+                        isLineNode,
+                        isTextNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 default:
                     return false;
             }
@@ -551,7 +558,7 @@ export class FigmaPluginNode extends PluginNode {
         });
     }
 
-    private paintOne(target: StyleProperty, value: string, inherited: boolean): void {
+    private paintOne(target: StyleProperty, value: any, inherited: boolean): void {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
             target === StyleProperty.fontSize ||
@@ -655,6 +662,26 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.gap:
                     if (isContainerNode(this._node)) {
                         (this._node as BaseFrameMixin).itemSpacing = this.safeNumber(value); // Removes unit, so assumes px
+                    }
+                    break;
+                case StyleProperty.shadow:
+                    {
+                        const shadows: Shadow[] = Array.isArray(value) ? value : [value];
+                        const figmaShadows = shadows.map(shadow => {
+                            return {
+                                type: 'DROP_SHADOW',
+                                color: colorToRgba(shadow.color.color as Rgb),
+                                offset: {
+                                    x: shadow.xOffset,
+                                    y: shadow.yOffset
+                                },
+                                radius: shadow.blurRadius,
+                                spread: shadow.spread,
+                                visible: true,
+                                blendMode: "NORMAL",
+                            } as DropShadowEffect
+                        });
+                        (this._node as BlendMixin).effects = figmaShadows;
                     }
                     break;
                 default:
