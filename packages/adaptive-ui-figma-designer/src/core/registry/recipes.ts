@@ -35,6 +35,10 @@ import {
     densityControl,
     densityItemContainer,
     densityLayer,
+    elevationCardRest,
+    elevationDialog,
+    elevationFlyout,
+    elevationTooltip,
     fillDiscernibleRestDelta,
     fillReadableRestDelta,
     fillStealthRestDelta,
@@ -317,6 +321,13 @@ const textTokens: DesignTokenStore = [
     typeRampPlus6LineHeight,
 ];
 
+const effectsTokens: DesignTokenStore = [
+    elevationCardRest,
+    elevationTooltip,
+    elevationFlyout,
+    elevationDialog,
+];
+
 export function nameToTitle(name: string): string {
     const base = name.replace(/-/g, ' ').replace(/density_/, '');
     return base.charAt(0).toUpperCase() + base.substring(1);
@@ -358,6 +369,7 @@ export const registerTokens = (registry: DesignTokenRegistry) => {
     registerStore(strokeWidthTokens, "Stroke width", registry);
     registerStore(cornerRadiusTokens, "Corner radius", registry);
     registerStore(textTokens, "Text", registry);
+    registerStore(effectsTokens, "Effects", registry);
 };
 
 export const registerAppliableTokens = (registry: DesignTokenRegistry) => {

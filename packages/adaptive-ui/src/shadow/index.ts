@@ -30,7 +30,7 @@ export class Shadow implements CSSDirective {
     }
 
     /**
-     * {@inheritdoc CSSDirective.createCSS}
+     * {@inheritdoc @microsoft/fast-element#CSSDirective.createCSS}
      */
     public createCSS(): string {
         const values = [

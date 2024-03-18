@@ -355,6 +355,25 @@ const template = html<App>`
                         </designer-drawer>
                     `
                 )}
+                ${when(
+                    (x) => x.supportsShadow,
+                    html<App>`
+                        <designer-drawer name="Shadow">
+                            <div slot="collapsed-content">
+                                ${(x) => appliedStylesTemplate("Shadow")}
+                                ${(x) => appliedTokensTemplate(x.shadowTokens, null)}
+                            </div>
+                            <div>
+                                ${(x) => availableStylesTemplate("Shadow")}
+                                ${(x) =>
+                                    availableTokensTemplate(
+                                        [StyleProperty.shadow],
+                                        "Shadow",
+                                    )}
+                            </div>
+                        </designer-drawer>
+                    `
+                )}
             </div>
         </adaptive-tab-panel>
         <adaptive-tab-panel id="tokensPanel">
@@ -541,6 +560,9 @@ export class App extends FASTElement {
     public supportsText: boolean;
 
     @observable
+    public supportsShadow: boolean;
+
+    @observable
     public layerTokens: AppliedDesignTokenItem[] | null;
 
     @observable
@@ -563,6 +585,9 @@ export class App extends FASTElement {
 
     @observable
     public textTokens: AppliedDesignTokenItem[] | null;
+
+    @observable
+    public shadowTokens: AppliedDesignTokenItem[] | null;
 
     @observable
     public supportsDesignSystem: boolean;
@@ -594,13 +619,15 @@ export class App extends FASTElement {
         this.supportsDensity = this.controller.supports(StyleProperty.gap);
         this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
         this.supportsText = this.controller.supports(StyleProperty.fontFamily);
+        this.supportsShadow = this.controller.supports(StyleProperty.shadow);
 
         this.supportsStyling =
             this.supportsColor ||
             this.supportsBorderThickness ||
             this.supportsDensity ||
             this.supportsCornerRadius ||
-            this.supportsText;
+            this.supportsText ||
+            this.supportsShadow;
 
         this.supportsDesignSystem = true;
 
@@ -627,6 +654,7 @@ export class App extends FASTElement {
             StyleProperty.fontSize,
             StyleProperty.lineHeight
         ]);
+        this.shadowTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.shadow]);
 
         this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
 
