@@ -1419,9 +1419,10 @@ export const inputBaseStyles = Styles.compose(
         controlShapeStyles,
         typeRampBaseStyles,
         neutralFillSubtleInverseControlStyles,
-        neutralOutlineDiscernibleControlStyles,
     ],
-    undefined,
+    {
+        ...densityBorderStyles(neutralStrokeDiscernible),
+    },
     "styles.input-base",
 );
 
