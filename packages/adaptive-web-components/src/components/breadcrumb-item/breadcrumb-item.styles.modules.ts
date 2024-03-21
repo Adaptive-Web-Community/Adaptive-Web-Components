@@ -30,14 +30,14 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: BreadcrumbItemAnatomy.conditions.noHref,
+            contextCondition: BreadcrumbItemAnatomy.conditions.noHref,
             part: BreadcrumbItemAnatomy.parts.control,
         },
         styles: neutralForegroundStrongElementStyles,
     },
     {
         target : {
-            hostCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
+            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
             part: BreadcrumbItemAnatomy.parts.control,
             partCondition: BreadcrumbItemAnatomy.conditions.current,
         },
@@ -45,7 +45,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
+            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
             part: BreadcrumbItemAnatomy.parts.control,
         },
         styles: accentForegroundReadableControlStyles,

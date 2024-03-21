@@ -32,7 +32,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: CheckboxAnatomy.conditions.checked,
+            contextCondition: CheckboxAnatomy.conditions.checked,
             part: CheckboxAnatomy.parts.control,
         },
         styles: selectableSelectedStyles,

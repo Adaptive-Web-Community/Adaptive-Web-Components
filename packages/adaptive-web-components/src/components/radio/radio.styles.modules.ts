@@ -36,7 +36,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: RadioAnatomy.conditions.checked,
+            contextCondition: RadioAnatomy.conditions.checked,
             part: RadioAnatomy.parts.control,
         },
         styles: [

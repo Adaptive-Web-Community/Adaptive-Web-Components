@@ -49,7 +49,7 @@ export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: MenuItemConditions,
     parts: MenuItemParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

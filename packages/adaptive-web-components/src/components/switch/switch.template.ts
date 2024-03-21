@@ -26,7 +26,7 @@ export const SwitchAnatomy: ComponentAnatomy<typeof SwitchConditions, typeof Swi
     interactivity: Interactivity.disabledAttribute,
     conditions: SwitchConditions,
     parts: SwitchParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

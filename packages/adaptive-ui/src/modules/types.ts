@@ -36,6 +36,11 @@ export type ComponentParts = Record<string, string>;
  */
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     /**
+     * The context element selector. Implementation defaults to `:host` if not provided.
+     */
+    context?: string;
+
+    /**
      * Description of the conditions for when the component is interactive or not.
      */
     interactivity?: InteractivityDefinition;
@@ -63,15 +68,20 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
  */
 export interface StyleModuleTarget {
     /**
-     * The condition to match at the host element level.
+     * The selector for the context element. Implementation defaults to `:host` if not provided.
      */
-    hostCondition?: string;
+    context?: string;
 
     /**
-     * Normally the state applies to the host, or if specified, the part. This option forces the state to the
-     * apply to the host, useful for styling the host state in only a portion of the child elements.
+     * The condition to match on the context element.
      */
-    stateOnHost?: boolean;
+    contextCondition?: string;
+
+    /**
+     * Normally the state applies to the context element, or if specified, the part. This option forces the state to the
+     * apply to the context element, useful for styling the context element state in only a portion of the child elements.
+     */
+    stateOnContext?: boolean;
 
     /**
      * The component part name to apply this style module.
@@ -79,7 +89,7 @@ export interface StyleModuleTarget {
     part?: string;
 
     /**
-     * The condition to match at the part element level.
+     * The condition to match on the part element.
      */
     partCondition?: string;
 
@@ -190,9 +200,9 @@ export interface FocusDefinition<TParts> {
  */
 export const Focus = {
     /**
-     * The simple case of the host element accepting and indicating focus.
+     * The simple case of the context element accepting and indicating focus.
      */
-    hostFocused: () => {
+    contextFocused: () => {
         return {
             focusTarget: {
                 ignoreInteractivity: true,
@@ -201,14 +211,14 @@ export const Focus = {
     },
 
     /**
-     * The host has focus, but a child element is the indicator.
+     * The context element has focus, but a child element is the indicator.
      *
      * @param indicatorPart - The part name of where to indicate focus.
      */
-    hostChildFocused: <TParts>(indicatorPart: keyof TParts & string) => {
+    contextChildFocused: <TParts>(indicatorPart: keyof TParts & string) => {
         return {
             focusTarget: {
-                stateOnHost: true,
+                stateOnContext: true,
                 part: indicatorPart,
                 ignoreInteractivity: true,
             },

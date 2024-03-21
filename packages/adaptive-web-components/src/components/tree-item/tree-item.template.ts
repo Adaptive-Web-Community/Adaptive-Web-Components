@@ -42,7 +42,7 @@ export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: TreeItemConditions,
     parts: TreeItemParts,
-    focus: Focus.hostChildFocused("control"),
+    focus: Focus.contextChildFocused("control"),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

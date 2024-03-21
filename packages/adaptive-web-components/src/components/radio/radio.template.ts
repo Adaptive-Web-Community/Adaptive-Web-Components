@@ -40,7 +40,7 @@ export const RadioAnatomy: ComponentAnatomy<typeof RadioConditions, typeof Radio
     interactivity: Interactivity.disabledAttribute,
     conditions: RadioConditions,
     parts: RadioParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

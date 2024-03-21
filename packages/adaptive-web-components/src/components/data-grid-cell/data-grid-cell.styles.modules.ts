@@ -24,13 +24,13 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: DataGridCellAnatomy.conditions.cellTypeColumnHeader,
+            contextCondition: DataGridCellAnatomy.conditions.cellTypeColumnHeader,
         },
         styles: labelTextStyles,
     },
     {
         target : {
-            hostCondition: DataGridCellAnatomy.conditions.cellTypeRowHeader,
+            contextCondition: DataGridCellAnatomy.conditions.cellTypeRowHeader,
         },
         styles: labelTextStyles,
     },

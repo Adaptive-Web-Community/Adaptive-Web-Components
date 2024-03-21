@@ -18,7 +18,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: ListboxOptionAnatomy.conditions.selected,
+            contextCondition: ListboxOptionAnatomy.conditions.selected,
         },
         styles: selectableSelectedStyles,
     },
