@@ -29,7 +29,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: AnchorAnatomy.conditions.noHref,
+            contextCondition: AnchorAnatomy.conditions.noHref,
             part: AnchorAnatomy.parts.control,
         },
         styles: neutralForegroundStrongElementStyles,

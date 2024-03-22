@@ -30,7 +30,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: SelectAnatomy.conditions.isListbox,
+            contextCondition: SelectAnatomy.conditions.isListbox,
             part: SelectAnatomy.parts.listbox,
         },
         styles: [
@@ -40,7 +40,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: SelectAnatomy.conditions.isDropdown,
+            contextCondition: SelectAnatomy.conditions.isDropdown,
             part: SelectAnatomy.parts.listbox,
         },
         styles: flyoutStyles,

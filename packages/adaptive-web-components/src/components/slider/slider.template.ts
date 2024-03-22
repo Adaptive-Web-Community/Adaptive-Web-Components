@@ -30,7 +30,7 @@ export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof Sli
     interactivity: Interactivity.never,
     conditions: SliderConditions,
     parts: SliderParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 // TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/

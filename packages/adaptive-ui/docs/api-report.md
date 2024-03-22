@@ -101,6 +101,7 @@ export type ColorRecipeParams = {
 // @public
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     conditions: TConditions;
+    context?: string;
     focus?: FocusDefinition<TParts>;
     interactivity?: InteractivityDefinition;
     parts: TParts;
@@ -299,8 +300,8 @@ export const Fill: {
 
 // @public
 export const Focus: {
-    readonly hostFocused: () => FocusDefinition<any>;
-    readonly hostChildFocused: <TParts>(indicatorPart: keyof TParts & string) => FocusDefinition<TParts>;
+    readonly contextFocused: () => FocusDefinition<any>;
+    readonly contextChildFocused: <TParts>(indicatorPart: keyof TParts & string) => FocusDefinition<TParts>;
     readonly partFocused: <TParts_1>(part: keyof TParts_1 & string) => FocusDefinition<TParts_1>;
     readonly partWithin: <TParts_2>(indicatorPart: keyof TParts_2 & string, focusablePart: keyof TParts_2 & string) => FocusDefinition<TParts_2>;
 };
@@ -482,13 +483,14 @@ export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDef
 
 // @public
 export interface StyleModuleTarget {
+    context?: string;
+    contextCondition?: string;
     focusSelector?: FocusSelector;
-    hostCondition?: string;
     // @beta
     ignoreInteractivity?: boolean;
     part?: string;
     partCondition?: string;
-    stateOnHost?: boolean;
+    stateOnContext?: boolean;
 }
 
 // @public

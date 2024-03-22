@@ -42,7 +42,7 @@ export const FlipperAnatomy: ComponentAnatomy<typeof FlipperConditions, typeof F
     interactivity: Interactivity.disabledAttribute,
     conditions: FlipperConditions,
     parts: FlipperParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

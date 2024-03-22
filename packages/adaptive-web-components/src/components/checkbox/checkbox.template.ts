@@ -42,7 +42,7 @@ export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof
     interactivity: Interactivity.disabledAttribute,
     conditions: CheckboxConditions,
     parts: CheckboxParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

@@ -22,7 +22,7 @@ export const PickerListItemAnatomy: ComponentAnatomy<typeof PickerListItemCondit
     interactivity: Interactivity.always,
     conditions: PickerListItemConditions,
     parts: PickerListItemParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

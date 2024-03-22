@@ -13,7 +13,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: PickerMenuOptionAnatomy.conditions.selected,
+            contextCondition: PickerMenuOptionAnatomy.conditions.selected,
         },
         styles: highlightFillReadableControlStyles,
     },

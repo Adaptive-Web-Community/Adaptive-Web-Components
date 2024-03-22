@@ -67,7 +67,7 @@ export const globalStyleRules = (anatomy?: ComponentAnatomy<any, any>): StyleRul
         styles.push(
             {
                 target : {
-                    hostCondition: anatomy.interactivity.disabledSelector,
+                    contextCondition: anatomy.interactivity.disabledSelector,
                     part: "*",
                 },
                 styles: disabledStyles,

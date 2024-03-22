@@ -25,7 +25,7 @@ export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions
     interactivity: Interactivity.never,
     conditions: DataGridCellConditions,
     parts: DataGridCellParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

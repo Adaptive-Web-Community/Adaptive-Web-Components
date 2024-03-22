@@ -43,7 +43,7 @@ export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof Sel
     interactivity: Interactivity.disabledAttribute,
     conditions: SelectConditions,
     parts: SelectParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

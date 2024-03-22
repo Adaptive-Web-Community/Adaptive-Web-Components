@@ -22,7 +22,7 @@ export const ListboxAnatomy: ComponentAnatomy<typeof ListboxConditions, typeof L
     interactivity: Interactivity.disabledAttribute,
     conditions: ListboxConditions,
     parts: ListboxParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

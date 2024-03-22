@@ -63,7 +63,7 @@ const myCheckboxDefinition = composeCheckbox(
             },
             {
                 target: {
-                    hostCondition: CheckboxAnatomy.conditions.checked,
+                    contextCondition: CheckboxAnatomy.conditions.checked,
                     part: CheckboxAnatomy.parts.control,
                 },
                 styles: accentFillReadableControlStyles,

@@ -36,7 +36,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            hostCondition: SwitchAnatomy.conditions.checked,
+            contextCondition: SwitchAnatomy.conditions.checked,
             part: SwitchAnatomy.parts.switch,
         },
         styles: [

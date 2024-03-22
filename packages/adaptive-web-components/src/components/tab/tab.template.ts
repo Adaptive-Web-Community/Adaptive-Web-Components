@@ -22,7 +22,7 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
     interactivity: Interactivity.disabledAttribute,
     conditions: TabConditions,
     parts: TabParts,
-    focus: Focus.hostFocused(),
+    focus: Focus.contextFocused(),
 };
 
 /**

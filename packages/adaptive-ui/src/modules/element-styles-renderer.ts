@@ -185,7 +185,17 @@ export class ElementStylesRenderer {
     public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
         for (const rule of styleRules) {
             const styles = Styles.fromDeclaration(rule);
-            const renderedStyles = new ElementStylesRenderer(styles).render(rule.target || {}, anatomy?.interactivity);
+
+            // Transform the target selector if necessary
+            const target = rule.target || {};
+            if (anatomy?.context && target.context === undefined) {
+                target.context = anatomy.context;
+                if (anatomy.context === target.part) {
+                    target.part = undefined;
+                }
+            }
+
+            const renderedStyles = new ElementStylesRenderer(styles).render(target, anatomy?.interactivity);
             baseStyles.push(renderedStyles);
         }
 
