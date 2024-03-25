@@ -6,10 +6,11 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
+        position: fixed;
+        visibility: hidden;
         height: fit-content;
         width: fit-content;
         white-space: nowrap;
-        visibility: hidden;
     }
 
     :host([visible]) {
