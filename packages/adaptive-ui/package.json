@@ -21,6 +21,9 @@
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
+  "bin": {
+    "adaptive-ui-build-styles": "./bin/adaptive-ui-build-styles.js"
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist",
@@ -39,11 +42,13 @@
     "culori": "^3.2.0"
   },
   "devDependencies": {
+    "@happy-dom/global-registrator": "^14.7.1",
     "@microsoft/api-extractor": "^7.34.4",
     "@types/chai": "^4.3.4",
     "@types/culori": "^2.0.0",
     "@types/mocha": "^10.0.1",
     "chai": "^4.3.7",
+    "glob": "^10.3.10",
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
     "mocha": "^10.2.0",
