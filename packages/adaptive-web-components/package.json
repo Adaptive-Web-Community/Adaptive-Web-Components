@@ -23,6 +23,7 @@
   "types": "dist/dts/index.d.ts",
   "unpkg": "dist/adaptive-web-components.min.js",
   "scripts": {
+    "build:styles": "adaptive-ui-build-styles",
     "build:tsc": "tsc -p ./tsconfig.build.json",
     "build:bundle": "rollup -c",
     "build": "rimraf clean ./dist && npm run build:tsc && npm run build:bundle && npm run cem:analyze",

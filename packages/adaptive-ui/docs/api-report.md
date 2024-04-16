@@ -562,7 +562,7 @@ export const stylePropertyCornerRadiusAll: ("cornerRadiusTopLeft" | "cornerRadiu
 export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
 
 // @public
-export const stylePropertyPaddingAll: ("paddingBottom" | "paddingLeft" | "paddingRight" | "paddingTop")[];
+export const stylePropertyPaddingAll: ("paddingTop" | "paddingRight" | "paddingBottom" | "paddingLeft")[];
 
 // @public
 export type StyleRule = {
