@@ -63,7 +63,6 @@ program.parse()
  * Fatal test to ensure a file exists
  */
 function ensureFileExists(inFilePath: string) {
-    // Ensure inFile exists
     try {
         fs.statSync(inFilePath)
     } catch (e) {
