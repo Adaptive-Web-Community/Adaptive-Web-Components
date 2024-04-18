@@ -7,7 +7,9 @@
         "lib": ["DOM", "ES2020"],
         "skipLibCheck": true,
         "declarationDir": "dist/dts",
-        "outDir": "dist/esm"
+        "outDir": "dist/esm",
+        "rootDir": "src"
+
     },
     "include": ["src"]
 }
