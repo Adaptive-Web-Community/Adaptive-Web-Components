@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-import "../dist/esm/aui.js";
+import "../dist/esm/bin/aui.js";

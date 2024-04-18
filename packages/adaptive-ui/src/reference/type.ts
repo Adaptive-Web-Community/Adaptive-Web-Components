@@ -6,7 +6,7 @@ import {
     createTokenFontVariations,
     createTokenFontWeight,
     createTokenLineHeight
-} from "../token-helpers.js";
+} from "../core/token-helpers.js";
 
 /**
  * Standard font weights.

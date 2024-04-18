@@ -18,9 +18,9 @@
     "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
     "directory": "packages/adaptive-ui"
   },
-  "main": "dist/esm/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/dts/index.d.ts",
+  "main": "dist/esm/core/index.js",
+  "module": "dist/esm/core/index.js",
+  "types": "dist/dts/core/index.d.ts",
   "bin": {
     "aui": "./bin/aui.js"
   },
@@ -60,16 +60,16 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/dts/index.d.ts",
-      "default": "./dist/esm/index.js"
+      "types": "./dist/dts/core/index.d.ts",
+      "default": "./dist/esm/core/index.js"
     },
     "./migration": {
       "types": "./dist/dts/migration/index.d.ts",
       "default": "./dist/esm/migration/index.js"
     },
     "./reference": {
-      "types": "./dist/dts/reference.d.ts",
-      "default": "./dist/esm/reference.js"
+      "types": "./dist/dts/reference/index.d.ts",
+      "default": "./dist/esm/reference/index.js"
     }
   }
 }

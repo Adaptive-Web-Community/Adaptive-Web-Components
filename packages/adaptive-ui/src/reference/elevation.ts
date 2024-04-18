@@ -1,9 +1,9 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { StyleProperty } from "../modules/types.js";
-import { DesignTokenMultiValue, DesignTokenType } from "../adaptive-design-tokens.js";
-import { createTokenNonCss, createTokenRecipe } from "../token-helpers.js";
-import { createTokenShadow, Shadow, ShadowValue } from "../shadow/index.js";
-import { InteractiveTokenGroup } from "../types.js";
+import { StyleProperty } from "../core/modules/types.js";
+import { DesignTokenMultiValue, DesignTokenType } from "../core/adaptive-design-tokens.js";
+import { createTokenNonCss, createTokenRecipe } from "../core/token-helpers.js";
+import { createTokenShadow, Shadow, ShadowValue } from "../core/shadow/index.js";
+import { InteractiveTokenGroup } from "../core/types.js";
 import { neutralStrokeStrong } from "./color.js";
 
 /**

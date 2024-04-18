@@ -1,14 +1,14 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { DesignTokenType } from "../adaptive-design-tokens.js";
-import { Palette, PaletteDirectionValue } from "../color/palette.js";
-import { ColorRecipeParams, InteractiveSwatchSet } from "../color/recipe.js";
-import { deltaSwatch, deltaSwatchSet } from "../color/recipes/index.js";
-import { Swatch } from "../color/swatch.js";
-import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
-import { StyleProperty } from "../modules/types.js";
-import { createTokenNonCss, createTokenRecipe, createTokenSwatch } from "../token-helpers.js";
-import { createTokenColorRecipe, createTokenColorSet, createTokenDelta } from "../token-helpers-color.js";
-import { InteractiveState } from "../types.js";
+import { DesignTokenType } from "../core/adaptive-design-tokens.js";
+import { Palette, PaletteDirectionValue } from "../core/color/palette.js";
+import { ColorRecipeParams, InteractiveSwatchSet } from "../core/color/recipe.js";
+import { deltaSwatch, deltaSwatchSet } from "../core/color/recipes/index.js";
+import { Swatch } from "../core/color/swatch.js";
+import { luminanceSwatch } from "../core/color/utilities/luminance-swatch.js";
+import { StyleProperty } from "../core/modules/types.js";
+import { createTokenNonCss, createTokenRecipe, createTokenSwatch } from "../core/token-helpers.js";
+import { createTokenColorRecipe, createTokenColorSet, createTokenDelta } from "../core/token-helpers-color.js";
+import { InteractiveState } from "../core/types.js";
 import { fillColor } from "./color.js";
 import { neutralPalette } from "./palette.js";
 

@@ -28,7 +28,7 @@ import {
     typeRampPlus6FontSize,
     typeRampPlus6FontVariations,
     typeRampPlus6LineHeight,
-} from "../design-tokens/type.js";
+} from "../reference/type.js";
 
 /**
  * @public
