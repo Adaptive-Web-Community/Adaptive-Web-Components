@@ -84,6 +84,7 @@ import {
     strokeSubtleRestDelta
 } from "../design-tokens/color.js";
 import { neutralPalette } from "../design-tokens/palette.js";
+import { InteractiveState } from "../types.js";
 
 /**
  * Convenience values for WCAG contrast requirements.
@@ -143,30 +144,30 @@ export const foregroundOnAccentFillReadableFocus = foregroundOnAccentFillReadabl
 const accentFillReadableName = "accent-fill-readable";
 
 /** @public @deprecated Use `fillReadableRestDelta` instead. */
-export const accentFillReadableRestDelta = createTokenDelta(accentFillReadableName, "rest", fillReadableRestDelta);
+export const accentFillReadableRestDelta = createTokenDelta(accentFillReadableName, InteractiveState.rest, fillReadableRestDelta);
 
 /** @public @deprecated Use `fillReadableHoverDelta` instead. */
-export const accentFillReadableHoverDelta = createTokenDelta(accentFillReadableName, "hover", fillReadableHoverDelta);
+export const accentFillReadableHoverDelta = createTokenDelta(accentFillReadableName, InteractiveState.hover, fillReadableHoverDelta);
 
 /** @public @deprecated Use `fillReadableActiveDelta` instead. */
-export const accentFillReadableActiveDelta = createTokenDelta(accentFillReadableName, "active", fillReadableActiveDelta);
+export const accentFillReadableActiveDelta = createTokenDelta(accentFillReadableName, InteractiveState.active, fillReadableActiveDelta);
 
 /** @public @deprecated Use `fillReadableFocusDelta` instead. */
-export const accentFillReadableFocusDelta = createTokenDelta(accentFillReadableName, "focus", fillReadableFocusDelta);
+export const accentFillReadableFocusDelta = createTokenDelta(accentFillReadableName, InteractiveState.focus, fillReadableFocusDelta);
 
 const accentStrokeReadableName = "accent-stroke-readable";
 
 /** @public @deprecated Use `strokeReadableRestDelta` instead. */
-export const accentStrokeReadableRestDelta = createTokenDelta(accentStrokeReadableName, "rest", strokeReadableRestDelta);
+export const accentStrokeReadableRestDelta = createTokenDelta(accentStrokeReadableName, InteractiveState.rest, strokeReadableRestDelta);
 
 /** @public @deprecated Use `strokeReadableHoverDelta` instead. */
-export const accentStrokeReadableHoverDelta = createTokenDelta(accentStrokeReadableName, "hover", strokeReadableHoverDelta);
+export const accentStrokeReadableHoverDelta = createTokenDelta(accentStrokeReadableName, InteractiveState.hover, strokeReadableHoverDelta);
 
 /** @public @deprecated Use `strokeReadableActiveDelta` instead. */
-export const accentStrokeReadableActiveDelta = createTokenDelta(accentStrokeReadableName, "active", strokeReadableActiveDelta);
+export const accentStrokeReadableActiveDelta = createTokenDelta(accentStrokeReadableName, InteractiveState.active, strokeReadableActiveDelta);
 
 /** @public @deprecated Use `strokeReadableFocusDelta` instead. */
-export const accentStrokeReadableFocusDelta = createTokenDelta(accentStrokeReadableName, "focus", strokeReadableFocusDelta);
+export const accentStrokeReadableFocusDelta = createTokenDelta(accentStrokeReadableName, InteractiveState.focus, strokeReadableFocusDelta);
 
 /** @public @deprecated use "Readable" instead */
 export const accentFillRestDelta = accentFillReadableRestDelta;
@@ -240,86 +241,86 @@ export const accentForegroundFocus = accentStrokeReadableFocus;
 const neutralFillStealthName = "neutral-fill-stealth";
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthRestDelta = createTokenDelta(neutralFillStealthName, "rest", fillStealthRestDelta);
+export const neutralFillStealthRestDelta = createTokenDelta(neutralFillStealthName, InteractiveState.rest, fillStealthRestDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthHoverDelta = createTokenDelta(neutralFillStealthName, "hover", fillStealthHoverDelta);
+export const neutralFillStealthHoverDelta = createTokenDelta(neutralFillStealthName, InteractiveState.hover, fillStealthHoverDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthActiveDelta = createTokenDelta(neutralFillStealthName, "active", fillStealthActiveDelta);
+export const neutralFillStealthActiveDelta = createTokenDelta(neutralFillStealthName, InteractiveState.active, fillStealthActiveDelta);
 
 /** @public @deprecated Use `fillStealthRestDelta` instead. */
-export const neutralFillStealthFocusDelta = createTokenDelta(neutralFillStealthName, "focus", fillStealthFocusDelta);
+export const neutralFillStealthFocusDelta = createTokenDelta(neutralFillStealthName, InteractiveState.focus, fillStealthFocusDelta);
 
 const neutralFillSubtleName = "neutral-fill-subtle";
 
 /** @public @deprecated Use `fillSubtleRestDelta` instead. */
-export const neutralFillSubtleRestDelta = createTokenDelta(neutralFillSubtleName, "rest", fillSubtleRestDelta);
+export const neutralFillSubtleRestDelta = createTokenDelta(neutralFillSubtleName, InteractiveState.rest, fillSubtleRestDelta);
 
 /** @public @deprecated Use `fillSubtleHoverDelta` instead. */
-export const neutralFillSubtleHoverDelta = createTokenDelta(neutralFillSubtleName, "hover", fillSubtleHoverDelta);
+export const neutralFillSubtleHoverDelta = createTokenDelta(neutralFillSubtleName, InteractiveState.hover, fillSubtleHoverDelta);
 
 /** @public @deprecated Use `fillSubtleActiveDelta` instead. */
-export const neutralFillSubtleActiveDelta = createTokenDelta(neutralFillSubtleName, "active", fillSubtleActiveDelta);
+export const neutralFillSubtleActiveDelta = createTokenDelta(neutralFillSubtleName, InteractiveState.active, fillSubtleActiveDelta);
 
 /** @public @deprecated Use `fillSubtleFocusDelta` instead. */
-export const neutralFillSubtleFocusDelta = createTokenDelta(neutralFillSubtleName, "focus", fillSubtleFocusDelta);
+export const neutralFillSubtleFocusDelta = createTokenDelta(neutralFillSubtleName, InteractiveState.focus, fillSubtleFocusDelta);
 
 const neutralFillDiscernibleName = "neutral-fill-discernible";
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleRestDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleRestDelta);
+export const neutralFillDiscernibleRestDelta = createTokenDelta(neutralFillDiscernibleName, InteractiveState.rest, fillDiscernibleRestDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleHoverDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleHoverDelta);
+export const neutralFillDiscernibleHoverDelta = createTokenDelta(neutralFillDiscernibleName, InteractiveState.rest, fillDiscernibleHoverDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleActiveDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleActiveDelta);
+export const neutralFillDiscernibleActiveDelta = createTokenDelta(neutralFillDiscernibleName, InteractiveState.rest, fillDiscernibleActiveDelta);
 
 /** @public @deprecated Use `fillDiscernibleRestDelta` instead. */
-export const neutralFillDiscernibleFocusDelta = createTokenDelta(neutralFillDiscernibleName, "rest", fillDiscernibleFocusDelta);
+export const neutralFillDiscernibleFocusDelta = createTokenDelta(neutralFillDiscernibleName, InteractiveState.rest, fillDiscernibleFocusDelta);
 
 const neutralStrokeSubtleName = "neutral-stroke-subtle";
 
 /** @public @deprecated Use `strokeSubtleRestDelta` instead. */
-export const neutralStrokeSubtleRestDelta = createTokenDelta(neutralStrokeSubtleName, "rest", strokeSubtleRestDelta);
+export const neutralStrokeSubtleRestDelta = createTokenDelta(neutralStrokeSubtleName, InteractiveState.rest, strokeSubtleRestDelta);
 
 /** @public @deprecated Use `strokeSubtleHoverDelta` instead. */
-export const neutralStrokeSubtleHoverDelta = createTokenDelta(neutralStrokeSubtleName, "hover", strokeSubtleHoverDelta);
+export const neutralStrokeSubtleHoverDelta = createTokenDelta(neutralStrokeSubtleName, InteractiveState.hover, strokeSubtleHoverDelta);
 
 /** @public @deprecated Use `strokeSubtleActiveDelta` instead. */
-export const neutralStrokeSubtleActiveDelta = createTokenDelta(neutralStrokeSubtleName, "active", strokeSubtleActiveDelta);
+export const neutralStrokeSubtleActiveDelta = createTokenDelta(neutralStrokeSubtleName, InteractiveState.active, strokeSubtleActiveDelta);
 
 /** @public @deprecated Use `strokeSubtleFocusDelta` instead. */
-export const neutralStrokeSubtleFocusDelta = createTokenDelta(neutralStrokeSubtleName, "focus", strokeSubtleFocusDelta);
+export const neutralStrokeSubtleFocusDelta = createTokenDelta(neutralStrokeSubtleName, InteractiveState.focus, strokeSubtleFocusDelta);
 
 const neutralStrokeDiscernibleName = "neutral-stroke-discernible";
 
 /** @public @deprecated Use `strokeDiscernibleRestDelta` instead. */
-export const neutralStrokeDiscernibleRestDelta = createTokenDelta(neutralStrokeDiscernibleName, "rest", strokeDiscernibleRestDelta);
+export const neutralStrokeDiscernibleRestDelta = createTokenDelta(neutralStrokeDiscernibleName, InteractiveState.rest, strokeDiscernibleRestDelta);
 
 /** @public @deprecated Use `strokeDiscernibleHoverDelta` instead. */
-export const neutralStrokeDiscernibleHoverDelta = createTokenDelta(neutralStrokeDiscernibleName, "hover", strokeDiscernibleHoverDelta);
+export const neutralStrokeDiscernibleHoverDelta = createTokenDelta(neutralStrokeDiscernibleName, InteractiveState.hover, strokeDiscernibleHoverDelta);
 
 /** @public @deprecated Use `strokeDiscernibleActiveDelta` instead. */
-export const neutralStrokeDiscernibleActiveDelta = createTokenDelta(neutralStrokeDiscernibleName, "active", strokeDiscernibleActiveDelta);
+export const neutralStrokeDiscernibleActiveDelta = createTokenDelta(neutralStrokeDiscernibleName, InteractiveState.active, strokeDiscernibleActiveDelta);
 
 /** @public @deprecated Use `strokeDiscernibleFocusDelta` instead. */
-export const neutralStrokeDiscernibleFocusDelta = createTokenDelta(neutralStrokeDiscernibleName, "focus", strokeDiscernibleFocusDelta);
+export const neutralStrokeDiscernibleFocusDelta = createTokenDelta(neutralStrokeDiscernibleName, InteractiveState.focus, strokeDiscernibleFocusDelta);
 
 const neutralStrokeReadableName = "neutral-stroke-readable";
 
 /** @public @deprecated Use `strokeReadableRestDelta` instead. */
-export const neutralStrokeReadableRestDelta = createTokenDelta(neutralStrokeReadableName, "rest", strokeReadableRestDelta);
+export const neutralStrokeReadableRestDelta = createTokenDelta(neutralStrokeReadableName, InteractiveState.rest, strokeReadableRestDelta);
 
 /** @public @deprecated Use `strokeReadableHoverDelta` instead. */
-export const neutralStrokeReadableHoverDelta = createTokenDelta(neutralStrokeReadableName, "hover", strokeReadableHoverDelta);
+export const neutralStrokeReadableHoverDelta = createTokenDelta(neutralStrokeReadableName, InteractiveState.hover, strokeReadableHoverDelta);
 
 /** @public @deprecated Use `strokeReadableActiveDelta` instead. */
-export const neutralStrokeReadableActiveDelta = createTokenDelta(neutralStrokeReadableName, "active", strokeReadableActiveDelta);
+export const neutralStrokeReadableActiveDelta = createTokenDelta(neutralStrokeReadableName, InteractiveState.active, strokeReadableActiveDelta);
 
 /** @public @deprecated Use `strokeReadableFocusDelta` instead. */
-export const neutralStrokeReadableFocusDelta = createTokenDelta(neutralStrokeReadableName, "focus", strokeReadableFocusDelta);
+export const neutralStrokeReadableFocusDelta = createTokenDelta(neutralStrokeReadableName, InteractiveState.focus, strokeReadableFocusDelta);
 
 const neutralStrokeStrongName = "neutral-stroke-strong";
 
@@ -327,16 +328,16 @@ const neutralStrokeStrongName = "neutral-stroke-strong";
 export const neutralStrokeStrongMinContrast = createTokenMinContrast(neutralStrokeStrongName, strokeStrongMinContrast);
 
 /** @public @deprecated Use `strokeStrongRestDelta` instead. */
-export const neutralStrokeStrongRestDelta = createTokenDelta(neutralStrokeStrongName, "rest", strokeStrongRestDelta);
+export const neutralStrokeStrongRestDelta = createTokenDelta(neutralStrokeStrongName, InteractiveState.rest, strokeStrongRestDelta);
 
 /** @public @deprecated Use `strokeStrongHoverDelta` instead. */
-export const neutralStrokeStrongHoverDelta = createTokenDelta(neutralStrokeStrongName, "hover", strokeStrongHoverDelta);
+export const neutralStrokeStrongHoverDelta = createTokenDelta(neutralStrokeStrongName, InteractiveState.hover, strokeStrongHoverDelta);
 
 /** @public @deprecated Use `strokeStrongActiveDelta` instead. */
-export const neutralStrokeStrongActiveDelta = createTokenDelta(neutralStrokeStrongName, "active", strokeStrongActiveDelta);
+export const neutralStrokeStrongActiveDelta = createTokenDelta(neutralStrokeStrongName, InteractiveState.active, strokeStrongActiveDelta);
 
 /** @public @deprecated Use `strokeStrongFocusDelta` instead. */
-export const neutralStrokeStrongFocusDelta = createTokenDelta(neutralStrokeStrongName, "focus", strokeStrongFocusDelta);
+export const neutralStrokeStrongFocusDelta = createTokenDelta(neutralStrokeStrongName, InteractiveState.focus, strokeStrongFocusDelta);
 
 /** @public @deprecated Use "Stroke Readable" instead */
 export const neutralForegroundHintRecipe = strokeReadableRecipe;
@@ -406,16 +407,16 @@ export const neutralFillFocus = neutralFillSubtleFocus;
 const neutralFillInputName = "neutral-fill-input";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputRestDelta = createTokenDelta(neutralFillInputName, "rest", -1);
+export const neutralFillInputRestDelta = createTokenDelta(neutralFillInputName, InteractiveState.rest, -1);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputHoverDelta = createTokenDelta(neutralFillInputName, "hover", 1);
+export const neutralFillInputHoverDelta = createTokenDelta(neutralFillInputName, InteractiveState.hover, 1);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputActiveDelta = createTokenDelta(neutralFillInputName, "active", -2);
+export const neutralFillInputActiveDelta = createTokenDelta(neutralFillInputName, InteractiveState.active, -2);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralFillInputFocusDelta = createTokenDelta(neutralFillInputName, "focus", -2);
+export const neutralFillInputFocusDelta = createTokenDelta(neutralFillInputName, InteractiveState.focus, -2);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralFillInputRecipe = createTokenColorRecipe(
@@ -457,16 +458,16 @@ export const neutralFillInputFocus = neutralFillInput.focus;
 const neutralFillSecondaryName = "neutral-fill-secondary";
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryRestDelta = createTokenDelta(neutralFillSecondaryName, "rest", 3);
+export const neutralFillSecondaryRestDelta = createTokenDelta(neutralFillSecondaryName, InteractiveState.rest, 3);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryHoverDelta = createTokenDelta(neutralFillSecondaryName, "hover", 2);
+export const neutralFillSecondaryHoverDelta = createTokenDelta(neutralFillSecondaryName, InteractiveState.hover, 2);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryActiveDelta = createTokenDelta(neutralFillSecondaryName, "active", 1);
+export const neutralFillSecondaryActiveDelta = createTokenDelta(neutralFillSecondaryName, InteractiveState.active, 1);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
-export const neutralFillSecondaryFocusDelta = createTokenDelta(neutralFillSecondaryName, "focus", 3);
+export const neutralFillSecondaryFocusDelta = createTokenDelta(neutralFillSecondaryName, InteractiveState.focus, 3);
 
 /** @public @deprecated Use "Subtle" or "Discernible" instead */
 export const neutralFillSecondaryRecipe = createTokenColorRecipe(
@@ -562,7 +563,7 @@ export const neutralStrokeFocus = neutralStrokeSubtleFocus;
 const neutralStrokeDividerName = "neutral-stroke-divider";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDividerName, "rest", 4);
+export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDividerName, InteractiveState.rest, 4);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeDividerRecipe = createTokenColorRecipe(
@@ -588,16 +589,16 @@ export const neutralStrokeDividerRest = createTokenColorRecipeValue(neutralStrok
 const neutralStrokeInputName = "neutral-stroke-input";
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputRestDelta = createTokenDelta(neutralStrokeInputName, "rest", 3);
+export const neutralStrokeInputRestDelta = createTokenDelta(neutralStrokeInputName, InteractiveState.rest, 3);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputHoverDelta = createTokenDelta(neutralStrokeInputName, "hover", 5);
+export const neutralStrokeInputHoverDelta = createTokenDelta(neutralStrokeInputName, InteractiveState.hover, 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputActiveDelta = createTokenDelta(neutralStrokeInputName, "active", 5);
+export const neutralStrokeInputActiveDelta = createTokenDelta(neutralStrokeInputName, InteractiveState.active, 5);
 
 /** @public @deprecated Use "Subtle" instead */
-export const neutralStrokeInputFocusDelta = createTokenDelta(neutralStrokeInputName, "focus", 5);
+export const neutralStrokeInputFocusDelta = createTokenDelta(neutralStrokeInputName, InteractiveState.focus, 5);
 
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRecipe = createTokenColorRecipe(

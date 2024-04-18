@@ -3,7 +3,7 @@ import type { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { InteractiveSet, InteractiveTokenGroup } from "../types.js";
+import { InteractiveTokenGroup, InteractiveValues } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
 import { StyleModuleTarget, StyleProperty, StylePropertyCss } from "./types.js";
 
@@ -12,7 +12,7 @@ import { StyleModuleTarget, StyleProperty, StylePropertyCss } from "./types.js";
  *
  * @public
  */
-export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string | number;
+export type StyleValue = CSSDesignToken<any> | InteractiveValues<any | null> | CSSDirective | string | number;
 
 /**
  * An object of style definitions, where the key is the {@link (StylePropertyCss:type)} and the value is the token or final value.

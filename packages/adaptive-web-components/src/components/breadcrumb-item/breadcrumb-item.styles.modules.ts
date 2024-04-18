@@ -37,7 +37,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
+            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactive,
             part: BreadcrumbItemAnatomy.parts.control,
             partCondition: BreadcrumbItemAnatomy.conditions.current,
         },
@@ -45,7 +45,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactivitySelector,
+            contextCondition: BreadcrumbItemAnatomy.interactivity?.interactive,
             part: BreadcrumbItemAnatomy.parts.control,
         },
         styles: accentForegroundReadableControlStyles,

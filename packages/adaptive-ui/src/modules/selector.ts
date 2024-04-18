@@ -1,44 +1,58 @@
-import type { StateSelector, StyleModuleEvaluateParameters } from "./types.js";
+import { InteractiveState, InteractiveValues } from "../types.js";
+import type { StyleModuleEvaluateParameters } from "./types.js";
 
 const HOST_CONTEXT = ":host";
 
 const defaultContext = HOST_CONTEXT;
 
 /**
- * Creates a single css selector for the provided `params` and optional `state`.
+ * Default css selectors for an interactive element's states.
+ */
+const DefaultInteractiveSelectors: InteractiveValues<string> = {
+    rest: "",
+    hover: ":hover",
+    active: ":active",
+    focus: ":focus-visible",
+    disabled: "",
+};
+
+/**
+ * Creates a single css selector for the provided `params` and `state`.
  *
  * @param params - Parameters for the selector.
- * @param state - An optional interactive state.
+ * @param state - The interactive state.
  * @returns A css selector string.
  *
  * @public
  */
-export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string {
+export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string {
     const selectors: string[] = [];
 
-    // `disabled` is a `state`, but it's not a css pseudo selector.
-    const statePseudo = state && state !== "disabled" ? ":" + state : "";
+    const rest = state === InteractiveState.rest;
+    const disabled = state === InteractiveState.disabled;
+
+    const stateSelector = disabled ? "" : params[state] || DefaultInteractiveSelectors[state];
     const context = params.context && params.context !== defaultContext ? `.${params.context}` : defaultContext;
 
     if (params.contextCondition ||
-        (state && state !== "disabled" && params.interactivitySelector !== undefined) ||
-        (state && state === "disabled" && params.disabledSelector !== undefined)
+        (!rest && !disabled && params.interactive !== undefined) ||
+        (!rest && disabled && params.disabled !== undefined)
     ) {
         // Start with any base context element condition like `[appearance='accent']`.
         let contextCondition = params.contextCondition || "";
 
-        if (state) {
-            if (state !== "disabled") {
+        if (state !== InteractiveState.rest) {
+            if (!disabled) {
                 // Add any interactive condition like `:not([disabled])`.
-                contextCondition += (params.interactivitySelector || "");
+                contextCondition += (params.interactive || "");
 
                 // If this is not targeting a part, or if configured, apply the state on the context element.
                 if (!params.part || params.stateOnContext === true) {
-                    contextCondition += statePseudo;
+                    contextCondition += stateSelector;
                 }
             } else {
                 // Add the non-interactive condition like `[disabled]`.
-                contextCondition += (params.disabledSelector || "");
+                contextCondition += (params.disabled || "");
             }
         }
 
@@ -56,10 +70,9 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state?: Stat
             selectors.push("*");
         } else {
             // Using class selector notation for now.
-            selectors.push(`.${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? statePseudo : ""}`);
+            selectors.push(`.${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? stateSelector : ""}`);
         }
     }
-    const ret = selectors.join(" ");
-    // console.log("makeSelector", ret);
-    return ret;
+
+    return selectors.join(" ");
 }
