@@ -40,7 +40,8 @@
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31",
     "commander": "^12.0.0",
-    "culori": "^3.2.0"
+    "culori": "^3.2.0",
+    "matcher": "^5.0.0"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^14.7.1",
