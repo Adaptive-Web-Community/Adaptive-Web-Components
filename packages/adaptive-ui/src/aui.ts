@@ -77,12 +77,7 @@ function ensureFileExists(inFilePath: string) {
  */
 async function compileFile(inFilePath: string, outFilePath: string, stylesName: string, anatomyName: string): Promise<string> {
     // Ensure inFile exists
-    try {
-        fs.statSync(inFilePath)
-    } catch (e) {
-        console.warn(failColor, `File not found: ${inFilePath}`)
-        process.exit(1)
-    }
+    ensureFileExists(inFilePath)
 
     const module = await import(inFilePath);
     const exportKeys = Object.keys(module);
