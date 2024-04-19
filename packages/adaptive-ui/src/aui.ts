@@ -12,7 +12,7 @@ import { ComponentAnatomy, ComponentConditions, ComponentParts, StyleRules } fro
 const program = new Command();
 
 program
-    .name('AUI CLI')
+    .name('aui')
     .description("CLI for Adaptive UI");
 
 
