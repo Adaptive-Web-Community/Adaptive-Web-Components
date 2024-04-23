@@ -22,7 +22,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
   "bin": {
-    "adaptive-ui-build-styles": "./bin/adaptive-ui-build-styles.js"
+    "aui": "./bin/aui.js"
   },
   "scripts": {
     "build": "tsc",
@@ -39,7 +39,9 @@
   "dependencies": {
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31",
-    "culori": "^3.2.0"
+    "commander": "^12.0.0",
+    "culori": "^3.2.0",
+    "matcher": "^5.0.0"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^14.7.1",
@@ -52,6 +54,7 @@
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
     "mocha": "^10.2.0",
+    "prettier": "^3.2.5",
     "rimraf": "^3.0.2",
     "typescript": "^4.7.0"
   },
