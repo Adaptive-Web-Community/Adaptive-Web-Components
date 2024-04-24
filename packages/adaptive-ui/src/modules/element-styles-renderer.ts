@@ -2,9 +2,9 @@ import { ComposableStyles, css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
-import type { InteractiveSet } from "../types.js";
+import { InteractiveState, InteractiveValues } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { ComponentAnatomy, StateSelector, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
+import type { ComponentAnatomy, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { Styles } from "./styles.js";
 
@@ -52,7 +52,7 @@ export class ElementStylesRenderer {
     private static declaration(
         property: StylePropertyCss,
         value: string | number | CSSDirective,
-        state?: StateSelector,
+        state: InteractiveState,
     ): DeclarationMap {
         const cssProperty = property in StyleProperty ?
             stylePropertyToCssProperty(property as keyof typeof StyleProperty) :
@@ -60,7 +60,7 @@ export class ElementStylesRenderer {
         const map = new Map([[cssProperty, value]]);
 
         // TODO: This belongs in a plugin as described above.
-        if (state === undefined) {
+        if (state === InteractiveState.rest) {
             if (property === StyleProperty.foregroundFill) {
                 map.set("fill", "currentcolor");
             }
@@ -74,34 +74,51 @@ export class ElementStylesRenderer {
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
             return new Map([
-                [makeSelector(params), ElementStylesRenderer.declaration(property, value)]
+                [makeSelector(params, InteractiveState.rest), ElementStylesRenderer.declaration(property, value, InteractiveState.rest)]
             ]);
         }
     }
 
     private static propertyInteractive(
         property: StylePropertyCss,
-        values: InteractiveSet<any>,
+        values: InteractiveValues<any>,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
             const selectors: RuleMap = new Map();
 
             if (values.rest) {
-                selectors.set(makeSelector(params), ElementStylesRenderer.declaration(property, values.rest));
-            }
-            if (params.interactivitySelector !== undefined && values.hover) {
-                selectors.set(makeSelector(params, "hover"), ElementStylesRenderer.declaration(property, values.hover, "hover"));
-            }
-            if (params.interactivitySelector !== undefined && values.active) {
-                selectors.set(makeSelector(params, "active"), ElementStylesRenderer.declaration(property, values.active, "active"));
-            }
-            if (params.interactivitySelector !== undefined && values.focus) {
-                const selector = params.focusSelector || "focus-visible";
-                selectors.set(makeSelector(params, selector), ElementStylesRenderer.declaration(property, values.focus, selector));
+                selectors.set(
+                    makeSelector(params, InteractiveState.rest),
+                    ElementStylesRenderer.declaration(property, values.rest, InteractiveState.rest)
+                );
             }
 
-            if (params.disabledSelector !== undefined && values.disabled) {
-                selectors.set(makeSelector(params, "disabled"), ElementStylesRenderer.declaration(property, values.disabled, "disabled"));
+            if (params.interactive !== undefined) {
+                if (values.hover) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.hover),
+                        ElementStylesRenderer.declaration(property, values.hover, InteractiveState.hover)
+                    );
+                }
+                if (values.active) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.active),
+                        ElementStylesRenderer.declaration(property, values.active, InteractiveState.active)
+                    );
+                }
+                if (values.focus) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.focus),
+                        ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
+                    );
+                }
+            }
+
+            if (params.disabled !== undefined && values.disabled) {
+                selectors.set(
+                    makeSelector(params, InteractiveState.disabled),
+                    ElementStylesRenderer.declaration(property, values.disabled, InteractiveState.disabled)
+                );
             }
 
             return selectors;
@@ -115,7 +132,7 @@ export class ElementStylesRenderer {
             } else if (value && typeof (value as any).createCSS === "function") {
                 return ElementStylesRenderer.propertySingle(property, value as CSSDirective);
             } else {
-                return ElementStylesRenderer.propertyInteractive(property, value as InteractiveSet<any>);
+                return ElementStylesRenderer.propertyInteractive(property, value as InteractiveValues<any>);
             }
         });
         return modules;
@@ -143,7 +160,10 @@ export class ElementStylesRenderer {
      */
     public render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles {
         // Construct the evaluation params, not including interactivity if requested
-        const effectiveInteractivity = (target.ignoreInteractivity === true) ? Interactivity.always : interactivity;
+        const effectiveInteractivity = interactivity || {};
+        if (target.ignoreInteractivity === true) {
+            Object.assign(effectiveInteractivity, Interactivity.always);
+        }
         const params: StyleModuleEvaluateParameters = Object.assign({}, effectiveInteractivity, target);
 
         // Combine the selectors
@@ -187,7 +207,7 @@ export class ElementStylesRenderer {
             const styles = Styles.fromDeclaration(rule);
 
             // Transform the target selector if necessary
-            const target = rule.target || {};
+            const target = rule.target || {} as StyleModuleTarget;
             if (anatomy?.context && target.context === undefined) {
                 target.context = anatomy.context;
                 if (anatomy.context === target.part) {

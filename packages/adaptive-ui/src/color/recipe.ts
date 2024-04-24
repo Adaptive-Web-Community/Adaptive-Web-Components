@@ -1,5 +1,5 @@
 import { Recipe, RecipeEvaluate, RecipeEvaluateOptional, RecipeOptional } from "../recipes.js";
-import { InteractiveSet } from "../types.js";
+import { InteractiveValues } from "../types.js";
 import { Palette } from "./palette.js";
 import { Swatch } from "./swatch.js";
 
@@ -87,7 +87,7 @@ export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<I
  *
  * @public
  */
-export interface InteractiveSwatchSet extends InteractiveSet<Swatch | null> {}
+export interface InteractiveSwatchSet extends InteractiveValues<Swatch | null> {}
 
 /**
  * A recipe that evaluates based on an interactive set of color values.

@@ -165,7 +165,7 @@ export function createTokenColorRecipeWithPalette<T>(recipeToken: TypedDesignTok
 export function createTokenColorSet(recipeToken: TypedDesignToken<InteractiveColorRecipe>): InteractiveTokenGroup<Swatch>;
 
 // @public
-export function createTokenDelta(baseName: string, state: keyof InteractiveSwatchSet, value: number | DesignToken<number>): TypedDesignToken<number>;
+export function createTokenDelta(baseName: string, state: InteractiveState, value: number | DesignToken<number>): TypedDesignToken<number>;
 
 // @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
@@ -313,9 +313,6 @@ export interface FocusDefinition<TParts> {
 }
 
 // @public
-export type FocusSelector = "focus" | "focus-visible" | "focus-within";
-
-// @public
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Swatch, minContrast: number, idealColor: Color, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveSwatchSet;
 
 // @public
@@ -337,38 +334,45 @@ export type InteractiveColorRecipePalette = ColorRecipePalette<InteractiveSwatch
 export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<InteractiveSwatchSet>;
 
 // @public
-export interface InteractiveSet<T> {
-    active: T;
-    disabled: T;
-    focus: T;
-    hover: T;
-    rest: T;
+export enum InteractiveState {
+    active = "active",
+    disabled = "disabled",
+    focus = "focus",
+    hover = "hover",
+    rest = "rest"
 }
 
 // @public
-export interface InteractiveSwatchSet extends InteractiveSet<Swatch | null> {
+export interface InteractiveSwatchSet extends InteractiveValues<Swatch | null> {
 }
 
 // @public
 export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, reference: Swatch, asOverlay: boolean): InteractiveSwatchSet;
 
 // @public
-export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveSet<TypedCSSDesignToken<T>> {
+export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveValues<TypedCSSDesignToken<T>> {
 }
+
+// @public
+export type InteractiveValues<T> = {
+    [key in InteractiveState]: T;
+};
 
 // @public
 export const Interactivity: {
     readonly disabledAttribute: InteractivityDefinition;
+    readonly disabledClass: InteractivityDefinition;
     readonly hrefAttribute: InteractivityDefinition;
     readonly always: InteractivityDefinition;
     readonly never: InteractivityDefinition;
 };
 
 // @public
-export interface InteractivityDefinition {
-    disabledSelector?: string;
-    interactivitySelector?: string;
-}
+export type InteractivityDefinition = {
+    [key in InteractiveState]?: string;
+} & {
+    interactive?: string;
+};
 
 // @public
 export function isDark(color: RelativeLuminance): boolean;
@@ -377,7 +381,7 @@ export function isDark(color: RelativeLuminance): boolean;
 export function luminanceSwatch(luminance: number): Swatch;
 
 // @public
-export function makeSelector(params: StyleModuleEvaluateParameters, state?: StateSelector): string;
+export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
 // @public (undocumented)
 export const Padding: {
@@ -470,9 +474,6 @@ export class Shadow implements CSSDirective {
 export type ShadowValue = Shadow | DesignTokenMultiValue<Shadow> | string;
 
 // @public
-export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
-
-// @public
 export type StyleDeclaration = {
     styles?: Styles | Iterable<Styles>;
     properties?: StyleProperties;
@@ -485,7 +486,6 @@ export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDef
 export interface StyleModuleTarget {
     context?: string;
     contextCondition?: string;
-    focusSelector?: FocusSelector;
     // @beta
     ignoreInteractivity?: boolean;
     part?: string;
@@ -591,7 +591,7 @@ export class Styles {
 }
 
 // @public
-export type StyleValue = CSSDesignToken<any> | InteractiveSet<any | null> | CSSDirective | string | number;
+export type StyleValue = CSSDesignToken<any> | InteractiveValues<any | null> | CSSDirective | string | number;
 
 // @public
 export class Swatch extends Color {

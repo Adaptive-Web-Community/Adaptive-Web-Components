@@ -8,6 +8,7 @@ import { luminanceSwatch } from "../color/utilities/luminance-swatch.js";
 import { StyleProperty } from "../modules/types.js";
 import { createTokenNonCss, createTokenRecipe, createTokenSwatch } from "../token-helpers.js";
 import { createTokenColorRecipe, createTokenColorSet, createTokenDelta } from "../token-helpers-color.js";
+import { InteractiveState } from "../types.js";
 import { fillColor } from "./color.js";
 import { neutralPalette } from "./palette.js";
 
@@ -55,7 +56,7 @@ export const layerFillBaseLuminance = createTokenNonCss<number>(`${layerFillName
  *
  * @public
  */
-export const layerFillRestDelta = createTokenDelta(layerFillName, "rest", -2);
+export const layerFillRestDelta = createTokenDelta(layerFillName, InteractiveState.rest, -2);
 
 /**
  * @public
@@ -68,28 +69,28 @@ export const layerFillDelta = layerFillRestDelta;
  *
  * @public
  */
-export const layerFillHoverDelta = createTokenDelta(layerFillName, "hover", -3);
+export const layerFillHoverDelta = createTokenDelta(layerFillName, InteractiveState.hover, -3);
 
 /**
  * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
  *
  * @public
  */
-export const layerFillActiveDelta = createTokenDelta(layerFillName, "active", -1);
+export const layerFillActiveDelta = createTokenDelta(layerFillName, InteractiveState.active, -1);
 
 /**
  * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
  *
  * @public
  */
-export const layerFillFocusDelta = createTokenDelta(layerFillName, "focus", -3);
+export const layerFillFocusDelta = createTokenDelta(layerFillName, InteractiveState.focus, -3);
 
 /**
  * The offset from the container for "Interactive" disabled state, {@link layerFillInteractiveDisabled}.
  *
  * @public
  */
-export const layerFillDisabledDelta = createTokenDelta(layerFillName, "disabled", -1);
+export const layerFillDisabledDelta = createTokenDelta(layerFillName, InteractiveState.disabled, -1);
 
 const layerFillFixedName = `${layerFillName}-fixed`;
 

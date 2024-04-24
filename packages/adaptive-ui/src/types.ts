@@ -24,35 +24,44 @@ export interface TokenGroup {
 }
 
 /**
- * A set for an interactive element's states.
+ * An interactive element's states.
  *
  * @public
  */
-export interface InteractiveSet<T> {
+export enum InteractiveState {
     /**
-     * The value to apply to the rest state.
+     * The rest state.
      */
-    rest: T;
+    rest = "rest",
 
     /**
-     * The value to apply to the hover state.
+     * The hover state.
      */
-    hover: T;
+    hover = "hover",
 
     /**
-     * The value to apply to the active state.
+     * The active state.
      */
-    active: T;
+    active = "active",
 
     /**
-     * The value to apply to the focus state.
+     * The focus state.
      */
-    focus: T;
+    focus = "focus",
 
     /**
-     * The value to apply to the disabled state.
+     * The disabled state.
      */
-    disabled: T;
+    disabled = "disabled",
+}
+
+/**
+ * Values for an interactive element's states.
+ *
+ * @public
+ */
+export type InteractiveValues<T> = {
+    [key in InteractiveState]: T;
 }
 
 /**
@@ -60,4 +69,4 @@ export interface InteractiveSet<T> {
  *
  * @public
  */
-export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveSet<TypedCSSDesignToken<T>> {}
+export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveValues<TypedCSSDesignToken<T>> {}

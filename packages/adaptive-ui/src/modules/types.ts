@@ -1,19 +1,6 @@
 import type { ValuesOf } from "@microsoft/fast-foundation";
+import { InteractiveState } from "../types.js";
 import { StyleRule } from "./styles.js";
-
-/**
- * Selectors for focus state.
- *
- * @public
- */
-export type FocusSelector = "focus" | "focus-visible" | "focus-within";
-
-/**
- * Selectors for interactive component states.
- *
- * @public
- */
-export type StateSelector = "hover" | "active" | FocusSelector | "disabled";
 
 /**
  * Type of the `conditions` for component {@link ComponentAnatomy}.
@@ -96,36 +83,36 @@ export interface StyleModuleTarget {
     /**
      * Informs the style generator to ignore the interactivity configuration of the component.
      *
-     * @beta
      * @remarks
      * The `StyleModuleTarget` and `InteractivityDefinition` together makeup the evaluation parameters for
      * generating the styles. In some edge case scenarios the default behavior of considering both of these
      * together is not desireable (ex: Menu items which should show focus when disabled). This is an
      * exploration into a way to describe this, but perhaps there's a more extensible pattern.
+     *
+     * @beta
      */
     ignoreInteractivity?: boolean;
-
-    /**
-     * The state selector for focus indication.
-     */
-    focusSelector?: FocusSelector;
 }
 
 /**
- * Parameters provided by a component to inform style modules of its interactivity configuration.
+ * Conditions supported by a component to inform the style rules of its interactivity configuration.
  *
  * @public
  */
-export interface InteractivityDefinition {
+export type InteractivityDefinition = {
+    /**
+     * The selectors to use for the states. Implementation defaults to {@link DefaultInteractiveSelectors} if not provided.
+     */
+    [key in InteractiveState]?: string;
+} & {
     /**
      * The selector indicating the component or element is interactive, like `:not([disabled])`.
+     *
+     * @remarks
+     * This is combined with the `hover`, `active`, and `focus` selectors to only apply those styles
+     * when the component or element is interactive.
      */
-    interactivitySelector?: string;
-
-    /**
-     * The selector indicating the component or element is disabled, like `[disabled]`.
-     */
-    disabledSelector?: string;
+    interactive?: string;
 }
 
 /**
@@ -140,8 +127,18 @@ export const Interactivity = {
      * For instance, a form control.
      */
     disabledAttribute: { 
-        interactivitySelector: ":not([disabled])",
-        disabledSelector: "[disabled]",
+        interactive: ":not([disabled])",
+        disabled: "[disabled]",
+    } as InteractivityDefinition,
+
+    /**
+     * Has interactive or disabled states based on a `disabled` class.
+     *
+     * For instance, a form control.
+     */
+    disabledClass: { 
+        interactive: ":not(.disabled)",
+        disabled: ".disabled",
     } as InteractivityDefinition,
 
     /**
@@ -150,8 +147,7 @@ export const Interactivity = {
      * For instance, an `<a>` should style as plain text when it doesn't have an `href` attribute.
      */
     hrefAttribute:  { 
-        interactivitySelector: "[href]",
-        disabledSelector: undefined,
+        interactive: "[href]",
     } as InteractivityDefinition,
 
     /**
@@ -160,18 +156,18 @@ export const Interactivity = {
      * For instance, cards or list items that are not able to be disabled.
      */
     always: { 
-        interactivitySelector: "",
-        disabledSelector: undefined,
+        interactive: "",
     } as InteractivityDefinition,
 
     /**
      * Is never interactive or disabled, that is, a plain static element.
      *
      * For instance, body text, headings, illustrations, etc.
+     *
+     * @remarks
+     * This is an explicit value representing the default case.
      */
     never: { 
-        interactivitySelector: undefined,
-        disabledSelector: undefined,
     } as InteractivityDefinition,
 } as const;
 
@@ -252,7 +248,7 @@ export const Focus = {
         return {
             focusTarget: {
                 part: indicatorPart,
-                focusSelector: "focus-within",
+                focus: ":focus-within",
                 ignoreInteractivity: true,
             },
             resetTarget: {

@@ -18,7 +18,7 @@ import { StyleProperty } from "./modules/types.js";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "./recipes.js";
 import { createTokenNonCss, createTokenSwatch } from "./token-helpers.js";
-import type { InteractiveSet, InteractiveTokenGroup } from "./types.js";
+import { InteractiveState, InteractiveTokenGroup } from "./types.js";
 
 /**
  * Creates a DesignToken that can be used for interactive color recipe deltas.
@@ -31,7 +31,7 @@ import type { InteractiveSet, InteractiveTokenGroup } from "./types.js";
  */
 export function createTokenDelta(
     baseName: string,
-    state: keyof InteractiveSwatchSet,
+    state: InteractiveState,
     value: number | DesignToken<number>
 ): TypedDesignToken<number> {
     return createTokenNonCss<number>(`${baseName}-${state}-delta`, DesignTokenType.number).withDefault(value);
@@ -134,7 +134,7 @@ export function createTokenColorRecipeWithPalette<T>(
 
 function createTokenColorSetState(
     valueToken: TypedDesignToken<InteractiveSwatchSet>,
-    state: keyof InteractiveSwatchSet,
+    state: InteractiveState,
 ): TypedCSSDesignToken<Swatch> {
     return createTokenSwatch(`${valueToken.name.replace("-value", "")}-${state}`, valueToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
@@ -161,11 +161,11 @@ export function createTokenColorSet(
         name,
         type: DesignTokenType.color,
         intendedFor: valueToken.intendedFor,
-        rest: createTokenColorSetState(valueToken, "rest"),
-        hover: createTokenColorSetState(valueToken, "hover"),
-        active: createTokenColorSetState(valueToken, "active"),
-        focus: createTokenColorSetState(valueToken, "focus"),
-        disabled: createTokenColorSetState(valueToken, "disabled"),
+        rest: createTokenColorSetState(valueToken, InteractiveState.rest),
+        hover: createTokenColorSetState(valueToken, InteractiveState.hover),
+        active: createTokenColorSetState(valueToken, InteractiveState.active),
+        focus: createTokenColorSetState(valueToken, InteractiveState.focus),
+        disabled: createTokenColorSetState(valueToken, InteractiveState.disabled),
     };
 }
 
@@ -202,8 +202,8 @@ export function createForegroundSet(
     const setName = `${foregroundBaseName}-on-${background.name}`;
 
     function createState(
-        foregroundState: keyof InteractiveSet<any>,
-        state: keyof InteractiveSet<any>,
+        foregroundState: InteractiveState,
+        state: InteractiveState,
     ): TypedCSSDesignToken<Swatch> {
         return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
@@ -217,11 +217,11 @@ export function createForegroundSet(
         name: setName,
         type: DesignTokenType.color,
         intendedFor: foregroundRecipe.intendedFor,
-        rest: createState("rest", "rest"),
-        hover: createState("rest", "hover"),
-        active: createState("rest", "active"),
-        focus: createState("rest", "focus"),
-        disabled: createState("disabled", "disabled"),
+        rest: createState(InteractiveState.rest, InteractiveState.rest),
+        hover: createState(InteractiveState.rest, InteractiveState.hover),
+        active: createState(InteractiveState.rest, InteractiveState.active),
+        focus: createState(InteractiveState.rest, InteractiveState.focus),
+        disabled: createState(InteractiveState.disabled, InteractiveState.disabled),
     };
 }
 
@@ -255,7 +255,7 @@ export function createForegroundSetBySet(
     );
 
     function createState(
-        state: keyof InteractiveSet<any>,
+        state: InteractiveState,
     ): TypedCSSDesignToken<Swatch> {
         return createTokenSwatch(`${setName}-${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
@@ -267,10 +267,10 @@ export function createForegroundSetBySet(
         name: setName,
         intendedFor: foregroundRecipe.intendedFor,
         type: DesignTokenType.color,
-        rest: createState("rest"),
-        hover: createState("hover"),
-        active: createState("active"),
-        focus: createState("focus"),
-        disabled: createState("disabled"),
+        rest: createState(InteractiveState.rest),
+        hover: createState(InteractiveState.hover),
+        active: createState(InteractiveState.active),
+        focus: createState(InteractiveState.focus),
+        disabled: createState(InteractiveState.disabled),
     };
 }

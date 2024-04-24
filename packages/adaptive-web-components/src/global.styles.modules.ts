@@ -1,7 +1,7 @@
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import {
     ComponentAnatomy,
-    InteractiveSet,
+    InteractiveValues,
     StyleProperties,
     StyleRule,
     StyleRules,
@@ -26,7 +26,7 @@ const convertToFocusState = (styles: Styles) => {
         } else if (value && typeof (value as any).createCSS === "function") {
             focusValue = value;
         } else {
-            focusValue = (value as InteractiveSet<any>).focus;
+            focusValue = (value as InteractiveValues<any>).focus;
         }
 
         if (focusValue) {
@@ -63,11 +63,11 @@ export const globalStyleRules = (anatomy?: ComponentAnatomy<any, any>): StyleRul
     const styles = new Array<StyleRule>();
 
     // If this component can be disabled, apply the style to all children.
-    if (anatomy?.interactivity?.disabledSelector !== undefined) {
+    if (anatomy?.interactivity?.disabled !== undefined) {
         styles.push(
             {
                 target : {
-                    contextCondition: anatomy.interactivity.disabledSelector,
+                    contextCondition: anatomy.interactivity.disabled,
                     part: "*",
                 },
                 styles: disabledStyles,

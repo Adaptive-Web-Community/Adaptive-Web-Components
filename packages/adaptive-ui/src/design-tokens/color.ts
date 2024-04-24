@@ -24,6 +24,7 @@ import {
 } from "../token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
 import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
+import { InteractiveState } from "../types.js";
 import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
 
 /**
@@ -220,19 +221,19 @@ export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<Interactiv
 const fillStealthName = "fill-stealth";
 
 /** @public */
-export const fillStealthRestDelta = createTokenDelta(fillStealthName, "rest", 0);
+export const fillStealthRestDelta = createTokenDelta(fillStealthName, InteractiveState.rest, 0);
 
 /** @public */
-export const fillStealthHoverDelta = createTokenDelta(fillStealthName, "hover", 3);
+export const fillStealthHoverDelta = createTokenDelta(fillStealthName, InteractiveState.hover, 3);
 
 /** @public */
-export const fillStealthActiveDelta = createTokenDelta(fillStealthName, "active", 2);
+export const fillStealthActiveDelta = createTokenDelta(fillStealthName, InteractiveState.active, 2);
 
 /** @public */
-export const fillStealthFocusDelta = createTokenDelta(fillStealthName, "focus", 0);
+export const fillStealthFocusDelta = createTokenDelta(fillStealthName, InteractiveState.focus, 0);
 
 /** @public */
-export const fillStealthDisabledDelta = createTokenDelta(fillStealthName, "disabled", 0);
+export const fillStealthDisabledDelta = createTokenDelta(fillStealthName, InteractiveState.disabled, 0);
 
 /** @public */
 export const fillStealthRecipe = createTokenColorRecipeForPalette(
@@ -256,19 +257,19 @@ export const fillStealthRecipe = createTokenColorRecipeForPalette(
 const fillSubtleName = "fill-subtle";
 
 /** @public */
-export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, "rest", 2);
+export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, InteractiveState.rest, 2);
 
 /** @public */
-export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, "hover", 3);
+export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, InteractiveState.hover, 3);
 
 /** @public */
-export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, "active", 1);
+export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, InteractiveState.active, 1);
 
 /** @public */
-export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, "focus", 2);
+export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, InteractiveState.focus, 2);
 
 /** @public */
-export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, "disabled", 2);
+export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, InteractiveState.disabled, 2);
 
 /** @public */
 export const fillSubtleRecipe = createTokenColorRecipeForPalette(
@@ -307,19 +308,19 @@ export const fillSubtleInverseRecipe = createTokenColorRecipeForPalette(
 const fillDiscernibleName = "fill-discernible";
 
 /** @public */
-export const fillDiscernibleRestDelta = createTokenDelta(fillDiscernibleName, "rest", 0);
+export const fillDiscernibleRestDelta = createTokenDelta(fillDiscernibleName, InteractiveState.rest, 0);
 
 /** @public */
-export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, "hover", 6);
+export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, InteractiveState.hover, 6);
 
 /** @public */
-export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, "active", 3);
+export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, InteractiveState.active, 3);
 
 /** @public */
-export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, "focus", 0);
+export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, InteractiveState.focus, 0);
 
 /** @public */
-export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, "disabled", 2);
+export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, InteractiveState.disabled, 2);
 
 /** @public */
 export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
@@ -342,19 +343,19 @@ export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
 const fillReadableName = "fill-readable";
 
 /** @public */
-export const fillReadableRestDelta = createTokenDelta(fillReadableName, "rest", 0);
+export const fillReadableRestDelta = createTokenDelta(fillReadableName, InteractiveState.rest, 0);
 
 /** @public */
-export const fillReadableHoverDelta = createTokenDelta(fillReadableName, "hover", -2);
+export const fillReadableHoverDelta = createTokenDelta(fillReadableName, InteractiveState.hover, -2);
 
 /** @public */
-export const fillReadableActiveDelta = createTokenDelta(fillReadableName, "active", 2);
+export const fillReadableActiveDelta = createTokenDelta(fillReadableName, InteractiveState.active, 2);
 
 /** @public */
-export const fillReadableFocusDelta = createTokenDelta(fillReadableName, "focus", 0);
+export const fillReadableFocusDelta = createTokenDelta(fillReadableName, InteractiveState.focus, 0);
 
 /** @public */
-export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, "disabled", 2);
+export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, InteractiveState.disabled, 2);
 
 /** @public */
 export const fillReadableRecipe = createTokenColorRecipeForPalette(
@@ -377,19 +378,19 @@ export const fillReadableRecipe = createTokenColorRecipeForPalette(
 const strokeSafetyName = "stroke-safety";
 
 /** @public */
-export const strokeSafetyRestDelta = createTokenDelta(strokeSafetyName, "rest", 0);
+export const strokeSafetyRestDelta = createTokenDelta(strokeSafetyName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeSafetyHoverDelta = createTokenDelta(strokeSafetyName, "hover", 6);
+export const strokeSafetyHoverDelta = createTokenDelta(strokeSafetyName, InteractiveState.hover, 6);
 
 /** @public */
-export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, "active", -6);
+export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, InteractiveState.active, -6);
 
 /** @public */
-export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, "focus", 0);
+export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeSafetyDisabledDelta = createTokenDelta(strokeSafetyName, "disabled", 0);
+export const strokeSafetyDisabledDelta = createTokenDelta(strokeSafetyName, InteractiveState.disabled, 0);
 
 /** @public */
 export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
@@ -415,19 +416,19 @@ export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
 const strokeStealthName = "stroke-stealth";
 
 /** @public */
-export const strokeStealthRestDelta = createTokenDelta(strokeStealthName, "rest", 0);
+export const strokeStealthRestDelta = createTokenDelta(strokeStealthName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeStealthHoverDelta = createTokenDelta(strokeStealthName, "hover", 6);
+export const strokeStealthHoverDelta = createTokenDelta(strokeStealthName, InteractiveState.hover, 6);
 
 /** @public */
-export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, "active", -6);
+export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, InteractiveState.active, -6);
 
 /** @public */
-export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, "focus", 0);
+export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeStealthDisabledDelta = createTokenDelta(strokeStealthName, "disabled", 0);
+export const strokeStealthDisabledDelta = createTokenDelta(strokeStealthName, InteractiveState.disabled, 0);
 
 /** @public */
 export const strokeStealthRecipe = createTokenColorRecipeForPalette(
@@ -452,19 +453,19 @@ export const strokeStealthRecipe = createTokenColorRecipeForPalette(
 const strokeSubtleName = "stroke-subtle";
 
 /** @public */
-export const strokeSubtleRestDelta = createTokenDelta(strokeSubtleName, "rest", 0);
+export const strokeSubtleRestDelta = createTokenDelta(strokeSubtleName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeSubtleHoverDelta = createTokenDelta(strokeSubtleName, "hover", 4);
+export const strokeSubtleHoverDelta = createTokenDelta(strokeSubtleName, InteractiveState.hover, 4);
 
 /** @public */
-export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, "active", -2);
+export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, InteractiveState.active, -2);
 
 /** @public */
-export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, "focus", 0);
+export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeSubtleDisabledDelta = createTokenDelta(strokeSubtleName, "disabled", 8);
+export const strokeSubtleDisabledDelta = createTokenDelta(strokeSubtleName, InteractiveState.disabled, 8);
 
 /** @public */
 export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
@@ -487,19 +488,19 @@ export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
 const strokeDiscernibleName = "stroke-discernible";
 
 /** @public */
-export const strokeDiscernibleRestDelta = createTokenDelta(strokeDiscernibleName, "rest", 0);
+export const strokeDiscernibleRestDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeDiscernibleHoverDelta = createTokenDelta(strokeDiscernibleName, "hover", 8);
+export const strokeDiscernibleHoverDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.hover, 8);
 
 /** @public */
-export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleName, "active", -4);
+export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.active, -4);
 
 /** @public */
-export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, "focus", 0);
+export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernibleName, "disabled", 8);
+export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.disabled, 8);
 
 /** @public */
 export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
@@ -522,19 +523,19 @@ export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
 const strokeReadableName = "stroke-readable";
 
 /** @public */
-export const strokeReadableRestDelta = createTokenDelta(strokeReadableName, "rest", 0);
+export const strokeReadableRestDelta = createTokenDelta(strokeReadableName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeReadableHoverDelta = createTokenDelta(strokeReadableName, "hover", 6);
+export const strokeReadableHoverDelta = createTokenDelta(strokeReadableName, InteractiveState.hover, 6);
 
 /** @public */
-export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, "active", -6);
+export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, InteractiveState.active, -6);
 
 /** @public */
-export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, "focus", 0);
+export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeReadableDisabledDelta = createTokenDelta(strokeReadableName, "disabled", 8);
+export const strokeReadableDisabledDelta = createTokenDelta(strokeReadableName, InteractiveState.disabled, 8);
 
 /** @public */
 export const strokeReadableRecipe = createTokenColorRecipeForPalette(
@@ -560,19 +561,19 @@ const strokeStrongName = "stroke-strong";
 export const strokeStrongMinContrast = createTokenMinContrast(strokeStrongName, 12);
 
 /** @public */
-export const strokeStrongRestDelta = createTokenDelta(strokeStrongName, "rest", 0);
+export const strokeStrongRestDelta = createTokenDelta(strokeStrongName, InteractiveState.rest, 0);
 
 /** @public */
-export const strokeStrongHoverDelta = createTokenDelta(strokeStrongName, "hover", 10);
+export const strokeStrongHoverDelta = createTokenDelta(strokeStrongName, InteractiveState.hover, 10);
 
 /** @public */
-export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, "active", -10);
+export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, InteractiveState.active, -10);
 
 /** @public */
-export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, "focus", 0);
+export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, InteractiveState.focus, 0);
 
 /** @public */
-export const strokeStrongDisabledDelta = createTokenDelta(strokeStrongName, "disabled", 8);
+export const strokeStrongDisabledDelta = createTokenDelta(strokeStrongName, InteractiveState.disabled, 8);
 
 /** @public */
 export const strokeStrongRecipe = createTokenColorRecipeForPalette(
