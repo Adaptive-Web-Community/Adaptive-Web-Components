@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@adaptive-web/adaptive-web-components": "0.5.0",
+    "change-case": "^5.4.4",
     "culori": "^3.2.0"
   },
   "peerDependencies": {

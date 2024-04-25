@@ -9,6 +9,7 @@ import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedSty
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 import { serializeUINodes } from '../core/serialization.js';
+import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';
 import { StylesController } from "./ui-controller-styles.js";
@@ -85,6 +86,11 @@ export class UIController {
      */
     public readonly states: StatesController;
 
+    /**
+     * A sub-controller for code generation.
+     */
+    public readonly code: CodeController;
+
     // This is adapting the new token model to the previous plugin structure.
     // What was previously a "recipe" is now an "applied design token".
     // The separation is useful for now in that "setting" a token is for overriding a value at a node,
@@ -112,6 +118,7 @@ export class UIController {
         this.designTokens = new DesignTokenController(this, this._elements);
         this.styles = new StylesController(this);
         this.states = new StatesController(this);
+        this.code = new CodeController(this);
 
         registerTokens(this.designTokenRegistry);
         registerAppliableTokens(this.appliableDesignTokenRegistry);
@@ -137,6 +144,7 @@ export class UIController {
         }
 
         this.designTokens.selectedNodesChanged();
+        this.code.selectedNodesChanged();
     }
 
     /**

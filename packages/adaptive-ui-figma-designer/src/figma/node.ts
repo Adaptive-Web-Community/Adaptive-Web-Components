@@ -115,6 +115,8 @@ export class FigmaPluginNode extends PluginNode {
     public states: StatesState;
     private _node: BaseNode;
     private _state: State | null = null;
+    public supportsCodeGen: boolean;
+    public codeGenName: string | undefined;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
 
@@ -250,6 +252,28 @@ export class FigmaPluginNode extends PluginNode {
                 StatesState.available :
                 StatesState.configured :
             StatesState.notAvailable;
+
+        this.supportsCodeGen = // this._node.type === "COMPONENT_SET" ||
+            this._node.type === "COMPONENT" ||
+            this._node.type === "INSTANCE";
+
+        if (this.supportsCodeGen) {
+            switch (this._node.type) {
+                case "INSTANCE":
+                    this.codeGenName = refComponentNode?.name;
+                    break;
+                case "COMPONENT":
+                    if (this.parent && this.parent.type === "COMPONENT_SET") {
+                        this.codeGenName = this.parent?.name;
+                    } else {
+                        this.codeGenName = this.name;
+                    }
+                    break;
+                case "COMPONENT_SET":
+                    this.codeGenName = this.name;
+                    break;
+            }
+        }
 
         if (this._node.type === "COMPONENT") {
             const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant] : null;
