@@ -146,6 +146,10 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         designUnit: string | DesignToken<string>,
         borderThickness: string | DesignToken<string>,
     ) {
+        this.designUnit = createTokenDimension(`${name}-design-unit`).withDefault(designUnit);
+
+        this.borderThickness = createTokenDimension(`${name}-border-thickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
+
         this.horizontalPaddingUnits = createTokenNonCss<number>(
             `${name}-horizontal-padding-units`,
             DesignTokenType.number,
@@ -197,10 +201,6 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             (resolve: DesignTokenResolver) =>
                 `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(this.designUnit)})`
         );
-
-        this.designUnit = createTokenDimension(`${name}-design-unit`).withDefault(designUnit);
-
-        this.borderThickness = createTokenDimension(`${name}-border-thickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
     }
 
     /**
