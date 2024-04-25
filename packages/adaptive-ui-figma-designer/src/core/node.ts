@@ -174,6 +174,16 @@ export abstract class PluginNode {
     public abstract readonly states: StatesState;
 
     /**
+     * Whether the selected nodes support code gen or not.
+     */
+    public abstract readonly supportsCodeGen: boolean;
+
+    /**
+     * The name of the component for code gen.
+     */
+    public abstract readonly codeGenName: string | undefined;
+
+    /**
      * The interactive state of the node.
      */
     public abstract get state(): string | null;
@@ -264,6 +274,11 @@ export abstract class PluginNode {
 
         if (this.state) {
             this._additionalData.set(AdditionalDataKeys.state, this.state);
+        }
+
+        this._additionalData.set(AdditionalDataKeys.supportsCodeGen, "" + this.supportsCodeGen);
+        if (this.codeGenName) {
+            this._additionalData.set(AdditionalDataKeys.codeGenName, this.codeGenName);
         }
 
         if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.fillColor) {
