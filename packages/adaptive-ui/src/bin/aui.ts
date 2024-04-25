@@ -6,8 +6,8 @@ import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { Command } from 'commander';
 import { glob } from "glob";
-import { ElementStylesRenderer } from './modules/element-styles-renderer.js';
-import { ComponentAnatomy, ComponentConditions, ComponentParts, StyleRules } from './modules/types.js';
+import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
+import { ComponentAnatomy, ComponentConditions, ComponentParts, StyleRules } from '../core/modules/types.js';
 
 const program = new Command();
 
