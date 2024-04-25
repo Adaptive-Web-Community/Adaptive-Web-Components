@@ -141,7 +141,7 @@ export class FigmaPluginNode extends PluginNode {
 
         However, once you override the value at an instance level, you no longer directly get the value from main:
 
-        Instance (set plugin data "A=2") --> Instance (set plugin data "A=2")
+        Instance (set plugin data "A=2") --> Instance (get plugin data "A=2")
 
         In our normal workflow we're reevaluating the applied tokens, so the instance may have the same overall structure
         but with different values. This would also normally be fine as we're going to evaluate for current values anyway.
@@ -150,7 +150,7 @@ export class FigmaPluginNode extends PluginNode {
 
         Main component (set plugin data "A=1, B=2") --> Instance (get plugin data "A=2")
 
-        Notice we don't have the addition of "B=2".
+        Notice we don't have the addition of "B=2". It's a simple string and the value is already set, so it doesn't change.
 
         The solution is to *store* the fully evaluated tokens on the instance node, but to *read* back both the main and instance
         values, and to deduplicate them.
@@ -158,20 +158,27 @@ export class FigmaPluginNode extends PluginNode {
         In the example above, we'd read "A=2" from the instance, "A=1, B=2" from the main, then assemble the full list, keeping
         any overrides from the instance: "A=2, B=2".
 
+        Refinement: The main component is not the most authoritative, but rather the reference component in the chain. This is
+        to handle composed nesting, where another component places an instance of a main, overrides a value, and then an instance
+        of the second component is being evaluated.
+
         In the case of the "design tokens" the key will be the name of the token, like "corner-radius".
         In the case of the "applied design tokens" the key will be the style target, like "backgroundFill".
         */
 
-        // Find the "main" reference node if this node is part of an instance.
-        let mainComponentNode: BaseNode | null = null;
-        if (isInstanceNode(this._node)) {
-            mainComponentNode = (this._node as InstanceNode).mainComponent;
-        } else if (this.id.startsWith("I")) {
+        // Find the reference node if this node is part of an instance or composition.
+        let refComponentNode: BaseNode | null = null;
+        if (this.id.startsWith("I")) {
+            // Check this first to handle nested components, we want the overrides on the reference instance before the main component.
             // Child nodes of an instance have an ID like `I##:##;##:##;##:##`
             // where each `##:##` points to the containing instance, and the last always points to the main node.
             const ids = this.id.split(";");
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            mainComponentNode = figma.getNodeById(ids.pop()!);
+            ids.shift();
+            const refId = "I" + ids.join(";");
+            // console.log("    looking for ref", refId);
+            refComponentNode = figma.getNodeById(refId);
+        } else if (isInstanceNode(this._node)) {
+            refComponentNode = (this._node as InstanceNode).mainComponent;
         }
 
         const deserializedDesignTokens = this.deserializeLocalDesignTokens();
@@ -179,17 +186,17 @@ export class FigmaPluginNode extends PluginNode {
         let filteredAppliedStyleModules = parsedAppliedStyleModules;
         const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens();
 
-        // Reconcile plugin data with the main component.
-        if (mainComponentNode) {
-            // console.log("    get main");
-            const mainFigmaNode = FigmaPluginNode.get(mainComponentNode, false);
-            // console.log("      is instance node", this.debugInfo, mainFigmaNode);
+        // Reconcile plugin data with the reference component.
+        if (refComponentNode) {
+            // console.log("    getting refComponentNode");
+            const refFigmaNode = FigmaPluginNode.get(refComponentNode, false);
+            // console.log("      refComponentNode for", this.debugInfo, " is ", refFigmaNode.debugInfo);
 
-            this._componentDesignTokens = mainFigmaNode.localDesignTokens;
-            this._componentAppliedStyleModules = mainFigmaNode.appliedStyleModules;
-            this._componentAppliedDesignTokens = mainFigmaNode.appliedDesignTokens;
+            this._componentDesignTokens = refFigmaNode.localDesignTokens;
+            this._componentAppliedStyleModules = refFigmaNode.appliedStyleModules;
+            this._componentAppliedDesignTokens = refFigmaNode.appliedDesignTokens;
 
-            mainFigmaNode.localDesignTokens.forEach((value, tokenId) => {
+            refFigmaNode.localDesignTokens.forEach((value, tokenId) => {
                 // If the token values are the same between the nodes, remove it from the local.
                 if (deserializedDesignTokens.get(tokenId)?.value === value.value) {
                     // console.log("    removing design token", this.debugInfo, tokenId);
@@ -198,9 +205,9 @@ export class FigmaPluginNode extends PluginNode {
             });
 
             filteredAppliedStyleModules = parsedAppliedStyleModules
-                .filter((parsedName) => mainFigmaNode.appliedStyleModules.indexOf(parsedName) === -1) as AppliedStyleModules;
+                .filter((parsedName) => refFigmaNode.appliedStyleModules.indexOf(parsedName) === -1) as AppliedStyleModules;
 
-            mainFigmaNode.appliedDesignTokens.forEach((applied, target) => {
+            refFigmaNode.appliedDesignTokens.forEach((applied, target) => {
                 // If the target and token are the same between the nodes, remove it from the local.
                 if (deserializedAppliedDesignTokens.get(target)?.tokenID === applied.tokenID) {
                     // console.log("    removing applied design token", this.debugInfo, target, applied.tokenID);
