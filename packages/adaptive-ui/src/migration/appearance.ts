@@ -1,4 +1,4 @@
-import { create, createTokenNumber } from "../token-helpers.js";
+import { create, createTokenNumber } from "../core/token-helpers.js";
 
 /** @public @deprecated This is changing to a `dimension` type with a value like `4px` */
 export const designUnit = createTokenNumber("design-unit").withDefault(4);

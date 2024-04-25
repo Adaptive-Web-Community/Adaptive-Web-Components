@@ -220,7 +220,9 @@ export const densityAdjustmentUnits: TypedDesignToken<number>;
 
 // @public
 export class DensityPaddingAndGapTokenGroup implements TokenGroup {
-    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number);
+    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number, designUnit: string | DesignToken<string>, borderThickness: string | DesignToken<string>);
+    readonly borderThickness: TypedCSSDesignToken<string>;
+    readonly designUnit: TypedCSSDesignToken<string>;
     readonly horizontalGap: TypedCSSDesignToken<string>;
     readonly horizontalGapUnits: TypedDesignToken<number>;
     readonly horizontalPadding: TypedCSSDesignToken<string>;

@@ -1,17 +1,17 @@
 import type { DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
-import { Palette } from "../color/palette.js";
-import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveSwatchSet } from "../color/recipe.js";
-import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
-import { blackOrWhiteByContrast } from "../color/recipes/black-or-white-by-contrast.js";
-import { contrastSwatch } from "../color/recipes/contrast-swatch.js";
-import { contrastAndDeltaSwatchSet } from "../color/recipes/contrast-and-delta-swatch-set.js";
-import { deltaSwatchSet } from "../color/recipes/delta-swatch-set.js";
-import { Swatch } from "../color/swatch.js";
-import { _white } from "../color/utilities/color-constants.js";
-import { conditionalSwatchSet } from "../color/utilities/conditional.js";
-import { interactiveSwatchSetAsOverlay } from "../color/utilities/opacity.js";
-import { StyleProperty, stylePropertyBorderFillAll } from "../modules/types.js";
-import { Recipe, RecipeOptional } from "../recipes.js";
+import { Palette } from "../core/color/palette.js";
+import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveSwatchSet } from "../core/color/recipe.js";
+import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
+import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
+import { contrastSwatch } from "../core/color/recipes/contrast-swatch.js";
+import { contrastAndDeltaSwatchSet } from "../core/color/recipes/contrast-and-delta-swatch-set.js";
+import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
+import { Swatch } from "../core/color/swatch.js";
+import { _white } from "../core/color/utilities/color-constants.js";
+import { conditionalSwatchSet } from "../core/color/utilities/conditional.js";
+import { interactiveSwatchSetAsOverlay } from "../core/color/utilities/opacity.js";
+import { StyleProperty, stylePropertyBorderFillAll } from "../core/modules/types.js";
+import { Recipe, RecipeOptional } from "../core/recipes.js";
 import {
     createTokenColorRecipe,
     createTokenColorRecipeBySet,
@@ -21,10 +21,10 @@ import {
     createTokenColorSet,
     createTokenDelta,
     createTokenMinContrast
-} from "../token-helpers-color.js";
-import { createNonCss, createTokenNonCss, createTokenSwatch } from "../token-helpers.js";
-import { DesignTokenType, TypedDesignToken } from "../adaptive-design-tokens.js";
-import { InteractiveState } from "../types.js";
+} from "../core/token-helpers-color.js";
+import { createNonCss, createTokenNonCss, createTokenSwatch } from "../core/token-helpers.js";
+import { InteractiveState } from "../core/types.js";
+import { DesignTokenType, TypedDesignToken } from "../core/adaptive-design-tokens.js";
 import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
 
 /**

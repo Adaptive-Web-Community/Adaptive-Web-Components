@@ -35,7 +35,7 @@ To tint the neutral palette, and thus all color recipes derived from it:
 neutralBaseColor.withDefault("#73818C");
 ```
 
-See more about the [adaptive color system](./src/color/README.md).
+See more about the [adaptive color system](./src/core/color/README.md).
 
 ## Next Steps
 

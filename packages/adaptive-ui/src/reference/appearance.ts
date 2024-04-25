@@ -1,5 +1,5 @@
-import { stylePropertyBorderThicknessAll, stylePropertyCornerRadiusAll } from "../modules/types.js";
-import { createTokenDimension } from "../token-helpers.js";
+import { stylePropertyBorderThicknessAll, stylePropertyCornerRadiusAll } from "../core/modules/types.js";
+import { createTokenDimension } from "../core/token-helpers.js";
 
 /** @public */
 export const designUnit = createTokenDimension("design-unit").withDefault("4px");

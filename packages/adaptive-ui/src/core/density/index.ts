@@ -1,10 +1,10 @@
 import { css, type CSSDirective } from "@microsoft/fast-element";
 import type { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
-import { designUnit, strokeThickness } from "../design-tokens/appearance.js";
 import { createTokenDimension, createTokenNonCss } from "../token-helpers.js";
-import { StyleProperty } from "../modules/types.js";
+import { StyleProperty, stylePropertyBorderThicknessAll } from "../modules/types.js";
 
 /**
  * The adjustment (plus or minus) to density unit values.
@@ -115,6 +115,20 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
     public readonly verticalGap: TypedCSSDesignToken<string>;
 
     /**
+     * The dimension of a design unit for density calculation.
+     *
+     * @public
+     */
+    public readonly designUnit: TypedCSSDesignToken<string>;
+
+    /**
+     * The dimension of the border for density calculation.
+     *
+     * @public
+     */
+    public readonly borderThickness: TypedCSSDesignToken<string>;
+
+    /**
      * Creates a new token group with the specified unit values and default calculations.
      *
      * @param name - The base name of the token group.
@@ -129,6 +143,8 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         horizontalGapUnits: number,
         verticalPaddingUnits: number,
         verticalGapUnits: number,
+        designUnit: string | DesignToken<string>,
+        borderThickness: string | DesignToken<string>,
     ) {
         this.horizontalPaddingUnits = createTokenNonCss<number>(
             `${name}-horizontal-padding-units`,
@@ -140,7 +156,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             [StyleProperty.paddingRight, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.horizontalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
+                `calc((${resolve(this.horizontalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(this.designUnit)}) - ${resolve(this.borderThickness)})`
         );
 
         this.horizontalGapUnits = createTokenNonCss<number>(
@@ -153,7 +169,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.horizontalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
+                `calc((${resolve(this.horizontalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(this.designUnit)})`
         );
 
         this.verticalPaddingUnits = createTokenNonCss<number>(
@@ -166,7 +182,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             [StyleProperty.paddingTop, StyleProperty.paddingBottom],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.verticalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(designUnit)}) - ${resolve(strokeThickness)})`
+                `calc((${resolve(this.verticalPaddingUnits) + resolve(densityAdjustmentUnits)} * ${resolve(this.designUnit)}) - ${resolve(this.borderThickness)})`
         );
 
         this.verticalGapUnits = createTokenNonCss<number>(
@@ -179,8 +195,12 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
             StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>
-                `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(designUnit)})`
+                `calc((${resolve(this.verticalGapUnits)} + ${resolve(densityAdjustmentUnits)}) * ${resolve(this.designUnit)})`
         );
+
+        this.designUnit = createTokenDimension(`${name}-design-unit`).withDefault(designUnit);
+
+        this.borderThickness = createTokenDimension(`${name}-border-thickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
     }
 
     /**

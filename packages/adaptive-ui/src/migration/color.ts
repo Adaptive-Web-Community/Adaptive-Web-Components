@@ -1,18 +1,18 @@
 import type { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { ColorRecipeParams, InteractiveSwatchSet } from "../color/recipe.js";
-import { blackOrWhiteByContrastSet } from "../color/recipes/black-or-white-by-contrast-set.js";
-import { deltaSwatchSet } from "../color/recipes/delta-swatch-set.js";
-import { deltaSwatch } from "../color/recipes/delta-swatch.js";
-import { Swatch } from "../color/swatch.js";
-import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../color/utilities/opacity.js";
-import { StyleProperty, stylePropertyBorderFillAll } from "../modules/types.js";
+import { ColorRecipeParams, InteractiveSwatchSet } from "../core/color/recipe.js";
+import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
+import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
+import { deltaSwatch } from "../core/color/recipes/delta-swatch.js";
+import { Swatch } from "../core/color/swatch.js";
+import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../core/color/utilities/opacity.js";
+import { StyleProperty, stylePropertyBorderFillAll } from "../core/modules/types.js";
 import {
     createTokenColorRecipe,
     createTokenColorRecipeValue,
     createTokenColorSet,
     createTokenDelta,
     createTokenMinContrast
-} from "../token-helpers-color.js";
+} from "../core/token-helpers-color.js";
 import {
     accentFillReadable,
     accentFillReadableActive,
@@ -82,9 +82,9 @@ import {
     strokeSubtleHoverDelta,
     strokeSubtleRecipe,
     strokeSubtleRestDelta
-} from "../design-tokens/color.js";
-import { neutralPalette } from "../design-tokens/palette.js";
-import { InteractiveState } from "../types.js";
+} from "../reference/color.js";
+import { neutralPalette } from "../reference/palette.js";
+import { InteractiveState } from "../core/types.js";
 
 /**
  * Convenience values for WCAG contrast requirements.
