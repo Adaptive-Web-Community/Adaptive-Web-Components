@@ -133,7 +133,7 @@ export class UIController {
         this._elements.selectedNodesChanged();
 
         if (this.autoRefresh) {
-            this.refreshSelectedNodes("set_selectedNodes", true);
+            this.refreshSelectedNodes("set_selectedNodes");
         }
 
         this.designTokens.selectedNodesChanged();
@@ -151,12 +151,7 @@ export class UIController {
      *
      * @param reason - A description used for debug logging
      */
-    public refreshSelectedNodes(reason: string = "refreshSelectedNodes", skipReset: boolean = false): void {
-        // Remove any `fill-color` tokens we've set while processing the tokens before.
-        if (!skipReset) {
-            this._elements.resetFillColor(this._elements.rootElement);
-        }
-
+    public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
         // console.log("  Evaluating all design tokens for all selected nodes");
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
 

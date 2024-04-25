@@ -38,6 +38,9 @@ export class ElementsController {
         this.rootElement.childNodes.forEach(child =>
             this.rootElement.removeChild(child)
         );
+
+        this.resetFillColor(this.rootElement);
+
         this.controller.selectedNodes.forEach(node => this.setupDesignTokenElement(this.rootElement, node));
     }
 
