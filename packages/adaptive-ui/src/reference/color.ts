@@ -23,9 +23,9 @@ import {
     createTokenMinContrast
 } from "../core/token-helpers-color.js";
 import { createNonCss, createTokenNonCss, createTokenSwatch } from "../core/token-helpers.js";
+import { InteractiveState } from "../core/types.js";
 import { DesignTokenType, TypedDesignToken } from "../core/adaptive-design-tokens.js";
 import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
-import { InteractiveState } from "../core/types.js";
 
 /**
  * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
