@@ -1147,7 +1147,7 @@ export const neutralForegroundReadableElementStyles: Styles = Styles.fromPropert
     {
         ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadable.rest, neutralStrokeStrong.disabled),
     },
-    "color.neutral-foreground-readable-control",
+    "color.neutral-foreground-readable-element",
 );
 
 /**
