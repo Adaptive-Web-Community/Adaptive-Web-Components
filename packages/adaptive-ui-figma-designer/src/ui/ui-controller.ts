@@ -1,5 +1,5 @@
 import { calc } from '@csstools/css-calc';
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
@@ -95,6 +95,12 @@ export class UIController {
     private _selectedNodes: PluginUINodeData[] = [];
 
     /**
+     * Whether the designer will auto refresh the selected nodes when the selection changes.
+     */
+    @observable
+    public autoRefresh: boolean;
+
+    /**
      * Create a new UI controller.
      *
      * @param messageCallback - Callback function to handle message from UI.
@@ -122,6 +128,8 @@ export class UIController {
 
         this._selectedNodes = nodes;
 
+        this.autoRefresh = !(this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE");
+
         this._elements.selectedNodesChanged();
 
         if (this.autoRefresh) {
@@ -136,15 +144,6 @@ export class UIController {
      */
     public get selectedNodes(): PluginUINodeData[] {
         return this._selectedNodes;
-    }
-
-    /**
-     * Whether the designer will auto refresh the selected nodes when the selection changes.
-     */
-    public get autoRefresh(): boolean {
-        return !(
-            this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE"
-        );
     }
 
     /**
