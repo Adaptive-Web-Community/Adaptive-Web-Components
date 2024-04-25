@@ -84,8 +84,10 @@ export abstract class Controller {
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
 
+        const includeChildren = selectedNodes[0].type !== "PAGE";
+
         return {
-            selectedNodes: pluginNodesToUINodes(selectedNodes, true),
+            selectedNodes: pluginNodesToUINodes(selectedNodes, true, includeChildren),
         };
     }
 

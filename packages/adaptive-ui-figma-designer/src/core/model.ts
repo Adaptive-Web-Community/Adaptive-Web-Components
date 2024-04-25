@@ -257,12 +257,13 @@ export interface PluginUINodeData extends PluginNodeData {
 
 export const pluginNodesToUINodes = (
     nodes: PluginNode[],
-    includeInherited: boolean
+    includeInherited: boolean,
+    includeChildren: boolean,
 ): PluginUINodeData[] => {
     const convertedNodes = nodes.map(
         (node): PluginUINodeData => {
             // TODO Not all children, only nodes with design tokens.
-            const children = pluginNodesToUINodes(node.children, false);
+            const children = includeChildren ? pluginNodesToUINodes(node.children, false, true) : [];
             const inheritedDesignTokens = includeInherited
                 ? node.inheritedDesignTokens
                 : new DesignTokenValues();
