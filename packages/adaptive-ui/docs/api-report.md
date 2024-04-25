@@ -15,6 +15,9 @@ import { TypedCSSDesignToken as TypedCSSDesignToken_2 } from '../adaptive-design
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
+export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
+
+// @public
 export class BasePalette<T extends Swatch> implements Palette<T> {
     constructor(source: Color, swatches: ReadonlyArray<T>);
     readonly closestIndexCache: Map<number, number>;
