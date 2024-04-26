@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "refactor compiler to add compile commands and allow paramaterized inputs",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

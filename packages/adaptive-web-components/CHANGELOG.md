@@ -1,8 +1,23 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Fri, 12 Jan 2024 00:16:08 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Apr 2024 21:58:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Fri, 26 Apr 2024 21:58:21 GMT
+
+### Minor changes
+
+- Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.3.0
+
+### Patches
+
+- Updated Adaptive UI interactive state support (47367562+bheston@users.noreply.github.com)
+- Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
+- Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
 
 ## 0.4.2
 

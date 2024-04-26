@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Expand styling capabilities to not assume `:host` container",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

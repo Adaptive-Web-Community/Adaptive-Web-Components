@@ -1,8 +1,31 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Fri, 12 Jan 2024 00:16:08 GMT and should not be manually modified.
+This log was last generated on Fri, 26 Apr 2024 21:58:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Fri, 26 Apr 2024 21:58:21 GMT
+
+### Minor changes
+
+- Added subtle inverse color recipes (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added support for overriding interactive state selectors - Naming and type cleanup around interactive states (47367562+bheston@users.noreply.github.com)
+- Added shadows to Designer plugin (47367562+bheston@users.noreply.github.com)
+
+### Patches
+
+- Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Fix circular palette reference (47367562+bheston@users.noreply.github.com)
+- Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
+- Adaptive UI : Organized package structure (47367562+bheston@users.noreply.github.com)
+- Added warning and success palettes and recipes Deprecated color recipe set aliases (47367562+bheston@users.noreply.github.com)
+- Added info color palette (47367562+bheston@users.noreply.github.com)
+- Updated density token settings (47367562+bheston@users.noreply.github.com)
+- refactor compiler to add compile commands and allow paramaterized inputs (nicholasrice@users.noreply.github.com)
+- Adaptive UI: Fix a sequence issue in the density helper (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.2
 

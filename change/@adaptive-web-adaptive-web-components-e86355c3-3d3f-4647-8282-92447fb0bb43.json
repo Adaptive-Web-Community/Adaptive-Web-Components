@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update CLI usage across packages",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

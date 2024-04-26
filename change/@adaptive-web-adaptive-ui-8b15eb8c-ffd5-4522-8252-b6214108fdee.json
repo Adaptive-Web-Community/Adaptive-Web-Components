@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Added warning and success palettes and recipes Deprecated color recipe set aliases",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

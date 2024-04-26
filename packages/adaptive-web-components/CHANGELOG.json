@@ -2,6 +2,61 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Fri, 26 Apr 2024 21:58:21 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Updated Adaptive UI interactive state support"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Expand styling capabilities to not assume `:host` container"
+          }
+        ],
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI: Added styles build script"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.3.0",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b"
+          }
+        ],
+        "none": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Fix tsdoc"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "update CLI usage across packages"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jan 2024 00:16:08 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.4.2",
       "version": "0.4.2",

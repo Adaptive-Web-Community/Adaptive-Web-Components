@@ -2,6 +2,95 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 26 Apr 2024 21:58:21 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI: Fix circular palette reference"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Expand styling capabilities to not assume `:host` container"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI : Organized package structure"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Added warning and success palettes and recipes Deprecated color recipe set aliases"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Added info color palette"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Updated density token settings"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "refactor compiler to add compile commands and allow paramaterized inputs"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI: Fix a sequence issue in the density helper"
+          }
+        ],
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Added subtle inverse color recipes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI: Added styles build script"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Adaptive UI: Added support for overriding interactive state selectors - Naming and type cleanup around interactive states"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "c80ec188594440398925a734c91804c198fcc59b",
+            "comment": "Added shadows to Designer plugin"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 12 Jan 2024 00:16:08 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.2.2",
       "version": "0.2.2",
