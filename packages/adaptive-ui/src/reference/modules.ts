@@ -1,3 +1,4 @@
+import { ValuesOf } from "@microsoft/fast-foundation";
 import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles, StyleValue } from "../core/modules/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
 import {
@@ -1567,7 +1568,7 @@ export const focusIndicatorStyles: Styles = Styles.fromProperties(
  *
  * @beta
  */
-export const styleNameMapping = {
+export const StyleNameMapping = {
     "shape.control": "controlShapeStyles",
     "shape.layer": "layerShapeStyles",
     "shape.round": "roundShapeStyles",
@@ -1656,3 +1657,5 @@ export const styleNameMapping = {
     "styles.disabled": "disabledStyles",
     "styles.focus-indicator": "focusIndicatorStyles",
 };
+
+export type StyleNameMapping = ValuesOf<typeof StyleNameMapping>;

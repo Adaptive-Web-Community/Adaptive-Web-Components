@@ -200,7 +200,7 @@ const footerTemplate = html<App>`
                 aria-label=${genStylesLabel}
                 style="display: ${(x) => (x.controller.code.supportsCodeGen ? "block" : "none")};"
                 @click=${(x) => {
-                    const val = x.controller.code.generateStyles();
+                    const val = x.controller.code.generateForSelectedNodes();
                     clipboardCopy(val);
                 }}
             >
