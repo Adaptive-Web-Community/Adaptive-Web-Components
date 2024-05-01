@@ -7,8 +7,6 @@
         "lib": ["ES2018"],
         "strict": true,
         "skipLibCheck": true,
-        "typeRoots": [
-            "../../../../node_modules/@figma"
-        ]
+        "types": ["../../../../node_modules/@figma/plugin-typings"],
     }
 }

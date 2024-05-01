@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "npm run compile && npm run build:ui -- --minify esbuild && npm run build:figma -- --minify",
+    "build:cli": "tsc --project ./src/cli/tsconfig.json",
     "build:debug": "npm run compile && npm run build:ui && npm run build:figma",
     "build:figma": "esbuild src/figma/main.ts --tsconfig=src/figma/tsconfig.json --bundle --target=ES2017 --outfile=dist/main.js",
     "build:ui": "npx vite build --emptyOutDir=false --minify false",
@@ -49,6 +50,7 @@
     "@csstools/css-parser-algorithms": "^2.2.0",
     "@csstools/css-tokenizer": "^2.1.1",
     "@figma/plugin-typings": "^1.80.0",
+    "@figma/rest-api-spec": "^0.13.0",
     "concurrently": "^7.6.0",
     "esbuild": "^0.17.10",
     "rimraf": "^3.0.2",

@@ -1,30 +1,18 @@
-import { observable } from "@microsoft/fast-element";
 import { styleNameMapping } from "@adaptive-web/adaptive-ui/reference";
 import { camelCase, kebabCase } from "change-case";
 import { AdditionalDataKeys, PluginUINodeData } from "../core/model.js";
-import { UIController } from "./ui-controller.js";
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
 
 export class CodeController {
-    /**
-     * Whether the current selection supports code generation or not.
-     */
-    @observable
-    public supportsCodeGen: boolean;
-
-    constructor(
-        private readonly controller: UIController,
-    ) {
-    }
 
     /**
      * Allow this controller to do any necessary setup when the selected nodes change.
      */
     public selectedNodesChanged() {
-        this.supportsCodeGen = this.controller.selectedNodes.length === 1 &&
-            this.controller.selectedNodes[0].additionalData.get(AdditionalDataKeys.supportsCodeGen) === "true";
+        // this.supportsCodeGen = this.controller.selectedNodes.length === 1 &&
+            // this.controller.selectedNodes[0].additionalData.get(AdditionalDataKeys.supportsCodeGen) === "true";
         // console.log("change", this.supportsCodeGen);
     }
 
@@ -33,17 +21,17 @@ export class CodeController {
      *
      * @returns The generated style code
      */
-    public generateStyles(): string {
-        const selectedNode = this.controller.selectedNodes[0];
-        console.log("selected", selectedNode.id, selectedNode.name);
-        const componentName = selectedNode.additionalData.get(AdditionalDataKeys.codeGenName);
+    public generateStyles(node: PluginUINodeData): string {
+        // const selectedNode = this.controller.selectedNodes[0];
+        console.log("selected", node.id, node.name);
+        const componentName = node.additionalData.get(AdditionalDataKeys.codeGenName);
         console.log("  componentName", componentName);
 
         const parts = [];
-        this.addParts(selectedNode, parts);
+        this.addParts(node, parts);
         console.log("  parts", parts);
 
-        const code = this.collectStyles(selectedNode, componentName);
+        const code = this.collectStyles(node, componentName);
 
         console.log(code);
         return code;

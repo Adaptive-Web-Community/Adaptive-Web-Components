@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir": "../../dist",
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "lib": ["ESNext"],
+        "strict": false,
+        "skipLibCheck": true,
+        "types": ["../../../../node_modules/@figma/plugin-typings", "node"],
+    }
+}
