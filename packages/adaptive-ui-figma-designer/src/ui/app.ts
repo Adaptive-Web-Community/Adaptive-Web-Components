@@ -162,7 +162,23 @@ const availableTokensTemplate = (
     )}
 `;
 
+const clipboardCopy = (content: string) => {
+    const textArea = document.getElementById("copyTextArea") as HTMLTextAreaElement;
+    textArea.value = content;
+    textArea.focus();
+    textArea.select();
+    try {
+        const successful = document.execCommand("copy");
+        if (!successful) {
+            console.warn("Copying text command was not successful");
+        }
+    } catch (err) {
+        console.error("Error copying text", err);
+    }
+};
+
 const syncLabel = "Evaluate and apply all design tokens for the current selection.";
+const genStylesLabel = "Copies styling code for this component.";
 const revertLabel = "Remove all plugin data from the current selection.";
 
 const footerTemplate = html<App>`
@@ -178,6 +194,17 @@ const footerTemplate = html<App>`
                 @click=${(x) => x.controller.refreshSelectedNodes()}
             >
                 Sync
+            </adaptive-button>
+            <adaptive-button
+                appearance="stealth"
+                aria-label=${genStylesLabel}
+                style="display: ${(x) => (x.controller.code.supportsCodeGen ? "block" : "none")};"
+                @click=${(x) => {
+                    const val = x.controller.code.generateStyles();
+                    clipboardCopy(val);
+                }}
+            >
+                Gen styles
             </adaptive-button>
             <adaptive-button
                 appearance="stealth"

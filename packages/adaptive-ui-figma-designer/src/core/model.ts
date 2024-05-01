@@ -3,6 +3,8 @@ import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
 import { SerializableNodeData } from "./serialization.js";
 
+// TODO: This structure was used to pass design token values (specifically fill-color) but this isn't used
+// anymore and it's not a good way to structure the data it _is_ being used for now. Refactor with `PluginNodeData`.
 export const AdditionalDataKeys = {
     /**
      * A key for passing the fill color from the tool to the plugin.
@@ -21,6 +23,19 @@ export const AdditionalDataKeys = {
      * The interactive state of the node. Applies to all nodes.
      */
     state: "state",
+
+    /**
+     * Whether the selected nodes support code gen or not.
+     */
+    supportsCodeGen: "supports-code-gen",
+
+    /**
+     * The name of the component for code gen.
+     *
+     * @remarks
+     * The design tool object model (Figma) doesn't provide the component name if only one component in a set is selected.
+     */
+    codeGenName: "code-gen-name",
 } as const;
 
 export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
@@ -257,12 +272,13 @@ export interface PluginUINodeData extends PluginNodeData {
 
 export const pluginNodesToUINodes = (
     nodes: PluginNode[],
-    includeInherited: boolean
+    includeInherited: boolean,
+    includeChildren: boolean,
 ): PluginUINodeData[] => {
     const convertedNodes = nodes.map(
         (node): PluginUINodeData => {
             // TODO Not all children, only nodes with design tokens.
-            const children = pluginNodesToUINodes(node.children, false);
+            const children = includeChildren ? pluginNodesToUINodes(node.children, false, true) : [];
             const inheritedDesignTokens = includeInherited
                 ? node.inheritedDesignTokens
                 : new DesignTokenValues();

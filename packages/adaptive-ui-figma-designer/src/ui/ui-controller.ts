@@ -1,5 +1,5 @@
 import { calc } from '@csstools/css-calc';
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
@@ -9,6 +9,7 @@ import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedSty
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
 import { serializeUINodes } from '../core/serialization.js';
+import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';
 import { StylesController } from "./ui-controller-styles.js";
@@ -85,6 +86,11 @@ export class UIController {
      */
     public readonly states: StatesController;
 
+    /**
+     * A sub-controller for code generation.
+     */
+    public readonly code: CodeController;
+
     // This is adapting the new token model to the previous plugin structure.
     // What was previously a "recipe" is now an "applied design token".
     // The separation is useful for now in that "setting" a token is for overriding a value at a node,
@@ -93,6 +99,12 @@ export class UIController {
     public readonly appliableDesignTokenRegistry: DesignTokenRegistry = new DesignTokenRegistry();
 
     private _selectedNodes: PluginUINodeData[] = [];
+
+    /**
+     * Whether the designer will auto refresh the selected nodes when the selection changes.
+     */
+    @observable
+    public autoRefresh: boolean;
 
     /**
      * Create a new UI controller.
@@ -106,6 +118,7 @@ export class UIController {
         this.designTokens = new DesignTokenController(this, this._elements);
         this.styles = new StylesController(this);
         this.states = new StatesController(this);
+        this.code = new CodeController(this);
 
         registerTokens(this.designTokenRegistry);
         registerAppliableTokens(this.appliableDesignTokenRegistry);
@@ -122,13 +135,16 @@ export class UIController {
 
         this._selectedNodes = nodes;
 
+        this.autoRefresh = !(this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE");
+
         this._elements.selectedNodesChanged();
 
         if (this.autoRefresh) {
-            this.refreshSelectedNodes("set_selectedNodes", true);
+            this.refreshSelectedNodes("set_selectedNodes");
         }
 
         this.designTokens.selectedNodesChanged();
+        this.code.selectedNodesChanged();
     }
 
     /**
@@ -139,25 +155,11 @@ export class UIController {
     }
 
     /**
-     * Whether the designer will auto refresh the selected nodes when the selection changes.
-     */
-    public get autoRefresh(): boolean {
-        return !(
-            this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE"
-        );
-    }
-
-    /**
      * Reevaluates the styles for the selected nodes.
      *
      * @param reason - A description used for debug logging
      */
-    public refreshSelectedNodes(reason: string = "refreshSelectedNodes", skipReset: boolean = false): void {
-        // Remove any `fill-color` tokens we've set while processing the tokens before.
-        if (!skipReset) {
-            this._elements.resetFillColor(this._elements.rootElement);
-        }
-
+    public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
         // console.log("  Evaluating all design tokens for all selected nodes");
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
 
