@@ -10,7 +10,7 @@ jobs:
   build_linux:
     environment: release
     runs-on: ubuntu-latest
-    if: contains('kingoftac,bheston', github.actor)
+    if: contains('kingoftac,bheston,nicholasrice', github.actor)
     steps:
       - uses: actions/checkout@v3
         with:
