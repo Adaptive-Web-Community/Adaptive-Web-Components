@@ -13,16 +13,16 @@
 /docs/ @awentzel @bheston @nicholasrice
 
 # GitHub management
-.github/ @awentzel @nicholasrice
-.github/workflows/ @awentzel @nicholasrice
+.github/ @awentzel @nicholasrice @KingOfTac
+.github/workflows/ @awentzel @nicholasrice @KingOfTac
 
 # Build scripts
-*.yml @awentzel @nicholasrice
-build/ @awentzel @nicholasrice
+*.yml @awentzel @nicholasrice @KingOfTac
+build/ @awentzel @nicholasrice @KingOfTac
 
 # Package specific owners
 # Examples
-/examples/ @bheston @KingOfTac
+/examples/ @bheston @KingOfTac @nicholasrice
 
 # Tooling
 
