@@ -5,30 +5,30 @@
 # The last matching pattern has the most precendence.
 
 # These *code owners* will be the default owners for everything in the repository.
-* @awentzel @bheston @KingOfTac @EisenbergEffect
+* @awentzel @bheston @KingOfTac @nicholasrice
 
 # File type specific owners
 # Markdown specific files
-*.md @awentzel @bheston @falkicon @EisenbergEffect
-/docs/ @awentzel @bheston @falkicon @EisenbergEffect
+*.md @awentzel @bheston @nicholasrice
+/docs/ @awentzel @bheston @nicholasrice
 
 # GitHub management
-.github/ @awentzel @EisenbergEffect
-.github/workflows/ @awentzel @EisenbergEffect
+.github/ @awentzel @nicholasrice @KingOfTac
+.github/workflows/ @awentzel @nicholasrice @KingOfTac
 
 # Build scripts
-*.yml @awentzel @EisenbergEffect
-build/ @awentzel @EisenbergEffect
+*.yml @awentzel @nicholasrice @KingOfTac
+build/ @awentzel @nicholasrice @KingOfTac
 
 # Package specific owners
 # Examples
-/examples/ @bheston @KingOfTac
+/examples/ @bheston @KingOfTac @nicholasrice
 
 # Tooling
 
 # Utilities
 
 # Web components
-/packages/adaptive-ui/ @EisenbergEffect @bheston
-/packages/adaptive-ui-explorer/ @EisenbergEffect @bheston
-/packages/adaptive-web-components/ @EisenbergEffect @bheston @KingOfTac
+/packages/adaptive-ui/ @nicholasrice @bheston
+/packages/adaptive-ui-explorer/ @nicholasrice @bheston
+/packages/adaptive-web-components/ @nicholasrice @bheston @KingOfTac
