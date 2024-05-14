@@ -13,6 +13,7 @@ import {
     ReadonlyAppliedStyleModules,
     ReadonlyDesignTokenValues,
 } from "./model.js";
+import { deserializeMap, serializeMap } from "./serialization.js";
 
 /**
  * Layer name for special handling of the focus indicator in design tools.
@@ -208,6 +209,12 @@ export abstract class PluginNode {
      */
     public abstract get supports(): Array<StyleProperty>;
 
+    protected deserializeLocalDesignTokens(): DesignTokenValues {
+        const json = this.getPluginData("designTokens");
+        // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
+        return deserializeMap(json);
+    }
+
     /**
      * Sets the design tokens to the node and design tool.
      * @param tokens The complete design tokens override map.
@@ -215,7 +222,7 @@ export abstract class PluginNode {
     public setDesignTokens(tokens: DesignTokenValues) {
         this._localDesignTokens = tokens;
         if (tokens.size) {
-            const json = tokens.serialize();
+            const json = serializeMap(tokens);
             this.setPluginData("designTokens", json);
         } else {
             this.deletePluginData("designTokens");
@@ -231,6 +238,12 @@ export abstract class PluginNode {
         return this._appliedDesignTokens;
     }
 
+    protected deserializeAppliedDesignTokens(): AppliedDesignTokens {
+        const json = this.getPluginData("appliedDesignTokens");
+        // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
+        return deserializeMap(json);
+    }
+
     /**
      * Sets the design tokens applied to the style of this node.
      * @param appliedTokens The complete design tokens applied to the style.
@@ -238,7 +251,7 @@ export abstract class PluginNode {
     public setAppliedDesignTokens(appliedTokens: AppliedDesignTokens) {
         this._appliedDesignTokens = appliedTokens;
         if (appliedTokens.size) {
-            const json = appliedTokens.serialize();
+            const json = serializeMap(appliedTokens);
             this.setPluginData("appliedDesignTokens", json);
         } else {
             this.deletePluginData("appliedDesignTokens");
@@ -250,6 +263,12 @@ export abstract class PluginNode {
      */
     public get appliedStyleModules(): ReadonlyAppliedStyleModules {
         return this._appliedStyleModules;
+    }
+
+    protected deserializeAppliedStyleModules(): AppliedStyleModules {
+        const json = this.getPluginData("appliedStyleModules");
+        // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
+        return JSON.parse(json || "[]");
     }
 
     /**

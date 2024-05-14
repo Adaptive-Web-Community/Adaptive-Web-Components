@@ -1,7 +1,6 @@
 import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
-import { SerializableNodeData } from "./serialization.js";
 
 // TODO: This structure was used to pass design token values (specifically fill-color) but this isn't used
 // anymore and it's not a good way to structure the data it _is_ being used for now. Refactor with `PluginNodeData`.
@@ -64,89 +63,10 @@ export class AppliedStyleValue {
     }
 }
 
-function mapReplacer(key: string, value: any) {
-    if (value instanceof Map) {
-        return {
-            dataType: "Map",
-            value: [...value],
-        };
-    } else {
-        return value;
-    }
-}
-
-function mapReviver(key: string, value: any) {
-    if (typeof value === "object" && value !== null) {
-        if (value.dataType === "Map") {
-            return new Map(value.value);
-        }
-    }
-    return value;
-}
-
-/**
- * An Array that can be serialized to JSON and deserialized with correct typing.
- *
- * @remarks
- * This is mostly for consistency with SerializableMap.
- */
-export class SerializableArray<T> extends Array<T> {
-    public deserialize(json: string | undefined): void {
-        if (this.length > 0) {
-            throw "There are already entries in this Array. Expected empty Array.";
-        }
-
-        if (json) {
-            try {
-                const array = JSON.parse(json as string) as Array<T>;
-                array.forEach((value) => {
-                    this.push(value);
-                });
-            } catch (e) {
-                // console.warn(e);
-                // Ignore, empty string
-            }
-        }
-    }
-
-    public serialize(): string {
-        const json = JSON.stringify(this);
-        return json;
-    }
-}
-
-/**
- * A Map that can be serialized to JSON and deserialized with correct typing.
- */
-export class SerializableMap<K, V> extends Map<K, V> {
-    public deserialize(json: string | undefined): void {
-        if (this.size > 0) {
-            throw "There are already entries in this Map. Expected empty Map.";
-        }
-
-        if (json) {
-            try {
-                const map = JSON.parse(json as string, mapReviver) as Map<K, V>;
-                map.forEach((v, k) => {
-                    this.set(k, v);
-                });
-            } catch (e) {
-                // console.warn(e);
-                // Ignore, empty string
-            }
-        }
-    }
-
-    public serialize(): string {
-        const json = JSON.stringify(this, mapReplacer);
-        return json;
-    }
-}
-
 /**
  * Map of design tokens set for a node. The key is the design token ID.
  */
-export class DesignTokenValues extends SerializableMap<string, DesignTokenValue> {}
+export class DesignTokenValues extends Map<string, DesignTokenValue> {}
 
 /**
  * Readonly Map of design tokens set for a node. The key is the design token ID.
@@ -156,7 +76,7 @@ export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
 /**
  * Array of style modules applied to the style of a node.
  */
-export class AppliedStyleModules extends SerializableArray<string> {}
+export class AppliedStyleModules extends Array<string> {}
 
 /**
  * Readonly Array of style modules applied to the style of a node.
@@ -166,7 +86,7 @@ export type ReadonlyAppliedStyleModules = ReadonlyArray<string>;
 /**
  * Map of design tokens applied to the style of a node. The key is the target style property.
  */
-export class AppliedDesignTokens extends SerializableMap<StyleProperty, AppliedDesignToken> {}
+export class AppliedDesignTokens extends Map<StyleProperty, AppliedDesignToken> {}
 
 /**
  * Readonly Map of design tokens applied to the style of a node. The key is the target style property.
@@ -176,7 +96,7 @@ export type ReadonlyAppliedDesignTokens = ReadonlyMap<StyleProperty, AppliedDesi
 /**
  * Map of values applied to the style of a node. The key is the target style property.
  */
-export class AppliedStyleValues extends SerializableMap<StyleProperty, AppliedStyleValue> {}
+export class AppliedStyleValues extends Map<StyleProperty, AppliedStyleValue> {}
 
 /**
  * Readonly Map of values applied to the style of a node. The key is the target style property.
@@ -186,7 +106,7 @@ export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyle
 /**
  * Map of additional data exchanged between the design tool and plugin. Not persisted.
  */
-export class AdditionalData extends SerializableMap<string, string> {}
+export class AdditionalData extends Map<string, string> {}
 
 /**
  * Defines the data stored by the plugin on a node instance.
@@ -312,7 +232,7 @@ export interface CreateStatesMessage {
 
 export interface NodeDataMessage {
     readonly type: 'NODE_DATA';
-    nodes: SerializableNodeData[];
+    nodes: PluginUINodeData[];
 }
 
 export type PluginMessage = CreateStatesMessage | NodeDataMessage;
