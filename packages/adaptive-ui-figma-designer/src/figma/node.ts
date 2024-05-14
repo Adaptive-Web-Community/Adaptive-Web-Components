@@ -253,7 +253,7 @@ export class FigmaPluginNode extends PluginNode {
                 StatesState.configured :
             StatesState.notAvailable;
 
-        this.supportsCodeGen = // this._node.type === "COMPONENT_SET" ||
+        this.supportsCodeGen = this._node.type === "COMPONENT_SET" ||
             this._node.type === "COMPONENT" ||
             this._node.type === "INSTANCE";
 
