@@ -3,11 +3,32 @@ import { InteractiveState } from "../types.js";
 import { StyleRule } from "./styles.js";
 
 /**
+ * The selector for a true/false condition.
+ *
+ * @public
+ */
+export type BooleanCondition = string; 
+
+/**
+ * The state and selector for a multiple value condition.
+ *
+ * @public
+ */
+export type StringCondition = Record<string, string>;
+
+/**
+ * A condition associated with a component.
+ *
+ * @public
+ */
+export type Condition = BooleanCondition | StringCondition;
+
+/**
  * Type of the `conditions` for component {@link ComponentAnatomy}.
  *
  * @public
  */
-export type ComponentConditions = Record<string, string>;
+export type ComponentConditions = Record<string, Condition>;
 
 /**
  * Type of the `parts` for component {@link ComponentAnatomy}.

@@ -7,9 +7,11 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const DataGridCellConditions = {
-    cellTypeDefault: `[cell-type='${DataGridCellTypes.default}']`,
-    cellTypeColumnHeader: `[cell-type='${DataGridCellTypes.columnHeader}']`,
-    cellTypeRowHeader: `[cell-type='${DataGridCellTypes.rowHeader}']`,
+    cellType: {
+        default: `[cell-type='${DataGridCellTypes.default}']`,
+        columnHeader: `[cell-type='${DataGridCellTypes.columnHeader}']`,
+        rowHeader: `[cell-type='${DataGridCellTypes.rowHeader}']`,
+    }
 };
 
 /**

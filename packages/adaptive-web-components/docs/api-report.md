@@ -778,9 +778,11 @@ export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions
 
 // @public (undocumented)
 export const DataGridCellConditions: {
-    cellTypeDefault: string;
-    cellTypeColumnHeader: string;
-    cellTypeRowHeader: string;
+    cellType: {
+        default: string;
+        columnHeader: string;
+        rowHeader: string;
+    };
 };
 
 // @public (undocumented)
@@ -811,9 +813,11 @@ export const DataGridRowAnatomy: ComponentAnatomy<typeof DataGridRowConditions, 
 
 // @public (undocumented)
 export const DataGridRowConditions: {
-    rowTypeDefault: string;
-    rowTypeHeader: string;
-    rowTypeStickyHeader: string;
+    rowType: {
+        default: string;
+        header: string;
+        stickyHeader: string;
+    };
     selected: string;
 };
 
@@ -926,8 +930,10 @@ export const DividerAnatomy: ComponentAnatomy<typeof DividerConditions, typeof D
 
 // @public (undocumented)
 export const DividerConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public (undocumented)
@@ -952,8 +958,10 @@ export const FlipperAnatomy: ComponentAnatomy<typeof FlipperConditions, typeof F
 
 // @public (undocumented)
 export const FlipperConditions: {
-    next: string;
-    previous: string;
+    direction: {
+        next: string;
+        previous: string;
+    };
 };
 
 // @public (undocumented)
@@ -1374,8 +1382,10 @@ export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, ty
 
 // @public (undocumented)
 export const RadioGroupConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public (undocumented)
@@ -1494,8 +1504,10 @@ export const SkeletonAnatomy: ComponentAnatomy<typeof SkeletonConditions, typeof
 
 // @public (undocumented)
 export const SkeletonConditions: {
-    rectangle: string;
-    circle: string;
+    shape: {
+        rectangle: string;
+        circle: string;
+    };
 };
 
 // @public (undocumented)
@@ -1520,8 +1532,10 @@ export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof Sli
 
 // @public (undocumented)
 export const SliderConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public
@@ -1532,8 +1546,10 @@ export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, 
 
 // @public (undocumented)
 export const SliderLabelConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public (undocumented)
@@ -1649,8 +1665,10 @@ export const TabsAnatomy: ComponentAnatomy<typeof TabsConditions, typeof TabsPar
 
 // @public (undocumented)
 export const TabsConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public (undocumented)
@@ -1742,8 +1760,10 @@ export const ToolbarAnatomy: ComponentAnatomy<typeof ToolbarConditions, typeof T
 
 // @public (undocumented)
 export const ToolbarConditions: {
-    horizontal: string;
-    vertical: string;
+    orientation: {
+        horizontal: string;
+        vertical: string;
+    };
 };
 
 // @public (undocumented)

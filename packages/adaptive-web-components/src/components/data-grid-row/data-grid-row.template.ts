@@ -8,9 +8,11 @@ import { composeDataGridCell } from "../data-grid-cell/index.js";
  * @public
  */
 export const DataGridRowConditions = {
-    rowTypeDefault: `[row-type='${DataGridRowTypes.default}']`,
-    rowTypeHeader: `[row-type='${DataGridRowTypes.header}']`,
-    rowTypeStickyHeader: `[row-type='${DataGridRowTypes.stickyHeader}']`,
+    rowType: {
+        default: `[row-type='${DataGridRowTypes.default}']`,
+        header: `[row-type='${DataGridRowTypes.header}']`,
+        stickyHeader: `[row-type='${DataGridRowTypes.stickyHeader}']`,
+    },
     selected: "[aria-selected='true']",
 };
 

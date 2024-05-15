@@ -10,7 +10,7 @@ import { DividerAnatomy } from "./divider.template.js";
 export const styleModules: StyleRules = [
     {
         target : {
-            contextCondition: DividerAnatomy.conditions.horizontal,
+            contextCondition: DividerAnatomy.conditions.orientation.horizontal,
         },
         properties: {
             borderFillTop: neutralStrokeSubtle.rest,
@@ -20,7 +20,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: DividerAnatomy.conditions.vertical,
+            contextCondition: DividerAnatomy.conditions.orientation.vertical,
         },
         properties: {
             borderFillLeft: neutralStrokeSubtle.rest,

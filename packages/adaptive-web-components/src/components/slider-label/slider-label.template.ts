@@ -8,8 +8,10 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const SliderLabelConditions = {
-    horizontal: "[orientation='horizontal']",
-    vertical: "[orientation='vertical']",
+    orientation: {
+        horizontal: "[orientation='horizontal']",
+        vertical: "[orientation='vertical']",
+    },
 };
 
 /**
