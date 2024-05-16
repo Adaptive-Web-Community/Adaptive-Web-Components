@@ -7,8 +7,10 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const TabsConditions = {
-    horizontal: "[orientation='horizontal']",
-    vertical: "[orientation='vertical']",
+    orientation: {
+        horizontal: "[orientation='horizontal']",
+        vertical: "[orientation='vertical']",
+    },
 };
 
 /**

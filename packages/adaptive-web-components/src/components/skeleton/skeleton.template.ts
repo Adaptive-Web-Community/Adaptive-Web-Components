@@ -7,8 +7,10 @@ import { DesignSystem } from "../../design-system.js";
  * @public
  */
 export const SkeletonConditions = {
-    rectangle: "[shape='rect']",
-    circle: "[shape='circle']",
+    shape: {
+        rectangle: "[shape='rect']",
+        circle: "[shape='circle']",
+    }
 };
 
 /**

@@ -15,14 +15,14 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: SkeletonAnatomy.conditions.rectangle,
+            contextCondition: SkeletonAnatomy.conditions.shape.rectangle,
         },
         styles: controlShapeStyles,
     },
     
     {
         target : {
-            contextCondition: SkeletonAnatomy.conditions.circle,
+            contextCondition: SkeletonAnatomy.conditions.shape.circle,
         },
         styles: roundShapeStyles,
     },

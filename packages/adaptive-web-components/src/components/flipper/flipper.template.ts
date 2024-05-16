@@ -23,8 +23,10 @@ export type FlipperStatics = ValuesOf<typeof FlipperStatics>;
  * @public
  */
 export const FlipperConditions = {
-    next: "[direction='next']",
-    previous: "[direction='previous']",
+    direction: {
+        next: "[direction='next']",
+        previous: "[direction='previous']",
+    },
 };
 
 /**

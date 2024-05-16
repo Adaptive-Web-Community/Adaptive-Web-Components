@@ -37,6 +37,9 @@ export function blackOrWhiteByContrast(reference: Swatch, minContrast: number, d
 // @public
 export function blackOrWhiteByContrastSet(set: InteractiveSwatchSet, minContrast: number, defaultBlack: boolean): InteractiveSwatchSet;
 
+// @public
+export type BooleanCondition = string;
+
 // @public (undocumented)
 export const BorderFill: {
     all: (value: StyleValue) => StyleProperties;
@@ -108,10 +111,13 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
 }
 
 // @public
-export type ComponentConditions = Record<string, string>;
+export type ComponentConditions = Record<string, Condition>;
 
 // @public
 export type ComponentParts = Record<string, string>;
+
+// @public
+export type Condition = BooleanCondition | StringCondition;
 
 // @public
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
@@ -474,6 +480,9 @@ export class Shadow implements CSSDirective {
 
 // @public
 export type ShadowValue = Shadow | DesignTokenMultiValue<Shadow> | string;
+
+// @public
+export type StringCondition = Record<string, string>;
 
 // @public
 export type StyleDeclaration = {
