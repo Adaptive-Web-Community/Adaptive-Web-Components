@@ -107,6 +107,7 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
     context?: string;
     focus?: FocusDefinition<TParts>;
     interactivity?: InteractivityDefinition;
+    name?: string;
     parts: TParts;
 }
 
@@ -256,6 +257,11 @@ export class DesignTokenMetadata {
 export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
     // (undocumented)
     createCSS(): string;
+}
+
+// @public
+export abstract class DesignTokenRegistry {
+    static Shared: Map<string, DesignToken<any>>;
 }
 
 // @public

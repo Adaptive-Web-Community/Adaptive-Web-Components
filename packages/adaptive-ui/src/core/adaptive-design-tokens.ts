@@ -85,6 +85,18 @@ export class DesignTokenMetadata {
 }
 
 /**
+ * A global registry for looking up Design Tokens by ID.
+ *
+ * @public
+ */
+export abstract class DesignTokenRegistry {
+    /**
+     * The shared Design Token registry.
+     */
+    public static Shared = new Map<string, DesignToken<any>>();
+}
+
+/**
  * A DesignToken with value type and intended styling uses.
  *
  * @public
@@ -103,7 +115,9 @@ export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMe
         type: DesignTokenType,
         intendedFor?: StyleProperty | StyleProperty[],
     ): TypedDesignToken<T> {
-        return new TypedDesignToken<T>(name, type, intendedFor);
+        const token = new TypedDesignToken<T>(name, type, intendedFor);
+        DesignTokenRegistry.Shared.set(name, token);
+        return token;
     }
 }
 
@@ -135,7 +149,9 @@ export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignT
         type: DesignTokenType,
         intendedFor?: StyleProperty | StyleProperty[],
     ): TypedCSSDesignToken<T> {
-        return new TypedCSSDesignToken<T>(name, type, intendedFor);
+        const token = new TypedCSSDesignToken<T>(name, type, intendedFor);
+        DesignTokenRegistry.Shared.set(name, token);
+        return token;
     }
 }
 

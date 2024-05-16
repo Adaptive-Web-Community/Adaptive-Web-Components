@@ -44,6 +44,11 @@ export type ComponentParts = Record<string, string>;
  */
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     /**
+     * The name of the component.
+     */
+    name?: string;
+
+    /**
      * The context element selector. Implementation defaults to `:host` if not provided.
      */
     context?: string;
