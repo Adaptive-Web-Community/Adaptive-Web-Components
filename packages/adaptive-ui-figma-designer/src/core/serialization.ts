@@ -1,28 +1,30 @@
 export function mapReplacer(key: string, value: any): any {
     if (value instanceof Map) {
         return [["__dataType__", "Map"], ...value];
-        // Legacy format:
+        // Legacy format, supported in `mapReviver` below:
         // return {
         //     dataType: "Map",
         //     value: [...value],
         // };
-    } else {
-        return value;
     }
+
+    return value;
 }
 
 export function mapReviver(key: string, value: any): any {
-    if (value !== null) {
+    if (value) {
         if (typeof value === "object" && value.dataType === "Map") {
             // Legacy format (revive existing values, see above)
             return new Map(value.value);
-        } else if (Array.isArray(value) && value.length > 0 && value.every(val => Array.isArray(val) && val.length === 2)) {
-            if (value[0][0] === "__dataType__") {
-                value = value.slice(1);
-            }
-            return new Map(value);
+        } else if (Array.isArray(value) &&
+            value.length > 0 &&
+            value.every(val => Array.isArray(val) && val.length === 2) &&
+            value[0][0] === "__dataType__"
+        ) {
+            return new Map(value.slice(1));
         }
     }
+
     return value;
 }
 
@@ -32,8 +34,11 @@ export function deserializeMap<K, V>(json?: string): Map<K, V> {
             const map = JSON.parse(json, mapReviver) as Map<K, V>;
             return map;
         } catch (e) {
-            // console.warn(e);
-            // Ignore, empty string
+            if (e instanceof SyntaxError && e.message === "Unexpected end of JSON input") {
+                // Empty string, ignore
+            } else {
+                console.warn(e);
+            }
         }
     }
 
