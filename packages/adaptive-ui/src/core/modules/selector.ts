@@ -32,7 +32,7 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
     const disabled = state === InteractiveState.disabled;
 
     const stateSelector = disabled ? "" : params[state] || DefaultInteractiveSelectors[state];
-    const context = params.context && params.context !== defaultContext ? `.${params.context}` : defaultContext;
+    const context = params.context && params.context !== defaultContext ? `${params.context}` : defaultContext;
 
     if (params.contextCondition ||
         (!rest && !disabled && params.interactive !== undefined) ||
@@ -69,8 +69,7 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
         if (params.part === "*") {
             selectors.push("*");
         } else {
-            // Using class selector notation for now.
-            selectors.push(`.${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? stateSelector : ""}`);
+            selectors.push(`${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? stateSelector : ""}`);
         }
     }
 

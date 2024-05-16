@@ -420,4 +420,4 @@ export const stylePropertyPaddingAll = [
  *
  * @public
  */
-export type StyleRules = Iterable<StyleRule>;
+export type StyleRules = Array<StyleRule>;
