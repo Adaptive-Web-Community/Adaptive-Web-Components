@@ -1,112 +1,50 @@
-import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AdditionalData, AppliedDesignTokens, AppliedStyleModules, DesignTokenValues, PluginUINodeData } from "../core/model.js";
+export function mapReplacer(key: string, value: any): any {
+    if (value instanceof Map) {
+        return [["__dataType__", "Map"], ...value];
+        // Legacy format, supported in `mapReviver` below:
+        // return {
+        //     dataType: "Map",
+        //     value: [...value],
+        // };
+    }
 
-/**
- * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
- */
-export interface SerializableNodeData {
-    id: string;
-    type: string;
-    name: string;
-    supports: Array<StyleProperty>;
-    children: SerializableNodeData[];
-    inheritedDesignTokens: string;
-    componentDesignTokens?: string;
-    designTokens: string;
-    componentAppliedStyleModules?: string;
-    appliedStyleModules: string;
-    componentAppliedDesignTokens?: string;
-    appliedDesignTokens: string;
-    additionalData: string;
-    effectiveAppliedStyleValues: string;
+    return value;
 }
 
-/**
- * Serializable version of the Figma selected node state.
- */
-export interface SerializableUIState {
-    selectedNodes: SerializableNodeData[];
-}
-
-/**
- * Converts node data from the UI to serializable format.
- * @param nodes Node data in the UI format.
- * @returns Node data in the serializable format.
- */
-export function serializeUINodes(
-    nodes: PluginUINodeData[]
-): SerializableNodeData[] {
-    const serializedNodes = nodes.map(
-        (node): SerializableNodeData => {
-            return {
-                id: node.id,
-                type: node.type,
-                name: node.name,
-                supports: node.supports,
-                children: serializeUINodes(node.children),
-                inheritedDesignTokens: (node.inheritedDesignTokens as DesignTokenValues).serialize(),
-                componentDesignTokens: (node.componentDesignTokens as DesignTokenValues)?.serialize(),
-                designTokens: node.designTokens.serialize(),
-                componentAppliedStyleModules: (node.componentAppliedStyleModules as AppliedStyleModules)?.serialize(),
-                appliedStyleModules: node.appliedStyleModules.serialize(),
-                componentAppliedDesignTokens: (node.componentAppliedDesignTokens as AppliedDesignTokens)?.serialize(),
-                appliedDesignTokens: node.appliedDesignTokens.serialize(),
-                additionalData: node.additionalData.serialize(),
-                effectiveAppliedStyleValues: node.effectiveAppliedStyleValues.serialize(),
-            };
+export function mapReviver(key: string, value: any): any {
+    if (value) {
+        if (typeof value === "object" && value.dataType === "Map") {
+            // Legacy format (revive existing values, see above)
+            return new Map(value.value);
+        } else if (Array.isArray(value) &&
+            value.length > 0 &&
+            value.every(val => Array.isArray(val) && val.length === 2) &&
+            value[0][0] === "__dataType__"
+        ) {
+            return new Map(value.slice(1));
         }
-    );
+    }
 
-    return serializedNodes;
+    return value;
 }
 
-/**
- * Converts node data from the serializable to UI format.
- * @param nodes Node data in the serializable format.
- * @returns Node data in the UI format.
- */
-export function deserializeUINodes(
-    nodes: SerializableNodeData[]
-): PluginUINodeData[] {
-    const deserializedNodes = nodes.map(
-        (node): PluginUINodeData => {
-            const inheritedDesignTokens = new DesignTokenValues();
-            inheritedDesignTokens.deserialize(node.inheritedDesignTokens);
-            const componentDesignTokens = new DesignTokenValues();
-            componentDesignTokens.deserialize(node.componentDesignTokens);
-            const designTokens = new DesignTokenValues();
-            designTokens.deserialize(node.designTokens);
-            const componentAppliedStyleModules = new AppliedStyleModules();
-            componentAppliedStyleModules.deserialize(node.componentAppliedStyleModules);
-            const appliedStyleModules = new AppliedStyleModules();
-            appliedStyleModules.deserialize(node.appliedStyleModules);
-            const componentAppliedDesignTokens = new AppliedDesignTokens();
-            componentAppliedDesignTokens.deserialize(node.componentAppliedDesignTokens);
-            const appliedDesignTokens = new AppliedDesignTokens();
-            appliedDesignTokens.deserialize(node.appliedDesignTokens);
-            const additionalData = new AdditionalData();
-            additionalData.deserialize(node.additionalData);
-            const effectiveAppliedStyleValues = new AppliedDesignTokens();
-            effectiveAppliedStyleValues.deserialize(node.effectiveAppliedStyleValues);
-
-            return {
-                id: node.id,
-                type: node.type,
-                name: node.name,
-                supports: node.supports,
-                children: deserializeUINodes(node.children),
-                inheritedDesignTokens,
-                componentDesignTokens,
-                designTokens,
-                componentAppliedStyleModules,
-                appliedStyleModules,
-                componentAppliedDesignTokens,
-                appliedDesignTokens,
-                additionalData,
-                effectiveAppliedStyleValues: effectiveAppliedStyleValues,
-            };
+export function deserializeMap<K, V>(json?: string): Map<K, V> {
+    if (json) {
+        try {
+            const map = JSON.parse(json, mapReviver) as Map<K, V>;
+            return map;
+        } catch (e) {
+            if (e instanceof SyntaxError && e.message === "Unexpected end of JSON input") {
+                // Empty string, ignore
+            } else {
+                console.warn(e);
+            }
         }
-    );
+    }
 
-    return deserializedNodes;
+    return new Map();
+}
+
+export function serializeMap(map: Map<any, any>): string {
+    return JSON.stringify(map, mapReplacer);
 }

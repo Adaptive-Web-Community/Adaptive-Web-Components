@@ -1,7 +1,7 @@
 import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Controller, STYLE_REMOVE } from "../core/controller.js";
-import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, DesignTokenValues, PluginNodeData } from "../core/model.js";
+import { AppliedStyleModules, AppliedStyleValues, PluginNodeData } from "../core/model.js";
 import { focusIndicatorNodeName, PluginNode, State, StatesState } from "../core/node.js";
 import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
@@ -303,36 +303,6 @@ export class FigmaPluginNode extends PluginNode {
 
     public static clearCache(): void {
         FigmaPluginNode.NodeCache.clear();
-    }
-
-    private deserializeLocalDesignTokens(): DesignTokenValues {
-        const json = this.getPluginData("designTokens");
-        const value = new DesignTokenValues();
-        if (json) {
-            value.deserialize(json);
-            // console.log("    deserializeLocalDesignTokens", this.debugInfo, value);
-        }
-        return value;
-    }
-
-    private deserializeAppliedStyleModules(): AppliedStyleModules {
-        const json = this.getPluginData("appliedStyleModules");
-        const value = new AppliedStyleModules();
-        if (json) {
-            value.deserialize(json);
-            // console.log("    deserializeAppliedStyleModules", this.debugInfo, value);
-        }
-        return value;
-    }
-
-    private deserializeAppliedDesignTokens(): AppliedDesignTokens {
-        const json = this.getPluginData("appliedDesignTokens");
-        const value = new AppliedDesignTokens();
-        if (json) {
-            value.deserialize(json);
-            // console.log("    deserializeAppliedDesignTokens", this.debugInfo, value);
-        }
-        return value;
     }
 
     public get state(): string | null {

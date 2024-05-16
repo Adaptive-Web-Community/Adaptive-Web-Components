@@ -1,4 +1,5 @@
 import { PluginMessage } from "../core/model.js";
+import { mapReviver } from "../core/serialization.js";
 import { FigmaController } from "./controller.js";
 
 const controller = new FigmaController();
@@ -63,7 +64,8 @@ function debounceSelection() {
 figma.on("selectionchange", debounceSelection);
 
 // Comes from ../ui/index.ts parent.postMessage
-figma.ui.onmessage = (message: PluginMessage): void => {
+figma.ui.onmessage = (json: string): void => {
+    const message: PluginMessage = JSON.parse(json, mapReviver);
     notifyProcessing(() => {
         controller.handleMessage(message);
     });

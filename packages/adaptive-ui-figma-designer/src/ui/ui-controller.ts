@@ -8,7 +8,6 @@ import { STYLE_REMOVE } from "../core/controller.js";
 import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, type PluginMessage, type PluginUINodeData } from "../core/model.js";
 import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
 import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
-import { serializeUINodes } from '../core/serialization.js';
 import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';
@@ -165,7 +164,7 @@ export class UIController {
 
         const message: PluginMessage = {
             type: 'NODE_DATA',
-            nodes: serializeUINodes(this._selectedNodes),
+            nodes: this._selectedNodes,
         };
         this.dispatchMessage(message, reason);
     }
@@ -286,8 +285,8 @@ export class UIController {
             }
         }
 
-        node.componentAppliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.componentModules));
-        node.componentAppliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
+        node.componentAppliedStyleModules?.forEach(appliedStyleModulesHandler(AppliedTokenSource.componentModules));
+        node.componentAppliedDesignTokens?.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
         node.appliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.localModules));
         node.appliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.local));
 

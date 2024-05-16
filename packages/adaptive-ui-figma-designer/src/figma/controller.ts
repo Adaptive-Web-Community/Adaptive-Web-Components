@@ -1,6 +1,6 @@
 import { Controller, PluginUIState } from "../core/controller.js";
 import type { PluginMessage } from "../core/model.js";
-import { deserializeUINodes, SerializableUIState, serializeUINodes } from "../core/serialization.js";
+import { mapReplacer } from "../core/serialization.js";
 import { FigmaPluginNode } from "./node.js";
 
 export class FigmaController extends Controller {
@@ -15,7 +15,7 @@ export class FigmaController extends Controller {
 
     public handleMessage(message: PluginMessage): void {
         if (message.type === "NODE_DATA") {
-            const pluginNodes = deserializeUINodes(message.nodes);
+            const pluginNodes = message.nodes;
             super.receiveStateFromUI({
                 selectedNodes: pluginNodes
             });
@@ -32,11 +32,12 @@ export class FigmaController extends Controller {
     }
 
     public sendStateToUI(state: PluginUIState): void {
-        const message: SerializableUIState = {
-            selectedNodes: serializeUINodes(state.selectedNodes),
+        const message: PluginUIState = {
+            selectedNodes: state.selectedNodes,
         };
 
         // Goes to ../ui/index.ts window.onmessage
-        figma.ui.postMessage(message);
+        const json = JSON.stringify(message, mapReplacer);
+        figma.ui.postMessage(json);
     }
 }
