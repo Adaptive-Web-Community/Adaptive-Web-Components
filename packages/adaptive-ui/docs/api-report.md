@@ -581,7 +581,7 @@ export type StyleRule = {
 } & StyleDeclaration;
 
 // @public
-export type StyleRules = Iterable<StyleRule>;
+export type StyleRules = Array<StyleRule>;
 
 // @public
 export class Styles {

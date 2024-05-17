@@ -63,7 +63,6 @@ import { FASTTreeView } from '@microsoft/fast-foundation';
 import { HorizontalScrollView } from '@microsoft/fast-foundation';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 import type { StaticallyComposableHTML } from '@microsoft/fast-foundation';
-import { StyleRule } from '@adaptive-web/adaptive-ui';
 import { StyleRules } from '@adaptive-web/adaptive-ui';
 import type { ValuesOf } from '@microsoft/fast-foundation';
 

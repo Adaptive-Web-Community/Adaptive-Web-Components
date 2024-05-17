@@ -11,6 +11,7 @@ import {
     type ComponentAnatomy,
     ElementStylesRenderer,
     StyleRule,
+    StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import type {
     AccordionItemStatics,
@@ -130,6 +131,23 @@ export class DesignSystem {
     }
 
     /**
+     * Checks a StyleRule for a target `part` and turns it into a class name.
+     *
+     * @remarks
+     * This Design System is local to AWC and all templates and anatomy are structured this way.
+     * The opinion of using class names used to exist in AUI, but AUI is now non-opinionated in this regard.
+     *
+     * @param styleRule - The StyleRule to check and update
+     * @returns The updated StyleRule.
+     */
+    private static updateStyleRulesParts(styleRule: StyleRule): StyleRule {
+        if (styleRule.target?.part && !styleRule.target?.part.startsWith(".")) {
+            styleRule.target.part = "." + styleRule.target.part;
+        }
+        return styleRule;
+    }
+
+    /**
      * Assembles the collection of intended styles, evaluating and injecting modular styling if provided.
      *
      * @param defaultStyles - The default collection of styles to use if not overridden by `options.styles`.
@@ -148,7 +166,7 @@ export class DesignSystem {
 
         const allStyleModules = [
             ...globalStyleRules(anatomy),
-            ...(options && options.styleModules ? options.styleModules : [])
+            ...(options && options.styleModules ? options.styleModules.map(DesignSystem.updateStyleRulesParts) : [])
         ];
 
         return ElementStylesRenderer.renderStyleRules(componentStyles, allStyleModules, anatomy);
@@ -170,7 +188,7 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 export type ComposeOptions<TSource, TStatics extends string = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
     styles?: ElementStyles | ElementStyles[];
-    styleModules?: Iterable<StyleRule>;
+    styleModules?: StyleRules;
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
     statics?: Record<TStatics, StaticallyComposableHTML>;
