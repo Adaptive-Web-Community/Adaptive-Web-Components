@@ -1,44 +1,142 @@
-import { StyleNameMapping } from "@adaptive-web/adaptive-ui/reference";
+/* eslint-disable max-len */
 import { camelCase, kebabCase } from "change-case";
+import {
+    Interactivity,
+    InteractivityDefinition,
+} from "@adaptive-web/adaptive-ui";
+import { StyleNameMapping } from "@adaptive-web/adaptive-ui/reference";
 import { AdditionalDataKeys } from "../core/model.js";
 import type { PluginUINodeData } from "../core/model.js";
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
 
-class Condition {}
-
-class BooleanCondition extends Condition {
-    readonly type: "boolean";
+function makeClassName(value: string) {
+    return `.${kebabCase(value)}`;
 }
 
-class StringCondition extends Condition {
-    readonly type: "string";
+// TODO: All of these type definitions will be merged into the core AUI package, including simple interface and serialization support.
 
-    constructor(public values: Set<string>) {
-        super();
+export type SerializableBooleanCondition = string; 
+
+export type SerializableStringCondition = Record<string, string>;
+
+export type SerializableCondition = SerializableBooleanCondition | SerializableStringCondition;
+
+export interface SerializableToken {
+    target: string;
+    tokenID: string;
+}
+
+export interface SerializableStyleRule {
+    contextCondition?: string;
+    part: string;
+    styles: string[];
+    tokens: SerializableToken[];
+}
+
+export interface SerializableAnatomy{
+    name: string;
+    context: string;
+    interactivity?: InteractivityDefinition;
+    conditions: Record<string, SerializableCondition>;
+    parts: Record<string, string>;
+    styleRules: SerializableStyleRule[];
+}
+
+export abstract class Condition {
+    constructor(
+        public readonly name: string,
+    ) {}
+
+    toJSON(): any {
+        return makeClassName(this.name);
     }
 }
 
-class Token {
-    constructor(
-        public target: string,
-        public tokenID: string
-    ) {}
+export class BooleanCondition extends Condition {
+    toJSON(): SerializableBooleanCondition {
+        return makeClassName(this.name);
+    }
 }
 
-class StyleRule {
+export class StringCondition extends Condition {
+    constructor(
+        name: string,
+        public values: Array<string>,
+    ) {
+        super(name);
+    }
+
+    toJSON(): SerializableStringCondition {
+        const values = this.values.reduce((prev, current) => {
+            prev[current[0]] = makeClassName(this.name + " " + current[1]); // Add space so that there is a kebab between name and value
+            return prev;
+        }, {} as SerializableStringCondition);
+
+        return values;
+    } 
+}
+
+export class Token {
+    constructor(
+        public target: string,
+        public tokenID: string,
+    ) {}
+
+    toJSON(): SerializableToken {
+        return {
+            target: this.target,
+            tokenID: this.tokenID,
+        };
+    }
+}
+
+export class StyleRule {
+    contextCondition?: string;
     part: string;
     styles: Set<string> = new Set();
     tokens: Set<Token> = new Set();
+
+    toJSON(): SerializableStyleRule {
+        const contextCondition = typeof this.contextCondition === "string" ? "." + kebabCase(this.contextCondition): undefined;
+        return {
+            contextCondition,
+            part: this.part,
+            styles: Array.from(this.styles),
+            tokens: Array.from(this.tokens).map(token => token.toJSON())
+        };
+    }
 }
 
-class Anatomy {
+export class Anatomy {
     name: string;
+    context: string;
+    interactivity?: InteractivityDefinition;
     conditions: Map<string, Condition> = new Map();
     parts: Set<string> = new Set();
     styleRules: Set<StyleRule> = new Set();
-    imported: Set<string> = new Set();
+
+    toJSON(): SerializableAnatomy {
+        const conditions = Array.from(this.conditions.entries()).reduce((prev, next) => {
+            prev[next[0]] = next[1].toJSON()
+            return prev
+        }, {} as SerializableAnatomy['conditions'])
+
+        const parts = Array.from(this.parts.entries()).reduce((prev, current) => {
+            prev[current[0]] = makeClassName(current[1]);
+            return prev;
+        }, {} as SerializableAnatomy['parts'])
+
+        return {
+            name: this.name,
+            context: makeClassName(this.name),
+            interactivity: this.interactivity,
+            conditions,
+            parts,
+            styleRules: Array.from(this.styleRules).map(rule => rule.toJSON()),
+        }
+    }
 }
 
 /**
@@ -76,13 +174,9 @@ export class CodeGen {
             throw new Error("Parameter `node` must provide `additionalData` value for `codeGenName`");
         }
 
-        console.log("parseComponent", node.id, node.name, node.type);
-        console.log("  componentName", componentName);
-
         const anatomy: Anatomy = new Anatomy();
         anatomy.name = componentName;
 
-        let componentNode = node;
         if (node.type === "COMPONENT_SET") {
             // Parse the component names into property and value sets
             const properties = new Map<string, Array<string>>();
@@ -98,6 +192,11 @@ export class CodeGen {
                 });
             });
 
+            // TODO look for other interactivity models
+            if (properties.has("Disabled")) {
+                anatomy.interactivity = Interactivity.disabledClass;
+            }
+
             // Convert properties into anatomy conditions
             // TODO: Validate known properties like "State" and "Disabled". Ignore for now.
             properties.forEach((values, property) => {
@@ -105,19 +204,47 @@ export class CodeGen {
                     if (values.length === 2 &&
                         values.filter((value) => value.toLowerCase() === "true" || value.toLowerCase() === "false").length === 2) {
                         // boolean property, add once
-                        anatomy.conditions.set(property, new BooleanCondition());
+                        anatomy.conditions.set(property, new BooleanCondition(property));
                     } else {
                         // string property, add all
-                        anatomy.conditions.set(property, new StringCondition(new Set(values)));
+                        anatomy.conditions.set(property, new StringCondition(property, values));
                     }
                 }
             });
 
-            componentNode = node.children[0];
-            console.log("  found set, using componentNode", componentNode);
-        }
+            // The first child is the default (no conditions)
+            this.walkNode(node.children[0], componentName, "", anatomy);
+            const defaultName = node.children[0].name;
 
-        this.walkNode(componentNode, componentName, anatomy);
+            const nodeHandler = (name: string, property: string): void => {
+                const found = node.children.find(node => node.name.toLowerCase() === name.toLowerCase());
+                if (!found) {
+                    // console.warn(`Expected component ${name}, property ${property}, not found`);
+                } else {
+                    // console.log("  found node", name);
+                    this.walkNode(found, componentName, property, anatomy);
+                }
+            };
+
+            // Find the component node for each condition
+            // Note that the current model treats conditions as additive, so condition A and condition B will be
+            // separate selectors which might both apply (in sequence)
+            anatomy.conditions.forEach((condition, property) => {
+                if (condition instanceof BooleanCondition) {
+                    // Assume false is the default condition, find the `true` component
+                    const name = defaultName.replace(`${property}=false`, `${property}=true`);
+                    nodeHandler(name, property);
+                } else if (condition instanceof StringCondition) {
+                    // The first value is the default, already handled
+                    condition.values.slice(1).forEach(value => {
+                        const name = defaultName.replace(`${property}=${condition.values[0]}`, `${property}=${value}`);
+                        nodeHandler(name, camelCase(`${property} ${value}`));
+                    });
+                }
+            });
+        } else {
+            this.walkNode(node, componentName, "", anatomy);
+        }
 
         return anatomy;
     }
@@ -145,11 +272,13 @@ export class CodeGen {
         const conditionsOut = this.#genTypeCode(anatomy.name, "Conditions", conditionsSet);
         const partsOut = this.#genTypeCode(anatomy.name, "Parts", anatomy.parts);
 
-        const conditionsValues = new Array(...conditionsSet).map(property => `\n        ${camelCase(property)}: "",`).join("");
-        const partsValues = new Array(...anatomy.parts).map(property => `\n        ${camelCase(property)}: ".${kebabCase(property)}",`).join("");
+        // TODO other states (json serialize?)
+        const interactivity = anatomy.interactivity ? `\n    interactivity: {\n        interactive: "${anatomy.interactivity.interactive}",\n        disabled: "${anatomy.interactivity.disabled}",\n    },` : "";
+        const conditionsValues = new Array(...conditionsSet).map(property => `\n        ${camelCase(property)}: "${makeClassName(property)}",`).join("");
+        const partsValues = new Array(...anatomy.parts).map(property => `\n        ${camelCase(property)}: "${makeClassName(property)}",`).join("");
 
         const anatomyOut = 
-`export const ${anatomy.name}Anatomy: ComponentAnatomy<${anatomy.name}Conditions, ${anatomy.name}Parts> = {
+`export const ${anatomy.name}Anatomy: ComponentAnatomy<${anatomy.name}Conditions, ${anatomy.name}Parts> = {${interactivity}
     conditions: {${conditionsValues}
     },
     parts: {${partsValues}
@@ -157,11 +286,9 @@ export class CodeGen {
 };
 `;
         // TODO:
-        // interactivity: Interactivity.disabledAttribute,
         // focus: Focus.contextFocused(),
 
         const output = `${conditionsOut}\n${partsOut}\n${anatomyOut}\n`;
-        console.log(output);
         return output;
     }
 
@@ -179,33 +306,45 @@ export class CodeGen {
      * @returns The generated style code
      */
     public generateStylesCode(anatomy: Anatomy): string {
+        const imported = new Array(...anatomy.styleRules).reduce<Array<string>>((accumulated, current) => {
+            current.styles.forEach(style => {
+                const varName = StyleNameMapping[style as keyof typeof StyleNameMapping];
+                accumulated.push(varName);
+            });
+            current.tokens.forEach(token => {
+                const varName = this.tokenIDMap(token.tokenID);
+                accumulated.push(varName);
+            });
+            return accumulated;
+        }, new Array<string>());
         const importBase = `import { StyleRules } from "@adaptive-web/adaptive-ui";\n`;
-        const refImports = [...anatomy.imported].sort().join(", ");
+        const refImports = [...imported].sort().join(", ");
         const importRef = `import { ${refImports} } from "@adaptive-web/adaptive-ui/reference";\n`;
         const importAnatomy = `import { ${anatomy.name}Anatomy } from "./${kebabCase(anatomy.name)}.template.js";\n`
         const styleRules = new Array(...anatomy.styleRules).map(styleRule => this.#genStyleRuleCode(anatomy.name, styleRule)).join("\n");
         const genStyleRules = `\nexport const styleRules: StyleRules = [\n${styleRules}\n];\n`;
 
         const output = `${importBase}${importRef}${importAnatomy}${genStyleRules}`;
-        console.log(output);
         return output;
     }
 
     #genStyleRuleCode(componentName: string, styleRule: StyleRule): string {
         let targetOut = "";
-        if (styleRule.part) {
-            targetOut = `        target: {\n            part: ${componentName}Anatomy.parts.${camelCase(styleRule.part)},\n        },\n`;
+        const contextCondition = styleRule.contextCondition ? `            contextCondition: ${componentName}Anatomy.conditions.${camelCase(styleRule.contextCondition)},\n` : "";
+        const part = styleRule.part ? `            part: ${componentName}Anatomy.parts.${camelCase(styleRule.part)},\n` : "";
+        if (contextCondition || part) {
+            targetOut = `        target: {\n${part}${contextCondition}        },\n`;
         }
 
         let stylesOut = "";
         if (styleRule.styles.size > 0) {
-            stylesOut = `        styles: [\n            ${new Array(...styleRule.styles).join(",\n            ")},\n        ],\n`;
+            stylesOut = `        styles: [\n            ${new Array(...styleRule.styles).map(style => StyleNameMapping[style as keyof typeof StyleNameMapping] || style).join(",\n            ")},\n        ],\n`;
         }
 
         let propertiesOut = "";
         if (styleRule.tokens.size > 0) {
             // TODO Need to map tokens better
-            const tokens = new Array(...styleRule.tokens).map(token => `${token.target}: ${token.tokenID}`);
+            const tokens = new Array(...styleRule.tokens).map(token => `${token.target}: ${this.tokenIDMap(token.tokenID)}`);
             propertiesOut = `        properties: {\n            ${tokens.join(",\n            ")},\n        },\n`;
         }
 
@@ -217,9 +356,7 @@ export class CodeGen {
         return nodeName.replace(/[^\x20-\x7F]/g, "").trim();
     }
 
-    private walkNode(node: PluginUINodeData, componentName: string, anatomy: Anatomy): void {
-        console.log("checking styles & tokens", node.name, node.type);
-
+    private walkNode(node: PluginUINodeData, componentName: string, condition: string, anatomy: Anatomy): void {
         const nodeName = this.cleanNodeName(node.name);
 
         if (nodeName === "Focus indicator") {
@@ -235,18 +372,18 @@ export class CodeGen {
 
             const styleRule = new StyleRule();
 
+            if (condition) {
+                styleRule.contextCondition = condition;
+            }
+
             node.appliedStyleModules.forEach(style => {
-                const styleVariableName = StyleNameMapping[style as keyof typeof StyleNameMapping] || style;
-                console.log("  style", style, "->", styleVariableName);
+                const styleVariableName = style;
                 styleRule.styles.add(styleVariableName);
-                anatomy.imported.add(styleVariableName);
             });
 
             node.appliedDesignTokens.forEach((token, target) => {
-                console.log("  token", token.tokenID, target);
-                const tokenRef = this.tokenIDMap(token.tokenID);
+                const tokenRef = token.tokenID;
                 styleRule.tokens.add(new Token(target, tokenRef));
-                anatomy.imported.add(tokenRef.split(".")[0]);
             });
 
             if (nodeName !== componentName) {
@@ -254,12 +391,15 @@ export class CodeGen {
             }
 
             if (styleRule.styles.size > 0 || styleRule.tokens.size > 0) {
+                if (nodeName !== componentName) {
+                    anatomy.parts.add(node.name)
+                }
                 anatomy.styleRules.add(styleRule);
             }
         }
 
         node.children.forEach((child) => {
-            this.walkNode(child, componentName, anatomy);
+            this.walkNode(child, componentName, condition, anatomy);
         });
     }
 
