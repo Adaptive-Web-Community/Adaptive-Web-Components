@@ -57,7 +57,7 @@ export function createTokenRecipe<TParam, TResult>(
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: RecipeEvaluate<TParam, TResult>,
 ): TypedDesignToken<Recipe<TParam, TResult>> {
-    return createTokenNonCss<Recipe<TParam, TResult>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+    return createTokenNonCss<Recipe<TParam, TResult>>(`${baseName}.recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }

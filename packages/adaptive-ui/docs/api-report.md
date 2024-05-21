@@ -172,7 +172,7 @@ export function createTokenColorRecipeWithPalette<T>(recipeToken: TypedDesignTok
 export function createTokenColorSet(recipeToken: TypedDesignToken<InteractiveColorRecipe>): InteractiveTokenGroup<Swatch>;
 
 // @public
-export function createTokenDelta(baseName: string, state: InteractiveState, value: number | DesignToken<number>): TypedDesignToken<number>;
+export function createTokenDelta(baseName: string, state: InteractiveState | string, value: number | DesignToken<number>): TypedDesignToken<number>;
 
 // @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;

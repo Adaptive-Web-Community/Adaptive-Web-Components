@@ -34,19 +34,9 @@ export const LayerBaseLuminance = Object.freeze({
  *
  * @public
  */
-export const layerPalette = createTokenNonCss<Palette>("layer-palette", DesignTokenType.palette).withDefault(neutralPalette);
+export const layerPalette = createTokenNonCss<Palette>("color.layer.palette", DesignTokenType.palette).withDefault(neutralPalette);
 
-const layerFillName = "layer-fill";
-
-/**
- * The ideal luminance value for the "Base" layer, {@link layerFillFixedBase}.
- *
- * @remarks
- * 0...1, 0 = black, 1 = white.
- *
- * @public
- */
-export const layerFillBaseLuminance = createTokenNonCss<number>(`${layerFillName}-base-luminance`, DesignTokenType.number).withDefault(LayerBaseLuminance.LightMode);
+const layerFillName = "color.layer.fill";
 
 /**
  * The offset between "Fixed" layers, or from the container for "Interactive" rest state, {@link layerFillInteractiveRest}.
@@ -56,43 +46,25 @@ export const layerFillBaseLuminance = createTokenNonCss<number>(`${layerFillName
  *
  * @public
  */
-export const layerFillRestDelta = createTokenDelta(layerFillName, InteractiveState.rest, -2);
+export const layerFillRestDelta = createTokenDelta(layerFillName, "layer", -2);
 
 /**
  * @public
- * @deprecated Use `layerFillRestDelta` instead.
+ * @deprecated Use `layerFillLayerDelta` instead.
  */
 export const layerFillDelta = layerFillRestDelta;
 
+const layerFillFixedName = `${layerFillName}.ramp`;
+
 /**
- * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
+ * The ideal luminance value for the "Base" layer, {@link layerFillFixedBase}.
+ *
+ * @remarks
+ * 0...1, 0 = black, 1 = white.
  *
  * @public
  */
-export const layerFillHoverDelta = createTokenDelta(layerFillName, InteractiveState.hover, -3);
-
-/**
- * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
- *
- * @public
- */
-export const layerFillActiveDelta = createTokenDelta(layerFillName, InteractiveState.active, -1);
-
-/**
- * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
- *
- * @public
- */
-export const layerFillFocusDelta = createTokenDelta(layerFillName, InteractiveState.focus, -3);
-
-/**
- * The offset from the container for "Interactive" disabled state, {@link layerFillInteractiveDisabled}.
- *
- * @public
- */
-export const layerFillDisabledDelta = createTokenDelta(layerFillName, InteractiveState.disabled, -1);
-
-const layerFillFixedName = `${layerFillName}-fixed`;
+export const layerFillBaseLuminance = createTokenNonCss<number>(`${layerFillFixedName}.baseLuminance`, DesignTokenType.number).withDefault(LayerBaseLuminance.LightMode);
 
 /**
  * The "Fixed" layers represent background fills commonly used to define app structure.
@@ -126,7 +98,7 @@ export const layerFillFixedRecipe = createTokenRecipe<number, Swatch>(
  *
  * @public
  */
-export const layerFillFixedBase = createTokenSwatch(`${layerFillFixedName}-base`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedBase = createTokenSwatch(`${layerFillFixedName}.base`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 0)
 );
@@ -139,7 +111,7 @@ export const layerFillFixedBase = createTokenSwatch(`${layerFillFixedName}-base`
  *
  * @public
  */
-export const layerFillFixedMinus1 = createTokenSwatch(`${layerFillFixedName}-minus-1`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedMinus1 = createTokenSwatch(`${layerFillFixedName}.minus1`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -1)
 );
@@ -152,7 +124,7 @@ export const layerFillFixedMinus1 = createTokenSwatch(`${layerFillFixedName}-min
  *
  * @public
  */
-export const layerFillFixedMinus2 = createTokenSwatch(`${layerFillFixedName}-minus-2`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedMinus2 = createTokenSwatch(`${layerFillFixedName}.minus2`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -2)
 );
@@ -165,7 +137,7 @@ export const layerFillFixedMinus2 = createTokenSwatch(`${layerFillFixedName}-min
  *
  * @public
  */
-export const layerFillFixedMinus3 = createTokenSwatch(`${layerFillFixedName}-minus-3`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedMinus3 = createTokenSwatch(`${layerFillFixedName}.minus3`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -3)
 );
@@ -178,7 +150,7 @@ export const layerFillFixedMinus3 = createTokenSwatch(`${layerFillFixedName}-min
  *
  * @public
  */
-export const layerFillFixedMinus4 = createTokenSwatch(`${layerFillFixedName}-minus-4`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedMinus4 = createTokenSwatch(`${layerFillFixedName}.minus4`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, -4)
 );
@@ -191,7 +163,7 @@ export const layerFillFixedMinus4 = createTokenSwatch(`${layerFillFixedName}-min
  *
  * @public
  */
-export const layerFillFixedPlus1 = createTokenSwatch(`${layerFillFixedName}-plus-1`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedPlus1 = createTokenSwatch(`${layerFillFixedName}.plus1`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 1)
 );
@@ -204,7 +176,7 @@ export const layerFillFixedPlus1 = createTokenSwatch(`${layerFillFixedName}-plus
  *
  * @public
  */
-export const layerFillFixedPlus2 = createTokenSwatch(`${layerFillFixedName}-plus-2`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedPlus2 = createTokenSwatch(`${layerFillFixedName}.plus2`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 2)
 );
@@ -217,7 +189,7 @@ export const layerFillFixedPlus2 = createTokenSwatch(`${layerFillFixedName}-plus
  *
  * @public
  */
-export const layerFillFixedPlus3 = createTokenSwatch(`${layerFillFixedName}-plus-3`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedPlus3 = createTokenSwatch(`${layerFillFixedName}.plus3`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 3)
 );
@@ -230,12 +202,40 @@ export const layerFillFixedPlus3 = createTokenSwatch(`${layerFillFixedName}-plus
  *
  * @public
  */
-export const layerFillFixedPlus4 = createTokenSwatch(`${layerFillFixedName}-plus-4`, StyleProperty.backgroundFill).withDefault(
+export const layerFillFixedPlus4 = createTokenSwatch(`${layerFillFixedName}.plus4`, StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(layerFillFixedRecipe).evaluate(resolve, 4)
 );
 
-const layerFillInteractiveName = `${layerFillName}-interactive`;
+const layerFillInteractiveName = `${layerFillName}.interactive`;
+
+/**
+ * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
+ *
+ * @public
+ */
+export const layerFillHoverDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.hover, -3);
+
+/**
+ * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
+ *
+ * @public
+ */
+export const layerFillActiveDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.active, -1);
+
+/**
+ * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
+ *
+ * @public
+ */
+export const layerFillFocusDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.focus, -3);
+
+/**
+ * The offset from the container for "Interactive" disabled state, {@link layerFillInteractiveDisabled}.
+ *
+ * @public
+ */
+export const layerFillDisabledDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.disabled, -1);
 
 /**
  * The recipe for a layer relative to its context (as opposed to {@link layerFillBaseLuminance}).

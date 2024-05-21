@@ -2,16 +2,17 @@ import { stylePropertyBorderThicknessAll, stylePropertyCornerRadiusAll } from ".
 import { createTokenDimension } from "../core/token-helpers.js";
 
 /** @public */
-export const designUnit = createTokenDimension("design-unit").withDefault("4px");
+export const designUnit = createTokenDimension("global.designUnit").withDefault("4px");
 
 /** @public */
-export const cornerRadiusControl = createTokenDimension("corner-radius-control", stylePropertyCornerRadiusAll).withDefault("4px");
+export const cornerRadiusControl = createTokenDimension("shape.cornerRadius.default", stylePropertyCornerRadiusAll).withDefault("4px");
+
+// Planning to migrate the radius settings as part of the density system.
+/** @public */
+export const cornerRadiusLayer = createTokenDimension("density.layer.cornerRadius", stylePropertyCornerRadiusAll).withDefault("8px");
 
 /** @public */
-export const cornerRadiusLayer = createTokenDimension("corner-radius-layer", stylePropertyCornerRadiusAll).withDefault("8px");
+export const strokeThickness = createTokenDimension("shape.strokeThickness.default", stylePropertyBorderThicknessAll).withDefault("1px");
 
 /** @public */
-export const strokeThickness = createTokenDimension("stroke-thickness", stylePropertyBorderThicknessAll).withDefault("1px");
-
-/** @public */
-export const focusStrokeThickness = createTokenDimension("focus-stroke-thickness", stylePropertyBorderThicknessAll).withDefault("2px");
+export const focusStrokeThickness = createTokenDimension("shape.strokeThickness.focus", stylePropertyBorderThicknessAll).withDefault("2px");

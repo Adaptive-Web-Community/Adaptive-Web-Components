@@ -21,15 +21,15 @@ import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
 // Local recipes for use in documentation files.
 
-export const docBaseColor = createTokenColor("doc-base-color").withDefault("#E1477E");
+export const docBaseColor = createTokenColor("color.doc.base").withDefault("#E1477E");
 
-export const docPalette = createNonCss<Palette>("doc-palette").withDefault(
+export const docPalette = createNonCss<Palette>("color.doc.palette").withDefault(
     (resolve: DesignTokenResolver) =>
         PaletteRGB.from(resolve(docBaseColor))
 );
 
 export const docForegroundRecipe = createTokenColorRecipe(
-    "doc-foreground",
+    "color.doc.foreground",
     [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         contrastSwatch(
@@ -42,7 +42,7 @@ export const docForegroundRecipe = createTokenColorRecipe(
 export const docForeground = createTokenColorRecipeValue(docForegroundRecipe);
 
 export const docFillRecipe = createTokenColorRecipe(
-    "doc-fill-recipe",
+    "color.doc.fill",
     StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         contrastSwatch(
@@ -56,7 +56,7 @@ export const docFill = createTokenColorRecipeValue(docFillRecipe);
 
 // Placeholder tokens for `blackOrWhite` recipes, which have special handling in style modules.
 
-export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-discernible-rest", StyleProperty.foregroundFill).withDefault(
+export const blackOrWhiteDiscernibleRest = createTokenSwatch("color.blackOrWhite.discernible.rest", StyleProperty.foregroundFill).withDefault(
     (resolve: DesignTokenResolver) => {
         const fill = resolve(fillColor);
         const set: InteractiveSwatchSet = {
@@ -70,7 +70,7 @@ export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-dis
     }
 );
 
-export const blackOrWhiteReadableRest = createTokenSwatch("black-or-white-readable-rest", StyleProperty.foregroundFill).withDefault(
+export const blackOrWhiteReadableRest = createTokenSwatch("color.blackOrWhite.readable.rest", StyleProperty.foregroundFill).withDefault(
     (resolve: DesignTokenResolver) => {
         const fill = resolve(fillColor);
         const set: InteractiveSwatchSet = {

@@ -61,7 +61,7 @@ const styles = css`
         left: 6px;
         right: 6px;
         box-sizing: border-box;
-        background: var(--fill-color);
+        background: var(--color-context);
         border: 1px solid #e8e8e8;
         border-radius: calc(${cornerRadiusControl} * 2);
     }
@@ -118,7 +118,7 @@ export enum TokenGlyphType {
 
 const params = {
     ...Interactivity.always,
-    part: "swatch",
+    part: ".swatch",
 };
 
 @customElement({
