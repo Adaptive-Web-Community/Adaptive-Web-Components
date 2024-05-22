@@ -1,13 +1,28 @@
 import "./install-dom-shim.js";
 import path from "path";
 import fs from "fs";
+import fsp from "fs/promises";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { Command } from 'commander';
 import { glob } from "glob";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
-import { ComponentAnatomy, ComponentConditions, ComponentParts, StyleRules } from '../core/modules/types.js';
+import {
+    ComponentAnatomy,
+    ComponentConditions,
+    ComponentParts,
+    SerializableAnatomy,
+    StyleModuleTarget,
+    StyleRules
+ } from '../core/modules/types.js';
+import {
+    DesignTokenRegistry,
+    StyleProperties,
+    StyleRule,
+    Styles,
+    TypedCSSDesignToken
+ } from "../core/index.js";
 
 const program = new Command();
 
@@ -56,6 +71,21 @@ program.command("compile-styles <glob>").description("")
             process.exit(0);
         })
     });
+program.command("compile-json-anatomy <anatomyPath>")
+.description("Compile a stylesheet from a JSON anatomy")
+.action(async (path: string) => {
+    const data = (await fsp.readFile(path)).toString();
+    await import("../reference/index.js");
+
+    const jsonData = JSON.parse(data);
+    const compiler = new SheetCompilerImpl();
+    const sheet = jsonToAUIStyleSheet(jsonData);
+    const compiledSheet = compiler.compile(sheet);
+    const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
+    process.stdout.write("/* This file is generated. Do not edit directly */\n", );
+    process.stdout.write(formatted)
+    process.stdout.end();
+});
 
 
 program.parse()
@@ -170,4 +200,41 @@ class SheetCompilerImpl implements SheetCompiler {
             )
             .reduce((prev: string, curr: string) => prev.concat(curr), "");
     }
+}
+function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
+    const sheet:AUIStyleSheet =  {
+        anatomy: {
+            conditions: obj.conditions,
+            parts: obj.parts,
+            interactivity: obj.interactivity
+        },
+        rules: obj.styleRules.map(style => {
+
+           const styles = style.styles.map(name => {
+                return Styles.Shared.get(name)!
+            });
+            const properties = style.tokens.reduce((prev, current) => {
+                prev[current.target] = DesignTokenRegistry.Shared.get(current.tokenID) as TypedCSSDesignToken<any>
+                return prev;
+            }, {} as StyleProperties)
+
+            // TODO this is incomplete
+            // TODO add 
+            const target: StyleModuleTarget = {
+                part: obj.parts[style.part],
+                context: obj.context,
+                contextCondition: style.contextCondition 
+            } 
+
+            const rule: StyleRule = {
+                styles,
+                properties,
+                target,
+            } 
+
+            return rule;
+        }) 
+    }
+
+    return sheet;
 }

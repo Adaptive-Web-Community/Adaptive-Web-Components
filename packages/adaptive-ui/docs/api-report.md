@@ -467,6 +467,51 @@ export interface RelativeLuminance {
 // @public
 export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
 
+// @beta (undocumented)
+export interface SerializableAnatomy {
+    // (undocumented)
+    conditions: Record<string, SerializableCondition>;
+    // (undocumented)
+    context: string;
+    // (undocumented)
+    interactivity?: InteractivityDefinition;
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    parts: Record<string, string>;
+    // (undocumented)
+    styleRules: SerializableStyleRule[];
+}
+
+// @beta (undocumented)
+export type SerializableBooleanCondition = string;
+
+// @beta (undocumented)
+export type SerializableCondition = SerializableBooleanCondition | SerializableStringCondition;
+
+// @beta (undocumented)
+export type SerializableStringCondition = Record<string, string>;
+
+// @beta (undocumented)
+export interface SerializableStyleRule {
+    // (undocumented)
+    contextCondition?: string;
+    // (undocumented)
+    part: string;
+    // (undocumented)
+    styles: string[];
+    // (undocumented)
+    tokens: SerializableToken[];
+}
+
+// @beta (undocumented)
+export interface SerializableToken {
+    // (undocumented)
+    target: string;
+    // (undocumented)
+    tokenID: string;
+}
+
 // @public
 export class Shadow implements CSSDirective {
     constructor(color: Swatch, xOffset: number, yOffset: number, blurRadius?: number | undefined, spread?: number | undefined);

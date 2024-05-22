@@ -426,3 +426,44 @@ export const stylePropertyPaddingAll = [
  * @public
  */
 export type StyleRules = Array<StyleRule>;
+
+/**
+ * @beta
+ */
+export type SerializableBooleanCondition = string; 
+/**
+ * @beta
+ */
+export type SerializableStringCondition = Record<string, string>;
+/**
+ * @beta
+ */
+export type SerializableCondition = SerializableBooleanCondition | SerializableStringCondition;
+
+/**
+ * @beta
+ */
+export interface SerializableToken {
+    target: string,
+    tokenID: string
+}
+/**
+ * @beta
+ */
+export interface SerializableStyleRule {
+    contextCondition?: string;
+    part: string,
+    styles: string[],
+    tokens: SerializableToken[];
+}
+/**
+ * @beta
+ */
+export interface SerializableAnatomy{
+    name: string,
+    context: string,
+    interactivity?: InteractivityDefinition,
+    conditions: Record<string, SerializableCondition>,
+    parts: Record<string, string>,
+    styleRules: SerializableStyleRule[]
+}
