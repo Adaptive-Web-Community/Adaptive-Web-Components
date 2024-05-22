@@ -1,0 +1,14 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "importHelpers": true,
+        "types": ["mocha"],
+        "lib": ["DOM", "ES2020"],
+        "skipLibCheck": true,
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm",
+        "rootDir": "src"
+    },
+    "include": ["src"]
+}

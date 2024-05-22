@@ -1,0 +1,25 @@
+{
+  "name": "@adaptive-web/figma",
+  "version": "0.0.0",
+  "description": "Figma integration for Adaptive Web.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adaptive-web-community/adaptive-web-components.git"
+  },
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "devDependencies": {
+    "@figma/rest-api-spec": "^0.13.0"
+  }
+}
