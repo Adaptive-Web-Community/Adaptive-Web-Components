@@ -1,6 +1,6 @@
 import { css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { DesignTokenDefinition, FormControlId } from "../../../core/registry/design-token-registry.js";
+import { DesignTokenDefinition, FormControlId } from "@adaptive-web/adaptive-ui-designer-core";
 
 const tokenTemplatesByType = {
     default: html<DesignTokenField>`

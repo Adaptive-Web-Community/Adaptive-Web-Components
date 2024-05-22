@@ -1,5 +1,5 @@
-import { PluginMessage } from "../core/model.js";
-import { mapReviver } from "../core/serialization.js";
+import { PluginMessage } from "@adaptive-web/adaptive-ui-designer-core";
+import { mapReviver } from "@adaptive-web/adaptive-ui-designer-core";
 import { FigmaController } from "./controller.js";
 
 const controller = new FigmaController();

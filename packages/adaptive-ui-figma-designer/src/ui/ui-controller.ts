@@ -4,10 +4,18 @@ import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { formatHex8 } from 'culori';
-import { STYLE_REMOVE } from "../core/controller.js";
-import { AdditionalDataKeys, AppliedDesignToken, AppliedStyleModules, AppliedStyleValue, type PluginMessage, type PluginUINodeData } from "../core/model.js";
-import { DesignTokenRegistry } from "../core/registry/design-token-registry.js";
-import { registerAppliableTokens, registerTokens } from "../core/registry/recipes.js";
+import {
+    AdditionalDataKeys,
+    AppliedDesignToken,
+    AppliedStyleModules,
+    AppliedStyleValue,
+    DesignTokenRegistry,
+    type PluginMessage,
+    type PluginUINodeData,
+    registerAppliableTokens,
+    registerTokens,
+    STYLE_REMOVE
+} from "@adaptive-web/adaptive-ui-designer-core";
 import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';

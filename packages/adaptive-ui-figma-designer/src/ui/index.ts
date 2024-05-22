@@ -5,9 +5,7 @@ import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { PluginMessage } from '../core/model.js';
-import { PluginUIState } from '../core/controller.js';
-import { mapReplacer, mapReviver } from "../core/serialization.js";
+import { mapReplacer, mapReviver, PluginMessage, PluginUIState  } from '@adaptive-web/adaptive-ui-designer-core';
 import { App } from "./app.js";
 
 AdaptiveDesignSystem.defineComponents({

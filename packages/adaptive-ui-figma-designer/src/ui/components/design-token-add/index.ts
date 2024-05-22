@@ -9,8 +9,8 @@ import {
     repeat,
 } from "@microsoft/fast-element";
 import { staticallyCompose } from "@microsoft/fast-foundation";
+import { DesignTokenDefinition } from "@adaptive-web/adaptive-ui-designer-core";
 import CheckmarkIcon from "../../assets/checkmark.svg";
-import { DesignTokenDefinition } from "../../../core/registry/design-token-registry.js";
 import { DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;

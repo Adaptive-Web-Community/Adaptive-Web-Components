@@ -1,8 +1,8 @@
 import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { Controller, STYLE_REMOVE } from "../core/controller.js";
-import { AppliedStyleModules, AppliedStyleValues, PluginNodeData } from "../core/model.js";
-import { focusIndicatorNodeName, PluginNode, State, StatesState } from "../core/node.js";
+import { Controller, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { AppliedStyleModules, AppliedStyleValues, PluginNodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { focusIndicatorNodeName, PluginNode, State, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
 const rgb = useMode(modeRgb);

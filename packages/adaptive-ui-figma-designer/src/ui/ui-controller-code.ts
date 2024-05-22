@@ -1,6 +1,6 @@
 import { observable } from "@microsoft/fast-element";
+import { AdditionalDataKeys } from "@adaptive-web/adaptive-ui-designer-core";
 import { CodeGen } from "../core/code-gen.js";
-import { AdditionalDataKeys } from "../core/model.js";
 import { UIController } from "./ui-controller.js";
 
 export class CodeController {

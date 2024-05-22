@@ -3,8 +3,7 @@ import { observable } from "@microsoft/fast-element";
 import { type DesignToken } from "@microsoft/fast-foundation";
 import { Color } from "@adaptive-web/adaptive-ui";
 import { formatHex8 } from 'culori';
-import { DesignTokenValue, PluginUINodeData } from "../core/model.js";
-import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
+import { DesignTokenDefinition, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 import { ElementsController } from "./ui-controller-elements.js";
 

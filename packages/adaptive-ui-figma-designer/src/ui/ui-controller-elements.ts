@@ -2,7 +2,7 @@ import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
 import { Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
-import { DesignTokenValue, PluginUINodeData } from "../core/model.js";
+import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 
 const providerElementName = "plugin-design-system-provider";

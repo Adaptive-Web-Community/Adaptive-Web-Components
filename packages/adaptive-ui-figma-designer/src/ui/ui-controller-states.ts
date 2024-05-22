@@ -1,5 +1,4 @@
-import { AdditionalDataKeys, type PluginMessage } from "../core/model.js";
-import { StatesState } from "../core/node.js";
+import { AdditionalDataKeys, type PluginMessage, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 
 export class StatesController {

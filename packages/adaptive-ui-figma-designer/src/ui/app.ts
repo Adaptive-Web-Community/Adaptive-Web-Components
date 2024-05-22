@@ -13,9 +13,9 @@ import {
     neutralStrokeReadableRest,
     neutralStrokeStrongRest
 } from "@adaptive-web/adaptive-ui/reference";
-import type { PluginMessage, PluginUINodeData } from "../core/model.js";
-import { StatesState } from "../core/node.js";
-import { DesignTokenDefinition } from "../core/registry/design-token-registry.js";
+import type { PluginMessage, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignTokenDefinition } from "@adaptive-web/adaptive-ui-designer-core";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
