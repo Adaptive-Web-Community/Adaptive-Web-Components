@@ -5,10 +5,11 @@ import {
     AppliedDesignTokens,
     AppliedStyleModules,
     AppliedStyleValues,
+    deserializeMap,
     DesignTokenValues,
     PluginNodeData,
     PluginUINodeData,
-} from "../core/model.js.js";
+} from "@adaptive-web/adaptive-ui-designer-core";
 
 const SHARED_PLUGIN_DATA_KEY = "adaptive_ui";
 function getPluginData<T extends FigmaRestAPI.Node, K extends keyof PluginNodeData>(node: T, key: K): string | null {
@@ -23,6 +24,11 @@ function hasChildren<T extends FigmaRestAPI.Node>(node: T): node is FigmaRestAPI
     return "children" in node;
 }
 
+/**
+ * Convert a Figma REST API node to a {@link PluginUINodeData}
+ * @param node 
+ * @returns 
+ */
 export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
     const children = hasChildren(node) ? node.children : [];
     const additionalData: AdditionalData = new AdditionalData(); // Where do I get data for this?
@@ -31,11 +37,14 @@ export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
         additionalData.set(AdditionalDataKeys.codeGenName, node.name);
     }
 
-    const appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens(); // shared plugin data
-    const appliedStyleModules: AppliedStyleModules = new AppliedStyleModules(); // Shared plugin data
-
-    appliedDesignTokens.deserialize(getPluginData(node, "appliedDesignTokens") || undefined);
-    appliedStyleModules.deserialize(getPluginData(node, "appliedStyleModules") || undefined);
+    const appliedTokensPluginData = getPluginData(node, "appliedDesignTokens");
+    const appliedStylesPluginData = getPluginData(node, "appliedStyleModules");
+    const appliedDesignTokens: AppliedDesignTokens = appliedTokensPluginData
+        ? deserializeMap(appliedTokensPluginData)
+        : new AppliedDesignTokens();
+    const appliedStyleModules: AppliedStyleModules = appliedStylesPluginData
+        ? JSON.parse(appliedStylesPluginData)
+        : new AppliedStyleModules();
 
     return {
         id: node.id,

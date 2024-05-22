@@ -1,5 +1,6 @@
 import { observable } from "@microsoft/fast-element";
 import { AdditionalDataKeys } from "@adaptive-web/adaptive-ui-designer-core";
+import { Anatomy } from "@adaptive-web/adaptive-ui-designer-figma";
 import { CodeGen } from "../core/code-gen.js";
 import { UIController } from "./ui-controller.js";
 
@@ -33,7 +34,7 @@ export class CodeController {
         const selectedNode = this.controller.selectedNodes[0];
 
         const codeGen = new CodeGen();
-        const anatomy = codeGen.parseComponent(selectedNode);
+        const anatomy = Anatomy.fromPluginUINodeData(selectedNode);
         const genAnatomy = `${codeGen.generateAnatomyCode(anatomy)}\n`;
         const genStyles = `${codeGen.generateStylesCode(anatomy)}\n`;
 

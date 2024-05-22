@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@adaptive-web/adaptive-ui-designer-core": "^0.0.0",
+    "@adaptive-web/adaptive-ui-designer-figma": "^0.0.0",
     "@adaptive-web/adaptive-web-components": "0.5.0",
     "change-case": "^5.4.4",
     "culori": "^3.2.0"

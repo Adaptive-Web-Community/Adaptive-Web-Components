@@ -1,9 +1,18 @@
 {
-  "name": "@adaptive-web/figma",
+  "name": "@adaptive-web/adaptive-ui-designer-figma",
   "version": "0.0.0",
   "description": "Figma integration for Adaptive Web.",
-  "main": "dist/index.js",
+  "main": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+        "types": "./dist/dts/index.d.ts",
+        "default": "./dist/esm/index.js"
+    }
+  },
+  "type": "module",
   "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +30,10 @@
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "devDependencies": {
     "@figma/rest-api-spec": "^0.13.0"
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "^0.3.0",
+    "@adaptive-web/adaptive-ui-designer-core": "^0.0.0",
+    "change-case": "^5.4.4"
   }
 }

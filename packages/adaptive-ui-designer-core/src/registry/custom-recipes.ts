@@ -16,7 +16,7 @@ import {
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     fillColor
-} from "@adaptive-web/adaptive-ui/reference"
+} from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
 // Local recipes for use in documentation files.

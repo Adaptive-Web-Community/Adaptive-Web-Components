@@ -1,4 +1,3 @@
-import "@figma/plugin-typings";
 import { Controller, PluginUIState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage } from "@adaptive-web/adaptive-ui-designer-core";
 import { mapReplacer } from "@adaptive-web/adaptive-ui-designer-core";
