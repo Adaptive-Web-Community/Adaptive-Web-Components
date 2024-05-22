@@ -1,5 +1,5 @@
 {
-  "name": "@adaptive-web/adaptive-ui-figma-designer",
+  "name": "@adaptive-web/adaptive-ui-designer-figma-plugin",
   "version": "0.0.1",
   "description": "A designer for working with Adaptive UI within Figma",
   "type": "module",
