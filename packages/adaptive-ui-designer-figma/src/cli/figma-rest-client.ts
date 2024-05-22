@@ -287,7 +287,7 @@ class FigmaFile implements File {
 /**
  * Figma file types
  */
-enum FileType {
+export enum FileType {
     file = "file",
 }
 

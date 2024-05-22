@@ -92,7 +92,7 @@ export class Token {
 
 export class StyleRule {
     contextCondition?: string;
-    part: string;
+    part: string = "";
     styles: Set<string> = new Set();
     tokens: Set<Token> = new Set();
 
@@ -100,7 +100,7 @@ export class StyleRule {
         const contextCondition = typeof this.contextCondition === "string" ? "." + kebabCase(this.contextCondition) : undefined;
         return {
             contextCondition,
-            part: this.part,
+            part: this.part || "",
             styles: Array.from(this.styles),
             tokens: Array.from(this.tokens).map(token => token.toJSON())
         };
@@ -108,8 +108,8 @@ export class StyleRule {
 }
 
 export class Anatomy implements Anatomy {
-    name: string;
-    context: string;
+    name: string = "";
+    context: string = "";
     interactivity?: InteractivityDefinition;
     conditions: Map<string, Condition> = new Map();
     parts: Set<string> = new Set();
@@ -209,7 +209,7 @@ function parseComponent(node: PluginUINodeData): Anatomy {
                 // console.warn(`Expected component ${name}, property ${property}, not found`);
             } else {
                 // console.log("  found node", name);
-                this.walkNode(found, componentName, property, anatomy);
+                walkNode(found, componentName, property, anatomy);
             }
         };
 
@@ -230,7 +230,7 @@ function parseComponent(node: PluginUINodeData): Anatomy {
             }
         });
     } else {
-        this.walkNode(node, componentName, "", anatomy);
+        walkNode(node, componentName, "", anatomy);
     }
 
     return anatomy;
@@ -284,6 +284,6 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: stri
     }
 
     node.children.forEach((child) => {
-        this.walkNode(child, componentName, condition, anatomy);
+        walkNode(child, componentName, condition, anatomy);
     });
 }

@@ -6,9 +6,11 @@
         "types": ["mocha"],
         "lib": ["DOM", "ES2020"],
         "skipLibCheck": true,
-        "declarationDir": "dist/dts",
-        "outDir": "dist/esm",
-        "rootDir": "src"
+        "rootDir": "./src",
     },
-    "include": ["src"]
+    "files": [],
+    "references": [
+        { "path": "./src/lib" },
+        { "path": "./src/cli"}
+    ]
 }

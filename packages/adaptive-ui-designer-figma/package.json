@@ -2,18 +2,20 @@
   "name": "@adaptive-web/adaptive-ui-designer-figma",
   "version": "0.0.0",
   "description": "Figma integration for Adaptive Web.",
-  "main": "./dist/esm/index.js",
+  "main": "./dist/esm/lib/index.js",
+  "bin": {
+    "aui-figma-compiler": "./bin/aui-figma-compiler.js"
+  },
   "exports": {
     ".": {
-        "types": "./dist/dts/index.d.ts",
-        "default": "./dist/esm/index.js"
+      "types": "./dist/lib/dts/index.d.ts",
+      "default": "./dist/lib/esm/index.js"
     }
   },
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "watch": "tsc --build --watch"
   },
   "repository": {
     "type": "git",
@@ -29,11 +31,15 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "devDependencies": {
-    "@figma/rest-api-spec": "^0.13.0"
+    "@figma/rest-api-spec": "^0.13.0",
+    "@types/inquirer": "^9.0.7"
   },
   "dependencies": {
     "@adaptive-web/adaptive-ui": "^0.3.0",
     "@adaptive-web/adaptive-ui-designer-core": "^0.0.0",
-    "change-case": "^5.4.4"
+    "@types/ajv": "^1.0.0",
+    "ajv": "^8.13.0",
+    "change-case": "^5.4.4",
+    "inquirer": "^9.2.22"
   }
 }
