@@ -1,4 +1,4 @@
-import type { DesignToken, ValuesOf } from "@microsoft/fast-foundation";
+import { DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 
 export const FormControlId = {

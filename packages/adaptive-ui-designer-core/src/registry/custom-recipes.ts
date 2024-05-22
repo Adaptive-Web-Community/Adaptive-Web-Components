@@ -66,7 +66,7 @@ export const blackOrWhiteDiscernibleRest = createTokenSwatch("black-or-white-dis
             focus: fill,
             disabled: fill,
         }
-        return resolve(blackOrWhiteDiscernibleRecipe).evaluate(resolve, set).rest
+        return resolve(blackOrWhiteDiscernibleRecipe).evaluate(resolve, set).rest!
     }
 );
 
@@ -80,6 +80,6 @@ export const blackOrWhiteReadableRest = createTokenSwatch("black-or-white-readab
             focus: fill,
             disabled: fill,
         }
-        return resolve(blackOrWhiteReadableRecipe).evaluate(resolve, set).rest
+        return resolve(blackOrWhiteReadableRecipe).evaluate(resolve, set).rest!
     }
 );

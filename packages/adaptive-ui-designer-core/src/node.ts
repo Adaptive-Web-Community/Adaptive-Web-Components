@@ -1,4 +1,3 @@
-import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, formatHex8 } from "culori/fn";
 import {
@@ -14,6 +13,11 @@ import {
     ReadonlyDesignTokenValues,
 } from "./model.js";
 import { deserializeMap, serializeMap } from "./serialization.js";
+/**
+ * Helper for enumerating a type from a const object
+ * Example: export type Foo = ValuesOf\<typeof Foo\>
+ */
+type ValuesOf<T> = T[keyof T];
 
 /**
  * Layer name for special handling of the focus indicator in design tools.

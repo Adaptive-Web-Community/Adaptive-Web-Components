@@ -5,8 +5,8 @@ import {
     InteractivityDefinition,
 } from "@adaptive-web/adaptive-ui";
 import { StyleNameMapping } from "@adaptive-web/adaptive-ui/reference";
-import { AdditionalDataKeys } from "../core/model.js";
-import type { PluginUINodeData } from "../core/model.js";
+import { AdditionalDataKeys } from "./model.js";
+import type { PluginUINodeData } from "./model.js";
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
