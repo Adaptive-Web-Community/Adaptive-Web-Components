@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { ValuesOf } from "@microsoft/fast-foundation";
 
 /**
  * A mapping of historic reference token names to their current names.
@@ -944,6 +943,4 @@ export const TokenNameMapping = {
     "neutral-stroke-strong-on-neutral-fill-readable-active": "color.neutral.stroke.strong.on.neutral.fill.readable.active",
     "neutral-stroke-strong-on-neutral-fill-readable-focus": "color.neutral.stroke.strong.on.neutral.fill.readable.focus",
     "neutral-stroke-strong-on-neutral-fill-readable-disabled": "color.neutral.stroke.strong.on.neutral.fill.readable.disabled",
-};
-
-export type TokenNameMapping = ValuesOf<typeof TokenNameMapping>;
+} as const;

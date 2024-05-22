@@ -91,7 +91,7 @@ export class DesignTokenField extends FASTElement {
         if (this.designToken) {
             if (this.designToken.formControlId === FormControlId.color) {
                 return tokenTemplatesByType.color;
-            } else if (this.designToken.id === "layer-fill-base-luminance") {
+            } else if (this.designToken.id === "color.layer.fill.ramp.baseLuminance") {
                 return tokenTemplatesByType.luminance;
             }
         }

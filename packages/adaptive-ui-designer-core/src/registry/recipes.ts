@@ -342,7 +342,8 @@ function registerStore<T>(
     store.forEach((token) => {
         // console.log("registerStore", token);
 
-        const title = nameToTitle(token.name.split(".").slice(1).join("-"));
+        // Handle legacy non-hierarchical format for `custom-recipes.ts`.
+        const title = nameToTitle(token.name.indexOf(".") > -1 ? token.name.split(".").slice(1).join("-") : token.name);
         const intendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
         const formControlId = token.type === DesignTokenType.color ? FormControlId.color : FormControlId.text;
 
