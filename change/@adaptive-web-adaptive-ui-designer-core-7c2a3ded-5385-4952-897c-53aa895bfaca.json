@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Initial package creation",
+  "packageName": "@adaptive-web/adaptive-ui-designer-core",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
