@@ -11,7 +11,7 @@ import { alphabetize } from './string-utils.js';
 
 const program = new Command();
 const logger = Logger.create();
-const programName = 'Highspot Design-to-Code';
+const programName = 'Adaptive UI Figma Stylesheet generator';
 
 program
   .name(programName)
@@ -56,13 +56,7 @@ async function main({ library }: ProgramOptions) {
 
   logger.success('Your library was successfully retrieved!');
 
-  const { component_sets } = libraryComponentsResponse.meta;
-
-  // This is an arbitrary filter for Polar components
-  // What is a good mechanism to use?
-  const allComponents = component_sets.filter((value) => {
-    return value.containing_frame?.pageName.startsWith('Core:');
-  });
+  const { component_sets: allComponents } = libraryComponentsResponse.meta;
 
   const componentNames = allComponents.map((value) => value.name).sort(alphabetize);
   const pickComponentsRequest = {
