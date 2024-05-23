@@ -2,10 +2,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 import type * as FigmaRestAPI from '@figma/rest-api-spec';
+import { kebabCase } from 'change-case';
 import { parseNode } from '../lib/node-parser.js';
 import { Anatomy, type SerializableAnatomy,  } from '../lib/anatomy.js';
 import { ILibraryConfig } from './library-config.js';
-import { spinalCase } from './string-utils.js';
 import { ILogger } from './logger.js';
 
 export interface IAnatomyConfiguration {
@@ -27,7 +27,7 @@ export class AnatomyConfiguration implements IAnatomyConfiguration {
     node: FigmaRestAPI.Node,
     logger: ILogger
   ): Promise<IAnatomyConfiguration> {
-    const name = spinalCase(node.name);
+    const name = kebabCase(node.name);
     const configurationPath = AnatomyConfiguration.path(library, name);
 
     let anatomy: SerializableAnatomy;
