@@ -1,6 +1,6 @@
 export default {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'https://highspot.com/schemas/design-to-code-library.json',
+  $id: 'https://www.adaptive-web-community/schemas/design-to-code-library.json',
   title: 'Design to Code Library',
   description: 'Describes a valid library file format for generating CSS Stylesheets from a Figma Component Library',
   type: 'object',

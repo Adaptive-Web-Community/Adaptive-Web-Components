@@ -8,7 +8,7 @@
     "target": "ESNext",
     "resolveJsonModule": true,
     "composite": true,
-    "declarationDir": "../../dist/dts",
+    "declarationDir": "../../dist/lib/dts",
     "outDir": "../../dist/lib",
   }
 }
