@@ -7,6 +7,7 @@
         "lib": ["DOM", "ES2020"],
         "skipLibCheck": true,
         "rootDir": "./src",
+        "declaration": true,
     },
     "files": [],
     "references": [

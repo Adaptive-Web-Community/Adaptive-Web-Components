@@ -1,14 +1,13 @@
 {
-  "include": ["./**/*"],
+  "include": ["**/*"],
   "compilerOptions": {
     "strict": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "baseUrl": ".",
     "target": "ESNext",
     "resolveJsonModule": true,
     "composite": true,
-    "declarationDir": "../../dist/lib/dts",
     "outDir": "../../dist/lib",
+    "declaration": true
   }
 }

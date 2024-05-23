@@ -1,13 +1,13 @@
 {
-    "include": ["./**/*"],
+    "include": ["**/*"],
     "compilerOptions": {
     "strict": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "../../dist/cli",
     "target": "ESNext",
-    "resolveJsonModule": true,
     "composite": true,
+    "declaration": true
   },
   "references": [{"path": "../lib"}]
 }

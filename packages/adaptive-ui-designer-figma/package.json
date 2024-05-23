@@ -8,8 +8,8 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/lib/dts/index.d.ts",
-      "default": "./dist/lib/esm/index.js"
+      "types": "./dist/lib/index.d.ts",
+      "default": "./dist/lib/index.js"
     }
   },
   "type": "module",
