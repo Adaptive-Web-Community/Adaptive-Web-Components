@@ -1,4 +1,5 @@
-import { AdditionalDataKeys, type PluginMessage, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdditionalDataKeys, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginMessage} from "../core/messages.js";
 import { UIController } from "./ui-controller.js";
 
 export class StatesController {

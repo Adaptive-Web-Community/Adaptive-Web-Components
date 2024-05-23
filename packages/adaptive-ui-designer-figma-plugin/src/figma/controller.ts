@@ -1,6 +1,6 @@
 import { Controller, PluginUIState } from "@adaptive-web/adaptive-ui-designer-core";
-import type { PluginMessage } from "@adaptive-web/adaptive-ui-designer-core";
 import { mapReplacer } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginMessage} from "../core/messages.js";
 import { FigmaPluginNode } from "./node.js";
 
 export class FigmaController extends Controller {

@@ -1,6 +1,7 @@
-import { ValuesOf } from "@microsoft/fast-foundation";
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
+
+type ValuesOf<T> = T[keyof T];
 
 // TODO: This structure was used to pass design token values (specifically fill-color) but this isn't used
 // anymore and it's not a good way to structure the data it _is_ being used for now. Refactor with `PluginNodeData`.
@@ -224,15 +225,3 @@ export const pluginNodesToUINodes = (
 
     return convertedNodes;
 }
-
-export interface CreateStatesMessage {
-    readonly type: 'CREATE_STATES';
-    id: string;
-}
-
-export interface NodeDataMessage {
-    readonly type: 'NODE_DATA';
-    nodes: PluginUINodeData[];
-}
-
-export type PluginMessage = CreateStatesMessage | NodeDataMessage;
