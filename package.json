@@ -25,8 +25,10 @@
     "workspaces": [
         "./packages/adaptive-ui",
         "./packages/adaptive-web-components",
+        "./packages/adaptive-ui-designer-core",
         "./packages/adaptive-ui-explorer",
-        "./packages/adaptive-ui-figma-designer",
+        "./packages/adaptive-ui-designer-figma",
+        "./packages/adaptive-ui-designer-figma-plugin",
         "./examples/*"
     ],
     "engines": {

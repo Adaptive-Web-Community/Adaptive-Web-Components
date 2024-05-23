@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir": "../../dist",
+        "moduleResolution": "Node16",
+        "module": "Node16",
+        "target": "ES2018",
+        "lib": ["ES2018"],
+        "strict": true,
+        "skipLibCheck": true,
+        "types": ["@figma/plugin-typings"],
+    }
+}

@@ -41,6 +41,9 @@ jobs:
 
     - name: Check for the presence of changed files inside ./change
       run: npm run checkchange
+    
+    - name: Build all packages
+      run: npm run build
 
     - name: Validate workspaces
       run: npm run test

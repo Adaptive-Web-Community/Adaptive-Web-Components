@@ -1,0 +1,17 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "importHelpers": true,
+        "types": ["mocha"],
+        "lib": ["DOM", "ES2020"],
+        "skipLibCheck": true,
+        "rootDir": "./src",
+        "declaration": true,
+    },
+    "files": [],
+    "references": [
+        { "path": "./src/lib" },
+        { "path": "./src/cli"}
+    ]
+}

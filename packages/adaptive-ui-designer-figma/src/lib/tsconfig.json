@@ -1,0 +1,13 @@
+{
+  "include": ["**/*"],
+  "compilerOptions": {
+    "strict": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
+    "resolveJsonModule": true,
+    "composite": true,
+    "outDir": "../../dist/lib",
+    "declaration": true
+  }
+}
