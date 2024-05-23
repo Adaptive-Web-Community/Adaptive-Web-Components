@@ -18,7 +18,6 @@ function makeClassName(value: string) {
  * The common flow for all output is:
  * ``` ts
  * const codeGen = new CodeGen();
- * const anatomy = codeGen.parseComponent(node);
  * const anatomyOutput = codeGen.generateAnatomyCode(anatomy);
  * const stylesOutput = codeGen.generateStylesCode(anatomy);
  * ```
