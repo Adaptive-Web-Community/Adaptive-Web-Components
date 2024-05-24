@@ -24,7 +24,7 @@ export class StyleSheet implements IStylesheet {
 
   public async render(): Promise<void> {
     try {
-      const compiler = spawn('npx', ['aui', 'compile-json-anatomy', this.anatomy.path]);
+      const compiler = spawn('npx', ['aui', 'compile-json-anatomy', this.anatomy.path], { shell: true });
       compiler.stderr.on('data', (chunk) => {
         this.logger.fail(chunk);
       });

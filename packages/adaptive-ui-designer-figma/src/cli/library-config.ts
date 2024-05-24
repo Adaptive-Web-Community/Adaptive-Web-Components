@@ -1,9 +1,7 @@
 /* eslint @typescript-eslint/naming-convention: off */
-import { readFile } from 'fs/promises';
-import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs/promises';
-import { config } from 'process';
+import { ErrorObject } from 'ajv';
 import { File, FileType, parseFilePath } from './figma-rest-client.js';
 import librarySchema from './library-schema.js';
 import { ISchemaValidator, SchemaValidator } from './schema-validator.js';
@@ -26,10 +24,13 @@ interface LibrarySchema {
 export interface ILibraryConfig {
   readonly file: File;
   readonly valid: boolean;
+  readonly errorMessages: Array<string>;
   readonly outDir: string;
 }
 
 class ErrorLibraryConfig implements ILibraryConfig {
+  constructor(public readonly errorMessages: Array<string>) {
+  }
   public readonly file: File = { url: '', file_key: '', file_name: '', file_type: FileType.file };
   public readonly valid = false;
   public readonly outDir: string = '';
@@ -43,6 +44,7 @@ export class LibraryConfig implements ILibraryConfig {
   }
 
   public readonly valid: boolean = true;
+  public readonly errorMessages: Array<string> = [];
   public readonly file: File;
   public readonly outDir: string;
 
@@ -54,7 +56,8 @@ export class LibraryConfig implements ILibraryConfig {
     if (result === true) {
       return new LibraryConfig(JSON.parse(configData), path.dirname(configPath));
     } else {
-      return new ErrorLibraryConfig();
+      const messages = (result as ErrorObject[]).map(error => `${error.instancePath}: ${error.message}`);
+      return new ErrorLibraryConfig(messages);
     }
   }
 
