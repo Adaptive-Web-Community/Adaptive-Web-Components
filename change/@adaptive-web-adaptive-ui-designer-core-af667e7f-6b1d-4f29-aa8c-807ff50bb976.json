@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Fixing main path and adding .npmignore",
+  "packageName": "@adaptive-web/adaptive-ui-designer-core",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
