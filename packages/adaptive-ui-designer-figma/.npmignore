@@ -1,0 +1,27 @@
+# Tests
+dist/dts/__test__/
+dist/esm/__test__/
+*.spec.*
+coverage/
+
+# Source files
+src/
+
+# config files
+.eslintignore
+.eslintrc.cjs
+.eslintrc.json
+.mocharc.json
+.prettierignore
+api-extractor.json
+karma.conf.js
+rollup.config.js
+tsconfig.json
+
+# cache
+.rollupcache
+temp
+
+# npm pack excludes dist directory without this line. Removing 'dist' from the root .gitignore
+# results in the correct packing behavior, so this appears to be a npm pack bug.
+!dist
