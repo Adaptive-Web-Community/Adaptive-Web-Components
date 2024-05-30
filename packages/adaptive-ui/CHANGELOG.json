@@ -2,6 +2,57 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Thu, 30 May 2024 17:37:24 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "AUI: Remove assumption on `part` selector"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Adaptive UI: Fix module name"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Adaptive UI: Updated token names to hierarchical format"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Designer: Added anatomy code generation"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Added a registry for Design Tokens"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Adds stylesheet generation from JSON anatomy"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Adaptive UI: Add support for multi-value string anatomy conditions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Apr 2024 21:58:21 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.3.0",
       "version": "0.3.0",

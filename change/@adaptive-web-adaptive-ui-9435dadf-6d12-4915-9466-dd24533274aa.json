@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Adds stylesheet generation from JSON anatomy",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,0 +1,54 @@
+{
+  "name": "@adaptive-web/adaptive-ui-designer-figma",
+  "entries": [
+    {
+      "date": "Thu, 30 May 2024 17:37:24 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.1.0",
+      "version": "0.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Initial package creation"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Fix plugin: - Relocate messaging interfaces back to the plugin - Mark new dependencies sideEffects to allow tree shaking"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.4.0",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui-designer-core to v0.1.0",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90"
+          }
+        ],
+        "none": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Adding .npmignore"
+          }
+        ],
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "10bca295b3b34c3e750d874407df06951eaa9a90",
+            "comment": "Fixing a few CLI runtime issues"
+          }
+        ]
+      }
+    }
+  ]
+}

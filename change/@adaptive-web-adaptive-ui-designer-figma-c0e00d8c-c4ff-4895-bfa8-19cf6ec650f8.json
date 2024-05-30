@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing a few CLI runtime issues",
-  "packageName": "@adaptive-web/adaptive-ui-designer-figma",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
