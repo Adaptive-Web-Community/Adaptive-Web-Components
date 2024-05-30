@@ -10,12 +10,12 @@ import {
     AppliedStyleModules,
     AppliedStyleValue,
     DesignTokenRegistry,
-    type PluginMessage,
     type PluginUINodeData,
     registerAppliableTokens,
     registerTokens,
     STYLE_REMOVE
 } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginMessage} from "../core/messages.js";
 import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';

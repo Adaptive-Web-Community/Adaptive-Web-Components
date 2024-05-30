@@ -26,32 +26,33 @@ export const StandardFontWeight = {
 } as const;
 
 /** @public */
-export const fontFamily = createTokenFontFamily("font-family").withDefault('Arial, Helvetica, sans-serif');
+export const fontFamily = createTokenFontFamily("typography.default.fontFamily").withDefault('Arial, Helvetica, sans-serif');
 
 /** @public */
-export const bodyFontFamily = createTokenFontFamily("body-font-family").withDefault(fontFamily);
+export const bodyFontFamily = createTokenFontFamily("typography.body.fontFamily").withDefault(fontFamily);
 
 /** @public */
-export const labelFontFamily = createTokenFontFamily("label-font-family").withDefault(fontFamily);
+export const labelFontFamily = createTokenFontFamily("typography.label.fontFamily").withDefault(fontFamily);
 
 /** @public */
-export const fontWeight = createTokenFontWeight("font-weight").withDefault(StandardFontWeight.Normal);
+export const fontWeight = createTokenFontWeight("typography.default.fontWeight").withDefault(StandardFontWeight.Normal);
 
 /** @public */
-export const bodyFontWeight = createTokenFontWeight("body-font-weight").withDefault(fontWeight);
+export const bodyFontWeight = createTokenFontWeight("typography.body.fontWeight").withDefault(fontWeight);
 
 /** @public */
-export const labelFontWeight = createTokenFontWeight("label-font-weight").withDefault(fontWeight);
+export const labelFontWeight = createTokenFontWeight("typography.label.fontWeight").withDefault(fontWeight);
 
 /** @public */
-export const fontStyle = createTokenFontStyle("font-style").withDefault("normal");
+export const fontStyle = createTokenFontStyle("typography.default.fontStyle").withDefault("normal");
 
 /** @public */
-export const bodyFontStyle = createTokenFontStyle("body-font-style").withDefault(fontStyle);
+export const bodyFontStyle = createTokenFontStyle("typography.body.fontStyle").withDefault(fontStyle);
 
 /** @public */
-export const labelFontStyle = createTokenFontStyle("label-font-style").withDefault(fontStyle);
+export const labelFontStyle = createTokenFontStyle("typography.label.fontStyle").withDefault(fontStyle);
 
+// TODO: This should be a recipe. Reevaluate as design tokens update.
 function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenResolver) => string {
     return (resolve: DesignTokenResolver): string => {
         return "";
@@ -59,100 +60,100 @@ function fontVariations(sizeToken: DesignToken<string>): (resolve: DesignTokenRe
 }
 
 /** @public */
-export const typeRampBaseFontSize = createTokenFontSize("type-ramp-base-font-size").withDefault("14px");
+export const typeRampBaseFontSize = createTokenFontSize("typography.ramp.base.fontSize").withDefault("14px");
 
 /** @public */
-export const typeRampBaseLineHeight = createTokenLineHeight("type-ramp-base-line-height").withDefault("16px");
+export const typeRampBaseLineHeight = createTokenLineHeight("typography.ramp.base.lineHeight").withDefault("16px");
 
 /** @public */
-export const typeRampBaseFontVariations = createTokenFontVariations("type-ramp-base-font-variations").withDefault(
+export const typeRampBaseFontVariations = createTokenFontVariations("typography.ramp.base.fontVariations").withDefault(
     fontVariations(typeRampBaseFontSize)
 );
 
 /** @public */
-export const typeRampMinus1FontSize = createTokenFontSize("type-ramp-minus-1-font-size").withDefault("12px");
+export const typeRampMinus1FontSize = createTokenFontSize("typography.ramp.minus1.fontSize").withDefault("12px");
 
 /** @public */
-export const typeRampMinus1LineHeight = createTokenLineHeight("type-ramp-minus-1-line-height").withDefault("14px");
+export const typeRampMinus1LineHeight = createTokenLineHeight("typography.ramp.minus1.lineHeight").withDefault("14px");
 
 /** @public */
-export const typeRampMinus1FontVariations = createTokenFontVariations("type-ramp-minus-1-font-variations").withDefault(
+export const typeRampMinus1FontVariations = createTokenFontVariations("typography.ramp.minus1.fontVariations").withDefault(
     fontVariations(typeRampMinus1FontSize)
 );
 
 /** @public */
-export const typeRampMinus2FontSize = createTokenFontSize("type-ramp-minus-2-font-size").withDefault("10px");
+export const typeRampMinus2FontSize = createTokenFontSize("typography.ramp.minus2.fontSize").withDefault("10px");
 
 /** @public */
-export const typeRampMinus2LineHeight = createTokenLineHeight("type-ramp-minus-2-line-height").withDefault("12px");
+export const typeRampMinus2LineHeight = createTokenLineHeight("typography.ramp.minus2.lineHeight").withDefault("12px");
 
 /** @public */
-export const typeRampMinus2FontVariations = createTokenFontVariations("type-ramp-minus-2-font-variations").withDefault(
+export const typeRampMinus2FontVariations = createTokenFontVariations("typography.ramp.minus2.fontVariations").withDefault(
     fontVariations(typeRampMinus2FontSize)
 );
 
 /** @public */
-export const typeRampPlus1FontSize = createTokenFontSize("type-ramp-plus-1-font-size").withDefault("16px");
+export const typeRampPlus1FontSize = createTokenFontSize("typography.ramp.plus1.fontSize").withDefault("16px");
 
 /** @public */
-export const typeRampPlus1LineHeight = createTokenLineHeight("type-ramp-plus-1-line-height").withDefault("22px");
+export const typeRampPlus1LineHeight = createTokenLineHeight("typography.ramp.plus1.lineHeight").withDefault("22px");
 
 /** @public */
-export const typeRampPlus1FontVariations = createTokenFontVariations("type-ramp-plus-1-font-variations").withDefault(
+export const typeRampPlus1FontVariations = createTokenFontVariations("typography.ramp.plus1.fontVariations").withDefault(
     fontVariations(typeRampPlus1FontSize)
 );
 
 /** @public */
-export const typeRampPlus2FontSize = createTokenFontSize("type-ramp-plus-2-font-size").withDefault("20px");
+export const typeRampPlus2FontSize = createTokenFontSize("typography.ramp.plus2.fontSize").withDefault("20px");
 
 /** @public */
-export const typeRampPlus2LineHeight = createTokenLineHeight("type-ramp-plus-2-line-height").withDefault("26px");
+export const typeRampPlus2LineHeight = createTokenLineHeight("typography.ramp.plus2.lineHeight").withDefault("26px");
 
 /** @public */
-export const typeRampPlus2FontVariations = createTokenFontVariations("type-ramp-plus-2-font-variations").withDefault(
+export const typeRampPlus2FontVariations = createTokenFontVariations("typography.ramp.plus2.fontVariations").withDefault(
     fontVariations(typeRampPlus2FontSize)
 );
 
 /** @public */
-export const typeRampPlus3FontSize = createTokenFontSize("type-ramp-plus-3-font-size").withDefault("24px");
+export const typeRampPlus3FontSize = createTokenFontSize("typography.ramp.plus3.fontSize").withDefault("24px");
 
 /** @public */
-export const typeRampPlus3LineHeight = createTokenLineHeight("type-ramp-plus-3-line-height").withDefault("32px");
+export const typeRampPlus3LineHeight = createTokenLineHeight("typography.ramp.plus3.lineHeight").withDefault("32px");
 
 /** @public */
-export const typeRampPlus3FontVariations = createTokenFontVariations("type-ramp-plus-3-font-variations").withDefault(
+export const typeRampPlus3FontVariations = createTokenFontVariations("typography.ramp.plus3.fontVariations").withDefault(
     fontVariations(typeRampPlus3FontSize)
 );
 
 /** @public */
-export const typeRampPlus4FontSize = createTokenFontSize("type-ramp-plus-4-font-size").withDefault("28px");
+export const typeRampPlus4FontSize = createTokenFontSize("typography.ramp.plus4.fontSize").withDefault("28px");
 
 /** @public */
-export const typeRampPlus4LineHeight = createTokenLineHeight("type-ramp-plus-4-line-height").withDefault("36px");
+export const typeRampPlus4LineHeight = createTokenLineHeight("typography.ramp.plus4.lineHeight").withDefault("36px");
 
 /** @public */
-export const typeRampPlus4FontVariations = createTokenFontVariations("type-ramp-plus-4-font-variations").withDefault(
+export const typeRampPlus4FontVariations = createTokenFontVariations("typography.ramp.plus4.fontVariations").withDefault(
     fontVariations(typeRampPlus4FontSize)
 );
 
 /** @public */
-export const typeRampPlus5FontSize = createTokenFontSize("type-ramp-plus-5-font-size").withDefault("32px");
+export const typeRampPlus5FontSize = createTokenFontSize("typography.ramp.plus5.fontSize").withDefault("32px");
 
 /** @public */
-export const typeRampPlus5LineHeight = createTokenLineHeight("type-ramp-plus-5-line-height").withDefault("40px");
+export const typeRampPlus5LineHeight = createTokenLineHeight("typography.ramp.plus5.lineHeight").withDefault("40px");
 
 /** @public */
-export const typeRampPlus5FontVariations = createTokenFontVariations("type-ramp-plus-5-font-variations").withDefault(
+export const typeRampPlus5FontVariations = createTokenFontVariations("typography.ramp.plus5.fontVariations").withDefault(
     fontVariations(typeRampPlus5FontSize)
 );
 
 /** @public */
-export const typeRampPlus6FontSize = createTokenFontSize("type-ramp-plus-6-font-size").withDefault("40px");
+export const typeRampPlus6FontSize = createTokenFontSize("typography.ramp.plus6.fontSize").withDefault("40px");
 
 /** @public */
-export const typeRampPlus6LineHeight = createTokenLineHeight("type-ramp-plus-6-line-height").withDefault("52px");
+export const typeRampPlus6LineHeight = createTokenLineHeight("typography.ramp.plus6.lineHeight").withDefault("52px");
 
 /** @public */
-export const typeRampPlus6FontVariations = createTokenFontVariations("type-ramp-plus-6-font-variations").withDefault(
+export const typeRampPlus6FontVariations = createTokenFontVariations("typography.ramp.plus6.fontVariations").withDefault(
     fontVariations(typeRampPlus6FontSize)
 );

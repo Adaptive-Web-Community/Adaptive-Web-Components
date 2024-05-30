@@ -1,4 +1,5 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
+import { TokenNameMapping } from "@adaptive-web/adaptive-ui/reference";
 import { type Color, formatHex8 } from "culori/fn";
 import {
     AdditionalData,
@@ -216,7 +217,16 @@ export abstract class PluginNode {
     protected deserializeLocalDesignTokens(): DesignTokenValues {
         const json = this.getPluginData("designTokens");
         // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
-        return deserializeMap(json);
+        const map: DesignTokenValues = deserializeMap(json);
+
+        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
+        const retMap = new DesignTokenValues();
+        map.forEach((value, tokenName) => {
+            const currentTokenName = TokenNameMapping[tokenName as keyof typeof TokenNameMapping] || tokenName;
+            retMap.set(currentTokenName, value);
+        })
+
+        return retMap;
     }
 
     /**
@@ -245,7 +255,19 @@ export abstract class PluginNode {
     protected deserializeAppliedDesignTokens(): AppliedDesignTokens {
         const json = this.getPluginData("appliedDesignTokens");
         // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
-        return deserializeMap(json);
+        const map: AppliedDesignTokens = deserializeMap(json);
+
+        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
+        const retMap = new AppliedDesignTokens();
+        map.forEach((value, key) => {
+            const currentTokenName = TokenNameMapping[value.tokenID as keyof typeof TokenNameMapping] || value.tokenID;
+            if (currentTokenName !== value.tokenID) {
+                value.tokenID = currentTokenName;
+            }
+            retMap.set(key, value);
+        })
+
+        return retMap;
     }
 
     /**

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Fix plugin: - Relocate messaging interfaces back to the plugin - Mark new dependencies sideEffects to allow tree shaking",
+  "packageName": "@adaptive-web/adaptive-ui-designer-figma",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

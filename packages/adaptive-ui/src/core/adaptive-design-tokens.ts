@@ -137,7 +137,8 @@ applyMixins(TypedDesignToken, DesignTokenMetadata);
 @htmlDirective()
 export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
     constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
-        super({ name, cssCustomPropertyName: name });
+        const cssName = name.replace(/\./g, "-");
+        super({ name, cssCustomPropertyName: cssName });
         this.init(type, intendedFor);
     }
 

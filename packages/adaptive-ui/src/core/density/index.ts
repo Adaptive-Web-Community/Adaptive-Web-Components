@@ -19,7 +19,7 @@ import { StyleProperty, stylePropertyBorderThicknessAll } from "../modules/types
  * @public
  */
 export const densityAdjustmentUnits = createTokenNonCss<number>(
-    "density-adjustment-units",
+    "density.adjustmentUnits",
     DesignTokenType.number,
 ).withDefault(0);
 
@@ -146,17 +146,17 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         designUnit: string | DesignToken<string>,
         borderThickness: string | DesignToken<string>,
     ) {
-        this.designUnit = createTokenDimension(`${name}-design-unit`).withDefault(designUnit);
+        this.designUnit = createTokenDimension(`${name}.designUnit`).withDefault(designUnit);
 
-        this.borderThickness = createTokenDimension(`${name}-border-thickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
+        this.borderThickness = createTokenDimension(`${name}.borderThickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
 
         this.horizontalPaddingUnits = createTokenNonCss<number>(
-            `${name}-horizontal-padding-units`,
+            `${name}.horizontal.paddingUnits`,
             DesignTokenType.number,
         ).withDefault(horizontalPaddingUnits);
 
         this.horizontalPadding = createTokenDimension(
-            `${name}-horizontal-padding`,
+            `${name}.horizontal.padding`,
             [StyleProperty.paddingRight, StyleProperty.paddingLeft],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
@@ -164,12 +164,12 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         );
 
         this.horizontalGapUnits = createTokenNonCss<number>(
-            `${name}-horizontal-gap-units`,
+            `${name}.horizontal.gapUnits`,
             DesignTokenType.number,
         ).withDefault(horizontalGapUnits);
 
         this.horizontalGap = createTokenDimension(
-            `${name}-horizontal-gap`,
+            `${name}.horizontal.gap`,
             StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>
@@ -177,12 +177,12 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         );
 
         this.verticalPaddingUnits = createTokenNonCss<number>(
-            `${name}-vertical-padding-units`,
+            `${name}.vertical.paddingUnits`,
             DesignTokenType.number,
         ).withDefault(verticalPaddingUnits);
 
         this.verticalPadding = createTokenDimension(
-            `${name}-vertical-padding`,
+            `${name}.vertical.padding`,
             [StyleProperty.paddingTop, StyleProperty.paddingBottom],
         ).withDefault(
             (resolve: DesignTokenResolver) =>
@@ -190,12 +190,12 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
         );
 
         this.verticalGapUnits = createTokenNonCss<number>(
-            `${name}-vertical-gap-units`,
+            `${name}.vertical.gapUnits`,
             DesignTokenType.number,
         ).withDefault(verticalGapUnits);
 
         this.verticalGap = createTokenDimension(
-            `${name}-vertical-gap`,
+            `${name}.vertical.gap`,
             StyleProperty.gap,
         ).withDefault(
             (resolve: DesignTokenResolver) =>

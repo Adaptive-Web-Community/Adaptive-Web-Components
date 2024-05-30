@@ -13,7 +13,9 @@
     }
   },
   "type": "module",
+  "sideEffects": false,
   "scripts": {
+    "clean": "rimraf dist",
     "build": "tsc --build",
     "watch": "tsc --build --watch"
   },
@@ -40,6 +42,7 @@
     "@types/ajv": "^1.0.0",
     "ajv": "^8.13.0",
     "change-case": "^5.4.4",
-    "inquirer": "^9.2.22"
+    "inquirer": "^9.2.22",
+    "rimraf": "^3.0.2"
   }
 }

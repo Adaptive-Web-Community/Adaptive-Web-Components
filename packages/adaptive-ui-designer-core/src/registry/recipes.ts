@@ -1,3 +1,4 @@
+import { sentenceCase } from "change-case";
 import type { DesignToken } from "@microsoft/fast-foundation";
 import {
     densityAdjustmentUnits,
@@ -330,7 +331,7 @@ const effectsTokens: DesignTokenStore = [
 
 export function nameToTitle(name: string): string {
     const base = name.replace(/-/g, ' ').replace(/density_/, '');
-    return base.charAt(0).toUpperCase() + base.substring(1);
+    return sentenceCase(base);
 }
 
 function registerStore<T>(
@@ -340,17 +341,18 @@ function registerStore<T>(
 ): void {
     store.forEach((token) => {
         // console.log("registerStore", token);
-        
-        const entryIntendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
 
-        const entryFormControlId = token.type === DesignTokenType.color ? FormControlId.color : FormControlId.text;
+        // Handle legacy non-hierarchical format for `custom-recipes.ts`.
+        const title = nameToTitle(token.name.indexOf(".") > -1 ? token.name.split(".").slice(1).join("-") : token.name);
+        const intendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
+        const formControlId = token.type === DesignTokenType.color ? FormControlId.color : FormControlId.text;
 
         const definition: DesignTokenDefinition = {
             id: token.name,
-            title: nameToTitle(token.name),
+            title,
             groupTitle,
-            intendedFor: entryIntendedFor,
-            formControlId: entryFormControlId,
+            intendedFor,
+            formControlId,
             token,
         };
 

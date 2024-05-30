@@ -1,5 +1,5 @@
-import { PluginMessage } from "@adaptive-web/adaptive-ui-designer-core";
 import { mapReviver } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginMessage } from "../core/messages.js";
 import { FigmaController } from "./controller.js";
 
 const controller = new FigmaController();

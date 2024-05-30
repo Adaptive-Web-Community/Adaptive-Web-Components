@@ -10,7 +10,9 @@
     }
   },
   "type": "module",
+  "sideEffects": false,
   "scripts": {
+    "clean": "rimraf dist",
     "build": "tsc",
     "watch": "tsc --watch"
   },
@@ -32,6 +34,7 @@
     "@microsoft/fast-foundation": "^3.0.0-alpha.31"
   },
   "devDependencies": {
+    "rimraf": "^3.0.2",
     "typescript": "^5.4.5"
   }
 }

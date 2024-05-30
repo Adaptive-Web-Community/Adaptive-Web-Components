@@ -13,9 +13,10 @@ import {
     neutralStrokeReadableRest,
     neutralStrokeStrongRest
 } from "@adaptive-web/adaptive-ui/reference";
-import type { PluginMessage, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import { DesignTokenDefinition } from "@adaptive-web/adaptive-ui-designer-core";
+import type { PluginMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
@@ -447,7 +448,7 @@ const styles = css`
     }
 
     adaptive-tabs::part(tablist) {
-        border-bottom: var(--stroke-width) solid var(--neutral-stroke-divider-rest);
+        border-bottom: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle-rest);
     }
 
     adaptive-tab-panel {
@@ -484,11 +485,11 @@ const styles = css`
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         justify-items: stretch;
-        margin-inline-end: calc(var(--design-unit) * 2);
+        margin-inline-end: calc(var(--global-designUnit) * 2);
     }
 
     .swatch-grid > * {
-        margin-bottom: calc(var(--design-unit) * 3);
+        margin-bottom: calc(var(--global-designUnit) * 3);
     }
 
     .swatch-stack {
@@ -497,13 +498,13 @@ const styles = css`
     }
 
     .swatch-stack > * {
-        padding: var(--design-unit) 0;
-        padding-inline-start: calc(var(--design-unit) * 4);
-        padding-inline-end: var(--design-unit);
+        padding: var(--global-designUnit) 0;
+        padding-inline-start: calc(var(--global-designUnit) * 4);
+        padding-inline-end: var(--global-designUnit);
     }
 
     .title {
-        padding: 0 calc(var(--design-unit) * 3);
+        padding: 0 calc(var(--global-designUnit) * 3);
         color: ${neutralStrokeReadableRest}
     }
 
@@ -544,7 +545,7 @@ const styles = css`
         grid-template-columns: 1fr auto;
         gap: 8px;
         align-items: center;
-        padding: 4px calc(var(--design-unit) * 2) 4px calc(var(--design-unit) * 4);
+        padding: 4px calc(var(--global-designUnit) * 2) 4px calc(var(--global-designUnit) * 4);
     }
 
     footer .selection-label {

@@ -24,17 +24,17 @@ import { InteractiveState, InteractiveTokenGroup } from "./types.js";
  * Creates a DesignToken that can be used for interactive color recipe deltas.
  *
  * @param baseName - The base token name in `css-identifier` casing.
- * @param state - The state for the recipe delta value.
+ * @param state - The state for the recipe delta value, or a custom identifier in camelCase.
  * @param value - The value for the recipe delta.
  *
  * @public
  */
 export function createTokenDelta(
     baseName: string,
-    state: InteractiveState,
+    state: InteractiveState | string,
     value: number | DesignToken<number>
 ): TypedDesignToken<number> {
-    return createTokenNonCss<number>(`${baseName}-${state}-delta`, DesignTokenType.number).withDefault(value);
+    return createTokenNonCss<number>(`${baseName}.${state}Delta`, DesignTokenType.number).withDefault(value);
 }
 
 /**
@@ -49,7 +49,7 @@ export function createTokenMinContrast(
     baseName: string,
     value: number | DesignToken<number>
 ): TypedDesignToken<number> {
-    return createTokenNonCss<number>(`${baseName}-min-contrast`, DesignTokenType.number).withDefault(value);
+    return createTokenNonCss<number>(`${baseName}.minContrast`, DesignTokenType.number).withDefault(value);
 }
 
 /**
@@ -66,7 +66,7 @@ export function createTokenColorRecipe<T = Swatch>(
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipeEvaluate<T>,
 ): TypedDesignToken<ColorRecipe<T>> {
-    return createTokenNonCss<ColorRecipe<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+    return createTokenNonCss<ColorRecipe<T>>(`${baseName}.recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }
@@ -85,7 +85,7 @@ export function createTokenColorRecipeBySet<T = Swatch>(
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipeBySetEvaluate<T>,
 ): TypedDesignToken<ColorRecipeBySet<T>> {
-    return createTokenNonCss<ColorRecipeBySet<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+    return createTokenNonCss<ColorRecipeBySet<T>>(`${baseName}.recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }
@@ -105,7 +105,7 @@ export function createTokenColorRecipeForPalette<T = Swatch>(
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipePaletteEvaluate<T>,
 ): TypedDesignToken<ColorRecipePalette<T>> {
-    return createTokenNonCss<ColorRecipePalette<T>>(`${baseName}-recipe`, DesignTokenType.recipe, intendedFor).withDefault({
+    return createTokenNonCss<ColorRecipePalette<T>>(`${baseName}.recipe`, DesignTokenType.recipe, intendedFor).withDefault({
         evaluate
     });
 }
@@ -122,8 +122,9 @@ export function createTokenColorRecipeWithPalette<T>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
     paletteToken: DesignToken<Palette>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    const palettePrefix = paletteToken.name.split("-")[0] + "-"; // TODO: More resilient
-    const name = palettePrefix + recipeToken.name;
+    const palettePrefix = paletteToken.name.replace(".palette", ""); // TODO: More resilient
+    const recipeSuffix = recipeToken.name.replace("color.shared.", "");
+    const name = `${palettePrefix}.${recipeSuffix}`;
     return createTokenNonCss<RecipeOptional<ColorRecipeParams, T>>(name, DesignTokenType.recipe, recipeToken.intendedFor).withDefault({
         evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): T => {
             const p = Object.assign({ palette: resolve(paletteToken) }, params);
@@ -136,7 +137,7 @@ function createTokenColorSetState(
     valueToken: TypedDesignToken<InteractiveSwatchSet>,
     state: InteractiveState,
 ): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${valueToken.name.replace("-value", "")}-${state}`, valueToken.intendedFor).withDefault(
+    return createTokenSwatch(`${valueToken.name.replace(".value", "")}.${state}`, valueToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(valueToken)[state] as any
     );
@@ -152,8 +153,8 @@ function createTokenColorSetState(
 export function createTokenColorSet(
     recipeToken: TypedDesignToken<InteractiveColorRecipe>
 ): InteractiveTokenGroup<Swatch> {
-    const name = recipeToken.name.replace("-recipe", "");
-    const valueToken = createTokenNonCss<InteractiveSwatchSet>(`${name}-value`, DesignTokenType.color, recipeToken.intendedFor).withDefault(
+    const name = recipeToken.name.replace(".recipe", "");
+    const valueToken = createTokenNonCss<InteractiveSwatchSet>(`${name}.value`, DesignTokenType.color, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -179,7 +180,7 @@ export function createTokenColorSet(
 export function createTokenColorRecipeValue(
     recipeToken: TypedDesignToken<ColorRecipe<Swatch>>,
 ): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${recipeToken.name.replace("-recipe", "")}`, recipeToken.intendedFor).withDefault(
+    return createTokenSwatch(`${recipeToken.name.replace(".recipe", "")}.value`, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -198,14 +199,14 @@ export function createForegroundSet(
     foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>,
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
-    const foregroundBaseName = `${foregroundRecipe.name.replace("-recipe", "")}`;
-    const setName = `${foregroundBaseName}-on-${background.name}`;
+    const foregroundBaseName = `${foregroundRecipe.name.replace(".recipe", "")}`;
+    const setName = `${foregroundBaseName}.on.${background.name.replace("color.", "")}`;
 
     function createState(
         foregroundState: InteractiveState,
         state: InteractiveState,
     ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}-${state}`).withDefault(
+        return createTokenSwatch(`${setName}.${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(foregroundRecipe).evaluate(resolve, {
                     reference: resolve(background[state])
@@ -237,10 +238,10 @@ export function createForegroundSetBySet(
     foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>,
     background: InteractiveTokenGroup<Swatch>,
 ): InteractiveTokenGroup<Swatch> {
-    const foregroundBaseName = foregroundRecipe.name.replace("-recipe", "");
-    const setName = `${foregroundBaseName}-on-${background.name}`;
+    const foregroundBaseName = foregroundRecipe.name.replace(".recipe", "");
+    const setName = `${foregroundBaseName}.on.${background.name.replace("color.", "")}`;
 
-    const set = createTokenNonCss<InteractiveSwatchSet>(`${setName}-value`, DesignTokenType.color).withDefault(
+    const set = createTokenNonCss<InteractiveSwatchSet>(`${setName}.value`, DesignTokenType.color).withDefault(
         (resolve: DesignTokenResolver) =>
             {
                 const backgroundSet: InteractiveSwatchSet = {
@@ -257,7 +258,7 @@ export function createForegroundSetBySet(
     function createState(
         state: InteractiveState,
     ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}-${state}`).withDefault(
+        return createTokenSwatch(`${setName}.${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(set)[state] as any
         );

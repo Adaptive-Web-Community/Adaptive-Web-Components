@@ -19,6 +19,10 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
+/**********************************************************************************************************
+ * Note that these tokens are not renamed due to complications in the temporary name resolution mechanism *
+ **********************************************************************************************************/
+
 // Local recipes for use in documentation files.
 
 export const docBaseColor = createTokenColor("doc-base-color").withDefault("#E1477E");
