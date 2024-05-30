@@ -26,8 +26,7 @@ jobs:
 
       - name: Build Packages
         run: |
-          npm run build -w @adaptive-web/adaptive-ui
-          npm run build -w @adaptive-web/adaptive-web-components
+          npm run build
 
       - name: Set Git Credentials
         run: |

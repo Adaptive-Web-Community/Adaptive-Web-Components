@@ -2,7 +2,7 @@
   "name": "@adaptive-web/adaptive-ui-designer-figma",
   "version": "0.0.0",
   "description": "Figma integration for Adaptive Web.",
-  "main": "./dist/esm/lib/index.js",
+  "main": "./dist/lib/index.js",
   "bin": {
     "aui-figma-compiler": "./bin/aui-figma-compiler.js"
   },
