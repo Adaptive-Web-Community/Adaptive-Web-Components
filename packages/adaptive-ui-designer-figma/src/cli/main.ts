@@ -24,11 +24,12 @@ interface ProgramOptions {
 }
 
 async function main({ library }: ProgramOptions) {
-  logger.neutral('Validating library config file...');
   const configPath = path.resolve(process.cwd(), library);
+  logger.neutral('Validating library config file: ' + configPath);
   const libraryConfig = await LibraryConfig.create(configPath);
   if (libraryConfig.valid !== true) {
     logger.fail('Hmmm... there is something wrong with the config file you provided.');
+    logger.fail(libraryConfig.errorMessages.join("\n"));
     process.exit(1);
   }
 
@@ -112,7 +113,7 @@ async function main({ library }: ProgramOptions) {
         try {
           const anatomy = await AnatomyConfiguration.create(libraryConfig, node.document, logger);
           return anatomy;
-                  } catch (e) {
+        } catch (e) {
           logger.fail('Something went wrong compiling anatomy');
           logger.fail(e as any);
           return null;
@@ -122,11 +123,11 @@ async function main({ library }: ProgramOptions) {
 
     await Promise.allSettled(
       anatomies.map(async (anatomy) => {
-      if (anatomy.status === "fulfilled" && anatomy.value !== null) {
-        const stylesheet = StyleSheet.create(anatomy.value, logger);
-        await stylesheet.render();
-      } 
-    })
+        if (anatomy.status === "fulfilled" && anatomy.value !== null) {
+          const stylesheet = StyleSheet.create(anatomy.value, logger);
+          await stylesheet.render();
+        } 
+      })
     );
 
     // process components
