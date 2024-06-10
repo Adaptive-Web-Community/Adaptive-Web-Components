@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Add runtime dependencies as dependencies",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Mon, 10 Jun 2024 23:22:54 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.4.1",
+      "version": "0.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "0b9ef103a116576059f4fc0ee56d39e4e3dee2da",
+            "comment": "Add runtime dependencies as dependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 May 2024 17:37:24 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.4.0",
       "version": "0.4.0",

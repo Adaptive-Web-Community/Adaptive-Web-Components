@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Mon, 10 Jun 2024 23:22:54 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.6.1",
+      "version": "0.6.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.4.1",
+            "commit": "0b9ef103a116576059f4fc0ee56d39e4e3dee2da"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 May 2024 17:37:24 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.6.0",
       "version": "0.6.0",
