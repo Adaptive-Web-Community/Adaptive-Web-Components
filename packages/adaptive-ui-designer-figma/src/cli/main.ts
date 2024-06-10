@@ -42,7 +42,6 @@ async function main({ library }: ProgramOptions) {
   };
 
   const response = await inquirer.prompt([patRequest]);
-  console.log(response.pat, response.pat.length)
   const client = Client.create({
     pat: response.pat
   });
