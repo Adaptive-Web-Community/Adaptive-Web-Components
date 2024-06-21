@@ -210,10 +210,10 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
         },
         rules: obj.styleRules.map(style => {
 
-           const styles = style.styles.map(name => {
+           const styles = style.styles?.map(name => {
                 return Styles.Shared.get(name)!
             });
-            const properties = style.tokens.reduce((prev, current) => {
+            const properties = style.tokens?.reduce((prev, current) => {
                 prev[current.target] = DesignTokenRegistry.Shared.get(current.tokenID) as TypedCSSDesignToken<any>
                 return prev;
             }, {} as StyleProperties)
@@ -221,9 +221,10 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             // TODO this is incomplete
             // TODO add 
             const target: StyleModuleTarget = {
-                part: obj.parts[style.part],
+                part: style.part ? obj.parts[style.part] : undefined,
                 context: obj.context,
-                contextCondition: style.contextCondition 
+                // TODO This should be a lookup like `part` above - also update in StyleRule.toJSON
+                contextCondition: style.contextCondition,
             } 
 
             const rule: StyleRule = {

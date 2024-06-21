@@ -498,11 +498,11 @@ export interface SerializableStyleRule {
     // (undocumented)
     contextCondition?: string;
     // (undocumented)
-    part: string;
+    part?: string;
     // (undocumented)
-    styles: string[];
+    styles?: string[];
     // (undocumented)
-    tokens: SerializableToken[];
+    tokens?: SerializableToken[];
 }
 
 // @beta (undocumented)

@@ -28,9 +28,9 @@ export interface SerializableToken {
 
 export interface SerializableStyleRule {
     contextCondition?: string;
-    part: string;
-    styles: string[];
-    tokens: SerializableToken[];
+    part?: string;
+    styles?: string[];
+    tokens?: SerializableToken[];
 }
 
 export interface SerializableAnatomy {
@@ -68,7 +68,7 @@ export class StringCondition extends Condition {
 
     toJSON(): SerializableStringCondition {
         const values = this.values.reduce((prev, current) => {
-            prev[current[0]] = makeClassName(this.name + " " + current[1]); // Add space so that there is a kebab between name and value
+            prev[current] = makeClassName(this.name + " " + current); // Add space so that there is a kebab between name and value
             return prev;
         }, {} as SerializableStringCondition);
 
@@ -102,7 +102,7 @@ export class StyleRule {
             contextCondition,
             part: this.part || "",
             styles: Array.from(this.styles),
-            tokens: Array.from(this.tokens).map(token => token.toJSON())
+            tokens: this.tokens.size === 0 ? undefined : Array.from(this.tokens).map(token => token.toJSON()),
         };
     }
 }
