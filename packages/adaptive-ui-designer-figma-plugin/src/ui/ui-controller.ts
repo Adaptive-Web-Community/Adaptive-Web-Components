@@ -224,7 +224,7 @@ export class UIController {
                             source,
                         });
                     } else {
-                        console.error("Token not found:", applied.tokenID);
+                        console.error("Token not found:", applied.tokenID, node.name, node.type);
                     }
                 } else { // Removed
                     allApplied.set(target, {

@@ -7,7 +7,8 @@ import { _black, _white } from "./utilities/color-constants.js";
 const okhsl = useMode(modeOkhsl);
 const rgb = useMode(modeRgb);
 
-const stepCount = 56;
+const stepCount = 66;
+const threeSteps = (1 / stepCount) * 3;
 
 /**
  * An implementation of a {@link Palette} that uses the okhsl color model.
@@ -24,12 +25,16 @@ export class PaletteOkhsl extends BasePalette<Swatch> {
 
         const sourceHsl = okhsl(color.color);
 
-        const lo = Object.assign({}, sourceHsl, {l: 0.01});
-        const hi = Object.assign({}, sourceHsl, {l: 0.99});
+        const hi = Object.assign({}, sourceHsl, {l: 0.999});
+        const lo = Object.assign({}, sourceHsl, {l: 0.02});
+
+        // Adjust the hi or lo end if the source color is too close to produce a good ramp.
+        sourceHsl.l = Math.min(1 - threeSteps, sourceHsl.l);
+        sourceHsl.l = Math.max(threeSteps, sourceHsl.l);
 
         const y = 1 - sourceHsl.l; // Position for the source color in the ramp
         const stepCountLeft = Math.round(y * stepCount);
-        const stepCountRight = stepCount- stepCountLeft;
+        const stepCountRight = stepCount - stepCountLeft + 1;
         const colorsLeft: any = [hi, sourceHsl];
         const colorsRight: any = [sourceHsl, lo];
         const interpolateLeft = interpolate(colorsLeft, "okhsl");

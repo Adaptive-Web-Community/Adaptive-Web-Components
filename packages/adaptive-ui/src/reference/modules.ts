@@ -3,6 +3,7 @@ import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, 
 import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
+    accentFillIdeal,
     accentFillReadable,
     accentFillStealth,
     accentFillSubtle,
@@ -14,6 +15,7 @@ import {
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
     criticalFillDiscernible,
+    criticalFillIdeal,
     criticalFillReadable,
     criticalFillStealth,
     criticalFillSubtle,
@@ -25,6 +27,7 @@ import {
     fillColor,
     focusStroke,
     highlightFillDiscernible,
+    highlightFillIdeal,
     highlightFillReadable,
     highlightFillStealth,
     highlightFillSubtle,
@@ -34,6 +37,7 @@ import {
     highlightStrokeReadableRecipe,
     highlightStrokeSafety,
     infoFillDiscernible,
+    infoFillIdeal,
     infoFillReadable,
     infoFillStealth,
     infoFillSubtle,
@@ -43,6 +47,7 @@ import {
     infoStrokeReadableRecipe,
     infoStrokeSafety,
     neutralFillDiscernible,
+    neutralFillIdeal,
     neutralFillReadable,
     neutralFillStealth,
     neutralFillSubtle,
@@ -54,6 +59,7 @@ import {
     neutralStrokeStrongRecipe,
     neutralStrokeSubtle,
     successFillDiscernible,
+    successFillIdeal,
     successFillReadable,
     successFillStealth,
     successFillSubtle,
@@ -63,6 +69,7 @@ import {
     successStrokeReadableRecipe,
     successStrokeSafety,
     warningFillDiscernible,
+    warningFillIdeal,
     warningFillReadable,
     warningFillStealth,
     warningFillSubtle,
@@ -324,11 +331,29 @@ export const accentFillSubtleInverseControlStyles: Styles = Styles.fromPropertie
 );
 
 /**
+ * Convenience style module for an accent-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - accent ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const accentFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(accentFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.accent-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an accent-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - accent discernible background (a11y)
- * - accent discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -450,11 +475,29 @@ export const highlightFillSubtleInverseControlStyles: Styles = Styles.fromProper
 );
 
 /**
+ * Convenience style module for an highlight-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - highlight ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const highlightFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(highlightFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.highlight-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an highlight-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - highlight discernible background (a11y)
- * - highlight discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -576,11 +619,29 @@ export const infoFillSubtleInverseControlStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Convenience style module for an info-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - info ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const infoFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(infoFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.info-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an info-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - info discernible background (a11y)
- * - info discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -702,11 +763,29 @@ export const successFillSubtleInverseControlStyles: Styles = Styles.fromProperti
 );
 
 /**
+ * Convenience style module for an success-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - success ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const successFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(successFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.success-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an success-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - success discernible background (a11y)
- * - success discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -828,11 +907,29 @@ export const warningFillSubtleInverseControlStyles: Styles = Styles.fromProperti
 );
 
 /**
+ * Convenience style module for an warning-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - warning ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const warningFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(warningFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.warning-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an warning-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - warning discernible background (a11y)
- * - warning discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -954,11 +1051,29 @@ export const criticalFillSubtleInverseControlStyles: Styles = Styles.fromPropert
 );
 
 /**
+ * Convenience style module for an critical-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - critical ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const criticalFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(criticalFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.critical-fill-ideal-control",
+);
+
+/**
  * Convenience style module for an critical-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - critical discernible background (a11y)
- * - critical discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -1080,11 +1195,29 @@ export const neutralFillSubtleInverseControlStyles: Styles = Styles.fromProperti
 );
 
 /**
+ * Convenience style module for an neutral-filled ideal control (interactive).
+ *
+ * By default, the background meets a non-WCAG contrast that minimally stands out, useful for a filled button:
+ * - neutral ideal background
+ * - black or white foreground (a11y)
+ * - no border
+ *
+ * @public
+ */
+export const neutralFillIdealControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForegroundBySet(neutralFillIdeal, blackOrWhiteReadableRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.neutral-fill-ideal-control",
+);
+
+/**
  * Convenience style module for a neutral-filled discernible control (interactive).
  *
  * By default, the background meets accessibility for non-text elements, useful for a checked checkbox:
  * - neutral discernible background (a11y)
- * - neutral discernible foreground
+ * - black or white foreground (a11y)
  * - no border
  *
  * @public
@@ -1581,6 +1714,7 @@ export const StyleNameMapping = {
     "color.accent-fill-stealth-control": "accentFillStealthControlStyles",
     "color.accent-fill-subtle-control": "accentFillSubtleControlStyles",
     "color.accent-fill-subtle-inverse-control": "accentFillSubtleInverseControlStyles",
+    "color.accent-fill-ideal-control": "accentFillIdealControlStyles",
     "color.accent-fill-discernible-control": "accentFillDiscernibleControlStyles",
     "color.accent-fill-readable-control": "accentFillReadableControlStyles",
     "color.accent-outline-discernible-control": "accentOutlineDiscernibleControlStyles",
@@ -1588,6 +1722,7 @@ export const StyleNameMapping = {
     "color.highlight-fill-stealth-control": "highlightFillStealthControlStyles",
     "color.highlight-fill-subtle-control": "highlightFillSubtleControlStyles",
     "color.highlight-fill-subtle-inverse-control": "highlightFillSubtleInverseControlStyles",
+    "color.highlight-fill-ideal-control": "highlightFillIdealControlStyles",
     "color.highlight-fill-discernible-control": "highlightFillDiscernibleControlStyles",
     "color.highlight-fill-readable-control": "highlightFillReadableControlStyles",
     "color.highlight-outline-discernible-control": "highlightOutlineDiscernibleControlStyles",
@@ -1595,6 +1730,7 @@ export const StyleNameMapping = {
     "color.info-fill-stealth-control": "infoFillStealthControlStyles",
     "color.info-fill-subtle-control": "infoFillSubtleControlStyles",
     "color.info-fill-subtle-inverse-control": "infoFillSubtleInverseControlStyles",
+    "color.info-fill-ideal-control": "infoFillIdealControlStyles",
     "color.info-fill-discernible-control": "infoFillDiscernibleControlStyles",
     "color.info-fill-readable-control": "infoFillReadableControlStyles",
     "color.info-outline-discernible-control": "infoOutlineDiscernibleControlStyles",
@@ -1602,6 +1738,7 @@ export const StyleNameMapping = {
     "color.success-fill-stealth-control": "successFillStealthControlStyles",
     "color.success-fill-subtle-control": "successFillSubtleControlStyles",
     "color.success-fill-subtle-inverse-control": "successFillSubtleInverseControlStyles",
+    "color.success-fill-ideal-control": "successFillIdealControlStyles",
     "color.success-fill-discernible-control": "successFillDiscernibleControlStyles",
     "color.success-fill-readable-control": "successFillReadableControlStyles",
     "color.success-outline-discernible-control": "successOutlineDiscernibleControlStyles",
@@ -1609,6 +1746,7 @@ export const StyleNameMapping = {
     "color.warning-fill-stealth-control": "warningFillStealthControlStyles",
     "color.warning-fill-subtle-control": "warningFillSubtleControlStyles",
     "color.warning-fill-subtle-inverse-control": "warningFillSubtleInverseControlStyles",
+    "color.warning-fill-ideal-control": "warningFillIdealControlStyles",
     "color.warning-fill-discernible-control": "warningFillDiscernibleControlStyles",
     "color.warning-fill-readable-control": "warningFillReadableControlStyles",
     "color.warning-outline-discernible-control": "warningOutlineDiscernibleControlStyles",
@@ -1616,6 +1754,7 @@ export const StyleNameMapping = {
     "color.critical-fill-stealth-control": "criticalFillStealthControlStyles",
     "color.critical-fill-subtle-control": "criticalFillSubtleControlStyles",
     "color.critical-fill-subtle-inverse-control": "criticalFillSubtleInverseControlStyles",
+    "color.critical-fill-ideal-control": "criticalFillIdealControlStyles",
     "color.critical-fill-discernible-control": "criticalFillDiscernibleControlStyles",
     "color.critical-fill-readable-control": "criticalFillReadableControlStyles",
     "color.critical-outline-discernible-control": "criticalOutlineDiscernibleControlStyles",
@@ -1623,6 +1762,7 @@ export const StyleNameMapping = {
     "color.neutral-fill-stealth-control": "neutralFillStealthControlStyles",
     "color.neutral-fill-subtle-control": "neutralFillSubtleControlStyles",
     "color.neutral-fill-subtle-inverse-control": "neutralFillSubtleInverseControlStyles",
+    "color.neutral-fill-ideal-control": "neutralFillIdealControlStyles",
     "color.neutral-fill-discernible-control": "neutralFillDiscernibleControlStyles",
     "color.neutral-fill-readable-control": "neutralFillReadableControlStyles",
     "color.neutral-outline-discernible-control": "neutralOutlineDiscernibleControlStyles",

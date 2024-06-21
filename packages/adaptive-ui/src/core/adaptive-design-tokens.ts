@@ -24,6 +24,7 @@ export const DesignTokenType = {
     gradient: "gradient",
     typography: "typography",
     // Added in Adaptive UI
+    boolean: "boolean",
     fontStyle: "fontStyle",
     fontVariations: "fontVariations",
     palette: "palette",

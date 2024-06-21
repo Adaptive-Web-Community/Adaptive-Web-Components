@@ -84,5 +84,10 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
             id="disabledState"
             :checked=${twoWay((x) => x.state.disabledState)}
         >Disabled state</adaptive-switch>
+
+        <adaptive-switch
+            id="showSwatches"
+            :checked=${twoWay((x) => x.state.showSwatches)}
+        >Show swatches</adaptive-switch>
     `;
 }

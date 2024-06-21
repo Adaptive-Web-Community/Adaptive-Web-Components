@@ -12,6 +12,7 @@ export interface State {
     showOnlyLayerBackgrounds: boolean;
     wcagContrastLevel: WcagContrastLevel;
     disabledState: boolean;
+    showSwatches: boolean;
 }
 
 export class DefaultState implements State {
@@ -35,4 +36,7 @@ export class DefaultState implements State {
 
     @observable
     public disabledState: boolean = false;
+
+    @observable
+    public showSwatches: boolean = false;
 }

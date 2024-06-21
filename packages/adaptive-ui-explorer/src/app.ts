@@ -58,6 +58,7 @@ const colorBlockTemplate = html<App>`
                 color=${(x) => x.color}
                 layer-name=${(x) => x.title}
                 :disabledState=${(_, c) => c.parent.state.disabledState}
+                :showSwatches=${(_, c) => c.parent.state.showSwatches}
             ></app-color-block>
         `
     )}
