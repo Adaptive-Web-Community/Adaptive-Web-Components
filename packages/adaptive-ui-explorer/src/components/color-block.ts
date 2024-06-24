@@ -1,6 +1,7 @@
 import { Swatch } from "@adaptive-web/adaptive-ui";
 import {
     accentFillDiscernibleControlStyles,
+    accentFillIdealControlStyles,
     accentFillReadableControlStyles,
     accentFillStealthControlStyles,
     accentFillSubtleControlStyles,
@@ -9,6 +10,7 @@ import {
     accentOutlineDiscernibleControlStyles,
     fillColor,
     highlightFillDiscernibleControlStyles,
+    highlightFillIdealControlStyles,
     highlightFillReadableControlStyles,
     highlightFillStealthControlStyles,
     highlightFillSubtleControlStyles,
@@ -18,6 +20,7 @@ import {
     neutralDividerDiscernibleElementStyles,
     neutralDividerSubtleElementStyles,
     neutralFillDiscernibleControlStyles,
+    neutralFillIdealControlStyles,
     neutralFillReadableControlStyles,
     neutralFillStealthControlStyles,
     neutralFillSubtleControlStyles,
@@ -49,103 +52,115 @@ StyleExample;
 AppSwatch;
 
 const backplateComponents = html<ColorBlock>`
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillIdealControlStyles}">
+        Accent ideal
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillReadableControlStyles}">
         Accent readable
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillStealthControlStyles}">
         Accent stealth
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillSubtleControlStyles}">
         Accent subtle
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillSubtleInverseControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillSubtleInverseControlStyles}">
         Accent subtle inverse
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillIdealControlStyles}">
+        Neutral ideal
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillReadableControlStyles}">
         Neutral readable
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillStealthControlStyles}">
         Neutral stealth
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillSubtleControlStyles}">
         Neutral subtle
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillSubtleInverseControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillSubtleInverseControlStyles}">
         Neutral subtle inverse
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillIdealControlStyles}">
+        Highlight ideal
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillReadableControlStyles}">
         Highlight readable
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillStealthControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillStealthControlStyles}">
         Highlight stealth
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillSubtleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillSubtleControlStyles}">
         Highlight subtle
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillSubtleInverseControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillSubtleInverseControlStyles}">
         Highlight subtle inverse
     </app-style-example>
 `;
 
 const textComponents = html<ColorBlock>`
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentForegroundReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentForegroundReadableControlStyles}">
         Accent control
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralForegroundStrongElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralForegroundStrongElementStyles}">
         Neutral element
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralForegroundReadableElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralForegroundReadableElementStyles}">
         Hint / placeholder element
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightForegroundReadableControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightForegroundReadableControlStyles}">
         Highlight control
     </app-style-example>
 `;
 
 const formComponents = html<ColorBlock>`
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentOutlineDiscernibleControlStyles}">
         Accent outline
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => accentFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillDiscernibleControlStyles}">
         Accent discernible
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralOutlineDiscernibleControlStyles}">
         Neutral outline
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillDiscernibleControlStyles}">
         Neutral discernible
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralDividerSubtleElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralDividerSubtleElementStyles}">
         Divider subtle
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => neutralDividerDiscernibleElementStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralDividerDiscernibleElementStyles}">
         Divider discernible
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightOutlineDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightOutlineDiscernibleControlStyles}">
         Highlight outline
     </app-style-example>
 
-    <app-style-example :disabledState=${x => x.disabledState} :styles="${x => highlightFillDiscernibleControlStyles}">
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => highlightFillDiscernibleControlStyles}">
         Highlight discernible
     </app-style-example>
 `;
@@ -227,6 +242,9 @@ export class ColorBlock extends FASTElement {
 
     @observable
     public disabledState: boolean = false;
+
+    @observable
+    public showSwatches: boolean = false;
 
     public componentTypeTemplate(): ViewTemplate<ColorBlock, any> {
         switch (this.component) {

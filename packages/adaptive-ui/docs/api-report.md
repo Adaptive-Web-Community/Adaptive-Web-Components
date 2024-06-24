@@ -279,6 +279,7 @@ export const DesignTokenType: {
     readonly shadow: "shadow";
     readonly gradient: "gradient";
     readonly typography: "typography";
+    readonly boolean: "boolean";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
     readonly palette: "palette";

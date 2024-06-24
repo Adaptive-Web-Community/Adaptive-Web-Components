@@ -6,6 +6,7 @@ import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-
 import { contrastSwatch } from "../core/color/recipes/contrast-swatch.js";
 import { contrastAndDeltaSwatchSet } from "../core/color/recipes/contrast-and-delta-swatch-set.js";
 import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
+import { idealColorDeltaSwatchSet } from "../core/color/recipes/ideal-color-delta-swatch-set.js";
 import { Swatch } from "../core/color/swatch.js";
 import { _white } from "../core/color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../core/color/utilities/conditional.js";
@@ -20,9 +21,9 @@ import {
     createTokenColorRecipeWithPalette,
     createTokenColorSet,
     createTokenDelta,
-    createTokenMinContrast
+    createTokenMinContrast,
 } from "../core/token-helpers-color.js";
-import { createNonCss, createTokenNonCss, createTokenSwatch } from "../core/token-helpers.js";
+import { createTokenNonCss, createTokenSwatch } from "../core/token-helpers.js";
 import { InteractiveState } from "../core/types.js";
 import { DesignTokenType, TypedDesignToken } from "../core/adaptive-design-tokens.js";
 import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
@@ -160,6 +161,12 @@ export const minContrastSubtle = createTokenNonCss<number>("color.wcagContrast.m
 );
 
 /** @public */
+export const minContrastIdeal = createTokenNonCss<number>("color.wcagContrast.minContrast.ideal", DesignTokenType.number).withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(wcagContrastLevel) === "aa" ? 2 : 3
+);
+
+/** @public */
 export const minContrastDiscernible = createTokenNonCss<number>("color.wcagContrast.minContrast.discernible", DesignTokenType.number).withDefault(
     (resolve: DesignTokenResolver) =>
         resolve(wcagContrastLevel) === "aa" ? 3 : 4.5
@@ -175,7 +182,7 @@ export const minContrastReadable = createTokenNonCss<number>("color.wcagContrast
 export const fillColor = createTokenSwatch("color.context").withDefault(_white);
 
 /** @public */
-export const neutralAsOverlay = createNonCss<boolean>("color.neutral.asOverlay").withDefault(false);
+export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOverlay", DesignTokenType.boolean).withDefault(false);
 
 /**
  * This recipe evaluates the {@link blackOrWhiteByContrastSet} for "discernible" accessibility relative to the provided background set.
@@ -258,19 +265,19 @@ export const fillStealthRecipe = createTokenColorRecipeForPalette(
 const fillSubtleName = "color.shared.fill.subtle";
 
 /** @public */
-export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, InteractiveState.rest, 2);
+export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, InteractiveState.rest, 3);
 
 /** @public */
-export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, InteractiveState.hover, 3);
+export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, InteractiveState.hover, 4);
 
 /** @public */
-export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, InteractiveState.active, 1);
+export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, InteractiveState.active, 2);
 
 /** @public */
-export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, InteractiveState.focus, 2);
+export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, InteractiveState.focus, 3);
 
 /** @public */
-export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, InteractiveState.disabled, 2);
+export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, InteractiveState.disabled, 3);
 
 /** @public */
 export const fillSubtleRecipe = createTokenColorRecipeForPalette(
@@ -301,7 +308,43 @@ export const fillSubtleInverseRecipe = createTokenColorRecipeForPalette(
             resolve(fillSubtleHoverDelta) * -1,
             resolve(fillSubtleActiveDelta) * -1,
             resolve(fillSubtleFocusDelta) * -1,
-            resolve(fillSubtleDisabledDelta) * -1,
+            resolve(fillSubtleDisabledDelta),
+            resolve(disabledPalette),
+        )
+);
+
+const fillIdealName = "color.shared.fill.ideal";
+
+/** @public */
+export const fillIdealRestDelta = createTokenDelta(fillIdealName, InteractiveState.rest, 0);
+
+/** @public */
+export const fillIdealHoverDelta = createTokenDelta(fillIdealName, InteractiveState.hover, -2);
+
+/** @public */
+export const fillIdealActiveDelta = createTokenDelta(fillIdealName, InteractiveState.active, 2);
+
+/** @public */
+export const fillIdealFocusDelta = createTokenDelta(fillIdealName, InteractiveState.focus, 0);
+
+/** @public */
+export const fillIdealDisabledDelta = createTokenDelta(fillIdealName, InteractiveState.disabled, 3);
+
+/** @public */
+export const fillIdealRecipe = createTokenColorRecipeForPalette(
+    fillIdealName,
+    StyleProperty.backgroundFill,
+    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
+        idealColorDeltaSwatchSet(
+            params.palette,
+            params.reference || resolve(fillColor),
+            resolve(minContrastIdeal),
+            params.palette.source,
+            resolve(fillIdealRestDelta),
+            resolve(fillIdealHoverDelta),
+            resolve(fillIdealActiveDelta),
+            resolve(fillIdealFocusDelta),
+            resolve(fillIdealDisabledDelta),
             resolve(disabledPalette),
         )
 );
@@ -321,17 +364,18 @@ export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, 
 export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, InteractiveState.focus, 0);
 
 /** @public */
-export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, InteractiveState.disabled, 2);
+export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, InteractiveState.disabled, 3);
 
 /** @public */
 export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
     fillDiscernibleName,
     StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
+        idealColorDeltaSwatchSet(
             params.palette,
             params.reference || resolve(fillColor),
             resolve(minContrastDiscernible),
+            params.palette.source,
             resolve(fillDiscernibleRestDelta),
             resolve(fillDiscernibleHoverDelta),
             resolve(fillDiscernibleActiveDelta),
@@ -356,17 +400,18 @@ export const fillReadableActiveDelta = createTokenDelta(fillReadableName, Intera
 export const fillReadableFocusDelta = createTokenDelta(fillReadableName, InteractiveState.focus, 0);
 
 /** @public */
-export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, InteractiveState.disabled, 2);
+export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, InteractiveState.disabled, 3);
 
 /** @public */
 export const fillReadableRecipe = createTokenColorRecipeForPalette(
     fillReadableName,
     StyleProperty.backgroundFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
+        idealColorDeltaSwatchSet(
             params.palette,
             params.reference || resolve(fillColor),
             resolve(minContrastReadable),
+            params.palette.source,
             resolve(fillReadableRestDelta),
             resolve(fillReadableHoverDelta),
             resolve(fillReadableActiveDelta),
@@ -506,7 +551,7 @@ export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernible
 /** @public */
 export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
     strokeDiscernibleName,
-    stylePropertyBorderFillAll,
+    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -641,6 +686,14 @@ export const accentFillSubtleInverseRecipe = createTokenColorRecipeAccent(fillSu
 
 /** @public */
 export const accentFillSubtleInverse = createTokenColorSet(accentFillSubtleInverseRecipe);
+
+// Accent Fill Ideal
+
+/** @public */
+export const accentFillIdealRecipe = createTokenColorRecipeAccent(fillIdealRecipe);
+
+/** @public */
+export const accentFillIdeal = createTokenColorSet(accentFillIdealRecipe);
 
 // Accent Fill Discernible
 
@@ -850,6 +903,14 @@ export const highlightFillSubtleInverseRecipe = createTokenColorRecipeHighlight(
 /** @public */
 export const highlightFillSubtleInverse = createTokenColorSet(highlightFillSubtleInverseRecipe);
 
+// Highlight Fill Ideal
+
+/** @public */
+export const highlightFillIdealRecipe = createTokenColorRecipeHighlight(fillIdealRecipe);
+
+/** @public */
+export const highlightFillIdeal = createTokenColorSet(highlightFillIdealRecipe);
+
 // Highlight Fill Discernible
 
 /** @public */
@@ -1058,6 +1119,14 @@ export const criticalFillSubtleInverseRecipe = createTokenColorRecipeCritical(fi
 /** @public */
 export const criticalFillSubtleInverse = createTokenColorSet(criticalFillSubtleInverseRecipe);
 
+// Critical Fill Ideal
+
+/** @public */
+export const criticalFillIdealRecipe = createTokenColorRecipeCritical(fillIdealRecipe);
+
+/** @public */
+export const criticalFillIdeal = createTokenColorSet(criticalFillIdealRecipe);
+
 // Critical Fill Discernible
 
 /** @public */
@@ -1239,6 +1308,12 @@ export const warningFillSubtleInverseRecipe = createTokenColorRecipeWarning(fill
 export const warningFillSubtleInverse = createTokenColorSet(warningFillSubtleInverseRecipe);
 
 /** @public */
+export const warningFillIdealRecipe = createTokenColorRecipeWarning(fillIdealRecipe);
+
+/** @public */
+export const warningFillIdeal = createTokenColorSet(warningFillIdealRecipe);
+
+/** @public */
 export const warningFillDiscernibleRecipe = createTokenColorRecipeWarning(fillDiscernibleRecipe);
 
 /** @public */
@@ -1307,6 +1382,12 @@ export const successFillSubtleInverseRecipe = createTokenColorRecipeSuccess(fill
 export const successFillSubtleInverse = createTokenColorSet(successFillSubtleInverseRecipe);
 
 /** @public */
+export const successFillIdealRecipe = createTokenColorRecipeSuccess(fillIdealRecipe);
+
+/** @public */
+export const successFillIdeal = createTokenColorSet(successFillIdealRecipe);
+
+/** @public */
 export const successFillDiscernibleRecipe = createTokenColorRecipeSuccess(fillDiscernibleRecipe);
 
 /** @public */
@@ -1373,6 +1454,12 @@ export const infoFillSubtleInverseRecipe = createTokenColorRecipeInfo(fillSubtle
 
 /** @public */
 export const infoFillSubtleInverse = createTokenColorSet(infoFillSubtleInverseRecipe);
+
+/** @public */
+export const infoFillIdealRecipe = createTokenColorRecipeInfo(fillIdealRecipe);
+
+/** @public */
+export const infoFillIdeal = createTokenColorSet(infoFillIdealRecipe);
 
 /** @public */
 export const infoFillDiscernibleRecipe = createTokenColorRecipeInfo(fillDiscernibleRecipe);
@@ -1469,6 +1556,14 @@ export const neutralFillSubtleInverseRecipe = createTokenColorRecipeNeutral(fill
 
 /** @public */
 export const neutralFillSubtleInverse = createTokenColorSet(neutralFillSubtleInverseRecipe);
+
+// Neutral Fill Ideal
+
+/** @public */
+export const neutralFillIdealRecipe = createTokenColorRecipeNeutral(fillIdealRecipe);
+
+/** @public */
+export const neutralFillIdeal = createTokenColorSet(neutralFillIdealRecipe);
 
 // Neutral Fill Discernible (previously "Strong")
 

@@ -1,12 +1,26 @@
 import { InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
 import { densityControl, fillColor } from '@adaptive-web/adaptive-ui/reference';
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
-import { css, customElement, FASTElement, html, observable, repeat, volatile } from "@microsoft/fast-element";
+import { css, customElement, FASTElement, html, observable, repeat, volatile, when } from "@microsoft/fast-element";
 import { AdaptiveComponent } from "./adaptive-component.js";
 import { AppSwatch, SwatchType } from "./swatch.js";
 
 AdaptiveComponent;
 AppSwatch;
+
+const swatchTemplate = html<StyleValue, StyleExample>`
+    <app-swatch
+        type="${x => x.type}"
+        recipe-name="${x => x.tokenName}"
+        :fillRecipe="${x => x.fillRecipe}"
+        :foregroundRecipe="${x => x.foregroundRecipe}"
+        :outlineRecipe="${x => x.outlineRecipe}"
+    ></app-swatch>
+`;
+
+const swatchesTemplate = html<StyleExample>`
+    ${repeat(x => x.styleValues, swatchTemplate)}
+`;
 
 const template = html<StyleExample>`
     <template>
@@ -15,15 +29,7 @@ const template = html<StyleExample>`
                 <slot></slot>
             </app-adaptive-component>
         </div>
-        ${repeat(x => x.styleValues, html<StyleValue, StyleExample>`
-            <app-swatch
-                type="${x => x.type}"
-                recipe-name="${x => x.tokenName}"
-                :fillRecipe="${x => x.fillRecipe}"
-                :foregroundRecipe="${x => x.foregroundRecipe}"
-                :outlineRecipe="${x => x.outlineRecipe}"
-            ></app-swatch>
-        `)}
+        ${when(x => x.showSwatches, swatchesTemplate)}
     </template>
 `;
 
@@ -59,6 +65,9 @@ interface StyleValue {
 export class StyleExample extends FASTElement {
     @observable
     public disabledState: boolean = false;
+
+    @observable
+    public showSwatches: boolean = false;
 
     @observable
     public styles?: Styles;

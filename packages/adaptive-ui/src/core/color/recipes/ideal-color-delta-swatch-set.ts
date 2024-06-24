@@ -48,6 +48,7 @@ export function idealColorDeltaSwatchSet(
 ): InteractiveSwatchSet {
     const dir = resolvePaletteDirection(direction);
 
+    const referenceIndex = palette.closestIndexOf(reference);
     const idealIndex = palette.closestIndexOf(idealColor);
     const startIndex =
         idealIndex +
@@ -77,6 +78,6 @@ export function idealColorDeltaSwatchSet(
         hover: palette.get(hoverIndex),
         active: palette.get(restIndex + dir * activeDelta),
         focus: palette.get(restIndex + dir * focusDelta),
-        disabled: disabledPalette.get(restIndex + dir * disabledDelta),
+        disabled: disabledPalette.get(referenceIndex + dir * disabledDelta),
     };
 }
