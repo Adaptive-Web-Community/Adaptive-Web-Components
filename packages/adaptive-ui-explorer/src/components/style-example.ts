@@ -8,6 +8,20 @@ import { AppSwatch, SwatchType } from "./swatch.js";
 AdaptiveComponent;
 AppSwatch;
 
+const swatchTemplate = html<StyleValue, StyleExample>`
+    <app-swatch
+        type="${x => x.type}"
+        recipe-name="${x => x.tokenName}"
+        :fillRecipe="${x => x.fillRecipe}"
+        :foregroundRecipe="${x => x.foregroundRecipe}"
+        :outlineRecipe="${x => x.outlineRecipe}"
+    ></app-swatch>
+`;
+
+const swatchesTemplate = html<StyleExample>`
+    ${repeat(x => x.styleValues, swatchTemplate)}
+`;
+
 const template = html<StyleExample>`
     <template>
         <div class="example">
@@ -15,17 +29,7 @@ const template = html<StyleExample>`
                 <slot></slot>
             </app-adaptive-component>
         </div>
-        ${when(x => x.showSwatches, html<StyleExample>`
-            ${repeat(x => x.styleValues, html<StyleValue, StyleExample>`
-                <app-swatch
-                    type="${x => x.type}"
-                    recipe-name="${x => x.tokenName}"
-                    :fillRecipe="${x => x.fillRecipe}"
-                    :foregroundRecipe="${x => x.foregroundRecipe}"
-                    :outlineRecipe="${x => x.outlineRecipe}"
-                ></app-swatch>
-            `)}
-        `)}
+        ${when(x => x.showSwatches, swatchesTemplate)}
     </template>
 `;
 
