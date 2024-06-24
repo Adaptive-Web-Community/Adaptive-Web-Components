@@ -2,6 +2,27 @@
   "name": "@adaptive-web/adaptive-ui-designer-core",
   "entries": [
     {
+      "date": "Mon, 24 Jun 2024 21:29:12 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-core_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "49f0876e298046c070a40dbd5221ec89fd49d0b0",
+            "comment": "Adaptive UI: Improve color palette accuracy"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.5.0",
+            "commit": "49f0876e298046c070a40dbd5221ec89fd49d0b0"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 10 Jun 2024 23:22:54 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-core_v0.1.1",
       "version": "0.1.1",

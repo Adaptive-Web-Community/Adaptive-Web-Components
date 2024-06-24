@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Mon, 10 Jun 2024 23:22:54 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Jun 2024 21:29:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Mon, 24 Jun 2024 21:29:12 GMT
+
+### Minor changes
+
+- Adaptive UI: Improve color palette accuracy (47367562+bheston@users.noreply.github.com)
 
 ## 0.4.1
 
