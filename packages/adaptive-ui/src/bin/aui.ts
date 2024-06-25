@@ -7,6 +7,7 @@ import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { Command } from 'commander';
 import { glob } from "glob";
+import { pathToFileURL } from "url";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
     ComponentAnatomy,
@@ -109,7 +110,7 @@ async function compileFile(inFilePath: string, outFilePath: string, stylesName: 
     // Ensure inFile exists
     ensureFileExists(inFilePath)
 
-    const module = await import(inFilePath);
+    const module = await import(pathToFileURL(inFilePath));
     const exportKeys = Object.keys(module);
 
     const stylesExportName = matcher(exportKeys, stylesName);
