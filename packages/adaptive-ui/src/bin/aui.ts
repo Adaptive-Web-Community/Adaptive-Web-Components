@@ -110,7 +110,7 @@ async function compileFile(inFilePath: string, outFilePath: string, stylesName: 
     // Ensure inFile exists
     ensureFileExists(inFilePath)
 
-    const module = await import(pathToFileURL(inFilePath));
+    const module = await import(pathToFileURL(inFilePath).href);
     const exportKeys = Object.keys(module);
 
     const stylesExportName = matcher(exportKeys, stylesName);
