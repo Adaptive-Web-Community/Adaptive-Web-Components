@@ -28,9 +28,9 @@ export interface SerializableToken {
 
 export interface SerializableStyleRule {
     contextCondition?: string;
-    part: string;
-    styles: string[];
-    tokens: SerializableToken[];
+    part?: string;
+    styles?: string[];
+    tokens?: SerializableToken[];
 }
 
 export interface SerializableAnatomy {
@@ -68,7 +68,7 @@ export class StringCondition extends Condition {
 
     toJSON(): SerializableStringCondition {
         const values = this.values.reduce((prev, current) => {
-            prev[current[0]] = makeClassName(this.name + " " + current[1]); // Add space so that there is a kebab between name and value
+            prev[current] = makeClassName(this.name + " " + current); // Add space so that there is a kebab between name and value
             return prev;
         }, {} as SerializableStringCondition);
 
@@ -102,7 +102,7 @@ export class StyleRule {
             contextCondition,
             part: this.part || "",
             styles: Array.from(this.styles),
-            tokens: Array.from(this.tokens).map(token => token.toJSON())
+            tokens: this.tokens.size === 0 ? undefined : Array.from(this.tokens).map(token => token.toJSON()),
         };
     }
 }
@@ -165,70 +165,91 @@ function parseComponent(node: PluginUINodeData): Anatomy {
     anatomy.name = componentName;
 
     if (node.type === "COMPONENT_SET") {
-        // Parse the component names into property and value sets
-        const properties = new Map<string, Array<string>>();
-        node.children.forEach((child) => {
-            const propValues = child.name.split(",");
-            propValues.forEach((propValue) => {
-                const [prop, value] = propValue.trim().split("=");
-                const values = properties.get(prop) || [];
-                if (values.indexOf(value) === -1) {
-                    values.push(value);
-                    properties.set(prop, values);
+        if (node.children.length === 1) {
+            // Unlikely case
+            walkNode(node.children[0], componentName, "", anatomy);
+        } else {
+            // Parse the component names into property and value sets
+            const properties = new Map<string, Array<string>>();
+
+            node.children.forEach((child) => {
+                const propValues = child.name.split(",");
+                propValues.forEach((propValue) => {
+                    const [prop, value] = propValue.trim().split("=");
+                    const values = properties.get(prop) || [];
+                    if (values.indexOf(value) === -1) {
+                        values.push(value);
+                        properties.set(prop, values);
+                    }
+                });
+            });
+
+            // TODO look for other interactivity models
+            if (properties.has("Disabled")) {
+                anatomy.interactivity = Interactivity.disabledClass;
+            }
+
+            // Convert properties into anatomy conditions
+            // TODO: Validate known properties like "State" and "Disabled". Ignore for now.
+            properties.forEach((values, property) => {
+                if (property !== "State" && property !== "Disabled") {
+                    if (values.length === 2 &&
+                        values.filter((value) => value.toLowerCase() === "true" || value.toLowerCase() === "false").length === 2) {
+                        // boolean property, add once
+                        anatomy.conditions.set(property, new BooleanCondition(property));
+                    } else {
+                        // string property, add all
+                        anatomy.conditions.set(property, new StringCondition(property, values));
+                    }
                 }
             });
-        });
 
-        // TODO look for other interactivity models
-        if (properties.has("Disabled")) {
-            anatomy.interactivity = Interactivity.disabledClass;
-        }
-
-        // Convert properties into anatomy conditions
-        // TODO: Validate known properties like "State" and "Disabled". Ignore for now.
-        properties.forEach((values, property) => {
-            if (property !== "State" && property !== "Disabled") {
-                if (values.length === 2 &&
-                    values.filter((value) => value.toLowerCase() === "true" || value.toLowerCase() === "false").length === 2) {
-                    // boolean property, add once
-                    anatomy.conditions.set(property, new BooleanCondition(property));
+            // Handler for a single Component within a Set
+            const nodeHandler = (name: string, property: string): void => {
+                const found = node.children.find(node => node.name.toLowerCase() === name.toLowerCase());
+                if (!found) {
+                    // console.warn(`Expected component ${name}, property ${property}, not found`);
                 } else {
-                    // string property, add all
-                    anatomy.conditions.set(property, new StringCondition(property, values));
+                    // console.log("  found node", name);
+                    walkNode(found, componentName, property, anatomy);
                 }
-            }
-        });
+            };
 
-        // The first child is the default (no conditions)
-        walkNode(node.children[0], componentName, "", anatomy);
-        const defaultName = node.children[0].name;
+            // The first child is the default (no conditions)            
+            const defaultName = node.children[0].name;
 
-        const nodeHandler = (name: string, property: string): void => {
-            const found = node.children.find(node => node.name.toLowerCase() === name.toLowerCase());
-            if (!found) {
-                // console.warn(`Expected component ${name}, property ${property}, not found`);
-            } else {
-                // console.log("  found node", name);
-                walkNode(found, componentName, property, anatomy);
-            }
-        };
+            // Process the component node for each condition
+            // Note that the current model treats conditions as additive, so condition A and condition B will be
+            // separate selectors which might both apply (in sequence)
 
-        // Find the component node for each condition
-        // Note that the current model treats conditions as additive, so condition A and condition B will be
-        // separate selectors which might both apply (in sequence)
-        anatomy.conditions.forEach((condition, property) => {
-            if (condition instanceof BooleanCondition) {
-                // Assume false is the default condition, find the `true` component
-                const name = defaultName.replace(`${property}=false`, `${property}=true`);
-                nodeHandler(name, property);
-            } else if (condition instanceof StringCondition) {
-                // The first value is the default, already handled
-                condition.values.slice(1).forEach(value => {
-                    const name = defaultName.replace(`${property}=${condition.values[0]}`, `${property}=${value}`);
-                    nodeHandler(name, camelCase(`${property} ${value}`));
-                });
+            // Handle string conditions first so each value is accounted for and forms the base for further variants
+            let foundString = false;
+            anatomy.conditions.forEach((condition, property) => {
+                if (condition instanceof StringCondition) {
+                    foundString = true;
+                    // The first value is in the defaultName:
+                    const replaceProperty = `${property}=${condition.values[0]}`;
+                    condition.values.forEach(value => {
+                        const name = defaultName.replace(replaceProperty, `${property}=${value}`);
+                        nodeHandler(name, camelCase(`${property} ${value}`));
+                    });
+                }
+            });
+
+            // If there were no string conditions, process the first component as the default "baseline"
+            if (!foundString) {
+                walkNode(node.children[0], componentName, "", anatomy);
             }
-        });
+
+            // Handle boolean condition "true" values
+            anatomy.conditions.forEach((condition, property) => {
+                if (condition instanceof BooleanCondition) {
+                    // Assume false is the default condition, find the `true` component
+                    const name = defaultName.replace(`${property}=false`, `${property}=true`);
+                    nodeHandler(name, property);
+                }
+            });
+        }
     } else {
         walkNode(node, componentName, "", anatomy);
     }
