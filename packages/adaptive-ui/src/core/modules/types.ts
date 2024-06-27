@@ -452,9 +452,9 @@ export interface SerializableToken {
  */
 export interface SerializableStyleRule {
     contextCondition?: string;
-    part: string,
-    styles: string[],
-    tokens: SerializableToken[];
+    part?: string,
+    styles?: string[],
+    tokens?: SerializableToken[];
 }
 /**
  * @beta
