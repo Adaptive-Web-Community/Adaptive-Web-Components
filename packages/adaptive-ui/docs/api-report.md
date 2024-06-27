@@ -496,7 +496,7 @@ export type SerializableStringCondition = Record<string, string>;
 // @beta (undocumented)
 export interface SerializableStyleRule {
     // (undocumented)
-    contextCondition?: string;
+    contextCondition?: Record<string, string | boolean>;
     // (undocumented)
     part?: string;
     // (undocumented)

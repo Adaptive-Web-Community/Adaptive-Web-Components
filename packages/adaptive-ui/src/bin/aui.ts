@@ -9,20 +9,23 @@ import { Command } from 'commander';
 import { glob } from "glob";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
+    BooleanCondition,
     ComponentAnatomy,
     ComponentConditions,
     ComponentParts,
     SerializableAnatomy,
+    SerializableStyleRule,
+    StringCondition,
     StyleModuleTarget,
     StyleRules
- } from '../core/modules/types.js';
+} from '../core/modules/types.js';
 import {
     DesignTokenRegistry,
     StyleProperties,
     StyleRule,
     Styles,
     TypedCSSDesignToken
- } from "../core/index.js";
+} from "../core/index.js";
 
 const program = new Command();
 
@@ -55,7 +58,8 @@ program.command('compile-style <inFile> <outFile>')
         process.exit(0);
     })
 
-program.command("compile-styles <glob>").description("")
+program.command("compile-styles <glob>")
+    .description("")
     .option("-a <name>, --anatomy <name>", "The name of the anatomy exports. This option supports wildcards.", "anatomy")
     .option("-s <name>, --styles <name>", "The name of the styles exports. This option supports wildcards.", "styles")
     .option("-e <extension>, --extension <extension>", "The file extension of the file to write.", ".css")
@@ -71,22 +75,22 @@ program.command("compile-styles <glob>").description("")
             process.exit(0);
         })
     });
+
 program.command("compile-json-anatomy <anatomyPath>")
-.description("Compile a stylesheet from a JSON anatomy")
-.action(async (path: string) => {
-    const data = (await fsp.readFile(path)).toString();
-    await import("../reference/index.js");
+    .description("Compile a stylesheet from a JSON anatomy")
+    .action(async (path: string) => {
+        const data = (await fsp.readFile(path)).toString();
+        await import("../reference/index.js");
 
-    const jsonData = JSON.parse(data);
-    const compiler = new SheetCompilerImpl();
-    const sheet = jsonToAUIStyleSheet(jsonData);
-    const compiledSheet = compiler.compile(sheet);
-    const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
-    process.stdout.write("/* This file is generated. Do not edit directly */\n", );
-    process.stdout.write(formatted)
-    process.stdout.end();
-});
-
+        const jsonData = JSON.parse(data);
+        const compiler = new SheetCompilerImpl();
+        const sheet = jsonToAUIStyleSheet(jsonData);
+        const compiledSheet = compiler.compile(sheet);
+        const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
+        process.stdout.write("/* This file is generated. Do not edit directly */\n",);
+        process.stdout.write(formatted)
+        process.stdout.end();
+    });
 
 program.parse()
 
@@ -201,40 +205,55 @@ class SheetCompilerImpl implements SheetCompiler {
             .reduce((prev: string, curr: string) => prev.concat(curr), "");
     }
 }
+
+function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule): string | undefined {
+    if (style.contextCondition) {
+        const conditionSelectors = Object.entries(style.contextCondition).map(entry => {
+            const conditionKey = entry[0];
+            const value = entry[1];
+
+            const condition = obj.conditions[conditionKey];
+            if (typeof value === "string") {
+                return (condition as StringCondition)[value];
+            } else {
+                return condition as BooleanCondition;
+            }
+        });
+        return conditionSelectors.join("");
+    }
+}
+
 function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
-    const sheet:AUIStyleSheet =  {
+    const sheet: AUIStyleSheet = {
         anatomy: {
             conditions: obj.conditions,
             parts: obj.parts,
-            interactivity: obj.interactivity
+            interactivity: obj.interactivity,
         },
         rules: obj.styleRules.map(style => {
-
-           const styles = style.styles?.map(name => {
-                return Styles.Shared.get(name)!
+            const styles = style.styles?.map(name => {
+                return Styles.Shared.get(name)!;
             });
+
             const properties = style.tokens?.reduce((prev, current) => {
                 prev[current.target] = DesignTokenRegistry.Shared.get(current.tokenID) as TypedCSSDesignToken<any>
                 return prev;
-            }, {} as StyleProperties)
+            }, {} as StyleProperties);
 
-            // TODO this is incomplete
-            // TODO add 
             const target: StyleModuleTarget = {
-                part: style.part ? obj.parts[style.part] : undefined,
                 context: obj.context,
-                // TODO This should be a lookup like `part` above - also update in StyleRule.toJSON
-                contextCondition: style.contextCondition,
-            } 
+                contextCondition: createCondition(obj, style),
+                part: style.part ? obj.parts[style.part] : undefined,
+            };
 
             const rule: StyleRule = {
+                target,
                 styles,
                 properties,
-                target,
-            } 
+            };
 
             return rule;
-        }) 
+        }),
     }
 
     return sheet;

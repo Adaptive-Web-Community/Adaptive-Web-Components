@@ -47,7 +47,14 @@ async function main({ library }: ProgramOptions) {
   });
 
   logger.neutral('Requesting Figma Library.');
-  const libraryComponentsResponse = await client.getFileComponentSets(libraryConfig.file);
+  const libraryComponentSetsResponse = await client.getFileComponentSets(libraryConfig.file);
+
+  if (libraryComponentSetsResponse.error || libraryComponentSetsResponse.status !== 200) {
+    logger.fail(`Accessing Figma library failed with status code ${libraryComponentSetsResponse.status}`);
+    process.exit(1);
+  }
+
+  const libraryComponentsResponse = await client.getFileComponents(libraryConfig.file);
 
   if (libraryComponentsResponse.error || libraryComponentsResponse.status !== 200) {
     logger.fail(`Accessing Figma library failed with status code ${libraryComponentsResponse.status}`);
@@ -56,7 +63,19 @@ async function main({ library }: ProgramOptions) {
 
   logger.success('Your library was successfully retrieved!');
 
-  const { component_sets: allComponents } = libraryComponentsResponse.meta;
+  const { component_sets: libraryComponentSets } = libraryComponentSetsResponse.meta;
+  const { components: libraryComponents } = libraryComponentsResponse.meta;
+
+  // The file components endpoint returns _all_ components including within a set, filter those out.
+  const uniqueComponents = libraryComponents.filter(component =>
+    // Also filter out components which aren't in a container frame (assume they are helper/utility for now)
+    component.containing_frame !== undefined &&
+    libraryComponentSets.find(componentSet =>
+        componentSet.containing_frame?.nodeId === component.containing_frame?.nodeId ||
+        componentSet.node_id === component.containing_frame?.nodeId
+    ) === undefined
+  );
+  const allComponents = libraryComponentSets.concat(uniqueComponents);
 
   const componentNames = allComponents.map((value) => value.name).sort(alphabetize);
   const pickComponentsRequest = {

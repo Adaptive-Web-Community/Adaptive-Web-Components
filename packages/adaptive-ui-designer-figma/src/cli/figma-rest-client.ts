@@ -416,7 +416,7 @@ export interface FigmaRESTClient {
      */
     getFileComponents(
         pathParams: FigmaRestAPI.GetFileComponentsPathParams,
-        queryParams: FigmaRestAPI.GetFilePathParams
+        queryParams?: FigmaRestAPI.GetFilePathParams
     ): Promise<FigmaRestAPI.GetFileComponentsResponse>;
 
     /**
