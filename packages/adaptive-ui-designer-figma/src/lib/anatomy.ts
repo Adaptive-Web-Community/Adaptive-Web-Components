@@ -1,8 +1,13 @@
 /* eslint-disable max-len */
-import { camelCase, kebabCase } from "change-case";
+import { kebabCase } from "change-case";
 import {
     Interactivity,
     InteractivityDefinition,
+    SerializableAnatomy,
+    SerializableBooleanCondition,
+    SerializableStringCondition,
+    SerializableStyleRule,
+    SerializableToken,
 } from "@adaptive-web/adaptive-ui";
 import { AdditionalDataKeys, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 
@@ -14,33 +19,6 @@ function makeClassName(value: string) {
 }
 
 // TODO: All of these type definitions will be merged into the core AUI package, including simple interface and serialization support.
-
-export type SerializableBooleanCondition = string;
-
-export type SerializableStringCondition = Record<string, string>;
-
-export type SerializableCondition = SerializableBooleanCondition | SerializableStringCondition;
-
-export interface SerializableToken {
-    target: string;
-    tokenID: string;
-}
-
-export interface SerializableStyleRule {
-    contextCondition?: string;
-    part?: string;
-    styles?: string[];
-    tokens?: SerializableToken[];
-}
-
-export interface SerializableAnatomy {
-    name: string;
-    context: string;
-    interactivity?: InteractivityDefinition;
-    conditions: Record<string, SerializableCondition>;
-    parts: Record<string, string>;
-    styleRules: SerializableStyleRule[];
-}
 
 export abstract class Condition {
     constructor(
@@ -91,17 +69,16 @@ export class Token {
 }
 
 export class StyleRule {
-    contextCondition?: string;
-    part: string = "";
+    contextCondition?: Record<string, string | boolean>;
+    part?: string;
     styles: Set<string> = new Set();
     tokens: Set<Token> = new Set();
 
     toJSON(): SerializableStyleRule {
-        const contextCondition = typeof this.contextCondition === "string" ? "." + kebabCase(this.contextCondition) : undefined;
         return {
-            contextCondition,
-            part: this.part || "",
-            styles: Array.from(this.styles),
+            contextCondition: this.contextCondition,
+            part: this.part,
+            styles: this.styles.size === 0 ? undefined : Array.from(this.styles),
             tokens: this.tokens.size === 0 ? undefined : Array.from(this.tokens).map(token => token.toJSON()),
         };
     }
@@ -119,12 +96,12 @@ export class Anatomy implements Anatomy {
         const conditions = Array.from(this.conditions.entries()).reduce((prev, next) => {
             prev[next[0]] = next[1].toJSON()
             return prev
-        }, {} as SerializableAnatomy['conditions'])
+        }, {} as SerializableAnatomy["conditions"])
 
         const parts = Array.from(this.parts.entries()).reduce((prev, current) => {
             prev[current[0]] = makeClassName(current[1]);
             return prev;
-        }, {} as SerializableAnatomy['parts'])
+        }, {} as SerializableAnatomy["parts"])
 
         return {
             name: this.name,
@@ -167,7 +144,7 @@ function parseComponent(node: PluginUINodeData): Anatomy {
     if (node.type === "COMPONENT_SET") {
         if (node.children.length === 1) {
             // Unlikely case
-            walkNode(node.children[0], componentName, "", anatomy);
+            walkNode(node.children[0], componentName, undefined, anatomy);
         } else {
             // Parse the component names into property and value sets
             const properties = new Map<string, Array<string>>();
@@ -205,13 +182,13 @@ function parseComponent(node: PluginUINodeData): Anatomy {
             });
 
             // Handler for a single Component within a Set
-            const nodeHandler = (name: string, property: string): void => {
+            const nodeHandler = (name: string, property: string, value: string | boolean): void => {
                 const found = node.children.find(node => node.name.toLowerCase() === name.toLowerCase());
                 if (!found) {
-                    // console.warn(`Expected component ${name}, property ${property}, not found`);
+                    console.warn(`Expected component ${name}, property ${property}, not found`);
                 } else {
-                    // console.log("  found node", name);
-                    walkNode(found, componentName, property, anatomy);
+                    // console.log("Handling node", {nodeName: name, condition: [property, value]});
+                    walkNode(found, componentName, { [property]: value }, anatomy);
                 }
             };
 
@@ -231,14 +208,14 @@ function parseComponent(node: PluginUINodeData): Anatomy {
                     const replaceProperty = `${property}=${condition.values[0]}`;
                     condition.values.forEach(value => {
                         const name = defaultName.replace(replaceProperty, `${property}=${value}`);
-                        nodeHandler(name, camelCase(`${property} ${value}`));
+                        nodeHandler(name, property, value);
                     });
                 }
             });
 
             // If there were no string conditions, process the first component as the default "baseline"
             if (!foundString) {
-                walkNode(node.children[0], componentName, "", anatomy);
+                walkNode(node.children[0], componentName, undefined, anatomy);
             }
 
             // Handle boolean condition "true" values
@@ -246,12 +223,12 @@ function parseComponent(node: PluginUINodeData): Anatomy {
                 if (condition instanceof BooleanCondition) {
                     // Assume false is the default condition, find the `true` component
                     const name = defaultName.replace(`${property}=false`, `${property}=true`);
-                    nodeHandler(name, property);
+                    nodeHandler(name, property, true);
                 }
             });
         }
     } else {
-        walkNode(node, componentName, "", anatomy);
+        walkNode(node, componentName, undefined, anatomy);
     }
 
     return anatomy;
@@ -262,7 +239,7 @@ function cleanNodeName(nodeName: string): string {
     return nodeName.replace(/[^\x20-\x7F]/g, "").trim();
 }
 
-function walkNode(node: PluginUINodeData, componentName: string, condition: string, anatomy: Anatomy): void {
+function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
     const nodeName = cleanNodeName(node.name);
 
     if (nodeName === "Focus indicator") {
@@ -270,36 +247,38 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: stri
         return;
     }
 
+    if (node.type === "INSTANCE" && nodeName !== componentName) {
+        // TODO: This is too simplified, but it addresses many nested component issues for now.
+        return;
+    }
+
     if (!node.name.endsWith(ignoreLayerName)) {
         // TODO, not only frames, but what?
         if (node.type === "FRAME" && nodeName !== componentName) {
-            anatomy.parts.add(node.name);
+            anatomy.parts.add(nodeName);
         }
 
-        const styleRule = new StyleRule();
+        if (node.appliedStyleModules.length > 0 || node.appliedDesignTokens.size > 0) {
+            const styleRule = new StyleRule();
 
-        if (condition) {
-            styleRule.contextCondition = condition;
-        }
-
-        node.appliedStyleModules.forEach(style => {
-            const styleVariableName = style;
-            styleRule.styles.add(styleVariableName);
-        });
-
-        node.appliedDesignTokens.forEach((token, target) => {
-            const tokenRef = token.tokenID;
-            styleRule.tokens.add(new Token(target, tokenRef));
-        });
-
-        if (nodeName !== componentName) {
-            styleRule.part = nodeName;
-        }
-
-        if (styleRule.styles.size > 0 || styleRule.tokens.size > 0) {
-            if (nodeName !== componentName) {
-                anatomy.parts.add(node.name)
+            if (condition) {
+                styleRule.contextCondition = condition;
             }
+    
+            node.appliedStyleModules.forEach(style => {
+                styleRule.styles.add(style);
+            });
+
+            node.appliedDesignTokens.forEach((token, target) => {
+                const tokenRef = token.tokenID;
+                styleRule.tokens.add(new Token(target, tokenRef));
+            });
+
+            if (nodeName !== componentName) {
+                anatomy.parts.add(nodeName)
+                styleRule.part = nodeName;
+            }
+
             anatomy.styleRules.add(styleRule);
         }
     }

@@ -10,16 +10,17 @@ import {
     PluginNodeData,
     PluginUINodeData,
 } from "@adaptive-web/adaptive-ui-designer-core";
+import { FIGMA_SHARED_DATA_NAMESPACE } from "./constants.js";
 
-const SHARED_PLUGIN_DATA_KEY = "adaptive_ui";
 function getPluginData<T extends FigmaRestAPI.Node, K extends keyof PluginNodeData>(node: T, key: K): string | null {
     const data = node.sharedPluginData;
-    if (data && (data as any)[SHARED_PLUGIN_DATA_KEY]) {
-        return (data as any)[SHARED_PLUGIN_DATA_KEY][key];
+    if (data && (data as any)[FIGMA_SHARED_DATA_NAMESPACE]) {
+        return (data as any)[FIGMA_SHARED_DATA_NAMESPACE][key];
     }
 
     return null;
 }
+
 function hasChildren<T extends FigmaRestAPI.Node>(node: T): node is FigmaRestAPI.HasChildrenTrait & T {
     return "children" in node;
 }
@@ -33,7 +34,7 @@ export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
     const children = hasChildren(node) ? node.children : [];
     const additionalData: AdditionalData = new AdditionalData(); // Where do I get data for this?
 
-    if (node.type === "COMPONENT_SET") {
+    if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") {
         additionalData.set(AdditionalDataKeys.codeGenName, node.name);
     }
 

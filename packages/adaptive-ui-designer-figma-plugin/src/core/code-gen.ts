@@ -104,7 +104,8 @@ export class CodeGen {
 
     #genStyleRuleCode(componentName: string, styleRule: StyleRule): string {
         let targetOut = "";
-        const contextCondition = styleRule.contextCondition ? `            contextCondition: ${componentName}Anatomy.conditions.${camelCase(styleRule.contextCondition)},\n` : "";
+        // HACK: The model has changed but this class never fully handled conditions yet anyway. Revisit this when the model changes are complete.
+        const contextCondition = ""; // styleRule.contextCondition ? `            contextCondition: ${componentName}Anatomy.conditions.${camelCase(styleRule.contextCondition)},\n` : "";
         const part = styleRule.part ? `            part: ${componentName}Anatomy.parts.${camelCase(styleRule.part)},\n` : "";
         if (contextCondition || part) {
             targetOut = `        target: {\n${part}${contextCondition}        },\n`;
