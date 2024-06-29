@@ -6,7 +6,7 @@ import { InteractiveState, InteractiveValues } from "../types.js";
 import { makeSelector } from "./selector.js";
 import type { ComponentAnatomy, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
-import { Styles } from "./styles.js";
+import { convertStylesToFocusState, Styles } from "./styles.js";
 
 /**
  * The properties and values of a css declaration.
@@ -195,6 +195,41 @@ export class ElementStylesRenderer {
     }
 
     /**
+     * Styles to merge in for any `ComponentAnatomy` which defines a `disabled` state.
+     */
+    public static disabledStyles: Styles;
+
+    private static _focusStateStyles: Styles;
+    private static _focusStateStylesAdjusted: Styles;
+
+    /**
+     * Styles to merge in for any `ComponentAnatomy` which defines a `focus` state.
+     */
+    public static get focusStateStyles(): Styles {
+        return ElementStylesRenderer._focusStateStyles;
+    }
+
+    public static set focusStateStyles(styles: Styles) {
+        ElementStylesRenderer._focusStateStyles = styles;
+        ElementStylesRenderer._focusStateStylesAdjusted = convertStylesToFocusState(styles);
+    }
+
+    private static _focusResetStyles: Styles;
+    private static _focusResetStylesAdjusted: Styles;
+
+    /**
+     * Styles to merge in for any `ComponentAnatomy` which defines a `focus` reset target.
+     */
+    public static get focusResetStyles(): Styles {
+        return ElementStylesRenderer._focusResetStyles;
+    }
+
+    public static set focusResetStyles(styles: Styles) {
+        ElementStylesRenderer._focusResetStyles = styles;
+        ElementStylesRenderer._focusResetStylesAdjusted = convertStylesToFocusState(styles);
+    }
+
+    /**
      * Convert style rule definitions to `ElementStyles`.
      *
      * @param baseStyles - Any base styles to append style rules to.
@@ -203,7 +238,46 @@ export class ElementStylesRenderer {
      * @returns The rendered `ElementStyles`.
      */
     public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
-        for (const rule of styleRules) {
+        const globalStyleRules: StyleRules = [];
+        if (anatomy) {
+            // If this component can be disabled, apply the style to all children.
+            if (ElementStylesRenderer.disabledStyles && anatomy.interactivity?.disabled !== undefined) {
+                globalStyleRules.push(
+                    {
+                        target : {
+                            contextCondition: anatomy.interactivity.disabled,
+                            part: "*",
+                        },
+                        styles: ElementStylesRenderer.disabledStyles,
+                    },
+                );
+            }
+
+            // If this component can get focus, apply the focus indicator styles.
+            if (anatomy.focus) {
+                if (ElementStylesRenderer._focusResetStylesAdjusted && anatomy.focus?.resetTarget) {
+                    globalStyleRules.push(
+                        {
+                            target: anatomy.focus?.resetTarget,
+                            styles: ElementStylesRenderer._focusResetStylesAdjusted,
+                        }
+                    );
+                }
+
+                // Set intentional focus styles
+                if (ElementStylesRenderer._focusStateStylesAdjusted) {
+                    globalStyleRules.push(
+                        {
+                            target: anatomy.focus.focusTarget,
+                            styles: ElementStylesRenderer._focusStateStylesAdjusted,
+                        }
+                    );
+                }
+            }
+        }
+
+        const allStyleRules = [...globalStyleRules, ...styleRules];
+        for (const rule of allStyleRules) {
             const styles = Styles.fromDeclaration(rule);
 
             // Transform the target selector if necessary

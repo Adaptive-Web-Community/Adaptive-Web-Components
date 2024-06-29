@@ -1693,6 +1693,16 @@ export const focusIndicatorStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * @public
+ */
+export const focusResetStyles: Styles = Styles.fromProperties(
+    {
+        outlineStyle: "none",
+    },
+    "styles.focus-reset",
+);
+
+/**
  * A mapping of reference style names to variable names.
  *
  * HACK: The full realization of design-to-code relies on generation of the styles _and_ the application to component parts.
@@ -1796,6 +1806,7 @@ export const StyleNameMapping = {
     "styles.flyout": "flyoutStyles",
     "styles.disabled": "disabledStyles",
     "styles.focus-indicator": "focusIndicatorStyles",
+    "styles.focus-reset": "focusResetStyles",
 };
 
 export type StyleNameMapping = ValuesOf<typeof StyleNameMapping>;

@@ -10,9 +10,11 @@ import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
     type ComponentAnatomy,
     ElementStylesRenderer,
+    StyleModuleTarget,
     StyleRule,
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
+import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "@adaptive-web/adaptive-ui/reference";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
@@ -25,7 +27,6 @@ import type {
     SelectStatics,
     TreeItemStatics
 } from "./components/index.js";
-import { globalStyleRules } from './global.styles.modules.js';
 
 type ComponentStatics =
     AccordionItemStatics
@@ -61,7 +62,12 @@ export class DesignSystem {
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
         private _statics: ElementStaticMap = new Map(),
-    ) {}
+    ) {
+        // Register the global styles with the renderer.
+        ElementStylesRenderer.disabledStyles = disabledStyles;
+        ElementStylesRenderer.focusStateStyles = focusIndicatorStyles;
+        ElementStylesRenderer.focusResetStyles = focusResetStyles;
+    }
 
     public get prefix() {
         return this._prefix;
@@ -141,10 +147,27 @@ export class DesignSystem {
      * @returns The updated StyleRule.
      */
     private static updateStyleRulesParts(styleRule: StyleRule): StyleRule {
-        if (styleRule.target?.part && !styleRule.target?.part.startsWith(".")) {
-            styleRule.target.part = "." + styleRule.target.part;
+        if (styleRule.target) {
+            DesignSystem.updateTargetParts(styleRule.target);
         }
         return styleRule;
+    }
+
+    /**
+     * Checks a `StyleModuleTarget` for `part` and turns it into a class name.
+     *
+     * @remarks
+     * This Design System is local to AWC and all templates and anatomy are structured this way.
+     * The opinion of using class names used to exist in AUI, but AUI is now non-opinionated in this regard.
+     *
+     * @param styleRule - The StyleModuleTarget to check and update
+     * @returns The updated StyleModuleTarget.
+     */
+    private static updateTargetParts(target: StyleModuleTarget): StyleModuleTarget {
+        if (target.part && !target.part.startsWith(".")) {
+            target.part = "." + target.part;
+        }
+        return target;
     }
 
     /**
@@ -164,10 +187,16 @@ export class DesignSystem {
             (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
             defaultStyles;
 
-        const allStyleModules = [
-            ...globalStyleRules(anatomy),
-            ...(options && options.styleModules ? options.styleModules.map(DesignSystem.updateStyleRulesParts) : [])
-        ];
+        const allStyleModules = options && options.styleModules ? options.styleModules.map(DesignSystem.updateStyleRulesParts) : [];
+
+        if (anatomy?.focus) {
+            if (anatomy.focus.focusTarget) {
+                DesignSystem.updateTargetParts(anatomy.focus.focusTarget);
+            }
+            if (anatomy.focus.resetTarget) {
+                DesignSystem.updateTargetParts(anatomy.focus.resetTarget);
+            }
+        }
 
         return ElementStylesRenderer.renderStyleRules(componentStyles, allStyleModules, anatomy);
     }
