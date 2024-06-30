@@ -2,12 +2,12 @@ import "./install-dom-shim.js";
 import path from "path";
 import fs from "fs";
 import fsp from "fs/promises";
+import { pathToFileURL } from "url";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { Command } from 'commander';
 import { glob } from "glob";
-import { pathToFileURL } from "url";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
     BooleanCondition,
