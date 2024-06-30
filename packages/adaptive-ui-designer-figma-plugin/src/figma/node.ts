@@ -1,8 +1,9 @@
-import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { Controller, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { AppliedStyleModules, AppliedStyleValues, PluginNodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { focusIndicatorNodeName, PluginNode, State, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
+import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
 import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
 const rgb = useMode(modeRgb);
@@ -104,8 +105,6 @@ function canHaveChildren(node: BaseNode): node is
         isComponentSetNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
-
-const FIGMA_SHARED_DATA_NAMESPACE: string = "adaptive_ui";
 
 export class FigmaPluginNode extends PluginNode {
     public id: string;

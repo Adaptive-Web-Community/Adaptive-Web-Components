@@ -431,10 +431,12 @@ export type StyleRules = Array<StyleRule>;
  * @beta
  */
 export type SerializableBooleanCondition = string; 
+
 /**
  * @beta
  */
 export type SerializableStringCondition = Record<string, string>;
+
 /**
  * @beta
  */
@@ -447,15 +449,17 @@ export interface SerializableToken {
     target: string,
     tokenID: string
 }
+
 /**
  * @beta
  */
 export interface SerializableStyleRule {
-    contextCondition?: string;
+    contextCondition?: Record<string, string | boolean>;
     part?: string,
     styles?: string[],
     tokens?: SerializableToken[];
 }
+
 /**
  * @beta
  */

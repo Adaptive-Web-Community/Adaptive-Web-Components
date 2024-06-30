@@ -1,10 +1,11 @@
 /* eslint @typescript-eslint/naming-convention: off */
 import fs from 'fs/promises';
 import path from 'path';
+import { SerializableAnatomy } from '@adaptive-web/adaptive-ui';
 import type * as FigmaRestAPI from '@figma/rest-api-spec';
 import { kebabCase } from 'change-case';
 import { parseNode } from '../lib/node-parser.js';
-import { Anatomy, type SerializableAnatomy,  } from '../lib/anatomy.js';
+import { Anatomy } from '../lib/anatomy.js';
 import { ILibraryConfig } from './library-config.js';
 import { ILogger } from './logger.js';
 
@@ -15,11 +16,9 @@ export interface IAnatomyConfiguration {
 
 export class AnatomyConfiguration implements IAnatomyConfiguration {
   public readonly name: string;
-  #anatomy: SerializableAnatomy;
 
   private constructor(anatomy: SerializableAnatomy, public readonly path: string) {
     this.name = anatomy.name;
-    this.#anatomy = anatomy;
   }
 
   public static async create(
@@ -35,13 +34,18 @@ export class AnatomyConfiguration implements IAnatomyConfiguration {
       await fs.stat(configurationPath);
       logger.neutral(`Anatomy file for ${name} already exists! Using existing anatomy.`);
       anatomy = JSON.parse((await fs.readFile(configurationPath)).toString()) as unknown as SerializableAnatomy;
-    } catch {
-      logger.success(`Writing anatomy file for ${name}.`);
-      const nodeAnatomy = Anatomy.fromPluginUINodeData(parseNode(node))
-      const nodeAnatomyFileData = JSON.stringify(nodeAnatomy, null, 2);
-      anatomy = JSON.parse(nodeAnatomyFileData);
-      await fs.mkdir(path.parse(configurationPath).dir, { recursive: true }); // ensure dir exists or fs.writeFile will throw
-      await fs.writeFile(configurationPath, nodeAnatomyFileData);
+    } catch (e) {
+      if ((e as Error).message.startsWith("ENOENT")) {
+        logger.success(`Writing anatomy file for ${name}.`);
+        const nodeAnatomy = Anatomy.fromPluginUINodeData(parseNode(node))
+        const nodeAnatomyFileData = JSON.stringify(nodeAnatomy, null, 2);
+        anatomy = JSON.parse(nodeAnatomyFileData);
+        await fs.mkdir(path.parse(configurationPath).dir, { recursive: true }); // ensure dir exists or fs.writeFile will throw
+        await fs.writeFile(configurationPath, nodeAnatomyFileData);
+      } else {
+        logger.warn(`Anatomy file error: ${(e as Error).message}.`);
+        throw e;
+      }
     }
 
     return new AnatomyConfiguration(anatomy, configurationPath);
