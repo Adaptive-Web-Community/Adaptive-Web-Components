@@ -1,5 +1,5 @@
 import type { CSSDirective } from "@microsoft/fast-element";
-import type { CSSDesignToken } from "@microsoft/fast-foundation";
+import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
 import { Swatch } from "../color/swatch.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
@@ -190,6 +190,40 @@ export const Padding = {
         };
     },
 }
+
+/**
+ * Converts `Styles` to focus-only state. This allows styles to be constructed as usual, using interactive sets
+ * or simple values, but convert the styles specifically to focus state to the necessary structure.
+ *
+ * @param styles - The input `Styles` to convert to focus-only styles.
+ * @returns Converted `Styles`.
+ *
+ * @public
+ */
+export const convertStylesToFocusState = (styles: Styles) => {
+    const props: StyleProperties = {};
+    styles.effectiveProperties.forEach((value, target) => {
+        let focusValue: StyleValue | null;
+        if (typeof value === "string" || value instanceof CSSDesignToken) {
+            focusValue = value;
+        } else if (value && typeof (value as any).createCSS === "function") {
+            focusValue = value;
+        } else {
+            focusValue = (value as InteractiveValues<any>).focus;
+        }
+
+        if (focusValue) {
+            props[target] = {
+                rest: undefined,
+                hover: undefined,
+                active: undefined,
+                focus: focusValue,
+                disabled: undefined,
+            };
+        }
+    });
+    return Styles.fromProperties(props);
+};
 
 /**
  * A modular definition of style properties, either an alias to another style module or a collection of style properties.

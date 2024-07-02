@@ -129,6 +129,9 @@ export function contrastAndDeltaSwatchSet(palette: Palette, reference: Swatch, m
 // @public
 export function contrastSwatch(palette: Palette, reference: Swatch, minContrast: number, direction?: PaletteDirection): Swatch;
 
+// @public
+export const convertStylesToFocusState: (styles: Styles) => Styles;
+
 // @public (undocumented)
 export const CornerRadius: {
     all: (value: StyleValue) => StyleProperties;
@@ -296,6 +299,11 @@ export function directionByIsDark(color: RelativeLuminance): PaletteDirectionVal
 // @public
 export class ElementStylesRenderer {
     constructor(styles: Styles);
+    static disabledStyles: Styles;
+    static get focusResetStyles(): Styles;
+    static set focusResetStyles(styles: Styles);
+    static get focusStateStyles(): Styles;
+    static set focusStateStyles(styles: Styles);
     render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles;
     static renderStyleRules(baseStyles: ComposableStyles[] | undefined, styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>): ElementStyles;
 }
