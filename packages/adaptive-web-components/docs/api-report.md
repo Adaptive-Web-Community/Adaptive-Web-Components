@@ -989,9 +989,6 @@ export const flipperTemplate: (ds: DesignSystem) => ElementViewTemplate<FASTFlip
 // @public
 export const flipperTemplateStyles: ElementStyles;
 
-// @public
-export const globalStyleRules: (anatomy?: ComponentAnatomy<any, any>) => StyleRules;
-
 // Warning: (ae-internal-missing-underscore) The name "heightNumber" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal @deprecated (undocumented)
