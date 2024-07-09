@@ -1,8 +1,17 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Mon, 24 Jun 2024 21:29:12 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Jul 2024 16:29:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Tue, 09 Jul 2024 16:29:52 GMT
+
+### Minor changes
+
+- Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.6.0
 
 ## 0.6.2
 

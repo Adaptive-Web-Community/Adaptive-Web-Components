@@ -1,8 +1,21 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Mon, 24 Jun 2024 21:29:12 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Jul 2024 16:29:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.6.0
+
+Tue, 09 Jul 2024 16:29:52 GMT
+
+### Minor changes
+
+- Improved Figma CLI (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
+
+### Patches
+
+- Adaptive UI: Anatomy CLI fixes (47367562+bheston@users.noreply.github.com)
 
 ## 0.5.0
 

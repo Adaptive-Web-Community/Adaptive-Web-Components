@@ -2,6 +2,41 @@
   "name": "@adaptive-web/adaptive-ui-designer-figma",
   "entries": [
     {
+      "date": "Tue, 09 Jul 2024 16:29:52 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03",
+            "comment": "Improved Figma CLI"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.6.0",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui-designer-core to v0.2.1",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03"
+          }
+        ],
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03",
+            "comment": "Adaptive UI: Anatomy CLI fixes"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Jun 2024 21:29:12 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.1.2",
       "version": "0.1.2",

@@ -1,8 +1,22 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
-This log was last generated on Mon, 24 Jun 2024 21:29:12 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Jul 2024 16:29:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.0
+
+Tue, 09 Jul 2024 16:29:52 GMT
+
+### Minor changes
+
+- Improved Figma CLI (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.6.0
+- Bump @adaptive-web/adaptive-ui-designer-core to v0.2.1
+
+### Patches
+
+- Adaptive UI: Anatomy CLI fixes (47367562+bheston@users.noreply.github.com)
 
 ## 0.1.2
 
