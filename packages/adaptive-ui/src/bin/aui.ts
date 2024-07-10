@@ -26,6 +26,7 @@ import {
     Styles,
     TypedCSSDesignToken
 } from "../core/index.js";
+import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "../reference/index.js";
 
 const program = new Command();
 
@@ -183,6 +184,11 @@ interface SheetCompiler {
     compile(sheet: AUIStyleSheet): string;
 }
 
+// TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
+ElementStylesRenderer.disabledStyles = disabledStyles;
+ElementStylesRenderer.focusStateStyles = focusIndicatorStyles;
+ElementStylesRenderer.focusResetStyles = focusResetStyles;
+
 class SheetCompilerImpl implements SheetCompiler {
     /**
      * Compiles an AUI stylesheet into a string
@@ -223,12 +229,19 @@ function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule)
     }
 }
 
+function resolvePart(anatomy: SerializableAnatomy, part?: string): string | undefined {
+    return part ? anatomy.parts[part] : undefined;
+}
+
 function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
     const sheet: AUIStyleSheet = {
         anatomy: {
+            name: obj.name,
+            context: obj.context,
             conditions: obj.conditions,
             parts: obj.parts,
             interactivity: obj.interactivity,
+            focus: obj.focus,
         },
         rules: obj.styleRules.map(style => {
             const styles = style.styles?.map(name => {
@@ -243,7 +256,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             const target: StyleModuleTarget = {
                 context: obj.context,
                 contextCondition: createCondition(obj, style),
-                part: style.part ? obj.parts[style.part] : undefined,
+                part: resolvePart(obj, style.part),
             };
 
             const rule: StyleRule = {
@@ -254,6 +267,13 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
 
             return rule;
         }),
+    }
+
+    if (sheet.anatomy.focus) {
+        sheet.anatomy.focus.focusTarget.part = resolvePart(obj, sheet.anatomy.focus.focusTarget.part);
+        if (sheet.anatomy.focus.resetTarget) {
+            sheet.anatomy.focus.resetTarget.part = resolvePart(obj, sheet.anatomy.focus.resetTarget.part);
+        }
     }
 
     return sheet;
