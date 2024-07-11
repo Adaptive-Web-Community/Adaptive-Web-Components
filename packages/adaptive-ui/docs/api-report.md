@@ -332,7 +332,7 @@ export const Focus: {
 // @public
 export interface FocusDefinition<TParts> {
     focusTarget: StyleModuleTarget;
-    resetTarget: StyleModuleTarget;
+    resetTarget?: StyleModuleTarget;
 }
 
 // @public
@@ -482,6 +482,8 @@ export interface SerializableAnatomy {
     conditions: Record<string, SerializableCondition>;
     // (undocumented)
     context: string;
+    // (undocumented)
+    focus?: FocusDefinition<any>;
     // (undocumented)
     interactivity?: InteractivityDefinition;
     // (undocumented)

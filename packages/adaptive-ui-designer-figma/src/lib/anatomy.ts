@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import { kebabCase } from "change-case";
 import {
+    FocusDefinition,
     Interactivity,
     InteractivityDefinition,
     SerializableAnatomy,
@@ -84,12 +85,13 @@ export class StyleRule {
     }
 }
 
-export class Anatomy implements Anatomy {
+export class Anatomy {
     name: string = "";
     context: string = "";
-    interactivity?: InteractivityDefinition;
     conditions: Map<string, Condition> = new Map();
     parts: Set<string> = new Set();
+    interactivity?: InteractivityDefinition;
+    focus?: FocusDefinition<any>;
     styleRules: Set<StyleRule> = new Set();
 
     toJSON(): SerializableAnatomy {
@@ -106,9 +108,10 @@ export class Anatomy implements Anatomy {
         return {
             name: this.name,
             context: makeClassName(this.name),
-            interactivity: this.interactivity,
             conditions,
             parts,
+            interactivity: this.interactivity,
+            focus: this.focus,
             styleRules: Array.from(this.styleRules).map(rule => rule.toJSON()),
         }
     }
@@ -239,6 +242,10 @@ function cleanNodeName(nodeName: string): string {
     return nodeName.replace(/[^\x20-\x7F]/g, "").trim();
 }
 
+function isNotContextNode(nodeName: string, componentName: string): boolean {
+    return nodeName.toLowerCase() !== componentName.toLowerCase()
+}
+
 function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
     const nodeName = cleanNodeName(node.name);
 
@@ -247,14 +254,14 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
         return;
     }
 
-    if (node.type === "INSTANCE" && nodeName !== componentName) {
+    if (node.type === "INSTANCE" && isNotContextNode(nodeName, componentName)) {
         // TODO: This is too simplified, but it addresses many nested component issues for now.
         return;
     }
 
     if (!node.name.endsWith(ignoreLayerName)) {
         // TODO, not only frames, but what?
-        if (node.type === "FRAME" && nodeName !== componentName) {
+        if (node.type === "FRAME" && isNotContextNode(nodeName, componentName)) {
             anatomy.parts.add(nodeName);
         }
 
@@ -274,7 +281,7 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
                 styleRule.tokens.add(new Token(target, tokenRef));
             });
 
-            if (nodeName !== componentName) {
+            if (isNotContextNode(nodeName, componentName)) {
                 anatomy.parts.add(nodeName)
                 styleRule.part = nodeName;
             }

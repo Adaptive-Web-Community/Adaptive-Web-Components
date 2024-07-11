@@ -32,8 +32,9 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
     const disabled = state === InteractiveState.disabled;
 
     const stateSelector = disabled ? "" : params[state] || DefaultInteractiveSelectors[state];
-    const context = params.context && params.context !== defaultContext ? `${params.context}` : defaultContext;
+    const context = params.context && params.context !== defaultContext ? params.context : defaultContext;
 
+    // Check for anything that will generate a condition on the context
     if (params.contextCondition ||
         (!rest && !disabled && params.interactive !== undefined) ||
         (!rest && disabled && params.disabled !== undefined)
@@ -60,11 +61,14 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
             const contextSelector = context === HOST_CONTEXT ? `${HOST_CONTEXT}(${contextCondition})` : `${context}${contextCondition}`;
             selectors.push(contextSelector);
         }
-    } else if (!params.part) {
-        // There wasn't a context condition, and there isn't a part, so basic context element selector.
+    }
+
+    // There wasn't a context condition, and there isn't a part, so basic context element selector.
+    if (selectors.length === 0 && (context !== HOST_CONTEXT || !params.part)) {
         selectors.push(context);
     }
 
+    // Add the part selector
     if (params.part) {
         if (params.part === "*") {
             selectors.push("*");

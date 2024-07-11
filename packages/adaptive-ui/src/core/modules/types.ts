@@ -54,11 +54,6 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
     context?: string;
 
     /**
-     * Description of the conditions for when the component is interactive or not.
-     */
-    interactivity?: InteractivityDefinition;
-
-    /**
      * List of conditions a component supports, like being selected or changing orientation.
      */
     conditions: TConditions;
@@ -67,6 +62,11 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
      * List of parts exposed by the component.
      */
     parts: TParts;
+
+    /**
+     * Description of the conditions for when the component is interactive or not.
+     */
+    interactivity?: InteractivityDefinition;
 
     /**
      * Description of the focus structure of the component.
@@ -212,7 +212,7 @@ export interface FocusDefinition<TParts> {
     /**
      * The focusable element to reset browser default styles, for instance, a native input element or an element with a `tabindex`.
      */
-    resetTarget: StyleModuleTarget,
+    resetTarget?: StyleModuleTarget,
 }
 
 /**
@@ -466,8 +466,9 @@ export interface SerializableStyleRule {
 export interface SerializableAnatomy{
     name: string,
     context: string,
-    interactivity?: InteractivityDefinition,
     conditions: Record<string, SerializableCondition>,
     parts: Record<string, string>,
+    interactivity?: InteractivityDefinition,
+    focus?: FocusDefinition<any>,
     styleRules: SerializableStyleRule[]
 }
