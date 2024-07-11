@@ -2,6 +2,33 @@
   "name": "@adaptive-web/adaptive-ui-designer-figma",
   "entries": [
     {
+      "date": "Thu, 11 Jul 2024 17:06:10 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "commit": "5066845126682b7afe85afafac45c14fb3e36620",
+            "comment": "AUI: Fix global style generation"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.7.0",
+            "commit": "5066845126682b7afe85afafac45c14fb3e36620"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui-designer-core to v0.2.2",
+            "commit": "5066845126682b7afe85afafac45c14fb3e36620"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Jul 2024 16:29:52 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.2.0",
       "version": "0.2.0",

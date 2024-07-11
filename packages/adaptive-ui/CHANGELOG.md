@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Tue, 09 Jul 2024 16:29:52 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Jul 2024 17:06:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Thu, 11 Jul 2024 17:06:10 GMT
+
+### Minor changes
+
+- AUI: Fix global style generation (47367562+bheston@users.noreply.github.com)
 
 ## 0.6.0
 

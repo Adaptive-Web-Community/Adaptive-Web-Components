@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Thu, 11 Jul 2024 17:06:10 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "5066845126682b7afe85afafac45c14fb3e36620",
+            "comment": "AUI: Fix global style generation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 09 Jul 2024 16:29:52 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.6.0",
       "version": "0.6.0",

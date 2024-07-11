@@ -1,8 +1,18 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
-This log was last generated on Tue, 09 Jul 2024 16:29:52 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Jul 2024 17:06:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Thu, 11 Jul 2024 17:06:10 GMT
+
+### Minor changes
+
+- AUI: Fix global style generation (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.7.0
+- Bump @adaptive-web/adaptive-ui-designer-core to v0.2.2
 
 ## 0.2.0
 
