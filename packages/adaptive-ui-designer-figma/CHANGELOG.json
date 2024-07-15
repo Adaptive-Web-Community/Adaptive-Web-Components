@@ -2,6 +2,27 @@
   "name": "@adaptive-web/adaptive-ui-designer-figma",
   "entries": [
     {
+      "date": "Mon, 15 Jul 2024 18:51:14 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.8.0",
+            "commit": "6f7943648953120d1b098761ccb974c15f013365"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-figma",
+            "comment": "Bump @adaptive-web/adaptive-ui-designer-core to v0.2.3",
+            "commit": "6f7943648953120d1b098761ccb974c15f013365"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Jul 2024 17:06:10 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-figma_v0.3.0",
       "version": "0.3.0",

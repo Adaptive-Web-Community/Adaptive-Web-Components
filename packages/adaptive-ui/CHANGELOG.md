@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Thu, 11 Jul 2024 17:06:10 GMT and should not be manually modified.
+This log was last generated on Mon, 15 Jul 2024 18:51:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.0
+
+Mon, 15 Jul 2024 18:51:14 GMT
+
+### Minor changes
+
+- Merge CSS rules during CSS generation from JSON anatomy (nicholasrice@users.noreply.github.com)
 
 ## 0.7.0
 
