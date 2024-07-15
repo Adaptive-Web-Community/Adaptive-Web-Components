@@ -5,6 +5,7 @@ import fsp from "fs/promises";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
+import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Command } from 'commander';
 import { glob } from "glob";
 import postcss, { type Processor} from "postcss";
@@ -28,7 +29,6 @@ import {
     StyleProperties,
     StyleRule,
     Styles,
-    TypedCSSDesignToken
 } from "../core/index.js";
 import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "../reference/index.js";
 
@@ -253,10 +253,15 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                 return Styles.Shared.get(name)!;
             });
 
-            const properties = style.tokens?.reduce((prev, current) => {
-                prev[current.target] = DesignTokenRegistry.Shared.get(current.tokenID) as TypedCSSDesignToken<any>
-                return prev;
-            }, {} as StyleProperties);
+            const properties: StyleProperties = {};
+            if (style.properties) {
+                Object.entries(style.properties).map(entry => {
+                    const target = entry[0];
+                    const value = entry[1];
+                    const token = DesignTokenRegistry.Shared.get(value);
+                    properties[target] = token ? token as CSSDesignToken<any> : value;
+                });
+            }
 
             const target: StyleModuleTarget = {
                 context: obj.context,

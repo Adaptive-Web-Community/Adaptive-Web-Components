@@ -85,10 +85,10 @@ export class CodeGen {
                 const varName = StyleNameMapping[style as keyof typeof StyleNameMapping];
                 accumulated.push(varName);
             });
-            current.tokens.forEach(token => {
-                const varName = this.tokenIDMap(token.tokenID);
+            for (const token of current.properties.entries()) {
+                const varName = CodeGen.tokenIDMap(token[1]);
                 accumulated.push(varName);
-            });
+            }
             return accumulated;
         }, new Array<string>());
         const importBase = `import { StyleRules } from "@adaptive-web/adaptive-ui";\n`;
@@ -117,16 +117,16 @@ export class CodeGen {
         }
 
         let propertiesOut = "";
-        if (styleRule.tokens.size > 0) {
+        if (styleRule.properties.size > 0) {
             // TODO Need to map tokens better
-            const tokens = new Array(...styleRule.tokens).map(token => `${token.target}: ${this.tokenIDMap(token.tokenID)}`);
+            const tokens = new Array(...styleRule.properties).map(token => `${token[0]}: ${CodeGen.tokenIDMap(token[1])}`);
             propertiesOut = `        properties: {\n            ${tokens.join(",\n            ")},\n        },\n`;
         }
 
         return `    {\n${targetOut}${stylesOut}${propertiesOut}    },`;
     }
 
-    private tokenIDMap(tokenID: string): string {
+    private static tokenIDMap(tokenID: string): string {
         let adjustedID = tokenID;
 
         // TODO: Clean up naming and grouping

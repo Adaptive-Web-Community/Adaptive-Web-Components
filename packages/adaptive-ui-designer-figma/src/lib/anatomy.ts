@@ -8,7 +8,6 @@ import {
     SerializableBooleanCondition,
     SerializableStringCondition,
     SerializableStyleRule,
-    SerializableToken,
 } from "@adaptive-web/adaptive-ui";
 import { AdditionalDataKeys, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 
@@ -55,32 +54,23 @@ export class StringCondition extends Condition {
     }
 }
 
-export class Token {
-    constructor(
-        public target: string,
-        public tokenID: string,
-    ) { }
-
-    toJSON(): SerializableToken {
-        return {
-            target: this.target,
-            tokenID: this.tokenID,
-        };
-    }
-}
-
 export class StyleRule {
     contextCondition?: Record<string, string | boolean>;
     part?: string;
     styles: Set<string> = new Set();
-    tokens: Set<Token> = new Set();
+    properties: Map<string, string> = new Map();
 
     toJSON(): SerializableStyleRule {
+        const properties = this.properties.size === 0 ? undefined : Array.from(this.properties.entries()).reduce((prev, next) => {
+            prev[next[0]] = next[1];
+            return prev;
+        }, {} as Record<string, string>);
+
         return {
             contextCondition: this.contextCondition,
             part: this.part,
             styles: this.styles.size === 0 ? undefined : Array.from(this.styles),
-            tokens: this.tokens.size === 0 ? undefined : Array.from(this.tokens).map(token => token.toJSON()),
+            properties,
         };
     }
 }
@@ -96,14 +86,14 @@ export class Anatomy {
 
     toJSON(): SerializableAnatomy {
         const conditions = Array.from(this.conditions.entries()).reduce((prev, next) => {
-            prev[next[0]] = next[1].toJSON()
-            return prev
-        }, {} as SerializableAnatomy["conditions"])
+            prev[next[0]] = next[1].toJSON();
+            return prev;
+        }, {} as SerializableAnatomy["conditions"]);
 
         const parts = Array.from(this.parts.entries()).reduce((prev, current) => {
             prev[current[0]] = makeClassName(current[1]);
             return prev;
-        }, {} as SerializableAnatomy["parts"])
+        }, {} as SerializableAnatomy["parts"]);
 
         return {
             name: this.name,
@@ -278,7 +268,7 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
 
             node.appliedDesignTokens.forEach((token, target) => {
                 const tokenRef = token.tokenID;
-                styleRule.tokens.add(new Token(target, tokenRef));
+                styleRule.properties.set(target, tokenRef);
             });
 
             if (isNotContextNode(nodeName, componentName)) {
