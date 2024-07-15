@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Merge CSS rules during CSS generation from JSON anatomy",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
