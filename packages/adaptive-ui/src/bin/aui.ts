@@ -7,6 +7,10 @@ import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { Command } from 'commander';
 import { glob } from "glob";
+import postcss, { type Processor} from "postcss";
+import postcssMergeLonghand from "postcss-merge-longhand";
+import postcssMergeRules from "postcss-merge-rules"
+import postcssMergeBorderRadius from "postcss-merge-border-radius";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
     BooleanCondition,
@@ -88,8 +92,9 @@ program.command("compile-json-anatomy <anatomyPath>")
         const sheet = jsonToAUIStyleSheet(jsonData);
         const compiledSheet = compiler.compile(sheet);
         const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
+        const minified = await mergeCSSRules(formatted);
         process.stdout.write("/* This file is generated. Do not edit directly */\n",);
-        process.stdout.write(formatted)
+        process.stdout.write(minified)
         process.stdout.end();
     });
 
@@ -277,4 +282,13 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
     }
 
     return sheet;
+}
+
+let minifier: null | Processor = null;
+async function mergeCSSRules(cssFileData: string): Promise<string> {
+    if (minifier === null) {
+        minifier = postcss([postcssMergeRules(), postcssMergeLonghand(), postcssMergeBorderRadius()]);
+    }
+
+    return await (await minifier.process(cssFileData, { from: "src.css", to: "dist.css"})).toString()
 }
