@@ -445,19 +445,11 @@ export type SerializableCondition = SerializableBooleanCondition | SerializableS
 /**
  * @beta
  */
-export interface SerializableToken {
-    target: string,
-    tokenID: string
-}
-
-/**
- * @beta
- */
 export interface SerializableStyleRule {
     contextCondition?: Record<string, string | boolean>;
     part?: string,
     styles?: string[],
-    tokens?: SerializableToken[];
+    properties?: Record<string, string>,
 }
 
 /**

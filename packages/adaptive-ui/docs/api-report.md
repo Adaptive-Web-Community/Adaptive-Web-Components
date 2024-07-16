@@ -510,17 +510,9 @@ export interface SerializableStyleRule {
     // (undocumented)
     part?: string;
     // (undocumented)
+    properties?: Record<string, string>;
+    // (undocumented)
     styles?: string[];
-    // (undocumented)
-    tokens?: SerializableToken[];
-}
-
-// @beta (undocumented)
-export interface SerializableToken {
-    // (undocumented)
-    target: string;
-    // (undocumented)
-    tokenID: string;
 }
 
 // @public
