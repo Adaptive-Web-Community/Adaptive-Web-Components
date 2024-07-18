@@ -5,6 +5,7 @@ import {
     AppliedDesignTokens,
     AppliedStyleModules,
     AppliedStyleValues,
+    Config,
     deserializeMap,
     DesignTokenValues,
     PluginNodeData,
@@ -38,8 +39,12 @@ export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
         additionalData.set(AdditionalDataKeys.codeGenName, node.name);
     }
 
+    const configData = getPluginData(node, "config");
     const appliedTokensPluginData = getPluginData(node, "appliedDesignTokens");
     const appliedStylesPluginData = getPluginData(node, "appliedStyleModules");
+    const config: Config = configData
+        ? JSON.parse(configData)
+        : new Config();
     const appliedDesignTokens: AppliedDesignTokens = appliedTokensPluginData
         ? deserializeMap(appliedTokensPluginData)
         : new AppliedDesignTokens();
@@ -53,6 +58,7 @@ export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
         type: node.type,
         supports: [],
         children: children.map(parseNode),
+        config,
         additionalData,
         appliedDesignTokens,
         appliedStyleModules,

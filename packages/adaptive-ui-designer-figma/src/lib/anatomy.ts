@@ -227,32 +227,29 @@ function parseComponent(node: PluginUINodeData): Anatomy {
     return anatomy;
 }
 
-function cleanNodeName(nodeName: string): string {
-    // Remove non-ascii characters
-    return nodeName.replace(/[^\x20-\x7F]/g, "").trim();
-}
-
-function isNotContextNode(nodeName: string, componentName: string): boolean {
-    return nodeName.toLowerCase() !== componentName.toLowerCase()
+function isContextNode(node: PluginUINodeData, componentName: string): boolean {
+    // Remove non-ascii characters (we tried a convention of decorating template node names)
+    const nodeName = node.name.replace(/[^\x20-\x7F]/g, "").trim();
+    return node.type === "COMPONENT" || nodeName.toLowerCase() === componentName.toLowerCase();
 }
 
 function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
-    const nodeName = cleanNodeName(node.name);
-
-    if (nodeName === "Focus indicator") {
+    if (node.name === "Focus indicator") {
         // Ignore for now
         return;
     }
 
-    if (node.type === "INSTANCE" && isNotContextNode(nodeName, componentName)) {
+    const isContext = isContextNode(node, componentName);
+
+    if (node.type === "INSTANCE" && !(node.config.inline === true || isContext)) {
         // TODO: This is too simplified, but it addresses many nested component issues for now.
         return;
     }
 
     if (!node.name.endsWith(ignoreLayerName)) {
         // TODO, not only frames, but what?
-        if (node.type === "FRAME" && isNotContextNode(nodeName, componentName)) {
-            anatomy.parts.add(nodeName);
+        if (node.type === "FRAME" && !isContext) {
+            anatomy.parts.add(node.name);
         }
 
         if (node.appliedStyleModules.length > 0 || node.appliedDesignTokens.size > 0) {
@@ -271,9 +268,9 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
                 styleRule.properties.set(target, tokenRef);
             });
 
-            if (isNotContextNode(nodeName, componentName)) {
-                anatomy.parts.add(nodeName)
-                styleRule.part = nodeName;
+            if (!isContext) {
+                anatomy.parts.add(node.name)
+                styleRule.part = node.name;
             }
 
             anatomy.styleRules.add(styleRule);
