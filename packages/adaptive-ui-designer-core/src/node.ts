@@ -7,6 +7,7 @@ import {
     AppliedDesignTokens,
     AppliedStyleModules,
     AppliedStyleValues,
+    Config,
     DesignTokenValues,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
@@ -213,6 +214,11 @@ export abstract class PluginNode {
      * Gets the style properties this node supports.
      */
     public abstract get supports(): Array<StyleProperty>;
+
+    /**
+     * Configuration options for a node.
+     */
+    public config: Config;
 
     protected deserializeLocalDesignTokens(): DesignTokenValues {
         const json = this.getPluginData("designTokens");

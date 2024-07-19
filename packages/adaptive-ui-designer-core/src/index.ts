@@ -1,5 +1,6 @@
 export { Controller, PluginUIState, STYLE_REMOVE } from "./controller.js";
 export {
+    Config,
     PluginNodeData,
     AppliedStyleModules,
     AppliedStyleValues,
