@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Mon, 15 Jul 2024 18:51:14 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jul 2024 17:39:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Fri, 19 Jul 2024 17:39:45 GMT
+
+### Minor changes
+
+- AUI: Update CLI from `tokens` to align with existing `properties` (47367562+bheston@users.noreply.github.com)
 
 ## 0.8.0
 

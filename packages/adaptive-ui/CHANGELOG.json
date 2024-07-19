@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 19 Jul 2024 17:39:45 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "85f1e62f4ec837a46d11ca03cecdfc33a39f8d16",
+            "comment": "AUI: Update CLI from `tokens` to align with existing `properties`"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 15 Jul 2024 18:51:14 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.8.0",
       "version": "0.8.0",

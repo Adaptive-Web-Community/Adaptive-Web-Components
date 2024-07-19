@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Mon, 15 Jul 2024 18:51:14 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jul 2024 17:39:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.3
+
+Fri, 19 Jul 2024 17:39:45 GMT
+
+### Patches
+
+- Bump @adaptive-web/adaptive-ui to v0.9.0
 
 ## 0.7.2
 

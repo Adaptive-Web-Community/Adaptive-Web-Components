@@ -1,8 +1,19 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
-This log was last generated on Mon, 15 Jul 2024 18:51:14 GMT and should not be manually modified.
+This log was last generated on Fri, 19 Jul 2024 17:39:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.0
+
+Fri, 19 Jul 2024 17:39:45 GMT
+
+### Minor changes
+
+- AUI: Update CLI from `tokens` to align with existing `properties` (47367562+bheston@users.noreply.github.com)
+- Designer: Added ability to mark a node `inline` for styling (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.9.0
+- Bump @adaptive-web/adaptive-ui-designer-core to v0.3.0
 
 ## 0.3.1
 
