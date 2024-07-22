@@ -185,27 +185,27 @@ class DesignSystemProvider extends FASTElement {}
 DesignSystemProvider;
 
 export class App extends FASTElement {
-    public canvas: DesignSystemProvider;
+    public canvas?: DesignSystemProvider;
 
     @State state!: State;
 
     @observable
-    public neutralPalette: Palette;
+    public neutralPalette?: Palette;
 
     @observable
     public neutralColors: string[] = [];
 
     @observable
-    public accentPalette: Palette;
+    public accentPalette?: Palette;
 
     @observable
-    public highlightPalette: Palette;
+    public highlightPalette?: Palette;
 
     @observable
-    public backgrounds: SwatchInfo[];
+    public backgrounds: SwatchInfo[] = [];
 
-    private _stateNotifier: Notifier | null;
-    private _stateHandler: Subscriber | null;
+    private _stateNotifier: Notifier | null = null;
+    private _stateHandler: Subscriber | null = null;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -215,7 +215,7 @@ export class App extends FASTElement {
         this._stateNotifier = Observable.getNotifier(this.state);
         this._stateHandler = {
             handleChange(source: State, propertyName: keyof State) {
-                if (app.$fastController.isConnected) {
+                if (app.$fastController.isConnected && app.canvas) {
                     switch (propertyName) {
                         case "neutralColor":
                             neutralBaseColor.setValueFor(app.canvas, source.neutralColor);
@@ -261,7 +261,7 @@ export class App extends FASTElement {
         }
     }
 
-    public designSystemElement: FASTElement;
+    public designSystemElement?: FASTElement;
 
     public componentTypeTemplate(): ViewTemplate<App, any> {
         if (this.state.componentType === ComponentType.sample) {
@@ -298,36 +298,41 @@ export class App extends FASTElement {
     ];
 
     private resolveLayerRecipes = (luminance: number): SwatchInfo[] => {
-        layerFillBaseLuminance.setValueFor(this.designSystemElement, luminance);
+        const ds = this.designSystemElement;
+        if (ds) {
+            layerFillBaseLuminance.setValueFor(ds, luminance);
 
-        return this.layerTokens
-            .map((conf: [DesignToken<Swatch>, string]): SwatchInfo => {
-                const color = conf[0].getValueFor(this.designSystemElement).toColorString();
-                return {
-                    index: this.neutralColors.indexOf(color),
-                    color: color,
-                    title: conf[1],
-                };
-            })
-            .reduce((accumulated: SwatchInfo[], value: SwatchInfo): Array<SwatchInfo> => {
-                const colorIndex: number = accumulated.findIndex(
-                    (config: SwatchInfo): boolean => config.color === value.color
-                );
+            return this.layerTokens
+                .map((conf: [DesignToken<Swatch>, string]): SwatchInfo => {
+                    const color = conf[0].getValueFor(ds).toColorString();
+                    return {
+                        index: this.neutralColors.indexOf(color),
+                        color: color,
+                        title: conf[1],
+                    };
+                })
+                .reduce((accumulated: SwatchInfo[], value: SwatchInfo): Array<SwatchInfo> => {
+                    const colorIndex: number = accumulated.findIndex(
+                        (config: SwatchInfo): boolean => config.color === value.color
+                    );
 
-                return colorIndex === -1
-                    ? accumulated.concat(value)
-                    : accumulated.map(
-                          (config: SwatchInfo, index: number): SwatchInfo =>
-                              index === colorIndex
-                                  ? {
-                                        index: this.neutralColors.indexOf(value.color),
-                                        color: value.color,
-                                        title: value.title!.concat(", ", config.title!),
-                                    }
-                                  : config
-                      );
-            }, [])
-            .sort((a: SwatchInfo, b: SwatchInfo): number => a.index - b.index);
+                    return colorIndex === -1
+                        ? accumulated.concat(value)
+                        : accumulated.map(
+                            (config: SwatchInfo, index: number): SwatchInfo =>
+                                index === colorIndex
+                                    ? {
+                                            index: this.neutralColors.indexOf(value.color),
+                                            color: value.color,
+                                            title: value.title!.concat(", ", config.title!),
+                                        }
+                                    : config
+                        );
+                }, [])
+                .sort((a: SwatchInfo, b: SwatchInfo): number => a.index - b.index);
+        } else {
+            return [];
+        }
     };
 
     private get lightModeLayers(): SwatchInfo[] {

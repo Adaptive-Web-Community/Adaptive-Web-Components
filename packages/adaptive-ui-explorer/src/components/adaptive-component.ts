@@ -59,5 +59,5 @@ export class AdaptiveComponent extends FASTElement {
     }
 
     // Keep track of the styles we added so we can remove them without recreating.
-    private _addedStyles: ElementStyles;
+    private _addedStyles?: ElementStyles;
 }

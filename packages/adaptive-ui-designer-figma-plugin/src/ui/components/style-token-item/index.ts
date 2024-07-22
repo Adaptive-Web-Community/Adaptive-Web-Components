@@ -65,10 +65,10 @@ const styles = css`
 })
 export class StyleTokenItem extends FASTElement {
     @attr
-    public title: string;
+    public title: string = "";
 
     @attr
-    public value: string;
+    public value: string = "";
 
     @attr
     public glyphType?: TokenGlyphType;

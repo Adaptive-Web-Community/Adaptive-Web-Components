@@ -20,13 +20,13 @@ export class DefaultState implements State {
     public componentType: ComponentType = ComponentType.backplate;
 
     @observable
-    public neutralColor: string;
+    public neutralColor: string = "#ff00ff";
 
     @observable
-    public accentColor: string;
+    public accentColor: string = "#ff00ff";
 
     @observable
-    public highlightColor: string;
+    public highlightColor: string = "#ff00ff";
 
     @observable
     public showOnlyLayerBackgrounds: boolean = true;

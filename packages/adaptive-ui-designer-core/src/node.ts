@@ -218,7 +218,7 @@ export abstract class PluginNode {
     /**
      * Configuration options for a node.
      */
-    public config: Config;
+    public config: Config = new Config();
 
     protected deserializeLocalDesignTokens(): DesignTokenValues {
         const json = this.getPluginData("designTokens");

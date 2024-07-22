@@ -226,19 +226,19 @@ const styles = css`
 })
 export class ColorBlock extends FASTElement {
     @attr
-    public index: number;
+    public index?: number;
 
     @attr
-    public component: ComponentType;
+    public component?: ComponentType;
 
     @attr
-    public color: string;
+    public color?: string;
     protected colorChanged(): void {
         Updates.enqueue(() => this.updateColor());
     }
 
     @attr({ attribute: "layer-name" })
-    public layerName: string;
+    public layerName?: string;
 
     @observable
     public disabledState: boolean = false;

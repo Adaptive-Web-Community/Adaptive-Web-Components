@@ -43,7 +43,7 @@ export class StylesController {
     private styleModuleReduce(accumulated: StyleModuleDisplayList, current: [string, Styles]) {
         const [topGroup, ...remaining] = current[0].split(".");
         const topGroupFormatted = nameToTitle(topGroup);
-        const modules = accumulated.has(topGroupFormatted) ? accumulated.get(topGroupFormatted) : [];
+        const modules = (accumulated.has(topGroupFormatted) ? accumulated.get(topGroupFormatted) : []) || [];
         modules.push({
             name: current[0],
             title: remaining.map((value) => nameToTitle(value)).join(" / "),
@@ -74,7 +74,7 @@ export class StylesController {
         this.controller.selectedNodes.forEach(node => {
             node.appliedStyleModules.forEach((name) => {
                 if (!allModules.has(name)) {
-                    allModules.set(name, Styles.Shared.get(name));
+                    allModules.set(name, Styles.Shared.get(name)!);
                 }
             })
         });
@@ -259,7 +259,7 @@ export class StylesController {
                 const applied = node.appliedDesignTokens.get(target);
                 if (applied?.tokenID === tokenID) {
                     // Set to null so we can process the removal
-                    node.appliedDesignTokens.set(target, null);
+                    node.appliedDesignTokens.set(target, new AppliedDesignToken(STYLE_REMOVE, STYLE_REMOVE));
                     // console.log("--------------------------------");
                     // console.log("  removed applied design token from node", target, node);
                 }
