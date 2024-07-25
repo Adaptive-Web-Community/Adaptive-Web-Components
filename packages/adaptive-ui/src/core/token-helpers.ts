@@ -1,5 +1,6 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
+import { Color } from "./color/color.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
 import { Recipe, RecipeEvaluate } from "./recipes.js";
@@ -27,8 +28,8 @@ export const { createTyped } = TypedCSSDesignToken;
  *
  * @public
  */
-export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string> {
-    return TypedCSSDesignToken.createTyped<string>(name, DesignTokenType.color, intendedFor);
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color> {
+    return TypedCSSDesignToken.createTyped<Color>(name, DesignTokenType.color, intendedFor);
 }
 
 /**

@@ -1,8 +1,6 @@
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
-import { Controller, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
-import { AppliedStyleModules, AppliedStyleValues, PluginNodeData } from "@adaptive-web/adaptive-ui-designer-core";
-import { focusIndicatorNodeName, PluginNode, State, StatesState } from "@adaptive-web/adaptive-ui-designer-core";
+import { AppliedStyleModules, AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, PluginNodeData, serializeMap, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
 import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
@@ -217,11 +215,11 @@ export class FigmaPluginNode extends PluginNode {
             });
 
             if (deserializedDesignTokens.size) {
-                // console.log("    reconciled design tokens", this.debugInfo, deserializedDesignTokens.serialize());
+                // console.log("    reconciled design tokens", this.debugInfo, serializeMap(deserializedDesignTokens));
             }
 
             if (deserializedAppliedDesignTokens.size) {
-                // console.log("    reconciled applied design tokens", this.debugInfo, deserializedAppliedDesignTokens.serialize());
+                // console.log("    reconciled applied design tokens", this.debugInfo, serializeMap(deserializedAppliedDesignTokens));
             }
         }
 

@@ -71,6 +71,7 @@ export class Color implements RelativeLuminance, CSSDirective {
     static parse(color: string): Color | undefined;
     get relativeLuminance(): number;
     toColorString(): string;
+    toString: () => string;
 }
 
 // @public
@@ -154,7 +155,7 @@ export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<Inte
 export function createNonCss<T>(name: string): DesignToken<T>;
 
 // @public
-export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color>;
 
 // @public
 export function createTokenColorRecipe<T = Swatch>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeEvaluate<T>): TypedDesignToken<ColorRecipe<T>>;
