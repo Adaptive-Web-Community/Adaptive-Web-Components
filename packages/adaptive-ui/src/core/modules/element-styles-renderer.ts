@@ -94,6 +94,12 @@ export class ElementStylesRenderer {
             }
 
             if (params.interactive !== undefined) {
+                if (values.focus) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.focus),
+                        ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
+                    );
+                }
                 if (values.hover) {
                     selectors.set(
                         makeSelector(params, InteractiveState.hover),
@@ -104,12 +110,6 @@ export class ElementStylesRenderer {
                     selectors.set(
                         makeSelector(params, InteractiveState.active),
                         ElementStylesRenderer.declaration(property, values.active, InteractiveState.active)
-                    );
-                }
-                if (values.focus) {
-                    selectors.set(
-                        makeSelector(params, InteractiveState.focus),
-                        ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
                     );
                 }
             }

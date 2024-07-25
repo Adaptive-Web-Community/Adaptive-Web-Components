@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Define order of interactivity states as focus - hover - active",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
