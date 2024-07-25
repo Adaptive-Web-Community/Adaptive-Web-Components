@@ -21,8 +21,24 @@ DesignToken.registerDefaultStyleTarget();
 
 App;
 
+interface CustomEventMap {
+    "dispatch": CustomEvent<PluginMessage>;
+}
+
+declare global {
+    interface HTMLElement {
+        addEventListener<K extends keyof CustomEventMap>(
+            type: K,
+            listener: (this: Document, ev: CustomEventMap[K]) => void
+        ): void;
+        dispatchEvent<K extends keyof CustomEventMap>(
+            ev: CustomEventMap[K]
+        ): void;
+    }
+}
+
 window.onload = () => {
-    const app: App = document.querySelector("designer-app") as App;
+    const app: App = document.querySelector("designer-app") as unknown as App;
 
     // Send a message from the UI to the Controller 
     app.addEventListener("dispatch", (e: CustomEvent<PluginMessage>): void => {

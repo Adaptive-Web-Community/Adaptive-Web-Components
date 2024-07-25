@@ -41,10 +41,12 @@ function layerBackgroundTemplate<T extends LayerBackground>(): ElementViewTempla
 })
 export class LayerBackground extends FASTElement {
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
-    public baseLayerLuminance: number;
+    public baseLayerLuminance?: number;
     protected baseLayerLuminanceChanged(prev: number, next: number): void {
-        layerFillBaseLuminance.setValueFor(this, this.baseLayerLuminance);
-        this.updateBackgroundColor();
+        if (next) {
+            layerFillBaseLuminance.setValueFor(this, next);
+            this.updateBackgroundColor();
+        }
     }
 
     @attr({ attribute: "background-layer-recipe" })

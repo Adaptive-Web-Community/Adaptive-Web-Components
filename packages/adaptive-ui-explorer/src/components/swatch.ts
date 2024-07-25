@@ -80,10 +80,10 @@ const styles = css`
 })
 export class AppSwatch extends FASTElement {
     @attr
-    public type: SwatchType;
+    public type?: SwatchType;
 
     @attr({ attribute: "recipe-name" })
-    public recipeName: string;
+    public recipeName?: string;
 
     @observable
     public foregroundRecipe?: DesignToken<Swatch>;
@@ -104,13 +104,13 @@ export class AppSwatch extends FASTElement {
     }
 
     @observable
-    public iconStyle: string;
+    public iconStyle?: string;
 
     @observable
-    public contrastMessage: string;
+    public contrastMessage?: string;
 
     @observable
-    public colorValue: string;
+    public colorValue?: string;
 
     public connectedCallback() {
         super.connectedCallback();

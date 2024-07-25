@@ -8,6 +8,6 @@
         "module": "ES2020",
         "useDefineForClassFields": false,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "strict": false
+        "skipLibCheck": true
     }
 }

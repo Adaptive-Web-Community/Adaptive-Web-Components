@@ -37,7 +37,7 @@ const appliedStylesTemplate = (
             <p class="title">Styles</p>
             <div class="swatch-stack">
                 ${repeat(
-                    (x) => x.appliedStyleModules.get(group),
+                    (x) => x.appliedStyleModules.get(group)!,
                     html<StyleModuleDisplay, App>`
                         <div class="style-module applied">
                             <span class="content">
@@ -71,7 +71,7 @@ const availableStylesTemplate = (
     <p class="title">Styles</p>
     <div class="swatch-stack">
         ${repeat(
-            (x) => x.controller.styles.getAvailableStyleModules().get(group),
+            (x) => x.controller.styles.getAvailableStyleModules().get(group)!,
             html<StyleModuleDisplay, App>`
                 <div class="style-module available">
                     <span
@@ -108,7 +108,7 @@ const appliedTokensTemplate = (
             )}
             <div class="swatch-stack">
                 ${repeat(
-                    (_) => tokens,
+                    (_) => tokens!,
                     html<AppliedDesignTokenItem, App>`
                         <designer-style-token-item
                             title=${(x, c) => c.parent.controller.styles.getAppliableDesignTokenDefinition(x.tokenID)?.title}
@@ -153,7 +153,7 @@ const availableTokensTemplate = (
                             value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x.token)}
                             glyphType=${(_) => glyphType}
                             content-button
-                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor, x)}
+                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
                         >
                         </designer-style-token-item>
                     `
@@ -570,55 +570,55 @@ export class App extends FASTElement {
     public readonly controller: UIController;
 
     @observable
-    public supportsStyling: boolean;
+    public supportsStyling: boolean = false;
 
     @observable
-    public supportsColor: boolean;
+    public supportsColor: boolean = false;
 
     @observable
-    public supportsBorderThickness: boolean;
+    public supportsBorderThickness: boolean = false;
 
     @observable
-    public supportsDensity: boolean;
+    public supportsDensity: boolean = false;
 
     @observable
-    public supportsCornerRadius: boolean;
+    public supportsCornerRadius: boolean = false;
 
     @observable
-    public supportsText: boolean;
+    public supportsText: boolean = false;
 
     @observable
-    public supportsShadow: boolean;
+    public supportsShadow: boolean = false;
 
     @observable
-    public layerTokens: AppliedDesignTokenItem[] | null;
+    public layerTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public backgroundTokens: AppliedDesignTokenItem[] | null;
+    public backgroundTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public foregroundTokens: AppliedDesignTokenItem[] | null;
+    public foregroundTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public borderFillTokens: AppliedDesignTokenItem[] | null;
+    public borderFillTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public borderThicknessTokens: AppliedDesignTokenItem[] | null;
+    public borderThicknessTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public densityTokens: AppliedDesignTokenItem[] | null;
+    public densityTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public cornerRadiusTokens: AppliedDesignTokenItem[] | null;
+    public cornerRadiusTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public textTokens: AppliedDesignTokenItem[] | null;
+    public textTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public shadowTokens: AppliedDesignTokenItem[] | null;
+    public shadowTokens: AppliedDesignTokenItem[] | null = null;
 
     @observable
-    public supportsDesignSystem: boolean;
+    public supportsDesignSystem: boolean = false;
 
     @observable
     public appliedStyleModules: StyleModuleDisplayList = new Map();
@@ -627,39 +627,41 @@ export class App extends FASTElement {
     public statesState: StatesState | "unknown" = "unknown";
 
     @observable
-    public selectionDescription: string;
+    public selectionDescription: string = "No selection";
 
     @observable
-    public selectedNodes: PluginUINodeData[] | null;
+    public selectedNodes: PluginUINodeData[] | null = null;
     protected selectedNodesChanged(prev: PluginUINodeData[] | null, next: PluginUINodeData[] | null) {
-        this.controller.selectedNodes = next;
+        if (this.controller) {
+            this.controller.selectedNodes = next || [];
 
-        this.selectionDescription = this.selectedNodes?.map((node) => `${node.type}`).join(" | ") || "No selection";
+            this.selectionDescription = this.selectedNodes?.map((node) => `${node.type}`).join(" | ") || "No selection";
 
-        this.supportsColor =
-            this.selectedNodes?.some(
-                (node) =>
-                    node.supports.includes(StyleProperty.backgroundFill) ||
-                    node.supports.includes(StyleProperty.foregroundFill) ||
-                    node.supports.includes(StyleProperty.borderFillTop)
-            ) || false;
-        this.supportsBorderThickness = this.controller.supports(StyleProperty.borderThicknessTop);
-        this.supportsDensity = this.controller.supports(StyleProperty.gap);
-        this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
-        this.supportsText = this.controller.supports(StyleProperty.fontFamily);
-        this.supportsShadow = this.controller.supports(StyleProperty.shadow);
+            this.supportsColor =
+                this.selectedNodes?.some(
+                    (node) =>
+                        node.supports.includes(StyleProperty.backgroundFill) ||
+                        node.supports.includes(StyleProperty.foregroundFill) ||
+                        node.supports.includes(StyleProperty.borderFillTop)
+                ) || false;
+            this.supportsBorderThickness = this.controller.supports(StyleProperty.borderThicknessTop);
+            this.supportsDensity = this.controller.supports(StyleProperty.gap);
+            this.supportsCornerRadius = this.controller.supports(StyleProperty.cornerRadiusTopLeft);
+            this.supportsText = this.controller.supports(StyleProperty.fontFamily);
+            this.supportsShadow = this.controller.supports(StyleProperty.shadow);
 
-        this.supportsStyling =
-            this.supportsColor ||
-            this.supportsBorderThickness ||
-            this.supportsDensity ||
-            this.supportsCornerRadius ||
-            this.supportsText ||
-            this.supportsShadow;
+            this.supportsStyling =
+                this.supportsColor ||
+                this.supportsBorderThickness ||
+                this.supportsDensity ||
+                this.supportsCornerRadius ||
+                this.supportsText ||
+                this.supportsShadow;
 
-        this.supportsDesignSystem = true;
+            this.supportsDesignSystem = true;
 
-        this.refreshObservables();
+            this.refreshObservables();
+        }
     }
 
     constructor() {

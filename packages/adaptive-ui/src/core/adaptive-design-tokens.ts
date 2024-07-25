@@ -47,7 +47,7 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 export class DesignTokenMetadata {
     // TODO: This needs to support multiple types, tokens in Adaptive UI might represent different value
     // types, like a Swatch type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
-    private _type: DesignTokenType;
+    private _type: DesignTokenType = "string";
 
     /**
      * Gets the value type for this token.

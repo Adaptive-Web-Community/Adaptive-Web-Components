@@ -35,13 +35,13 @@ export class DesignTokenController {
      * A display representation of design tokens applied to the selected nodes.
      */
     @observable
-    public designTokenValues: UIDesignTokenValue[] | null;
+    public designTokenValues: UIDesignTokenValue[] | null = null;
 
     /**
      * A list of all design tokens which are not already applied to the selected nodes.
      */
     @observable
-    public availableDesignTokens: DesignTokenDefinition[] | null;
+    public availableDesignTokens: DesignTokenDefinition[] | null = null;
 
     constructor(
         private readonly controller: UIController,
@@ -67,7 +67,7 @@ export class DesignTokenController {
 
         // Get all design tokens that can be added, which is the full list except any already applied.
         this.availableDesignTokens = this.controller.designTokenRegistry.entries.filter((definition) =>
-            this.designTokenValues.find((appliedToken) => appliedToken.definition.id === definition.id) === undefined
+            this.designTokenValues?.find((appliedToken) => appliedToken.definition.id === definition.id) === undefined
         );
     }
 
@@ -137,9 +137,7 @@ export class DesignTokenController {
 
     private setDesignTokenForNode(node: PluginUINodeData, definition: DesignTokenDefinition, value: any): void {
         if (value) {
-            // TODO This should not convert to string
-            const valueAsString = this.valueToString(value);
-            const designToken = new DesignTokenValue(valueAsString);
+            const designToken = new DesignTokenValue(value);
             node.designTokens.set(definition.id, designToken);
         } else {
             node.designTokens.delete(definition.id);

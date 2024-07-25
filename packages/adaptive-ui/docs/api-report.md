@@ -59,7 +59,7 @@ export const BorderThickness: {
 export class Color implements RelativeLuminance, CSSDirective {
     constructor(color: Color_2);
     readonly color: Color_2;
-    contrast: any;
+    contrast: (b: RelativeLuminance) => number;
     createCSS: () => string;
     static from(obj: {
         r: number;

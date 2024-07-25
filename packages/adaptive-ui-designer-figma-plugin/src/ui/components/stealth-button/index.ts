@@ -82,7 +82,7 @@ export class StealthButton extends FASTElement {
         return this.slotHasContent(
             (this.shadowRoot as ShadowRoot).querySelector(
                 "[id='glyph']"
-            ) as HTMLSlotElement
+            ) as unknown as HTMLSlotElement
         );
     }
 
@@ -90,7 +90,7 @@ export class StealthButton extends FASTElement {
         return this.slotHasContent(
             (this.shadowRoot as ShadowRoot).querySelector(
                 "[id='content']"
-            ) as HTMLSlotElement
+            ) as unknown as HTMLSlotElement
         );
     }
 
