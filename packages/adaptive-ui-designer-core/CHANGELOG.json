@@ -2,6 +2,21 @@
   "name": "@adaptive-web/adaptive-ui-designer-core",
   "entries": [
     {
+      "date": "Thu, 25 Jul 2024 17:29:23 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-core_v0.3.1",
+      "version": "0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.9.1",
+            "commit": "e8addb7e23cd2fec3e72086daad1141e0b0460fe"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 19 Jul 2024 17:39:45 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-core_v0.3.0",
       "version": "0.3.0",

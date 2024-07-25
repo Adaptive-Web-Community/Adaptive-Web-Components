@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Fri, 19 Jul 2024 17:39:45 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Jul 2024 17:29:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.1
+
+Thu, 25 Jul 2024 17:29:23 GMT
+
+### Patches
+
+- Define order of interactivity states as focus - hover - active (nicholasrice@users.noreply.github.com)
 
 ## 0.9.0
 
