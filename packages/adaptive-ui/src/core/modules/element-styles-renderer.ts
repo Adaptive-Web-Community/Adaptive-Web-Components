@@ -94,16 +94,16 @@ export class ElementStylesRenderer {
             }
 
             if (params.interactive !== undefined) {
-                if (values.hover) {
-                    selectors.set(
-                        makeSelector(params, InteractiveState.hover),
-                        ElementStylesRenderer.declaration(property, values.hover, InteractiveState.hover)
-                    );
-                }
                 if (values.focus) {
                     selectors.set(
                         makeSelector(params, InteractiveState.focus),
                         ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
+                    );
+                }
+                if (values.hover) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.hover),
+                        ElementStylesRenderer.declaration(property, values.hover, InteractiveState.hover)
                     );
                 }
                 if (values.active) {
