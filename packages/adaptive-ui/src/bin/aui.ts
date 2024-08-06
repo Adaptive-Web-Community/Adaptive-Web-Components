@@ -2,6 +2,7 @@ import "./install-dom-shim.js";
 import path from "path";
 import fs from "fs";
 import fsp from "fs/promises";
+import { pathToFileURL } from "url";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
@@ -119,7 +120,7 @@ async function compileFile(inFilePath: string, outFilePath: string, stylesName: 
     // Ensure inFile exists
     ensureFileExists(inFilePath)
 
-    const module = await import(inFilePath);
+    const module = await import(pathToFileURL(inFilePath).href);
     const exportKeys = Object.keys(module);
 
     const stylesExportName = matcher(exportKeys, stylesName);
