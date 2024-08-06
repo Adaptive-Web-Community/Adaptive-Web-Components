@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 import { kebabCase } from "change-case";
 import {
+    FocusDefinition,
     Interactivity,
     InteractivityDefinition,
     SerializableAnatomy,
     SerializableBooleanCondition,
     SerializableStringCondition,
     SerializableStyleRule,
-    SerializableToken,
 } from "@adaptive-web/adaptive-ui";
 import { AdditionalDataKeys, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 
@@ -54,61 +54,54 @@ export class StringCondition extends Condition {
     }
 }
 
-export class Token {
-    constructor(
-        public target: string,
-        public tokenID: string,
-    ) { }
-
-    toJSON(): SerializableToken {
-        return {
-            target: this.target,
-            tokenID: this.tokenID,
-        };
-    }
-}
-
 export class StyleRule {
     contextCondition?: Record<string, string | boolean>;
     part?: string;
     styles: Set<string> = new Set();
-    tokens: Set<Token> = new Set();
+    properties: Map<string, string> = new Map();
 
     toJSON(): SerializableStyleRule {
+        const properties = this.properties.size === 0 ? undefined : Array.from(this.properties.entries()).reduce((prev, next) => {
+            prev[next[0]] = next[1];
+            return prev;
+        }, {} as Record<string, string>);
+
         return {
             contextCondition: this.contextCondition,
             part: this.part,
             styles: this.styles.size === 0 ? undefined : Array.from(this.styles),
-            tokens: this.tokens.size === 0 ? undefined : Array.from(this.tokens).map(token => token.toJSON()),
+            properties,
         };
     }
 }
 
-export class Anatomy implements Anatomy {
+export class Anatomy {
     name: string = "";
     context: string = "";
-    interactivity?: InteractivityDefinition;
     conditions: Map<string, Condition> = new Map();
     parts: Set<string> = new Set();
+    interactivity?: InteractivityDefinition;
+    focus?: FocusDefinition<any>;
     styleRules: Set<StyleRule> = new Set();
 
     toJSON(): SerializableAnatomy {
         const conditions = Array.from(this.conditions.entries()).reduce((prev, next) => {
-            prev[next[0]] = next[1].toJSON()
-            return prev
-        }, {} as SerializableAnatomy["conditions"])
+            prev[next[0]] = next[1].toJSON();
+            return prev;
+        }, {} as SerializableAnatomy["conditions"]);
 
         const parts = Array.from(this.parts.entries()).reduce((prev, current) => {
             prev[current[0]] = makeClassName(current[1]);
             return prev;
-        }, {} as SerializableAnatomy["parts"])
+        }, {} as SerializableAnatomy["parts"]);
 
         return {
             name: this.name,
             context: makeClassName(this.name),
-            interactivity: this.interactivity,
             conditions,
             parts,
+            interactivity: this.interactivity,
+            focus: this.focus,
             styleRules: Array.from(this.styleRules).map(rule => rule.toJSON()),
         }
     }
@@ -234,28 +227,29 @@ function parseComponent(node: PluginUINodeData): Anatomy {
     return anatomy;
 }
 
-function cleanNodeName(nodeName: string): string {
-    // Remove non-ascii characters
-    return nodeName.replace(/[^\x20-\x7F]/g, "").trim();
+function isContextNode(node: PluginUINodeData, componentName: string): boolean {
+    // Remove non-ascii characters (we tried a convention of decorating template node names)
+    const nodeName = node.name.replace(/[^\x20-\x7F]/g, "").trim();
+    return node.type === "COMPONENT" || nodeName.toLowerCase() === componentName.toLowerCase();
 }
 
 function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
-    const nodeName = cleanNodeName(node.name);
-
-    if (nodeName === "Focus indicator") {
+    if (node.name === "Focus indicator") {
         // Ignore for now
         return;
     }
 
-    if (node.type === "INSTANCE" && nodeName !== componentName) {
+    const isContext = isContextNode(node, componentName);
+
+    if (node.type === "INSTANCE" && !(node.config.inline === true || isContext)) {
         // TODO: This is too simplified, but it addresses many nested component issues for now.
         return;
     }
 
     if (!node.name.endsWith(ignoreLayerName)) {
         // TODO, not only frames, but what?
-        if (node.type === "FRAME" && nodeName !== componentName) {
-            anatomy.parts.add(nodeName);
+        if (node.type === "FRAME" && !isContext) {
+            anatomy.parts.add(node.name);
         }
 
         if (node.appliedStyleModules.length > 0 || node.appliedDesignTokens.size > 0) {
@@ -271,12 +265,12 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
 
             node.appliedDesignTokens.forEach((token, target) => {
                 const tokenRef = token.tokenID;
-                styleRule.tokens.add(new Token(target, tokenRef));
+                styleRule.properties.set(target, tokenRef);
             });
 
-            if (nodeName !== componentName) {
-                anatomy.parts.add(nodeName)
-                styleRule.part = nodeName;
+            if (!isContext) {
+                anatomy.parts.add(node.name)
+                styleRule.part = node.name;
             }
 
             anatomy.styleRules.add(styleRule);

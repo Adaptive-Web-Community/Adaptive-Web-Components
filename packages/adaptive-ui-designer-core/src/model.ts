@@ -41,6 +41,18 @@ export const AdditionalDataKeys = {
 export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
 
 /**
+ * Configuration options for a node.
+ */
+export class Config {
+    /**
+     * Indicator to treat the node as flattened or inline with the containing hierarchy.
+     * Usable on Component nodes which exist as a construction convenience and are not
+     * actual implemented components.
+     */
+    public inline?: boolean;
+}
+
+/**
  * A design token value.
  */
 export class DesignTokenValue {
@@ -113,6 +125,11 @@ export class AdditionalData extends Map<string, string> {}
  * Defines the data stored by the plugin on a node instance.
  */
 export interface PluginNodeData {
+    /**
+     * Configuration options for a node.
+     */
+    config: Config;
+
     /**
      * Design token values set directly to the node.
      */
@@ -216,6 +233,7 @@ export const pluginNodesToUINodes = (
                 componentAppliedDesignTokens: node.componentAppliedDesignTokens,
                 effectiveAppliedStyleValues: new AppliedStyleValues(),
                 children,
+                config: node.config,
                 designTokens: node.localDesignTokens as DesignTokenValues,
                 appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
                 appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,

@@ -6,8 +6,13 @@ import { pathToFileURL } from "url";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
+import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Command } from 'commander';
 import { glob } from "glob";
+import postcss, { type Processor} from "postcss";
+import postcssMergeLonghand from "postcss-merge-longhand";
+import postcssMergeRules from "postcss-merge-rules"
+import postcssMergeBorderRadius from "postcss-merge-border-radius";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
     BooleanCondition,
@@ -25,8 +30,8 @@ import {
     StyleProperties,
     StyleRule,
     Styles,
-    TypedCSSDesignToken
 } from "../core/index.js";
+import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "../reference/index.js";
 
 const program = new Command();
 
@@ -88,8 +93,9 @@ program.command("compile-json-anatomy <anatomyPath>")
         const sheet = jsonToAUIStyleSheet(jsonData);
         const compiledSheet = compiler.compile(sheet);
         const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
+        const minified = await mergeCSSRules(formatted);
         process.stdout.write("/* This file is generated. Do not edit directly */\n",);
-        process.stdout.write(formatted)
+        process.stdout.write(minified)
         process.stdout.end();
     });
 
@@ -184,6 +190,11 @@ interface SheetCompiler {
     compile(sheet: AUIStyleSheet): string;
 }
 
+// TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
+ElementStylesRenderer.disabledStyles = disabledStyles;
+ElementStylesRenderer.focusStateStyles = focusIndicatorStyles;
+ElementStylesRenderer.focusResetStyles = focusResetStyles;
+
 class SheetCompilerImpl implements SheetCompiler {
     /**
      * Compiles an AUI stylesheet into a string
@@ -224,27 +235,39 @@ function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule)
     }
 }
 
+function resolvePart(anatomy: SerializableAnatomy, part?: string): string | undefined {
+    return part ? anatomy.parts[part] : undefined;
+}
+
 function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
     const sheet: AUIStyleSheet = {
         anatomy: {
+            name: obj.name,
+            context: obj.context,
             conditions: obj.conditions,
             parts: obj.parts,
             interactivity: obj.interactivity,
+            focus: obj.focus,
         },
         rules: obj.styleRules.map(style => {
             const styles = style.styles?.map(name => {
                 return Styles.Shared.get(name)!;
             });
 
-            const properties = style.tokens?.reduce((prev, current) => {
-                prev[current.target] = DesignTokenRegistry.Shared.get(current.tokenID) as TypedCSSDesignToken<any>
-                return prev;
-            }, {} as StyleProperties);
+            const properties: StyleProperties = {};
+            if (style.properties) {
+                Object.entries(style.properties).map(entry => {
+                    const target = entry[0];
+                    const value = entry[1];
+                    const token = DesignTokenRegistry.Shared.get(value);
+                    properties[target] = token ? token as CSSDesignToken<any> : value;
+                });
+            }
 
             const target: StyleModuleTarget = {
                 context: obj.context,
                 contextCondition: createCondition(obj, style),
-                part: style.part ? obj.parts[style.part] : undefined,
+                part: resolvePart(obj, style.part),
             };
 
             const rule: StyleRule = {
@@ -257,5 +280,21 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
         }),
     }
 
+    if (sheet.anatomy.focus) {
+        sheet.anatomy.focus.focusTarget.part = resolvePart(obj, sheet.anatomy.focus.focusTarget.part);
+        if (sheet.anatomy.focus.resetTarget) {
+            sheet.anatomy.focus.resetTarget.part = resolvePart(obj, sheet.anatomy.focus.resetTarget.part);
+        }
+    }
+
     return sheet;
+}
+
+let minifier: null | Processor = null;
+async function mergeCSSRules(cssFileData: string): Promise<string> {
+    if (minifier === null) {
+        minifier = postcss([postcssMergeRules(), postcssMergeLonghand(), postcssMergeBorderRadius()]);
+    }
+
+    return await (await minifier.process(cssFileData, { from: "src.css", to: "dist.css"})).toString()
 }

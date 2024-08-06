@@ -332,7 +332,7 @@ export const Focus: {
 // @public
 export interface FocusDefinition<TParts> {
     focusTarget: StyleModuleTarget;
-    resetTarget: StyleModuleTarget;
+    resetTarget?: StyleModuleTarget;
 }
 
 // @public
@@ -483,6 +483,8 @@ export interface SerializableAnatomy {
     // (undocumented)
     context: string;
     // (undocumented)
+    focus?: FocusDefinition<any>;
+    // (undocumented)
     interactivity?: InteractivityDefinition;
     // (undocumented)
     name: string;
@@ -508,17 +510,9 @@ export interface SerializableStyleRule {
     // (undocumented)
     part?: string;
     // (undocumented)
+    properties?: Record<string, string>;
+    // (undocumented)
     styles?: string[];
-    // (undocumented)
-    tokens?: SerializableToken[];
-}
-
-// @beta (undocumented)
-export interface SerializableToken {
-    // (undocumented)
-    target: string;
-    // (undocumented)
-    tokenID: string;
 }
 
 // @public

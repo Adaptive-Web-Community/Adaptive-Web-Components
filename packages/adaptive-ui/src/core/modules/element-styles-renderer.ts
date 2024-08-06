@@ -94,6 +94,12 @@ export class ElementStylesRenderer {
             }
 
             if (params.interactive !== undefined) {
+                if (values.focus) {
+                    selectors.set(
+                        makeSelector(params, InteractiveState.focus),
+                        ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
+                    );
+                }
                 if (values.hover) {
                     selectors.set(
                         makeSelector(params, InteractiveState.hover),
@@ -104,12 +110,6 @@ export class ElementStylesRenderer {
                     selectors.set(
                         makeSelector(params, InteractiveState.active),
                         ElementStylesRenderer.declaration(property, values.active, InteractiveState.active)
-                    );
-                }
-                if (values.focus) {
-                    selectors.set(
-                        makeSelector(params, InteractiveState.focus),
-                        ElementStylesRenderer.declaration(property, values.focus, InteractiveState.focus)
                     );
                 }
             }
@@ -242,11 +242,22 @@ export class ElementStylesRenderer {
         if (anatomy) {
             // If this component can be disabled, apply the style to all children.
             if (ElementStylesRenderer.disabledStyles && anatomy.interactivity?.disabled !== undefined) {
+                // Focus and disabled are related in the way that they define the footprint of an indicator:
+                // - In the case of focus, the indicator is typically the focus ring on the interactive element
+                // - In the case of disabled, the indicator is typically the `not-allowed` cursor
+                // Here we use the detailed description of the interactive and focusable elements to inform where to
+                // apply the disabled styles.
+                // The core problem we're trying to solve for here is to not show the disabled cursor over empty space
+                // in a composed components, for example, in the upper right area beside the label and above the input
+                // control in a typical input component like a Text Field.
+                // If the focus is applied to the context (the `part` is undefined) then we should also apply the disabled
+                // state to the context (also the `part` is undefined).
+                const disabledPart = (anatomy.focus && anatomy.focus.focusTarget.part) ? "*" : undefined;
                 globalStyleRules.push(
                     {
                         target : {
                             contextCondition: anatomy.interactivity.disabled,
-                            part: "*",
+                            part: disabledPart,
                         },
                         styles: ElementStylesRenderer.disabledStyles,
                     },

@@ -2,6 +2,87 @@
   "name": "@adaptive-web/adaptive-web-components",
   "entries": [
     {
+      "date": "Thu, 25 Jul 2024 17:29:23 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.7.4",
+      "version": "0.7.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.9.1",
+            "commit": "e8addb7e23cd2fec3e72086daad1141e0b0460fe"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 19 Jul 2024 17:39:45 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.7.3",
+      "version": "0.7.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.9.0",
+            "commit": "85f1e62f4ec837a46d11ca03cecdfc33a39f8d16"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 15 Jul 2024 18:51:14 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.7.2",
+      "version": "0.7.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.8.0",
+            "commit": "6f7943648953120d1b098761ccb974c15f013365"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 11 Jul 2024 17:06:10 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.7.1",
+      "version": "0.7.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.7.0",
+            "commit": "5066845126682b7afe85afafac45c14fb3e36620"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 09 Jul 2024 16:29:52 GMT",
+      "tag": "@adaptive-web/adaptive-web-components_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-web-components",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03",
+            "comment": "Adaptive UI: Migrated global disabled and focus style support from AWC to AUI"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-web-components",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.6.0",
+            "commit": "be4b217942ee950690acd6db3e5464621732cf03"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Jun 2024 21:29:12 GMT",
       "tag": "@adaptive-web/adaptive-web-components_v0.6.2",
       "version": "0.6.2",

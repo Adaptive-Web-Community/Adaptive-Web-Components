@@ -1,8 +1,53 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Mon, 24 Jun 2024 21:29:12 GMT and should not be manually modified.
+This log was last generated on Thu, 25 Jul 2024 17:29:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.1
+
+Thu, 25 Jul 2024 17:29:23 GMT
+
+### Patches
+
+- Define order of interactivity states as focus - hover - active (nicholasrice@users.noreply.github.com)
+
+## 0.9.0
+
+Fri, 19 Jul 2024 17:39:45 GMT
+
+### Minor changes
+
+- AUI: Update CLI from `tokens` to align with existing `properties` (47367562+bheston@users.noreply.github.com)
+
+## 0.8.0
+
+Mon, 15 Jul 2024 18:51:14 GMT
+
+### Minor changes
+
+- Merge CSS rules during CSS generation from JSON anatomy (nicholasrice@users.noreply.github.com)
+
+## 0.7.0
+
+Thu, 11 Jul 2024 17:06:10 GMT
+
+### Minor changes
+
+- AUI: Fix global style generation (47367562+bheston@users.noreply.github.com)
+
+## 0.6.0
+
+Tue, 09 Jul 2024 16:29:52 GMT
+
+### Minor changes
+
+- Improved Figma CLI (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
+
+### Patches
+
+- Adaptive UI: Anatomy CLI fixes (47367562+bheston@users.noreply.github.com)
 
 ## 0.5.0
 
