@@ -38,6 +38,9 @@
     "@adaptive-web/adaptive-ui-designer-core": "^0.3.1",
     "@adaptive-web/adaptive-ui-designer-figma": "^0.4.1",
     "@adaptive-web/adaptive-web-components": "0.7.4",
+    "@csstools/css-calc": "^1.1.1",
+    "@csstools/css-parser-algorithms": "^2.2.0",
+    "@csstools/css-tokenizer": "^2.1.1",
     "change-case": "^5.4.4",
     "culori": "^3.2.0"
   },
@@ -47,9 +50,6 @@
     "@microsoft/fast-foundation": "3.0.0-alpha.31"
   },
   "devDependencies": {
-    "@csstools/css-calc": "^1.1.1",
-    "@csstools/css-parser-algorithms": "^2.2.0",
-    "@csstools/css-tokenizer": "^2.1.1",
     "@figma/plugin-typings": "^1.80.0",
     "concurrently": "^7.6.0",
     "esbuild": "^0.17.10",

@@ -9,7 +9,7 @@ export class CodeController {
      * Whether the current selection supports code generation or not.
      */
     @observable
-    public supportsCodeGen: boolean;
+    public supportsCodeGen: boolean = false;
 
     constructor(
         private readonly controller: UIController,

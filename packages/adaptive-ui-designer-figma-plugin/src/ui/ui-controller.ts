@@ -1,7 +1,7 @@
 import { calc } from '@csstools/css-calc';
 import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
-import { Color, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
+import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { formatHex8 } from 'culori';
 import {
@@ -111,7 +111,7 @@ export class UIController {
      * Whether the designer will auto refresh the selected nodes when the selection changes.
      */
     @observable
-    public autoRefresh: boolean;
+    public autoRefresh: boolean = false;
 
     /**
      * Create a new UI controller.
@@ -211,7 +211,7 @@ export class UIController {
      */
     private collectEffectiveAppliedStyles(node: PluginUINodeData): Map<StyleProperty, AppliedStyleValueInfo> {
         const allApplied = new Map<StyleProperty, AppliedStyleValueInfo>();
-        const state = node.additionalData.get(AdditionalDataKeys.state)?.toLowerCase() || "rest";
+        const state = (node.additionalData.get(AdditionalDataKeys.state)?.toLowerCase() || "rest") as InteractiveState;
 
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
@@ -307,7 +307,7 @@ export class UIController {
 
         // Remove the applied tokens which have been marked as removed.
         node.appliedDesignTokens.forEach((value, key) => {
-            if (value === null) {
+            if (value.tokenID === STYLE_REMOVE) {
                 node.appliedDesignTokens.delete(key);
             }
         })

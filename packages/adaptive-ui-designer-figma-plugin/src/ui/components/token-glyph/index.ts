@@ -121,6 +121,8 @@ const params = {
     part: ".swatch",
 };
 
+const PLACEHOLDER_COLOR = "#ff00ff";
+
 @customElement({
     name: "designer-token-glyph",
     template,
@@ -137,11 +139,11 @@ export class TokenGlyph extends FASTElement {
     public value: string | "none" = "none";
     protected valueChanged(prev: string, next: string) {
         const color = parse(next);
-        this.valueColor = formatHex8(color);
+        this.valueColor = formatHex8(color) || PLACEHOLDER_COLOR;
     }
 
     @observable
-    public valueColor: string;
+    public valueColor: string = PLACEHOLDER_COLOR;
 
     @observable
     public styles?: Styles;
@@ -159,5 +161,5 @@ export class TokenGlyph extends FASTElement {
     public interactive: boolean = false;
 
     // Keep track of the styles we added so we can remove them without recreating.
-    private _addedStyles: ElementStyles;
+    private _addedStyles?: ElementStyles;
 }

@@ -15,18 +15,20 @@ export interface State {
     showSwatches: boolean;
 }
 
+const PLACEHOLDER_COLOR = "#ff00ff";
+
 export class DefaultState implements State {
     @observable
     public componentType: ComponentType = ComponentType.backplate;
 
     @observable
-    public neutralColor: string;
+    public neutralColor: string = PLACEHOLDER_COLOR;
 
     @observable
-    public accentColor: string;
+    public accentColor: string = PLACEHOLDER_COLOR;
 
     @observable
-    public highlightColor: string;
+    public highlightColor: string = PLACEHOLDER_COLOR;
 
     @observable
     public showOnlyLayerBackgrounds: boolean = true;
