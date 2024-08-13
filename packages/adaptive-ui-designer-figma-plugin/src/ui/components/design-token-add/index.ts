@@ -88,7 +88,7 @@ export class DesignTokenAdd extends FASTElement {
             }
 
             if (this.field) {
-                this.field.value = this.selectedDesignToken?.token.default;
+                this.field.value = "" + this.selectedDesignToken?.token.default;
             }
         }
     }

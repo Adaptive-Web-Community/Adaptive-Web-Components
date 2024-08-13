@@ -47,6 +47,11 @@ export class Color implements RelativeLuminance, CSSDirective {
     }
 
     /**
+     * {@inheritdoc Color.toColorString}
+     */
+    public toString = this.toColorString;
+
+    /**
      * Gets the contrast between this Color and another.
      *
      * @returns The contrast between the two luminance values, for example, 4.54

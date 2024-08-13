@@ -1,5 +1,6 @@
 import { ElementViewTemplate, html, repeat } from "@microsoft/fast-element";
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { Color } from "@adaptive-web/adaptive-ui";
 import { WcagContrastLevel } from "@adaptive-web/adaptive-ui/reference";
 import { ComponentType } from "../../component-type.js";
 import { ControlPane } from "./control-pane.js";
@@ -34,7 +35,7 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                 type="color"
                 value=${(x) => x.state.neutralColor}
                 @change=${(x, c) =>
-                    x.state.neutralColor = c.eventTarget<HTMLInputElement>().value
+                    x.state.neutralColor = Color.parse(c.eventTarget<HTMLInputElement>().value)!
                 }
             />
         </div>
@@ -50,7 +51,7 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                 type="color"
                 value=${(x) => x.state.accentColor}
                 @change=${(x, c) =>
-                    x.state.accentColor = c.eventTarget<HTMLInputElement>().value
+                    x.state.accentColor = Color.parse(c.eventTarget<HTMLInputElement>().value)!
                 }
             />
         </div>
@@ -61,7 +62,7 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
                 type="color"
                 value=${(x) => x.state.highlightColor}
                 @change=${(x, c) =>
-                    x.state.highlightColor = c.eventTarget<HTMLInputElement>().value
+                    x.state.highlightColor = Color.parse(c.eventTarget<HTMLInputElement>().value)!
                 }
             />
         </div>

@@ -2,7 +2,6 @@ import {
     ColorRecipeParams,
     contrastSwatch,
     createNonCss,
-    createTokenColor,
     createTokenColorRecipe,
     createTokenColorRecipeValue,
     createTokenSwatch,
@@ -11,6 +10,7 @@ import {
     PaletteRGB,
     StyleProperty,
     stylePropertyBorderFillAll,
+    Swatch,
 } from "@adaptive-web/adaptive-ui";
 import {
     blackOrWhiteDiscernibleRecipe,
@@ -25,7 +25,7 @@ import { DesignTokenResolver } from "@microsoft/fast-foundation";
 
 // Local recipes for use in documentation files.
 
-export const docBaseColor = createTokenColor("doc-base-color").withDefault("#E1477E");
+export const docBaseColor = createTokenSwatch("doc-base-color").withDefault(Swatch.parse("#E1477E")!);
 
 export const docPalette = createNonCss<Palette>("doc-palette").withDefault(
     (resolve: DesignTokenResolver) =>
