@@ -1,4 +1,4 @@
-import { clampChroma, interpolate, modeOkhsl, modeRgb, samples, useMode} from "culori/fn";
+import { clampChroma, interpolate, modeOkhsl, modeRgb, samples, useMode } from "culori/fn";
 import { Color } from "./color.js";
 import { BasePalette } from "./palette-base.js";
 import { Swatch } from "./swatch.js";
@@ -58,7 +58,7 @@ export class PaletteOkhsl extends BasePalette<Swatch> {
             throw new Error(`Unable to parse source: ${source}`);
         }
 
-        const opts = options === void 0 || null ? defaultPaletteOkhslOptions : { ...defaultPaletteOkhslOptions, ...options };
+        const opts = (options === void 0 || options === null) ? defaultPaletteOkhslOptions : { ...defaultPaletteOkhslOptions, ...options };
 
         const oneStep = (1 / opts.stepCount);
         const threeSteps = oneStep * 3;
@@ -67,8 +67,8 @@ export class PaletteOkhsl extends BasePalette<Swatch> {
 
         const hiS = sourceHsl.s > 0 && opts.lightEndSaturation > 0 ? opts.lightEndSaturation : sourceHsl.s;
         const loS = sourceHsl.s > 0 && opts.darkEndSaturation > 0 ? opts.darkEndSaturation : sourceHsl.s;
-        const hi = Object.assign({}, sourceHsl, {s: hiS, l: 1 - oneStep});
-        const lo = Object.assign({}, sourceHsl, {s: loS, l: Math.max(oneStep, 0.04)}); // Minimum value to perceive difference
+        const hi = Object.assign({}, sourceHsl, { s: hiS, l: 1 - oneStep });
+        const lo = Object.assign({}, sourceHsl, { s: loS, l: Math.max(oneStep, 0.04) }); // Minimum value to perceive difference
 
         // Adjust the hi or lo end if the source color is too close to produce a good ramp.
         sourceHsl.l = Math.min(1 - threeSteps, sourceHsl.l);
