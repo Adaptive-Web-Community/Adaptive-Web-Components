@@ -8,7 +8,7 @@ import { StyleProperty } from "../core/modules/types.js";
 export const paletteStepCount = createTokenNumberNonStyling("color.palette.stepCount").withDefault(66);
 
 /** @public */
-export const paletteLightEndSaturation = createTokenNumberNonStyling("color.palette.lightEndSaturation").withDefault(0.4); // TODO `0`
+export const paletteLightEndSaturation = createTokenNumberNonStyling("color.palette.lightEndSaturation").withDefault(0);
 
 /** @public */
 export const paletteDarkEndSaturation = createTokenNumberNonStyling("color.palette.darkEndSaturation").withDefault(0);
