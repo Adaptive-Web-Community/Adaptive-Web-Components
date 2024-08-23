@@ -1,5 +1,6 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
+import { Color } from "./color/color.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
 import { Recipe, RecipeEvaluate } from "./recipes.js";
@@ -27,8 +28,8 @@ export const { createTyped } = TypedCSSDesignToken;
  *
  * @public
  */
-export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string> {
-    return TypedCSSDesignToken.createTyped<string>(name, DesignTokenType.color, intendedFor);
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color> {
+    return TypedCSSDesignToken.createTyped<Color>(name, DesignTokenType.color, intendedFor);
 }
 
 /**
@@ -150,6 +151,18 @@ export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>
  */
 export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number> {
     return TypedCSSDesignToken.createTyped<number>(name, DesignTokenType.number, intendedFor);
+}
+
+/**
+ * Creates a DesignToken for number values that can be used by other DesignTokens, but not directly in styles.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ *
+ * @public
+ */
+export function createTokenNumberNonStyling(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<number> {
+    return TypedDesignToken.createTyped<number>(name, DesignTokenType.number, intendedFor);
 }
 
 /**

@@ -59,7 +59,7 @@ export const BorderThickness: {
 export class Color implements RelativeLuminance, CSSDirective {
     constructor(color: Color_2);
     readonly color: Color_2;
-    contrast: any;
+    contrast: (b: RelativeLuminance) => number;
     createCSS: () => string;
     static from(obj: {
         r: number;
@@ -71,6 +71,7 @@ export class Color implements RelativeLuminance, CSSDirective {
     static parse(color: string): Color | undefined;
     get relativeLuminance(): number;
     toColorString(): string;
+    toString: () => string;
 }
 
 // @public
@@ -154,7 +155,7 @@ export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<Inte
 export function createNonCss<T>(name: string): DesignToken<T>;
 
 // @public
-export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
+export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color>;
 
 // @public
 export function createTokenColorRecipe<T = Swatch>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeEvaluate<T>): TypedDesignToken<ColorRecipe<T>>;
@@ -206,6 +207,9 @@ export function createTokenNonCss<T>(name: string, type: DesignTokenType, intend
 
 // @public
 export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
+
+// @public
+export function createTokenNumberNonStyling(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<number>;
 
 // @public
 export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
@@ -437,7 +441,14 @@ export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof Pa
 // @public
 export class PaletteOkhsl extends BasePalette<Swatch> {
     // (undocumented)
-    static from(source: Color | string): PaletteOkhsl;
+    static from(source: Color | string, options?: Partial<PaletteOkhslOptions>): PaletteOkhsl;
+}
+
+// @public
+export interface PaletteOkhslOptions {
+    darkEndSaturation: number;
+    lightEndSaturation: number;
+    stepCount: number;
 }
 
 // @public

@@ -25,6 +25,7 @@ import {
     layerFillFixedBase
 } from "@adaptive-web/adaptive-ui/reference";
 import { DesignToken, FASTRadioGroup, FASTSwitch } from "@microsoft/fast-foundation";
+import { Color } from '@adaptive-web/adaptive-ui';
 
 // This must be called during initialization for the Design Tokens to be setup so the component styling is applied.
 DesignToken.registerDefaultStyleTarget();
@@ -47,5 +48,5 @@ document.getElementById("accentColor").onchange = function(event) {
     const value = (event.target as FASTRadioGroup).value;
     console.log("accentColor change", value);
     // This Design Token causes the accent palette to update, including any components styled with recipes based on that palette.
-    accentBaseColor.withDefault("#" + value);
+    accentBaseColor.withDefault(Color.parse("#" + value));
 };

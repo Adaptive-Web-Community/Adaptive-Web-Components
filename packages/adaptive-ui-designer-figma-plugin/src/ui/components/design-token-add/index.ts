@@ -72,27 +72,29 @@ export class DesignTokenAdd extends FASTElement {
     @observable
     selectedDesignToken?: DesignTokenDefinition;
 
-    list: HTMLSelectElement;
+    list?: HTMLSelectElement;
 
-    field: DesignTokenField;
+    field?: DesignTokenField;
 
     selectHandler(c: ExecutionContext) {
-        const selectedTokenId = (c.event.target as HTMLSelectElement).value;
+        const selectedTokenId = (c.event.target as unknown as HTMLSelectElement).value;
 
         if (selectedTokenId !== "-") {
             this.selectedDesignToken = this.designTokens.find((token) => {
                 return token.id === selectedTokenId;
             });
-            this.list.value = "-";
+            if (this.list) {
+                this.list.value = "-";
+            }
 
             if (this.field) {
-                this.field.value = this.selectedDesignToken.token.default;
+                this.field.value = "" + this.selectedDesignToken?.token.default;
             }
         }
     }
 
     addHandler() {
-        if (this.field.value) {
+        if (this.field?.value) {
             this.$emit("add", {
                 definition: this.selectedDesignToken,
                 value: this.field.value,

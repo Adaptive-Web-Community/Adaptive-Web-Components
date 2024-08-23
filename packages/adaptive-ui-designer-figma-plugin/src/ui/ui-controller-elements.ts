@@ -27,7 +27,7 @@ export class ElementsController {
     ) {
         this.rootElement = document.createElement(providerElementName) as DesignSystemProvider;
         this.rootElement.id = "designTokenRoot";
-        document.body.appendChild(this.rootElement);
+        document.body.appendChild(this.rootElement as unknown as Node);
     }
 
     /**
@@ -104,7 +104,7 @@ export class ElementsController {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const element = this.rootElement.querySelector(
             `#${CSS.escape(node.id)}`
-        )! as FASTElement;
+        )! as unknown as FASTElement;
         return element;
     }
 
@@ -147,7 +147,7 @@ export class ElementsController {
         const nodeElement = document.createElement(providerElementName) as FASTElement;
         nodeElement.id = node.id;
         nodeElement.title = node.name;
-        element.appendChild(nodeElement);
+        element.appendChild(nodeElement as unknown as Node);
 
         // Set all the inherited design token values for the local element.
         // console.log("    setting inherited tokens");
@@ -188,7 +188,7 @@ export class ElementsController {
     public resetFillColor(element: FASTElement) {
         this.setDesignTokenForElement(element, fillColor, null);
         element.childNodes.forEach(child =>
-            this.resetFillColor(child as FASTElement)
+            this.resetFillColor(child as unknown as FASTElement)
         );
     }
 }

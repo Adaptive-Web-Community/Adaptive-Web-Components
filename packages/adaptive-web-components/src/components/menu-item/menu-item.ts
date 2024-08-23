@@ -19,7 +19,7 @@ export class AdaptiveMenuItem extends FASTMenuItem {
      * @public
      */
     @attr({ attribute: "start-column-count" })
-    public startColumnCount: AdaptiveMenuItemColumnCount;
+    public startColumnCount: AdaptiveMenuItemColumnCount = 0;
 
     // public connectedCallback(): void {
     //     super.connectedCallback();

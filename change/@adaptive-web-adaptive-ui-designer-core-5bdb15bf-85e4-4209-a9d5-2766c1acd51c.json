@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Updating palette base color token type for better type safety",
+  "packageName": "@adaptive-web/adaptive-ui-designer-core",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
