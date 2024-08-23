@@ -154,6 +154,18 @@ export function createTokenNumber(name: string, intendedFor?: StyleProperty | St
 }
 
 /**
+ * Creates a DesignToken for number values that can be used by other DesignTokens, but not directly in styles.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ *
+ * @public
+ */
+export function createTokenNumberNonStyling(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<number> {
+    return TypedDesignToken.createTyped<number>(name, DesignTokenType.number, intendedFor);
+}
+
+/**
  * Creates a DesignToken that can be used as a fill in styles.
  *
  * @param name - The token name in `css-identifier` casing.
