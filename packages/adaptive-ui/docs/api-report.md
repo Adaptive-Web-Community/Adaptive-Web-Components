@@ -209,6 +209,9 @@ export function createTokenNonCss<T>(name: string, type: DesignTokenType, intend
 export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
 
 // @public
+export function createTokenNumberNonStyling(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<number>;
+
+// @public
 export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
 
 // @public
@@ -438,7 +441,14 @@ export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof Pa
 // @public
 export class PaletteOkhsl extends BasePalette<Swatch> {
     // (undocumented)
-    static from(source: Color | string): PaletteOkhsl;
+    static from(source: Color | string, options?: Partial<PaletteOkhslOptions>): PaletteOkhsl;
+}
+
+// @public
+export interface PaletteOkhslOptions {
+    darkEndSaturation: number;
+    lightEndSaturation: number;
+    stepCount: number;
 }
 
 // @public
