@@ -15,6 +15,7 @@ import {
     ReadonlyDesignTokenValues,
 } from "./model.js";
 import { deserializeMap, serializeMap } from "./serialization.js";
+
 /**
  * Helper for enumerating a type from a const object
  * Example: export type Foo = ValuesOf\<typeof Foo\>
@@ -102,17 +103,17 @@ export abstract class PluginNode {
     /**
      * Gets the design token values set on ancestor nodes.
      */
-    public get inheritedDesignTokens(): ReadonlyDesignTokenValues {
+    public async getInheritedDesignTokens(): Promise<ReadonlyDesignTokenValues> {
         // Return value from the cache if we have it
         if (DesignTokenCache.has(this.id)) {
             return DesignTokenCache.get(this.id) as ReadonlyDesignTokenValues;
         }
 
         let designTokens = new DesignTokenValues();
-        const parent = this.parent;
+        const parent = await this.getParent();
         if (parent !== null) {
             designTokens = new DesignTokenValues([
-                ...parent.inheritedDesignTokens,
+                ...await parent.getInheritedDesignTokens(),
                 ...(parent.componentDesignTokens
                     ? parent.componentDesignTokens
                     : new DesignTokenValues()),
@@ -178,7 +179,7 @@ export abstract class PluginNode {
     /**
      * The state of stateful component capabilities for this node.
      */
-    public abstract readonly states: StatesState;
+    public abstract readonly states?: StatesState;
 
     /**
      * Whether the selected nodes support code gen or not.
@@ -188,37 +189,37 @@ export abstract class PluginNode {
     /**
      * The name of the component for code gen.
      */
-    public abstract readonly codeGenName: string | undefined;
+    public abstract readonly codeGenName?: string;
 
     /**
      * The interactive state of the node.
      */
-    public abstract get state(): string | null;
+    public abstract getState(): Promise<string | null>;
 
     /**
      * Gets whether this type of node can have children or not.
      */
-    public abstract get canHaveChildren(): boolean;
+    public abstract getCanHaveChildren(): Promise<boolean>;
 
     /**
      * Gets all child nodes.
      */
-    public abstract get children(): PluginNode[];
+    public abstract getChildren(): Promise<PluginNode[]>;
 
     /**
      * Gets the parent node.
      */
-    public abstract get parent(): PluginNode | null;
+    public abstract getParent(): Promise<PluginNode | null>;
 
     /**
      * Gets the effective fill color of this node, either locally applied or from an ancestor.
      */
-    public abstract get effectiveFillColor(): Color | null;
+    public abstract getEffectiveFillColor(): Promise<Color | null>;
 
     /**
      * Gets the style properties this node supports.
      */
-    public abstract get supports(): Array<StyleProperty>;
+    public abstract getSupports(): Promise<Array<StyleProperty>>;
 
     /**
      * Configuration options for a node.
@@ -244,7 +245,7 @@ export abstract class PluginNode {
      * Sets the design tokens to the node and design tool.
      * @param tokens The complete design tokens override map.
      */
-    public setDesignTokens(tokens: DesignTokenValues) {
+    public async setDesignTokens(tokens: DesignTokenValues) {
         this._localDesignTokens = tokens;
         if (tokens.size) {
             const json = serializeMap(tokens);
@@ -253,7 +254,7 @@ export abstract class PluginNode {
             this.deletePluginData("designTokens");
         }
 
-        this.invalidateDesignTokenCache();
+        await this.invalidateDesignTokenCache();
     }
 
     /**
@@ -325,11 +326,14 @@ export abstract class PluginNode {
     /**
      * Gets additional data associated with this node.
      */
-    public get additionalData(): AdditionalData {
-        this._additionalData.set(AdditionalDataKeys.states, this.states);
+    public async getAdditionalData(): Promise<AdditionalData> {
+        if (this.states) {
+            this._additionalData.set(AdditionalDataKeys.states, this.states);
+        }
 
-        if (this.state) {
-            this._additionalData.set(AdditionalDataKeys.state, this.state);
+        const state = await this.getState();
+        if (state) {
+            this._additionalData.set(AdditionalDataKeys.state, state);
         }
 
         this._additionalData.set(AdditionalDataKeys.supportsCodeGen, "" + this.supportsCodeGen);
@@ -337,9 +341,13 @@ export abstract class PluginNode {
             this._additionalData.set(AdditionalDataKeys.codeGenName, this.codeGenName);
         }
 
-        if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.effectiveFillColor) {
-            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(this.parent?.effectiveFillColor));
-            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(this.parent.effectiveFillColor));
+        const parent = await this.getParent();
+        if (parent) {
+            const fillColor = await parent.getEffectiveFillColor();
+            if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && fillColor) {
+                // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(parent.effectiveFillColor));
+                this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(fillColor));
+            }
         }
 
         return this._additionalData;
@@ -349,28 +357,30 @@ export abstract class PluginNode {
      * Updates the style property applied to this node.
      * @param values All applied style value.
      */
-    public abstract paint(values: AppliedStyleValues): void;
+    public abstract paint(values: AppliedStyleValues): Promise<void>;
 
     /**
      * Handle components that have custom dark mode configuration, like logos or illustration.
      */
-    public abstract handleManualDarkMode(): boolean;
+    public abstract handleManualDarkMode(): Promise<boolean>;
 
     /**
      * Delete entries in the design token cache for this node and any child nodes.
      */
-    private invalidateDesignTokenCache(): void {
-        function getIds(node: PluginNode): string[] {
+    private async invalidateDesignTokenCache(): Promise<void> {
+        async function getIds(node: PluginNode): Promise<string[]> {
             let found = [node.id];
 
-            node.children.forEach((child: PluginNode) => {
-                found = found.concat(getIds(child));
-            });
+            for (const child of await node.getChildren()) {
+                found = found.concat(await getIds(child));
+            }
 
             return found;
         }
 
-        getIds(this).forEach((id: string) => DesignTokenCache.delete(id));
+        for (const id of await getIds(this)) {
+            DesignTokenCache.delete(id)
+        }
     }
 
     protected get debugInfo() {

@@ -23,9 +23,9 @@ function notifyProcessing(callback: () => void) {
     setTimeout(() => {
         try {
             callback();
-        } catch (e: any) {
+        } catch (e) {
             console.error(e);
-            figma.notify(e.message, { error: true });
+            figma.notify((e as Error).message, { error: true });
         }
 
         notify.cancel();
@@ -40,8 +40,8 @@ function handleSelection() {
         ? figma.currentPage.selection
         : Object.freeze([figma.currentPage]);
 
-    notifyProcessing(() =>
-        controller.setSelectedNodes(nodes.map((node: BaseNode): string => node.id))
+    notifyProcessing(async () =>
+        await controller.setSelectedNodes(nodes.map((node: BaseNode): string => node.id))
     );
 }
 

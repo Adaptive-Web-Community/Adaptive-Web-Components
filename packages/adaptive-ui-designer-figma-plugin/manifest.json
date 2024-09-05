@@ -4,5 +4,10 @@
     "api": "1.0.0",
     "main": "./dist/main.js",
     "ui": "./dist/index.html",
+    "documentAccess": "dynamic-page",
+    "networkAccess": {
+        "allowedDomains": ["https://rsms.me"],
+        "reasoning": "Inter open source font to match Figma"
+    },
     "editorType": ["figma"]
 }

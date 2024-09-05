@@ -1,0 +1,9 @@
+{
+    "_comments": "Placeholder file for eslint to work with project parsing options since these are shared and don't have their own tsconfig",
+    "compilerOptions": {
+        "outDir": "dist",
+        "moduleResolution": "Node16",
+        "target": "ES2020",
+        "module": "ES2020",
+    }
+}

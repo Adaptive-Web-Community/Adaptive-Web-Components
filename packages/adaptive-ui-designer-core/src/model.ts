@@ -208,25 +208,25 @@ export interface PluginUINodeData extends PluginNodeData {
     children: PluginUINodeData[];
 }
 
-export const pluginNodesToUINodes = (
+export const pluginNodesToUINodes = async (
     nodes: PluginNode[],
     includeInherited: boolean,
     includeChildren: boolean,
-): PluginUINodeData[] => {
-    const convertedNodes = nodes.map(
-        (node): PluginUINodeData => {
+): Promise<PluginUINodeData[]> => {
+    const convertedNodes = await Promise.all(nodes.map(
+        async (node): Promise<PluginUINodeData> => {
             // TODO Not all children, only nodes with design tokens.
-            const children = includeChildren ? pluginNodesToUINodes(node.children, false, true) : [];
+            const children = includeChildren ? await pluginNodesToUINodes(await node.getChildren(), false, true) : [];
             const inheritedDesignTokens = includeInherited
-                ? node.inheritedDesignTokens
+                ? await node.getInheritedDesignTokens()
                 : new DesignTokenValues();
 
             return {
                 id: node.id,
                 type: node.type,
                 name: node.name,
-                supports: node.supports,
-                additionalData: node.additionalData,
+                supports: await node.getSupports(),
+                additionalData: await node.getAdditionalData(),
                 inheritedDesignTokens,
                 componentDesignTokens: node.componentDesignTokens,
                 componentAppliedStyleModules: node.componentAppliedStyleModules,
@@ -239,7 +239,7 @@ export const pluginNodesToUINodes = (
                 appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,
             };
         }
-    );
+    ));
 
     return convertedNodes;
 }
