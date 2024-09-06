@@ -83,22 +83,26 @@ function isShapeNode(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
-function isIndividualStrokesShapeNode(node: BaseNode): node is
+function canHaveIndividualStrokes(node: BaseNode): node is
+    FrameNode |
+    ComponentNode |
+    InstanceNode |
     RectangleNode {
     return [
+        isContainerNode,
         isRectangleNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
 function canHaveChildren(node: BaseNode): node is
-    | DocumentNode
-    | PageNode
-    | FrameNode
-    | GroupNode
-    | BooleanOperationNode
-    | InstanceNode
-    | ComponentNode
-    | ComponentSetNode {
+    DocumentNode |
+    PageNode |
+    FrameNode |
+    GroupNode |
+    BooleanOperationNode |
+    InstanceNode |
+    ComponentNode |
+    ComponentSetNode {
     return [
         isDocumentNode,
         isPageNode,
@@ -557,7 +561,6 @@ export class FigmaPluginNode extends PluginNode {
      * If you change the weight, then remove the strokes (nothing visible) it maintains
      * the old stroke weight, but when you add again it resets to `1`.
      *
-     * @param node - The Figma node
      * @param values - The entire list of values to be applied
      */
     private handleStroke(values: AppliedStyleValues) {
@@ -571,13 +574,12 @@ export class FigmaPluginNode extends PluginNode {
             || values.has(StyleProperty.borderThicknessLeft);
 
         if (applyingFill && applyingThickness) {
-            if (isContainerNode(this._node) || isIndividualStrokesShapeNode(this._node)) {
+            // We only need to reset "individual" strokes here since we'll set a common stroke later anyway.
+            if (canHaveIndividualStrokes(this._node)) {
                 (this._node as IndividualStrokesMixin).strokeTopWeight = 0;
                 (this._node as IndividualStrokesMixin).strokeRightWeight = 0;
                 (this._node as IndividualStrokesMixin).strokeBottomWeight = 0;
                 (this._node as IndividualStrokesMixin).strokeLeftWeight = 0;
-            } else {
-                // If it's not "individual" we're going to set it anyway.
             }
         }
     }
@@ -934,7 +936,7 @@ export class FigmaPluginNode extends PluginNode {
     private paintStrokeWidth(target: StyleProperty, value: string): void {
         try {
             const numValue = this.safeNumber(value);
-            if (isContainerNode(this._node) || isIndividualStrokesShapeNode(this._node)) {
+            if (canHaveIndividualStrokes(this._node)) {
                 switch (target) {
                     case StyleProperty.borderThicknessTop:
                         (this._node as IndividualStrokesMixin).strokeTopWeight = numValue;
