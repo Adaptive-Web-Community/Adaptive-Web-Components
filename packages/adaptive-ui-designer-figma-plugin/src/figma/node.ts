@@ -83,15 +83,26 @@ function isShapeNode(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
+function canHaveIndividualStrokes(node: BaseNode): node is
+    FrameNode |
+    ComponentNode |
+    InstanceNode |
+    RectangleNode {
+    return [
+        isContainerNode,
+        isRectangleNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
 function canHaveChildren(node: BaseNode): node is
-    | DocumentNode
-    | PageNode
-    | FrameNode
-    | GroupNode
-    | BooleanOperationNode
-    | InstanceNode
-    | ComponentNode
-    | ComponentSetNode {
+    DocumentNode |
+    PageNode |
+    FrameNode |
+    GroupNode |
+    BooleanOperationNode |
+    InstanceNode |
+    ComponentNode |
+    ComponentSetNode {
     return [
         isDocumentNode,
         isPageNode,
@@ -391,7 +402,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.gap:
                     return [
                         isContainerNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this._node));        
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
                 case StyleProperty.cornerRadiusBottomRight:
@@ -510,7 +521,7 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     protected handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues) {
-        const fontFamily = values?.get(StyleProperty.fontFamily)?.value;
+        const fontFamily = values.get(StyleProperty.fontFamily)?.value;
         // We'll only set the font if the family is provided.
         if (fontFamily) {
             if (isTextNode(node._node)) {
@@ -541,6 +552,38 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
+    /**
+     * Cleans up stroke values based on what we're about to apply.
+     * 
+     * @remarks
+     * Figma has a default invisible stroke width of `1`. If you add a stroke in the UI
+     * it sets the weight to `1` and adds a default color.
+     * If you change the weight, then remove the strokes (nothing visible) it maintains
+     * the old stroke weight, but when you add again it resets to `1`.
+     *
+     * @param values - The entire list of values to be applied
+     */
+    private handleStroke(values: AppliedStyleValues) {
+        const applyingFill = values.has(StyleProperty.borderFillTop)
+            || values.has(StyleProperty.borderFillRight)
+            || values.has(StyleProperty.borderFillBottom)
+            || values.has(StyleProperty.borderFillLeft);
+        const applyingThickness = values.has(StyleProperty.borderThicknessTop)
+            || values.has(StyleProperty.borderThicknessRight)
+            || values.has(StyleProperty.borderThicknessBottom)
+            || values.has(StyleProperty.borderThicknessLeft);
+
+        if (applyingFill && applyingThickness) {
+            // We only need to reset "individual" strokes here since we'll set a common stroke later anyway.
+            if (canHaveIndividualStrokes(this._node)) {
+                (this._node as IndividualStrokesMixin).strokeTopWeight = 0;
+                (this._node as IndividualStrokesMixin).strokeRightWeight = 0;
+                (this._node as IndividualStrokesMixin).strokeBottomWeight = 0;
+                (this._node as IndividualStrokesMixin).strokeLeftWeight = 0;
+            }
+        }
+    }
+
     protected safeNumber(value: string, defaultValue: number = 0) {
         return value === STYLE_REMOVE ? defaultValue : Number.parseFloat(value);
     }
@@ -548,6 +591,8 @@ export class FigmaPluginNode extends PluginNode {
     public paint(values: AppliedStyleValues): void {
         // Fonts are complicated in Figma, so pull them out of the normal loop.
         this.handleFontFamily(this, values);
+
+        this.handleStroke(values);
 
         // Paint all applied design tokens on the node
         values.forEach((styleValue, target) => {
@@ -591,7 +636,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderThicknessBottom:
                 case StyleProperty.borderThicknessLeft:
                     this.setBoxSizing();
-                    this.paintStrokeWidth(value);
+                    this.paintStrokeWidth(target, value);
                     break;
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
@@ -879,16 +924,42 @@ export class FigmaPluginNode extends PluginNode {
                 (this._node as MinimalFillsMixin).fills = paint ? [paint] : [SOLID_BLACK];
                 break;
             case StyleProperty.borderFillTop:
+            case StyleProperty.borderFillRight:
+            case StyleProperty.borderFillBottom:
+            case StyleProperty.borderFillLeft:
                 // TODO: Figma only supports one border color, though it can be hacked using inner shadow.
                 (this._node as MinimalStrokesMixin).strokes = paintValue;
                 break;
         }
     }
 
-    private paintStrokeWidth(value: string): void {
-        (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
-        if ((this._node as MinimalStrokesMixin).strokes.length === 0) {
-            (this._node as MinimalStrokesMixin).strokes = [SOLID_TRANSPARENT];
+    private paintStrokeWidth(target: StyleProperty, value: string): void {
+        try {
+            const numValue = this.safeNumber(value);
+            if (canHaveIndividualStrokes(this._node)) {
+                switch (target) {
+                    case StyleProperty.borderThicknessTop:
+                        (this._node as IndividualStrokesMixin).strokeTopWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessRight:
+                        (this._node as IndividualStrokesMixin).strokeRightWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessBottom:
+                        (this._node as IndividualStrokesMixin).strokeBottomWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessLeft:
+                        (this._node as IndividualStrokesMixin).strokeLeftWeight = numValue;
+                        break;
+                }
+            } else {
+                (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
+            }
+
+            if ((this._node as MinimalStrokesMixin).strokes.length === 0) {
+                (this._node as MinimalStrokesMixin).strokes = [SOLID_TRANSPARENT];
+            }
+        } catch (error) {
+            console.error("paintStrokeWidth", { target, value, error, ...this.debugInfo });
         }
     }
 
@@ -1010,7 +1081,7 @@ export class FigmaPluginNode extends PluginNode {
                     }]
                 }];
 
-                y += restComponent.height + spacing;    
+                y += restComponent.height + spacing;
             });
 
             this._node.resize(x - spacing + paddingRight, y - spacing + paddingBottom);
