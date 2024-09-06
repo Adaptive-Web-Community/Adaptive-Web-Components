@@ -83,6 +83,13 @@ function isShapeNode(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
+function isIndividualStrokesShapeNode(node: BaseNode): node is
+    RectangleNode {
+    return [
+        isRectangleNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
 function canHaveChildren(node: BaseNode): node is
     | DocumentNode
     | PageNode
@@ -391,7 +398,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.gap:
                     return [
                         isContainerNode,
-                    ].some((test: (node: BaseNode) => boolean) => test(this._node));        
+                    ].some((test: (node: BaseNode) => boolean) => test(this._node));
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
                 case StyleProperty.cornerRadiusBottomRight:
@@ -591,7 +598,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.borderThicknessBottom:
                 case StyleProperty.borderThicknessLeft:
                     this.setBoxSizing();
-                    this.paintStrokeWidth(value);
+                    this.paintStrokeWidth(target, value);
                     break;
                 case StyleProperty.cornerRadiusTopLeft:
                 case StyleProperty.cornerRadiusTopRight:
@@ -879,16 +886,42 @@ export class FigmaPluginNode extends PluginNode {
                 (this._node as MinimalFillsMixin).fills = paint ? [paint] : [SOLID_BLACK];
                 break;
             case StyleProperty.borderFillTop:
+            case StyleProperty.borderFillRight:
+            case StyleProperty.borderFillBottom:
+            case StyleProperty.borderFillLeft:
                 // TODO: Figma only supports one border color, though it can be hacked using inner shadow.
                 (this._node as MinimalStrokesMixin).strokes = paintValue;
                 break;
         }
     }
 
-    private paintStrokeWidth(value: string): void {
-        (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
-        if ((this._node as MinimalStrokesMixin).strokes.length === 0) {
-            (this._node as MinimalStrokesMixin).strokes = [SOLID_TRANSPARENT];
+    private paintStrokeWidth(target: StyleProperty, value: string): void {
+        try {
+            const numValue = this.safeNumber(value);
+            if (isContainerNode(this._node) || isIndividualStrokesShapeNode(this._node)) {
+                switch (target) {
+                    case StyleProperty.borderThicknessTop:
+                        (this._node as IndividualStrokesMixin).strokeTopWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessRight:
+                        (this._node as IndividualStrokesMixin).strokeRightWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessBottom:
+                        (this._node as IndividualStrokesMixin).strokeBottomWeight = numValue;
+                        break;
+                    case StyleProperty.borderThicknessLeft:
+                        (this._node as IndividualStrokesMixin).strokeLeftWeight = numValue;
+                        break;
+                }
+            } else {
+                (this._node as MinimalStrokesMixin).strokeWeight = this.safeNumber(value);
+            }
+
+            if ((this._node as MinimalStrokesMixin).strokes.length === 0) {
+                (this._node as MinimalStrokesMixin).strokes = [SOLID_TRANSPARENT];
+            }
+        } catch (error) {
+            console.error("paintStrokeWidth", { target, value, error, ...this.debugInfo });
         }
     }
 
@@ -1010,7 +1043,7 @@ export class FigmaPluginNode extends PluginNode {
                     }]
                 }];
 
-                y += restComponent.height + spacing;    
+                y += restComponent.height + spacing;
             });
 
             this._node.resize(x - spacing + paddingRight, y - spacing + paddingBottom);
