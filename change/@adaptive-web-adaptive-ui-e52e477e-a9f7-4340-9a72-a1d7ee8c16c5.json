@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "AUI: Added support for pseudo selectors in part conditions",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
