@@ -71,11 +71,13 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
     // Add the part selector
     if (params.part) {
         if (params.part === "*") {
-            selectors.push("*");
+            selectors.push(" *");
+        } else if (params.part.startsWith("::")) {
+            selectors.push(params.part);
         } else {
-            selectors.push(`${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? stateSelector : ""}`);
+            selectors.push(` ${params.part}${params.partCondition || ""}${params.stateOnContext !== true ? stateSelector : ""}`);
         }
     }
 
-    return selectors.join(" ");
+    return selectors.join("");
 }
