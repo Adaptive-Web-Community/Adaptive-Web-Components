@@ -3,6 +3,9 @@
   "version": "0.4.1",
   "description": "Figma integration for Adaptive Web.",
   "main": "./dist/lib/index.js",
+  "publishConfig": {
+    "provenance": true
+  },
   "bin": {
     "aui-figma-compiler": "./bin/aui-figma-compiler.js"
   },

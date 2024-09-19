@@ -5,6 +5,9 @@
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "publishConfig": {
+    "provenance": true
+  },
   "author": {
     "name": "Adaptive Web Community",
     "url": "https://github.com/adaptive-web-community"
