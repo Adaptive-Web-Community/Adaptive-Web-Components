@@ -64,7 +64,7 @@
     "lit-html": "^2.5.0",
     "resolve-typescript-plugin": "^1.2.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.71.1",
+    "rollup": "^3.29.5",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-svgo": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",
