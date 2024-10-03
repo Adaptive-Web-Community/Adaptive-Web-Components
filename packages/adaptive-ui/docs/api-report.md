@@ -602,6 +602,10 @@ export const StyleProperty: {
     readonly fontVariationSettings: "fontVariationSettings";
     readonly letterSpacing: "letterSpacing";
     readonly lineHeight: "lineHeight";
+    readonly marginTop: "marginTop";
+    readonly marginRight: "marginRight";
+    readonly marginBottom: "marginBottom";
+    readonly marginLeft: "marginLeft";
     readonly paddingTop: "paddingTop";
     readonly paddingRight: "paddingRight";
     readonly paddingBottom: "paddingBottom";

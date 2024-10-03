@@ -59,6 +59,14 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "letter-spacing";
         case StyleProperty.lineHeight:
             return "line-height";
+        case StyleProperty.marginTop:
+            return "margin-top";
+        case StyleProperty.marginRight:
+            return "margin-right";
+        case StyleProperty.marginBottom:
+            return "margin-bottom";
+        case StyleProperty.marginLeft:
+            return "margin-left";
         case StyleProperty.paddingTop:
             return "padding-top";
         case StyleProperty.paddingRight:
