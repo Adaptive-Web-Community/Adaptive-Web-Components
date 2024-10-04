@@ -230,7 +230,7 @@ function parseComponent(node: PluginUINodeData): Anatomy {
 function isContextNode(node: PluginUINodeData, componentName: string): boolean {
     // Remove non-ascii characters (we tried a convention of decorating template node names)
     const nodeName = node.name.replace(/[^\x20-\x7F]/g, "").trim();
-    return node.type === "COMPONENT" || nodeName.toLowerCase() === componentName.toLowerCase();
+    return node.type === "COMPONENT" || componentName.toLowerCase().indexOf(nodeName.toLowerCase()) !== -1;
 }
 
 function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {

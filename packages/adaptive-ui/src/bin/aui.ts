@@ -15,13 +15,13 @@ import postcssMergeRules from "postcss-merge-rules"
 import postcssMergeBorderRadius from "postcss-merge-border-radius";
 import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
 import {
-    BooleanCondition,
     ComponentAnatomy,
     ComponentConditions,
     ComponentParts,
     SerializableAnatomy,
+    SerializableBooleanCondition,
+    SerializableStringCondition,
     SerializableStyleRule,
-    StringCondition,
     StyleModuleTarget,
     StyleRules
 } from '../core/modules/types.js';
@@ -226,9 +226,13 @@ function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule)
 
             const condition = obj.conditions[conditionKey];
             if (typeof value === "string") {
-                return (condition as StringCondition)[value];
+                return (condition as SerializableStringCondition)[value];
             } else {
-                return condition as BooleanCondition;
+                if (value === false) {
+                    return `:not(${condition as SerializableBooleanCondition})`;
+                } else {
+                    return condition as SerializableBooleanCondition;
+                }
             }
         });
         return conditionSelectors.join("");
