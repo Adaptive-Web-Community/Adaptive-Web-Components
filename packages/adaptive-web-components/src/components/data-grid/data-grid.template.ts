@@ -2,7 +2,7 @@ import { ElementViewTemplate } from "@microsoft/fast-element";
 import { dataGridTemplate, FASTDataGrid } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { composeDataGridRow } from '../data-grid-row/index.js';
+import { composeDataGridRow } from "../data-grid-row/index.js";
 
 /**
  * @public
