@@ -264,7 +264,16 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                     const target = entry[0];
                     const value = entry[1];
                     const token = DesignTokenRegistry.Shared.get(value);
-                    properties[target] = token ? token as CSSDesignToken<any> : value;
+                    if (token) {
+                        properties[target] = token as CSSDesignToken<any>;
+                    } else {
+                        const group = DesignTokenRegistry.Groups.get(value);
+                        if (group) {
+                            properties[target] = group;
+                        } else {
+                            properties[target] = value;
+                        }
+                    }
                 });
             }
 

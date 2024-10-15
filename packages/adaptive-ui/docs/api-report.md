@@ -268,6 +268,7 @@ export class DesignTokenMultiValue<T extends CSSDirective | string> extends Arra
 
 // @public
 export abstract class DesignTokenRegistry {
+    static Groups: Map<string, InteractiveTokenGroup<any>>;
     static Shared: Map<string, DesignToken<any>>;
 }
 
