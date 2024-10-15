@@ -1,5 +1,4 @@
 import {
-    BorderFill,
     createForegroundSet,
     Styles
 } from "@adaptive-web/adaptive-ui";
@@ -39,7 +38,7 @@ AdaptiveDesignSystem.defineComponents({
 // Define a custom style module.
 const accentOutlineReadableControlStyles: Styles = Styles.fromProperties({
     backgroundFill: neutralFillSubtle,
-    ...BorderFill.all(accentStrokeReadable),
+    borderFill: accentStrokeReadable,
     foregroundFill: createForegroundSet(accentStrokeReadableRecipe, neutralFillSubtle),
 });
 

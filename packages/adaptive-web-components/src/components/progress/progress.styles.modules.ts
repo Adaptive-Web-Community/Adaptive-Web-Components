@@ -1,5 +1,4 @@
 import {
-    CornerRadius,
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
@@ -18,7 +17,7 @@ export const styleModules: StyleRules = [
     {
         properties: {
             backgroundFill: neutralFillSubtle.rest,
-            ...CornerRadius.all(designUnit),
+            cornerRadius: designUnit,
         },
     },
     {
@@ -27,7 +26,7 @@ export const styleModules: StyleRules = [
         },
         properties: {
             backgroundFill: accentFillReadable.rest,
-            ...CornerRadius.all(designUnit),
+            cornerRadius: designUnit,
         },
     },
 ];

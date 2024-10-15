@@ -4,7 +4,7 @@ import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
 import { InteractiveState, InteractiveValues } from "../types.js";
 import { makeSelector } from "./selector.js";
-import type { ComponentAnatomy, StyleModuleEvaluateParameters, StylePropertyCss, StyleRules } from "./types.js";
+import type { ComponentAnatomy, StyleModuleEvaluateParameters, StyleRules } from "./types.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { convertStylesToFocusState, Styles } from "./styles.js";
 
@@ -50,7 +50,7 @@ export class ElementStylesRenderer {
     // Perhaps these static functions turn into a registration mechanism.
 
     private static declaration(
-        property: StylePropertyCss,
+        property: string,
         value: string | number | CSSDirective,
         state: InteractiveState,
     ): DeclarationMap {
@@ -69,7 +69,7 @@ export class ElementStylesRenderer {
     }
 
     private static propertySingle(
-        property: StylePropertyCss,
+        property: string,
         value: string | number | CSSDirective,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
@@ -80,7 +80,7 @@ export class ElementStylesRenderer {
     }
 
     private static propertyInteractive(
-        property: StylePropertyCss,
+        property: string,
         values: InteractiveValues<any>,
     ): StyleModuleEvaluate {
         return (params: StyleModuleEvaluateParameters): RuleMap => {
