@@ -79,10 +79,24 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "gap";
         case StyleProperty.height:
             return "height";
+        case StyleProperty.minHeight:
+            return "min-height";
+        case StyleProperty.maxHeight:
+            return "max-height";
         case StyleProperty.width:
             return "width";
+        case StyleProperty.minWidth:
+            return "min-width";
+        case StyleProperty.maxWidth:
+            return "max-width";
+        case StyleProperty.layoutInner:
+            return "display";
         case StyleProperty.layoutDirection:
             return "flex-direction";
+        case StyleProperty.layoutMainAxisAlignItems:
+            return "justify-content";
+        case StyleProperty.layoutCrossAxisAlignItems:
+            return "align-items";
         case StyleProperty.opacity:
             return "opacity";
         case StyleProperty.cursor:
@@ -93,6 +107,8 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "outline-offset";
         case StyleProperty.outlineStyle:
             return "outline-style";
+        case StyleProperty.outlineThickness:
+            return "outline-width";
         case StyleProperty.outlineWidth:
             return "outline-width";
         case StyleProperty.shadow:
