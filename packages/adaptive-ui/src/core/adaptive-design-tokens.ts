@@ -2,6 +2,7 @@ import { CSSDirective, cssDirective, htmlDirective } from "@microsoft/fast-eleme
 import { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { applyMixins } from './apply-mixins.js';
 import { StyleProperty } from "./modules/types.js";
+import { InteractiveTokenGroup } from "./types.js";
 
 /**
  * Standard design token types from the community group and new types defined in Adaptive UI.
@@ -95,6 +96,14 @@ export abstract class DesignTokenRegistry {
      * The shared Design Token registry.
      */
     public static Shared = new Map<string, DesignToken<any>>();
+
+    /**
+     * The Design Token Group registry.
+     *
+     * @remarks
+     * Currently only Interactive Token Groups are meaningful and supported.
+     */
+    public static Groups = new Map<string, InteractiveTokenGroup<any>>();
 }
 
 /**
