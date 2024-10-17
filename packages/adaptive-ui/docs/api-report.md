@@ -510,6 +510,12 @@ export interface SerializableAnatomy {
 }
 
 // @beta (undocumented)
+export interface SerializableAnatomyWithImports extends SerializableAnatomy {
+    // (undocumented)
+    imports?: string[];
+}
+
+// @beta (undocumented)
 export type SerializableBooleanCondition = string;
 
 // @beta (undocumented)

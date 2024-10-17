@@ -7,7 +7,7 @@ import { StyleRule } from "./styles.js";
  *
  * @public
  */
-export type BooleanCondition = string; 
+export type BooleanCondition = string;
 
 /**
  * The state and selector for a multiple value condition.
@@ -152,7 +152,7 @@ export const Interactivity = {
      *
      * For instance, a form control.
      */
-    disabledAttribute: { 
+    disabledAttribute: {
         interactive: ":not([disabled])",
         disabled: "[disabled]",
     } as InteractivityDefinition,
@@ -162,7 +162,7 @@ export const Interactivity = {
      *
      * For instance, a form control.
      */
-    disabledClass: { 
+    disabledClass: {
         interactive: ":not(.disabled)",
         disabled: ".disabled",
     } as InteractivityDefinition,
@@ -172,7 +172,7 @@ export const Interactivity = {
      *
      * For instance, an `<a>` should style as plain text when it doesn't have an `href` attribute.
      */
-    hrefAttribute:  { 
+    hrefAttribute: {
         interactive: "[href]",
     } as InteractivityDefinition,
 
@@ -181,7 +181,7 @@ export const Interactivity = {
      *
      * For instance, cards or list items that are not able to be disabled.
      */
-    always: { 
+    always: {
         interactive: "",
     } as InteractivityDefinition,
 
@@ -193,7 +193,7 @@ export const Interactivity = {
      * @remarks
      * This is an explicit value representing the default case.
      */
-    never: { 
+    never: {
     } as InteractivityDefinition,
 } as const;
 
@@ -481,7 +481,7 @@ export type StyleRules = Array<StyleRule>;
 /**
  * @beta
  */
-export type SerializableBooleanCondition = string; 
+export type SerializableBooleanCondition = string;
 
 /**
  * @beta
@@ -506,7 +506,7 @@ export interface SerializableStyleRule {
 /**
  * @beta
  */
-export interface SerializableAnatomy{
+export interface SerializableAnatomy {
     name: string,
     context: string,
     conditions: Record<string, SerializableCondition>,
@@ -514,4 +514,11 @@ export interface SerializableAnatomy{
     interactivity?: InteractivityDefinition,
     focus?: FocusDefinition<any>,
     styleRules: SerializableStyleRule[]
+}
+
+/**
+ * @beta
+ */
+export interface SerializableAnatomyWithImports extends SerializableAnatomy {
+    imports?: string[]
 }
