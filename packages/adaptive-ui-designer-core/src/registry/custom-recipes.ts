@@ -9,7 +9,7 @@ import {
     Palette,
     PaletteRGB,
     StyleProperty,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand,
     Swatch,
 } from "@adaptive-web/adaptive-ui";
 import {
@@ -34,7 +34,7 @@ export const docPalette = createNonCss<Palette>("doc-palette").withDefault(
 
 export const docForegroundRecipe = createTokenColorRecipe(
     "doc-foreground",
-    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
+    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         contrastSwatch(
             resolve(docPalette),

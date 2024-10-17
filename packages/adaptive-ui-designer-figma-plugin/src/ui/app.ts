@@ -2,10 +2,7 @@ import { css, customElement, FASTElement, html, observable, repeat, when } from 
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import {
     StyleProperty,
-    stylePropertyBorderFillAll,
-    stylePropertyBorderThicknessAll,
-    stylePropertyCornerRadiusAll,
-    stylePropertyPaddingAll
+    StylePropertyShorthand,
 } from "@adaptive-web/adaptive-ui";
 import {
     cornerRadiusControl,
@@ -283,7 +280,7 @@ const template = html<App>`
                                         TokenGlyphType.backgroundSwatch)}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        stylePropertyBorderFillAll,
+                                        StylePropertyShorthand.borderFill,
                                         "Stroke",
                                         "stack",
                                         TokenGlyphType.borderSwatch
@@ -312,12 +309,12 @@ const template = html<App>`
                                 ${(x) => availableStylesTemplate("Shape")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        stylePropertyCornerRadiusAll,
+                                        StylePropertyShorthand.cornerRadius,
                                         "Corner radius",
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        stylePropertyBorderThicknessAll,
+                                        StylePropertyShorthand.borderThickness,
                                         "Stroke thickness",
                                     )}
                             </div>
@@ -336,7 +333,7 @@ const template = html<App>`
                                 ${(x) => availableStylesTemplate("Density")}
                                 ${(x) =>
                                     availableTokensTemplate(
-                                        [...stylePropertyPaddingAll, StyleProperty.gap],
+                                        [...StylePropertyShorthand.padding, StyleProperty.gap],
                                         "Density",
                                     )}
                             </div>
@@ -673,10 +670,10 @@ export class App extends FASTElement {
     private refreshObservables() {
         this.backgroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.backgroundFill]);
         this.foregroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.foregroundFill]);
-        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderFillAll);
-        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyBorderThicknessAll);
-        this.densityTokens = this.controller.styles.getAppliedDesignTokens([...stylePropertyPaddingAll, StyleProperty.gap]);
-        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(stylePropertyCornerRadiusAll);
+        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderFill);
+        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderThickness);
+        this.densityTokens = this.controller.styles.getAppliedDesignTokens([...StylePropertyShorthand.padding, StyleProperty.gap]);
+        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.cornerRadius);
         this.textTokens = this.controller.styles.getAppliedDesignTokens([
             StyleProperty.fontFamily,
             StyleProperty.fontStyle,

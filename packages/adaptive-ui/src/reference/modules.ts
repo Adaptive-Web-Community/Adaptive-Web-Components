@@ -1,5 +1,5 @@
 import { ValuesOf } from "@microsoft/fast-foundation";
-import { BorderFill, BorderStyle, BorderThickness, CornerRadius, Fill, Padding, Styles, StyleValue } from "../core/modules/styles.js";
+import { Fill, Styles, StyleValue } from "../core/modules/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
@@ -126,7 +126,7 @@ import {
  */
 export const controlShapeStyles: Styles = Styles.fromProperties(
     {
-        ...CornerRadius.all(cornerRadiusControl),
+        cornerRadius: cornerRadiusControl,
     },
     "shape.control",
 );
@@ -140,7 +140,7 @@ export const controlShapeStyles: Styles = Styles.fromProperties(
  */
 export const layerShapeStyles: Styles = Styles.fromProperties(
     {
-        ...CornerRadius.all(cornerRadiusLayer),
+        cornerRadius: cornerRadiusLayer,
     },
     "shape.layer",
 );
@@ -154,7 +154,7 @@ export const layerShapeStyles: Styles = Styles.fromProperties(
  */
 export const roundShapeStyles: Styles = Styles.fromProperties(
     {
-        ...CornerRadius.all("999px"),
+        cornerRadius: "999px",
     },
     "shape.round",
 );
@@ -170,7 +170,8 @@ export const roundShapeStyles: Styles = Styles.fromProperties(
  */
 export const controlDensityStyles: Styles = Styles.fromProperties(
     {
-        ...Padding.verticalHorizontal(densityControl.verticalPadding, densityControl.horizontalPadding),
+        paddingHorizontal: densityControl.horizontalPadding,
+        paddingVertical: densityControl.verticalPadding,
         gap: densityControl.horizontalGap,
     },
     "density.control",
@@ -187,7 +188,7 @@ export const controlDensityStyles: Styles = Styles.fromProperties(
  */
 export const controlSquareDensityStyles: Styles = Styles.fromProperties(
     {
-        ...Padding.verticalHorizontal(densityControl.verticalPadding, densityControl.verticalPadding),
+        padding: densityControl.verticalPadding,
         gap: densityControl.horizontalGap,
     },
     "density.control-square",
@@ -243,7 +244,8 @@ export const autofillInnerDensityStyles: Styles = Styles.fromProperties(
  */
 export const itemContainerDensityStyles: Styles = Styles.fromProperties(
     {
-        ...Padding.verticalHorizontal(densityItemContainer.verticalPadding, densityItemContainer.horizontalPadding),
+        paddingHorizontal: densityItemContainer.horizontalPadding,
+        paddingVertical: densityItemContainer.verticalPadding,
         gap: densityItemContainer.horizontalGap,
     },
     "density.item-container",
@@ -258,7 +260,8 @@ export const itemContainerDensityStyles: Styles = Styles.fromProperties(
  */
 export const layerDensityStyles: Styles = Styles.fromProperties(
     {
-        ...Padding.verticalHorizontal(densityLayer.verticalPadding, densityLayer.horizontalPadding),
+        paddingHorizontal: densityLayer.horizontalPadding,
+        paddingVertical: densityLayer.verticalPadding,
         gap: densityLayer.horizontalGap,
     },
     "density.layer",
@@ -270,9 +273,9 @@ const transparent = "transparent";
 // but setting the color is done elsewhere or not at all, producing inconsistent and unpredictable styling.
 const densityBorderStyles = (fillValue: StyleValue) => {
     return {
-        ...BorderThickness.all(strokeThickness),
-        ...BorderStyle.all("solid"),
-        ...BorderFill.all(fillValue),
+        borderThickness: strokeThickness,
+        borderStyle: "solid",
+        borderFill: fillValue,
     }
 };
 

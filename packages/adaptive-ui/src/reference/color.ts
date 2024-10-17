@@ -11,7 +11,7 @@ import { Swatch } from "../core/color/swatch.js";
 import { _white } from "../core/color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../core/color/utilities/conditional.js";
 import { interactiveSwatchSetAsOverlay } from "../core/color/utilities/opacity.js";
-import { StyleProperty, stylePropertyBorderFillAll } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
 import { Recipe, RecipeOptional } from "../core/recipes.js";
 import {
     createTokenColorRecipe,
@@ -441,7 +441,7 @@ export const strokeSafetyDisabledDelta = createTokenDelta(strokeSafetyName, Inte
 /** @public */
 export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
     strokeSafetyName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         conditionalSwatchSet(
             contrastAndDeltaSwatchSet(
@@ -479,7 +479,7 @@ export const strokeStealthDisabledDelta = createTokenDelta(strokeStealthName, In
 /** @public */
 export const strokeStealthRecipe = createTokenColorRecipeForPalette(
     strokeStealthName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -516,7 +516,7 @@ export const strokeSubtleDisabledDelta = createTokenDelta(strokeSubtleName, Inte
 /** @public */
 export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
     strokeSubtleName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -551,7 +551,7 @@ export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernible
 /** @public */
 export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
     strokeDiscernibleName,
-    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
+    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -586,7 +586,7 @@ export const strokeReadableDisabledDelta = createTokenDelta(strokeReadableName, 
 /** @public */
 export const strokeReadableRecipe = createTokenColorRecipeForPalette(
     strokeReadableName,
-    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
+    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -624,7 +624,7 @@ export const strokeStrongDisabledDelta = createTokenDelta(strokeStrongName, Inte
 /** @public */
 export const strokeStrongRecipe = createTokenColorRecipeForPalette(
     strokeStrongName,
-    [...stylePropertyBorderFillAll, StyleProperty.foregroundFill],
+    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
@@ -1753,7 +1753,7 @@ const focusStrokeName = "color.focusStroke";
 /** @public */
 export const focusStrokeRecipe = createTokenColorRecipe(
     focusStrokeName,
-    [...stylePropertyBorderFillAll, StyleProperty.outlineColor],
+    [...StylePropertyShorthand.borderFill, StyleProperty.outlineColor],
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         contrastSwatch(
             resolve(focusStrokePalette),
@@ -1772,7 +1772,7 @@ const focusStrokeOuterName = "color.focusStroke.outer";
 /** @public */
 export const focusStrokeOuterRecipe = createTokenColorRecipe(
     focusStrokeOuterName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
 );
@@ -1787,7 +1787,7 @@ const focusStrokeInnerName = "color.focusStroke.inner";
 /** @public */
 export const focusStrokeInnerRecipe = createTokenColorRecipe(
     focusStrokeInnerName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver): Swatch =>
         blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
 );
