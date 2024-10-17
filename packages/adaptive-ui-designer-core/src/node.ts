@@ -211,6 +211,11 @@ export abstract class PluginNode {
     public abstract get parent(): PluginNode | null;
 
     /**
+     * Gets the effective fill color of this node, either locally applied or from an ancestor.
+     */
+    public abstract get effectiveFillColor(): Color | null;
+
+    /**
      * Gets the style properties this node supports.
      */
     public abstract get supports(): Array<StyleProperty>;
@@ -332,9 +337,9 @@ export abstract class PluginNode {
             this._additionalData.set(AdditionalDataKeys.codeGenName, this.codeGenName);
         }
 
-        if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.fillColor) {
-            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(this.parent?.fillColor));
-            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(this.parent.fillColor));
+        if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && this.parent?.effectiveFillColor) {
+            // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(this.parent?.effectiveFillColor));
+            this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(this.parent.effectiveFillColor));
         }
 
         return this._additionalData;

@@ -749,7 +749,7 @@ export class FigmaPluginNode extends PluginNode {
             return null;
         }
 
-        // console.log("    get parent");
+        // console.log("    get parent", this.debugInfo);
         return FigmaPluginNode.get(parent, false);
     }
 
@@ -776,6 +776,16 @@ export class FigmaPluginNode extends PluginNode {
         return null;
     }
 
+    public get effectiveFillColor(): Color | null {
+        if (this.fillColor) {
+            return this.fillColor;
+        }
+        if (this.parent) {
+            return this.parent.fillColor;
+        }
+        return null;
+    }
+
     private darkTarget: number = (-0.1 + Math.sqrt(0.21)) / 2;
 
     public handleManualDarkMode(): boolean {
@@ -783,7 +793,7 @@ export class FigmaPluginNode extends PluginNode {
             if (this._node.variantProperties) {
                 const currentDarkMode = this._node.variantProperties["Dark mode"];
                 if (currentDarkMode) {
-                    const color = this.parent?.fillColor;
+                    const color = this.parent?.effectiveFillColor;
                     if (color) {
                         const containerIsDark = wcagLuminance(color) <= this.darkTarget;
                         // eslint-disable-next-line max-len

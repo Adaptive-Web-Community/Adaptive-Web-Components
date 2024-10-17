@@ -168,6 +168,8 @@ export class UIController {
      */
     public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
         // console.log("  Evaluating all design tokens for all selected nodes");
+        this._elements.resetFillColor();
+
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
 
         const message: PluginMessage = {
@@ -358,7 +360,7 @@ export class UIController {
         if (valueOriginal instanceof Color) {
             const swatch = valueOriginal;
             value = formatHex8(swatch.color);
-            // valueDebug = swatch;
+            // valueDebug = swatch.toColorString();
         } else if (typeof valueOriginal === "string") {
             if (valueOriginal.startsWith("calc")) {
                 const ret = calc(valueOriginal as string);
@@ -366,7 +368,7 @@ export class UIController {
                 value = ret;
             }
         }
-        // const fillColorValue = this._elements.getDesignTokenValue(node, fillColor);
+        // const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Swatch).toColorString();
         // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${source})`, "fillColor", fillColorValue);
 
         const applied = new AppliedStyleValue(value);
