@@ -5,7 +5,7 @@ import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
 import { deltaSwatch } from "../core/color/recipes/delta-swatch.js";
 import { Swatch } from "../core/color/swatch.js";
 import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../core/color/utilities/opacity.js";
-import { StyleProperty, stylePropertyBorderFillAll } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
 import {
     createTokenColorRecipe,
     createTokenColorRecipeValue,
@@ -568,7 +568,7 @@ export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDivid
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeDividerRecipe = createTokenColorRecipe(
     neutralStrokeDividerName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
         swatchAsOverlay(
             deltaSwatch(
@@ -603,7 +603,7 @@ export const neutralStrokeInputFocusDelta = createTokenDelta(neutralStrokeInputN
 /** @public @deprecated Use "Subtle" instead */
 export const neutralStrokeInputRecipe = createTokenColorRecipe(
     neutralStrokeInputName,
-    stylePropertyBorderFillAll,
+    StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver, params?: ColorRecipeParams) =>
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(

@@ -15,7 +15,7 @@ import {
 import { Palette } from "./color/palette.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
-import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
+import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "./recipes.js";
 import { createTokenNonCss, createTokenSwatch } from "./token-helpers.js";
 import { InteractiveState, InteractiveTokenGroup } from "./types.js";
@@ -158,7 +158,8 @@ export function createTokenColorSet(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
-    return {
+
+    const group = {
         name,
         type: DesignTokenType.color,
         intendedFor: valueToken.intendedFor,
@@ -168,6 +169,8 @@ export function createTokenColorSet(
         focus: createTokenColorSetState(valueToken, InteractiveState.focus),
         disabled: createTokenColorSetState(valueToken, InteractiveState.disabled),
     };
+    DesignTokenRegistry.Groups.set(name, group);
+    return group;
 }
 
 /**
@@ -214,7 +217,7 @@ export function createForegroundSet(
         );
     }
 
-    return {
+    const group = {
         name: setName,
         type: DesignTokenType.color,
         intendedFor: foregroundRecipe.intendedFor,
@@ -224,6 +227,8 @@ export function createForegroundSet(
         focus: createState(InteractiveState.rest, InteractiveState.focus),
         disabled: createState(InteractiveState.disabled, InteractiveState.disabled),
     };
+    DesignTokenRegistry.Groups.set(setName, group);
+    return group;
 }
 
 /**
@@ -264,7 +269,7 @@ export function createForegroundSetBySet(
         );
     }
 
-    return {
+    const group = {
         name: setName,
         intendedFor: foregroundRecipe.intendedFor,
         type: DesignTokenType.color,
@@ -274,4 +279,6 @@ export function createForegroundSetBySet(
         focus: createState(InteractiveState.focus),
         disabled: createState(InteractiveState.disabled),
     };
+    DesignTokenRegistry.Groups.set(setName, group);
+    return group;
 }

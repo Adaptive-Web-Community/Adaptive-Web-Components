@@ -326,6 +326,10 @@ export const StyleProperty = {
     fontVariationSettings: "fontVariationSettings",
     letterSpacing: "letterSpacing",
     lineHeight: "lineHeight",
+    marginTop: "marginTop",
+    marginRight: "marginRight",
+    marginBottom: "marginBottom",
+    marginLeft: "marginLeft",
     paddingTop: "paddingTop",
     paddingRight: "paddingRight",
     paddingBottom: "paddingBottom",
@@ -354,9 +358,76 @@ export const StyleProperty = {
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
 /**
+ * @public
+ */
+export const StylePropertyShorthand = {
+    borderFill: [
+        StyleProperty.borderFillTop,
+        StyleProperty.borderFillRight,
+        StyleProperty.borderFillBottom,
+        StyleProperty.borderFillLeft,
+    ],
+    borderThickness: [
+        StyleProperty.borderThicknessTop,
+        StyleProperty.borderThicknessRight,
+        StyleProperty.borderThicknessBottom,
+        StyleProperty.borderThicknessLeft,
+    ],
+    borderStyle: [
+        StyleProperty.borderStyleTop,
+        StyleProperty.borderStyleRight,
+        StyleProperty.borderStyleBottom,
+        StyleProperty.borderStyleLeft,
+    ],
+    cornerRadius: [
+        StyleProperty.cornerRadiusTopLeft,
+        StyleProperty.cornerRadiusTopRight,
+        StyleProperty.cornerRadiusBottomRight,
+        StyleProperty.cornerRadiusBottomLeft,
+    ],
+    margin: [
+        StyleProperty.marginTop,
+        StyleProperty.marginRight,
+        StyleProperty.marginBottom,
+        StyleProperty.marginLeft,
+    ],
+    marginHorizontal: [
+        StyleProperty.marginRight,
+        StyleProperty.marginLeft,
+    ],
+    marginVertical: [
+        StyleProperty.marginTop,
+        StyleProperty.marginBottom,
+    ],
+    padding: [
+        StyleProperty.paddingTop,
+        StyleProperty.paddingRight,
+        StyleProperty.paddingBottom,
+        StyleProperty.paddingLeft,
+    ],
+    paddingHorizontal: [
+        StyleProperty.paddingRight,
+        StyleProperty.paddingLeft,
+    ],
+    paddingVertical: [
+        StyleProperty.paddingTop,
+        StyleProperty.paddingBottom,
+    ],
+};
+
+/**
+ * Supported style property shorthands for design-to-code with Adaptive UI.
+ *
+ * @public
+ */
+export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
+
+
+/**
  * Any style property, either an {@link (StyleProperty:type)} or a string for any other CSS property.
  *
  * @public
+ * @deprecated Use StyleKey instead
  */
 export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
 
@@ -364,61 +435,41 @@ export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
  * A convenience shorthand for all border fill {@link (StyleProperty:type)} values.
  *
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
-export const stylePropertyBorderFillAll = [
-    StyleProperty.borderFillTop,
-    StyleProperty.borderFillRight,
-    StyleProperty.borderFillBottom,
-    StyleProperty.borderFillLeft
-];
+export const stylePropertyBorderFillAll = StylePropertyShorthand.borderFill;
 
 /**
  * A convenience shorthand for all border thickness {@link (StyleProperty:type)} values.
  *
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
-export const stylePropertyBorderThicknessAll = [
-    StyleProperty.borderThicknessTop,
-    StyleProperty.borderThicknessRight,
-    StyleProperty.borderThicknessBottom,
-    StyleProperty.borderThicknessLeft
-];
+export const stylePropertyBorderThicknessAll = StylePropertyShorthand.borderThickness;
 
 /**
  * A convenience shorthand for all border style {@link (StyleProperty:type)} values.
  *
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
-export const stylePropertyBorderStyleAll = [
-    StyleProperty.borderStyleTop,
-    StyleProperty.borderStyleRight,
-    StyleProperty.borderStyleBottom,
-    StyleProperty.borderStyleLeft
-];
+export const stylePropertyBorderStyleAll = StylePropertyShorthand.borderStyle;
 
 /**
  * A convenience shorthand for all corner radius {@link (StyleProperty:type)} values.
  *
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
-export const stylePropertyCornerRadiusAll = [
-    StyleProperty.cornerRadiusTopLeft,
-    StyleProperty.cornerRadiusTopRight,
-    StyleProperty.cornerRadiusBottomRight,
-    StyleProperty.cornerRadiusBottomLeft
-];
+export const stylePropertyCornerRadiusAll = StylePropertyShorthand.cornerRadius;
 
 /**
  * A convenience shorthand for all padding {@link (StyleProperty:type)} values.
  *
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
-export const stylePropertyPaddingAll = [
-    StyleProperty.paddingTop,
-    StyleProperty.paddingRight,
-    StyleProperty.paddingBottom,
-    StyleProperty.paddingLeft
-];
+export const stylePropertyPaddingAll = StylePropertyShorthand.padding;
 
 /**
  * A list of {@link StyleRule}s in the context of a component.

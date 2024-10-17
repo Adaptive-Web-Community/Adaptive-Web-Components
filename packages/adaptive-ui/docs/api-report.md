@@ -40,17 +40,17 @@ export function blackOrWhiteByContrastSet(set: InteractiveSwatchSet, minContrast
 // @public
 export type BooleanCondition = string;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const BorderFill: {
     all: (value: StyleValue) => StyleProperties;
 };
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const BorderStyle: {
     all: (value: StyleValue) => StyleProperties;
 };
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const BorderThickness: {
     all: (value: StyleValue) => StyleProperties;
 };
@@ -133,7 +133,7 @@ export function contrastSwatch(palette: Palette, reference: Swatch, minContrast:
 // @public
 export const convertStylesToFocusState: (styles: Styles) => Styles;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const CornerRadius: {
     all: (value: StyleValue) => StyleProperties;
 };
@@ -268,6 +268,7 @@ export class DesignTokenMultiValue<T extends CSSDirective | string> extends Arra
 
 // @public
 export abstract class DesignTokenRegistry {
+    static Groups: Map<string, InteractiveTokenGroup<any>>;
     static Shared: Map<string, DesignToken<any>>;
 }
 
@@ -299,6 +300,9 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 // @public
 export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
+
+// @public
+export type EffectiveStylePropertiesMap = Map<string, StyleValue>;
 
 // @public
 export class ElementStylesRenderer {
@@ -410,7 +414,7 @@ export function luminanceSwatch(luminance: number): Swatch;
 // @public
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const Padding: {
     all: (value: StyleValue) => StyleProperties;
     verticalHorizontal: (valueVertical: StyleValue, valueHorizontal: StyleValue) => StyleProperties;
@@ -556,6 +560,9 @@ export type StyleDeclaration = {
 };
 
 // @public
+export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
+
+// @public
 export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
 
 // @public
@@ -570,10 +577,10 @@ export interface StyleModuleTarget {
 }
 
 // @public
-export type StyleProperties = Partial<Record<StylePropertyCss, StyleValue>>;
+export type StyleProperties = Partial<Record<StyleKey, StyleValue>>;
 
 // @public
-export type StylePropertiesMap = Map<StylePropertyCss, StyleValue>;
+export type StylePropertiesMap = Map<StyleKey, StyleValue>;
 
 // @public
 export const StyleProperty: {
@@ -602,6 +609,10 @@ export const StyleProperty: {
     readonly fontVariationSettings: "fontVariationSettings";
     readonly letterSpacing: "letterSpacing";
     readonly lineHeight: "lineHeight";
+    readonly marginTop: "marginTop";
+    readonly marginRight: "marginRight";
+    readonly marginBottom: "marginBottom";
+    readonly marginLeft: "marginLeft";
     readonly paddingTop: "paddingTop";
     readonly paddingRight: "paddingRight";
     readonly paddingBottom: "paddingBottom";
@@ -622,23 +633,40 @@ export const StyleProperty: {
 // @public
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
 
-// @public
+// @public @deprecated
 export const stylePropertyBorderFillAll: ("borderFillTop" | "borderFillRight" | "borderFillBottom" | "borderFillLeft")[];
 
-// @public
+// @public @deprecated
 export const stylePropertyBorderStyleAll: ("borderStyleTop" | "borderStyleRight" | "borderStyleBottom" | "borderStyleLeft")[];
 
-// @public
+// @public @deprecated
 export const stylePropertyBorderThicknessAll: ("borderThicknessTop" | "borderThicknessRight" | "borderThicknessBottom" | "borderThicknessLeft")[];
 
-// @public
+// @public @deprecated
 export const stylePropertyCornerRadiusAll: ("cornerRadiusTopLeft" | "cornerRadiusTopRight" | "cornerRadiusBottomRight" | "cornerRadiusBottomLeft")[];
 
-// @public
+// @public @deprecated
 export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
 
-// @public
+// @public @deprecated
 export const stylePropertyPaddingAll: ("paddingTop" | "paddingRight" | "paddingBottom" | "paddingLeft")[];
+
+// @public (undocumented)
+export const StylePropertyShorthand: {
+    borderFill: ("borderFillTop" | "borderFillRight" | "borderFillBottom" | "borderFillLeft")[];
+    borderThickness: ("borderThicknessTop" | "borderThicknessRight" | "borderThicknessBottom" | "borderThicknessLeft")[];
+    borderStyle: ("borderStyleTop" | "borderStyleRight" | "borderStyleBottom" | "borderStyleLeft")[];
+    cornerRadius: ("cornerRadiusTopLeft" | "cornerRadiusTopRight" | "cornerRadiusBottomRight" | "cornerRadiusBottomLeft")[];
+    margin: ("marginTop" | "marginRight" | "marginBottom" | "marginLeft")[];
+    marginHorizontal: ("marginRight" | "marginLeft")[];
+    marginVertical: ("marginTop" | "marginBottom")[];
+    padding: ("paddingTop" | "paddingRight" | "paddingBottom" | "paddingLeft")[];
+    paddingHorizontal: ("paddingRight" | "paddingLeft")[];
+    paddingVertical: ("paddingTop" | "paddingBottom")[];
+};
+
+// @public
+export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
 // @public
 export type StyleRule = {
@@ -656,7 +684,7 @@ export class Styles {
     static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles;
     get composed(): Styles[] | undefined;
     get effectiveAdaptiveProperties(): Map<StyleProperty, StyleValue>;
-    get effectiveProperties(): StylePropertiesMap;
+    get effectiveProperties(): EffectiveStylePropertiesMap;
     static fromDeclaration(declaration: StyleDeclaration, name?: string): Styles;
     static fromProperties(properties: StyleProperties, name?: string): Styles;
     readonly name: string | undefined;

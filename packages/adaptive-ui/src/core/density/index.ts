@@ -4,7 +4,7 @@ import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
 import { createTokenDimension, createTokenNonCss } from "../token-helpers.js";
-import { StyleProperty, stylePropertyBorderThicknessAll } from "../modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../modules/types.js";
 
 /**
  * The adjustment (plus or minus) to density unit values.
@@ -148,7 +148,7 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
     ) {
         this.designUnit = createTokenDimension(`${name}.designUnit`).withDefault(designUnit);
 
-        this.borderThickness = createTokenDimension(`${name}.borderThickness`, stylePropertyBorderThicknessAll).withDefault(borderThickness);
+        this.borderThickness = createTokenDimension(`${name}.borderThickness`, StylePropertyShorthand.borderThickness).withDefault(borderThickness);
 
         this.horizontalPaddingUnits = createTokenNonCss<number>(
             `${name}.horizontal.paddingUnits`,

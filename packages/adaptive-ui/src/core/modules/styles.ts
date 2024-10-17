@@ -5,7 +5,14 @@ import { Swatch } from "../color/swatch.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveTokenGroup, InteractiveValues } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
-import { StyleModuleTarget, StyleProperty, StylePropertyCss } from "./types.js";
+import { StyleModuleTarget, StyleProperty, StylePropertyShorthand } from "./types.js";
+
+/**
+ * Key for a style property, a {@link (StyleProperty:type)}, {@link (StylePropertyShorthand:type)}, or a string for any other CSS property.
+ *
+ * @public
+ */
+export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
 
 /**
  * Supported values for a style property.
@@ -15,21 +22,28 @@ import { StyleModuleTarget, StyleProperty, StylePropertyCss } from "./types.js";
 export type StyleValue = CSSDesignToken<any> | InteractiveValues<any | null> | CSSDirective | string | number;
 
 /**
- * An object of style definitions, where the key is the {@link (StylePropertyCss:type)} and the value is the token or final value.
+ * An object of style definitions, where the key is the {@link (StyleKey:type)} and the value is the token or final value.
  *
  * @remarks
  * The `Record` format is a convenience for manual authoring of style modules (instead of a `Map`).
  *
  * @public
  */
-export type StyleProperties = Partial<Record<StylePropertyCss, StyleValue>>;
+export type StyleProperties = Partial<Record<StyleKey, StyleValue>>;
 
 /**
- * A `Map` of style definitions, where the key is the {@link (StylePropertyCss:type)} and the value is the token or final value.
+ * A `Map` of style definitions, where the key is the {@link (StyleKey:type)} and the value is the token or final value.
  *
  * @public
  */
-export type StylePropertiesMap = Map<StylePropertyCss, StyleValue>;
+export type StylePropertiesMap = Map<StyleKey, StyleValue>;
+
+/**
+ * A `Map` of style definitions, where the key is a string and the value is the token or final value.
+ *
+ * @public
+ */
+export type EffectiveStylePropertiesMap = Map<string, StyleValue>;
 
 /**
  * The properties and values for a {@link StyleRule} definition.
@@ -114,6 +128,7 @@ export const Fill = {
 
 /**
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
 export const BorderFill = {
     all: function(value: StyleValue): StyleProperties {
@@ -128,6 +143,7 @@ export const BorderFill = {
 
 /**
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
 export const BorderThickness = {
     all: function(value: StyleValue): StyleProperties {
@@ -142,6 +158,7 @@ export const BorderThickness = {
 
 /**
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
 export const BorderStyle = {
     all: function(value: StyleValue): StyleProperties {
@@ -156,6 +173,7 @@ export const BorderStyle = {
 
 /**
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
 export const CornerRadius = {
     all: function(value: StyleValue): StyleProperties {
@@ -170,6 +188,7 @@ export const CornerRadius = {
 
 /**
  * @public
+ * @deprecated Use StylePropertyShorthand instead
  */
 export const Padding = {
     all: function(value: StyleValue): StyleProperties {
@@ -226,7 +245,7 @@ export const convertStylesToFocusState = (styles: Styles) => {
 };
 
 /**
- * A modular definition of style properties, either an alias to another style module or a collection of style properties.
+ * A composable definition of style properties, either an alias to another style or a collection of style properties.
  *
  * @public
  */
@@ -236,7 +255,7 @@ export class Styles {
     // Individual properties, or additional to composed style properties
     private _properties?: StylePropertiesMap;
     // Effective properties from composed styles and additional properties
-    private _composedProperties?: StylePropertiesMap;
+    private _effectiveProperties: EffectiveStylePropertiesMap = new Map();
 
     private constructor(
         /**
@@ -249,10 +268,9 @@ export class Styles {
             throw `Style '${name}' already created. Update it instead.`;
         }
 
-        if (Array.isArray(propertiesOrStyles)) {
+        if (Array.isArray(propertiesOrStyles)) { // styles
             this._composed = propertiesOrStyles;
-            this.createEffectiveProperties();
-        } else {
+        } else { // properties
             this._properties = new Map();
             for (const k in propertiesOrStyles) {
                 const key: keyof StyleProperties = k as keyof StyleProperties;
@@ -262,6 +280,8 @@ export class Styles {
                 }
             }
         }
+
+        this.createEffectiveProperties();
 
         if (name) {
             Styles.Shared.set(name, this);
@@ -280,11 +300,14 @@ export class Styles {
      */
     public clearComposed(): void {
         this._composed = undefined;
-        this._composedProperties = undefined;
+        this.createEffectiveProperties();
     }
 
     public appendComposed(styles: Styles): void {
-        this._composed?.push(styles);
+        if (this._composed === undefined) {
+            this._composed = [];
+        }
+        this._composed.push(styles);
         this.createEffectiveProperties();
     }
 
@@ -303,14 +326,8 @@ export class Styles {
     /**
      * Gets the full effective set of properties, from composed styles and local properties as applicable.
      */
-    public get effectiveProperties(): StylePropertiesMap {
-        if (this._composedProperties) {
-            return this._composedProperties;
-        } else if (this._properties) {
-            return this._properties;
-        } else {
-            return new Map();
-        }
+    public get effectiveProperties(): EffectiveStylePropertiesMap {
+        return this._effectiveProperties;
     }
 
     /**
@@ -323,18 +340,30 @@ export class Styles {
     }
 
     private createEffectiveProperties() {
+        const map: EffectiveStylePropertiesMap = new Map();
+
         if (this._composed) {
-            const map: StylePropertiesMap = new Map();
             this._composed.forEach((styles: Styles) => {
                 styles.effectiveProperties.forEach((value, target) => {
                     map.set(target, value);
                 });
             });
-            this._properties?.forEach((value, target) => {
-                map.set(target, value);
-            });
-            this._composedProperties = map;
         }
+
+        if (this._properties) {
+            this._properties.forEach((value, target) => {
+                if (target in StylePropertyShorthand) {
+                    const props: StyleProperty[] = StylePropertyShorthand[target as StylePropertyShorthand];
+                    props.forEach(prop => {
+                        map.set(prop, value);
+                    });
+                } else {
+                    map.set(target, value);
+                }
+            });
+        }
+
+        this._effectiveProperties = map;
     }
 
     public static Shared: Map<string, Styles> = new Map();
