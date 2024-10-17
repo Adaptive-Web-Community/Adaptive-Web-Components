@@ -3,6 +3,9 @@
   "version": "0.3.1",
   "description": "Core infrastructure for the Adaptive UI Designer",
   "main": "dist/esm/index.js",
+  "publishConfig": {
+    "provenance": true
+  },
   "exports": {
     ".": {
       "types": "./dist/dts/index.d.ts",
