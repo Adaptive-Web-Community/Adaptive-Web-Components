@@ -336,13 +336,23 @@ export const StyleProperty = {
     paddingLeft: "paddingLeft",
     gap: "gap",
     height: "height",
+    minHeight: "minHeight",
+    maxHeight: "maxHeight",
     width: "width",
+    minWidth: "minWidth",
+    maxWidth: "maxWidth",
+    // layoutOuter: "layoutOuter", // TODO Add support for inline or block definition
+    layoutInner: "layoutInner",
     layoutDirection: "layoutDirection",
+    layoutMainAxisAlignItems: "layoutMainAxisAlignItems",
+    layoutCrossAxisAlignItems: "layoutCrossAxisAlignItems",
     opacity: "opacity",
     cursor: "cursor",
     outlineColor: "outlineColor",
     outlineOffset: "outlineOffset",
     outlineStyle: "outlineStyle",
+    outlineThickness: "outlineThickness",
+    /** @deprecated Use outlineThickness */
     outlineWidth: "outlineWidth",
     shadow: "shadow",
 } as const;

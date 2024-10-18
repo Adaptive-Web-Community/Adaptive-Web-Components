@@ -1690,7 +1690,7 @@ export const focusIndicatorStyles: Styles = Styles.fromProperties(
         outlineColor: focusStroke,
         outlineOffset: "1px",
         outlineStyle: "solid",
-        outlineWidth: focusStrokeThickness,
+        outlineThickness: focusStrokeThickness,
     },
     "styles.focus-indicator",
 );
