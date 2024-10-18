@@ -4,8 +4,8 @@ import type { PluginMessage} from "../core/messages.js";
 import { FigmaPluginNode } from "./node.js";
 
 export class FigmaController extends Controller {
-    public getNode(id: string): FigmaPluginNode | null {
-        const node = figma.getNodeById(id);
+    public async getNode(id: string): Promise<FigmaPluginNode | null> {
+        const node = await figma.getNodeByIdAsync(id);
         if (node) {
             return FigmaPluginNode.get(node, false);
         } else {
@@ -13,21 +13,21 @@ export class FigmaController extends Controller {
         }
     }
 
-    public handleMessage(message: PluginMessage): void {
+    public async handleMessage(message: PluginMessage): Promise<void> {
         if (message.type === "NODE_DATA") {
             const pluginNodes = message.nodes;
-            super.receiveStateFromUI({
+            await super.receiveStateFromUI({
                 selectedNodes: pluginNodes
             });
 
             FigmaPluginNode.clearCache();
         } else if (message.type === "CREATE_STATES") {
-            const node = this.getNode(message.id);
+            const node = await this.getNode(message.id);
             // Create the interactive state components
             node?.createStates();
             // Resend the nodes to the plugin UI
             FigmaPluginNode.clearCache();
-            this.setSelectedNodes([message.id]);
+            await this.setSelectedNodes([message.id]);
         }
     }
 

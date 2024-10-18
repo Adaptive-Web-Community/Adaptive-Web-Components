@@ -21,10 +21,8 @@ export interface PluginUIState {
  */
 export abstract class Controller {
     /**
-     * Track the currently selected node.
+     * Tracks the number of nodes loaded for performance stats.
      */
-    private _selectedNodeIds: string[] = [];
-
     public static nodeCount: number = 0;
 
     /**
@@ -32,7 +30,7 @@ export abstract class Controller {
      * @param id The ID of the node.
      * @returns The PluginNode or null if no node by the provided ID exists.
      */
-    public abstract getNode(id: string): PluginNode | null;
+    public abstract getNode(id: string): Promise<PluginNode | null>;
 
     /**
      * Provides the state object to the UI component and updates the UI.
@@ -44,8 +42,7 @@ export abstract class Controller {
      * Sets the selected node IDs - Setting the IDs will trigger a UI refresh.
      * @param ids The node IDs.
      */
-    public setSelectedNodes(ids: string[]): void {
-        this._selectedNodeIds = ids;
+    public async setSelectedNodes(ids: string[]): Promise<void> {
         Controller.nodeCount = 0;
 
         // console.log("--------------------------------");
@@ -53,7 +50,7 @@ export abstract class Controller {
 
         // const timeStart = new Date().getTime();
 
-        this.sendStateToUI(this.getPluginUIState());
+        this.sendStateToUI(await this.getPluginUIState(ids));
 
         // const timeEnd = new Date().getTime();
         // const timeDiff = timeEnd - timeStart;
@@ -65,13 +62,13 @@ export abstract class Controller {
      * Handle the updated state that's posted from the UI.
      * @param state The state from the UI.
      */
-    public receiveStateFromUI(state: PluginUIState): void {
+    public async receiveStateFromUI(state: PluginUIState): Promise<void> {
         // console.log("--------------------------------");
         // console.log("Controller.receiveStateFromUI begin", state);
 
         // const timeStart = new Date().getTime();
 
-        this.syncPluginNodes(state.selectedNodes);
+        await this.syncPluginNodes(state.selectedNodes);
 
         // const timeEnd = new Date().getTime();
         // const timeDiff = timeEnd - timeStart;
@@ -79,32 +76,34 @@ export abstract class Controller {
         // console.log("--------------------------------");
     }
 
-    private getPluginUIState(): PluginUIState {
-        const selectedNodes = this._selectedNodeIds
-            .map(id => this.getNode(id))
-            .filter((node): node is PluginNode => node !== null);
+    private async getPluginUIState(ids: string[]): Promise<PluginUIState> {
+        const nodes = await Promise.all(ids
+            .map(async id => await this.getNode(id))
+        );
+
+        const selectedNodes = nodes.filter((node): node is PluginNode => node !== null);
 
         const includeChildren = selectedNodes[0].type !== "PAGE";
 
         return {
-            selectedNodes: pluginNodesToUINodes(selectedNodes, true, includeChildren),
+            selectedNodes: await pluginNodesToUINodes(selectedNodes, true, includeChildren),
         };
     }
 
-    private syncPluginNodes(nodes: PluginUINodeData[]) {
-        nodes.forEach(node => {
-            const pluginNode = this.getNode(node.id);
+    private async syncPluginNodes(nodes: PluginUINodeData[]) {
+        for (const node of nodes) {
+            const pluginNode = await this.getNode(node.id);
             if (pluginNode) {
-                pluginNode.handleManualDarkMode();
-                pluginNode.setDesignTokens(node.designTokens);
+                await pluginNode.handleManualDarkMode();
+                await pluginNode.setDesignTokens(node.designTokens);
                 pluginNode.setAppliedStyleModules(node.appliedStyleModules);
                 pluginNode.setAppliedDesignTokens(node.appliedDesignTokens);
 
                 // Paint all applied design tokens on the node
-                pluginNode.paint(node.effectiveAppliedStyleValues);
+                await pluginNode.paint(node.effectiveAppliedStyleValues);
 
-                this.syncPluginNodes(node.children);
+                await this.syncPluginNodes(node.children);
             }
-        });
+        }
     }
 }

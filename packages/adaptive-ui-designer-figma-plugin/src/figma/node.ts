@@ -1,6 +1,6 @@
 import { type Color, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedStyleModules, AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, PluginNodeData, serializeMap, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { AppliedStyleModules, AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, PluginNodeData, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
 import { colorToRgba, variantBooleanHelper } from "./utility.js";
 
@@ -119,11 +119,11 @@ export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     public name: string;
-    public fillColor: Color | null;
-    public states: StatesState;
+    public fillColor: Color | null = null;
+    public states?: StatesState;
     private _node: BaseNode;
-    private _state: State | null = null;
-    public supportsCodeGen: boolean;
+    private _state?: State;
+    public supportsCodeGen: boolean = false;
     public codeGenName: string | undefined;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
@@ -139,7 +139,9 @@ export class FigmaPluginNode extends PluginNode {
         this.name = node.name;
 
         // console.log("  new FigmaPluginNode", this.debugInfo, "node", node);
+    }
 
+    private async init() {
         /*
         This data model and token processing is to handle an unfortunate consequence of the Figma component model.
 
@@ -186,9 +188,9 @@ export class FigmaPluginNode extends PluginNode {
             ids.shift();
             const refId = "I" + ids.join(";");
             // console.log("    looking for ref", refId);
-            refComponentNode = figma.getNodeById(refId);
+            refComponentNode = await figma.getNodeByIdAsync(refId);
         } else if (isInstanceNode(this._node)) {
-            refComponentNode = (this._node as InstanceNode).mainComponent;
+            refComponentNode = await (this._node as InstanceNode).getMainComponentAsync();
         }
 
         const deserializedDesignTokens = this.deserializeLocalDesignTokens();
@@ -199,7 +201,7 @@ export class FigmaPluginNode extends PluginNode {
         // Reconcile plugin data with the reference component.
         if (refComponentNode) {
             // console.log("    getting refComponentNode");
-            const refFigmaNode = FigmaPluginNode.get(refComponentNode, false);
+            const refFigmaNode = await FigmaPluginNode.get(refComponentNode, false);
             // console.log("      refComponentNode for", this.debugInfo, " is ", refFigmaNode.debugInfo);
 
             this._componentDesignTokens = refFigmaNode.localDesignTokens;
@@ -270,13 +272,15 @@ export class FigmaPluginNode extends PluginNode {
                 case "INSTANCE":
                     this.codeGenName = refComponentNode?.name;
                     break;
-                case "COMPONENT":
-                    if (this.parent && this.parent.type === "COMPONENT_SET") {
-                        this.codeGenName = this.parent?.name;
+                case "COMPONENT": {
+                    const parent = await this.getParent();
+                    if (parent && parent.type === "COMPONENT_SET") {
+                        this.codeGenName = parent.name;
                     } else {
                         this.codeGenName = this.name;
                     }
                     break;
+                }
                 case "COMPONENT_SET":
                     this.codeGenName = this.name;
                     break;
@@ -285,7 +289,7 @@ export class FigmaPluginNode extends PluginNode {
 
         if (this._node.type === "COMPONENT") {
             const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant] : null;
-            const state: State | null = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : null;
+            const state: State | undefined = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : undefined;
             this._state = disabled === "true" ? "Disabled" : state;
         } else if (this._node.type === "INSTANCE") {
             const disabled: string | null = this._node.componentProperties[disabledVariant]?.value as string;
@@ -294,16 +298,17 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public static get(node: BaseNode, deep: boolean): FigmaPluginNode {
+    public static async get(node: BaseNode, deep: boolean): Promise<FigmaPluginNode> {
         if (FigmaPluginNode.NodeCache.has(node.id)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return FigmaPluginNode.NodeCache.get(node.id)!;
         } else {
             const pluginNode = new FigmaPluginNode(node);
+            await pluginNode.init();
             FigmaPluginNode.NodeCache.set(node.id, pluginNode);
             if (deep) {
                 // Load the children for initial processing - added to support focusIndicator promotion
-                pluginNode.children;
+                await pluginNode.getChildren();
             }
             return pluginNode;
         }
@@ -313,12 +318,13 @@ export class FigmaPluginNode extends PluginNode {
         FigmaPluginNode.NodeCache.clear();
     }
 
-    public get state(): string | null {
+    public async getState(): Promise<string | null> {
         if (this._state) {
             return this._state;
         }
-        if (this.parent) {
-            return this.parent.state;
+        const parent = await this.getParent();
+        if (parent) {
+            return parent.getState();
         }
         return null;
     }
@@ -328,30 +334,31 @@ export class FigmaPluginNode extends PluginNode {
      */
     public focusIndicatorNode: FigmaPluginNode | null = null;
 
-    public get canHaveChildren(): boolean {
-        return canHaveChildren(this._node);
+    public getCanHaveChildren(): Promise<boolean> {
+        return Promise.resolve(canHaveChildren(this._node));
     }
 
     private _childrenLoaded: boolean = false;
-    private _children: PluginNode[] = [];
+    private _children: FigmaPluginNode[] = [];
 
     /**
      * Get all logical children of this node.
      */
-    public get children(): PluginNode[] {
+    public async getChildren(): Promise<FigmaPluginNode[]> {
         if (canHaveChildren(this._node) && !this._childrenLoaded) {
             // console.log("    get children", this.debugInfo);
             for (const child of this._node.children) {
-                const childNode = FigmaPluginNode.get(child, true);
+                const childNode = await FigmaPluginNode.get(child, true);
                 // Promote the focus indicator node to the parent's parent (`this` is the parent here)
                 if (childNode.name === focusIndicatorNodeName && childNode._node.type === "INSTANCE") {
                     // console.log("      Found focus indicator node", childNode.debugInfo);
-                    if (this.parent) {
+                    const parent = await this.getParent();
+                    if (parent) {
                         // console.log("        Promoting to parent", this.parent.debugInfo);
-                        this.parent.focusIndicatorNode = childNode;
-                        childNode.focusIndicatorParentNode = this.parent;
+                        parent.focusIndicatorNode = childNode;
+                        childNode.focusIndicatorParentNode = parent;
                         // Force load the children since this node is outside of the typical parent/children relationship
-                        childNode.children;
+                        await childNode.getChildren();
                     }
                 } else {
                     this._children.push(childNode);
@@ -370,8 +377,8 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public get supports(): Array<StyleProperty> {
-        return Object.keys(StyleProperty).filter((key: string) => {
+    public getSupports(): Promise<Array<StyleProperty>> {
+        return Promise.resolve(Object.keys(StyleProperty).filter((key: string) => {
             switch (key) {
                 case StyleProperty.backgroundFill:
                     return [
@@ -439,7 +446,7 @@ export class FigmaPluginNode extends PluginNode {
                 default:
                     return false;
             }
-        }) as Array<StyleProperty>;
+        }) as Array<StyleProperty>);
     }
 
     /**
@@ -520,7 +527,7 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    protected handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues) {
+    protected async handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues) {
         const fontFamily = values.get(StyleProperty.fontFamily)?.value;
         // We'll only set the font if the family is provided.
         if (fontFamily) {
@@ -544,10 +551,9 @@ export class FigmaPluginNode extends PluginNode {
                     }
                 });
             } else if (isContainerNode(node._node)) {
-                node.children.forEach((child) => {
-                    const figmaNode = (child as FigmaPluginNode);
-                    this.handleFontFamily(figmaNode, values);
-                });
+                for (const child of await node.getChildren()) {
+                    await this.handleFontFamily(child, values);
+                }
             }
         }
     }
@@ -588,28 +594,29 @@ export class FigmaPluginNode extends PluginNode {
         return value === STYLE_REMOVE ? defaultValue : Number.parseFloat(value);
     }
 
-    public paint(values: AppliedStyleValues): void {
+    public async paint(values: AppliedStyleValues): Promise<void> {
         // Fonts are complicated in Figma, so pull them out of the normal loop.
         this.handleFontFamily(this, values);
 
         this.handleStroke(values);
 
         // Paint all applied design tokens on the node
-        values.forEach((styleValue, target) => {
+        for (const [target, styleValue] of values) {
             // console.log("applied design token eval", target, applied);
-            this.paintOne(target, styleValue.value, false);
-        });
+            await this.paintOne(target, styleValue.value, false);
+        }
     }
 
-    private paintOne(target: StyleProperty, value: any, inherited: boolean): void {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private async paintOne(target: StyleProperty, value: any, inherited: boolean): Promise<void> {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
             target === StyleProperty.fontSize ||
             target === StyleProperty.lineHeight))
         {
-            this.children.forEach((child) => {
-                (child as FigmaPluginNode).paintOne(target, value, true);
-            });
+            for (const child of await this.getChildren()) {
+                await (child).paintOne(target, value, true);
+            }
         } else {
             switch (target) {
                 case StyleProperty.borderFillTop:
@@ -620,7 +627,7 @@ export class FigmaPluginNode extends PluginNode {
                 case StyleProperty.foregroundFill:
                     // I'd like to describe this better, but for now don't pass `foregroundFill`
                     // to children other than text and vector nodes (for icon support)
-                    if (this.supports.includes(target) &&
+                    if ((await this.getSupports()).includes(target) &&
                         (inherited ? isTextNode(this._node) || isVectorNode(this._node) : true)) {
                         this.paintColor(target, value);
                     }
@@ -738,7 +745,7 @@ export class FigmaPluginNode extends PluginNode {
      */
     public focusIndicatorParentNode: FigmaPluginNode | null = null;
 
-    public get parent(): FigmaPluginNode | null {
+    public async getParent(): Promise<FigmaPluginNode | null> {
         if (this.focusIndicatorParentNode !== null) {
             return this.focusIndicatorParentNode;
         }
@@ -750,7 +757,7 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         // console.log("    get parent", this.debugInfo);
-        return FigmaPluginNode.get(parent, false);
+        return await FigmaPluginNode.get(parent, false);
     }
 
     private getFillColor(): Color | null {
@@ -776,34 +783,38 @@ export class FigmaPluginNode extends PluginNode {
         return null;
     }
 
-    public get effectiveFillColor(): Color | null {
+    public async getEffectiveFillColor(): Promise<Color | null> {
         if (this.fillColor) {
             return this.fillColor;
         }
-        if (this.parent) {
-            return this.parent.fillColor;
+        const parent = await this.getParent();
+        if (parent) {
+            return parent.fillColor;
         }
         return null;
     }
 
     private darkTarget: number = (-0.1 + Math.sqrt(0.21)) / 2;
 
-    public handleManualDarkMode(): boolean {
+    public async handleManualDarkMode(): Promise<boolean> {
         if (isInstanceNode(this._node)) {
             if (this._node.variantProperties) {
                 const currentDarkMode = this._node.variantProperties["Dark mode"];
                 if (currentDarkMode) {
-                    const color = this.parent?.effectiveFillColor;
-                    if (color) {
-                        const containerIsDark = wcagLuminance(color) <= this.darkTarget;
-                        // eslint-disable-next-line max-len
-                        // console.log("handleManualDarkMode", this._node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
-                        const value = variantBooleanHelper(currentDarkMode, containerIsDark);
-                        if (value) {
-                            this._node.setProperties({
-                                "Dark mode": value,
-                            });
-                            return true;
+                    const parent = await this.getParent()
+                    if (parent) {
+                        const color = await parent.getEffectiveFillColor();
+                        if (color) {
+                            const containerIsDark = wcagLuminance(color) <= this.darkTarget;
+                            // eslint-disable-next-line max-len
+                            // console.log("handleManualDarkMode", this._node.variantProperties['Dark mode'], "color", color.toStringHexRGB(), "dark", containerIsDark);
+                            const value = variantBooleanHelper(currentDarkMode, containerIsDark);
+                            if (value) {
+                                this._node.setProperties({
+                                    "Dark mode": value,
+                                });
+                                return true;
+                            }
                         }
                     }
                 }
@@ -886,6 +897,7 @@ export class FigmaPluginNode extends PluginNode {
                                 b: color.b,
                                 a: color.alpha || 1,
                             },
+                            boundVariables: {}, // HACK this should be optional in their API
                         };
                         return stop;
                     });
@@ -1034,10 +1046,10 @@ export class FigmaPluginNode extends PluginNode {
             // Create states
             let hoverComponent: ComponentNode;
 
-            this._node.children.forEach((restComponent, setIndex, setChildren) => {
+            this._node.children.forEach(async (restComponent, setIndex, setChildren) => {
                 x = paddingLeft + maxWidth + spacing;
                 const states: State[] = ["Hover", "Active", "Focus", "Disabled"];
-                states.forEach((state, stateIndex) => {
+                states.forEach(async (state, stateIndex) => {
                     const stateComponent = restComponent.clone() as ComponentNode;
 
                     // Keep the layer order consistent with the layout
@@ -1061,7 +1073,7 @@ export class FigmaPluginNode extends PluginNode {
                         // Save it for later
                         hoverComponent = stateComponent;
                     } else if (state === "Active") {
-                        (hoverComponent as ComponentNode).reactions = [{
+                        await (hoverComponent as ComponentNode).setReactionsAsync([{
                             trigger: {
                                 type: "ON_PRESS",
                             },
@@ -1072,13 +1084,13 @@ export class FigmaPluginNode extends PluginNode {
                                 transition: null,
                                 preserveScrollPosition: true,
                             }]
-                        }];
+                        }]);
                     }
 
                     x += maxWidth + spacing;
                 });
 
-                (restComponent as ComponentNode).reactions = [{
+                await (restComponent as ComponentNode).setReactionsAsync([{
                     trigger: {
                         type: "ON_HOVER",
                     },
@@ -1089,7 +1101,7 @@ export class FigmaPluginNode extends PluginNode {
                         transition: null,
                         preserveScrollPosition: true,
                     }]
-                }];
+                }]);
 
                 y += restComponent.height + spacing;
             });

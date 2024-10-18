@@ -17,6 +17,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc --build",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "watch": "tsc --build --watch"
   },
   "repository": {
