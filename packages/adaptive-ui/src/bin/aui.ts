@@ -8,6 +8,7 @@ import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Command } from 'commander';
+import { deepmerge } from "deepmerge-ts";
 import { glob } from "glob";
 import postcss, { type Processor} from "postcss";
 import postcssMergeLonghand from "postcss-merge-longhand";
@@ -19,6 +20,7 @@ import {
     ComponentConditions,
     ComponentParts,
     SerializableAnatomy,
+    SerializableAnatomyWithImports,
     SerializableBooleanCondition,
     SerializableStringCondition,
     SerializableStyleRule,
@@ -84,11 +86,27 @@ program.command("compile-styles <glob>")
 
 program.command("compile-json-anatomy <anatomyPath>")
     .description("Compile a stylesheet from a JSON anatomy")
-    .action(async (path: string) => {
-        const data = (await fsp.readFile(path)).toString();
+    .action(async (jsonPath: string) => {
+        const data = (await fsp.readFile(jsonPath)).toString();
         await import("../reference/index.js");
 
-        const jsonData = JSON.parse(data);
+        let jsonData = JSON.parse(data) as SerializableAnatomyWithImports;
+
+        if (jsonData.imports) {
+            for (const imp of jsonData.imports) {
+                const impWithExt = imp.toLowerCase().endsWith(".json") ? imp : `${imp}.json`;
+                const impFilePath = path.format({ ...path.parse(path.join(path.parse(jsonPath).dir, impWithExt)) });
+                const impData = (await fsp.readFile(impFilePath)).toString();
+                const impJsonData = JSON.parse(impData);
+                // If `parts` are in the import, they are for validation/consistency of that file, but we want to use the parts
+                // list from the main anatomy definition.
+                // Consider extending this so imports can add their own known parts.
+                delete impJsonData.parts;
+
+                jsonData = deepmerge(jsonData, impJsonData);
+            }
+        }
+
         const compiler = new SheetCompilerImpl();
         const sheet = jsonToAUIStyleSheet(jsonData);
         const compiledSheet = compiler.compile(sheet);
