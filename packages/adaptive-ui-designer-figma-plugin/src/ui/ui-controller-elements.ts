@@ -39,7 +39,7 @@ export class ElementsController {
             this.rootElement.removeChild(child)
         );
 
-        this.resetFillColor(this.rootElement);
+        this.resetFillColor();
 
         this.controller.selectedNodes.forEach(node => this.setupDesignTokenElement(this.rootElement, node));
     }
@@ -182,13 +182,15 @@ export class ElementsController {
 
     /**
      * Resets the `fill-color` token value on the full element tree.
-     *
-     * @param element - The top element, recursive
      */
-    public resetFillColor(element: FASTElement) {
+    public resetFillColor() {
+        this.resetFillColorForElement(this.rootElement);
+    }
+
+    private resetFillColorForElement(element: FASTElement) {
         this.setDesignTokenForElement(element, fillColor, null);
         element.childNodes.forEach(child =>
-            this.resetFillColor(child as unknown as FASTElement)
+            this.resetFillColorForElement(child as unknown as FASTElement)
         );
     }
 }
