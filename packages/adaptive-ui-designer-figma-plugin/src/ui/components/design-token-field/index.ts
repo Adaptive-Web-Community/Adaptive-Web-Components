@@ -1,6 +1,10 @@
+import { DesignToken } from "@microsoft/fast-foundation";
 import { css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { DesignTokenDefinition, FormControlId } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignTokenMetadata, DesignTokenType } from "@adaptive-web/adaptive-ui";
+import { designTokenTitle } from "../../util.js";
+
+export type ChangeEventDetail = string;
 
 const tokenTemplatesByType = {
     default: html<DesignTokenField>`
@@ -36,7 +40,7 @@ const tokenTemplatesByType = {
 
 const template = html<DesignTokenField>`
     <label>
-        <span>${x => x.designToken?.title}</span>
+        <span>${x => designTokenTitle(x.designToken)}</span>
         ${x => x.selectTemplate()}
     </label>
 `;
@@ -79,19 +83,19 @@ const styles = css`
 })
 export class DesignTokenField extends FASTElement {
     @observable
-    designToken?: DesignTokenDefinition;
+    designToken?: DesignToken<any> & DesignTokenMetadata;
 
     @observable
     value: string = "";
     valueChanged(prev: string, next: string) {
-        this.$emit("change", this.value);
+        this.$emit("change", this.value as ChangeEventDetail);
     }
 
     selectTemplate() {
         if (this.designToken) {
-            if (this.designToken.formControlId === FormControlId.color) {
+            if (this.designToken.type === DesignTokenType.color) {
                 return tokenTemplatesByType.color;
-            } else if (this.designToken.id === "color.layer.fill.ramp.baseLuminance") {
+            } else if (this.designToken.name === "color.layer.fill.ramp.baseLuminance") {
                 return tokenTemplatesByType.luminance;
             }
         }

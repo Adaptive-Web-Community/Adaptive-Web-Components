@@ -1,9 +1,9 @@
 import { calc } from '@csstools/css-calc';
 import { observable } from "@microsoft/fast-element";
-import { type DesignToken } from "@microsoft/fast-foundation";
+import { DesignToken } from "@microsoft/fast-foundation";
 import { Color } from "@adaptive-web/adaptive-ui";
 import { formatHex8 } from 'culori';
-import { DesignTokenDefinition, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 import { ElementsController } from "./ui-controller-elements.js";
 
@@ -12,9 +12,9 @@ import { ElementsController } from "./ui-controller-elements.js";
  */
 export interface UIDesignTokenValue {
     /**
-     * The definition of the design token.
+     * The design token.
      */
-    definition: DesignTokenDefinition;
+    token: DesignToken<any>;
 
     /**
      * Represents the design token value if all selected nodes have the same value.
@@ -41,7 +41,7 @@ export class DesignTokenController {
      * A list of all design tokens which are not already applied to the selected nodes.
      */
     @observable
-    public availableDesignTokens: DesignTokenDefinition[] | null = null;
+    public availableDesignTokens: DesignToken<any>[] | null = null;
 
     constructor(
         private readonly controller: UIController,
@@ -67,8 +67,8 @@ export class DesignTokenController {
 
         // Get all design tokens that can be added, which is the full list except any already applied.
         this.availableDesignTokens = this.controller.designTokenRegistry.entries.filter((definition) =>
-            this.designTokenValues?.find((appliedToken) => appliedToken.definition.id === definition.id) === undefined
-        );
+            this.designTokenValues?.find((appliedToken) => appliedToken.token.name === definition.id) === undefined
+        ).map(def => def.token);
     }
 
     /**
@@ -92,12 +92,11 @@ export class DesignTokenController {
 
         const allDesignTokens = this.controller.designTokenRegistry.entries;
 
-        allDesignTokens.forEach(designToken => {
-            if (tokenValues.has(designToken.id)) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                const set = tokenValues.get(designToken.id)!;
+        allDesignTokens.forEach(def => {
+            if (tokenValues.has(def.id)) {
+                const set = tokenValues.get(def.id);
                 designTokens.push({
-                    definition: designToken,
+                    token: def.token,
                     value: set.size === 1 ? set.values().next().value : undefined,
                     multipleValues: set.size > 1 ? [...set].join(", ") : undefined,
                 });
@@ -135,57 +134,57 @@ export class DesignTokenController {
         return val;
     }
 
-    private setDesignTokenForNode(node: PluginUINodeData, definition: DesignTokenDefinition, value: any): void {
+    private setDesignTokenForNode(node: PluginUINodeData, token: DesignToken<any>, value: any): void {
         if (value) {
             const designToken = new DesignTokenValue(value);
-            node.designTokens.set(definition.id, designToken);
+            node.designTokens.set(token.name, designToken);
         } else {
-            node.designTokens.delete(definition.id);
+            node.designTokens.delete(token.name);
         }
         // console.log("  after set designTokens", node.id, node.type, node.designTokens);
 
         const element = this.elements.getElementForNode(node);
-        this.elements.setDesignTokenForElement(element, definition.token, value);
+        this.elements.setDesignTokenForElement(element, token, value);
     }
 
     /**
      * Sets a design token value (override) for the selected nodes.
      *
-     * @param definition - The design token definition
+     * @param token - The design token definition
      * @param value - The value for this design token for the selected nodes
      */
-    public setDesignToken(definition: DesignTokenDefinition, value: any): void {
+    public setDesignToken(token: DesignToken<any>, value: any): void {
         const nodes = this.controller.selectedNodes;
 
         // console.log("--------------------------------");
-        // console.log("DesignTokenController.setDesignToken", definition, value, typeof value, nodes);
+        // console.log("DesignTokenController.setDesignToken", token, value, typeof value, nodes);
 
         nodes.forEach(node =>
-            this.setDesignTokenForNode(node, definition, value)
+            this.setDesignTokenForNode(node, token, value)
         );
 
         this.setupDesignTokenObservables();
 
-        this.controller.refreshSelectedNodes("setDesignToken " + definition.id);
+        this.controller.refreshSelectedNodes("setDesignToken " + token.name);
     }
 
     /**
      * Removes a design token value (override) from the selected nodes.
      *
-     * @param definition - The design token definition
+     * @param token - The design token definition
      */
-    public removeDesignToken(definition: DesignTokenDefinition): void {
+    public removeDesignToken(token: DesignToken<any>): void {
         const nodes = this.controller.selectedNodes;
 
         // console.log("--------------------------------");
-        // console.log("DesignTokenController.removeDesignToken", definition.id, nodes);
+        // console.log("DesignTokenController.removeDesignToken", token.name, nodes);
 
         nodes.forEach(node =>
-            this.setDesignTokenForNode(node, definition, null)
+            this.setDesignTokenForNode(node, token, null)
         );
 
         this.setupDesignTokenObservables();
 
-        this.controller.refreshSelectedNodes("removeDesignToken " + definition.id);
+        this.controller.refreshSelectedNodes("removeDesignToken " + token.name);
     }
 }
