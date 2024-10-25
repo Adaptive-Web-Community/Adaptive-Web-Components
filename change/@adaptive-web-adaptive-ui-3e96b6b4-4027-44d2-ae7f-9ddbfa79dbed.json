@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix module imports on windows",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

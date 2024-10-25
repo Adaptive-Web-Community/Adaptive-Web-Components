@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Designer: Support Figma async page loading model",
-  "packageName": "@adaptive-web/adaptive-ui-designer-core",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

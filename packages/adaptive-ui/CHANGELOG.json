@@ -2,6 +2,77 @@
   "name": "@adaptive-web/adaptive-ui",
   "entries": [
     {
+      "date": "Fri, 25 Oct 2024 03:02:05 GMT",
+      "tag": "@adaptive-web/adaptive-ui_v0.10.0",
+      "version": "0.10.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Turn on strict compilation mode"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "fix module imports on windows"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Add support for margin properties"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Added support for pseudo selectors in part conditions"
+          }
+        ],
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Add import capability to component anatomy definitions"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Add a few style properties"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Updating palette base color token type for better type safety"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Improve StyleProperty shorthand capabilities"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Adaptive UI: Added palette options for Okhsl"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Add support for looking up Token Groups in anatomy"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jul 2024 17:29:23 GMT",
       "tag": "@adaptive-web/adaptive-ui_v0.9.1",
       "version": "0.9.1",

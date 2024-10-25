@@ -1,8 +1,28 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Thu, 25 Jul 2024 17:29:23 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Oct 2024 03:02:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.10.0
+
+Fri, 25 Oct 2024 03:02:05 GMT
+
+### Minor changes
+
+- AUI: Add import capability to component anatomy definitions (47367562+bheston@users.noreply.github.com)
+- AUI: Add a few style properties (47367562+bheston@users.noreply.github.com)
+- Updating palette base color token type for better type safety (47367562+bheston@users.noreply.github.com)
+- AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added palette options for Okhsl (47367562+bheston@users.noreply.github.com)
+- AUI: Add support for looking up Token Groups in anatomy (47367562+bheston@users.noreply.github.com)
+
+### Patches
+
+- Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
+- fix module imports on windows (32497422+KingOfTac@users.noreply.github.com)
+- Add support for margin properties (47367562+bheston@users.noreply.github.com)
+- AUI: Added support for pseudo selectors in part conditions (47367562+bheston@users.noreply.github.com)
 
 ## 0.9.1
 

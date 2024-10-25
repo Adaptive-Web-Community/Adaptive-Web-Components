@@ -1,8 +1,22 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
-This log was last generated on Thu, 25 Jul 2024 17:29:23 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Oct 2024 03:02:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Fri, 25 Oct 2024 03:02:05 GMT
+
+### Minor changes
+
+- Designer: Support Figma async page loading model (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.10.0
+- Bump @adaptive-web/adaptive-ui-designer-core to v0.4.0
+
+### Patches
+
+- Add support for margin properties (47367562+bheston@users.noreply.github.com)
 
 ## 0.4.1
 

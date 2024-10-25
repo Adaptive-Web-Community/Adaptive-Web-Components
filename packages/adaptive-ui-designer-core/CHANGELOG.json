@@ -2,6 +2,53 @@
   "name": "@adaptive-web/adaptive-ui-designer-core",
   "entries": [
     {
+      "date": "Fri, 25 Oct 2024 03:02:05 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-core_v0.4.0",
+      "version": "0.4.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Updating palette base color token type for better type safety"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "AUI: Improve StyleProperty shorthand capabilities"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Designer: Support Figma async page loading model"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Designer: Fix parent fill color handling"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.10.0",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b"
+          }
+        ],
+        "patch": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "80ef2f24e72d13317fa14c1bbe11ab64e025575b",
+            "comment": "Turn on strict compilation mode"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 25 Jul 2024 17:29:23 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-core_v0.3.1",
       "version": "0.3.1",

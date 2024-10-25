@@ -1,8 +1,21 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
-This log was last generated on Thu, 25 Jul 2024 17:29:23 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Oct 2024 03:02:05 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.0
+
+Fri, 25 Oct 2024 03:02:05 GMT
+
+### Minor changes
+
+- AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.10.0
+
+### Patches
+
+- Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
 
 ## 0.7.4
 
