@@ -1,8 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-core
 
-This log was last generated on Fri, 25 Oct 2024 03:02:05 GMT and should not be manually modified.
+This log was last generated on Fri, 01 Nov 2024 01:04:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.4.1
+
+Fri, 01 Nov 2024 01:04:24 GMT
+
+### Patches
+
+- Bump @adaptive-web/adaptive-ui to v0.11.0
 
 ## 0.4.0
 
