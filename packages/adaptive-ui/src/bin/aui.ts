@@ -97,11 +97,18 @@ program.command("compile-json-anatomy <anatomyPath>")
                 const impWithExt = imp.toLowerCase().endsWith(".json") ? imp : `${imp}.json`;
                 const impFilePath = path.format({ ...path.parse(path.join(path.parse(jsonPath).dir, impWithExt)) });
                 const impData = (await fsp.readFile(impFilePath)).toString();
-                const impJsonData = JSON.parse(impData);
-                // If `parts` are in the import, they are for validation/consistency of that file, but we want to use the parts
-                // list from the main anatomy definition.
-                // Consider extending this so imports can add their own known parts.
-                delete impJsonData.parts;
+                const impJsonData = JSON.parse(impData) as SerializableAnatomy;
+
+                // If `parts` are in the import, they are either for validation/consistency of that file
+                // or additive to the main anatomy definition.
+                // If the part selector is empty, remove it an use the value from the main anatomy definition.
+                for (const part in impJsonData.parts) {
+                    if (impJsonData.parts.hasOwnProperty(part)) {
+                        if (impJsonData.parts[part] === "") {
+                            delete impJsonData.parts[part];
+                        }
+                    }
+                }
 
                 jsonData = deepmerge(jsonData, impJsonData);
             }
