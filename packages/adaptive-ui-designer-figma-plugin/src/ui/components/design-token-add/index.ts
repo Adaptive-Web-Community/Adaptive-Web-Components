@@ -8,21 +8,24 @@ import {
     ref,
     repeat,
 } from "@microsoft/fast-element";
-import { staticallyCompose } from "@microsoft/fast-foundation";
-import { DesignTokenDefinition } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
 import CheckmarkIcon from "../../assets/checkmark.svg";
 import { DesignTokenField } from "../design-token-field/index.js";
+import { UIDesignTokenValue } from "../../ui-controller-tokens.js";
+import { designTokenTitle } from "../../util.js";
 
 DesignTokenField;
+
+export type AddEventDetail = UIDesignTokenValue;
 
 const template = html<DesignTokenAdd>`
     <select @change="${(x, c) => x.selectHandler(c)}" ${ref("list")}>
         <option selected value="-">Add design token override...</option>
         ${repeat(
             x => x.designTokens,
-            html<DesignTokenDefinition, DesignTokenAdd>`
-                <option value="${x => x.id}">
-                    ${x => x.title} (${x => x.groupTitle})
+            html<DesignToken<any>, DesignTokenAdd>`
+                <option value="${x => x.name}">
+                    ${x => designTokenTitle(x)}
                 </option>
             `
         )}
@@ -67,28 +70,28 @@ const styles = css`
 })
 export class DesignTokenAdd extends FASTElement {
     @observable
-    designTokens: DesignTokenDefinition[] = [];
+    designTokens: DesignToken<any>[] = [];
 
     @observable
-    selectedDesignToken?: DesignTokenDefinition;
+    selectedDesignToken?: DesignToken<any>;
 
     list?: HTMLSelectElement;
 
     field?: DesignTokenField;
 
     selectHandler(c: ExecutionContext) {
-        const selectedTokenId = (c.event.target as unknown as HTMLSelectElement).value;
+        const selectedTokenName = (c.event.target as unknown as HTMLSelectElement).value;
 
-        if (selectedTokenId !== "-") {
+        if (selectedTokenName !== "-") {
             this.selectedDesignToken = this.designTokens.find((token) => {
-                return token.id === selectedTokenId;
+                return token.name === selectedTokenName;
             });
             if (this.list) {
                 this.list.value = "-";
             }
 
             if (this.field) {
-                this.field.value = "" + this.selectedDesignToken?.token.default;
+                this.field.value = "" + this.selectedDesignToken?.default;
             }
         }
     }
@@ -96,9 +99,9 @@ export class DesignTokenAdd extends FASTElement {
     addHandler() {
         if (this.field?.value) {
             this.$emit("add", {
-                definition: this.selectedDesignToken,
+                token: this.selectedDesignToken,
                 value: this.field.value,
-            });
+            } as AddEventDetail);
 
             this.selectedDesignToken = undefined;
         }

@@ -7,12 +7,15 @@ import {
     repeat,
     when,
 } from "@microsoft/fast-element";
-import { staticallyCompose } from "@microsoft/fast-foundation";
+import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
 import SubtractIcon from "../../assets/subtract.svg";
 import type { UIDesignTokenValue } from "../../ui-controller-tokens.js";
-import { DesignTokenField } from "../design-token-field/index.js";
+import { ChangeEventDetail, DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;
+
+export type TokenChangeEventDetail = UIDesignTokenValue;
+export type DetachEventDetail = DesignToken<any>;
 
 const template = html<DesignTokensForm>`
     <ul>
@@ -21,10 +24,10 @@ const template = html<DesignTokensForm>`
             html<UIDesignTokenValue, DesignTokensForm>`
                 <li>
                     <designer-design-token-field
-                        :designToken=${x => x.definition}
+                        :designToken=${x => x.token}
                         :value=${x => x.value}
                         @change="${(x, c) =>
-                            c.parent.changeHandler(x, c.event as CustomEvent)}"
+                            c.parent.changeHandler(x, (c.event as CustomEvent).detail as ChangeEventDetail)}"
                     ></designer-design-token-field>
                     <adaptive-button
                         appearance="stealth"
@@ -69,9 +72,9 @@ export class DesignTokensForm extends FASTElement {
     @observable
     designTokens: UIDesignTokenValue[] = [];
 
-    changeHandler(token: UIDesignTokenValue, e: CustomEvent) {
-        token.value = e.detail;
-        this.$emit("tokenChange", token);
+    changeHandler(token: UIDesignTokenValue, value: string) {
+        token.value = value;
+        this.$emit("tokenChange", token as TokenChangeEventDetail);
     }
 
     detachHandler(token: UIDesignTokenValue) {
@@ -83,6 +86,6 @@ export class DesignTokensForm extends FASTElement {
         });
         this.designTokens.splice(detachIndex, 1);
 
-        this.$emit("detach", token.definition);
+        this.$emit("detach", token.token as DetachEventDetail);
     }
 }

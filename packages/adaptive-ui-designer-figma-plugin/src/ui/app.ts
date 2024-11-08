@@ -17,7 +17,7 @@ import type { PluginMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
-import { DesignTokenAdd, DesignTokensForm, Drawer, StyleTokenItem, TokenGlyph, TokenGlyphType } from "./components/index.js";
+import { AddEventDetail, DesignTokenAdd, DesignTokensForm, DetachEventDetail, Drawer, StyleTokenItem, TokenChangeEventDetail, TokenGlyph, TokenGlyphType } from "./components/index.js";
 
 StyleTokenItem;
 TokenGlyph;
@@ -411,8 +411,8 @@ const template = html<App>`
                                 :designTokens=${(x) => x.controller.designTokens.availableDesignTokens}
                                 @add=${(x, c) =>
                                     x.controller.designTokens.setDesignToken(
-                                        (c.event as CustomEvent).detail.definition,
-                                        (c.event as CustomEvent).detail.value
+                                        ((c.event as CustomEvent).detail as AddEventDetail).token,
+                                        ((c.event as CustomEvent).detail as AddEventDetail).value
                                     )}
                             ></designer-design-token-add>
                             <adaptive-divider></adaptive-divider>
@@ -422,10 +422,13 @@ const template = html<App>`
                                 :designTokens=${(x) => x.controller.designTokens.designTokenValues}
                                 @tokenChange=${(x, c) =>
                                     x.controller.designTokens.setDesignToken(
-                                        (c.event as CustomEvent).detail.definition,
-                                        (c.event as CustomEvent).detail.value
+                                        ((c.event as CustomEvent).detail as TokenChangeEventDetail).token,
+                                        ((c.event as CustomEvent).detail as TokenChangeEventDetail).value
                                     )}
-                                @detach=${(x, c) => x.controller.designTokens.removeDesignToken((c.event as CustomEvent).detail)}
+                                @detach=${(x, c) =>
+                                    x.controller.designTokens.removeDesignToken(
+                                        ((c.event as CustomEvent).detail as DetachEventDetail)
+                                    )}
                             ></designer-design-tokens-form>
                         </div>
                     </div>
