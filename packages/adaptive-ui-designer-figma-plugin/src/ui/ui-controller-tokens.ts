@@ -66,9 +66,9 @@ export class DesignTokenController {
         this.designTokenValues = this.getDesignTokenValues();
 
         // Get all design tokens that can be added, which is the full list except any already applied.
-        this.availableDesignTokens = this.controller.designTokenRegistry.entries.filter((definition) =>
-            this.designTokenValues?.find((appliedToken) => appliedToken.token.name === definition.id) === undefined
-        ).map(def => def.token);
+        this.availableDesignTokens = this.controller.designTokenRegistry.entries.filter((token) =>
+            this.designTokenValues?.find((appliedToken) => appliedToken.token.name === token.name) === undefined
+        );
     }
 
     /**
@@ -92,11 +92,11 @@ export class DesignTokenController {
 
         const allDesignTokens = this.controller.designTokenRegistry.entries;
 
-        allDesignTokens.forEach(def => {
-            if (tokenValues.has(def.id)) {
-                const set = tokenValues.get(def.id);
+        allDesignTokens.forEach(token => {
+            if (tokenValues.has(token.name)) {
+                const set = tokenValues.get(token.name);
                 designTokens.push({
-                    token: def.token,
+                    token: token,
                     value: set.size === 1 ? set.values().next().value : undefined,
                     multipleValues: set.size > 1 ? [...set].join(", ") : undefined,
                 });

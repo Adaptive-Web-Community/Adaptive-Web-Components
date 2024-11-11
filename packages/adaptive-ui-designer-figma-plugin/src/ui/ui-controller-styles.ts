@@ -1,6 +1,9 @@
+import { sentenceCase } from "change-case";
+import { DesignToken } from "@microsoft/fast-foundation";
 import { StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
-import { AppliedDesignToken, DesignTokenDefinition, nameToTitle, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdaptiveDesignToken, AppliedDesignToken, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
+import { designTokenTitle } from "./util.js";
 
 /**
  * A display definition for a single style module.
@@ -23,6 +26,11 @@ export interface AppliedDesignTokenItem {
     targets: StyleProperty[];
     tokenID: string;
     value: string;
+}
+
+function nameToTitle(name: string): string {
+    const base = name.replace(/-/g, ' ').replace(/density_/, '');
+    return sentenceCase(base);
 }
 
 /**
@@ -174,8 +182,8 @@ export class StylesController {
      * @param targets - Style property types
      * @returns List of available appliable design tokens
      */
-    public getAppliableDesignTokenOptions(targets: StyleProperty[]): DesignTokenDefinition[] {
-        const tokens: DesignTokenDefinition[] = [];
+    public getAppliableDesignTokenOptions(targets: StyleProperty[]): AdaptiveDesignToken[] {
+        const tokens: AdaptiveDesignToken[] = [];
 
         // Collect the individual tokens available for the requested targets
         // TODO: Handle multiple values better
@@ -187,9 +195,9 @@ export class StylesController {
         });
 
         // Group by token name
-        return tokens.reduce((accumulated: DesignTokenDefinition[], current: DesignTokenDefinition): DesignTokenDefinition[] => {
-            const found = accumulated.find((item) => {
-                return item.token.name === current.token.name
+        return tokens.reduce((accumulated: AdaptiveDesignToken[], current: AdaptiveDesignToken): AdaptiveDesignToken[] => {
+            const found = accumulated.find((token) => {
+                return token.name === current.name
             });
 
             if (!found) {
@@ -197,16 +205,16 @@ export class StylesController {
             }
 
             return accumulated;
-        }, []).sort((a, b): number => a.title.localeCompare(b.title));
+        }, []).sort((a, b): number => designTokenTitle(a).localeCompare(designTokenTitle(b)));
     }
 
     /**
-     * Gets the full design token definition for a token by ID.
+     * Gets the design token by ID.
      *
      * @param id - The design token ID
-     * @returns The full design token definition
+     * @returns The design token
      */
-    public getAppliableDesignTokenDefinition(id: string): DesignTokenDefinition | null {
+    public getAppliableDesignToken(id: string): DesignToken<any> | null {
         return this.controller.appliableDesignTokenRegistry.get(id);
     }
 
@@ -227,15 +235,15 @@ export class StylesController {
      * Applies a design token to the selected nodes.
      *
      * @param targets - The target style property types
-     * @param token - The design token definition
+     * @param token - The design token
      */
-    public applyDesignToken(targets: StyleProperty[], token: DesignTokenDefinition): void {
+    public applyDesignToken(targets: StyleProperty[], token: DesignToken<any>): void {
         this.controller.selectedNodes.forEach(node => {
             // console.log("--------------------------------");
             // console.log("StylesController.applyDesignToken - targets", targets, token);
 
             targets.forEach(target =>
-                node.appliedDesignTokens.set(target, new AppliedDesignToken(token.id, null))
+                node.appliedDesignTokens.set(target, new AppliedDesignToken(token.name, null))
             );
 
             // console.log("  added applied design token to node", node);

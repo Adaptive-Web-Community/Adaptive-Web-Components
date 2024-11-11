@@ -10,14 +10,14 @@ import {
     neutralStrokeReadableRest,
     neutralStrokeStrongRest
 } from "@adaptive-web/adaptive-ui/reference";
-import type { PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import type { AdaptiveDesignToken, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
-import { DesignTokenDefinition } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
 import { AddEventDetail, DesignTokenAdd, DesignTokensForm, DetachEventDetail, Drawer, StyleTokenItem, TokenChangeEventDetail, TokenGlyph, TokenGlyphType } from "./components/index.js";
+import { designTokenTitle } from "./util.js";
 
 StyleTokenItem;
 TokenGlyph;
@@ -108,7 +108,10 @@ const appliedTokensTemplate = (
                     (_) => tokens!,
                     html<AppliedDesignTokenItem, App>`
                         <designer-style-token-item
-                            title=${(x, c) => c.parent.controller.styles.getAppliableDesignTokenDefinition(x.tokenID)?.title}
+                            title=${(x, c) => {
+                                const token = c.parent.controller.styles.getAppliableDesignToken(x.tokenID);
+                                return token ? designTokenTitle(token) : x.tokenID;
+                            }}
                             value=${(x) => x.value}
                             glyphType=${(_) => glyphType}
                         >
@@ -144,10 +147,10 @@ const availableTokensTemplate = (
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.styles.getAppliableDesignTokenOptions(tokenTypes),
-                    html<DesignTokenDefinition, App>`
+                    html<AdaptiveDesignToken, App>`
                         <designer-style-token-item
-                            title=${(x) => x.title}
-                            value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x.token)}
+                            title=${(x) => designTokenTitle(x)}
+                            value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x)}
                             glyphType=${(_) => glyphType}
                             content-button
                             @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}

@@ -1,12 +1,4 @@
-import { sentenceCase } from "change-case";
-import type { DesignToken } from "@microsoft/fast-foundation";
-import {
-    Color,
-    densityAdjustmentUnits,
-    DesignTokenMetadata,
-    DesignTokenType,
-    TypedCSSDesignToken
-} from "@adaptive-web/adaptive-ui"
+import { densityAdjustmentUnits } from "@adaptive-web/adaptive-ui"
 import {
     accentBaseColor,
     accentFillDiscernible,
@@ -154,13 +146,12 @@ import {
     warningStrokeSubtle,
     wcagContrastLevel,
 } from "@adaptive-web/adaptive-ui/reference";
-import { DesignTokenDefinition, DesignTokenRegistry, FormControlId } from "./design-token-registry.js";
-import { blackOrWhiteDiscernibleRest, blackOrWhiteReadableRest, docBaseColor, docFill, docForeground } from "./custom-recipes.js";
+import { AdaptiveDesignToken, DesignTokenRegistry } from "./design-token-registry.js";
 
 /**
  * A collection of DesignTokens for adding to a {@link DesignTokenRegistry}.
  */
-type DesignTokenStore<T = any> = Array<DesignToken<T> & DesignTokenMetadata>;
+type DesignTokenStore = Array<AdaptiveDesignToken>;
 
 const designTokens: DesignTokenStore = [
     accentBaseColor,
@@ -175,7 +166,6 @@ const designTokens: DesignTokenStore = [
     layerFillHoverDelta,
     layerFillActiveDelta,
     layerFillFocusDelta,
-    docBaseColor,
     wcagContrastLevel,
     densityAdjustmentUnits,
     densityControl.horizontalPaddingUnits,
@@ -203,7 +193,7 @@ const designTokens: DesignTokenStore = [
     strokeStrongRestDelta,
 ];
 
-const colorTokens: DesignTokenStore<Color> = [
+const colorTokens: DesignTokenStore = [
     // Layer
     layerFillFixedMinus4,
     layerFillFixedMinus3,
@@ -297,11 +287,6 @@ const colorTokens: DesignTokenStore<Color> = [
     neutralStrokeDiscernible.rest,
     neutralStrokeReadable.rest,
     neutralStrokeStrong.rest,
-    // Custom
-    blackOrWhiteDiscernibleRest,
-    blackOrWhiteReadableRest,
-    docForeground,
-    docFill,
 ];
 
 const strokeWidthTokens: DesignTokenStore = [
@@ -309,7 +294,7 @@ const strokeWidthTokens: DesignTokenStore = [
     focusStrokeThickness,
 ];
 
-const densityTokens: DesignTokenStore<string> = [
+const densityTokens: DesignTokenStore = [
     densityControl.horizontalPadding,
     densityControl.verticalPadding,
     densityControl.horizontalGap,
@@ -324,7 +309,7 @@ const densityTokens: DesignTokenStore<string> = [
     densityLayer.verticalGap,
 ];
 
-const cornerRadiusTokens: DesignTokenStore<string> = [
+const cornerRadiusTokens: DesignTokenStore = [
     cornerRadiusControl,
     cornerRadiusLayer,
 ];
@@ -366,34 +351,13 @@ const effectsTokens: DesignTokenStore = [
     elevationDialog,
 ];
 
-export function nameToTitle(name: string): string {
-    const base = name.replace(/-/g, ' ').replace(/density_/, '');
-    return sentenceCase(base);
-}
-
-function registerStore<T>(
-    store: DesignTokenStore<T>,
-    groupTitle: string | undefined, // Phasing this out. Currently only used on the "Design Tokens" tab.
+function registerStore(
+    store: DesignTokenStore,
     registry: DesignTokenRegistry
 ): void {
     store.forEach((token) => {
         // console.log("registerStore", token);
-
-        // Handle legacy non-hierarchical format for `custom-recipes.ts`.
-        const title = nameToTitle(token.name.indexOf(".") > -1 ? token.name.split(".").slice(1).join("-") : token.name);
-        const intendedFor = (token instanceof TypedCSSDesignToken ? (token as TypedCSSDesignToken<any>).intendedFor : undefined);
-        const formControlId = token.type === DesignTokenType.color ? FormControlId.color : FormControlId.text;
-
-        const definition: DesignTokenDefinition = {
-            id: token.name,
-            title,
-            groupTitle,
-            intendedFor,
-            formControlId,
-            token,
-        };
-
-        registry.register(definition);
+        registry.register(token);
     });
 }
 
@@ -403,18 +367,18 @@ function registerStore<T>(
 // For now we've grouped the color tokens since by default those are all recipes/derived.
 
 export const registerTokens = (registry: DesignTokenRegistry) => {
-    registerStore(designTokens, "Global tokens", registry);
+    registerStore(designTokens, registry);
     // This could be optimized, but some tokens are intended to be modified as well as applied as style properties.
-    registerStore(strokeWidthTokens, "Stroke width", registry);
-    registerStore(cornerRadiusTokens, "Corner radius", registry);
-    registerStore(textTokens, "Text", registry);
-    registerStore(effectsTokens, "Effects", registry);
+    registerStore(strokeWidthTokens, registry);
+    registerStore(cornerRadiusTokens, registry);
+    registerStore(textTokens, registry);
+    registerStore(effectsTokens, registry);
 };
 
 export const registerAppliableTokens = (registry: DesignTokenRegistry) => {
-    registerStore(colorTokens, undefined, registry);
-    registerStore(strokeWidthTokens, undefined, registry);
-    registerStore(densityTokens, undefined, registry);
-    registerStore(cornerRadiusTokens, undefined, registry);
-    registerStore(textTokens, undefined, registry);
+    registerStore(colorTokens, registry);
+    registerStore(strokeWidthTokens, registry);
+    registerStore(densityTokens, registry);
+    registerStore(cornerRadiusTokens, registry);
+    registerStore(textTokens, registry);
 };
