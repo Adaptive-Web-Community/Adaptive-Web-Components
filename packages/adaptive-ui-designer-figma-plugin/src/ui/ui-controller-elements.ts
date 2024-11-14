@@ -128,12 +128,12 @@ export class ElementsController {
         element: FASTElement
     ): (value: DesignTokenValue, key: string) => void {
         return (value: DesignTokenValue, key: string): void => {
-            const def = this.controller.designTokenRegistry.get(key);
-            // console.log("      setting token", key, def, value.value);
-            if (def) {
+            const token = this.controller.designTokenRegistry.get(key);
+            // console.log("      setting token", key, token, value.value);
+            if (token) {
                 this.setDesignTokenForElement(
                     element,
-                    def.token,
+                    token,
                     value.value
                 );
             }
@@ -170,10 +170,10 @@ export class ElementsController {
         // Handle any additional data. Any keys that are for a design token will be set.
         // console.log("    setting additional data");
         node.additionalData.forEach((value, key) => {
-            const def = this.controller.designTokenRegistry.get(key);
-            if (def) {
-                // console.log("      setting token value on element", def, "value", value);
-                this.setDesignTokenForElement(nodeElement, def.token, value);
+            const token = this.controller.designTokenRegistry.get(key);
+            if (token) {
+                // console.log("      setting token value on element", token, "value", value);
+                this.setDesignTokenForElement(nodeElement, token, value);
             }
         }, this);
 

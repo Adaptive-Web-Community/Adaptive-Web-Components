@@ -222,7 +222,7 @@ export class UIController {
                     const token = registry.get(applied.tokenID);
                     if (token) {
                         allApplied.set(target, {
-                            value: token.token as CSSDesignToken<any>,
+                            value: token as CSSDesignToken<any>,
                             source,
                         });
                     } else {
