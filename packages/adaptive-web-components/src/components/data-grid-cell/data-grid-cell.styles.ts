@@ -6,6 +6,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
+        grid-column: ${x => x.gridColumn ?? 0};
         overflow: hidden;
         white-space: nowrap;
     }
