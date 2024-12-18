@@ -79,7 +79,7 @@ import {
     warningStrokeReadableRecipe,
     warningStrokeSafety,
 } from "./color.js";
-import { densityControl, densityItemContainer, densityLayer } from "./density.js";
+import { densityControl, densityControlList, densityItemContainer, densityLayer, densityText } from "./density.js";
 import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
 import { layerFillFixedPlus1 } from "./layer.js";
 import {
@@ -160,6 +160,22 @@ export const roundShapeStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Style module for the density and spacing of plain text.
+ *
+ * By default, sets the padding and gap, useful for label and value pairs or stacked lines of text.
+ *
+ * @public
+ */
+export const textDensityStyles: Styles = Styles.fromProperties(
+    {
+        paddingHorizontal: densityText.horizontalPadding,
+        paddingVertical: densityText.verticalPadding,
+        gap: densityText.horizontalGap,
+    },
+    "density.text",
+);
+
+/**
  * Style module for the density and spacing of a control.
  *
  * By default, sets the padding and gap, useful for buttons, list items, etc.
@@ -234,13 +250,28 @@ export const autofillInnerDensityStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Style module for the density and spacing of a list of controls.
+ *
+ * By default, sets the padding and gap, useful for menus, lists of buttons, etc.
+ *
+ * @public
+ */
+export const controlListDensityStyles: Styles = Styles.fromProperties(
+    {
+        paddingHorizontal: densityControlList.horizontalPadding,
+        paddingVertical: densityControlList.verticalPadding,
+        gap: densityControlList.horizontalGap,
+    },
+    "density.control-list",
+);
+
+/**
  * Style module for the density and spacing of an item container.
  *
  * By default, sets the padding and gap, useful for buttons, list items, etc.
  *
- * See {@link controlDensityStyles} or {@link autofillOuterDensityStyles}.
- *
  * @public
+ * @deprecated Use controlListDensityStyles
  */
 export const itemContainerDensityStyles: Styles = Styles.fromProperties(
     {
