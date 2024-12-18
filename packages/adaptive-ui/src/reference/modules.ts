@@ -1313,7 +1313,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadable.rest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadable.rest, neutralStrokeReadable.disabled),
     },
     "color.neutral-foreground-readable-element",
 );
