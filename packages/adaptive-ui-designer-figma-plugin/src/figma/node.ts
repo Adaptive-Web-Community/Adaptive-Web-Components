@@ -897,7 +897,6 @@ export class FigmaPluginNode extends PluginNode {
                                 b: color.b,
                                 a: color.alpha || 1,
                             },
-                            boundVariables: {}, // HACK this should be optional in their API
                         };
                         return stop;
                     });
