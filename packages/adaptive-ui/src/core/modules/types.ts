@@ -346,6 +346,7 @@ export const StyleProperty = {
     layoutDirection: "layoutDirection",
     layoutMainAxisAlignItems: "layoutMainAxisAlignItems",
     layoutCrossAxisAlignItems: "layoutCrossAxisAlignItems",
+    layoutWrap: "layoutWrap",
     opacity: "opacity",
     cursor: "cursor",
     outlineColor: "outlineColor",
