@@ -634,6 +634,7 @@ export const StyleProperty: {
     readonly layoutDirection: "layoutDirection";
     readonly layoutMainAxisAlignItems: "layoutMainAxisAlignItems";
     readonly layoutCrossAxisAlignItems: "layoutCrossAxisAlignItems";
+    readonly layoutWrap: "layoutWrap";
     readonly opacity: "opacity";
     readonly cursor: "cursor";
     readonly outlineColor: "outlineColor";

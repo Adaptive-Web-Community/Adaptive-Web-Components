@@ -97,6 +97,8 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "justify-content";
         case StyleProperty.layoutCrossAxisAlignItems:
             return "align-items";
+        case StyleProperty.layoutWrap:
+            return "flex-wrap";
         case StyleProperty.opacity:
             return "opacity";
         case StyleProperty.cursor:
