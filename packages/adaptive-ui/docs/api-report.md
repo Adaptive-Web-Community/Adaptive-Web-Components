@@ -251,14 +251,10 @@ export class DensityPaddingAndGapTokenGroup implements TokenGroup {
 }
 
 // @public
-export class DesignTokenMetadata {
-    // (undocumented)
-    protected init(type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): void;
-    get intendedFor(): StyleProperty[] | undefined;
-    protected set intendedFor(value: StyleProperty[] | undefined);
-    get type(): DesignTokenType;
-    protected set type(value: DesignTokenType);
-}
+export type DesignTokenMetadata = {
+    readonly type: DesignTokenType;
+    readonly intendedFor?: StyleProperty[];
+};
 
 // @public
 export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
@@ -381,7 +377,7 @@ export interface InteractiveSwatchSet extends InteractiveValues<Swatch | null> {
 export function interactiveSwatchSetAsOverlay(set: InteractiveSwatchSet, reference: Swatch, asOverlay: boolean): InteractiveSwatchSet;
 
 // @public
-export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveValues<TypedCSSDesignToken<T>> {
+export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {
 }
 
 // @public
@@ -410,6 +406,14 @@ export function isDark(color: RelativeLuminance): boolean;
 
 // @public
 export function luminanceSwatch(luminance: number): Swatch;
+
+// @public (undocumented)
+export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & {
+    [P in K]?: T[P];
+};
+
+// @public (undocumented)
+export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 // @public
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
@@ -733,8 +737,8 @@ export class Swatch extends Color {
 export function swatchAsOverlay(swatch: Swatch | null, reference: Swatch, asOverlay: boolean): Swatch | null;
 
 // @public
-export interface TokenGroup {
-    intendedFor?: StyleProperty | StyleProperty[];
+export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "type"> {
+    intendedFor?: StyleProperty[];
     name: string;
     type?: DesignTokenType;
 }

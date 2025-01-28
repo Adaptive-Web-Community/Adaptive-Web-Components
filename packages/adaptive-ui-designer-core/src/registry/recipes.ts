@@ -1,4 +1,4 @@
-import { densityAdjustmentUnits } from "@adaptive-web/adaptive-ui"
+import { densityAdjustmentUnits, DesignTokenMetadata } from "@adaptive-web/adaptive-ui"
 import {
     accentBaseColor,
     accentFillDiscernible,
@@ -148,12 +148,16 @@ import {
     warningStrokeSubtle,
     wcagContrastLevel,
 } from "@adaptive-web/adaptive-ui/reference";
-import { AdaptiveDesignToken, DesignTokenRegistry } from "./design-token-registry.js";
+import { AdaptiveDesignToken, AdaptiveDesignTokenOrGroup, DesignTokenRegistry } from "./design-token-registry.js";
 
 /**
  * A collection of DesignTokens for adding to a {@link DesignTokenRegistry}.
  */
-type DesignTokenStore = Array<AdaptiveDesignToken>;
+type Store<T extends { name: string } & DesignTokenMetadata> = Array<T>;
+
+type DesignTokenStore = Store<AdaptiveDesignToken>;
+
+type DesignTokenOrGroupStore = Store<AdaptiveDesignTokenOrGroup>;
 
 const designTokens: DesignTokenStore = [
     accentBaseColor,
@@ -203,7 +207,7 @@ const designTokens: DesignTokenStore = [
     strokeStrongRestDelta,
 ];
 
-const colorTokens: DesignTokenStore = [
+const colorTokens: DesignTokenOrGroupStore = [
     // Layer
     layerFillFixedMinus4,
     layerFillFixedMinus3,
@@ -214,89 +218,89 @@ const colorTokens: DesignTokenStore = [
     layerFillFixedPlus2,
     layerFillFixedPlus3,
     layerFillFixedPlus4,
-    layerFillInteractive.rest,
+    layerFillInteractive,
     // Fill
     accentBaseColor,
-    accentFillStealth.rest,
-    accentFillSubtle.rest,
-    accentFillIdeal.rest,
-    accentFillDiscernible.rest,
-    accentFillReadable.rest,
+    accentFillStealth,
+    accentFillSubtle,
+    accentFillIdeal,
+    accentFillDiscernible,
+    accentFillReadable,
     highlightBaseColor,
-    highlightFillStealth.rest,
-    highlightFillSubtle.rest,
-    highlightFillIdeal.rest,
-    highlightFillDiscernible.rest,
-    highlightFillReadable.rest,
+    highlightFillStealth,
+    highlightFillSubtle,
+    highlightFillIdeal,
+    highlightFillDiscernible,
+    highlightFillReadable,
     criticalBaseColor,
-    criticalFillStealth.rest,
-    criticalFillSubtle.rest,
-    criticalFillIdeal.rest,
-    criticalFillDiscernible.rest,
-    criticalFillReadable.rest,
+    criticalFillStealth,
+    criticalFillSubtle,
+    criticalFillIdeal,
+    criticalFillDiscernible,
+    criticalFillReadable,
     warningBaseColor,
-    warningFillStealth.rest,
-    warningFillSubtle.rest,
-    warningFillIdeal.rest,
-    warningFillDiscernible.rest,
-    warningFillReadable.rest,
+    warningFillStealth,
+    warningFillSubtle,
+    warningFillIdeal,
+    warningFillDiscernible,
+    warningFillReadable,
     successBaseColor,
-    successFillStealth.rest,
-    successFillSubtle.rest,
-    successFillIdeal.rest,
-    successFillDiscernible.rest,
-    successFillReadable.rest,
+    successFillStealth,
+    successFillSubtle,
+    successFillIdeal,
+    successFillDiscernible,
+    successFillReadable,
     infoBaseColor,
-    infoFillStealth.rest,
-    infoFillSubtle.rest,
-    infoFillIdeal.rest,
-    infoFillDiscernible.rest,
-    infoFillReadable.rest,
+    infoFillStealth,
+    infoFillSubtle,
+    infoFillIdeal,
+    infoFillDiscernible,
+    infoFillReadable,
     neutralBaseColor,
-    neutralFillStealth.rest,
-    neutralFillSubtle.rest,
-    neutralFillIdeal.rest,
-    neutralFillDiscernible.rest,
-    neutralFillReadable.rest,
+    neutralFillStealth,
+    neutralFillSubtle,
+    neutralFillIdeal,
+    neutralFillDiscernible,
+    neutralFillReadable,
     // Stroke
     focusStroke,
     focusStrokeOuter,
     focusStrokeInner,
-    accentStrokeSafety.rest,
-    accentStrokeSubtle.rest,
-    accentStrokeDiscernible.rest,
-    accentStrokeReadable.rest,
-    accentStrokeStrong.rest,
-    highlightStrokeSafety.rest,
-    highlightStrokeSubtle.rest,
-    highlightStrokeDiscernible.rest,
-    highlightStrokeReadable.rest,
-    highlightStrokeStrong.rest,
-    criticalStrokeSafety.rest,
-    criticalStrokeSubtle.rest,
-    criticalStrokeDiscernible.rest,
-    criticalStrokeReadable.rest,
-    criticalStrokeStrong.rest,
-    warningStrokeSafety.rest,
-    warningStrokeSubtle.rest,
-    warningStrokeDiscernible.rest,
-    warningStrokeReadable.rest,
-    warningStrokeStrong.rest,
-    successStrokeSafety.rest,
-    successStrokeSubtle.rest,
-    successStrokeDiscernible.rest,
-    successStrokeReadable.rest,
-    successStrokeStrong.rest,
-    infoStrokeSafety.rest,
-    infoStrokeSubtle.rest,
-    infoStrokeDiscernible.rest,
-    infoStrokeReadable.rest,
-    infoStrokeStrong.rest,
-    neutralStrokeSafety.rest,
-    neutralStrokeSubtle.rest,
-    neutralStrokeDiscernible.rest,
-    neutralStrokeReadable.rest,
-    neutralStrokeStrong.rest,
+    accentStrokeSafety,
+    accentStrokeSubtle,
+    accentStrokeDiscernible,
+    accentStrokeReadable,
+    accentStrokeStrong,
+    highlightStrokeSafety,
+    highlightStrokeSubtle,
+    highlightStrokeDiscernible,
+    highlightStrokeReadable,
+    highlightStrokeStrong,
+    criticalStrokeSafety,
+    criticalStrokeSubtle,
+    criticalStrokeDiscernible,
+    criticalStrokeReadable,
+    criticalStrokeStrong,
+    warningStrokeSafety,
+    warningStrokeSubtle,
+    warningStrokeDiscernible,
+    warningStrokeReadable,
+    warningStrokeStrong,
+    successStrokeSafety,
+    successStrokeSubtle,
+    successStrokeDiscernible,
+    successStrokeReadable,
+    successStrokeStrong,
+    infoStrokeSafety,
+    infoStrokeSubtle,
+    infoStrokeDiscernible,
+    infoStrokeReadable,
+    infoStrokeStrong,
+    neutralStrokeSafety,
+    neutralStrokeSubtle,
+    neutralStrokeDiscernible,
+    neutralStrokeReadable,
+    neutralStrokeStrong,
 ];
 
 const strokeWidthTokens: DesignTokenStore = [
@@ -369,9 +373,9 @@ const effectsTokens: DesignTokenStore = [
     elevationDialog,
 ];
 
-function registerStore(
-    store: DesignTokenStore,
-    registry: DesignTokenRegistry
+function registerStore<T extends { name: string } & DesignTokenMetadata>(
+    store: Store<T>,
+    registry: DesignTokenRegistry<T>
 ): void {
     store.forEach((token) => {
         // console.log("registerStore", token);
@@ -384,7 +388,7 @@ function registerStore(
 // interface for mapping tokens to other recipes or fixed values as well.
 // For now we've grouped the color tokens since by default those are all recipes/derived.
 
-export const registerTokens = (registry: DesignTokenRegistry) => {
+export const registerTokens = (registry: DesignTokenRegistry<AdaptiveDesignToken>) => {
     registerStore(designTokens, registry);
     // This could be optimized, but some tokens are intended to be modified as well as applied as style properties.
     registerStore(strokeWidthTokens, registry);
@@ -393,7 +397,7 @@ export const registerTokens = (registry: DesignTokenRegistry) => {
     registerStore(effectsTokens, registry);
 };
 
-export const registerAppliableTokens = (registry: DesignTokenRegistry) => {
+export const registerAppliableTokens = (registry: DesignTokenRegistry<AdaptiveDesignTokenOrGroup>) => {
     registerStore(colorTokens, registry);
     registerStore(strokeWidthTokens, registry);
     registerStore(densityTokens, registry);

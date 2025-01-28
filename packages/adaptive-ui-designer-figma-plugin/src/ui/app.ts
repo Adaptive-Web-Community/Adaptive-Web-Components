@@ -1,16 +1,8 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
-import { staticallyCompose } from "@microsoft/fast-foundation";
-import {
-    StyleProperty,
-    StylePropertyShorthand,
-} from "@adaptive-web/adaptive-ui";
-import {
-    cornerRadiusControl,
-    neutralFillStealthHover,
-    neutralStrokeReadableRest,
-    neutralStrokeStrongRest
-} from "@adaptive-web/adaptive-ui/reference";
-import type { AdaptiveDesignToken, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
+import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
+import { neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
+import type { AdaptiveDesignTokenOrGroup, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
@@ -36,25 +28,20 @@ const appliedStylesTemplate = (
                 ${repeat(
                     (x) => x.appliedStyleModules.get(group)!,
                     html<StyleModuleDisplay, App>`
-                        <div class="style-module applied">
-                            <span class="content">
-                                ${(x) => x.title}
-                            </span>
-                            <designer-token-glyph
-                                circular
-                                type=${TokenGlyphType.stylesSwatch}
-                                :styles=${x => x.styles}
-                                interactive
-                            >
-                            </designer-token-glyph>
+                        <designer-style-token-item
+                            title=${(x) => x.title}
+                            :styles=${x => x.styles}
+                            glyphType=${TokenGlyphType.stylesSwatch}
+                        >
                             <adaptive-button
+                                slot="actions"
                                 appearance="stealth"
                                 aria-label="Remove style"
                                 @click=${(x, c) => c.parent.controller.styles.removeStyleModule(x.name)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
-                        </div>
+                        </designer-style-token-item>
                     `
                 )}
             </div>
@@ -70,22 +57,14 @@ const availableStylesTemplate = (
         ${repeat(
             (x) => x.controller.styles.getAvailableStyleModules().get(group)!,
             html<StyleModuleDisplay, App>`
-                <div class="style-module available">
-                    <span
-                        class="content"
-                        role="button"
-                        @click=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
-                    >
-                        ${(x) => x.title}
-                    </span>
-                    <designer-token-glyph
-                        circular
-                        type=${TokenGlyphType.stylesSwatch}
-                        :styles=${x => x.styles}
-                        interactive
-                    >
-                    </designer-token-glyph>
-                </div>
+                <designer-style-token-item
+                    title=${(x) => x.title}
+                    :styles=${x => x.styles}
+                    glyphType=${TokenGlyphType.stylesSwatch}
+                    content-button
+                    @itemClick=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
+                >
+                </designer-style-token-item>
             `
         )}
     </div>
@@ -112,14 +91,14 @@ const appliedTokensTemplate = (
                                 const token = c.parent.controller.styles.getAppliableDesignToken(x.tokenID);
                                 return token ? designTokenTitle(token) : x.tokenID;
                             }}
-                            value=${(x) => x.value}
+                            value=${(x) => [...x.values][0]}
                             glyphType=${(_) => glyphType}
                         >
                             <adaptive-button
                                 slot="actions"
                                 appearance="stealth"
                                 aria-label="Remove design token"
-                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.targets, x.tokenID)}
+                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken([...x.targets], x.tokenID)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
@@ -147,13 +126,24 @@ const availableTokensTemplate = (
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.styles.getAppliableDesignTokenOptions(tokenTypes),
-                    html<AdaptiveDesignToken, App>`
+                    html<AdaptiveDesignTokenOrGroup, App>`
                         <designer-style-token-item
                             title=${(x) => designTokenTitle(x)}
-                            value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x)}
+                            value=${(x, c) =>
+                                (x instanceof DesignToken) ?
+                                    c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x) :
+                                    ""
+                            }
+                            :styles=${x =>
+                                (x instanceof DesignToken) ?
+                                    null :
+                                    Styles.fromProperties({
+                                        [tokenTypes[0]]: x
+                                    })
+                            }
                             glyphType=${(_) => glyphType}
                             content-button
-                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
+                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
                         >
                         </designer-style-token-item>
                     `
@@ -509,32 +499,6 @@ const styles = css`
     .title {
         padding: 0 calc(var(--global-designUnit) * 3);
         color: ${neutralStrokeReadableRest}
-    }
-
-    .style-module {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .style-module .content {
-        display: flex;
-        justify-content: space-between;
-        flex-grow: 1;
-        border-radius: ${cornerRadiusControl};
-        color: ${neutralStrokeStrongRest};
-        padding: 8px 4px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    .style-module .content[role="button"] {
-        cursor: pointer;
-    }
-
-    .style-module .content[role="button"]:hover {
-        background: ${neutralFillStealthHover};
     }
 
     .tokens-panel-content {

@@ -75,7 +75,7 @@ export const elevationCardDisabled = createTokenShadow("elevation.card.disabled"
 export const elevationCardInteractive: InteractiveTokenGroup<ShadowValue> = {
     name: "elevation.card",
     type: DesignTokenType.shadow,
-    intendedFor: StyleProperty.shadow,
+    intendedFor: [StyleProperty.shadow],
     rest: elevationCardRest,
     hover: elevationCardHover,
     active: elevationCardActive,

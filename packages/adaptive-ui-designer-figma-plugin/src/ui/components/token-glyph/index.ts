@@ -1,6 +1,6 @@
 import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
 import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
-import { ElementStylesRenderer, Interactivity, Styles } from "@adaptive-web/adaptive-ui";
+import { ElementStylesRenderer, Interactivity, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import { formatHex8, parse } from "culori/fn";
 import BlobIcon from "../../assets/blob.svg";
@@ -39,11 +39,13 @@ const styles = css`
         width: 32px;
         height: 32px;
         border-radius: calc(${cornerRadiusControl} * 2);
+        color: transparent; /* Reset for styles which don't have a foreground color */
     }
 
     .text,
     .icon {
         display: none;
+        user-select: none;
     }
 
     :host([type="background"]) .swatch,
@@ -116,8 +118,9 @@ export enum TokenGlyphType {
     icon = "icon",
 }
 
-const params = {
+const params: StyleModuleTarget = {
     ...Interactivity.always,
+    context: ":host([type='styles'])", // More specificity than the `.swatch` selector above
     part: ".swatch",
 };
 

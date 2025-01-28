@@ -1,12 +1,16 @@
-import type { DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
+import type { DesignTokenMetadata, DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
 import { StyleProperty } from "./modules/types.js";
+
+export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & { [P in K]?: T[P] };
+
+export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 /**
  * A group of tokens.
  *
  * @public
  */
-export interface TokenGroup {
+export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "type"> {
     /**
      * The name of the token group. Contained tokens should extend this name like `groupName` -\> `groupName.child`.
      */
@@ -20,7 +24,7 @@ export interface TokenGroup {
     /**
      * The style properties where tokens within this group are intended to be used.
      */
-    intendedFor?: StyleProperty | StyleProperty[]
+    intendedFor?: StyleProperty[];
 }
 
 /**
@@ -69,4 +73,4 @@ export type InteractiveValues<T> = {
  *
  * @public
  */
-export interface InteractiveTokenGroup<T> extends TokenGroup, InteractiveValues<TypedCSSDesignToken<T>> {}
+export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {}

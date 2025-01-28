@@ -1,7 +1,6 @@
 import { sentenceCase } from "change-case";
-import { DesignToken } from "@microsoft/fast-foundation";
 import { StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
-import { AdaptiveDesignToken, AppliedDesignToken, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdaptiveDesignTokenOrGroup, AppliedDesignToken, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 import { designTokenTitle } from "./util.js";
 
@@ -23,9 +22,9 @@ export type StyleModuleDisplayList = Map<string, StyleModuleDisplay[]>;
  * A display representation of applied design tokens.
  */
 export interface AppliedDesignTokenItem {
-    targets: StyleProperty[];
+    targets: Set<StyleProperty>;
     tokenID: string;
-    value: string;
+    values: Set<string>;
 }
 
 function nameToTitle(name: string): string {
@@ -147,14 +146,15 @@ export class StylesController {
 
         // Collect the individual tokens applied for the requested targets
         // TODO: Handle multiple values better
+        //    Especially interactive groups
         this.controller.selectedNodes.forEach(node => {
             targets.forEach((target) => {
                 const applied = node.appliedDesignTokens.get(target);
                 if (applied) {
                     tokens.push({
-                        targets: [target],
+                        targets: new Set([target]),
                         tokenID: applied.tokenID,
-                        value: applied.value
+                        values: new Set([applied.value])
                     });
                 }
             });
@@ -163,11 +163,12 @@ export class StylesController {
         // Group by tokenID and value
         return tokens.reduce((accumulated: AppliedDesignTokenItem[], current: AppliedDesignTokenItem): AppliedDesignTokenItem[] => {
             const found = accumulated.find((item) => {
-                return item.tokenID === current.tokenID && item.value === current.value
+                return item.tokenID === current.tokenID
             });
 
             if (found) {
-                found.targets.push(...current.targets);
+                found.targets = new Set([...found.targets, ...current.targets]);
+                found.values = new Set([...found.values, ...current.values]);
             } else {
                 accumulated.push(current);
             }
@@ -182,8 +183,8 @@ export class StylesController {
      * @param targets - Style property types
      * @returns List of available appliable design tokens
      */
-    public getAppliableDesignTokenOptions(targets: StyleProperty[]): AdaptiveDesignToken[] {
-        const tokens: AdaptiveDesignToken[] = [];
+    public getAppliableDesignTokenOptions(targets: StyleProperty[]): AdaptiveDesignTokenOrGroup[] {
+        const tokens: AdaptiveDesignTokenOrGroup[] = [];
 
         // Collect the individual tokens available for the requested targets
         // TODO: Handle multiple values better
@@ -195,7 +196,7 @@ export class StylesController {
         });
 
         // Group by token name
-        return tokens.reduce((accumulated: AdaptiveDesignToken[], current: AdaptiveDesignToken): AdaptiveDesignToken[] => {
+        return tokens.reduce((accumulated: AdaptiveDesignTokenOrGroup[], current: AdaptiveDesignTokenOrGroup): AdaptiveDesignTokenOrGroup[] => {
             const found = accumulated.find((token) => {
                 return token.name === current.name
             });
@@ -214,7 +215,7 @@ export class StylesController {
      * @param id - The design token ID
      * @returns The design token
      */
-    public getAppliableDesignToken(id: string): DesignToken<any> | null {
+    public getAppliableDesignToken(id: string): AdaptiveDesignTokenOrGroup | null {
         return this.controller.appliableDesignTokenRegistry.get(id);
     }
 
@@ -237,7 +238,7 @@ export class StylesController {
      * @param targets - The target style property types
      * @param token - The design token
      */
-    public applyDesignToken(targets: StyleProperty[], token: DesignToken<any>): void {
+    public applyDesignToken(targets: StyleProperty[], token: AdaptiveDesignTokenOrGroup): void {
         this.controller.selectedNodes.forEach(node => {
             // console.log("--------------------------------");
             // console.log("StylesController.applyDesignToken - targets", targets, token);
