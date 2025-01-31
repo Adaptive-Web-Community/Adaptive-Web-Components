@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/adaptive-ui-designer-figma",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Figma integration for Adaptive Web.",
   "main": "./dist/lib/index.js",
   "bin": {
@@ -39,8 +39,8 @@
     "@types/inquirer": "^9.0.7"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^0.11.0",
-    "@adaptive-web/adaptive-ui-designer-core": "^0.4.1",
+    "@adaptive-web/adaptive-ui": "^0.12.0",
+    "@adaptive-web/adaptive-ui-designer-core": "^0.5.0",
     "@types/ajv": "^1.0.0",
     "ajv": "^8.13.0",
     "change-case": "^5.4.4",

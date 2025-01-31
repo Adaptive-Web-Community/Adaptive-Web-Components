@@ -1,8 +1,21 @@
 # Change Log - @adaptive-web/adaptive-ui
 
-This log was last generated on Fri, 01 Nov 2024 01:04:24 GMT and should not be manually modified.
+This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.12.0
+
+Fri, 31 Jan 2025 15:36:53 GMT
+
+### Minor changes
+
+- Updated reference density recipes (47367562+bheston@users.noreply.github.com)
+- AUI: Added layout wrap support (47367562+bheston@users.noreply.github.com)
+
+### Patches
+
+- AUI: Fix minor color recipe bug (47367562+bheston@users.noreply.github.com)
 
 ## 0.11.0
 

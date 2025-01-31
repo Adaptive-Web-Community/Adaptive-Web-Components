@@ -2,6 +2,33 @@
   "name": "@adaptive-web/adaptive-ui-designer-core",
   "entries": [
     {
+      "date": "Fri, 31 Jan 2025 15:36:53 GMT",
+      "tag": "@adaptive-web/adaptive-ui-designer-core_v0.5.0",
+      "version": "0.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "d0009edf58249af99814fb5c8e4c4e85ad6fc906",
+            "comment": "Designer: Finished migration away from Token Definition wrapper"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "commit": "d0009edf58249af99814fb5c8e4c4e85ad6fc906",
+            "comment": "Updated reference density recipes"
+          },
+          {
+            "author": "beachball",
+            "package": "@adaptive-web/adaptive-ui-designer-core",
+            "comment": "Bump @adaptive-web/adaptive-ui to v0.12.0",
+            "commit": "d0009edf58249af99814fb5c8e4c4e85ad6fc906"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 01 Nov 2024 01:04:24 GMT",
       "tag": "@adaptive-web/adaptive-ui-designer-core_v0.4.1",
       "version": "0.4.1",

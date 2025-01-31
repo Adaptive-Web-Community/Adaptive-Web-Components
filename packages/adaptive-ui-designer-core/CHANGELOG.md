@@ -1,8 +1,18 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-core
 
-This log was last generated on Fri, 01 Nov 2024 01:04:24 GMT and should not be manually modified.
+This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.5.0
+
+Fri, 31 Jan 2025 15:36:53 GMT
+
+### Minor changes
+
+- Designer: Finished migration away from Token Definition wrapper (47367562+bheston@users.noreply.github.com)
+- Updated reference density recipes (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.12.0
 
 ## 0.4.1
 
