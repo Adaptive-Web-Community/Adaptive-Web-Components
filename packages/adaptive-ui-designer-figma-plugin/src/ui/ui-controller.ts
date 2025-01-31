@@ -232,17 +232,17 @@ export class UIController {
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
             return function(applied, target) {
-                if (applied) {
+                if (applied && applied.value !== STYLE_REMOVE) {
                     const token = registry.get(applied.tokenID);
                     if (token) {
-                        if (token instanceof DesignToken) {
-                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id, applied.value);
-                        } else if (token instanceof CSSDesignToken) {
+                        if (token instanceof CSSDesignToken) {
                             allApplied.set(target, {
                                 name: token.name,
                                 value: token,
                                 source,
                             });
+                        } else if (token instanceof DesignToken) {
+                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id, applied.value);
                         } else {
                             const group = (token as InteractiveTokenGroup<any>);
                             if (group && group[state]) {
@@ -257,7 +257,23 @@ export class UIController {
                             }
                         }
                     } else {
-                        console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                        const tokenIDParts = applied.tokenID.split(".");
+                        if (Object.keys(InteractiveState).includes(tokenIDParts[tokenIDParts.length - 1])) {
+                            const groupState = tokenIDParts.pop();
+                            const groupName = tokenIDParts.join(".");
+                            const tokenGroup = registry.get(groupName) as InteractiveTokenGroup<any>;
+                            if (tokenGroup) {
+                                allApplied.set(target, {
+                                    name: groupName,
+                                    value: tokenGroup[groupState],
+                                    source,
+                                });
+                            } else {
+                                console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);    
+                            }
+                        } else {
+                            console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                        }
                     }
                 } else { // Removed
                     allApplied.set(target, {

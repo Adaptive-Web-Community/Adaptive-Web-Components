@@ -314,7 +314,7 @@ export class Styles {
     /**
      * The local properties or composition overrides.
      */
-    public get properties(): StylePropertiesMap | undefined {
+    public get properties(): Readonly<StylePropertiesMap> | undefined {
         return this._properties;
     }
 
