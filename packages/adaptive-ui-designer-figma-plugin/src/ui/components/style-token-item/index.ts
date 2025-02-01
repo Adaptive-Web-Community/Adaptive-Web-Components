@@ -1,6 +1,7 @@
-import { attr, css, customElement, FASTElement, html, when } from "@microsoft/fast-element";
+import { attr, css, customElement, FASTElement, html, observable, ref, when } from "@microsoft/fast-element";
+import { Styles } from "@adaptive-web/adaptive-ui";
 import { cornerRadiusControl, neutralFillStealthHover, neutralStrokeStrongRest } from "@adaptive-web/adaptive-ui/reference";
-import { TokenGlyphType } from "../token-glyph/index.js";
+import { TokenGlyph, TokenGlyphValueType } from "../token-glyph/index.js";
 
 // TODO, make a button
 const template = html<StyleTokenItem>`
@@ -8,16 +9,19 @@ const template = html<StyleTokenItem>`
         <span
             class="content"
             role=${x => (x.contentButton ? "button" : null)}
+            @click="${(x, c) => x.handleContentClick(c.event)}"
         >
             ${(x) => x.title}
         </span>
         ${when(
-            (x) => x.glyphType,
+            (x) => x.glyphType || x.styles,
             html`
                 <designer-token-glyph
+                    ${ref("glyph")}
                     circular
-                    value=${(x) => x.value}
-                    type=${(x) => x.glyphType}
+                    :value=${(x) => x.value}
+                    :styles=${(x) => x.styles}
+                    valueType=${(x) => x.glyphType}
                 >
                 </designer-token-glyph>
             `,
@@ -45,6 +49,11 @@ const styles = css`
         padding: 8px 4px;
     }
 
+    .value {
+        /* Needs a better UI, but cap for long values like font family */
+        max-width: 50%;
+    }
+
     .content,
     .value {
         white-space: nowrap;
@@ -68,11 +77,38 @@ export class StyleTokenItem extends FASTElement {
     public title: string = "";
 
     @attr
-    public value: string = "";
+    public value: string | null = null;
 
     @attr
-    public glyphType?: TokenGlyphType;
+    public glyphType?: TokenGlyphValueType;
+
+    public glyph?: TokenGlyph;
 
     @attr({ attribute: "content-button", mode: "boolean" })
     public contentButton: boolean = false;
+
+    @observable
+    public styles?: Styles;
+    protected stylesChanged() {
+        this.setupGlyph();
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.setupGlyph();
+    }
+
+    private setupGlyph() {
+        if (this.glyph && this.styles) {
+            if (this.glyphType === TokenGlyphValueType.foreground) {
+                this.glyph.icon = true;
+            }
+            this.glyph.valueType = null;
+            this.glyph.interactive = true;
+        }
+    }
+
+    public handleContentClick(event: Event): void {
+        this.$emit("itemClick", event);
+    }
 }

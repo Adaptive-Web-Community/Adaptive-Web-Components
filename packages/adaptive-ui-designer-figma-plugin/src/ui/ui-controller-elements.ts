@@ -1,5 +1,5 @@
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
-import type { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
+import { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
 import { Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
@@ -130,7 +130,7 @@ export class ElementsController {
         return (value: DesignTokenValue, key: string): void => {
             const token = this.controller.designTokenRegistry.get(key);
             // console.log("      setting token", key, token, value.value);
-            if (token) {
+            if (token && token instanceof DesignToken) {
                 this.setDesignTokenForElement(
                     element,
                     token,
@@ -171,8 +171,8 @@ export class ElementsController {
         // console.log("    setting additional data");
         node.additionalData.forEach((value, key) => {
             const token = this.controller.designTokenRegistry.get(key);
-            if (token) {
-                // console.log("      setting token value on element", token, "value", value);
+            if (token && token instanceof DesignToken) {
+                // console.log("      setting token value on element", def, "value", value);
                 this.setDesignTokenForElement(nodeElement, token, value);
             }
         }, this);

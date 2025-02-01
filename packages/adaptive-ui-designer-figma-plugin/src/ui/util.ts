@@ -1,7 +1,6 @@
 import { sentenceCase } from "change-case";
-import { DesignToken } from "@microsoft/fast-foundation";
 
-export function designTokenTitle(token?: DesignToken<any>): string {
+export function designTokenTitle(token?: { name: string }): string {
     if (token === undefined || token.name === undefined) {
         console.log(token);
         

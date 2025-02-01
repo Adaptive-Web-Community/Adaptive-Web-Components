@@ -45,7 +45,13 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
  *
  * @public
  */
-export class DesignTokenMetadata {
+export type DesignTokenMetadata = {
+    readonly type: DesignTokenType;
+    readonly intendedFor?: StyleProperty[];
+};
+
+// A slight alteration of the mixin pattern to hide an internal function from the public type.
+class DesignTokenMetadataImpl implements DesignTokenMetadata {
     // TODO: This needs to support multiple types, tokens in Adaptive UI might represent different value
     // types, like a Swatch type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
     private _type: DesignTokenType = "string";
@@ -74,7 +80,7 @@ export class DesignTokenMetadata {
         this._intendedFor = value;
     }
 
-    protected init(type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
+    setMetadata(type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         this.type = type;
         if (intendedFor) {
             if (Array.isArray(intendedFor)) {
@@ -114,7 +120,7 @@ export abstract class DesignTokenRegistry {
 export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
     constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         super({ name });
-        this.init(type, intendedFor);
+        (this as unknown as DesignTokenMetadataImpl).setMetadata(type, intendedFor);
     }
 
     /**
@@ -136,7 +142,7 @@ export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMe
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface TypedDesignToken<T> extends DesignTokenMetadata {}
-applyMixins(TypedDesignToken, DesignTokenMetadata);
+applyMixins(TypedDesignToken, DesignTokenMetadataImpl);
 
 /**
  * A CSSDesignToken with value type and intended styling uses.
@@ -149,7 +155,7 @@ export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignT
     constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]) {
         const cssName = name.replace(/\./g, "-");
         super({ name, cssCustomPropertyName: cssName });
-        this.init(type, intendedFor);
+        (this as unknown as DesignTokenMetadataImpl).setMetadata(type, intendedFor);
     }
 
     /**
@@ -171,7 +177,7 @@ export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignT
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {}
-applyMixins(TypedCSSDesignToken, DesignTokenMetadata);
+applyMixins(TypedCSSDesignToken, DesignTokenMetadataImpl);
 
 /**
  * A design token value for css properties which can have multiple values, like `box-shadow`.

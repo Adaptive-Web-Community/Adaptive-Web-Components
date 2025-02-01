@@ -1,20 +1,20 @@
 import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
-import { cornerRadiusControl } from "@adaptive-web/adaptive-ui/reference";
-import { ElementStylesRenderer, Interactivity, Styles } from "@adaptive-web/adaptive-ui";
+import { cornerRadiusControl, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
+import { ElementStylesRenderer, Interactivity, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
 import { staticallyCompose } from "@microsoft/fast-foundation";
 import { formatHex8, parse } from "culori/fn";
 import BlobIcon from "../../assets/blob.svg";
 
 const template = html<TokenGlyph>`
     <template
-        class=${x => (x.value === "none" && x.type !== TokenGlyphType.stylesSwatch ? "none" : "")}
+        class=${x => (x.valueType !== null && x.value === null ? "none" : null)}
         tabindex=${x => (x.interactive ? "0" : null)}
         role=${x => (x.interactive ? "button" : null)}
     >
         <div
             part="swatch"
             class="swatch"
-            style=${x => (!x.value || x.value === "none" ? "" : `--swatch-value: ${x.valueColor}`)}
+            style=${x => (x.value !== null ? `--swatch-value: ${x.valueColor}` : null)}
         >
             <span class="text">Ag</span>
             <span class="icon">${staticallyCompose(BlobIcon)}</span>
@@ -24,6 +24,7 @@ const template = html<TokenGlyph>`
 
 const styles = css`
     :host {
+        position: relative;
         box-sizing: border-box;
         display: inline-flex;
         align-items: center;
@@ -39,50 +40,77 @@ const styles = css`
         width: 32px;
         height: 32px;
         border-radius: calc(${cornerRadiusControl} * 2);
+        /* Resets for 'style' type, here for specificity */
+        color: transparent;
+        border: solid 6px transparent;
     }
 
-    .text,
+    .text {
+        user-select: none;
+    }
+
     .icon {
         display: none;
     }
 
-    :host([type="background"]) .swatch,
-    :host([type="border"]) .swatch {
-        background-color: var(--swatch-value);
-        border: 1px solid #e8e8e8;
+    svg {
+        fill: currentcolor;
     }
 
-    :host([type="border"]) .swatch::before {
+    :host([valueType="background"]) .swatch {
+        background-color: var(--swatch-value);
+    }
+
+    :host([valueType="border"]) .swatch {
+        border-color: var(--swatch-value);
+    }
+
+    /* Pseudo border rings */
+    :host([valueType="border"]) .swatch::before,
+    :host([valueType="background"]) .swatch::after,
+    :host([valueType="border"]) .swatch::after {
         display: block;
         content: "";
         position: absolute;
-        top: 6px;
-        bottom: 6px;
-        left: 6px;
-        right: 6px;
         box-sizing: border-box;
-        background: var(--color-context);
         border: 1px solid #e8e8e8;
-        border-radius: calc(${cornerRadiusControl} * 2);
+        border-radius: inherit;
     }
 
-    :host([type="icon"]) .swatch {
+    /* Inner pseudo border ring */
+    :host([valueType="border"]) .swatch::before {
+        inset: 0;
+    }
+
+    /* Outer pseudo border ring */
+    :host([valueType="background"]) .swatch::after,
+    :host([valueType="border"]) .swatch::after {
+        inset: -8px;
+    }
+
+    :host([valueType="foreground"]) .swatch,
+    :host([icon]) .swatch {
         position: relative;
         width: 28px;
         height: 28px;
         overflow: hidden;
+    }
+
+    :host([valueType="foreground"]) .swatch {
         color: var(--swatch-value);
     }
 
-    :host([type="icon"]) .icon {
+    :host([valueType="foreground"]) .icon,
+    :host([icon]) .icon {
         display: block;
     }
 
-    :host([type="icon"]) svg {
-        fill: currentcolor;
+    :host([valueType="foreground"]) .text,
+    :host([icon]) .text {
+        display: none;
     }
 
-    :host(.none) .swatch::after {
+    :host(.none)::after {
         display: block;
         content: "";
         width: 1px;
@@ -94,12 +122,7 @@ const styles = css`
         transform: rotate(45deg);
     }
 
-    :host([type="styles"]) .text {
-        display: block;
-    }
-
-    :host([circular]) .swatch,
-    :host([circular]) .swatch::before {
+    :host([circular]) .swatch {
         border-radius: 50%;
     }
 
@@ -109,15 +132,15 @@ const styles = css`
     }
 `;
 
-export enum TokenGlyphType {
-    backgroundSwatch = "background",
-    borderSwatch = "border",
-    stylesSwatch = "styles",
-    icon = "icon",
+export enum TokenGlyphValueType {
+    background = "background",
+    foreground = "foreground",
+    border = "border",
 }
 
-const params = {
+const params: StyleModuleTarget = {
     ...Interactivity.always,
+    context: ":host(:not([foo]))", // More specificity than the `.swatch` selector above
     part: ".swatch",
 };
 
@@ -130,14 +153,11 @@ const PLACEHOLDER_COLOR = "#ff00ff";
 })
 export class TokenGlyph extends FASTElement {
     @attr
-    public type: TokenGlyphType = TokenGlyphType.backgroundSwatch;
-
-    @attr({ mode: "boolean" })
-    public circular: boolean = false;
+    public valueType: TokenGlyphValueType = TokenGlyphValueType.background;
 
     @attr
-    public value: string | "none" = "none";
-    protected valueChanged(prev: string, next: string) {
+    public value: string | null = null;
+    protected valueChanged(prev: string | null, next: string | null) {
         const color = parse(next);
         this.valueColor = formatHex8(color) || PLACEHOLDER_COLOR;
     }
@@ -147,15 +167,28 @@ export class TokenGlyph extends FASTElement {
 
     @observable
     public styles?: Styles;
-    protected stylesChanged(prev: Styles, next: Styles) {
+    protected stylesChanged(prev?: Styles, next?: Styles) {
         if (prev) {
             this.$fastController.removeStyles(this._addedStyles);
         }
         if (next) {
+            // There are too many combinations of needs for the preview glyph.
+            // This is a workaround for the font-only styles so they display for now.
+            if (next.effectiveProperties.has("fontFamily") && !next.effectiveProperties.has("foregroundFill")) {
+                const props = next.properties;
+                props.set("foregroundFill", neutralStrokeStrong.rest);
+                next.properties = props;
+            }
             this._addedStyles = new ElementStylesRenderer(next).render(params);
             this.$fastController.addStyles(this._addedStyles);
         }
     }
+
+    @attr({ mode: "boolean" })
+    public circular: boolean = false;
+
+    @attr({ mode: "boolean" })
+    public icon: boolean = false;
 
     @attr({ mode: "boolean" })
     public interactive: boolean = false;

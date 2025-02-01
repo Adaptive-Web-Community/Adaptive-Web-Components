@@ -1,16 +1,18 @@
 import { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
-import { DesignTokenMetadata, StyleProperty } from "@adaptive-web/adaptive-ui";
+import { DesignTokenMetadata, InteractiveTokenGroup, StyleProperty } from "@adaptive-web/adaptive-ui";
 
 export type AdaptiveDesignToken = (DesignToken<any> | CSSDesignToken<any>) & DesignTokenMetadata;
 
-export class DesignTokenRegistry {
-    private _entries: { [id: string]: AdaptiveDesignToken } = {};
+export type AdaptiveDesignTokenOrGroup = (DesignToken<any> | CSSDesignToken<any> | InteractiveTokenGroup<any>) & DesignTokenMetadata;
+
+export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadata> {
+    private _entries: { [id: string]: T } = {};
 
     /**
      * Registers a new design token definition.
      * @param designToken The design token definition to register.
      */
-    public register(designToken: AdaptiveDesignToken): void {
+    public register(designToken: T): void {
         const { name } = designToken;
 
         if (this.isRegistered(name)) {
@@ -34,7 +36,7 @@ export class DesignTokenRegistry {
      * Gets a design token definition by ID.
      * @param name The ID of the design token definition.
      */
-    public get(name: string): AdaptiveDesignToken | null {
+    public get(name: string): T | null {
         if (this.isRegistered(name)) {
             return this._entries[name];
         }
@@ -45,7 +47,7 @@ export class DesignTokenRegistry {
     /**
      * Gets all entries in this registry.
      */
-    public get entries(): AdaptiveDesignToken[] {
+    public get entries(): T[] {
         return Object.values(this._entries);
     }
 
@@ -61,7 +63,7 @@ export class DesignTokenRegistry {
      * Returns all entries that apply to a given style property type
      * @param target the style property type to return entries of
      */
-    public find(target: StyleProperty): AdaptiveDesignToken[] {
+    public find(target: StyleProperty): T[] {
         return Object.values(this._entries).filter(value => value.intendedFor?.includes(target));
     }
 }
