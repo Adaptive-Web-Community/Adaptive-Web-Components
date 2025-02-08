@@ -1,10 +1,12 @@
 import { calc } from '@csstools/css-calc';
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { CSSDesignToken, type ValuesOf } from "@microsoft/fast-foundation";
+import { CSSDesignToken, DesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { formatHex8 } from 'culori';
 import {
+    AdaptiveDesignToken,
+    AdaptiveDesignTokenOrGroup,
     AdditionalDataKeys,
     AppliedDesignToken,
     AppliedStyleModules,
@@ -58,7 +60,19 @@ type AppliedTokenSource = ValuesOf<typeof AppliedTokenSource>;
  * Information about an applied design token, used to evaluate and apply the value.
  */
 type AppliedStyleValueInfo = {
+    /**
+     * The name of the token, which may also be an interactive group.
+     */
+    name?: string;
+
+    /**
+     * The value when evaluated.
+     */
     value: string | CSSDesignToken<any>;
+
+    /**
+     * How the token was applied.
+     */
     source: AppliedTokenSource;
 }
 
@@ -102,8 +116,8 @@ export class UIController {
     // What was previously a "recipe" is now an "applied design token".
     // The separation is useful for now in that "setting" a token is for overriding a value at a node,
     // and "applying" a token is using it for some visual element.
-    public readonly designTokenRegistry: DesignTokenRegistry = new DesignTokenRegistry();
-    public readonly appliableDesignTokenRegistry: DesignTokenRegistry = new DesignTokenRegistry();
+    public readonly designTokenRegistry: DesignTokenRegistry<AdaptiveDesignToken> = new DesignTokenRegistry();
+    public readonly appliableDesignTokenRegistry: DesignTokenRegistry<AdaptiveDesignTokenOrGroup> = new DesignTokenRegistry();
 
     private _selectedNodes: PluginUINodeData[] = [];
 
@@ -218,15 +232,48 @@ export class UIController {
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
             return function(applied, target) {
-                if (applied) {
+                if (applied && applied.value !== STYLE_REMOVE) {
                     const token = registry.get(applied.tokenID);
                     if (token) {
-                        allApplied.set(target, {
-                            value: token as CSSDesignToken<any>,
-                            source,
-                        });
-                    } else {
-                        console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                        if (token instanceof CSSDesignToken) {
+                            allApplied.set(target, {
+                                name: token.name,
+                                value: token,
+                                source,
+                            });
+                        } else if (token instanceof DesignToken) {
+                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                        } else {
+                            const group = (token as InteractiveTokenGroup<any>);
+                            if (group && group[state]) {
+                                // console.log("    applying group >", state, group);
+                                allApplied.set(target, {
+                                    name: group.name,
+                                    value: group[state],
+                                    source,
+                                });
+                            } else {
+                                console.warn("    token type not supported >", typeof token, token);
+                            }
+                        }
+                    } else if (applied.tokenID) {
+                        const tokenIDParts = applied.tokenID.split(".");
+                        if (Object.keys(InteractiveState).includes(tokenIDParts[tokenIDParts.length - 1])) {
+                            const groupState = tokenIDParts.pop();
+                            const groupName = tokenIDParts.join(".");
+                            const tokenGroup = registry.get(groupName) as InteractiveTokenGroup<any>;
+                            if (tokenGroup) {
+                                allApplied.set(target, {
+                                    name: groupName,
+                                    value: tokenGroup[groupState],
+                                    source,
+                                });
+                            } else {
+                                console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);    
+                            }
+                        } else {
+                            console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                        }
                     }
                 } else { // Removed
                     allApplied.set(target, {
@@ -269,6 +316,7 @@ export class UIController {
                         if (value instanceof CSSDesignToken) {
                             // console.log("    applying token >", value);
                             allApplied.set(target, {
+                                name: value.name,
                                 value,
                                 source,
                             });
@@ -283,6 +331,7 @@ export class UIController {
                             if (group && group[state]) {
                                 // console.log("    applying group >", state, group);
                                 allApplied.set(target, {
+                                    name: group.name,
                                     value: group[state],
                                     source,
                                 });
@@ -333,13 +382,7 @@ export class UIController {
             const allApplied = this.collectEffectiveAppliedStyles(node);
             allApplied.forEach((info, target) => {
                 if (info.value) {
-                    if (typeof info.value === "string") {
-                        // console.log("    evaluateEffectiveAppliedStyleValues", target, " : ", "string", " -> ", info.value, `(from ${info.source})`);
-                        const applied = new AppliedStyleValue(info.value);
-                        node.effectiveAppliedStyleValues.set(target, applied);
-                    } else {
-                        this.evaluateEffectiveAppliedDesignToken(target, info.value, node, info.source);
-                    }
+                    this.evaluateEffectiveAppliedDesignToken(target, info, node);
                 } else {
                     console.warn("Token not found in appliable tokens", info.source);
                 }
@@ -353,50 +396,57 @@ export class UIController {
         });
     }
 
-    private evaluateEffectiveAppliedDesignToken(target: StyleProperty, token: CSSDesignToken<any>, node: PluginUINodeData, source: AppliedTokenSource) {
-        const valueOriginal: any = this._elements.getDesignTokenValue(node, token);
-        let value: any = valueOriginal;
-        // let valueDebug: any;
-        if (valueOriginal instanceof Color) {
-            const swatch = valueOriginal;
-            value = formatHex8(swatch.color);
-            // valueDebug = swatch.toColorString();
-        } else if (typeof valueOriginal === "string") {
-            if (valueOriginal.startsWith("calc")) {
-                const ret = calc(valueOriginal as string);
-                // console.log(`    calc ${value} returns ${ret}`);
-                value = ret;
+    private evaluateEffectiveAppliedDesignToken(target: StyleProperty, info: AppliedStyleValueInfo, node: PluginUINodeData) {
+        if (typeof info.value === "string") {
+            // console.log("    evaluateEffectiveAppliedStyleValues", target, " : ", "string", " -> ", info.value, `(from ${info.source})`);
+            const applied = new AppliedStyleValue(info.value);
+            node.effectiveAppliedStyleValues.set(target, applied);
+        } else {
+            const token = info.value;
+            const valueOriginal: any = this._elements.getDesignTokenValue(node, token);
+            let value: any = valueOriginal;
+            // let valueDebug: any;
+            if (valueOriginal instanceof Color) {
+                const swatch = valueOriginal;
+                value = formatHex8(swatch.color);
+                // valueDebug = swatch.toColorString();
+            } else if (typeof valueOriginal === "string") {
+                if (valueOriginal.startsWith("calc")) {
+                    const ret = calc(valueOriginal as string);
+                    // console.log(`    calc ${value} returns ${ret}`);
+                    value = ret;
+                }
             }
-        }
-        // const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Swatch).toColorString();
-        // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${source})`, "fillColor", fillColorValue);
+            const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Swatch).toColorString();
+            // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "fillColor", fillColorValue);
 
-        const applied = new AppliedStyleValue(value);
-        node.effectiveAppliedStyleValues.set(target, applied);
+            const applied = new AppliedStyleValue(value);
+            node.effectiveAppliedStyleValues.set(target, applied);
 
-        if (source === AppliedTokenSource.local) {
-            const appliedToken = new AppliedDesignToken(token.name, value);
-            node.appliedDesignTokens.set(target, appliedToken);
-        }
+            if (info.source === AppliedTokenSource.local) {
+                const appliedToken = new AppliedDesignToken(info.name, value);
+                node.appliedDesignTokens.set(target, appliedToken);
+            }
 
-        // This is necessary for representing nested elements in Figma, but does not realistically represent the way the tokens work.
-        // - A node will come in with the paren't fill color provided in `additionalData`. This accounts for relative color recipes,
-        //   but addressed the fact only selected nodes are processed going down the hierarchy.
-        // - If this node calculates a new background fill we need to update that value.
-        // - See `evaluateEffectiveAppliedStyleValues` where this value is set as a design token value.
-        // 
-        // This is perhaps still the most indirect interaction in Adaptive UI, where most color recipes are based on a container fill,
-        // but there's no way to resolve the _container_ color, so the color has to be on the _child_ node.
-        // This is further complicated by the fact that token values can only be set at the component level, not for a child element.
-        // This is also one of the primary motivations of the style modules and the creation of background/foreground color sets, because
-        // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
-        if (target === StyleProperty.backgroundFill) {
-            if (node.children.length > 0) {
-                // console.log(`        Setting '${AdditionalDataKeys.toolParentFillColor}' additional data on children`, value, valueOriginal);
-                node.children.forEach(child => {
-                    // console.log("          Child", child.id, child.name);
-                    child.additionalData.set(AdditionalDataKeys.toolParentFillColor, value);
-                });
+            // This is necessary for representing nested elements in Figma, but does not realistically represent the way the tokens work.
+            // - A node will come in with the paren't fill color provided in `additionalData`. This accounts for relative color recipes,
+            //   but addressed the fact only selected nodes are processed going down the hierarchy.
+            // - If this node calculates a new background fill we need to update that value.
+            // - See `evaluateEffectiveAppliedStyleValues` where this value is set as a design token value.
+            // 
+            // This is perhaps still the most indirect interaction in Adaptive UI, where most color recipes are based on a container fill,
+            // but there's no way to resolve the _container_ color, so the color has to be on the _child_ node.
+            // This is further complicated by the fact that token values can only be set at the component level, not for a child element.
+            // This is also one of the primary motivations of the style modules and the creation of background/foreground color sets, because
+            // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
+            if (target === StyleProperty.backgroundFill) {
+                if (node.children.length > 0) {
+                    // console.log(`        Setting '${AdditionalDataKeys.toolParentFillColor}' additional data on children`, value, valueOriginal);
+                    node.children.forEach(child => {
+                        // console.log("          Child", child.id, child.name);
+                        child.additionalData.set(AdditionalDataKeys.toolParentFillColor, value);
+                    });
+                }
             }
         }
     }

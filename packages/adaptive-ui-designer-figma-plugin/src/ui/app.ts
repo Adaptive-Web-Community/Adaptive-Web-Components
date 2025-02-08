@@ -1,22 +1,14 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
-import { staticallyCompose } from "@microsoft/fast-foundation";
-import {
-    StyleProperty,
-    StylePropertyShorthand,
-} from "@adaptive-web/adaptive-ui";
-import {
-    cornerRadiusControl,
-    neutralFillStealthHover,
-    neutralStrokeReadableRest,
-    neutralStrokeStrongRest
-} from "@adaptive-web/adaptive-ui/reference";
-import type { AdaptiveDesignToken, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
+import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
+import { neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
+import type { AdaptiveDesignTokenOrGroup, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
-import { AddEventDetail, DesignTokenAdd, DesignTokensForm, DetachEventDetail, Drawer, StyleTokenItem, TokenChangeEventDetail, TokenGlyph, TokenGlyphType } from "./components/index.js";
+import { AddEventDetail, DesignTokenAdd, DesignTokensForm, DetachEventDetail, Drawer, StyleTokenItem, TokenChangeEventDetail, TokenGlyph, TokenGlyphValueType } from "./components/index.js";
 import { designTokenTitle } from "./util.js";
 
 StyleTokenItem;
@@ -36,25 +28,19 @@ const appliedStylesTemplate = (
                 ${repeat(
                     (x) => x.appliedStyleModules.get(group)!,
                     html<StyleModuleDisplay, App>`
-                        <div class="style-module applied">
-                            <span class="content">
-                                ${(x) => x.title}
-                            </span>
-                            <designer-token-glyph
-                                circular
-                                type=${TokenGlyphType.stylesSwatch}
-                                :styles=${x => x.styles}
-                                interactive
-                            >
-                            </designer-token-glyph>
+                        <designer-style-token-item
+                            title=${(x) => x.title}
+                            :styles=${x => x.styles}
+                        >
                             <adaptive-button
+                                slot="actions"
                                 appearance="stealth"
                                 aria-label="Remove style"
                                 @click=${(x, c) => c.parent.controller.styles.removeStyleModule(x.name)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
-                        </div>
+                        </designer-style-token-item>
                     `
                 )}
             </div>
@@ -70,31 +56,39 @@ const availableStylesTemplate = (
         ${repeat(
             (x) => x.controller.styles.getAvailableStyleModules().get(group)!,
             html<StyleModuleDisplay, App>`
-                <div class="style-module available">
-                    <span
-                        class="content"
-                        role="button"
-                        @click=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
-                    >
-                        ${(x) => x.title}
-                    </span>
-                    <designer-token-glyph
-                        circular
-                        type=${TokenGlyphType.stylesSwatch}
-                        :styles=${x => x.styles}
-                        interactive
-                    >
-                    </designer-token-glyph>
-                </div>
+                <designer-style-token-item
+                    title=${(x) => x.title}
+                    :styles=${x => x.styles}
+                    content-button
+                    @itemClick=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
+                >
+                </designer-style-token-item>
             `
         )}
     </div>
 `;
 
+function getAppliedToken(applied: AppliedDesignTokenItem, app: App) {
+    return app.controller.styles.getAppliableDesignToken(applied.tokenID);
+}
+
+function tokenOrGroupValues(tokenOrGroup: AdaptiveDesignTokenOrGroup, app: App): string {
+    return (tokenOrGroup instanceof DesignToken) ?
+        app.controller.designTokens.getDefaultDesignTokenValueAsString(tokenOrGroup) :
+        null;
+}
+
+function tokenOrGroupStyles(tokenOrGroup: AdaptiveDesignTokenOrGroup, tokenTypes: StyleProperty[]): Styles {
+    return (!(tokenOrGroup instanceof DesignToken)) ?
+        Styles.fromProperties(Object.fromEntries(tokenTypes.map(key => [key, tokenOrGroup]))) :
+        null;
+}
+
 const appliedTokensTemplate = (
+    tokenTypes: StyleProperty[],
     tokens: AppliedDesignTokenItem[] | null,
     title: string | null,
-    glyphType?: TokenGlyphType
+    glyphType?: TokenGlyphValueType
 ) => html<App>`
     ${when(
         (_) => tokens?.length,
@@ -112,14 +106,15 @@ const appliedTokensTemplate = (
                                 const token = c.parent.controller.styles.getAppliableDesignToken(x.tokenID);
                                 return token ? designTokenTitle(token) : x.tokenID;
                             }}
-                            value=${(x) => x.value}
+                            :value=${(x, c) => tokenOrGroupValues(getAppliedToken(x, c.parent), c.parent)}
+                            :styles=${(x, c) => tokenOrGroupStyles(getAppliedToken(x, c.parent), tokenTypes)}
                             glyphType=${(_) => glyphType}
                         >
                             <adaptive-button
                                 slot="actions"
                                 appearance="stealth"
                                 aria-label="Remove design token"
-                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken(x.targets, x.tokenID)}
+                                @click=${(x, c) => c.parent.controller.styles.removeAppliedDesignToken([...x.targets], x.tokenID)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
@@ -135,7 +130,7 @@ const availableTokensTemplate = (
     tokenTypes: StyleProperty[],
     title: string | null,
     tokenLayout: "stack" | "grid" = "stack",
-    glyphType?: TokenGlyphType
+    glyphType?: TokenGlyphValueType
 ) => html<App>`
     ${when(
         (x) => x.selectedNodes?.some((node) => tokenTypes.some((prop) => node.supports.includes(prop))),
@@ -147,13 +142,14 @@ const availableTokensTemplate = (
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.styles.getAppliableDesignTokenOptions(tokenTypes),
-                    html<AdaptiveDesignToken, App>`
+                    html<AdaptiveDesignTokenOrGroup, App>`
                         <designer-style-token-item
                             title=${(x) => designTokenTitle(x)}
-                            value=${(x, c) => c.parent.controller.designTokens.getDefaultDesignTokenValueAsString(x)}
+                            :value=${(x, c) => tokenOrGroupValues(x, c.parent)}
+                            :styles=${x => tokenOrGroupStyles(x, tokenTypes)}
                             glyphType=${(_) => glyphType}
                             content-button
-                            @click=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
+                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
                         >
                         </designer-style-token-item>
                     `
@@ -268,10 +264,10 @@ const template = html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
                                 ${(x) => appliedStylesTemplate("Color")}
-                                ${(x) => appliedTokensTemplate(x.layerTokens, "Layer", TokenGlyphType.backgroundSwatch)}
-                                ${(x) => appliedTokensTemplate(x.backgroundTokens, "Background", TokenGlyphType.backgroundSwatch)}
-                                ${(x) => appliedTokensTemplate(x.borderFillTokens, "Stroke", TokenGlyphType.borderSwatch)}
-                                ${(x) => appliedTokensTemplate(x.foregroundTokens, "Foreground", TokenGlyphType.icon)}
+                                ${(x) => appliedTokensTemplate([StyleProperty.backgroundFill], x.layerTokens, "Layer", TokenGlyphValueType.background)}
+                                ${(x) => appliedTokensTemplate([StyleProperty.backgroundFill], x.backgroundTokens, "Background", TokenGlyphValueType.background)}
+                                ${(x) => appliedTokensTemplate(StylePropertyShorthand.borderFill, x.borderFillTokens, "Stroke", TokenGlyphValueType.border)}
+                                ${(x) => appliedTokensTemplate([StyleProperty.foregroundFill], x.foregroundTokens, "Foreground", TokenGlyphValueType.foreground)}
                             </div>
                             <div>
                                 ${(x) => availableStylesTemplate("Color")}
@@ -280,20 +276,20 @@ const template = html<App>`
                                         [StyleProperty.backgroundFill],
                                         "Fill",
                                         "stack",
-                                        TokenGlyphType.backgroundSwatch)}
+                                        TokenGlyphValueType.background)}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         StylePropertyShorthand.borderFill,
                                         "Stroke",
                                         "stack",
-                                        TokenGlyphType.borderSwatch
+                                        TokenGlyphValueType.border
                                     )}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.foregroundFill],
                                         "Foreground",
                                         "stack",
-                                        TokenGlyphType.icon
+                                        TokenGlyphValueType.foreground
                                     )}
                             </div>
                         </designer-drawer>
@@ -305,8 +301,8 @@ const template = html<App>`
                         <designer-drawer name="Shape">
                             <div slot="collapsed-content">
                                 ${(x) => appliedStylesTemplate("Shape")}
-                                ${(x) => appliedTokensTemplate(x.cornerRadiusTokens, null)}
-                                ${(x) => appliedTokensTemplate(x.borderThicknessTokens, null)}
+                                ${(x) => appliedTokensTemplate(StylePropertyShorthand.cornerRadius, x.cornerRadiusTokens, null)}
+                                ${(x) => appliedTokensTemplate(StylePropertyShorthand.borderThickness, x.borderThicknessTokens, null)}
                             </div>
                             <div>
                                 ${(x) => availableStylesTemplate("Shape")}
@@ -330,7 +326,7 @@ const template = html<App>`
                         <designer-drawer name="Density">
                             <div slot="collapsed-content">
                                 ${(x) => appliedStylesTemplate("Density")}
-                                ${(x) => appliedTokensTemplate(x.densityTokens, null)}
+                                ${(x) => appliedTokensTemplate([...StylePropertyShorthand.padding, StyleProperty.gap], x.densityTokens, null)}
                             </div>
                             <div>
                                 ${(x) => availableStylesTemplate("Density")}
@@ -350,7 +346,7 @@ const template = html<App>`
                             <div slot="collapsed-content">
                                 ${(x) => appliedStylesTemplate("Text")}
                                 ${(x) => appliedStylesTemplate("Font") /* TODO legacy, remove */}
-                                ${(x) => appliedTokensTemplate(x.textTokens, null)}
+                                ${(x) => appliedTokensTemplate([StyleProperty.fontFamily], x.textTokens, null)}
                             </div>
                             <div>
                                 ${(x) => availableStylesTemplate("Text")}
@@ -389,7 +385,7 @@ const template = html<App>`
                         <designer-drawer name="Shadow">
                             <div slot="collapsed-content">
                                 ${(x) => appliedStylesTemplate("Shadow")}
-                                ${(x) => appliedTokensTemplate(x.shadowTokens, null)}
+                                ${(x) => appliedTokensTemplate([StyleProperty.shadow], x.shadowTokens, null)}
                             </div>
                             <div>
                                 ${(x) => availableStylesTemplate("Shadow")}
@@ -509,32 +505,6 @@ const styles = css`
     .title {
         padding: 0 calc(var(--global-designUnit) * 3);
         color: ${neutralStrokeReadableRest}
-    }
-
-    .style-module {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .style-module .content {
-        display: flex;
-        justify-content: space-between;
-        flex-grow: 1;
-        border-radius: ${cornerRadiusControl};
-        color: ${neutralStrokeStrongRest};
-        padding: 8px 4px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    .style-module .content[role="button"] {
-        cursor: pointer;
-    }
-
-    .style-module .content[role="button"]:hover {
-        background: ${neutralFillStealthHover};
     }
 
     .tokens-panel-content {
