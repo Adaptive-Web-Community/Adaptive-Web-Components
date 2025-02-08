@@ -256,7 +256,7 @@ export class UIController {
                                 console.warn("    token type not supported >", typeof token, token);
                             }
                         }
-                    } else {
+                    } else if (applied.tokenID) {
                         const tokenIDParts = applied.tokenID.split(".");
                         if (Object.keys(InteractiveState).includes(tokenIDParts[tokenIDParts.length - 1])) {
                             const groupState = tokenIDParts.pop();
