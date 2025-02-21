@@ -122,6 +122,12 @@ export class UIController {
     private _selectedNodes: PluginUINodeData[] = [];
 
     /**
+     * Whether auto refresh is enabled.
+     */
+    @observable
+    public autoRefreshEnabled: boolean = false;
+
+    /**
      * Whether the designer will auto refresh the selected nodes when the selection changes.
      */
     @observable
@@ -156,7 +162,7 @@ export class UIController {
 
         this._selectedNodes = nodes;
 
-        this.autoRefresh = !(this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE");
+        this.autoRefresh = this.autoRefreshEnabled && !(this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE");
 
         this._elements.selectedNodesChanged();
 

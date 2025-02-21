@@ -1,10 +1,11 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
+import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
 import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
 import { neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
 import type { AdaptiveDesignTokenOrGroup, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
-import type { PluginMessage} from "../core/messages.js";
+import type { PluginMessage, SkipInvisibleNodesMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
 import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
@@ -195,7 +196,7 @@ const footerTemplate = html<App>`
             <adaptive-button
                 appearance="stealth"
                 aria-label=${genStylesLabel}
-                style="display: ${(x) => (x.controller.code.supportsCodeGen ? "block" : "none")};"
+                style="display: ${/* HACK: Not using this currently (x) => (x.controller.code.supportsCodeGen ? "block" : */"none"/*)*/};"
                 @click=${(x) => {
                     const val = x.controller.code.generateForSelectedNodes();
                     clipboardCopy(val);
@@ -218,6 +219,7 @@ const template = html<App>`
     <adaptive-tabs activeid="styling">
         <adaptive-tab id="styling">Styling</adaptive-tab>
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
+        <adaptive-tab id="settings">Settings</adaptive-tab>
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
                 ${when(
@@ -435,6 +437,12 @@ const template = html<App>`
             )}
             ${when((x) => !x.supportsDesignSystem, html` <div>Selected layers don't support design tokens</div> `)}
         </adaptive-tab-panel>
+        <adaptive-tab-panel id="settingsPanel">
+            <div class="settings-layout">
+                <adaptive-switch :checked="${twoWay((x) => x.controller.autoRefreshEnabled)}">Auto refresh</adaptive-switch>
+                <adaptive-switch :checked="${twoWay((x) => x.skipInvisibleNodes)}">Skip invisible nodes (composition mode)</adaptive-switch>
+            </div>
+        </adaptive-tab-panel>
     </adaptive-tabs>
     ${(x) => footerTemplate}
 `;
@@ -511,6 +519,13 @@ const styles = css`
         display: grid;
         grid-template-rows: auto 1fr;
         height: 100%;
+    }
+
+    .settings-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
     }
 
     footer {
@@ -637,6 +652,16 @@ export class App extends FASTElement {
         }
     }
 
+    @observable
+    public skipInvisibleNodes: boolean = false;
+    protected skipInvisibleNodesChanged(prev: boolean, next: boolean) {
+        const message: SkipInvisibleNodesMessage = {
+            type: "SKIP_INVISIBLE_NODES",
+            value: next
+        };
+        this.dispatchMessage(message);
+    }
+
     constructor() {
         super();
 
@@ -644,24 +669,26 @@ export class App extends FASTElement {
     }
 
     private refreshObservables() {
-        this.backgroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.backgroundFill]);
-        this.foregroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.foregroundFill]);
-        this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderFill);
-        this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderThickness);
-        this.densityTokens = this.controller.styles.getAppliedDesignTokens([...StylePropertyShorthand.padding, StyleProperty.gap]);
-        this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.cornerRadius);
-        this.textTokens = this.controller.styles.getAppliedDesignTokens([
-            StyleProperty.fontFamily,
-            StyleProperty.fontStyle,
-            StyleProperty.fontWeight,
-            StyleProperty.fontSize,
-            StyleProperty.lineHeight
-        ]);
-        this.shadowTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.shadow]);
+        if (this.controller) {
+            this.backgroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.backgroundFill]);
+            this.foregroundTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.foregroundFill]);
+            this.borderFillTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderFill);
+            this.borderThicknessTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.borderThickness);
+            this.densityTokens = this.controller.styles.getAppliedDesignTokens([...StylePropertyShorthand.padding, StyleProperty.gap]);
+            this.cornerRadiusTokens = this.controller.styles.getAppliedDesignTokens(StylePropertyShorthand.cornerRadius);
+            this.textTokens = this.controller.styles.getAppliedDesignTokens([
+                StyleProperty.fontFamily,
+                StyleProperty.fontStyle,
+                StyleProperty.fontWeight,
+                StyleProperty.fontSize,
+                StyleProperty.lineHeight
+            ]);
+            this.shadowTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.shadow]);
 
-        this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
+            this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
 
-        this.statesState = this.controller.states.getState();
+            this.statesState = this.controller.states.getState();
+        }
     }
 
     private dispatchMessage(message: PluginMessage): void {
