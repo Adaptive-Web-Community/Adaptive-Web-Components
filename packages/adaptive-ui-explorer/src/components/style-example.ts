@@ -1,4 +1,4 @@
-import { InteractiveTokenGroup, StyleProperty, Styles, Swatch, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
+import { Color, InteractiveTokenGroup, StyleProperty, Styles, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
 import { densityControl, fillColor } from '@adaptive-web/adaptive-ui/reference';
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import { css, customElement, FASTElement, html, observable, repeat, volatile, when } from "@microsoft/fast-element";
@@ -52,9 +52,9 @@ const styles = css`
 interface StyleValue {
     type: SwatchType;
     tokenName: string;
-    foregroundRecipe?: TypedCSSDesignToken<Swatch>;
-    fillRecipe?: TypedCSSDesignToken<Swatch>;
-    outlineRecipe?: TypedCSSDesignToken<Swatch>;
+    foregroundRecipe?: TypedCSSDesignToken<Color>;
+    fillRecipe?: TypedCSSDesignToken<Color>;
+    outlineRecipe?: TypedCSSDesignToken<Color>;
 }
 
 @customElement({

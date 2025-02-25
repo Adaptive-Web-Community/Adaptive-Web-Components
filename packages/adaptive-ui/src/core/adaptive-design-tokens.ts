@@ -30,6 +30,7 @@ export const DesignTokenType = {
     fontVariations: "fontVariations",
     palette: "palette",
     recipe: "recipe",
+    paint: "paint", // `color` or `gradient`
     string: "string",
 } as const;
 
@@ -53,7 +54,7 @@ export type DesignTokenMetadata = {
 // A slight alteration of the mixin pattern to hide an internal function from the public type.
 class DesignTokenMetadataImpl implements DesignTokenMetadata {
     // TODO: This needs to support multiple types, tokens in Adaptive UI might represent different value
-    // types, like a Swatch type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
+    // types, like a `paint` type commonly refers to a `color` but may also be a `gradient`. (see `create.ts`)
     private _type: DesignTokenType = "string";
 
     /**

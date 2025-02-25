@@ -1,13 +1,13 @@
 import chai from "chai";
+import { Color } from "../color.js";
 import { PaletteRGB } from "../palette-rgb.js";
-import { Swatch } from "../swatch.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { idealColorDeltaSwatchSet } from "./ideal-color-delta-swatch-set.js";
 
 const { expect } = chai;
 
-const neutralBase = Swatch.parse("#808080")!;
-const accentBase = Swatch.parse("#80DEEA")!;
+const neutralBase = Color.parse("#808080")!;
+const accentBase = Color.parse("#80DEEA")!;
 
 describe("idealColorDeltaSwatchSet", (): void => {
     const neutralPalette = PaletteRGB.from(neutralBase);
@@ -23,11 +23,11 @@ describe("idealColorDeltaSwatchSet", (): void => {
 
     it("should have accessible rest and hover colors against the background color", (): void => {
         const accentColors = [
-            Swatch.parse("#0078D4")!,
-            Swatch.parse("#107C10")!,
-            Swatch.parse("#5C2D91")!,
-            Swatch.parse("#D83B01")!,
-            Swatch.parse("#F2C812")!,
+            Color.parse("#0078D4")!,
+            Color.parse("#107C10")!,
+            Color.parse("#5C2D91")!,
+            Color.parse("#D83B01")!,
+            Color.parse("#F2C812")!,
         ];
 
         accentColors.forEach((accent): void => {

@@ -1,4 +1,4 @@
-import { Swatch } from "@adaptive-web/adaptive-ui";
+import { Color } from "@adaptive-web/adaptive-ui";
 import {
     accentFillDiscernibleControlStyles,
     accentFillIdealControlStyles,
@@ -261,9 +261,9 @@ export class ColorBlock extends FASTElement {
 
     private updateColor(): void {
         if (this.color && this.$fastController.isConnected) {
-            const swatch =Swatch.parse(this.color)
-            if (swatch) {
-                fillColor.setValueFor(this, swatch);
+            const color = Color.parse(this.color)
+            if (color) {
+                fillColor.setValueFor(this, color);
             }
         }
     }

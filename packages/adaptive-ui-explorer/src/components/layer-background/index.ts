@@ -1,4 +1,4 @@
-import { Swatch } from '@adaptive-web/adaptive-ui';
+import { Color } from '@adaptive-web/adaptive-ui';
 import {
     fillColor,
     layerFillBaseLuminance,
@@ -61,7 +61,7 @@ export class LayerBackground extends FASTElement {
         }
 
         if (this.backgroundLayerRecipe !== undefined) {
-            let swatch: Swatch | null = null;
+            let swatch: Color | null = null;
             switch (this.backgroundLayerRecipe) {
                 case "-1":
                     swatch = layerFillFixedMinus1.getValueFor(this);

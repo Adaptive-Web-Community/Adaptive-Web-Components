@@ -1,6 +1,6 @@
 import {
+    Color,
     Palette,
-    Swatch,
 } from "@adaptive-web/adaptive-ui";
 import {
     accentBaseColor,
@@ -289,7 +289,7 @@ export class App extends FASTElement {
               });
     }
 
-    private layerTokens: Array<[DesignToken<Swatch>, string]> = [
+    private layerTokens: Array<[DesignToken<Color>, string]> = [
         [layerFillFixedPlus1, "+1"],
         [layerFillFixedBase, "Base"],
         [layerFillFixedMinus1, "-1"],
@@ -303,7 +303,7 @@ export class App extends FASTElement {
             layerFillBaseLuminance.setValueFor(ds, luminance);
 
             return this.layerTokens
-                .map((conf: [DesignToken<Swatch>, string]): SwatchInfo => {
+                .map((conf: [DesignToken<Color>, string]): SwatchInfo => {
                     const color = conf[0].getValueFor(ds).toColorString();
                     return {
                         index: this.neutralColors.indexOf(color),

@@ -1,7 +1,7 @@
 import { calc } from '@csstools/css-calc';
 import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, DesignToken, type ValuesOf } from "@microsoft/fast-foundation";
-import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles, Swatch } from "@adaptive-web/adaptive-ui";
+import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { formatHex8 } from 'culori';
 import {
@@ -382,7 +382,7 @@ export class UIController {
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
                 // console.log("    setting fill color token on parent element", colorHex, parentElement.id, parentElement.title);
-                this._elements.setDesignTokenForElement(parentElement, fillColor, Swatch.parse(colorHex));
+                this._elements.setDesignTokenForElement(parentElement, fillColor, Color.parse(colorHex));
             }
 
             const allApplied = this.collectEffectiveAppliedStyles(node);
@@ -413,8 +413,8 @@ export class UIController {
             let value: any = valueOriginal;
             // let valueDebug: any;
             if (valueOriginal instanceof Color) {
-                const swatch = valueOriginal;
-                value = formatHex8(swatch.color);
+                const color = valueOriginal;
+                value = formatHex8(color.color);
                 // valueDebug = swatch.toColorString();
             } else if (typeof valueOriginal === "string") {
                 if (valueOriginal.startsWith("calc")) {
@@ -423,7 +423,7 @@ export class UIController {
                     value = ret;
                 }
             }
-            const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Swatch).toColorString();
+            // const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Color).toColorString();
             // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "fillColor", fillColorValue);
 
             const applied = new AppliedStyleValue(value);

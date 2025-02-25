@@ -1,16 +1,16 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { Color, isDark, Swatch } from "@adaptive-web/adaptive-ui";
+import { Color, isDark } from "@adaptive-web/adaptive-ui";
 import { PaletteGradient } from "./palette-gradient.js";
 
-function getClass(swatch: Swatch, source?: Color, closestSource?: Swatch) {
-    return swatch.toColorString() === source?.toColorString()
+function getClass(color: Color, source?: Color, closestSource?: Color) {
+    return color.toString() === source?.toString()
         ? "source"
-        : swatch.toColorString() === closestSource?.toColorString()
+        : color.toString() === closestSource?.toString()
         ? "source closest"
         : "";
 }
 
-function getColor(background: Swatch) {
+function getColor(background: Color) {
     const darkMode = isDark(background);
     return darkMode ? "white" : "black";
 }
@@ -18,11 +18,11 @@ function getColor(background: Swatch) {
 export const paletteGradientTemplate = html<PaletteGradient>`
     ${repeat(
         (x) => x.palette?.swatches || [],
-        html<Swatch, PaletteGradient>`
+        html<Color, PaletteGradient>`
             <a
                 class="${(x, c) => getClass(x, c.parent.palette?.source, c.parent.closestSource)}"
-                style="background: ${(x) => x.toColorString()}; color: ${(x) => getColor(x)}"
-                title="${(x, c) => c.index.toString().concat(": ", x.toColorString().toUpperCase())}"
+                style="background: ${(x) => x.toString()}; color: ${(x) => getColor(x)}"
+                title="${(x, c) => c.index.toString().concat(": ", x.toString().toUpperCase())}"
             ></a>
         `,
         { positioning: true }

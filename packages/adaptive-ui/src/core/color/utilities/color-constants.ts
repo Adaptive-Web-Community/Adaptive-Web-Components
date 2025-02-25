@@ -1,15 +1,15 @@
-import { Swatch } from "../swatch.js";
+import { Color } from "../color.js";
 
 /**
- * A {@link Swatch} convenience for white.
+ * A {@link Color} convenience for white.
  *
  * @internal
  */
-export const _white = Swatch.fromRgb(1, 1, 1);
+export const _white = Color.fromRgb(1, 1, 1);
 
 /**
- * A {@link Swatch} convenience for black.
+ * A {@link Color} convenience for black.
  *
  * @internal
  */
-export const _black = Swatch.fromRgb(0, 0, 0);
+export const _black = Color.fromRgb(0, 0, 0);

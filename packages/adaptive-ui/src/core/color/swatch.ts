@@ -1,81 +1,21 @@
-import { type Color as CuloriColor, modeRgb, parse, type Rgb, useMode } from "culori/fn";
+import { modeRgb, parse, type Rgb, useMode } from "culori/fn";
 import { Color } from "./color.js";
+import { calculateOverlayColor } from "./utilities/opacity.js";
 
 const rgb = useMode(modeRgb);
 
-const rgbBlack: Rgb = { mode: "rgb", r: 0, g: 0, b: 0 };
-const rgbWhite: Rgb = { mode: "rgb", r: 1, g: 1, b: 1 };
-
-function calcChannelOverlay(match: number, background: number, overlay: number): number {
-    if (overlay - background === 0) {
-        return 0;
-    } else {
-        return (match - background) / (overlay - background);
-    }
-}
-
-function calcRgbOverlay(rgbMatch: Rgb, rgbBackground: Rgb, rgbOverlay: Rgb): number {
-    const rChannel: number = calcChannelOverlay(rgbMatch.r, rgbBackground.r, rgbOverlay.r);
-    const gChannel: number = calcChannelOverlay(rgbMatch.g, rgbBackground.g, rgbOverlay.g);
-    const bChannel: number = calcChannelOverlay(rgbMatch.b, rgbBackground.b, rgbOverlay.b);
-    return (rChannel + gChannel + bChannel) / 3;
-}
-
 /**
- * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appearance of a given solid color
- * when placed on the same background.
- *
- * @param rgbMatch - The solid color the overlay should match in appearance when placed over the rgbBackground
- * @param rgbBackground - The background on which the overlay rests
- * @returns The rgba (rgb + alpha) color of the overlay
- */
-function calculateOverlayColor(rgbMatch: Rgb, rgbBackground: Rgb): Rgb {
-    let overlay = rgbBlack;
-    let alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
-    if (alpha <= 0) {
-        overlay = rgbWhite;
-        alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
-    }
-    alpha = Math.round(alpha * 1000) / 1000;
-
-    return Object.assign({}, overlay, { alpha });
-}
-
-/**
- * Extends {@link Color} adding support for relative opacity.
+ * Legacy equivalent of Color.
  *
  * @public
+ * @deprecated Use {@link Color}.
  */
 export class Swatch extends Color {
-    /**
-     * The opaque value this Swatch represents if opacity is used.
-     */
-    private readonly _intendedColor?: Swatch;
-
-    /**
-     * Creates a new Swatch.
-     *
-     * @param color - The underlying Color value
-     * @param intendedColor - If `color.alpha` &lt; 1 this tracks the intended opaque color value for dependent calculations
-     */
-    protected constructor(color: CuloriColor, intendedColor?: Swatch) {
-        super(color);
-        this._intendedColor = intendedColor;
-    }
-
-    /**
-     * {@inheritdoc RelativeLuminance.relativeLuminance}
-     */
-    public get relativeLuminance(): number {
-        return this._intendedColor
-            ? this._intendedColor.relativeLuminance
-            : super.relativeLuminance;
-    }
-
     /**
      * Gets this color with transparency.
      *
      * @returns The color with full transparency
+     * @deprecated Use Color.unsafeOpacity
      */
     public toTransparent(alpha: number = 0): Swatch {
         const transparentColor = { ...this.color };

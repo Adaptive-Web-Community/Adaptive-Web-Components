@@ -46,3 +46,7 @@ export const colorToRgba = (color: Rgb): RGBA => {
         a: color.alpha || 1,
     };
 }
+
+export const roundToDecimals = (num: number, dec: number): number => {
+    return parseFloat(num.toFixed(dec));
+}

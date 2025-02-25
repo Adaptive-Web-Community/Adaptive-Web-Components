@@ -1,4 +1,4 @@
-import { Palette, Swatch } from "@adaptive-web/adaptive-ui";
+import { Color, Palette } from "@adaptive-web/adaptive-ui";
 import { customElement, FASTElement, observable } from "@microsoft/fast-element";
 import { paletteGradientStyles as styles } from "./palette-gradient.styles.js";
 import { paletteGradientTemplate as template } from "./palette-gradient.template.js";
@@ -9,7 +9,7 @@ import { paletteGradientTemplate as template } from "./palette-gradient.template
     styles,
 })
 export class PaletteGradient extends FASTElement {
-    public closestSource?: Swatch;
+    public closestSource?: Color;
 
     @observable
     public palette?: Palette;
