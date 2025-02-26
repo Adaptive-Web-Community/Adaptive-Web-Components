@@ -28,6 +28,8 @@ export class FigmaController extends Controller {
             // Resend the nodes to the plugin UI
             FigmaPluginNode.clearCache();
             await this.setSelectedNodes([message.id]);
+        } else if (message.type === "SKIP_INVISIBLE_NODES") {
+            figma.skipInvisibleInstanceChildren = message.value;
         }
     }
 

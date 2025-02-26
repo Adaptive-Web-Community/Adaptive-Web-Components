@@ -10,4 +10,9 @@ export interface NodeDataMessage {
     nodes: PluginUINodeData[];
 }
 
-export type PluginMessage = CreateStatesMessage | NodeDataMessage;
+export interface SkipInvisibleNodesMessage {
+    readonly type: 'SKIP_INVISIBLE_NODES';
+    value: boolean;
+}
+
+export type PluginMessage = CreateStatesMessage | NodeDataMessage | SkipInvisibleNodesMessage;

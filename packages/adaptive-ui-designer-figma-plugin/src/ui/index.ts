@@ -1,6 +1,7 @@
 import { AdaptiveDesignSystem } from '@adaptive-web/adaptive-web-components';
 import { buttonDefinition } from "@adaptive-web/adaptive-web-components/button";
 import { dividerDefinition } from "@adaptive-web/adaptive-web-components/divider";
+import { switchDefinition } from "@adaptive-web/adaptive-web-components/switch";
 import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
@@ -12,6 +13,7 @@ import { App } from "./app.js";
 AdaptiveDesignSystem.defineComponents({
     buttonDefinition,
     dividerDefinition,
+    switchDefinition,
     tabDefinition,
     tabPanelDefinition,
     tabsDefinition,
