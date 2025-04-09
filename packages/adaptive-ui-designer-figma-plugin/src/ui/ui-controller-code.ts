@@ -21,7 +21,7 @@ export class CodeController {
      */
     public selectedNodesChanged() {
         this.supportsCodeGen = this.controller.selectedNodes.length === 1 &&
-            this.controller.selectedNodes[0].additionalData.get(AdditionalDataKeys.supportsCodeGen) === "true";
+            this.controller.selectedNodes[0].additionalData.get(AdditionalDataKeys.supportsCodeGen).toLowerCase() === "true";
         // console.log("change", this.supportsCodeGen);
     }
 

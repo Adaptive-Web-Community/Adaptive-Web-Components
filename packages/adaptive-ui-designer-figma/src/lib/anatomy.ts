@@ -234,7 +234,7 @@ function isContextNode(node: PluginUINodeData, componentName: string): boolean {
 }
 
 function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
-    if (node.name === "Focus indicator") {
+    if (node.name.toLowerCase() === "focus indicator") {
         // Ignore for now
         return;
     }
