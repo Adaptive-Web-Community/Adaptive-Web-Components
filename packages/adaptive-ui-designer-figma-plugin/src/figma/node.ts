@@ -288,11 +288,11 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         if (this._node.type === "COMPONENT") {
-            const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant] : null;
+            const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant]?.toLowerCase() : null;
             const state: State | undefined = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : undefined;
             this._state = disabled === "true" ? "Disabled" : state;
         } else if (this._node.type === "INSTANCE") {
-            const disabled: string | null = this._node.componentProperties[disabledVariant]?.value as string;
+            const disabled: string | null = (this._node.componentProperties[disabledVariant]?.value as string)?.toLowerCase();
             const state: State = this._node.componentProperties[stateVariant]?.value as State;
             this._state = disabled === "true" ? "Disabled" : state;
         }
