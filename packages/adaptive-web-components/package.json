@@ -58,7 +58,7 @@
     "@storybook/csf": "0.0.2--canary.0899bb7.0",
     "@storybook/html": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
-    "@types/node": "^16.0.0",
+    "@types/node": "^22.14.1",
     "@types/react": "^16.14.0",
     "babel-loader": "^8.3.0",
     "lit-html": "^2.5.0",
