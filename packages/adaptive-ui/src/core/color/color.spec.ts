@@ -1,6 +1,7 @@
 import chai from "chai";
 import { Color } from "./color.js";
 import { type Rgb } from "culori/fn";
+import { _white } from "./utilities/color-constants.js";
 
 const { expect } = chai;
 
@@ -42,5 +43,29 @@ describe("Color", () => {
         expect(color).to.be.instanceof(Color);
         expect(color.color).to.deep.equal(opacityColor);
         expect(color.toColorString()).to.equal(opacityRgba);
+    });
+
+    it("should provide the correct relative luminance", () => {
+        const color = Color.from(greyObject);
+
+        expect(color.relativeLuminance).to.approximately(0.21, 0.01);
+    });
+
+    it("should provide a string representation", () => {
+        const color = Color.from(greyObject);
+
+        expect(color.toString()).to.equal(greyHex);
+    });
+
+    it("should provide a css representation", () => {
+        const color = Color.from(greyObject);
+
+        expect(color.createCSS()).to.equal(greyHex);
+    });
+
+    it("should provide its contrast with another value", () => {
+        const color = Color.from(greyObject);
+
+        expect(color.contrast(_white)).to.approximately(3.9, 0.1);
     });
 });
