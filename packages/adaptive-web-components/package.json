@@ -55,7 +55,7 @@
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-links": "^6.5.16",
     "@storybook/builder-webpack5": "^6.5.16",
-    "@storybook/csf": "0.0.2--canary.0899bb7.0",
+    "@storybook/csf": "0.1.13",
     "@storybook/html": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
     "@types/node": "^16.0.0",
