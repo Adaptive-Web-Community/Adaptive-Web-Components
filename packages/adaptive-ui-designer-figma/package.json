@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "devDependencies": {
-    "@figma/rest-api-spec": "^0.13.0",
+    "@figma/rest-api-spec": "^0.28.0",
     "@types/inquirer": "^9.0.7"
   },
   "dependencies": {
