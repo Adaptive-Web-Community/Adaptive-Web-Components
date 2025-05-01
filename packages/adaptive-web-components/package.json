@@ -18,6 +18,9 @@
     "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
     "directory": "packages/adaptive-web-components"
   },
+  "publishConfig": {
+    "provenance": true
+  },
   "main": "dist/adaptive-web-components.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
