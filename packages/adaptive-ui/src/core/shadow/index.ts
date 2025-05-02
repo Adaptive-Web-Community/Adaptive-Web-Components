@@ -58,7 +58,7 @@ export type ShadowValue = Shadow | DesignTokenMultiValue<Shadow> | string;
 /**
  * Creates a DesignToken that can be used for Shadow value.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
