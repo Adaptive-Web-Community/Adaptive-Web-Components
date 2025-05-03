@@ -1,6 +1,6 @@
 import { ValuesOf } from "@microsoft/fast-foundation";
-import { Fill, Styles, StyleValue } from "../core/modules/styles.js";
-import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness, strokeThickness } from "./appearance.js";
+import { Fill, Styles } from "../core/modules/styles.js";
+import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,
     accentFillIdeal,
@@ -116,6 +116,7 @@ import {
     typeRampPlus6FontVariations,
     typeRampPlus6LineHeight,
 } from "./type.js";
+import { densityBorderStyles, transparent } from "./util.js";
 
 /**
  * Style module for the shape of a control.
@@ -297,18 +298,6 @@ export const layerDensityStyles: Styles = Styles.fromProperties(
     },
     "density.layer",
 );
-
-const transparent = "transparent";
-
-// TODO: There's a bit of an overlap right now where density calculations assume a border thickness,
-// but setting the color is done elsewhere or not at all, producing inconsistent and unpredictable styling.
-const densityBorderStyles = (fillValue: StyleValue) => {
-    return {
-        borderThickness: strokeThickness,
-        borderStyle: "solid",
-        borderFill: fillValue,
-    }
-};
 
 /**
  * Convenience style module for an accent-filled stealth control (interactive).
@@ -1295,7 +1284,7 @@ export const neutralFillReadableControlStyles: Styles = Styles.fromProperties(
 export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromProperties(
     {
         ...densityBorderStyles(neutralStrokeDiscernible),
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractive(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
         backgroundFill: fillColor,
     },
     "color.neutral-outline-discernible-control",
@@ -1313,7 +1302,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundReadableElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeReadable.rest, neutralStrokeReadable.disabled),
+        ...Fill.foregroundNonInteractive(neutralStrokeReadable.rest, neutralStrokeReadable.disabled),
     },
     "color.neutral-foreground-readable-element",
 );
@@ -1330,7 +1319,7 @@ export const neutralForegroundReadableElementStyles: Styles = Styles.fromPropert
  */
 export const neutralForegroundStrongElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractive(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-foreground-strong-element",
 );
@@ -1347,7 +1336,7 @@ export const neutralForegroundStrongElementStyles: Styles = Styles.fromPropertie
  */
 export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeSubtle.rest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractive(neutralStrokeSubtle.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-subtle-element",
 );
@@ -1364,7 +1353,7 @@ export const neutralDividerSubtleElementStyles: Styles = Styles.fromProperties(
  */
 export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromProperties(
     {
-        ...Fill.foregroundNonInteractiveWithDisabled(neutralStrokeDiscernible.rest, neutralStrokeStrong.disabled),
+        ...Fill.foregroundNonInteractive(neutralStrokeDiscernible.rest, neutralStrokeStrong.disabled),
     },
     "color.neutral-divider-discernible-element",
 );
