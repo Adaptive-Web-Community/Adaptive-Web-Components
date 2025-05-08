@@ -1,6 +1,6 @@
 import { cssDirective } from "@microsoft/fast-element";
 import { type Color as CuloriColor, formatHex, formatRgb, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { Paint } from "./paint.js";
+import { PaintBase } from "./paint.js";
 import { calculateOverlayColor } from "./utilities/opacity.js";
 
 useMode(modeRgb);
@@ -13,7 +13,7 @@ useMode(modeLrgb);
  * @public
  */
 @cssDirective()
-export class Color extends Paint {
+export class Color extends PaintBase {
     /**
      * The underlying Color value.
      */

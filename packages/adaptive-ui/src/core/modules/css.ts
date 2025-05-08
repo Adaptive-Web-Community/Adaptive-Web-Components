@@ -10,7 +10,7 @@ import { StyleProperty } from "./types.js";
 export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
     switch (usage) {
         case StyleProperty.backgroundFill:
-            return "background-color";
+            return "background";
         case StyleProperty.foregroundFill:
             return "color";
         case StyleProperty.borderFillTop:
