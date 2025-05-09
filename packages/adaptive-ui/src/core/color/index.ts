@@ -1,6 +1,7 @@
 export * from "./recipes/index.js";
 export * from "./utilities/index.js";
 export * from "./color.js";
+export * from "./gradient.js";
 export * from "./paint.js";
 export * from "./palette-base.js";
 export * from "./palette-okhsl.js";

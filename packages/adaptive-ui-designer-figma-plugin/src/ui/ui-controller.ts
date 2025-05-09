@@ -3,7 +3,6 @@ import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, DesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
-import { formatHex8 } from 'culori';
 import {
     AdaptiveDesignToken,
     AdaptiveDesignTokenOrGroup,
@@ -413,9 +412,7 @@ export class UIController {
             let value: any = valueOriginal;
             // let valueDebug: any;
             if (valueOriginal instanceof Color) {
-                const color = valueOriginal;
-                value = formatHex8(color.color);
-                // valueDebug = swatch.toColorString();
+                // valueDebug = valueOriginal.toString();
             } else if (typeof valueOriginal === "string") {
                 if (valueOriginal.startsWith("calc")) {
                     const ret = calc(valueOriginal as string);

@@ -61,7 +61,7 @@ export const BorderThickness: {
 export function calculateOverlayColor(match: Color_2, background: Color_2): Rgb;
 
 // @public
-export class Color extends Paint {
+export class Color extends PaintBase {
     constructor(color: Color_2, intendedColor?: Color);
     static asOverlay(intendedColor: Color, reference: Color): Color;
     readonly color: Color_2;
@@ -127,6 +127,16 @@ export type ComponentParts = Record<string, string>;
 
 // @public
 export type Condition = BooleanCondition | StringCondition;
+
+// @public
+export class ConicGradient extends Gradient {
+    constructor(stops: GradientStop[], angle?: number);
+    readonly angle: number;
+    // (undocumented)
+    toString(): string;
+    // (undocumented)
+    readonly type: GradientType;
+}
 
 // @public
 export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
@@ -273,6 +283,12 @@ export class DesignTokenMultiValue<T extends CSSDirective | string> extends Arra
 }
 
 // @public
+export class DesignTokenMultiValuePaint extends DesignTokenMultiValue<PaintBase> implements RelativeLuminance {
+    contrast(b: RelativeLuminance): number;
+    get relativeLuminance(): number;
+}
+
+// @public
 export abstract class DesignTokenRegistry {
     static Groups: Map<string, InteractiveTokenGroup<any>>;
     static Shared: Map<string, DesignToken<any>>;
@@ -333,7 +349,8 @@ export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
 export const Fill: {
     backgroundAndForeground: (background: InteractiveTokenGroup<Paint>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>) => StyleProperties;
     backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Paint>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
-    foregroundNonInteractiveWithDisabled: (foreground: TypedCSSDesignToken<Paint>, disabled: TypedCSSDesignToken<Paint>) => StyleProperties;
+    backgroundNonInteractive: (background: TypedCSSDesignToken<Paint>, disabled?: TypedCSSDesignToken<Paint>) => StyleProperties;
+    foregroundNonInteractive: (foreground: TypedCSSDesignToken<Paint>, disabled?: TypedCSSDesignToken<Paint>) => StyleProperties;
 };
 
 // @public
@@ -349,6 +366,36 @@ export interface FocusDefinition<TParts> {
     focusTarget: StyleModuleTarget;
     resetTarget?: StyleModuleTarget;
 }
+
+// @public
+export abstract class Gradient extends PaintBase {
+    constructor(stops: GradientStop[]);
+    createCSS: () => string;
+    readonly stops: GradientStop[];
+    // (undocumented)
+    protected get stopsListCSS(): string;
+    abstract toString(): string;
+    abstract readonly type: GradientType;
+}
+
+// @public
+export type GradientStop = {
+    color: Color;
+    position: GradientStopPosition;
+    endPosition?: GradientStopPosition;
+};
+
+// @public
+export type GradientStopPosition = {
+    value: number;
+    unit: "%" | "px" | "deg";
+};
+
+// @public
+export type GradientType = "conic" | "linear" | "radial";
+
+// @beta
+export function hueShiftGradient(palette: Palette, reference: Paint, delta: number, angle?: number, startShift?: number, endShift?: number, direction?: PaletteDirection): Gradient;
 
 // @public
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveColorSet;
@@ -420,6 +467,15 @@ export type InteractivityDefinition = {
 export function isDark(color: RelativeLuminance): boolean;
 
 // @public
+export class LinearGradient extends Gradient {
+    constructor(stops: GradientStop[], angle?: number);
+    readonly angle: number;
+    toString(): string;
+    // (undocumented)
+    readonly type: GradientType;
+}
+
+// @public
 export function luminanceSwatch(luminance: number): Color;
 
 // @public (undocumented)
@@ -440,9 +496,11 @@ export const Padding: {
 };
 
 // @public
-export abstract class Paint implements RelativeLuminance, CSSDirective {
+export type Paint = PaintBase | DesignTokenMultiValuePaint;
+
+// @public
+export abstract class PaintBase implements RelativeLuminance, CSSDirective {
     protected constructor(relativeLuminance: number);
-    // (undocumented)
     contrast(b: RelativeLuminance): number;
     createCSS(add: AddBehavior): ComposableStyles;
     get relativeLuminance(): number;
@@ -493,6 +551,14 @@ export interface PaletteRGBOptions {
     preserveSource: boolean;
     stepContrast: number;
     stepContrastRamp: number;
+}
+
+// @public
+export class RadialGradient extends Gradient {
+    constructor(stops: GradientStop[]);
+    toString(): string;
+    // (undocumented)
+    readonly type: GradientType;
 }
 
 // @public
@@ -766,6 +832,9 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
     name: string;
     type?: DesignTokenType;
 }
+
+// @beta
+export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, angle?: number, direction?: PaletteDirection): Gradient;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedCSSDesignToken" because one of its declarations is marked as @internal

@@ -7,7 +7,9 @@ import {
     accentFillSubtleControlStyles,
     accentFillSubtleInverseControlStyles,
     accentForegroundReadableControlStyles,
+    accentHueShiftGradientFillSubtleElementStyles,
     accentOutlineDiscernibleControlStyles,
+    accentToHighlightGradientFillSubtleElementStyles,
     fillColor,
     highlightFillDiscernibleControlStyles,
     highlightFillIdealControlStyles,
@@ -52,6 +54,14 @@ StyleExample;
 AppSwatch;
 
 const backplateComponents = html<ColorBlock>`
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentHueShiftGradientFillSubtleElementStyles}">
+        Accent hue shift
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentToHighlightGradientFillSubtleElementStyles}">
+        Accent to Highlight
+    </app-style-example>
+
     <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillIdealControlStyles}">
         Accent ideal
     </app-style-example>

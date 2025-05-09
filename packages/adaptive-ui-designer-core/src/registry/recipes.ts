@@ -7,11 +7,13 @@ import {
     accentFillStealth,
     accentFillSubtle,
     accentFillSubtleInverse,
+    accentHueShiftGradientFillSubtleRest,
     accentStrokeDiscernible,
     accentStrokeReadable,
     accentStrokeSafety,
     accentStrokeStrong,
     accentStrokeSubtle,
+    accentToHighlightGradientFillSubtleRest,
     bodyFontFamily,
     bodyFontStyle,
     bodyFontWeight,
@@ -50,6 +52,9 @@ import {
     fontFamily,
     fontStyle,
     fontWeight,
+    gradientAngle,
+    gradientEndShift,
+    gradientStartShift,
     highlightBaseColor,
     highlightFillDiscernible,
     highlightFillIdeal,
@@ -212,6 +217,9 @@ const designTokens: DesignTokenStore = [
     strokeDiscernibleRestDelta,
     strokeReadableRestDelta,
     strokeStrongRestDelta,
+    gradientAngle,
+    gradientStartShift,
+    gradientEndShift,
 ];
 
 const colorTokens: DesignTokenOrGroupStore = [
@@ -276,6 +284,8 @@ const colorTokens: DesignTokenOrGroupStore = [
     neutralFillIdeal,
     neutralFillDiscernible,
     neutralFillReadable,
+    accentHueShiftGradientFillSubtleRest,
+    accentToHighlightGradientFillSubtleRest,
     // Stroke
     focusStroke,
     focusStrokeOuter,

@@ -23,7 +23,7 @@ import { InteractiveState, InteractiveTokenGroup } from "./types.js";
 /**
  * Creates a DesignToken that can be used for interactive color recipe deltas.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param state - The state for the recipe delta value, or a custom identifier in camelCase.
  * @param value - The value for the recipe delta.
  *
@@ -40,7 +40,7 @@ export function createTokenDelta(
 /**
  * Creates a DesignToken that can be used for color recipe minimum contrast.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param value - The value for the recipe minimum contrast.
  *
  * @public
@@ -55,7 +55,7 @@ export function createTokenMinContrast(
 /**
  * Creates a DesignToken that can be used for a color recipe, optionally referencing a context color.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *
@@ -74,7 +74,7 @@ export function createTokenColorRecipe<T = Paint>(
 /**
  * Creates a DesignToken that can be used for a color recipe, referencing an interactive color set for context.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *
@@ -94,7 +94,7 @@ export function createTokenColorRecipeBySet<T = Paint>(
  * Creates a DesignToken that can be used for a color recipe that works with different {@link Palette}s.
  * Use in conjunction with {@link createTokenColorRecipeWithPalette}.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *

@@ -4,4 +4,6 @@ export * from "./contrast-and-delta-swatch-set.js";
 export * from "./contrast-swatch.js";
 export * from "./delta-swatch-set.js";
 export * from "./delta-swatch.js";
+export * from "./hue-shift-gradient.js";
 export * from "./ideal-color-delta-swatch-set.js";
+export * from "./two-palette-gradient.js";

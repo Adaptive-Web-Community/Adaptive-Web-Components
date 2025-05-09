@@ -109,9 +109,25 @@ export const Fill = {
         };
     },
 
-    foregroundNonInteractiveWithDisabled: function(
+    backgroundNonInteractive: function(
+        background: TypedCSSDesignToken<Paint>,
+        disabled?: TypedCSSDesignToken<Paint>,
+    ): StyleProperties {
+        return {
+            backgroundFill: {
+                name: `${background.name}-value`,
+                rest: background,
+                hover: background,
+                active: background,
+                focus: background,
+                disabled: disabled || background,
+            } as InteractiveTokenGroup<Paint>,
+        }
+    },
+
+    foregroundNonInteractive: function(
         foreground: TypedCSSDesignToken<Paint>,
-        disabled: TypedCSSDesignToken<Paint>,
+        disabled?: TypedCSSDesignToken<Paint>,
     ): StyleProperties {
         return {
             foregroundFill: {
@@ -120,7 +136,7 @@ export const Fill = {
                 hover: foreground,
                 active: foreground,
                 focus: foreground,
-                disabled,
+                disabled : disabled || foreground,
             } as InteractiveTokenGroup<Paint>,
         }
     }

@@ -1,8 +1,14 @@
 import type { DesignTokenMetadata, DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
 import { StyleProperty } from "./modules/types.js";
 
+/**
+ * @public
+ */
 export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & { [P in K]?: T[P] };
 
+/**
+ * @public
+ */
 export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 /**
