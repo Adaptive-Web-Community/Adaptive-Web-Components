@@ -1,6 +1,6 @@
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
-import { Swatch } from "@adaptive-web/adaptive-ui";
+import { Color } from "@adaptive-web/adaptive-ui";
 import { fillColor } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
@@ -55,7 +55,13 @@ export class ElementsController {
         try {
             if (value) {
                 // TODO figure out a better way to handle storage data types
-                const color = Swatch.parse((value as unknown) as string);
+
+                let color: Color | null = null;
+                if (value instanceof Color) {
+                    color = value;
+                } else {
+                    color = Color.parse((value as unknown) as string);
+                }
                 if (color) {
                     // TODO fix this logic
                     // console.log("        setting DesignToken value (color)", token.name, value);

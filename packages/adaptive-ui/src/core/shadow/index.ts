@@ -1,6 +1,6 @@
 import { CSSDirective, cssDirective } from "@microsoft/fast-element";
 import { DesignTokenMultiValue, DesignTokenType } from "../adaptive-design-tokens.js";
-import { Swatch } from "../color/swatch.js";
+import { Color } from "../color/color.js";
 import { StyleProperty } from "../modules/types.js";
 import { createTyped } from "../token-helpers.js";
 
@@ -21,7 +21,7 @@ export class Shadow implements CSSDirective {
      * @param spread - The spread in `px`. This is not supported in all potential uses of Shadow (text or drop).
      */
     constructor(
-        public color: Swatch,
+        public color: Color,
         public xOffset: number,
         public yOffset: number,
         public blurRadius?: number,

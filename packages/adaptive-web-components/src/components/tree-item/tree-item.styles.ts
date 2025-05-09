@@ -1,4 +1,4 @@
-import { Swatch } from"@adaptive-web/adaptive-ui";
+import { Color } from"@adaptive-web/adaptive-ui";
 import {
     cornerRadiusControl,
     focusStrokeThickness,
@@ -11,14 +11,14 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { heightNumber } from "../../styles/index.js";
 
-const expandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collapse-hover").withDefault(
+const expandCollapseHover = DesignToken.create<Color>("tree-item-expand-collapse-hover").withDefault(
     (resolve: DesignTokenResolver) => {
         const recipe = resolve(neutralFillStealthRecipe);
         return recipe.evaluate(resolve, { reference: recipe.evaluate(resolve).hover }).hover as any;
     }
 );
 
-const selectedExpandCollapseHover = DesignToken.create<Swatch>("tree-item-expand-collapse-selected-hover").withDefault(
+const selectedExpandCollapseHover = DesignToken.create<Color>("tree-item-expand-collapse-selected-hover").withDefault(
     (resolve: DesignTokenResolver) => {
         const baseRecipe = resolve(neutralFillSubtleRecipe);
         const buttonRecipe = resolve(neutralFillStealthRecipe);

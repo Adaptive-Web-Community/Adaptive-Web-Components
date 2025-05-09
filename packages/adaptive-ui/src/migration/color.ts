@@ -1,9 +1,9 @@
 import type { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { ColorRecipeParams, InteractiveSwatchSet } from "../core/color/recipe.js";
+import { ColorRecipeParams, InteractivePaintSet } from "../core/color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
 import { deltaSwatch } from "../core/color/recipes/delta-swatch.js";
-import { Swatch } from "../core/color/swatch.js";
+import { Color } from "../core/color/color.js";
 import { interactiveSwatchSetAsOverlay, swatchAsOverlay } from "../core/color/utilities/opacity.js";
 import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
 import {
@@ -112,7 +112,7 @@ const foregroundOnAccentFillReadableName = "foreground-on-accent-fill-readable";
 export const foregroundOnAccentFillReadableRecipe = createTokenColorRecipe(
     foregroundOnAccentFillReadableName,
     StyleProperty.foregroundFill,
-    (resolve: DesignTokenResolver): InteractiveSwatchSet =>
+    (resolve: DesignTokenResolver): InteractivePaintSet =>
         blackOrWhiteByContrastSet(
             {
                 rest: resolve(accentFillReadable.rest),
@@ -433,7 +433,7 @@ export const neutralFillInputRecipe = createTokenColorRecipe(
                 resolve(neutralFillInputFocusDelta),
                 1,
             ),
-            params?.reference || resolve(fillColor),
+            params?.reference as Color || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
@@ -484,7 +484,7 @@ export const neutralFillSecondaryRecipe = createTokenColorRecipe(
                 resolve(neutralFillSecondaryFocusDelta),
                 1,
             ),
-            params?.reference || resolve(fillColor),
+            params?.reference as Color || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );
@@ -569,14 +569,14 @@ export const neutralStrokeDividerRestDelta = createTokenDelta(neutralStrokeDivid
 export const neutralStrokeDividerRecipe = createTokenColorRecipe(
     neutralStrokeDividerName,
     StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Color =>
         swatchAsOverlay(
             deltaSwatch(
                 resolve(neutralPalette),
                 params?.reference || resolve(fillColor),
                 resolve(neutralStrokeDividerRestDelta)
             ),
-            params?.reference || resolve(fillColor),
+            params?.reference as Color || resolve(fillColor),
             resolve(neutralAsOverlay)
         )!
 );
@@ -615,7 +615,7 @@ export const neutralStrokeInputRecipe = createTokenColorRecipe(
                 resolve(neutralStrokeInputFocusDelta),
                 1,
             ),
-            params?.reference || resolve(fillColor),
+            params?.reference as Color || resolve(fillColor),
             resolve(neutralAsOverlay)
         )
 );

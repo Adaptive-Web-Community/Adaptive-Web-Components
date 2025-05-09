@@ -1,11 +1,11 @@
 import { Color } from "../color.js";
+import { Paint } from "../paint.js";
 import { Palette, PaletteDirection, PaletteDirectionValue, resolvePaletteDirection } from "../palette.js";
-import { InteractiveSwatchSet } from "../recipe.js";
-import { Swatch } from "../swatch.js";
+import { InteractiveColorSet } from "../recipe.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /**
- * Gets an interactive set of {@link Swatch}es using contrast from the reference color. If the ideal color meets contrast it
+ * Gets an interactive set of {@link Color}s using contrast from the reference color. If the ideal color meets contrast it
  * is used for the base color, if not it's adjusted until contrast is met. Then deltas from that color are used for each state.
  *
  * This algorithm is similar to {@link contrastAndDeltaSwatchSet}, with the addition of `idealColor`. This is often preferable
@@ -18,7 +18,7 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  * This algorithm will maintain the difference between the rest and hover deltas, but may slide them on the Palette
  * to maintain accessibility.
  *
- * @param palette - The Palette used to find the Swatches
+ * @param palette - The Palette used to find the Colors
  * @param reference - The reference color
  * @param idealColor - The color to use as the base color if it meets `minContrast` from `reference`
  * @param minContrast - The desired minimum contrast from `reference`, which determines the base color
@@ -27,15 +27,15 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  * @param activeDelta - The active state offset from the base color
  * @param focusDelta - The focus state offset from the base color
  * @param disabledDelta - The disabled state offset from the base color
- * @param disabledPalette - The Palette for the disabled Swatch
+ * @param disabledPalette - The Palette for the disabled color
  * @param direction - The direction the deltas move on the `palette`, defaults to {@link directionByIsDark} based on `reference`
- * @returns The interactive set of Swatches
+ * @returns The interactive set of Colors
  *
  * @public
  */
 export function idealColorDeltaSwatchSet(
     palette: Palette,
-    reference: Swatch,
+    reference: Paint,
     minContrast: number,
     idealColor: Color,
     restDelta: number,
@@ -45,7 +45,7 @@ export function idealColorDeltaSwatchSet(
     disabledDelta: number,
     disabledPalette: Palette = palette,
     direction: PaletteDirection = directionByIsDark(reference)
-): InteractiveSwatchSet {
+): InteractiveColorSet {
     const dir = resolvePaletteDirection(direction);
 
     const referenceIndex = palette.closestIndexOf(reference);

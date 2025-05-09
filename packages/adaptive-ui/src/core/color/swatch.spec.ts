@@ -1,7 +1,7 @@
 import chai from "chai";
+import { type Rgb } from "culori/fn";
 import { Color } from "./color.js";
 import { Swatch } from "./swatch.js";
-import { type Rgb } from "culori/fn";
 import { _white } from "./utilities/color-constants.js";
 
 const { expect } = chai;
@@ -24,6 +24,7 @@ describe("Swatch", () => {
         expect(swatch).to.be.instanceof(Swatch);
         expect(swatch.color).to.deep.equal(greyColor);
         expect(swatch.toColorString()).to.equal(greyHex);
+        expect(swatch.toString()).to.equal(greyHex);
     });
 
     it("should create a Swatch from the provided RGB values", () => {

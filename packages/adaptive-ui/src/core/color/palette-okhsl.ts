@@ -1,7 +1,6 @@
 import { clampChroma, interpolate, modeOkhsl, modeRgb, samples, useMode } from "culori/fn";
 import { Color } from "./color.js";
 import { BasePalette } from "./palette-base.js";
-import { Swatch } from "./swatch.js";
 import { _black, _white } from "./utilities/color-constants.js";
 
 const okhsl = useMode(modeOkhsl);
@@ -51,7 +50,7 @@ const defaultPaletteOkhslOptions: PaletteOkhslOptions = {
  *
  * @public
  */
-export class PaletteOkhsl extends BasePalette<Swatch> {
+export class PaletteOkhsl extends BasePalette {
     public static from(source: Color | string, options?: Partial<PaletteOkhslOptions>): PaletteOkhsl {
         const color = source instanceof Color ? source : Color.parse(source);
         if (!color) {
@@ -87,7 +86,7 @@ export class PaletteOkhsl extends BasePalette<Swatch> {
 
         const ramp = [...samplesLeft, ...samplesRight.slice(1)];
         const rampSwatches = ramp.map((value) =>
-            Swatch.from(rgb(clampChroma(value, "okhsl")))
+            Color.from(rgb(clampChroma(value, "okhsl")))
         );
 
         // It's important that the ends are full white and black.

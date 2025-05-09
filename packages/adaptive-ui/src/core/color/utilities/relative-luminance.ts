@@ -8,6 +8,13 @@ export interface RelativeLuminance {
      * A number between 0 and 1, calculated by {@link https://www.w3.org/WAI/GL/wiki/Relative_luminance}
      */
     readonly relativeLuminance: number;
+
+    /**
+     * Gets the contrast between this relative luminance and another.
+     *
+     * @returns The contrast between the two luminance values, for example, 4.54
+     */
+    contrast: (a: RelativeLuminance) => number;
 }
 
 /**

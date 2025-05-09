@@ -1,4 +1,5 @@
 import { DesignTokenResolver } from "@microsoft/fast-foundation";
+import { Color } from "../core/color/color.js";
 import { StyleProperty } from "../core/modules/types.js";
 import { DesignTokenMultiValue, DesignTokenType } from "../core/adaptive-design-tokens.js";
 import { createTokenNonCss, createTokenRecipe } from "../core/token-helpers.js";
@@ -19,9 +20,9 @@ export const elevationRecipe = createTokenRecipe<number, ShadowValue>("elevation
             directionalOpacity = 0.24;
         }
 
-        const color = resolve(neutralStrokeStrong.rest);
-        const ambient = new Shadow(color.toTransparent(ambientOpacity), 0, 0, 2);
-        const directional = new Shadow(color.toTransparent(directionalOpacity), 0, size * 0.5, size);
+        const color = resolve(neutralStrokeStrong.rest) as Color; // TODO remove type assumption
+        const ambient = new Shadow(Color.unsafeOpacity(color, ambientOpacity), 0, 0, 2);
+        const directional = new Shadow(Color.unsafeOpacity(color, directionalOpacity), 0, size * 0.5, size);
         return new DesignTokenMultiValue(ambient, directional);
     },
 );

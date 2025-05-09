@@ -1,7 +1,8 @@
 import { Recipe, RecipeEvaluate, RecipeEvaluateOptional, RecipeOptional } from "../recipes.js";
 import { InteractiveValues } from "../types.js";
+import { Color } from "./color.js";
+import { Paint } from "./paint.js";
 import { Palette } from "./palette.js";
-import { Swatch } from "./swatch.js";
 
 /**
  * Parameters provided to {@link ColorRecipe}.
@@ -12,7 +13,7 @@ export type ColorRecipeParams = {
     /**
      * The reference color, implementation defaults to `fillColor`, but allows for overriding for nested color recipes.
      */
-    reference: Swatch | null,
+    reference: Paint | null,
 };
 
 /**
@@ -20,14 +21,14 @@ export type ColorRecipeParams = {
  *
  * @public
  */
-export type ColorRecipe<T = Swatch> = RecipeOptional<ColorRecipeParams, T>;
+export type ColorRecipe<T = Color> = RecipeOptional<ColorRecipeParams, T>;
 
 /**
  * The type of the `evaluate` function for {@link ColorRecipe}.
  *
  * @public
  */
-export type ColorRecipeEvaluate<T = Swatch> = RecipeEvaluateOptional<ColorRecipeParams, T>;
+export type ColorRecipeEvaluate<T = Color> = RecipeEvaluateOptional<ColorRecipeParams, T>;
 
 /**
  * Parameters provided to {@link ColorRecipePalette}.
@@ -45,49 +46,56 @@ export type ColorRecipePaletteParams = ColorRecipeParams & {
  *
  * @public
  */
-export type ColorRecipePalette<T = Swatch> = Recipe<ColorRecipePaletteParams, T>;
+export type ColorRecipePalette<T = Color> = Recipe<ColorRecipePaletteParams, T>;
 
 /**
  * The type of the `evaluate` function for {@link ColorRecipePalette}.
  *
  * @public
  */
-export type ColorRecipePaletteEvaluate<T = Swatch> = RecipeEvaluate<ColorRecipePaletteParams, T>;
+export type ColorRecipePaletteEvaluate<T = Color> = RecipeEvaluate<ColorRecipePaletteParams, T>;
 
 /**
  * A recipe that evaluates a color value for rest, hover, active, and focus states.
  *
  * @public
  */
-export type InteractiveColorRecipe = ColorRecipe<InteractiveSwatchSet>;
+export type InteractiveColorRecipe = ColorRecipe<InteractivePaintSet>;
 
 /**
  * The type of the `evaluate` function for {@link InteractiveColorRecipe}.
  *
  * @public
  */
-export type InteractiveColorRecipeEvaluate = ColorRecipeEvaluate<InteractiveSwatchSet>;
+export type InteractiveColorRecipeEvaluate = ColorRecipeEvaluate<InteractivePaintSet>;
 
 /**
  * A recipe that evaluates a color value for rest, hover, active, and focus states using the provided Palette.
  *
  * @public
  */
-export type InteractiveColorRecipePalette = ColorRecipePalette<InteractiveSwatchSet>;
+export type InteractiveColorRecipePalette = ColorRecipePalette<InteractivePaintSet>;
 
 /**
  * The type of the `evaluate` function for {@link InteractiveColorRecipePalette}.
  *
  * @public
  */
-export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<InteractiveSwatchSet>;
+export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<InteractivePaintSet>;
 
 /**
- * A set of {@link Swatch}es to use for an interactive control's states.
+ * A set of {@link Paint}s to use for an interactive control's states.
  *
  * @public
  */
-export interface InteractiveSwatchSet extends InteractiveValues<Swatch | null> {}
+export interface InteractivePaintSet extends InteractiveValues<Paint | null> {}
+
+/**
+ * A set of {@link Color}s to use for an interactive control's states.
+ *
+ * @public
+ */
+export interface InteractiveColorSet extends InteractiveValues<Color | null> {}
 
 /**
  * A recipe that evaluates based on an interactive set of color values.
@@ -97,25 +105,25 @@ export interface InteractiveSwatchSet extends InteractiveValues<Swatch | null> {
  *
  * @public
  */
-export type ColorRecipeBySet<T = Swatch> = Recipe<InteractiveSwatchSet, T>;
+export type ColorRecipeBySet<T = Color> = Recipe<InteractivePaintSet, T>;
 
 /**
  * The type of the `evaluate` function for {@link ColorRecipeBySet}.
  *
  * @public
  */
-export type ColorRecipeBySetEvaluate<T = Swatch> = RecipeEvaluate<InteractiveSwatchSet, T>;
+export type ColorRecipeBySetEvaluate<T = Color> = RecipeEvaluate<InteractivePaintSet, T>;
 
 /**
  * A recipe that evaluates a color value for rest, hover, active, and focus states.
  *
  * @public
  */
-export type InteractiveColorRecipeBySet = ColorRecipeBySet<InteractiveSwatchSet>;
+export type InteractiveColorRecipeBySet = ColorRecipeBySet<InteractivePaintSet>;
 
 /**
  * The type of the `evaluate` function for {@link InteractiveColorRecipeBySet}.
  *
  * @public
  */
-export type InteractiveColorRecipeBySetEvaluate = ColorRecipeBySetEvaluate<InteractiveSwatchSet>;
+export type InteractiveColorRecipeBySetEvaluate = ColorRecipeBySetEvaluate<InteractivePaintSet>;

@@ -1,17 +1,16 @@
 import { Color } from "./color.js";
 import { Palette, PaletteDirection, PaletteDirectionValue, resolvePaletteDirection } from "./palette.js";
-import { Swatch } from "./swatch.js";
 import { binarySearch } from "./utilities/binary-search.js";
 import { directionByIsDark } from "./utilities/direction-by-is-dark.js";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
  * A base {@link Palette} with a common implementation of the interface. Use PaletteRGB for an implementation
- * of a palette generation algorithm that is ready to be used directly, or extend this class to generate custom Swatches.
+ * of a palette generation algorithm that is ready to be used directly, or extend this class to generate custom swatches.
  *
  * @public
  */
-export class BasePalette<T extends Swatch> implements Palette<T> {
+export class BasePalette<T extends Color = Color> implements Palette<T> {
     /**
      * {@inheritdoc Palette.source}
      */
@@ -28,12 +27,12 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
     readonly lastIndex: number;
 
     /**
-     * A copy of the `Swatch`es in reverse order, used for optimized searching.
+     * A copy of the swatches in reverse order, used for optimized searching.
      */
     readonly reversedSwatches: ReadonlyArray<T>;
 
     /**
-     * Cache from `relativeLuminance` to `Swatch` index in the `Palette`.
+     * Cache from `relativeLuminance` to swatch index in the `Palette`.
      */
     readonly closestIndexCache = new Map<number, number>();
 
@@ -41,7 +40,7 @@ export class BasePalette<T extends Swatch> implements Palette<T> {
      * Creates a new Palette.
      *
      * @param source - The source color for the Palette
-     * @param swatches - All Swatches in the Palette
+     * @param swatches - All swatches in the Palette
      */
     constructor(source: Color, swatches: ReadonlyArray<T>) {
         this.source = source;

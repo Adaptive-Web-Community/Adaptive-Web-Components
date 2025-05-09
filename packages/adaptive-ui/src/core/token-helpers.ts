@@ -1,6 +1,7 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Color } from "./color/color.js";
+import { Paint } from "./color/paint.js";
 import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
 import { Recipe, RecipeEvaluate } from "./recipes.js";
@@ -166,7 +167,7 @@ export function createTokenNumberNonStyling(name: string, intendedFor?: StylePro
 }
 
 /**
- * Creates a DesignToken that can be used as a fill in styles.
+ * Creates a DesignToken that can be used as a paint treatment (background, foreground, border, etc.) in styles.
  *
  * @param name - The token name in `css-identifier` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
@@ -176,7 +177,19 @@ export function createTokenNumberNonStyling(name: string, intendedFor?: StylePro
  *
  * @public
  */
+export function createTokenPaint(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Paint> {
+    return TypedCSSDesignToken.createTyped<Paint>(name, DesignTokenType.paint, intendedFor);
+}
+
+/**
+ * Creates a DesignToken that can be used as a color in styles.
+ *
+ * @param name - The token name in `css-identifier` casing.
+ * @param intendedFor - The style properties where this token is intended to be used.
+ *
+ * @public
+ * @deprecated Use createTokenColor or createTokenPaint
+ */
 export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch> {
-    // TODO: Add back `gradient` type support when multiple types are added. (see `adaptive-design-tokens.ts`)
     return TypedCSSDesignToken.createTyped<Swatch>(name, DesignTokenType.color, intendedFor);
 }

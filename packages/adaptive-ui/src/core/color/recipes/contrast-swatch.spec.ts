@@ -1,12 +1,12 @@
 import chai from "chai";
+import { Color } from "../color.js";
 import { PaletteRGB } from "../palette-rgb.js";
-import { Swatch } from "../swatch.js";
 import { contrastSwatch } from "./contrast-swatch.js";
 
 const { expect } = chai;
 
-const neutralBase = Swatch.parse("#808080")!;
-const accentBase = Swatch.parse("#80DEEA")!;
+const neutralBase = Color.parse("#808080")!;
+const accentBase = Color.parse("#80DEEA")!;
 
 describe("contrastSwatch", (): void => {
     const neutralPalette = PaletteRGB.from(neutralBase);

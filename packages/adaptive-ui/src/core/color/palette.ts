@@ -1,9 +1,8 @@
 import { Color } from "./color.js";
-import { Swatch } from "./swatch.js";
 import { RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
- * Directional values for navigating {@link Swatch}es in {@link Palette}.
+ * Directional values for navigating swatches in {@link Palette}.
  *
  * @public
  */
@@ -20,7 +19,7 @@ export const PaletteDirectionValue = Object.freeze({
 } as const);
 
 /**
- * Directional values for navigating {@link Swatch}es in {@link Palette}.
+ * Directional values for navigating swatches in {@link Palette}.
  *
  * @public
  */
@@ -50,30 +49,30 @@ export function resolvePaletteDirection(direction: PaletteDirection): PaletteDir
 }
 
 /**
- * A collection of {@link Swatch}es that form a luminance gradient from light (index 0) to dark.
+ * A collection of {@link Color}s that form a luminance gradient from light (index 0) to dark.
  *
  * @public
  */
-export interface Palette<T extends Swatch = Swatch> {
+export interface Palette<T extends Color = Color> {
     /**
-     * The Swatch used to create the full palette.
+     * The Color used to create the full palette.
      */
     readonly source: Color;
 
     /**
-     * The array of all Swatches from light to dark.
+     * The array of all Colors from light to dark.
      */
     readonly swatches: ReadonlyArray<T>;
 
     /**
-     * Returns a Swatch from the Palette that most closely meets
+     * Returns a Color from the Palette that most closely meets
      * the `minContrast` ratio for to the `reference`.
      *
      * @param reference - The relative luminance of the reference
      * @param minContrast - The minimum amount of contrast from the `reference`
      * @param initialIndex - Optional starting point for the search
      * @param direction - Optional control for the direction of the search
-     * @returns The Swatch that meets the provided contrast
+     * @returns The Color that meets the provided contrast
      */
     colorContrast(
         reference: RelativeLuminance,
@@ -83,10 +82,10 @@ export interface Palette<T extends Swatch = Swatch> {
     ): T;
 
     /**
-     * Returns a Swatch from the Palette that's the specified position and direction away from the `reference`.
+     * Returns a Color from the Palette that's the specified position and direction away from the `reference`.
      *
      * @param reference - The relative luminance of the reference
-     * @param delta - The number of Swatches away from `reference`
+     * @param delta - The number of swatches away from `reference`
      * @param direction - The direction to go from `reference`, 1 goes darker, -1 goes lighter
      */
     delta(reference: RelativeLuminance, delta: number, direction: PaletteDirection): T;
@@ -101,11 +100,11 @@ export interface Palette<T extends Swatch = Swatch> {
     closestIndexOf(reference: RelativeLuminance): number;
 
     /**
-     * Gets a Swatch by index. Index is clamped to the limits
-     * of the Palette so a Swatch will always be returned.
+     * Gets a Color by index. Index is clamped to the limits
+     * of the Palette so a Color will always be returned.
      *
      * @param index - The index
-     * @returns The Swatch
+     * @returns The Color
      */
     get(index: number): T;
 }

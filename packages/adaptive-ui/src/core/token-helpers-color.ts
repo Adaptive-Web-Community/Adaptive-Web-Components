@@ -1,4 +1,5 @@
 import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
+import { Paint } from "./color/paint.js";
 import {
     ColorRecipe,
     ColorRecipeBySet,
@@ -10,14 +11,13 @@ import {
     ColorRecipeParams,
     InteractiveColorRecipe,
     InteractiveColorRecipeBySet,
-    InteractiveSwatchSet,
+    InteractivePaintSet,
 } from "./color/recipe.js";
 import { Palette } from "./color/palette.js";
-import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
 import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "./recipes.js";
-import { createTokenNonCss, createTokenSwatch } from "./token-helpers.js";
+import { createTokenNonCss, createTokenPaint } from "./token-helpers.js";
 import { InteractiveState, InteractiveTokenGroup } from "./types.js";
 
 /**
@@ -61,7 +61,7 @@ export function createTokenMinContrast(
  *
  * @public
  */
-export function createTokenColorRecipe<T = Swatch>(
+export function createTokenColorRecipe<T = Paint>(
     baseName: string,
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipeEvaluate<T>,
@@ -80,7 +80,7 @@ export function createTokenColorRecipe<T = Swatch>(
  *
  * @public
  */
-export function createTokenColorRecipeBySet<T = Swatch>(
+export function createTokenColorRecipeBySet<T = Paint>(
     baseName: string,
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipeBySetEvaluate<T>,
@@ -100,7 +100,7 @@ export function createTokenColorRecipeBySet<T = Swatch>(
  *
  * @public
  */
-export function createTokenColorRecipeForPalette<T = Swatch>(
+export function createTokenColorRecipeForPalette<T = Paint>(
     baseName: string,
     intendedFor: StyleProperty | StyleProperty[],
     evaluate: ColorRecipePaletteEvaluate<T>,
@@ -118,7 +118,7 @@ export function createTokenColorRecipeForPalette<T = Swatch>(
  *
  * @public
  */
-export function createTokenColorRecipeWithPalette<T>(
+export function createTokenColorRecipeWithPalette<T = Paint>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
     paletteToken: DesignToken<Palette>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
@@ -133,11 +133,11 @@ export function createTokenColorRecipeWithPalette<T>(
     });
 }
 
-function createTokenColorSetState(
-    valueToken: TypedDesignToken<InteractiveSwatchSet>,
+function createTokenPaintSetState(
+    valueToken: TypedDesignToken<InteractivePaintSet>,
     state: InteractiveState,
-): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${valueToken.name.replace(".value", "")}.${state}`, valueToken.intendedFor).withDefault(
+): TypedCSSDesignToken<Paint> {
+    return createTokenPaint(`${valueToken.name.replace(".value", "")}.${state}`, valueToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(valueToken)[state] as any
     );
@@ -152,9 +152,9 @@ function createTokenColorSetState(
  */
 export function createTokenColorSet(
     recipeToken: TypedDesignToken<InteractiveColorRecipe>
-): InteractiveTokenGroup<Swatch> {
+): InteractiveTokenGroup<Paint> {
     const name = recipeToken.name.replace(".recipe", "");
-    const valueToken = createTokenNonCss<InteractiveSwatchSet>(`${name}.value`, DesignTokenType.color, recipeToken.intendedFor).withDefault(
+    const valueToken = createTokenNonCss<InteractivePaintSet>(`${name}.value`, DesignTokenType.color, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -163,11 +163,11 @@ export function createTokenColorSet(
         name,
         type: DesignTokenType.color,
         intendedFor: valueToken.intendedFor,
-        rest: createTokenColorSetState(valueToken, InteractiveState.rest),
-        hover: createTokenColorSetState(valueToken, InteractiveState.hover),
-        active: createTokenColorSetState(valueToken, InteractiveState.active),
-        focus: createTokenColorSetState(valueToken, InteractiveState.focus),
-        disabled: createTokenColorSetState(valueToken, InteractiveState.disabled),
+        rest: createTokenPaintSetState(valueToken, InteractiveState.rest),
+        hover: createTokenPaintSetState(valueToken, InteractiveState.hover),
+        active: createTokenPaintSetState(valueToken, InteractiveState.active),
+        focus: createTokenPaintSetState(valueToken, InteractiveState.focus),
+        disabled: createTokenPaintSetState(valueToken, InteractiveState.disabled),
     };
     DesignTokenRegistry.Groups.set(name, group);
     return group;
@@ -181,9 +181,9 @@ export function createTokenColorSet(
  * @public
  */
 export function createTokenColorRecipeValue(
-    recipeToken: TypedDesignToken<ColorRecipe<Swatch>>,
-): TypedCSSDesignToken<Swatch> {
-    return createTokenSwatch(`${recipeToken.name.replace(".recipe", "")}.value`, recipeToken.intendedFor).withDefault(
+    recipeToken: TypedDesignToken<ColorRecipe<Paint>>,
+): TypedCSSDesignToken<Paint> {
+    return createTokenPaint(`${recipeToken.name.replace(".recipe", "")}.value`, recipeToken.intendedFor).withDefault(
         (resolve: DesignTokenResolver) =>
             resolve(recipeToken).evaluate(resolve)
     );
@@ -200,16 +200,16 @@ export function createTokenColorRecipeValue(
  */
 export function createForegroundSet(
     foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>,
-    background: InteractiveTokenGroup<Swatch>,
-): InteractiveTokenGroup<Swatch> {
+    background: InteractiveTokenGroup<Paint>,
+): InteractiveTokenGroup<Paint> {
     const foregroundBaseName = `${foregroundRecipe.name.replace(".recipe", "")}`;
     const setName = `${foregroundBaseName}.on.${background.name.replace("color.", "")}`;
 
     function createState(
         foregroundState: InteractiveState,
         state: InteractiveState,
-    ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}.${state}`).withDefault(
+    ): TypedCSSDesignToken<Paint> {
+        return createTokenPaint(`${setName}.${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(foregroundRecipe).evaluate(resolve, {
                     reference: resolve(background[state])
@@ -241,15 +241,15 @@ export function createForegroundSet(
  */
 export function createForegroundSetBySet(
     foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>,
-    background: InteractiveTokenGroup<Swatch>,
-): InteractiveTokenGroup<Swatch> {
+    background: InteractiveTokenGroup<Paint>,
+): InteractiveTokenGroup<Paint> {
     const foregroundBaseName = foregroundRecipe.name.replace(".recipe", "");
     const setName = `${foregroundBaseName}.on.${background.name.replace("color.", "")}`;
 
-    const set = createTokenNonCss<InteractiveSwatchSet>(`${setName}.value`, DesignTokenType.color).withDefault(
+    const set = createTokenNonCss<InteractivePaintSet>(`${setName}.value`, DesignTokenType.color).withDefault(
         (resolve: DesignTokenResolver) =>
             {
-                const backgroundSet: InteractiveSwatchSet = {
+                const backgroundSet: InteractivePaintSet = {
                     rest: resolve(background.rest),
                     hover: resolve(background.hover),
                     active: resolve(background.active),
@@ -262,8 +262,8 @@ export function createForegroundSetBySet(
 
     function createState(
         state: InteractiveState,
-    ): TypedCSSDesignToken<Swatch> {
-        return createTokenSwatch(`${setName}.${state}`).withDefault(
+    ): TypedCSSDesignToken<Paint> {
+        return createTokenPaint(`${setName}.${state}`).withDefault(
             (resolve: DesignTokenResolver) =>
                 resolve(set)[state] as any
         );

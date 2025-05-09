@@ -1,6 +1,6 @@
 import { clampRgb, type Hsl, interpolate, modeHsl, modeLab, modeRgb, type Rgb, useMode } from "culori/fn";
 import { BasePalette } from "./palette-base.js";
-import { Swatch } from "./swatch.js";
+import { Color } from "./color.js";
 import { contrast } from "./utilities/relative-luminance.js";
 import { _black, _white } from "./utilities/color-constants.js";
 
@@ -9,10 +9,10 @@ const lab = useMode(modeLab);
 const rgb = useMode(modeRgb);
 
 /**
- * A utility Palette that generates many Swatches used for selection in the actual Palette.
+ * A utility Palette that generates many swatches used for selection in the actual Palette.
  * The algorithm uses the LAB color space and keeps the saturation from the source color throughout.
  */
-class HighResolutionPaletteRGB extends BasePalette<Swatch> {
+class HighResolutionPaletteRGB extends BasePalette {
     /**
      * Bump the saturation if it falls below the reference color saturation.
      *
@@ -38,9 +38,9 @@ class HighResolutionPaletteRGB extends BasePalette<Swatch> {
      * @returns Output number, 0 to 0.5
      */
     private static ramp(l: number) {
-        const inputval = l / 100;
-        if (inputval > 0.5) return (inputval - 0.5) / 0.5; //from 0.500001in = 0.00000001out to 1.0in = 1.0out
-        return 2 * inputval; //from 0in = 0out to 0.5in = 1.0out
+        const inputVal = l / 100;
+        if (inputVal > 0.5) return (inputVal - 0.5) / 0.5; //from 0.500001in = 0.00000001out to 1.0in = 1.0out
+        return 2 * inputVal; //from 0in = 0out to 0.5in = 1.0out
     }
 
     /**
@@ -49,8 +49,8 @@ class HighResolutionPaletteRGB extends BasePalette<Swatch> {
      * @param source - The source color
      * @returns The Palette based on the `source` color
      */
-    static from(source: Swatch): HighResolutionPaletteRGB {
-        const swatches: Swatch[] = [];
+    static from(source: Color): HighResolutionPaletteRGB {
+        const swatches: Color[] = [];
 
         const labSource = lab(source.color);
         const lab0 = clampRgb(rgb({ mode: "lab", l: 0, a: labSource.a, b: labSource.b }));
@@ -84,7 +84,7 @@ class HighResolutionPaletteRGB extends BasePalette<Swatch> {
 
             rgb = HighResolutionPaletteRGB.saturationBump(lab50, rgb);
 
-            swatches.push(Swatch.from(rgb));
+            swatches.push(Color.from(rgb));
         }
 
         return new HighResolutionPaletteRGB(source, swatches);
@@ -132,14 +132,14 @@ const defaultPaletteRGBOptions: PaletteRGBOptions = {
 };
 
 /**
- * An implementation of a {@link Palette} that has a consistent minimum contrast value between Swatches.
+ * An implementation of a {@link Palette} that has a consistent minimum contrast value between swatches.
  * This is useful for UI as it means the perception of the difference between colors the same distance
  * apart in the Palette will be consistent whether the colors are light yellow or dark red.
  * It generates its curve using the LAB color space and maintains the saturation of the source color throughout.
  *
  * @public
  */
-export class PaletteRGB extends BasePalette<Swatch> {
+export class PaletteRGB extends BasePalette {
     /**
      * Adjust one end of the contrast-based palette so it doesn't abruptly fall to black (or white).
      *
@@ -149,15 +149,15 @@ export class PaletteRGB extends BasePalette<Swatch> {
      * @param direction - The end to adjust
      */
     private static adjustEnd(
-        swatchContrast: (swatch: Swatch) => number,
+        swatchContrast: (swatch: Color) => number,
         referencePalette: HighResolutionPaletteRGB,
-        targetPalette: Swatch[],
+        targetPalette: Color[],
         direction: 1 | -1
     ) {
         // Careful with the use of referencePalette as only the refSwatches is reversed.
         const refSwatches = direction === -1 ? referencePalette.swatches : referencePalette.reversedSwatches;
-        const refIndex = (swatch: Swatch) => {
-            const index = referencePalette.closestIndexOf(swatch);
+        const refIndex = (color: Color) => {
+            const index = referencePalette.closestIndexOf(color);
             return direction === 1 ? referencePalette.lastIndex - index : index;
         };
 
@@ -198,21 +198,21 @@ export class PaletteRGB extends BasePalette<Swatch> {
     }
 
     /**
-     * Generate a Palette with consistent minimum contrast between Swatches.
+     * Generate a Palette with consistent minimum contrast between swatches.
      *
      * @param source - The source color
      * @param options - Palette generation options
-     * @returns A Palette meeting the requested contrast between Swatches.
+     * @returns A Palette meeting the requested contrast between swatches.
      */
-    private static createColorPaletteByContrast(source: Swatch, options: PaletteRGBOptions): Swatch[] {
+    private static createColorPaletteByContrast(source: Color, options: PaletteRGBOptions): Color[] {
         const referencePalette = HighResolutionPaletteRGB.from(source);
 
         // Ramp function to increase contrast as the swatches get darker
-        const nextContrast = (swatch: Swatch) => {
-            return options.stepContrast + options.stepContrast * (1 - swatch.relativeLuminance) * options.stepContrastRamp;
+        const nextContrast = (color: Color) => {
+            return options.stepContrast + options.stepContrast * (1 - color.relativeLuminance) * options.stepContrastRamp;
         };
 
-        const swatches: Swatch[] = [];
+        const swatches: Color[] = [];
 
         // Start with the source color (when preserving) or the light end color
         let ref = options.preserveSource ? source : referencePalette.swatches[0];
@@ -248,20 +248,20 @@ export class PaletteRGB extends BasePalette<Swatch> {
     }
 
     /**
-     * Creates a PaletteRGB from a source Swatch with options.
+     * Creates a PaletteRGB from a source Color with options.
      *
-     * @param source - The source Swatch to create a Palette from
+     * @param source - The source Color to create a Palette from
      * @param options - Options to specify details of palette generation
-     * @returns The PaletteRGB with Swatches based on `source`
+     * @returns The PaletteRGB with swatches based on `source`
      */
-    static from(source: Swatch | string, options?: Partial<PaletteRGBOptions>): PaletteRGB {
-        const swatch = source instanceof Swatch ? source : Swatch.parse(source);
-        if (!swatch) {
+    static from(source: Color | string, options?: Partial<PaletteRGBOptions>): PaletteRGB {
+        const color = source instanceof Color ? source : Color.parse(source);
+        if (!color) {
             throw new Error(`Unable to parse Color as hex string: ${source}`);
         }
 
         const opts = options === void 0 || null ? defaultPaletteRGBOptions : { ...defaultPaletteRGBOptions, ...options };
 
-        return new PaletteRGB(swatch, Object.freeze(PaletteRGB.createColorPaletteByContrast(swatch, opts)));
+        return new PaletteRGB(color, Object.freeze(PaletteRGB.createColorPaletteByContrast(color, opts)));
     }
 }

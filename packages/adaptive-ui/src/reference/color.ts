@@ -1,13 +1,13 @@
 import type { DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
 import { Palette } from "../core/color/palette.js";
-import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveSwatchSet } from "../core/color/recipe.js";
+import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveColorSet, InteractivePaintSet } from "../core/color/recipe.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
 import { contrastSwatch } from "../core/color/recipes/contrast-swatch.js";
 import { contrastAndDeltaSwatchSet } from "../core/color/recipes/contrast-and-delta-swatch-set.js";
 import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
 import { idealColorDeltaSwatchSet } from "../core/color/recipes/ideal-color-delta-swatch-set.js";
-import { Swatch } from "../core/color/swatch.js";
+import { Color } from "../core/color/color.js";
 import { _white } from "../core/color/utilities/color-constants.js";
 import { conditionalSwatchSet } from "../core/color/utilities/conditional.js";
 import { interactiveSwatchSetAsOverlay } from "../core/color/utilities/opacity.js";
@@ -23,7 +23,7 @@ import {
     createTokenDelta,
     createTokenMinContrast,
 } from "../core/token-helpers-color.js";
-import { createTokenNonCss, createTokenSwatch } from "../core/token-helpers.js";
+import { createTokenColor, createTokenNonCss } from "../core/token-helpers.js";
 import { InteractiveState } from "../core/types.js";
 import { DesignTokenType, TypedDesignToken } from "../core/adaptive-design-tokens.js";
 import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
@@ -113,7 +113,7 @@ export function createTokenColorRecipeInfo<T>(
  *
  * @public
  */
-export function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
+export function createTokenColorRecipeNeutral<T extends InteractiveColorSet>(
     recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
 ): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
     const paletteToken = neutralPalette;
@@ -125,7 +125,7 @@ export function createTokenColorRecipeNeutral<T extends InteractiveSwatchSet>(
             const p = Object.assign({ palette: resolve(paletteToken) }, params);
             return interactiveSwatchSetAsOverlay(
                 resolve(recipeToken).evaluate(resolve, p),
-                p.reference || resolve(fillColor),
+                p.reference as Color || resolve(fillColor),
                 resolve(neutralAsOverlay)
             ) as T;
         }
@@ -179,7 +179,7 @@ export const minContrastReadable = createTokenNonCss<number>("color.wcagContrast
 );
 
 /** @public */
-export const fillColor = createTokenSwatch("color.context").withDefault(_white);
+export const fillColor = createTokenColor("color.context").withDefault(_white);
 
 /** @public */
 export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOverlay", DesignTokenType.boolean).withDefault(false);
@@ -193,10 +193,10 @@ export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOver
  *
  * @public
  */
-export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<InteractiveSwatchSet>(
+export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<InteractivePaintSet>(
     "color.blackOrWhite.discernible",
     StyleProperty.foregroundFill,
-    (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
+    (resolve: DesignTokenResolver, reference: InteractivePaintSet) =>
         blackOrWhiteByContrastSet(
             reference,
             resolve(minContrastDiscernible),
@@ -213,10 +213,10 @@ export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<Interac
  *
  * @public
  */
-export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<InteractiveSwatchSet>(
+export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<InteractivePaintSet>(
     "color.blackOrWhite.readable",
     StyleProperty.foregroundFill,
-    (resolve: DesignTokenResolver, reference: InteractiveSwatchSet) =>
+    (resolve: DesignTokenResolver, reference: InteractivePaintSet) =>
         blackOrWhiteByContrastSet(
             reference,
             resolve(minContrastReadable),
@@ -1754,7 +1754,7 @@ const focusStrokeName = "color.focusStroke";
 export const focusStrokeRecipe = createTokenColorRecipe(
     focusStrokeName,
     [...StylePropertyShorthand.borderFill, StyleProperty.outlineColor],
-    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Swatch =>
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Color =>
         contrastSwatch(
             resolve(focusStrokePalette),
             params?.reference || resolve(fillColor),
@@ -1773,7 +1773,7 @@ const focusStrokeOuterName = "color.focusStroke.outer";
 export const focusStrokeOuterRecipe = createTokenColorRecipe(
     focusStrokeOuterName,
     StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver): Swatch =>
+    (resolve: DesignTokenResolver): Color =>
         blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
 );
 
@@ -1788,7 +1788,7 @@ const focusStrokeInnerName = "color.focusStroke.inner";
 export const focusStrokeInnerRecipe = createTokenColorRecipe(
     focusStrokeInnerName,
     StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver): Swatch =>
+    (resolve: DesignTokenResolver): Color =>
         blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
 );
 

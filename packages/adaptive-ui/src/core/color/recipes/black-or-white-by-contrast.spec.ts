@@ -1,11 +1,11 @@
 import chai from "chai";
-import { Swatch } from "../swatch.js";
+import { Color } from "../color.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
 const { expect } = chai;
 
-const middleGrey = Swatch.parse("#808080")!;
+const middleGrey = Color.parse("#808080")!;
 
 describe("blackOrWhiteByContrast", (): void => {
     it("should return black when background does not meet contrast ratio with white", (): void => {

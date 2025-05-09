@@ -1,4 +1,4 @@
-import { Swatch } from "@adaptive-web/adaptive-ui";
+import { Color } from "@adaptive-web/adaptive-ui";
 import { densityControl, fillColor, neutralStrokeReadableRest, typeRampMinus1FontSize } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
@@ -86,19 +86,19 @@ export class AppSwatch extends FASTElement {
     public recipeName?: string;
 
     @observable
-    public foregroundRecipe?: DesignToken<Swatch>;
+    public foregroundRecipe?: DesignToken<Color>;
     protected foregroundRecipeChanged() {
         this.updateObservables();
     }
 
     @observable
-    public fillRecipe?: DesignToken<Swatch>;
+    public fillRecipe?: DesignToken<Color>;
     protected fillRecipeChanged() {
         this.updateObservables();
     }
 
     @observable
-    public outlineRecipe?: DesignToken<Swatch>;
+    public outlineRecipe?: DesignToken<Color>;
     protected outlineRecipeChanged() {
         this.updateObservables();
     }
@@ -136,13 +136,13 @@ export class AppSwatch extends FASTElement {
         this.updateColorValue();
     }
 
-    private tokenCSS(token?: DesignToken<Swatch>): string {
+    private tokenCSS(token?: DesignToken<Color>): string {
         return token && typeof (token as any).createCSS === "function"
             ? (token as any).createCSS()
             : "";
     }
 
-    private evaluateToken(token?: DesignToken<Swatch>): string {
+    private evaluateToken(token?: DesignToken<Color>): string {
         return token?.getValueFor(this).toColorString() || "";
     }
 
@@ -156,7 +156,7 @@ export class AppSwatch extends FASTElement {
                 : background;
     }
 
-    private formatContrast(a?: DesignToken<Swatch>, b?: DesignToken<Swatch>): string {
+    private formatContrast(a?: DesignToken<Color>, b?: DesignToken<Color>): string {
         return a && b
             ? wcagContrast(
                   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -168,8 +168,8 @@ export class AppSwatch extends FASTElement {
     }
 
     private formatContrastMessage(
-        a?: DesignToken<Swatch>,
-        b?: DesignToken<Swatch>
+        a?: DesignToken<Color>,
+        b?: DesignToken<Color>
     ): string {
         return `Contrast: ${this.formatContrast(a, b)} : 1`;
     }

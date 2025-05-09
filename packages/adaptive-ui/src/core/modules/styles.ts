@@ -1,7 +1,7 @@
 import type { CSSDirective } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { InteractiveColorRecipe, InteractiveColorRecipeBySet } from "../color/recipe.js";
-import { Swatch } from "../color/swatch.js";
+import { Paint } from "../color/paint.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveTokenGroup, InteractiveValues } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
@@ -90,7 +90,7 @@ export type StyleRule = {
  */
 export const Fill = {
     backgroundAndForeground: function(
-        background: InteractiveTokenGroup<Swatch>,
+        background: InteractiveTokenGroup<Paint>,
         foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>
     ): StyleProperties {
         return {
@@ -100,7 +100,7 @@ export const Fill = {
     },
 
     backgroundAndForegroundBySet: function(
-        background: InteractiveTokenGroup<Swatch>,
+        background: InteractiveTokenGroup<Paint>,
         foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>
     ): StyleProperties {
         return {
@@ -110,8 +110,8 @@ export const Fill = {
     },
 
     foregroundNonInteractiveWithDisabled: function(
-        foreground: TypedCSSDesignToken<Swatch>,
-        disabled: TypedCSSDesignToken<Swatch>,
+        foreground: TypedCSSDesignToken<Paint>,
+        disabled: TypedCSSDesignToken<Paint>,
     ): StyleProperties {
         return {
             foregroundFill: {
@@ -121,7 +121,7 @@ export const Fill = {
                 active: foreground,
                 focus: foreground,
                 disabled,
-            } as InteractiveTokenGroup<Swatch>,
+            } as InteractiveTokenGroup<Paint>,
         }
     }
 }
