@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix a style generation bug on placement of state selector",
+  "packageName": "@adaptive-web/adaptive-ui",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
