@@ -1,10 +1,10 @@
-import { type Color as CuloriColor, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { Color, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
+import { type Color as CuloriColor, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { AppliedStyleModules, AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, PluginNodeData, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
-import { colorToRgba, roundToDecimals, variantBooleanHelper } from "./utility.js";
+import { colorToRgb, colorToRgba, variantBooleanHelper } from "./utility.js";
+import { gradientToGradientPaint } from "./gradient.js";
 
-const rgb = useMode(modeRgb);
 // For luminance
 useMode(modeLrgb);
 
@@ -853,105 +853,23 @@ export class FigmaPluginNode extends PluginNode {
         let paint: Paint | null = null;
 
         if (value !== STYLE_REMOVE) {
-            if (typeof value === "string") {
-                if (value.startsWith("linear-gradient")) {
-                    const linearMatch = /linear-gradient\((?<params>.+)\)/;
-                    const matches = value.match(linearMatch);
-                    if (matches && matches.groups) {
-                        const array = matches.groups.params.split(",").map(p => p.trim());
-
-                        let degrees: number = 90;
-                        if (array[0].endsWith("deg")) {
-                            const angle = array.shift()?.replace("deg", "") || "90";
-                            degrees = Number.parseFloat(angle);
-                        }
-                        const radians: number = degrees * (Math.PI / 180);
-
-                        const paramMatch = /(?<color>#[\w\d]+)( (?<pos>.+))?/;
-                        const stops = array.map((p, index, array) => {
-                            const paramMatches = p.match(paramMatch);
-                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            const color = rgb(parse(paramMatches?.groups?.color || "FF00FF")!);
-                            let position: number = 0;
-                            if (paramMatches?.groups && paramMatches?.groups?.pos) {
-                                if (paramMatches.groups.pos.endsWith("%")) {
-                                    position = Number.parseFloat(paramMatches.groups.pos) / 100;
-                                } else if (paramMatches.groups.pos.startsWith("calc(100% - ")) {
-                                    const px = Number.parseFloat(
-                                        paramMatches.groups.pos
-                                            .replace("calc(100% - ", "")
-                                            .replace("px)", "")
-                                    );
-                                    const size = degrees === 90 || degrees === 270
-                                        ? (this._node as LayoutMixin).height
-                                        : (this._node as LayoutMixin).width;
-                                    position = (size - px) / size;
-                                }
-                            } else if (index === array.length - 1) {
-                                position = 1;
-                            }
-                            const stop: ColorStop = {
-                                position,
-                                color: {
-                                    r: color.r,
-                                    g: color.g,
-                                    b: color.b,
-                                    a: color.alpha || 1,
-                                },
-                            };
-                            return stop;
-                        });
-
-                        const gradientPaint: GradientPaint = {
-                            type: "GRADIENT_LINEAR",
-                            gradientStops: stops,
-                            gradientTransform: [
-                                [Math.cos(radians), Math.sin(radians), 0],
-                                [Math.sin(radians) * -1, Math.cos(radians), 1],
-                            ],
-                        };
-                        paint = gradientPaint;
-                    }
-                } else {
-                    // Assume it's solid
-                    const color = parse(value);
-                    if (!color) {
-                        throw new Error(
-                            `The value "${value}" could not be parsed`
-                        );
-                    }
-
-                    const rgbColor = rgb(color);
-                    const solidPaint: SolidPaint = {
-                        type: "SOLID",
-                        visible: true,
-                        opacity: rgbColor.alpha,
-                        blendMode: "NORMAL",
-                        color: {
-                            r: rgbColor.r,
-                            g: rgbColor.g,
-                            b: rgbColor.b,
-                        },
-                    };
-                    paint = solidPaint;
-                }
-            } else if (value && typeof value === "object") {
+            if (value && typeof value === "object") {
                 if (Object.keys(value).includes("color")) {
                     const color = value as Color;
-                    // console.log("    Color", color);
                     const solidPaint: SolidPaint = {
                         type: "SOLID",
                         visible: true,
                         opacity: color.color.alpha,
                         blendMode: "NORMAL",
-                        color: {
-                            r: roundToDecimals((color.color as Rgb).r, 6),
-                            g: roundToDecimals((color.color as Rgb).g, 6),
-                            b: roundToDecimals((color.color as Rgb).b, 6),
-                        },
+                        color: colorToRgb(color.color as Rgb),
                     };
                     paint = solidPaint;
+                } else if (Object.keys(value).includes("stops")) {
+                    const gradient = value as Gradient;
+                    paint = gradientToGradientPaint(gradient);
                 }
+            } else {
+                throw `unexpected value at paintColor: ${typeof value}, ${value}, ${target}`;
             }
         }
 

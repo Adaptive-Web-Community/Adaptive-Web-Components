@@ -32,18 +32,18 @@ export const variantBooleanHelper = (booleanFormat: string, isTrue: boolean): st
 
 export const colorToRgb = (color: Rgb): RGB => {
     return {
-        r: color.r,
-        g: color.g,
-        b: color.b,
+        r: roundToDecimals(color.r, 6),
+        g: roundToDecimals(color.g, 6),
+        b: roundToDecimals(color.b, 6),
     };
 }
 
 export const colorToRgba = (color: Rgb): RGBA => {
     return {
-        r: color.r,
-        g: color.g,
-        b: color.b,
-        a: color.alpha || 1,
+        r: roundToDecimals(color.r, 6),
+        g: roundToDecimals(color.g, 6),
+        b: roundToDecimals(color.b, 6),
+        a: color.alpha !== undefined ? roundToDecimals(color.alpha!, 6) : 1,
     };
 }
 

@@ -4,6 +4,6 @@
     "timeout": 5000,
     "spec": "dist/**/*.spec.js",
     "require": [
-        "jsdom-global/register"
+        "./.mocha-jsdom.js"
     ]
 }

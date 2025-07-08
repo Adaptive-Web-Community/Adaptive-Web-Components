@@ -59,8 +59,8 @@ export class ElementsController {
                 let color: Color | null = null;
                 if (value instanceof Color) {
                     color = value;
-                } else {
-                    color = Color.parse((value as unknown) as string);
+                } else if (typeof value === "string" && value.startsWith("#")) {
+                    color = Color.parse(value);
                 }
                 if (color) {
                     // TODO fix this logic

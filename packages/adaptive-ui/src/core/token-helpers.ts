@@ -24,7 +24,7 @@ export const { createTyped } = TypedCSSDesignToken;
 /**
  * Creates a DesignToken that can be used for color value.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
@@ -36,7 +36,7 @@ export function createTokenColor(name: string, intendedFor?: StyleProperty | Sty
 /**
  * Creates a DesignToken that can be used by other DesignTokens, but not directly in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param type - The allowed types for the token value.
  *
  * @public
@@ -48,7 +48,7 @@ export function createTokenNonCss<T>(name: string, type: DesignTokenType, intend
 /**
  * Creates a DesignToken that can be used for a recipe.
  *
- * @param baseName - The base token name in `css-identifier` casing.
+ * @param baseName - The base token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  * @param evaluate - The function to call when the derived token needs to be evaluated.
  *
@@ -67,7 +67,7 @@ export function createTokenRecipe<TParam, TResult>(
 /**
  * Creates a DesignToken that can be used for thickness, sizes, and other dimension values in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
@@ -79,7 +79,7 @@ export function createTokenDimension(name: string, intendedFor?: StyleProperty |
 /**
  * Creates a DesignToken that can be used for typography font family in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -90,7 +90,7 @@ export function createTokenFontFamily(name: string): TypedCSSDesignToken<string>
 /**
  * Creates a DesignToken that can be used for typography font size in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -101,7 +101,7 @@ export function createTokenFontSize(name: string): TypedCSSDesignToken<string> {
 /**
  * Creates a DesignToken that can be used for typography font style (normal, italic) in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -112,7 +112,7 @@ export function createTokenFontStyle(name: string): TypedCSSDesignToken<string> 
 /**
  * Creates a DesignToken that can be used for typography font variations in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -123,7 +123,7 @@ export function createTokenFontVariations(name: string): TypedCSSDesignToken<str
 /**
  * Creates a DesignToken that can be used for typography font weight in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -134,7 +134,7 @@ export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>
 /**
  * Creates a DesignToken that can be used for typography line height in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  *
  * @public
  */
@@ -145,7 +145,7 @@ export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>
 /**
  * Creates a DesignToken that can be used for number value.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
@@ -157,7 +157,7 @@ export function createTokenNumber(name: string, intendedFor?: StyleProperty | St
 /**
  * Creates a DesignToken for number values that can be used by other DesignTokens, but not directly in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
@@ -169,7 +169,7 @@ export function createTokenNumberNonStyling(name: string, intendedFor?: StylePro
 /**
  * Creates a DesignToken that can be used as a paint treatment (background, foreground, border, etc.) in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @remarks
@@ -184,7 +184,7 @@ export function createTokenPaint(name: string, intendedFor?: StyleProperty | Sty
 /**
  * Creates a DesignToken that can be used as a color in styles.
  *
- * @param name - The token name in `css-identifier` casing.
+ * @param name - The token name in `dotted.camelCase` casing.
  * @param intendedFor - The style properties where this token is intended to be used.
  *
  * @public
