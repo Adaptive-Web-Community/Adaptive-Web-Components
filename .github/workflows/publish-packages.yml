@@ -3,6 +3,9 @@
 
 name: release npm packages
 
+permissions:
+  id-token: write
+
 on:
   workflow_dispatch:
 
