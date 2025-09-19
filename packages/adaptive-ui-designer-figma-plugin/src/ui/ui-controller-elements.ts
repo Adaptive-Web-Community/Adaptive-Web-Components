@@ -1,7 +1,7 @@
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 import { DesignToken, StaticDesignTokenValue } from "@microsoft/fast-foundation";
 import { Color } from "@adaptive-web/adaptive-ui";
-import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { colorContext } from "@adaptive-web/adaptive-ui/reference";
 import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { UIController } from "./ui-controller.js";
 
@@ -126,7 +126,7 @@ export class ElementsController {
         const element = this.getElementForNode(node);
         const val = token.getValueFor(element);
         // console.log("      getDesignTokenValue", node.id, node.type, token.name, "value", this.valueToString(val));
-        // console.log("        fill color", fillColor.getValueFor(element)?.toColorString(), element);
+        // console.log("        color context", colorContext.getValueFor(element)?.toColorString(), element);
         return val;
     }
 
@@ -194,7 +194,7 @@ export class ElementsController {
     }
 
     private resetFillColorForElement(element: FASTElement) {
-        this.setDesignTokenForElement(element, fillColor, null);
+        this.setDesignTokenForElement(element, colorContext, null);
         element.childNodes.forEach(child =>
             this.resetFillColorForElement(child as unknown as FASTElement)
         );

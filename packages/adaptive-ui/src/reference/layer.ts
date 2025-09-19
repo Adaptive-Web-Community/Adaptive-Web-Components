@@ -9,7 +9,7 @@ import { StyleProperty } from "../core/modules/types.js";
 import { createTokenColor, createTokenNonCss, createTokenRecipe } from "../core/token-helpers.js";
 import { createTokenColorRecipe, createTokenColorSet, createTokenDelta } from "../core/token-helpers-color.js";
 import { InteractiveState } from "../core/types.js";
-import { fillColor } from "./color.js";
+import { colorContext } from "./color.js";
 import { neutralPalette } from "./palette.js";
 
 /**
@@ -249,7 +249,7 @@ export const layerFillInteractiveRecipe = createTokenColorRecipe<InteractivePain
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): InteractivePaintSet =>
         deltaSwatchSet(
             resolve(layerPalette),
-            params?.reference || resolve(fillColor),
+            params?.reference || resolve(colorContext),
             resolve(layerFillRestDelta),
             resolve(layerFillHoverDelta),
             resolve(layerFillActiveDelta),

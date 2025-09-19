@@ -19,7 +19,7 @@ AdaptiveDesignSystem.defineComponents({
 
 import {
     accentBaseColor,
-    fillColor,
+    colorContext,
     LayerBaseLuminance,
     layerFillBaseLuminance,
     layerFillFixedBase
@@ -30,9 +30,9 @@ import { Color } from '@adaptive-web/adaptive-ui';
 // This must be called during initialization for the Design Tokens to be setup so the component styling is applied.
 DesignToken.registerDefaultStyleTarget();
 
-// The `fillColor` Design Token is the reference for many color recipes - setup the layering system as that basis.
+// The `colorContext` Design Token is the reference for many color recipes - setup the layering system as that basis.
 // Look at the css for how this displays in the browser in the plain html model.
-fillColor.withDefault(layerFillFixedBase);
+colorContext.withDefault(layerFillFixedBase);
 
 // Simple event handlers to change Design Token values:
 

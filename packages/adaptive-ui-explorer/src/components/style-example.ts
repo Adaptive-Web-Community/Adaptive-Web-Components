@@ -1,5 +1,5 @@
 import { Color, InteractiveTokenGroup, StyleProperty, Styles, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
-import { densityControl, fillColor } from '@adaptive-web/adaptive-ui/reference';
+import { colorContext, densityControl } from '@adaptive-web/adaptive-ui/reference';
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import { css, customElement, FASTElement, html, observable, repeat, volatile, when } from "@microsoft/fast-element";
 import { AdaptiveComponent } from "./adaptive-component.js";
@@ -76,10 +76,10 @@ export class StyleExample extends FASTElement {
     public get styleValues(): StyleValue[] {
         const values: StyleValue[] = [];
 
-        let backgroundRest = fillColor;
-        let backgroundHover = fillColor;
-        let backgroundActive = fillColor;
-        let backgroundFocus = fillColor;
+        let backgroundRest = colorContext;
+        let backgroundHover = colorContext;
+        let backgroundActive = colorContext;
+        let backgroundFocus = colorContext;
 
         const backgroundValue = this.styles?.effectiveProperties?.get(StyleProperty.backgroundFill);
         if (backgroundValue) {

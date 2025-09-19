@@ -1,6 +1,6 @@
 import { Color } from '@adaptive-web/adaptive-ui';
 import {
-    fillColor,
+    colorContext,
     layerFillBaseLuminance,
     layerFillFixedBase,
     layerFillFixedMinus1,
@@ -23,7 +23,7 @@ const layerBackgroundStyles = css`
 
     :host {
         display: block;
-        background: ${fillColor};
+        background: ${colorContext};
         color: ${neutralStrokeStrongRest};
     }
 `;
@@ -93,7 +93,7 @@ export class LayerBackground extends FASTElement {
             }
 
             if (swatch !== null) {
-                fillColor.setValueFor(this, swatch);
+                colorContext.setValueFor(this, swatch);
             }
         }
     }

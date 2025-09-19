@@ -10,7 +10,7 @@ import {
     accentHueShiftGradientFillSubtleElementStyles,
     accentOutlineDiscernibleControlStyles,
     accentToHighlightGradientFillSubtleElementStyles,
-    fillColor,
+    colorContext,
     highlightFillDiscernibleControlStyles,
     highlightFillIdealControlStyles,
     highlightFillReadableControlStyles,
@@ -205,7 +205,7 @@ const styles = css`
         min-height: 100%;
         padding: 36px;
         gap: 24px;
-        background-color: ${fillColor};
+        background-color: ${colorContext};
         color: ${neutralStrokeReadable.rest};
     }
 
@@ -273,7 +273,7 @@ export class ColorBlock extends FASTElement {
         if (this.color && this.$fastController.isConnected) {
             const color = Color.parse(this.color)
             if (color) {
-                fillColor.setValueFor(this, color);
+                colorContext.setValueFor(this, color);
             }
         }
     }

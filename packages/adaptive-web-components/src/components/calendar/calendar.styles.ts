@@ -1,8 +1,8 @@
 import {
     accentFillReadableRest,
+    colorContext,
     cornerRadiusControl,
     designUnit,
-    fillColor,
     neutralFillSubtleRest,
     neutralStrokeReadableRest,
     neutralStrokeStrongRest,
@@ -95,7 +95,7 @@ export const aestheticStyles: ElementStyles = css`
     .selected {
         color: ${accentFillReadableRest};
         border: 1px solid ${accentFillReadableRest};
-        background: ${fillColor};
+        background: ${colorContext};
     }
 
     .selected + .selected {

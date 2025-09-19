@@ -125,7 +125,7 @@ export function createTokenColorRecipeNeutral<T extends InteractiveColorSet>(
             const p = Object.assign({ palette: resolve(paletteToken) }, params);
             return interactiveSwatchSetAsOverlay(
                 resolve(recipeToken).evaluate(resolve, p),
-                p.reference as Color || resolve(fillColor),
+                p.reference as Color || resolve(colorContext),
                 resolve(neutralAsOverlay)
             ) as T;
         }
@@ -179,7 +179,10 @@ export const minContrastReadable = createTokenNonCss<number>("color.wcagContrast
 );
 
 /** @public */
-export const fillColor = createTokenColor("color.context").withDefault(_white);
+export const colorContext = createTokenColor("color.context", [StyleProperty.backgroundFill, StyleProperty.foregroundFill, ...StylePropertyShorthand.borderFill]).withDefault(_white);
+
+/** @public @deprecated Use colorContext */
+export const fillColor = colorContext;
 
 /** @public */
 export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOverlay", DesignTokenType.boolean).withDefault(false);
@@ -250,7 +253,7 @@ export const fillStealthRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(fillStealthRestDelta),
             resolve(fillStealthHoverDelta),
             resolve(fillStealthActiveDelta),
@@ -286,7 +289,7 @@ export const fillSubtleRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(fillSubtleRestDelta),
             resolve(fillSubtleHoverDelta),
             resolve(fillSubtleActiveDelta),
@@ -303,7 +306,7 @@ export const fillSubtleInverseRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         deltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(fillSubtleRestDelta) * -1,
             resolve(fillSubtleHoverDelta) * -1,
             resolve(fillSubtleActiveDelta) * -1,
@@ -337,7 +340,7 @@ export const fillIdealRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         idealColorDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastIdeal),
             params.palette.source,
             resolve(fillIdealRestDelta),
@@ -373,7 +376,7 @@ export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         idealColorDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastDiscernible),
             params.palette.source,
             resolve(fillDiscernibleRestDelta),
@@ -409,7 +412,7 @@ export const fillReadableRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         idealColorDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastReadable),
             params.palette.source,
             resolve(fillReadableRestDelta),
@@ -446,7 +449,7 @@ export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
         conditionalSwatchSet(
             contrastAndDeltaSwatchSet(
                 params.palette,
-                params.reference || resolve(fillColor),
+                params.reference || resolve(colorContext),
                 resolve(minContrastSafety),
                 resolve(strokeSafetyRestDelta),
                 resolve(strokeSafetyHoverDelta),
@@ -483,7 +486,7 @@ export const strokeStealthRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastSafety),
             resolve(strokeStealthRestDelta),
             resolve(strokeStealthHoverDelta),
@@ -520,7 +523,7 @@ export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastSubtle),
             resolve(strokeSubtleRestDelta),
             resolve(strokeSubtleHoverDelta),
@@ -555,7 +558,7 @@ export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastDiscernible),
             resolve(strokeDiscernibleRestDelta),
             resolve(strokeDiscernibleHoverDelta),
@@ -590,7 +593,7 @@ export const strokeReadableRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(minContrastReadable),
             resolve(strokeReadableRestDelta),
             resolve(strokeReadableHoverDelta),
@@ -628,7 +631,7 @@ export const strokeStrongRecipe = createTokenColorRecipeForPalette(
     (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
         contrastAndDeltaSwatchSet(
             params.palette,
-            params.reference || resolve(fillColor),
+            params.reference || resolve(colorContext),
             resolve(strokeStrongMinContrast),
             resolve(strokeStrongRestDelta),
             resolve(strokeStrongHoverDelta),
@@ -1757,7 +1760,7 @@ export const focusStrokeRecipe = createTokenColorRecipe(
     (resolve: DesignTokenResolver, params?: ColorRecipeParams): Color =>
         contrastSwatch(
             resolve(focusStrokePalette),
-            params?.reference || resolve(fillColor),
+            params?.reference || resolve(colorContext),
             resolve(focusStrokeMinContrast)
         )
 );
@@ -1774,7 +1777,7 @@ export const focusStrokeOuterRecipe = createTokenColorRecipe(
     focusStrokeOuterName,
     StylePropertyShorthand.borderFill,
     (resolve: DesignTokenResolver): Color =>
-        blackOrWhiteByContrast(resolve(fillColor), resolve(minContrastReadable), true)
+        blackOrWhiteByContrast(resolve(colorContext), resolve(minContrastReadable), true)
 );
 
 /** @public */
