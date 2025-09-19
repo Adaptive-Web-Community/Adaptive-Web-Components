@@ -17,6 +17,7 @@ import {
     bodyFontFamily,
     bodyFontStyle,
     bodyFontWeight,
+    colorContext,
     cornerRadiusControl,
     cornerRadiusLayer,
     criticalBaseColor,
@@ -223,6 +224,7 @@ const designTokens: DesignTokenStore = [
 ];
 
 const colorTokens: DesignTokenOrGroupStore = [
+    colorContext,
     // Layer
     layerFillFixedMinus4,
     layerFillFixedMinus3,

@@ -11,7 +11,7 @@ import { Palette } from "./palette.js";
  */
 export type ColorRecipeParams = {
     /**
-     * The reference color, implementation defaults to `fillColor`, but allows for overriding for nested color recipes.
+     * The reference color, implementation defaults to `colorContext`, but allows for overriding for nested color recipes.
      */
     reference: Paint | null,
 };

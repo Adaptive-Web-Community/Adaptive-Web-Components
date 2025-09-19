@@ -14,6 +14,7 @@ import {
     accentStrokeSafety,
     blackOrWhiteDiscernibleRecipe,
     blackOrWhiteReadableRecipe,
+    colorContext,
     criticalFillDiscernible,
     criticalFillIdeal,
     criticalFillReadable,
@@ -24,7 +25,6 @@ import {
     criticalStrokeReadable,
     criticalStrokeReadableRecipe,
     criticalStrokeSafety,
-    fillColor,
     focusStroke,
     highlightFillDiscernible,
     highlightFillIdeal,
@@ -421,7 +421,7 @@ export const accentOutlineDiscernibleControlStyles: Styles = Styles.fromProperti
     {
         ...densityBorderStyles(accentStrokeDiscernible),
         foregroundFill: accentStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.accent-outline-discernible-control",
 );
@@ -565,7 +565,7 @@ export const highlightOutlineDiscernibleControlStyles: Styles = Styles.fromPrope
     {
         ...densityBorderStyles(highlightStrokeDiscernible),
         foregroundFill: highlightStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.highlight-outline-discernible-control",
 );
@@ -709,7 +709,7 @@ export const infoOutlineDiscernibleControlStyles: Styles = Styles.fromProperties
     {
         ...densityBorderStyles(infoStrokeDiscernible),
         foregroundFill: infoStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.info-outline-discernible-control",
 );
@@ -853,7 +853,7 @@ export const successOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
     {
         ...densityBorderStyles(successStrokeDiscernible),
         foregroundFill: successStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.success-outline-discernible-control",
 );
@@ -997,7 +997,7 @@ export const warningOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
     {
         ...densityBorderStyles(warningStrokeDiscernible),
         foregroundFill: warningStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.warning-outline-discernible-control",
 );
@@ -1141,7 +1141,7 @@ export const criticalOutlineDiscernibleControlStyles: Styles = Styles.fromProper
     {
         ...densityBorderStyles(criticalStrokeDiscernible),
         foregroundFill: criticalStrokeReadable,
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.critical-outline-discernible-control",
 );
@@ -1285,7 +1285,7 @@ export const neutralOutlineDiscernibleControlStyles: Styles = Styles.fromPropert
     {
         ...densityBorderStyles(neutralStrokeDiscernible),
         ...Fill.foregroundNonInteractive(neutralStrokeStrong.rest, neutralStrokeStrong.disabled),
-        backgroundFill: fillColor,
+        backgroundFill: colorContext,
     },
     "color.neutral-outline-discernible-control",
 );

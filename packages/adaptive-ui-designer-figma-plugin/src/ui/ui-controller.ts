@@ -2,7 +2,7 @@ import { calc } from '@csstools/css-calc';
 import { FASTElement, observable } from "@microsoft/fast-element";
 import { CSSDesignToken, DesignToken, type ValuesOf } from "@microsoft/fast-foundation";
 import { Color, InteractiveState, InteractiveTokenGroup, StyleProperty, Styles } from "@adaptive-web/adaptive-ui";
-import { fillColor } from "@adaptive-web/adaptive-ui/reference";
+import { colorContext } from "@adaptive-web/adaptive-ui/reference";
 import {
     AdaptiveDesignToken,
     AdaptiveDesignTokenOrGroup,
@@ -258,7 +258,7 @@ export class UIController {
                                     source,
                                 });
                             } else {
-                                console.warn("    token type not supported >", typeof token, token);
+                                console.warn("    token type not supported >", typeof token, token, applied.tokenID, applied.value);
                             }
                         }
                     } else if (applied.tokenID) {
@@ -341,7 +341,7 @@ export class UIController {
                                     source,
                                 });
                             } else {
-                                console.warn("    token type not supported >", typeof value, value);
+                                console.warn("    token type not supported >", typeof value, value, target);
                             }
                         }
                     }
@@ -381,7 +381,7 @@ export class UIController {
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
                 // console.log("    setting fill color token on parent element", colorHex, parentElement.id, parentElement.title);
-                this._elements.setDesignTokenForElement(parentElement, fillColor, Color.parse(colorHex));
+                this._elements.setDesignTokenForElement(parentElement, colorContext, Color.parse(colorHex));
             }
 
             const allApplied = this.collectEffectiveAppliedStyles(node);
@@ -420,8 +420,8 @@ export class UIController {
                     value = ret;
                 }
             }
-            // const fillColorValue = (this._elements.getDesignTokenValue(node, fillColor) as Color).toColorString();
-            // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "fillColor", fillColorValue);
+            // const colorContextValue = (this._elements.getDesignTokenValue(node, colorContext) as Color).toColorString();
+            // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "colorContext", colorContextValue);
 
             const applied = new AppliedStyleValue(value);
             node.effectiveAppliedStyleValues.set(target, applied);

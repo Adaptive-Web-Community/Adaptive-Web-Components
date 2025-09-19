@@ -1,8 +1,8 @@
 import { css } from "@microsoft/fast-element";
 import {
     bodyFontFamily,
+    colorContext,
     cornerRadiusLayer,
-    fillColor,
     neutralStrokeStrongRest,
     typeRampPlus3FontSize,
     typeRampPlus3LineHeight
@@ -18,7 +18,7 @@ export const sampleAppStyles = css`
         color: ${neutralStrokeStrongRest};
         min-height: 650px;
         min-width: 775px;
-        background: ${fillColor};
+        background: ${colorContext};
         border-radius: ${cornerRadiusLayer};
         --gutter: 20;
     }

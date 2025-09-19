@@ -23,7 +23,7 @@ import {
     accentStrokeReadableFocus,
     accentStrokeReadableHover,
     accentStrokeReadableRest,
-    fillColor,
+    colorContext,
     fillDiscernibleActiveDelta,
     fillDiscernibleFocusDelta,
     fillDiscernibleHoverDelta,
@@ -426,14 +426,14 @@ export const neutralFillInputRecipe = createTokenColorRecipe(
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
-                params?.reference || resolve(fillColor),
+                params?.reference || resolve(colorContext),
                 resolve(neutralFillInputRestDelta),
                 resolve(neutralFillInputHoverDelta),
                 resolve(neutralFillInputActiveDelta),
                 resolve(neutralFillInputFocusDelta),
                 1,
             ),
-            params?.reference as Color || resolve(fillColor),
+            params?.reference as Color || resolve(colorContext),
             resolve(neutralAsOverlay)
         )
 );
@@ -477,14 +477,14 @@ export const neutralFillSecondaryRecipe = createTokenColorRecipe(
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
-                params?.reference || resolve(fillColor),
+                params?.reference || resolve(colorContext),
                 resolve(neutralFillSecondaryRestDelta),
                 resolve(neutralFillSecondaryHoverDelta),
                 resolve(neutralFillSecondaryActiveDelta),
                 resolve(neutralFillSecondaryFocusDelta),
                 1,
             ),
-            params?.reference as Color || resolve(fillColor),
+            params?.reference as Color || resolve(colorContext),
             resolve(neutralAsOverlay)
         )
 );
@@ -573,10 +573,10 @@ export const neutralStrokeDividerRecipe = createTokenColorRecipe(
         swatchAsOverlay(
             deltaSwatch(
                 resolve(neutralPalette),
-                params?.reference || resolve(fillColor),
+                params?.reference || resolve(colorContext),
                 resolve(neutralStrokeDividerRestDelta)
             ),
-            params?.reference as Color || resolve(fillColor),
+            params?.reference as Color || resolve(colorContext),
             resolve(neutralAsOverlay)
         )!
 );
@@ -608,14 +608,14 @@ export const neutralStrokeInputRecipe = createTokenColorRecipe(
         interactiveSwatchSetAsOverlay(
             deltaSwatchSet(
                 resolve(neutralPalette),
-                params?.reference || resolve(fillColor),
+                params?.reference || resolve(colorContext),
                 resolve(neutralStrokeInputRestDelta),
                 resolve(neutralStrokeInputHoverDelta),
                 resolve(neutralStrokeInputActiveDelta),
                 resolve(neutralStrokeInputFocusDelta),
                 1,
             ),
-            params?.reference as Color || resolve(fillColor),
+            params?.reference as Color || resolve(colorContext),
             resolve(neutralAsOverlay)
         )
 );
