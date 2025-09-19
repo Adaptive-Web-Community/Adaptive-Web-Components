@@ -305,6 +305,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             const target: StyleModuleTarget = {
                 context: obj.context,
                 contextCondition: createCondition(obj, style),
+                stateOnContext: style.stateOnContext,
                 part: resolvePart(obj, style.part),
             };
 

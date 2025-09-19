@@ -653,7 +653,7 @@ export class App extends FASTElement {
     }
 
     @observable
-    public skipInvisibleNodes: boolean = false;
+    public skipInvisibleNodes: boolean = true;
     protected skipInvisibleNodesChanged(prev: boolean, next: boolean) {
         const message: SkipInvisibleNodesMessage = {
             type: "SKIP_INVISIBLE_NODES",

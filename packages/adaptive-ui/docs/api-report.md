@@ -628,6 +628,8 @@ export interface SerializableStyleRule {
     // (undocumented)
     properties?: Record<string, string>;
     // (undocumented)
+    stateOnContext?: boolean;
+    // (undocumented)
     styles?: string[];
 }
 

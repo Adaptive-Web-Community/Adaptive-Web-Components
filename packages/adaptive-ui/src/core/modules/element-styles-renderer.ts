@@ -8,6 +8,19 @@ import type { ComponentAnatomy, StyleModuleEvaluateParameters, StyleRules } from
 import { stylePropertyToCssProperty } from "./css.js";
 import { convertStylesToFocusState, Styles } from "./styles.js";
 
+const deepFreeze =<T>(obj: T): T => {
+    if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {
+        Object.getOwnPropertyNames(obj).forEach((prop) => {
+            const value = (obj as any)[prop];
+            if (value && typeof value === "object") {
+                deepFreeze(value);
+            }
+        });
+        Object.freeze(obj);
+    }
+    return obj;
+}
+
 /**
  * The properties and values of a css declaration.
  */
@@ -160,7 +173,7 @@ export class ElementStylesRenderer {
      */
     public render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles {
         // Construct the evaluation params, not including interactivity if requested
-        const effectiveInteractivity = interactivity || {};
+        const effectiveInteractivity = { ...(interactivity || {}) };
         if (target.ignoreInteractivity === true) {
             Object.assign(effectiveInteractivity, Interactivity.always);
         }
@@ -240,6 +253,7 @@ export class ElementStylesRenderer {
     public static renderStyleRules(baseStyles: ComposableStyles[] = [], styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>) {
         const globalStyleRules: StyleRules = [];
         if (anatomy) {
+            anatomy = deepFreeze(anatomy);
             // If this component can be disabled, apply the style to all children.
             if (ElementStylesRenderer.disabledStyles && anatomy.interactivity?.disabled !== undefined) {
                 // Focus and disabled are related in the way that they define the footprint of an indicator:
@@ -292,7 +306,7 @@ export class ElementStylesRenderer {
             const styles = Styles.fromDeclaration(rule);
 
             // Transform the target selector if necessary
-            const target = rule.target || {} as StyleModuleTarget;
+            const target = { ...(rule.target || {}) } as StyleModuleTarget;
             if (anatomy?.context && target.context === undefined) {
                 target.context = anatomy.context;
                 if (anatomy.context === target.part) {

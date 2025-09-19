@@ -508,6 +508,7 @@ export type SerializableCondition = SerializableBooleanCondition | SerializableS
  * @beta
  */
 export interface SerializableStyleRule {
+    stateOnContext?: boolean;
     contextCondition?: Record<string, string | boolean>;
     part?: string,
     styles?: string[],

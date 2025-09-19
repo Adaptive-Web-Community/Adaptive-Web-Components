@@ -4,6 +4,13 @@ import type { PluginMessage} from "../core/messages.js";
 import { FigmaPluginNode } from "./node.js";
 
 export class FigmaController extends Controller {
+    constructor() {
+        super();
+
+        // Ignore invisible nodes for performance by default. There is a setting in the UI to toggle this.
+        figma.skipInvisibleInstanceChildren = true;
+    }
+
     public async getNode(id: string): Promise<FigmaPluginNode | null> {
         const node = await figma.getNodeByIdAsync(id);
         if (node) {
