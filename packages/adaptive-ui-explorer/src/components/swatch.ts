@@ -1,5 +1,5 @@
 import { Color } from "@adaptive-web/adaptive-ui";
-import { densityControl, fillColor, neutralStrokeReadableRest, typeRampMinus1FontSize } from "@adaptive-web/adaptive-ui/reference";
+import { colorContext, densityControl, neutralStrokeReadableRest, typeRampMinus1FontSize } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
@@ -115,7 +115,7 @@ export class AppSwatch extends FASTElement {
     public connectedCallback() {
         super.connectedCallback();
 
-        fillColor.subscribe(this);
+        colorContext.subscribe(this);
 
         this.updateObservables();
     }
@@ -123,7 +123,7 @@ export class AppSwatch extends FASTElement {
     public disconnectedCallback() {
         super.disconnectedCallback();
 
-        fillColor.unsubscribe(this);
+        colorContext.unsubscribe(this);
     }
 
     public handleChange() {
@@ -183,7 +183,7 @@ export class AppSwatch extends FASTElement {
                 : this.fillRecipe,
             this.type === SwatchType.foreground
                 ? this.fillRecipe
-                : fillColor
+                : colorContext
         );
 
         this.contrastMessage = contrastMessage;

@@ -4,7 +4,7 @@ import { hueShiftGradient } from "../core/color/recipes/hue-shift-gradient.js";
 import { twoPaletteGradient } from "../core/color/recipes/two-palette-gradient.js";
 import { Fill, Styles } from "../core/modules/styles.js";
 import { StyleProperty } from "../core/modules/types.js";
-import { accentStrokeSafety, fillColor, fillSubtleRestDelta, neutralFillSubtle } from "./color.js";
+import { accentStrokeSafety, colorContext, fillSubtleRestDelta, neutralFillSubtle } from "./color.js";
 import { accentPalette, highlightPalette } from "./palette.js";
 import { densityBorderStyles } from "./util.js";
 
@@ -30,7 +30,7 @@ export const gradientEndShift = createTokenNumber("color.gradient.endShift").wit
 export const accentHueShiftGradientFillSubtleRest = createTokenPaint("color.accentHueShiftGradient.fill.subtle.rest", StyleProperty.backgroundFill).withDefault(
     (resolve: DesignTokenResolver) => {
         const palette = resolve(accentPalette);
-        const reference = resolve(fillColor);
+        const reference = resolve(colorContext);
         const delta = resolve(fillSubtleRestDelta);
         const angle = resolve(gradientAngle);
         const startShift = resolve(gradientStartShift);
@@ -46,10 +46,9 @@ export const accentToHighlightGradientFillSubtleRest = createTokenPaint("color.a
     (resolve: DesignTokenResolver) => {
         const startPalette = resolve(accentPalette);
         const endPalette = resolve(highlightPalette);
-        const reference = resolve(fillColor);
+        const reference = resolve(colorContext);
         const delta = resolve(fillSubtleRestDelta);
         const angle = resolve(gradientAngle);
-        console.log("twoPaletteGradient", delta, angle);
         return twoPaletteGradient(startPalette, endPalette, reference, delta, angle);
     }
 );
