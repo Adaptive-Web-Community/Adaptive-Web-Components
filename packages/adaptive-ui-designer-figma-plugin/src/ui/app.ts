@@ -85,6 +85,10 @@ function tokenOrGroupStyles(tokenOrGroup: AdaptiveDesignTokenOrGroup, tokenTypes
         null;
 }
 
+function appliedStyleProperties(tokenTypes: StyleProperty[], tokenIntendedFor: StyleProperty[]): StyleProperty[] {
+    return tokenTypes.filter(element => tokenIntendedFor.includes(element));
+}
+
 const appliedTokensTemplate = (
     tokenTypes: StyleProperty[],
     tokens: AppliedDesignTokenItem[] | null,
@@ -150,7 +154,7 @@ const availableTokensTemplate = (
                             :styles=${x => tokenOrGroupStyles(x, tokenTypes)}
                             glyphType=${(_) => glyphType}
                             content-button
-                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(x.intendedFor || [], x)}
+                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(appliedStyleProperties(tokenTypes, x.intendedFor), x)}
                         >
                         </designer-style-token-item>
                     `
