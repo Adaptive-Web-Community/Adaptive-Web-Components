@@ -868,6 +868,8 @@ export class FigmaPluginNode extends PluginNode {
                     const gradient = value as Gradient;
                     paint = gradientToGradientPaint(gradient);
                 }
+            } else if (value && typeof value === "string" && value === "transparent") {
+                paint = SOLID_TRANSPARENT;
             } else {
                 throw `unexpected value at paintColor: ${typeof value}, ${value}, ${target}`;
             }
