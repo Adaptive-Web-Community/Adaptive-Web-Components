@@ -6,7 +6,7 @@ const ajv = new Ajv();
 export interface ISchemaValidator {
   /**
    * Validates a JSON schema against the validator
-   * @param json the JSON string to validate, or a JavaScript object
+   * @param json - The JSON string to validate, or a JavaScript object
    */
   validate(json: string | object): Promise<boolean | ErrorObject[]>;
 }

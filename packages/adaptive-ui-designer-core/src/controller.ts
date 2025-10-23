@@ -27,20 +27,20 @@ export abstract class Controller {
 
     /**
      * Gets a Node from the design tool by ID.
-     * @param id The ID of the node.
+     * @param id - The ID of the node.
      * @returns The PluginNode or null if no node by the provided ID exists.
      */
     public abstract getNode(id: string): Promise<PluginNode | null>;
 
     /**
      * Provides the state object to the UI component and updates the UI.
-     * @param state The UI state object.
+     * @param state - The UI state object.
      */
     protected abstract sendStateToUI(state: PluginUIState): void;
 
     /**
      * Sets the selected node IDs - Setting the IDs will trigger a UI refresh.
-     * @param ids The node IDs.
+     * @param ids - The node IDs.
      */
     public async setSelectedNodes(ids: string[]): Promise<void> {
         Controller.nodeCount = 0;
@@ -60,7 +60,7 @@ export abstract class Controller {
 
     /**
      * Handle the updated state that's posted from the UI.
-     * @param state The state from the UI.
+     * @param state - The state from the UI.
      */
     public async receiveStateFromUI(state: PluginUIState): Promise<void> {
         // console.log("--------------------------------");
