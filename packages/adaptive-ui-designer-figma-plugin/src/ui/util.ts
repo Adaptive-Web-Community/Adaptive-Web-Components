@@ -2,7 +2,7 @@ import { sentenceCase } from "change-case";
 
 export function designTokenTitle(token?: { name: string }): string {
     if (token === undefined || token.name === undefined) {
-        console.log(token);
+        // console.log(token);
         
         return "-";
     }

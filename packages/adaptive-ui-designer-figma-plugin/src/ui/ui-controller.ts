@@ -237,7 +237,7 @@ export class UIController {
         const registry = this.appliableDesignTokenRegistry;
         function appliedDesignTokensHandler(source: AppliedTokenSource): (applied: AppliedDesignToken, target: StyleProperty) => void {
             return function(applied, target) {
-                if (applied && applied.value !== STYLE_REMOVE) {
+                if (applied && applied.tokenID !== STYLE_REMOVE) {
                     const token = registry.get(applied.tokenID);
                     if (token) {
                         if (token instanceof CSSDesignToken) {
@@ -247,7 +247,7 @@ export class UIController {
                                 source,
                             });
                         } else if (token instanceof DesignToken) {
-                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id);
                         } else {
                             const group = (token as InteractiveTokenGroup<any>);
                             if (group && group[state]) {
@@ -258,7 +258,7 @@ export class UIController {
                                     source,
                                 });
                             } else {
-                                console.warn("    token type not supported >", typeof token, token, applied.tokenID, applied.value);
+                                console.warn("    token type not supported >", typeof token, token, applied.tokenID);
                             }
                         }
                     } else if (applied.tokenID) {
@@ -274,10 +274,10 @@ export class UIController {
                                     source,
                                 });
                             } else {
-                                console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);    
+                                console.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
                             }
                         } else {
-                            console.error("Token not found:", applied.tokenID, node.name, node.type, node.id, applied.value);
+                            console.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
                         }
                     }
                 } else { // Removed
@@ -427,7 +427,7 @@ export class UIController {
             node.effectiveAppliedStyleValues.set(target, applied);
 
             if (info.source === AppliedTokenSource.local) {
-                const appliedToken = new AppliedDesignToken(info.name, value);
+                const appliedToken = new AppliedDesignToken(info.name);
                 node.appliedDesignTokens.set(target, appliedToken);
             }
 

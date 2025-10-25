@@ -76,33 +76,32 @@ export class DesignTokenController {
      * @returns Applied design tokens.
      */
     private getDesignTokenValues(): UIDesignTokenValue[] {
-        const tokenValues = new Map<string, Set<string>>();
-        const designTokens: UIDesignTokenValue[] = [];
-
-        this.controller.selectedNodes.forEach(node =>
-            node.designTokens.forEach((designToken, designTokenId) => {
-                if (designToken.value) {
-                    const values = tokenValues.get(designTokenId) || new Set<string>();
-                    values.add(designToken.value);
-                    tokenValues.set(designTokenId, values);
-                }
-            })
-        );
+        const tokenValuesMap = this.controller.selectedNodes
+            .flatMap(node =>
+                Array.from(node.designTokens.entries()).map(([designTokenId, designToken]) => ({
+                    designTokenId,
+                    value: designToken.value
+                }))
+            )
+            .filter(item => item.value)
+            .reduce((acc, item) => {
+                const values = acc.get(item.designTokenId) || new Set<string>();
+                values.add(item.value);
+                acc.set(item.designTokenId, values);
+                return acc;
+            }, new Map<string, Set<string>>());
 
         const allDesignTokens = this.controller.designTokenRegistry.entries;
 
-        allDesignTokens.forEach(token => {
-            if (tokenValues.has(token.name)) {
-                const set = tokenValues.get(token.name);
-                designTokens.push({
-                    token: token,
-                    value: set.size === 1 ? set.values().next().value : undefined,
-                    multipleValues: set.size > 1 ? [...set].join(", ") : undefined,
-                });
-            }
+        // This must include all design tokens, not only the ones in the registry.
+        return Array.from(tokenValuesMap.entries()).map(([tokenName, valueSet]) => {
+            const token = allDesignTokens.find(t => t.name === tokenName);
+            return {
+                token: token || { name: tokenName } as DesignToken<any>,
+                value: valueSet.size === 1 ? valueSet.values().next().value : undefined,
+                multipleValues: valueSet.size > 1 ? [...valueSet].join(", ") : undefined,
+            };
         });
-
-        return designTokens;
     }
 
     private valueToString(value: any): string {

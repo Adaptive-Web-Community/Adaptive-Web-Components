@@ -1,119 +1,15 @@
 import { type Color as CuloriColor, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedStyleModules, AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, PluginNodeData, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
-import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
-import { colorToRgb, colorToRgba, variantBooleanHelper } from "./utility.js";
+import { AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
+import { PluginDataResolver } from "./plugin-data-resolver.js";
 
 // For luminance
 useMode(modeLrgb);
 
 const stateVariant = "State";
 const disabledVariant = "Disabled";
-
-const SOLID_BLACK: SolidPaint = {
-    type: "SOLID",
-    visible: true,
-    opacity: 1,
-    blendMode: "NORMAL",
-    color: {
-        r: 0,
-        g: 0,
-        b: 0,
-    },
-};
-
-const SOLID_TRANSPARENT: SolidPaint = {
-    type: "SOLID",
-    visible: true,
-    opacity: 0,
-    blendMode: "NORMAL",
-    color: {
-        r: 1,
-        g: 1,
-        b: 1,
-    },
-};
-
-function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
-    return (node: BaseNode): node is T => node.type === type;
-}
-
-const isDocumentNode = isNodeType<DocumentNode>("DOCUMENT");
-const isPageNode = isNodeType<PageNode>("PAGE");
-const isFrameNode = isNodeType<FrameNode>("FRAME");
-const isGroupNode = isNodeType<GroupNode>("GROUP");
-const isComponentNode = isNodeType<ComponentNode>("COMPONENT");
-const isComponentSetNode = isNodeType<ComponentNode>("COMPONENT_SET");
-const isInstanceNode = isNodeType<InstanceNode>("INSTANCE");
-const isBooleanOperationNode = isNodeType<BooleanOperationNode>("BOOLEAN_OPERATION");
-const isVectorNode = isNodeType<VectorNode>("VECTOR");
-const isStarNode = isNodeType<StarNode>("STAR");
-const isLineNode = isNodeType<LineNode>("LINE");
-const isEllipseNode = isNodeType<EllipseNode>("ELLIPSE");
-const isPolygonNode = isNodeType<PolygonNode>("POLYGON");
-const isRectangleNode = isNodeType<RectangleNode>("RECTANGLE");
-const isTextNode = isNodeType<TextNode>("TEXT");
-
-function isContainerNode(node: BaseNode): node is
-    FrameNode |
-    ComponentNode |
-    InstanceNode {
-    return [
-        isFrameNode,
-        isComponentNode,
-        isInstanceNode,
-    ].some((test: (node: BaseNode) => boolean) => test(node));
-}
-
-function isShapeNode(node: BaseNode): node is
-    RectangleNode |
-    EllipseNode |
-    PolygonNode |
-    StarNode |
-    BooleanOperationNode |
-    VectorNode {
-    return [
-        isRectangleNode,
-        isEllipseNode,
-        isPolygonNode,
-        isStarNode,
-        isBooleanOperationNode,
-        isVectorNode,
-    ].some((test: (node: BaseNode) => boolean) => test(node));
-}
-
-function canHaveIndividualStrokes(node: BaseNode): node is
-    FrameNode |
-    ComponentNode |
-    InstanceNode |
-    RectangleNode {
-    return [
-        isContainerNode,
-        isRectangleNode,
-    ].some((test: (node: BaseNode) => boolean) => test(node));
-}
-
-function canHaveChildren(node: BaseNode): node is
-    DocumentNode |
-    PageNode |
-    FrameNode |
-    GroupNode |
-    BooleanOperationNode |
-    InstanceNode |
-    ComponentNode |
-    ComponentSetNode {
-    return [
-        isDocumentNode,
-        isPageNode,
-        isFrameNode,
-        isGroupNode,
-        isBooleanOperationNode,
-        isInstanceNode,
-        isComponentNode,
-        isComponentSetNode,
-    ].some((test: (node: BaseNode) => boolean) => test(node));
-}
 
 export class FigmaPluginNode extends PluginNode {
     public id: string;
@@ -122,11 +18,16 @@ export class FigmaPluginNode extends PluginNode {
     public fillColor: CuloriColor | null = null;
     public states?: StatesState;
     private _node: BaseNode;
+    private _refNode: FigmaPluginNode | null = null;
     private _state?: State;
     public supportsCodeGen: boolean = false;
     public codeGenName: string | undefined;
 
     private static NodeCache: Map<string, FigmaPluginNode> = new Map();
+
+    static {
+        PluginNode.pluginDataAccessor = new PluginDataResolver();
+    }
 
     private constructor(node: BaseNode) {
         super();
@@ -142,103 +43,45 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private async init() {
-        /*
-        This data model and token processing is to handle an unfortunate consequence of the Figma component model.
-
-        An instance component will inherit plugin data from the main component by default. For instance:
-
-        Main component (set plugin data "A=1") --> Instance (get plugin data "A=1")
-
-        This is mostly beneficial as when it comes to applying design tokens, we want to apply whatever was defined on main.
-
-        However, once you override the value at an instance level, you no longer directly get the value from main:
-
-        Instance (set plugin data "A=2") --> Instance (get plugin data "A=2")
-
-        In our normal workflow we're reevaluating the applied tokens, so the instance may have the same overall structure
-        but with different values. This would also normally be fine as we're going to evaluate for current values anyway.
-
-        The problem is that once we've updated the values on the instance don't directly get any _changes_ made on the main.
-
-        Main component (set plugin data "A=1, B=2") --> Instance (get plugin data "A=2")
-
-        Notice we don't have the addition of "B=2". It's a simple string and the value is already set, so it doesn't change.
-
-        The solution is to *store* the fully evaluated tokens on the instance node, but to *read* back both the main and instance
-        values, and to deduplicate them.
-
-        In the example above, we'd read "A=2" from the instance, "A=1, B=2" from the main, then assemble the full list, keeping
-        any overrides from the instance: "A=2, B=2".
-
-        Refinement: The main component is not the most authoritative, but rather the reference component in the chain. This is
-        to handle composed nesting, where another component places an instance of a main, overrides a value, and then an instance
-        of the second component is being evaluated.
-
-        In the case of the "design tokens" the key will be the name of the token, like "corner-radius".
-        In the case of the "applied design tokens" the key will be the style target, like "backgroundFill".
-        */
-
         // Find the reference node if this node is part of an instance or composition.
-        let refComponentNode: BaseNode | null = null;
+        let refNode: BaseNode | null = null;
         if (this.id.startsWith("I")) {
             // Check this first to handle nested components, we want the overrides on the reference instance before the main component.
             // Child nodes of an instance have an ID like `I##:##;##:##;##:##`
             // where each `##:##` points to the containing instance, and the last always points to the main node.
             const ids = this.id.split(";");
-            ids.shift();
-            const refId = "I" + ids.join(";");
-            // console.log("    looking for ref", refId);
-            refComponentNode = await figma.getNodeByIdAsync(refId);
+            // Updated to support more complex nested instances of instances
+            while (ids.length >= 2 && !refNode) {
+                ids.shift();
+                // First look with the I
+                const refId = "I" + ids.join(";");
+                // console.log("    looking for ref (I)", refId);
+                refNode = await figma.getNodeByIdAsync(refId);
+                if (!refNode) {
+                    // Then look without the I
+                    const refId = ids.join(";");
+                    // console.log("    looking for ref (no I)", refId);
+                    refNode = await figma.getNodeByIdAsync(refId);
+                }
+            }
         } else if (isInstanceNode(this._node)) {
-            refComponentNode = await (this._node as InstanceNode).getMainComponentAsync();
+            // console.log("    getting main component");
+            refNode = await this._node.getMainComponentAsync();
         }
 
-        const deserializedDesignTokens = this.deserializeLocalDesignTokens();
-        const parsedAppliedStyleModules = this.deserializeAppliedStyleModules();
-        let filteredAppliedStyleModules = parsedAppliedStyleModules;
-        const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens();
+        if (refNode) {
+            // console.log("    getting refNode");
+            this._refNode = await FigmaPluginNode.get(refNode, false);
+            // console.log("      refNode for", this.debugInfo, " is ", this._refNode.debugInfo);
 
-        // Reconcile plugin data with the reference component.
-        if (refComponentNode) {
-            // console.log("    getting refComponentNode");
-            const refFigmaNode = await FigmaPluginNode.get(refComponentNode, false);
-            // console.log("      refComponentNode for", this.debugInfo, " is ", refFigmaNode.debugInfo);
-
-            this._componentDesignTokens = refFigmaNode.localDesignTokens;
-            this._componentAppliedStyleModules = refFigmaNode.appliedStyleModules;
-            this._componentAppliedDesignTokens = refFigmaNode.appliedDesignTokens;
-
-            refFigmaNode.localDesignTokens.forEach((value, tokenId) => {
-                // If the token values are the same between the nodes, remove it from the local.
-                if (deserializedDesignTokens.get(tokenId)?.value === value.value) {
-                    // console.log("    removing design token", this.debugInfo, tokenId);
-                    deserializedDesignTokens.delete(tokenId);
-                }
-            });
-
-            filteredAppliedStyleModules = parsedAppliedStyleModules
-                .filter((parsedName) => refFigmaNode.appliedStyleModules.indexOf(parsedName) === -1) as AppliedStyleModules;
-
-            refFigmaNode.appliedDesignTokens.forEach((applied, target) => {
-                // If the target and token are the same between the nodes, remove it from the local.
-                if (deserializedAppliedDesignTokens.get(target)?.tokenID === applied.tokenID) {
-                    // console.log("    removing applied design token", this.debugInfo, target, applied.tokenID);
-                    deserializedAppliedDesignTokens.delete(target);
-                }
-            });
-
-            if (deserializedDesignTokens.size) {
-                // console.log("    reconciled design tokens", this.debugInfo, serializeMap(deserializedDesignTokens));
-            }
-
-            if (deserializedAppliedDesignTokens.size) {
-                // console.log("    reconciled applied design tokens", this.debugInfo, serializeMap(deserializedAppliedDesignTokens));
-            }
+            this._componentDesignTokens = this._refNode.localDesignTokens;
+            this._componentAppliedStyleModules = this._refNode.appliedStyleModules;
+            this._componentAppliedDesignTokens = this._refNode.appliedDesignTokens;
         }
 
-        this._localDesignTokens = deserializedDesignTokens;
-        this._appliedStyleModules = filteredAppliedStyleModules;
-        this._appliedDesignTokens = deserializedAppliedDesignTokens;
+        this._localDesignTokens = await PluginNode.pluginDataAccessor.getLocalDesignTokens(this);
+        this._appliedStyleModules = await PluginNode.pluginDataAccessor.getAppliedStyleModules(this);
+        this._appliedDesignTokens = await PluginNode.pluginDataAccessor.getAppliedDesignTokens(this);
 
         // Check for and/or remove legacy FAST plugin data.
         // const fastKeys = this._node.getSharedPluginDataKeys("fast");
@@ -249,10 +92,6 @@ export class FigmaPluginNode extends PluginNode {
         //         console.log("  deleting data", fastKey);
         //         // console.log("  ", fastKey, this._node.getSharedPluginData("fast", fastKey));
         //     });
-        // }
-
-        // if (this._appliedDesignTokens.size) {
-        //     console.log("    final applied design tokens", this._appliedDesignTokens.serialize());
         // }
 
         this.fillColor = this.getFillColor();
@@ -270,7 +109,7 @@ export class FigmaPluginNode extends PluginNode {
         if (this.supportsCodeGen) {
             switch (this._node.type) {
                 case "INSTANCE":
-                    this.codeGenName = refComponentNode?.name;
+                    this.codeGenName = this._refNode?.name;
                     break;
                 case "COMPONENT": {
                     const parent = await this.getParent();
@@ -316,6 +155,22 @@ export class FigmaPluginNode extends PluginNode {
 
     public static clearCache(): void {
         FigmaPluginNode.NodeCache.clear();
+    }
+
+    /**
+     * Gets the Figma node associated with this plugin node.
+     * @returns The Figma node
+     */
+    public getFigmaNode(): BaseNode {
+        return this._node;
+    }
+
+    /**
+     * Gets the reference Node for this node, if it is part of an instance or composition.
+     * @returns The reference Node
+     */
+    public getRefNode(): FigmaPluginNode | null {
+        return this._refNode;
     }
 
     public async getState(): Promise<string | null> {
@@ -527,7 +382,7 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    protected async handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues) {
+    protected async handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues, inherited: boolean) {
         const fontFamily = values.get(StyleProperty.fontFamily)?.value;
         // We'll only set the font if the family is provided.
         if (fontFamily) {
@@ -550,9 +405,11 @@ export class FigmaPluginNode extends PluginNode {
                         (node._node as TextNode).fontName = fontName;
                     }
                 });
-            } else if (isContainerNode(node._node)) {
+            } else if (isContainerNode(node._node) && !inherited) {
+                // Only support one layer of children for font family inheritance.
+                // This may cause problems with the `Text` component, but it breaks other styles by setting too deeply.
                 for (const child of await node.getChildren()) {
-                    await this.handleFontFamily(child, values);
+                    await this.handleFontFamily(child, values, true);
                 }
             }
         }
@@ -596,7 +453,7 @@ export class FigmaPluginNode extends PluginNode {
 
     public async paint(values: AppliedStyleValues): Promise<void> {
         // Fonts are complicated in Figma, so pull them out of the normal loop.
-        this.handleFontFamily(this, values);
+        this.handleFontFamily(this, values, false);
 
         this.handleStroke(values);
 
@@ -822,25 +679,6 @@ export class FigmaPluginNode extends PluginNode {
         }
 
         return false;
-    }
-
-    protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
-        let value: string | undefined = this._node.getSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key as string);
-        if (value === "") {
-            value = undefined;
-        }
-        // console.log("    getPluginData", this.debugInfo, key, value);
-        return value;
-    }
-
-    protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
-        // console.log("    setPluginData", this.debugInfo, key, value);
-        this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, value);
-    }
-
-    protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
-        // console.log("    deletePluginData", this.debugInfo, key);
-        this._node.setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
     }
 
     private setBoxSizing() {
