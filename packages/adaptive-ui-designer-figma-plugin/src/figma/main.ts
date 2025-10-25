@@ -11,7 +11,7 @@ figma.showUI(__html__, {
 
 /**
  * Displays a notification when running a function that takes some time.
- * @param callback The function to call
+ * @param callback - The function to call
  */
 function notifyProcessing(callback: () => void) {
     const notify = figma.notify("Processing design tokens", { timeout: Infinity });

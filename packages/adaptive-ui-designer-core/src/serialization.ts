@@ -28,7 +28,7 @@ export function mapReviver(key: string, value: any): any {
     return value;
 }
 
-export function deserializeMap<K, V>(json?: string): Map<K, V> {
+export function deserializeMap<K, V>(json: string | null): Map<K, V> {
     if (json) {
         try {
             const map = JSON.parse(json, mapReviver) as Map<K, V>;

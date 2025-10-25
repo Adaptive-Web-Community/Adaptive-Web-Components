@@ -24,7 +24,7 @@ export type StyleModuleDisplayList = Map<string, StyleModuleDisplay[]>;
 export interface AppliedDesignTokenItem {
     targets: Set<StyleProperty>;
     tokenID: string;
-    values: Set<string>;
+    // values: Set<string>; // TODO: consider bringing this back
 }
 
 function nameToTitle(name: string): string {
@@ -154,7 +154,7 @@ export class StylesController {
                     tokens.push({
                         targets: new Set([target]),
                         tokenID: applied.tokenID,
-                        values: new Set([applied.value])
+                        // values: new Set([applied.value])
                     });
                 }
             });
@@ -168,7 +168,7 @@ export class StylesController {
 
             if (found) {
                 found.targets = new Set([...found.targets, ...current.targets]);
-                found.values = new Set([...found.values, ...current.values]);
+                // found.values = new Set([...found.values, ...current.values]);
             } else {
                 accumulated.push(current);
             }
@@ -244,7 +244,7 @@ export class StylesController {
             // console.log("StylesController.applyDesignToken - targets", targets, token);
 
             targets.forEach(target =>
-                node.appliedDesignTokens.set(target, new AppliedDesignToken(token.name, null))
+                node.appliedDesignTokens.set(target, new AppliedDesignToken(token.name))
             );
 
             // console.log("  added applied design token to node", node);
@@ -268,7 +268,7 @@ export class StylesController {
                 const applied = node.appliedDesignTokens.get(target);
                 if (applied?.tokenID === tokenID) {
                     // Set to null so we can process the removal
-                    node.appliedDesignTokens.set(target, new AppliedDesignToken(STYLE_REMOVE, STYLE_REMOVE));
+                    node.appliedDesignTokens.set(target, new AppliedDesignToken(STYLE_REMOVE));
                     // console.log("--------------------------------");
                     // console.log("  removed applied design token from node", target, node);
                 }

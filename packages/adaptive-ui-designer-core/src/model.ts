@@ -64,7 +64,7 @@ export class DesignTokenValue {
  * A token + value pair from an applied design token.
  */
 export class AppliedDesignToken {
-    constructor(public tokenID: string, public value: string) {
+    constructor(public tokenID: string) {
     }
 }
 
@@ -89,12 +89,12 @@ export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
 /**
  * Array of style modules applied to the style of a node.
  */
-export class AppliedStyleModules extends Array<string> {}
+export class AppliedStyleModules extends Array<string> {} // TODO This is more accurate as a Set
 
 /**
  * Readonly Array of style modules applied to the style of a node.
  */
-export type ReadonlyAppliedStyleModules = ReadonlyArray<string>;
+export type ReadonlyAppliedStyleModules = ReadonlyArray<string>; // TODO This is more accurate as a Set
 
 /**
  * Map of design tokens applied to the style of a node. The key is the target style property.

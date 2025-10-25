@@ -28,8 +28,8 @@ function hasChildren<T extends FigmaRestAPI.Node>(node: T): node is FigmaRestAPI
 
 /**
  * Convert a Figma REST API node to a {@link PluginUINodeData}
- * @param node 
- * @returns 
+ * @param node - The Figma REST API node.
+ * @returns The corresponding PluginUINodeData.
  */
 export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
     const children = hasChildren(node) ? node.children : [];

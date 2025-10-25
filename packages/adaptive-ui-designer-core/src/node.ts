@@ -42,7 +42,58 @@ export const StatesState = {
 
 export type StatesState = ValuesOf<typeof StatesState>;
 
+/**
+ * The states for an interactive component.
+ */
 export type State = "Rest" | "Hover" | "Active" | "Focus" | "Disabled";
+
+/**
+ * Interface for accessing plugin node data storage.
+ */
+export interface PluginNodeDataAccessor {
+    /**
+     * Gets custom data from the design tool storage.
+     * @param key - The data storage key.
+     */
+    getPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): string | null;
+
+    /**
+     * Sets custom data to the design tool storage.
+     * @param key - The data storage key.
+     * @param value - The new serialized value.
+     */
+    setPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K, value: string): void;
+
+    /**
+     * Deletes custom data from the design tool storage.
+     * @param key - The data storage key.
+     */
+    deletePluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): void;
+
+    /**
+     * Gets the local design tokens for a given node, without inherited values.
+     * @param node - The node to get the local design tokens for.
+     * @param rawData - The raw data to extract the design tokens from.
+     * @returns The local design tokens for the node.
+     */
+    getLocalDesignTokens(node: PluginNode): Promise<DesignTokenValues>;
+
+    /**
+     * Gets the local applied design tokens for a given node, without inherited values.
+     * @param node - The node to get the local applied design tokens for.
+     * @param rawData - The raw data to extract the applied design tokens from.
+     * @returns The local applied design tokens for the node.
+     */
+    getAppliedDesignTokens(node: PluginNode): Promise<AppliedDesignTokens>;
+
+    /**
+     * Gets the local styles for a given node, without inherited values.
+     * @param node - The node to get the local styles for.
+     * @param rawData - The raw data to extract the styles from.
+     * @returns The local styles for the node.
+     */
+    getAppliedStyleModules(node: PluginNode): Promise<AppliedStyleModules>;
+}
 
 /**
  * The abstract class the plugin Controller interacts with.
@@ -51,6 +102,11 @@ export type State = "Rest" | "Hover" | "Active" | "Focus" | "Disabled";
  * for each design tool.
  */
 export abstract class PluginNode {
+    /**
+     * Accessor for plugin node data storage.
+     */
+    public static pluginDataAccessor: PluginNodeDataAccessor;
+
     /**
      * Design tokens inherited by an instance node from the main component.
      *
@@ -116,7 +172,7 @@ export abstract class PluginNode {
                 ...await parent.getInheritedDesignTokens(),
                 ...(parent.componentDesignTokens
                     ? parent.componentDesignTokens
-                    : new DesignTokenValues()),
+                    : []),
                 ...parent.localDesignTokens,
             ]);
         }
@@ -132,28 +188,50 @@ export abstract class PluginNode {
      * Gets the applied style modules inherited by an instance node from the main component.
      */
     public get componentAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
-        return this._componentAppliedStyleModules;
+        const refNode = this.getRefNode();
+        const appliedStyleModules = new AppliedStyleModules();
+        
+        if (refNode && refNode.componentAppliedStyleModules) {
+            appliedStyleModules.push(...refNode.componentAppliedStyleModules);
+        }
+        
+        if (this._componentAppliedStyleModules) {
+            appliedStyleModules.push(...this._componentAppliedStyleModules);
+        }
+
+        return appliedStyleModules;
     }
 
     /**
      * Gets the applied design tokens inherited by an instance node from the main component.
      */
     public get componentAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
-        return this._componentAppliedDesignTokens;
-    }
-
-    /**
-     * Gets the design tokens set for this node.
-     */
-    public get localDesignTokens(): ReadonlyDesignTokenValues {
-        return this._localDesignTokens;
+        const refNode = this.getRefNode();
+        const appliedDesignTokens = new AppliedDesignTokens([
+            ...(refNode && refNode.componentAppliedDesignTokens
+                ? refNode.componentAppliedDesignTokens
+                : []),
+            ...this._componentAppliedDesignTokens
+                ? this._componentAppliedDesignTokens
+                : [],
+        ]);
+        return appliedDesignTokens;
     }
 
     /**
      * Gets the design tokens inherited by an instance node from the main component.
      */
     public get componentDesignTokens(): ReadonlyDesignTokenValues | undefined {
-        return this._componentDesignTokens;
+        const refNode = this.getRefNode();
+        const designTokens = new DesignTokenValues([
+            ...(refNode && refNode.componentDesignTokens
+                ? refNode.componentDesignTokens
+                : []),
+            ...this._componentDesignTokens
+                ? this._componentDesignTokens
+                : [],
+        ]);
+        return designTokens;
     }
 
     /**
@@ -197,6 +275,11 @@ export abstract class PluginNode {
     public abstract getState(): Promise<string | null>;
 
     /**
+     * Gets the reference node for this node, if it is part of an instance or composition.
+     */
+    public abstract getRefNode(): PluginNode | null;
+
+    /**
      * Gets whether this type of node can have children or not.
      */
     public abstract getCanHaveChildren(): Promise<boolean>;
@@ -226,9 +309,22 @@ export abstract class PluginNode {
      */
     public config: Config = new Config();
 
-    protected deserializeLocalDesignTokens(): DesignTokenValues {
-        const json = this.getPluginData("designTokens");
-        // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
+    /**
+     * Gets the design tokens set for this node.
+     */
+    public get localDesignTokens(): ReadonlyDesignTokenValues {
+        return this._localDesignTokens;
+    }
+
+    /**
+     * Deserializes design tokens set to the node.
+     * @param json - The raw plugin data string.
+     * @returns The deserialized design tokens set to the node.
+     */
+    public deserializeLocalDesignTokens(json: string | null): DesignTokenValues {
+        if (json !== null) {
+            // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
+        }
         const map: DesignTokenValues = deserializeMap(json);
 
         // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
@@ -243,15 +339,15 @@ export abstract class PluginNode {
 
     /**
      * Sets the design tokens to the node and design tool.
-     * @param tokens The complete design tokens override map.
+     * @param tokens - The complete design tokens override map.
      */
     public async setDesignTokens(tokens: DesignTokenValues) {
         this._localDesignTokens = tokens;
         if (tokens.size) {
             const json = serializeMap(tokens);
-            this.setPluginData("designTokens", json);
+            PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", json);
         } else {
-            this.deletePluginData("designTokens");
+            PluginNode.pluginDataAccessor.deletePluginData(this, "designTokens");
         }
 
         await this.invalidateDesignTokenCache();
@@ -264,9 +360,15 @@ export abstract class PluginNode {
         return this._appliedDesignTokens;
     }
 
-    protected deserializeAppliedDesignTokens(): AppliedDesignTokens {
-        const json = this.getPluginData("appliedDesignTokens");
-        // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
+    /**
+     * Deserializes the design tokens applied to the style of this node.
+     * @param json - The raw plugin data string.
+     * @returns The deserialized applied design tokens.
+     */
+    public deserializeAppliedDesignTokens(json: string | null): AppliedDesignTokens {
+        if (json !== null) {
+            // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
+        }
         const map: AppliedDesignTokens = deserializeMap(json);
 
         // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
@@ -284,15 +386,15 @@ export abstract class PluginNode {
 
     /**
      * Sets the design tokens applied to the style of this node.
-     * @param appliedTokens The complete design tokens applied to the style.
+     * @param appliedTokens - The complete design tokens applied to the style.
      */
     public setAppliedDesignTokens(appliedTokens: AppliedDesignTokens) {
         this._appliedDesignTokens = appliedTokens;
         if (appliedTokens.size) {
             const json = serializeMap(appliedTokens);
-            this.setPluginData("appliedDesignTokens", json);
+            PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", json);
         } else {
-            this.deletePluginData("appliedDesignTokens");
+            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedDesignTokens");
         }
     }
 
@@ -303,23 +405,29 @@ export abstract class PluginNode {
         return this._appliedStyleModules;
     }
 
-    protected deserializeAppliedStyleModules(): AppliedStyleModules {
-        const json = this.getPluginData("appliedStyleModules");
-        // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
+    /**
+     * Deserializes the style modules applied to the style of this node.
+     * @param json - The raw plugin data string.
+     * @returns The deserialized applied style modules.
+     */
+    public deserializeAppliedStyleModules(json: string | null): AppliedStyleModules {
+        if (json !== null) {
+            // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
+        }
         return JSON.parse(json || "[]");
     }
 
     /**
      * Sets the style modules applied to the style of this node.
-     * @param appliedModules The complete style modules applied to the style.
+     * @param appliedModules - The complete style modules applied to the style.
      */
     public setAppliedStyleModules(appliedModules: AppliedStyleModules) {
         this._appliedStyleModules = appliedModules;
         if (appliedModules.length) {
             const json = JSON.stringify(appliedModules);
-            this.setPluginData("appliedStyleModules", json);
+            PluginNode.pluginDataAccessor.setPluginData(this, "appliedStyleModules", json);
         } else {
-            this.deletePluginData("appliedStyleModules");
+            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedStyleModules");
         }
     }
 
@@ -355,7 +463,7 @@ export abstract class PluginNode {
 
     /**
      * Updates the style property applied to this node.
-     * @param values All applied style value.
+     * @param values - All applied style value.
      */
     public abstract paint(values: AppliedStyleValues): Promise<void>;
 
@@ -383,30 +491,14 @@ export abstract class PluginNode {
         }
     }
 
-    protected get debugInfo() {
+    /**
+     * Gets debug information for this node.
+     */
+    public get debugInfo() {
         return {
             id: this.id,
             type: this.type,
             name: this.name,
         };
     }
-
-    /**
-     * Gets custom data from the design tool storage.
-     * @param key The data storage key.
-     */
-    protected abstract getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined;
-
-    /**
-     * Sets custom data to the design tool storage.
-     * @param key The data storage key.
-     * @param value The new serialized value.
-     */
-    protected abstract setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void;
-
-    /**
-     * Deletes custom data from the design tool storage.
-     * @param key The data storage key.
-     */
-    protected abstract deletePluginData<K extends keyof PluginNodeData>(key: K): void;
 }

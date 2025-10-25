@@ -10,7 +10,7 @@ export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadat
 
     /**
      * Registers a new design token definition.
-     * @param designToken The design token definition to register.
+     * @param designToken - The design token definition to register.
      */
     public register(designToken: T): void {
         const { name } = designToken;
@@ -26,7 +26,7 @@ export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadat
 
     /**
      * Unregisters a design token definition.
-     * @param name The ID of the design token definition to unregister.
+     * @param name - The ID of the design token definition to unregister.
      */
     public unregister(name: string): void {
         delete this._entries[name];
@@ -34,7 +34,7 @@ export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadat
 
     /**
      * Gets a design token definition by ID.
-     * @param name The ID of the design token definition.
+     * @param name - The ID of the design token definition.
      */
     public get(name: string): T | null {
         if (this.isRegistered(name)) {
@@ -53,7 +53,7 @@ export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadat
 
     /**
      * Determines if the design token definition has been registered.
-     * @param name The ID of the design token definition.
+     * @param name - The ID of the design token definition.
      */
     public isRegistered(name: string): boolean {
         return this._entries.hasOwnProperty(name);
@@ -61,7 +61,7 @@ export class DesignTokenRegistry<T extends { name: string } & DesignTokenMetadat
 
     /**
      * Returns all entries that apply to a given style property type
-     * @param target the style property type to return entries of
+     * @param target - The style property type to return entries of
      */
     public find(target: StyleProperty): T[] {
         return Object.values(this._entries).filter(value => value.intendedFor?.includes(target));
