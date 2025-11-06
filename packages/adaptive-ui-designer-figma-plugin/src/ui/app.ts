@@ -200,7 +200,7 @@ const footerTemplate = html<App>`
             <adaptive-button
                 appearance="stealth"
                 aria-label=${genStylesLabel}
-                style="display: ${/* HACK: Not using this currently (x) => (x.controller.code.supportsCodeGen ? "block" : */"none"/*)*/};"
+                style="display: ${(x) => (x.controller.code.supportsCodeGen ? "block" : "none")};"
                 @click=${(x) => {
                     const val = x.controller.code.generateForSelectedNodes();
                     clipboardCopy(val);

@@ -9,7 +9,7 @@ import {
     SerializableStringCondition,
     SerializableStyleRule,
 } from "@adaptive-web/adaptive-ui";
-import { AdditionalDataKeys, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdditionalDataKeys, AppliedDesignTokens, AppliedStyleModules, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
@@ -252,18 +252,35 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
             anatomy.parts.add(node.name);
         }
 
-        if (node.appliedStyleModules.length > 0 || node.appliedDesignTokens.size > 0) {
+        const appliedStyleModules = new AppliedStyleModules();
+        if (node.componentAppliedStyleModules) {
+            appliedStyleModules.push(...node.componentAppliedStyleModules);
+        }
+        if (node.appliedStyleModules) {
+            appliedStyleModules.push(...node.appliedStyleModules);
+        }
+
+        const appliedDesignTokens = new AppliedDesignTokens([
+            ...(node.componentAppliedDesignTokens
+                ? node.componentAppliedDesignTokens
+                : []),
+            ...node.appliedDesignTokens
+                ? node.appliedDesignTokens
+                : [],
+        ]);
+
+        if (appliedStyleModules.length > 0 || appliedDesignTokens.size > 0) {
             const styleRule = new StyleRule();
 
             if (condition) {
                 styleRule.contextCondition = condition;
             }
-    
-            node.appliedStyleModules.forEach(style => {
+
+            appliedStyleModules.forEach(style => {
                 styleRule.styles.add(style);
             });
 
-            node.appliedDesignTokens.forEach((token, target) => {
+            appliedDesignTokens.forEach((token, target) => {
                 const tokenRef = token.tokenID;
                 styleRule.properties.set(target, tokenRef);
             });

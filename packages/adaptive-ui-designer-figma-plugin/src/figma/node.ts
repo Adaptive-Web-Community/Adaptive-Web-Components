@@ -1,7 +1,7 @@
 import { type Color as CuloriColor, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
-import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
+import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLayoutNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
 import { PluginDataResolver } from "./plugin-data-resolver.js";
 
@@ -79,6 +79,7 @@ export class FigmaPluginNode extends PluginNode {
             this._componentAppliedDesignTokens = this._refNode.appliedDesignTokens;
         }
 
+        this.config = JSON.parse(PluginNode.pluginDataAccessor.getPluginData(this, "config") || "{}");
         this._localDesignTokens = await PluginNode.pluginDataAccessor.getLocalDesignTokens(this);
         this._appliedStyleModules = await PluginNode.pluginDataAccessor.getAppliedStyleModules(this);
         this._appliedDesignTokens = await PluginNode.pluginDataAccessor.getAppliedDesignTokens(this);
@@ -447,6 +448,14 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
+    private handleSize(values: AppliedStyleValues) {
+        if (isLayoutNode(this._node)) {
+            const width = this.safeNumber(values.get(StyleProperty.width)?.value) || this._node.width;
+            const height = this.safeNumber(values.get(StyleProperty.height)?.value) || this._node.height;
+            (this._node).resize(width, height);
+        }
+    }
+
     protected safeNumber(value: string, defaultValue: number = 0) {
         return value === STYLE_REMOVE ? defaultValue : Number.parseFloat(value);
     }
@@ -456,6 +465,8 @@ export class FigmaPluginNode extends PluginNode {
         this.handleFontFamily(this, values, false);
 
         this.handleStroke(values);
+
+        this.handleSize(values);
 
         // Paint all applied design tokens on the node
         for (const [target, styleValue] of values) {
@@ -571,6 +582,10 @@ export class FigmaPluginNode extends PluginNode {
                         (this._node as BaseFrameMixin).itemSpacing = this.safeNumber(value); // Removes unit, so assumes px
                     }
                     break;
+                case StyleProperty.height:
+                case StyleProperty.width:
+                    // Ignore, handled in handleSize.
+                    break;
                 case StyleProperty.shadow:
                     {
                         const shadows: Shadow[] = Array.isArray(value) ? value : [value];
@@ -592,6 +607,7 @@ export class FigmaPluginNode extends PluginNode {
                     }
                     break;
                 default:
+                    console.error(`Applied design token could not be painted for ${target}:`, JSON.stringify(value), this.debugInfo);
                     throw new Error(`Applied design token could not be painted for ${target}: ${JSON.stringify(value)}`);
             }
         }
