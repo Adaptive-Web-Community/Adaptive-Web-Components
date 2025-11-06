@@ -33,12 +33,19 @@ export class CodeController {
     public generateForSelectedNodes(): string {
         const selectedNode = this.controller.selectedNodes[0];
 
-        const codeGen = new CodeGen();
-        const anatomy = Anatomy.fromPluginUINodeData(selectedNode);
-        const genAnatomy = `${codeGen.generateAnatomyCode(anatomy)}\n`;
-        const genStyles = `${codeGen.generateStylesCode(anatomy)}\n`;
+        const name = selectedNode.additionalData.get(AdditionalDataKeys.codeGenName) || "unknown";
 
-        const output = `${genAnatomy}${genStyles}`;
+        // const codeGen = new CodeGen();
+
+        const anatomy = Anatomy.fromPluginUINodeData(selectedNode);
+        const anatomyJson = JSON.stringify(anatomy, null, 4);
+        // const genAnatomy = `${codeGen.generateAnatomyCode(anatomy)}\n`;
+        // const genStyles = `${codeGen.generateStylesCode(anatomy)}\n`;
+
+        // const output = `${genAnatomy}${genStyles}`;
+        console.log("Anatomy generated", name);
+        
+        const output = anatomyJson;
         return output;
     }
 }

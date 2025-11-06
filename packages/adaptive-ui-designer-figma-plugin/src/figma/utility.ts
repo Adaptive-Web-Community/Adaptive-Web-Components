@@ -55,6 +55,32 @@ export function isContainerNode(node: BaseNode): node is
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
+export function isLayoutNode(node: BaseNode): node is
+    FrameNode |
+    GroupNode |
+    ComponentSetNode |
+    ComponentNode |
+    InstanceNode |
+    RectangleNode |
+    EllipseNode |
+    PolygonNode |
+    StarNode |
+    BooleanOperationNode |
+    VectorNode |
+    LineNode |
+    TextNode {
+    return [
+        isFrameNode,
+        isGroupNode,
+        isComponentSetNode,
+        isComponentNode,
+        isInstanceNode,
+        isShapeNode,
+        isLineNode,
+        isTextNode,
+    ].some((test: (node: BaseNode) => boolean) => test(node));
+}
+
 export function isShapeNode(node: BaseNode): node is
     RectangleNode |
     EllipseNode |
