@@ -1,10 +1,13 @@
 import type { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
-import type { TypedCSSDesignToken } from "../adaptive-design-tokens.js";
+import { DesignTokenValue } from "@microsoft/fast-foundation/design-token-core.js";
+import { type TypedCSSDesignToken, type TypedDesignToken } from "../adaptive-design-tokens.js";
 import { TokenGroup } from "../types.js";
 import {
+    createTokenDimension,
     createTokenFontSize,
     createTokenFontVariations,
-    createTokenLineHeight
+    createTokenLineHeight,
+    createTokenNumber
 } from "../token-helpers.js";
 
 // TODO: This should be a recipe. Reevaluate as design tokens update.
@@ -52,8 +55,8 @@ export class TypeRampPosition {
     constructor(
         baseName: string,
         position: string,
-        fontSize: string,
-        lineHeight: string,
+        fontSize: DesignTokenValue<string>,
+        lineHeight: DesignTokenValue<string>,
     ) {
         this.fontSize = createTokenFontSize(`${baseName}.fontSize.${position}`).withDefault(fontSize);
         this.lineHeight = createTokenLineHeight(`${baseName}.lineHeight.${position}`).withDefault(lineHeight);
@@ -155,24 +158,24 @@ export class TypeRampTokenGroup implements TokenGroup {
      */
     constructor(
         public readonly name: string,
-        minus2FontSize: string,
-        minus2LineHeight: string,
-        minus1FontSize: string,
-        minus1LineHeight: string,
-        baseFontSize: string,
-        baseLineHeight: string,
-        plus1FontSize: string,
-        plus1LineHeight: string,
-        plus2FontSize: string,
-        plus2LineHeight: string,
-        plus3FontSize: string,
-        plus3LineHeight: string,
-        plus4FontSize: string,
-        plus4LineHeight: string,
-        plus5FontSize: string,
-        plus5LineHeight: string,
-        plus6FontSize: string,
-        plus6LineHeight: string
+        minus2FontSize: DesignTokenValue<string>,
+        minus2LineHeight: DesignTokenValue<string>,
+        minus1FontSize: DesignTokenValue<string>,
+        minus1LineHeight: DesignTokenValue<string>,
+        baseFontSize: DesignTokenValue<string>,
+        baseLineHeight: DesignTokenValue<string>,
+        plus1FontSize: DesignTokenValue<string>,
+        plus1LineHeight: DesignTokenValue<string>,
+        plus2FontSize: DesignTokenValue<string>,
+        plus2LineHeight: DesignTokenValue<string>,
+        plus3FontSize: DesignTokenValue<string>,
+        plus3LineHeight: DesignTokenValue<string>,
+        plus4FontSize: DesignTokenValue<string>,
+        plus4LineHeight: DesignTokenValue<string>,
+        plus5FontSize: DesignTokenValue<string>,
+        plus5LineHeight: DesignTokenValue<string>,
+        plus6FontSize: DesignTokenValue<string>,
+        plus6LineHeight: DesignTokenValue<string>
     ) {
         this.minus2 = new TypeRampPosition(name, "minus2", minus2FontSize, minus2LineHeight);
         this.minus1 = new TypeRampPosition(name, "minus1", minus1FontSize, minus1LineHeight);
@@ -183,5 +186,166 @@ export class TypeRampTokenGroup implements TokenGroup {
         this.plus4 = new TypeRampPosition(name, "plus4", plus4FontSize, plus4LineHeight);
         this.plus5 = new TypeRampPosition(name, "plus5", plus5FontSize, plus5LineHeight);
         this.plus6 = new TypeRampPosition(name, "plus6", plus6FontSize, plus6LineHeight);
+    }
+
+}
+
+/**
+ * A type ramp generated from a base size and multiplier (type scale).
+ * 
+ * In this model, the base.fontSize is the primary token that should be edited,
+ * and all other positions are derived from it using calc() expressions with the multiplier.
+ * 
+ * @public
+ */
+export class TypeScaleTokenGroup extends TypeRampTokenGroup {
+    /**
+     * The multiplier token for the type scale.
+     *
+     * @public
+     */
+    public readonly multiplier: TypedDesignToken<number>;
+
+    /**
+     * The line height ratio token for the type scale.
+     *
+     * @public
+     */
+    public readonly lineHeightRatio: TypedDesignToken<number>;
+
+    /**
+     * The line height snap token for rounding line heights.
+     *
+     * @public
+     */
+    public readonly lineHeightSnap: TypedCSSDesignToken<string>;
+
+    /**
+     * Creates a new type scale token group.
+     *
+     * @param name - The base name of the token group (e.g., "typography.ramp.scale").
+     * @param baseSize - The base font size as a string value (e.g., "16px").
+     * @param multiplier - The multiplier for the type scale (e.g., 1.25).
+     * @param lineHeightRatio - The line height ratio (default: 1.4).
+     * @param lineHeightSnap - The line height snap value for rounding line heights (default: "2px").
+     */
+    constructor(
+        name: string,
+        baseSize: string,
+        multiplier: number,
+        lineHeightRatio: number = 1.4,
+        lineHeightSnap: string = "2px"
+    ) {
+        // Create the tokens
+        const multiplierToken = createTokenNumber(`${name}.multiplier`).withDefault(multiplier);
+        const lineHeightRatioToken = createTokenNumber(`${name}.lineHeightRatio`).withDefault(lineHeightRatio);
+        const lineHeightSnapToken = createTokenDimension(`${name}.lineHeightSnap`).withDefault(lineHeightSnap);
+        
+        // Call parent constructor with placeholder values
+        // We'll update the tokens with calculated values after all position tokens are created
+        super(
+            name,
+            "0px", // minus2 fontSize placeholder
+            "0px", // minus2 lineHeight placeholder
+            "0px", // minus1 fontSize placeholder
+            "0px", // minus1 lineHeight placeholder
+            baseSize, // base fontSize (the only concrete value)
+            "0px", // base lineHeight placeholder
+            "0px", // plus1 fontSize placeholder
+            "0px", // plus1 lineHeight placeholder
+            "0px", // plus2 fontSize placeholder
+            "0px", // plus2 lineHeight placeholder
+            "0px", // plus3 fontSize placeholder
+            "0px", // plus3 lineHeight placeholder
+            "0px", // plus4 fontSize placeholder
+            "0px", // plus4 lineHeight placeholder
+            "0px", // plus5 fontSize placeholder
+            "0px", // plus5 lineHeight placeholder
+            "0px", // plus6 fontSize placeholder
+            "0px"  // plus6 lineHeight placeholder
+        );
+        
+        // Set the tokens
+        this.multiplier = multiplierToken;
+        this.lineHeightRatio = lineHeightRatioToken;
+        this.lineHeightSnap = lineHeightSnapToken;
+
+        // Now that all position tokens exist, update them with calculated values
+        this.minus2.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} / pow(${resolve(multiplierToken)}, 2))`
+        );
+        this.minus2.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.minus2.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.minus1.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} / ${resolve(multiplierToken)})`
+        );
+        this.minus1.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.minus1.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.base.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.base.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus1.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * ${resolve(multiplierToken)})`
+        );
+        this.plus1.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus1.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus2.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * pow(${resolve(multiplierToken)}, 2))`
+        );
+        this.plus2.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus2.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus3.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * pow(${resolve(multiplierToken)}, 3))`
+        );
+        this.plus3.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus3.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus4.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * pow(${resolve(multiplierToken)}, 4))`
+        );
+        this.plus4.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus4.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus5.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * pow(${resolve(multiplierToken)}, 5))`
+        );
+        this.plus5.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus5.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
+
+        this.plus6.fontSize.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `calc(${resolve(this.base.fontSize)} * pow(${resolve(multiplierToken)}, 6))`
+        );
+        this.plus6.lineHeight.withDefault(
+            (resolve: DesignTokenResolver) =>
+                `round(${resolve(this.plus6.fontSize)} * ${resolve(lineHeightRatioToken)}, ${resolve(lineHeightSnapToken)})`
+        );
     }
 }

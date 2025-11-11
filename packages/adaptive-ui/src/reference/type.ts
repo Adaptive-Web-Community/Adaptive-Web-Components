@@ -72,85 +72,112 @@ export const typeRampDefault = new TypeRampTokenGroup(
     "52px"
 );
 
+/**
+ * Example: Create a type scale from a base size and multiplier.
+ * A type scale generates all positions using a consistent multiplier and line height ratio.
+ * The base.fontSize is the primary editable token, and all other positions
+ * derive from it using calc() expressions with the multiplier.
+ *
+ * @example
+ * ```ts
+ * import { TypeScaleTokenGroup } from "../core/typography/type-ramp.js";
+ * 
+ * // Create a type scale with 1.25 ratio
+ * export const typeRampScale = new TypeScaleTokenGroup(
+ *     "typography.ramp.scale",
+ *     "16px",  // base size
+ *     1.25,    // multiplier (each step is 1.25x the previous)
+ *     1.4      // line height ratio (optional, defaults to 1.4)
+ * );
+ * 
+ * // Access the scale:
+ * // typeRampScale.base.fontSize - the primary editable base font size token
+ * // typeRampScale.multiplier - the multiplier token (also editable)
+ * // typeRampScale.plus1.fontSize - derived: "calc(base * multiplier)"
+ * // typeRampScale.plus2.fontSize - derived: "calc(base * pow(multiplier, 2))"
+ * // typeRampScale.minus1.fontSize - derived: "calc(base / multiplier)"
+ * ```
+ */
+
 // Export individual tokens for backward compatibility
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus2.fontSize` directly. @public */
 export const typeRampMinus2FontSize = typeRampDefault.minus2.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus2.lineHeight` directly. @public */
 export const typeRampMinus2LineHeight = typeRampDefault.minus2.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus2.fontVariations` directly. @public */
 export const typeRampMinus2FontVariations = typeRampDefault.minus2.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus1.fontSize` directly. @public */
 export const typeRampMinus1FontSize = typeRampDefault.minus1.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus1.lineHeight` directly. @public */
 export const typeRampMinus1LineHeight = typeRampDefault.minus1.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.minus1.fontVariations` directly. @public */
 export const typeRampMinus1FontVariations = typeRampDefault.minus1.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.base.fontSize` directly. @public */
 export const typeRampBaseFontSize = typeRampDefault.base.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.base.lineHeight` directly. @public */
 export const typeRampBaseLineHeight = typeRampDefault.base.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.base.fontVariations` directly. @public */
 export const typeRampBaseFontVariations = typeRampDefault.base.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus1.fontSize` directly. @public */
 export const typeRampPlus1FontSize = typeRampDefault.plus1.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus1.lineHeight` directly. @public */
 export const typeRampPlus1LineHeight = typeRampDefault.plus1.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus1.fontVariations` directly. @public */
 export const typeRampPlus1FontVariations = typeRampDefault.plus1.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus2.fontSize` directly. @public */
 export const typeRampPlus2FontSize = typeRampDefault.plus2.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus2.lineHeight` directly. @public */
 export const typeRampPlus2LineHeight = typeRampDefault.plus2.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus2.fontVariations` directly. @public */
 export const typeRampPlus2FontVariations = typeRampDefault.plus2.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus3.fontSize` directly. @public */
 export const typeRampPlus3FontSize = typeRampDefault.plus3.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus3.lineHeight` directly. @public */
 export const typeRampPlus3LineHeight = typeRampDefault.plus3.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus3.fontVariations` directly. @public */
 export const typeRampPlus3FontVariations = typeRampDefault.plus3.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus4.fontSize` directly. @public */
 export const typeRampPlus4FontSize = typeRampDefault.plus4.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus4.lineHeight` directly. @public */
 export const typeRampPlus4LineHeight = typeRampDefault.plus4.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus4.fontVariations` directly. @public */
 export const typeRampPlus4FontVariations = typeRampDefault.plus4.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus5.fontSize` directly. @public */
 export const typeRampPlus5FontSize = typeRampDefault.plus5.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus5.lineHeight` directly. @public */
 export const typeRampPlus5LineHeight = typeRampDefault.plus5.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus5.fontVariations` directly. @public */
 export const typeRampPlus5FontVariations = typeRampDefault.plus5.fontVariations;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus6.fontSize` directly. @public */
 export const typeRampPlus6FontSize = typeRampDefault.plus6.fontSize;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus6.lineHeight` directly. @public */
 export const typeRampPlus6LineHeight = typeRampDefault.plus6.lineHeight;
 
-/** @public */
+/** @deprecated Use `typeRampDefault.plus6.fontVariations` directly. @public */
 export const typeRampPlus6FontVariations = typeRampDefault.plus6.fontVariations;
