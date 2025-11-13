@@ -39,6 +39,7 @@ import { ControlPane } from "./components/control-pane/index.js";
 import { LayerBackground } from "./components/layer-background/index.js";
 import { PaletteGradient } from "./components/palette-gradient/palette-gradient.js";
 import { SampleApp } from "./sample/index.js";
+import { typeRampScale, Typography } from "./typography/index.js";
 import { State } from "./state.js";
 
 ColorBlock;
@@ -46,6 +47,7 @@ ControlPane;
 LayerBackground;
 PaletteGradient;
 SampleApp;
+Typography;
 
 const colorBlockTemplate = html<App>`
     ${repeat(
@@ -82,6 +84,12 @@ const sampleTemplate = html<App>`
         >
             <app-sample-app></app-sample-app>
         </app-layer-background>
+    </app-design-system-provider>
+`;
+
+const typographyTemplate = html<App>`
+    <app-design-system-provider>
+        <app-typography></app-typography>
     </app-design-system-provider>
 `;
 
@@ -241,6 +249,18 @@ export class App extends FASTElement {
                         case "wcagContrastLevel":
                             wcagContrastLevel.setValueFor(app.canvas, source.wcagContrastLevel);
                             break;
+                        case "typeScaleBaseSize":
+                            typeRampScale.base.fontSize.setValueFor(app.canvas, `${source.typeScaleBaseSize}px`);
+                            break;
+                        case "typeScaleMultiplier":
+                            typeRampScale.multiplier.setValueFor(app.canvas, source.typeScaleMultiplier);
+                            break;
+                        case "typeScaleLineHeightRatio":
+                            typeRampScale.lineHeightRatio.setValueFor(app.canvas, source.typeScaleLineHeightRatio);
+                            break;
+                        case "typeScaleLineHeightSnap":
+                            typeRampScale.lineHeightSnap.setValueFor(app.canvas, `${source.typeScaleLineHeightSnap}px`);
+                            break;
                         default:
                             break;
                     }
@@ -266,6 +286,8 @@ export class App extends FASTElement {
     public componentTypeTemplate(): ViewTemplate<App, any> {
         if (this.state.componentType === ComponentType.sample) {
             return sampleTemplate;
+        } else if (this.state.componentType === ComponentType.typography) {
+            return typographyTemplate;
         } else {
             return colorBlockTemplate;
         }

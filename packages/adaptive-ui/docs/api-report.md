@@ -11,6 +11,7 @@ import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
 import { DesignToken } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
+import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
 import { ElementStyles } from '@microsoft/fast-element';
 import { Rgb } from 'culori/fn';
 import { TypedCSSDesignToken as TypedCSSDesignToken_2 } from '../adaptive-design-tokens.js';
@@ -862,6 +863,38 @@ export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMe
 
 // @internal (undocumented)
 export interface TypedDesignToken<T> extends DesignTokenMetadata {
+}
+
+// @public
+export class TypeRampPosition {
+    constructor(baseName: string, position: string, fontSize: DesignTokenValue<string>, lineHeight: DesignTokenValue<string>);
+    readonly fontSize: TypedCSSDesignToken<string>;
+    readonly fontVariations: TypedCSSDesignToken<string>;
+    readonly lineHeight: TypedCSSDesignToken<string>;
+}
+
+// @public
+export class TypeRampTokenGroup implements TokenGroup {
+    constructor(name: string, minus2FontSize: DesignTokenValue<string>, minus2LineHeight: DesignTokenValue<string>, minus1FontSize: DesignTokenValue<string>, minus1LineHeight: DesignTokenValue<string>, baseFontSize: DesignTokenValue<string>, baseLineHeight: DesignTokenValue<string>, plus1FontSize: DesignTokenValue<string>, plus1LineHeight: DesignTokenValue<string>, plus2FontSize: DesignTokenValue<string>, plus2LineHeight: DesignTokenValue<string>, plus3FontSize: DesignTokenValue<string>, plus3LineHeight: DesignTokenValue<string>, plus4FontSize: DesignTokenValue<string>, plus4LineHeight: DesignTokenValue<string>, plus5FontSize: DesignTokenValue<string>, plus5LineHeight: DesignTokenValue<string>, plus6FontSize: DesignTokenValue<string>, plus6LineHeight: DesignTokenValue<string>);
+    readonly base: TypeRampPosition;
+    readonly minus1: TypeRampPosition;
+    readonly minus2: TypeRampPosition;
+    // (undocumented)
+    readonly name: string;
+    readonly plus1: TypeRampPosition;
+    readonly plus2: TypeRampPosition;
+    readonly plus3: TypeRampPosition;
+    readonly plus4: TypeRampPosition;
+    readonly plus5: TypeRampPosition;
+    readonly plus6: TypeRampPosition;
+}
+
+// @public
+export class TypeScaleTokenGroup extends TypeRampTokenGroup {
+    constructor(name: string, baseSize: string, multiplier: number, lineHeightRatio?: number, lineHeightSnap?: string);
+    readonly lineHeightRatio: TypedDesignToken<number>;
+    readonly lineHeightSnap: TypedCSSDesignToken<string>;
+    readonly multiplier: TypedDesignToken<number>;
 }
 
 // @internal

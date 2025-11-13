@@ -14,6 +14,11 @@ export interface State {
     wcagContrastLevel: WcagContrastLevel;
     disabledState: boolean;
     showSwatches: boolean;
+    typeScaleBaseSize: number;
+    typeScaleMultiplier: number;
+    typeScaleLineHeightRatio: number;
+    typeScaleLineHeightSnap: number;
+    multiline: boolean;
 }
 
 const PLACEHOLDER_COLOR = Color.parse("#ff00ff")!;
@@ -42,4 +47,19 @@ export class DefaultState implements State {
 
     @observable
     public showSwatches: boolean = false;
+
+    @observable
+    public typeScaleBaseSize: number = 16;
+
+    @observable
+    public typeScaleMultiplier: number = 1.2;
+
+    @observable
+    public typeScaleLineHeightRatio: number = 1.4;
+
+    @observable
+    public typeScaleLineHeightSnap: number = 2;
+
+    @observable
+    public multiline: boolean = false;
 }

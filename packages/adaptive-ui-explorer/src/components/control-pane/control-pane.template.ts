@@ -90,5 +90,66 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
             id="showSwatches"
             :checked=${twoWay((x) => x.state.showSwatches)}
         >Show swatches</adaptive-switch>
+
+        <div>
+            <label>Type scale base size (px)</label>
+            <input
+                type="number"
+                min="8"
+                max="32"
+                step="1"
+                value=${(x) => x.state.typeScaleBaseSize}
+                @input=${(x, c) =>
+                    x.state.typeScaleBaseSize = parseFloat(c.eventTarget<HTMLInputElement>().value)
+                }
+            />
+        </div>
+
+        <div>
+            <label>Type scale multiplier</label>
+            <input
+                type="number"
+                min="1.0"
+                max="2.0"
+                step="0.01"
+                value=${(x) => x.state.typeScaleMultiplier}
+                @input=${(x, c) =>
+                    x.state.typeScaleMultiplier = parseFloat(c.eventTarget<HTMLInputElement>().value)
+                }
+            />
+        </div>
+
+        <div>
+            <label>Type scale line height ratio</label>
+            <input
+                type="number"
+                min="1.0"
+                max="2.0"
+                step="0.01"
+                value=${(x) => x.state.typeScaleLineHeightRatio}
+                @input=${(x, c) =>
+                    x.state.typeScaleLineHeightRatio = parseFloat(c.eventTarget<HTMLInputElement>().value)
+                }
+            />
+        </div>
+
+        <div>
+            <label>Type scale line height snap (px)</label>
+            <input
+                type="number"
+                min="1"
+                max="10"
+                step="1"
+                value=${(x) => x.state.typeScaleLineHeightSnap}
+                @input=${(x, c) =>
+                    x.state.typeScaleLineHeightSnap = parseFloat(c.eventTarget<HTMLInputElement>().value)
+                }
+            />
+        </div>
+
+        <adaptive-switch
+            id="multiline"
+            :checked=${twoWay((x) => x.state.multiline)}
+        >Multiline typography</adaptive-switch>
     `;
 }
