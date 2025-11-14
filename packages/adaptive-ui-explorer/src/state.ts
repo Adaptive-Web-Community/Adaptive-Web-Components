@@ -17,6 +17,7 @@ export interface State {
     typeScaleBaseSize: number;
     typeScaleMultiplier: number;
     typeScaleLineHeightRatio: number;
+    typeScaleLineHeightMultilineRatio: number;
     typeScaleLineHeightSnap: number;
     multiline: boolean;
 }
@@ -55,7 +56,10 @@ export class DefaultState implements State {
     public typeScaleMultiplier: number = 1.2;
 
     @observable
-    public typeScaleLineHeightRatio: number = 1.4;
+    public typeScaleLineHeightRatio: number = 1.3;
+
+    @observable
+    public typeScaleLineHeightMultilineRatio: number = 1.6;
 
     @observable
     public typeScaleLineHeightSnap: number = 2;

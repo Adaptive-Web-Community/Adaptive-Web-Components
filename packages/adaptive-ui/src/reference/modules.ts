@@ -88,33 +88,7 @@ import {
     labelFontFamily,
     labelFontStyle,
     labelFontWeight,
-    typeRampBaseFontSize,
-    typeRampBaseFontVariations,
-    typeRampBaseLineHeight,
-    typeRampMinus1FontSize,
-    typeRampMinus1FontVariations,
-    typeRampMinus1LineHeight,
-    typeRampMinus2FontSize,
-    typeRampMinus2FontVariations,
-    typeRampMinus2LineHeight,
-    typeRampPlus1FontSize,
-    typeRampPlus1FontVariations,
-    typeRampPlus1LineHeight,
-    typeRampPlus2FontSize,
-    typeRampPlus2FontVariations,
-    typeRampPlus2LineHeight,
-    typeRampPlus3FontSize,
-    typeRampPlus3FontVariations,
-    typeRampPlus3LineHeight,
-    typeRampPlus4FontSize,
-    typeRampPlus4FontVariations,
-    typeRampPlus4LineHeight,
-    typeRampPlus5FontSize,
-    typeRampPlus5FontVariations,
-    typeRampPlus5LineHeight,
-    typeRampPlus6FontSize,
-    typeRampPlus6FontVariations,
-    typeRampPlus6LineHeight,
+    typeRampDefault,
 } from "./type.js";
 import { densityBorderStyles, transparent } from "./util.js";
 
@@ -1366,10 +1340,10 @@ export const neutralDividerDiscernibleElementStyles: Styles = Styles.fromPropert
 export const typeRampBaseStyles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampBaseFontSize,
-        lineHeight: typeRampBaseLineHeight,
+        fontSize: typeRampDefault.base.fontSize,
+        lineHeight: typeRampDefault.base.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampBaseFontVariations,
+        fontVariationSettings: typeRampDefault.base.fontVariations,
     },
     "text.type-ramp-base",
 );
@@ -1382,10 +1356,10 @@ export const typeRampBaseStyles: Styles = Styles.fromProperties(
 export const typeRampMinus1Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampMinus1FontSize,
-        lineHeight: typeRampMinus1LineHeight,
+        fontSize: typeRampDefault.minus1.fontSize,
+        lineHeight: typeRampDefault.minus1.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampMinus1FontVariations,
+        fontVariationSettings: typeRampDefault.minus1.fontVariations,
     },
     "text.type-ramp-minus-1",
 );
@@ -1398,10 +1372,10 @@ export const typeRampMinus1Styles: Styles = Styles.fromProperties(
 export const typeRampMinus2Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampMinus2FontSize,
-        lineHeight: typeRampMinus2LineHeight,
+        fontSize: typeRampDefault.minus2.fontSize,
+        lineHeight: typeRampDefault.minus2.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampMinus2FontVariations,
+        fontVariationSettings: typeRampDefault.minus2.fontVariations,
     },
     "text.type-ramp-minus-2",
 );
@@ -1414,10 +1388,10 @@ export const typeRampMinus2Styles: Styles = Styles.fromProperties(
 export const typeRampPlus1Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus1FontSize,
-        lineHeight: typeRampPlus1LineHeight,
+        fontSize: typeRampDefault.plus1.fontSize,
+        lineHeight: typeRampDefault.plus1.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus1FontVariations,
+        fontVariationSettings: typeRampDefault.plus1.fontVariations,
     },
     "text.type-ramp-plus-1",
 );
@@ -1430,10 +1404,10 @@ export const typeRampPlus1Styles: Styles = Styles.fromProperties(
 export const typeRampPlus2Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus2FontSize,
-        lineHeight: typeRampPlus2LineHeight,
+        fontSize: typeRampDefault.plus2.fontSize,
+        lineHeight: typeRampDefault.plus2.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus2FontVariations,
+        fontVariationSettings: typeRampDefault.plus2.fontVariations,
     },
     "text.type-ramp-plus-2",
 );
@@ -1446,10 +1420,10 @@ export const typeRampPlus2Styles: Styles = Styles.fromProperties(
 export const typeRampPlus3Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus3FontSize,
-        lineHeight: typeRampPlus3LineHeight,
+        fontSize: typeRampDefault.plus3.fontSize,
+        lineHeight: typeRampDefault.plus3.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus3FontVariations,
+        fontVariationSettings: typeRampDefault.plus3.fontVariations,
     },
     "text.type-ramp-plus-3",
 );
@@ -1462,10 +1436,10 @@ export const typeRampPlus3Styles: Styles = Styles.fromProperties(
 export const typeRampPlus4Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus4FontSize,
-        lineHeight: typeRampPlus4LineHeight,
+        fontSize: typeRampDefault.plus4.fontSize,
+        lineHeight: typeRampDefault.plus4.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus4FontVariations,
+        fontVariationSettings: typeRampDefault.plus4.fontVariations,
     },
     "text.type-ramp-plus-4",
 );
@@ -1478,10 +1452,10 @@ export const typeRampPlus4Styles: Styles = Styles.fromProperties(
 export const typeRampPlus5Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus5FontSize,
-        lineHeight: typeRampPlus5LineHeight,
+        fontSize: typeRampDefault.plus5.fontSize,
+        lineHeight: typeRampDefault.plus5.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus5FontVariations,
+        fontVariationSettings: typeRampDefault.plus5.fontVariations,
     },
     "text.type-ramp-plus-5",
 );
@@ -1494,10 +1468,10 @@ export const typeRampPlus5Styles: Styles = Styles.fromProperties(
 export const typeRampPlus6Styles: Styles = Styles.fromProperties(
     {
         fontFamily: fontFamily,
-        fontSize: typeRampPlus6FontSize,
-        lineHeight: typeRampPlus6LineHeight,
+        fontSize: typeRampDefault.plus6.fontSize,
+        lineHeight: typeRampDefault.plus6.lineHeight,
         fontWeight: fontWeight,
-        fontVariationSettings: typeRampPlus6FontVariations,
+        fontVariationSettings: typeRampDefault.plus6.fontVariations,
     },
     "text.type-ramp-plus-6",
 );
@@ -1657,6 +1631,20 @@ export const plainTextStyles: Styles = Styles.compose(
     ],
     undefined,
     "styles.text-plain",
+);
+
+/**
+ * @public
+ */
+export const plainTextMultilineStyles: Styles = Styles.compose(
+    [
+        typeRampBaseStyles,
+        neutralForegroundStrongElementStyles,
+    ],
+    {
+        lineHeight: typeRampDefault.base.lineHeightMultiline,
+    },
+    "styles.text-plain-multiline",
 );
 
 /**

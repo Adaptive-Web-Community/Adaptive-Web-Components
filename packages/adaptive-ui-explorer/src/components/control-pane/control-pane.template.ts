@@ -134,6 +134,20 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
         </div>
 
         <div>
+            <label>Type scale line height ratio (multiline)</label>
+            <input
+                type="number"
+                min="1.0"
+                max="2.0"
+                step="0.01"
+                value=${(x) => x.state.typeScaleLineHeightMultilineRatio}
+                @input=${(x, c) =>
+                    x.state.typeScaleLineHeightMultilineRatio = parseFloat(c.eventTarget<HTMLInputElement>().value)
+                }
+            />
+        </div>
+
+        <div>
             <label>Type scale line height snap (px)</label>
             <input
                 type="number"

@@ -6,7 +6,7 @@ const multiLineText = html<Typography>`Lorem ipsum dolor sit amet, consectetur a
 
 export function typographyTemplate<T extends Typography>(): ElementViewTemplate<T> {
     return html<T>`
-        <div class="content">
+        <div class="content${x => x.state.multiline ? ' multiline' : ''}">
             <p class="minus2">
                 <span class="values">Minus 2 (font-size: ${x => x.minus2.fontSize}, line-height: ${x => x.minus2.lineHeight})</span>
                 <span class="sample-text">${x => x.state.multiline ? multiLineText : singleLineText}</span>

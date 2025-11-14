@@ -867,15 +867,23 @@ export interface TypedDesignToken<T> extends DesignTokenMetadata {
 
 // @public
 export class TypeRampPosition {
-    constructor(baseName: string, position: string, fontSize: DesignTokenValue<string>, lineHeight: DesignTokenValue<string>);
+    constructor(baseName: string, position: string, config: TypeRampPositionConfig);
     readonly fontSize: TypedCSSDesignToken<string>;
     readonly fontVariations: TypedCSSDesignToken<string>;
     readonly lineHeight: TypedCSSDesignToken<string>;
+    readonly lineHeightMultiline: TypedCSSDesignToken<string>;
+}
+
+// @public
+export interface TypeRampPositionConfig {
+    fontSize: DesignTokenValue<string>;
+    lineHeight: DesignTokenValue<string>;
+    lineHeightMultiline: DesignTokenValue<string>;
 }
 
 // @public
 export class TypeRampTokenGroup implements TokenGroup {
-    constructor(name: string, minus2FontSize: DesignTokenValue<string>, minus2LineHeight: DesignTokenValue<string>, minus1FontSize: DesignTokenValue<string>, minus1LineHeight: DesignTokenValue<string>, baseFontSize: DesignTokenValue<string>, baseLineHeight: DesignTokenValue<string>, plus1FontSize: DesignTokenValue<string>, plus1LineHeight: DesignTokenValue<string>, plus2FontSize: DesignTokenValue<string>, plus2LineHeight: DesignTokenValue<string>, plus3FontSize: DesignTokenValue<string>, plus3LineHeight: DesignTokenValue<string>, plus4FontSize: DesignTokenValue<string>, plus4LineHeight: DesignTokenValue<string>, plus5FontSize: DesignTokenValue<string>, plus5LineHeight: DesignTokenValue<string>, plus6FontSize: DesignTokenValue<string>, plus6LineHeight: DesignTokenValue<string>);
+    constructor(name: string, minus2: TypeRampPositionConfig, minus1: TypeRampPositionConfig, base: TypeRampPositionConfig, plus1: TypeRampPositionConfig, plus2: TypeRampPositionConfig, plus3: TypeRampPositionConfig, plus4: TypeRampPositionConfig, plus5: TypeRampPositionConfig, plus6: TypeRampPositionConfig);
     readonly base: TypeRampPosition;
     readonly minus1: TypeRampPosition;
     readonly minus2: TypeRampPosition;
@@ -891,7 +899,8 @@ export class TypeRampTokenGroup implements TokenGroup {
 
 // @public
 export class TypeScaleTokenGroup extends TypeRampTokenGroup {
-    constructor(name: string, baseSize: string, multiplier: number, lineHeightRatio?: number, lineHeightSnap?: string);
+    constructor(name: string, baseSize: string, multiplier: number, lineHeightRatio?: number, lineHeightMultilineRatio?: number, lineHeightSnap?: string);
+    readonly lineHeightMultilineRatio: TypedDesignToken<number>;
     readonly lineHeightRatio: TypedDesignToken<number>;
     readonly lineHeightSnap: TypedCSSDesignToken<string>;
     readonly multiplier: TypedDesignToken<number>;
