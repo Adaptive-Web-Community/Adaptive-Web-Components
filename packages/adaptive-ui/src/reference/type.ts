@@ -52,24 +52,15 @@ export const labelFontStyle = createTokenFontStyle("typography.fontStyle.label")
  */
 export const typeRampDefault = new TypeRampTokenGroup(
     "typography.ramp.default",
-    "10px",
-    "12px",
-    "12px",
-    "14px",
-    "14px",
-    "16px",
-    "16px",
-    "22px",
-    "20px",
-    "26px",
-    "24px",
-    "32px",
-    "28px",
-    "36px",
-    "32px",
-    "40px",
-    "40px",
-    "52px"
+    { fontSize: "10px", lineHeight: "12px", lineHeightMultiline: "14px" }, // minus2
+    { fontSize: "12px", lineHeight: "14px", lineHeightMultiline: "16px" }, // minus1
+    { fontSize: "14px", lineHeight: "16px", lineHeightMultiline: "18px" }, // base
+    { fontSize: "16px", lineHeight: "22px", lineHeightMultiline: "24px" }, // plus1
+    { fontSize: "20px", lineHeight: "26px", lineHeightMultiline: "28px" }, // plus2
+    { fontSize: "24px", lineHeight: "32px", lineHeightMultiline: "34px" }, // plus3
+    { fontSize: "28px", lineHeight: "36px", lineHeightMultiline: "38px" }, // plus4
+    { fontSize: "32px", lineHeight: "40px", lineHeightMultiline: "42px" }, // plus5
+    { fontSize: "40px", lineHeight: "52px", lineHeightMultiline: "56px" }  // plus6
 );
 
 /**
@@ -86,12 +77,16 @@ export const typeRampDefault = new TypeRampTokenGroup(
  * export const typeRampScale = new TypeScaleTokenGroup(
  *     "typography.ramp.scale",
  *     "16px",  // base size
- *     1.25,    // multiplier (each step is 1.25x the previous)
- *     1.4      // line height ratio (optional, defaults to 1.4)
+ *     1.2,     // multiplier (each step is 1.2x the previous)
+ *     1.3,     // line height ratio for single-line UI (optional, defaults to 1.3)
+ *     1.6,     // line height ratio for multiline text (optional, defaults to 1.6)
+ *     "2px",   // line height snap for rounding (optional, defaults to "2px")
  * );
  * 
  * // Access the scale:
  * // typeRampScale.base.fontSize - the primary editable base font size token
+ * // typeRampScale.base.lineHeight - for single-line UI elements
+ * // typeRampScale.base.lineHeightMultiline - for multiline text
  * // typeRampScale.multiplier - the multiplier token (also editable)
  * // typeRampScale.plus1.fontSize - derived: "calc(base * multiplier)"
  * // typeRampScale.plus2.fontSize - derived: "calc(base * pow(multiplier, 2))"

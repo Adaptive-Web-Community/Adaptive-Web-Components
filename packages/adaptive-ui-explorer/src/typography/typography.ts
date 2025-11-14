@@ -1,5 +1,4 @@
-import { customElement, FASTElement, observable } from "@microsoft/fast-element";
-import { DesignToken, DesignTokenChangeRecord } from "@microsoft/fast-foundation";
+import { customElement, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { State } from "../state.js";
 import { typographyStyles as styles } from "./typography.styles.js";
 import { typographyTemplate as template } from "./typography.template.js";
@@ -57,6 +56,16 @@ export class Typography extends FASTElement {
 
         // Subscribe to token changes
         this.subscribeToTokenChanges();
+
+        // Subscribe to state.multiline changes
+        Observable.getNotifier(this.state).subscribe(this, "multiline");
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        
+        // Unsubscribe from state changes
+        Observable.getNotifier(this.state).unsubscribe(this, "multiline");
     }
 
     private subscribeToTokenChanges(): void {
@@ -70,15 +79,18 @@ export class Typography extends FASTElement {
         positions.forEach(position => {
             position.fontSize.subscribe(this);
             position.lineHeight.subscribe(this);
+            position.lineHeightMultiline.subscribe(this);
         });
 
         // Also subscribe to multiplier and ratio changes
         typeRampScale.multiplier.subscribe(this);
         typeRampScale.lineHeightRatio.subscribe(this);
+        typeRampScale.lineHeightMultilineRatio.subscribe(this);
         typeRampScale.lineHeightSnap.subscribe(this);
     }
 
-    handleChange(token: DesignToken<any>, record: DesignTokenChangeRecord<any>): void {
+    handleChange(source: any, propertyName?: any): void {
+        // Handle both DesignToken changes and Observable property changes
         if (!this.updateScheduled) {
             this.updateScheduled = true;
             requestAnimationFrame(() => {
