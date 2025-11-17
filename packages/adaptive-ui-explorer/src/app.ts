@@ -258,6 +258,9 @@ export class App extends FASTElement {
                         case "typeScaleLineHeightRatio":
                             typeRampScale.lineHeightRatio.setValueFor(app.canvas, source.typeScaleLineHeightRatio);
                             break;
+                        case "typeScaleLineHeightMultilineRatio":
+                            typeRampScale.lineHeightMultilineRatio.setValueFor(app.canvas, source.typeScaleLineHeightMultilineRatio);
+                            break;
                         case "typeScaleLineHeightSnap":
                             typeRampScale.lineHeightSnap.setValueFor(app.canvas, `${source.typeScaleLineHeightSnap}px`);
                             break;

@@ -43,9 +43,17 @@ export const typographyStyles = css`
         line-height: ${typeRampScale.minus2.lineHeight};
     }
 
+    .multiline p.minus2 {
+        line-height: ${typeRampScale.minus2.lineHeightMultiline};
+    }
+
     p.minus1 {
         font-size: ${typeRampScale.minus1.fontSize};
         line-height: ${typeRampScale.minus1.lineHeight};
+    }
+
+    .multiline p.minus1 {
+        line-height: ${typeRampScale.minus1.lineHeightMultiline};
     }
 
     p.base {
@@ -53,9 +61,17 @@ export const typographyStyles = css`
         line-height: ${typeRampScale.base.lineHeight};
     }
 
+    .multiline p.base {
+        line-height: ${typeRampScale.base.lineHeightMultiline};
+    }
+
     p.plus1 {
         font-size: ${typeRampScale.plus1.fontSize};
         line-height: ${typeRampScale.plus1.lineHeight};
+    }
+
+    .multiline p.plus1 {
+        line-height: ${typeRampScale.plus1.lineHeightMultiline};
     }
 
     p.plus2 {
@@ -63,9 +79,17 @@ export const typographyStyles = css`
         line-height: ${typeRampScale.plus2.lineHeight};
     }
 
+    .multiline p.plus2 {
+        line-height: ${typeRampScale.plus2.lineHeightMultiline};
+    }
+
     p.plus3 {
         font-size: ${typeRampScale.plus3.fontSize};
         line-height: ${typeRampScale.plus3.lineHeight};
+    }
+
+    .multiline p.plus3 {
+        line-height: ${typeRampScale.plus3.lineHeightMultiline};
     }
 
     p.plus4 {
@@ -73,13 +97,25 @@ export const typographyStyles = css`
         line-height: ${typeRampScale.plus4.lineHeight};
     }
 
+    .multiline p.plus4 {
+        line-height: ${typeRampScale.plus4.lineHeightMultiline};
+    }
+
     p.plus5 {
         font-size: ${typeRampScale.plus5.fontSize};
         line-height: ${typeRampScale.plus5.lineHeight};
     }
 
+    .multiline p.plus5 {
+        line-height: ${typeRampScale.plus5.lineHeightMultiline};
+    }
+
     p.plus6 {
         font-size: ${typeRampScale.plus6.fontSize};
         line-height: ${typeRampScale.plus6.lineHeight};
+    }
+
+    .multiline p.plus6 {
+        line-height: ${typeRampScale.plus6.lineHeightMultiline};
     }
 `;
