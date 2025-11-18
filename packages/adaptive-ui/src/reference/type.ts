@@ -1,4 +1,4 @@
-import { createTokenFontFamily, createTokenFontStyle, createTokenFontWeight } from "../core/token-helpers.js";
+import { createTokenFontFamily, createTokenFontSize, createTokenFontStyle, createTokenFontWeight } from "../core/token-helpers.js";
 import { TypeRampTokenGroup } from "../core/typography/type-ramp.js";
 
 /**
@@ -44,6 +44,34 @@ export const bodyFontStyle = createTokenFontStyle("typography.fontStyle.body").w
 
 /** @public */
 export const labelFontStyle = createTokenFontStyle("typography.fontStyle.label").withDefault(fontStyle);
+
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const fontFamilyLegacy = createTokenFontFamily("typography.default.fontFamily").withDefault(fontFamily);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const bodyFontFamilyLegacy = createTokenFontFamily("typography.body.fontFamily").withDefault(bodyFontFamily);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const labelFontFamilyLegacy = createTokenFontFamily("typography.label.fontFamily").withDefault(labelFontFamily);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const fontWeightLegacy = createTokenFontWeight("typography.default.fontWeight").withDefault(fontWeight);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const bodyFontWeightLegacy = createTokenFontWeight("typography.body.fontWeight").withDefault(bodyFontWeight);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const labelFontWeightLegacy = createTokenFontWeight("typography.label.fontWeight").withDefault(labelFontWeight);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const fontStyleLegacy = createTokenFontStyle("typography.default.fontStyle").withDefault(fontStyle);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const bodyFontStyleLegacy = createTokenFontStyle("typography.body.fontStyle").withDefault(bodyFontStyle);
+
+/** @deprecated Use the non-"Legacy" versions of the tokens instead. @public */
+export const labelFontStyleLegacy = createTokenFontStyle("typography.label.fontStyle").withDefault(labelFontStyle);
 
 /**
  * The complete type ramp with all positions from minus2 to plus6.
@@ -97,82 +125,82 @@ export const typeRampDefault = new TypeRampTokenGroup(
 // Export individual tokens for backward compatibility
 
 /** @deprecated Use `typeRampDefault.minus2.fontSize` directly. @public */
-export const typeRampMinus2FontSize = typeRampDefault.minus2.fontSize;
+export const typeRampMinus2FontSize = createTokenFontSize("typography.ramp.minus2.fontSize").withDefault(typeRampDefault.minus2.fontSize);
 
 /** @deprecated Use `typeRampDefault.minus2.lineHeight` directly. @public */
-export const typeRampMinus2LineHeight = typeRampDefault.minus2.lineHeight;
+export const typeRampMinus2LineHeight = createTokenFontSize("typography.ramp.minus2.lineHeight").withDefault(typeRampDefault.minus2.lineHeight);
 
 /** @deprecated Use `typeRampDefault.minus2.fontVariations` directly. @public */
-export const typeRampMinus2FontVariations = typeRampDefault.minus2.fontVariations;
+export const typeRampMinus2FontVariations = createTokenFontSize("typography.ramp.minus2.fontVariations").withDefault(typeRampDefault.minus2.fontVariations);
 
 /** @deprecated Use `typeRampDefault.minus1.fontSize` directly. @public */
-export const typeRampMinus1FontSize = typeRampDefault.minus1.fontSize;
+export const typeRampMinus1FontSize = createTokenFontSize("typography.ramp.minus1.fontSize").withDefault(typeRampDefault.minus1.fontSize);
 
 /** @deprecated Use `typeRampDefault.minus1.lineHeight` directly. @public */
-export const typeRampMinus1LineHeight = typeRampDefault.minus1.lineHeight;
+export const typeRampMinus1LineHeight = createTokenFontSize("typography.ramp.minus1.lineHeight").withDefault(typeRampDefault.minus1.lineHeight);
 
 /** @deprecated Use `typeRampDefault.minus1.fontVariations` directly. @public */
-export const typeRampMinus1FontVariations = typeRampDefault.minus1.fontVariations;
+export const typeRampMinus1FontVariations = createTokenFontSize("typography.ramp.minus1.fontVariations").withDefault(typeRampDefault.minus1.fontVariations);
 
 /** @deprecated Use `typeRampDefault.base.fontSize` directly. @public */
-export const typeRampBaseFontSize = typeRampDefault.base.fontSize;
+export const typeRampBaseFontSize = createTokenFontSize("typography.ramp.base.fontSize").withDefault(typeRampDefault.base.fontSize);
 
 /** @deprecated Use `typeRampDefault.base.lineHeight` directly. @public */
-export const typeRampBaseLineHeight = typeRampDefault.base.lineHeight;
+export const typeRampBaseLineHeight = createTokenFontSize("typography.ramp.base.lineHeight").withDefault(typeRampDefault.base.lineHeight);
 
 /** @deprecated Use `typeRampDefault.base.fontVariations` directly. @public */
-export const typeRampBaseFontVariations = typeRampDefault.base.fontVariations;
+export const typeRampBaseFontVariations = createTokenFontSize("typography.ramp.base.fontVariations").withDefault(typeRampDefault.base.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus1.fontSize` directly. @public */
-export const typeRampPlus1FontSize = typeRampDefault.plus1.fontSize;
+export const typeRampPlus1FontSize = createTokenFontSize("typography.ramp.plus1.fontSize").withDefault(typeRampDefault.plus1.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus1.lineHeight` directly. @public */
-export const typeRampPlus1LineHeight = typeRampDefault.plus1.lineHeight;
+export const typeRampPlus1LineHeight = createTokenFontSize("typography.ramp.plus1.lineHeight").withDefault(typeRampDefault.plus1.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus1.fontVariations` directly. @public */
-export const typeRampPlus1FontVariations = typeRampDefault.plus1.fontVariations;
+export const typeRampPlus1FontVariations = createTokenFontSize("typography.ramp.plus1.fontVariations").withDefault(typeRampDefault.plus1.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus2.fontSize` directly. @public */
-export const typeRampPlus2FontSize = typeRampDefault.plus2.fontSize;
+export const typeRampPlus2FontSize = createTokenFontSize("typography.ramp.plus2.fontSize").withDefault(typeRampDefault.plus2.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus2.lineHeight` directly. @public */
-export const typeRampPlus2LineHeight = typeRampDefault.plus2.lineHeight;
+export const typeRampPlus2LineHeight = createTokenFontSize("typography.ramp.plus2.lineHeight").withDefault(typeRampDefault.plus2.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus2.fontVariations` directly. @public */
-export const typeRampPlus2FontVariations = typeRampDefault.plus2.fontVariations;
+export const typeRampPlus2FontVariations = createTokenFontSize("typography.ramp.plus2.fontVariations").withDefault(typeRampDefault.plus2.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus3.fontSize` directly. @public */
-export const typeRampPlus3FontSize = typeRampDefault.plus3.fontSize;
+export const typeRampPlus3FontSize = createTokenFontSize("typography.ramp.plus3.fontSize").withDefault(typeRampDefault.plus3.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus3.lineHeight` directly. @public */
-export const typeRampPlus3LineHeight = typeRampDefault.plus3.lineHeight;
+export const typeRampPlus3LineHeight = createTokenFontSize("typography.ramp.plus3.lineHeight").withDefault(typeRampDefault.plus3.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus3.fontVariations` directly. @public */
-export const typeRampPlus3FontVariations = typeRampDefault.plus3.fontVariations;
+export const typeRampPlus3FontVariations = createTokenFontSize("typography.ramp.plus3.fontVariations").withDefault(typeRampDefault.plus3.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus4.fontSize` directly. @public */
-export const typeRampPlus4FontSize = typeRampDefault.plus4.fontSize;
+export const typeRampPlus4FontSize = createTokenFontSize("typography.ramp.plus4.fontSize").withDefault(typeRampDefault.plus4.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus4.lineHeight` directly. @public */
-export const typeRampPlus4LineHeight = typeRampDefault.plus4.lineHeight;
+export const typeRampPlus4LineHeight = createTokenFontSize("typography.ramp.plus4.lineHeight").withDefault(typeRampDefault.plus4.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus4.fontVariations` directly. @public */
-export const typeRampPlus4FontVariations = typeRampDefault.plus4.fontVariations;
+export const typeRampPlus4FontVariations = createTokenFontSize("typography.ramp.plus4.fontVariations").withDefault(typeRampDefault.plus4.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus5.fontSize` directly. @public */
-export const typeRampPlus5FontSize = typeRampDefault.plus5.fontSize;
+export const typeRampPlus5FontSize = createTokenFontSize("typography.ramp.plus5.fontSize").withDefault(typeRampDefault.plus5.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus5.lineHeight` directly. @public */
-export const typeRampPlus5LineHeight = typeRampDefault.plus5.lineHeight;
+export const typeRampPlus5LineHeight = createTokenFontSize("typography.ramp.plus5.lineHeight").withDefault(typeRampDefault.plus5.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus5.fontVariations` directly. @public */
-export const typeRampPlus5FontVariations = typeRampDefault.plus5.fontVariations;
+export const typeRampPlus5FontVariations = createTokenFontSize("typography.ramp.plus5.fontVariations").withDefault(typeRampDefault.plus5.fontVariations);
 
 /** @deprecated Use `typeRampDefault.plus6.fontSize` directly. @public */
-export const typeRampPlus6FontSize = typeRampDefault.plus6.fontSize;
+export const typeRampPlus6FontSize = createTokenFontSize("typography.ramp.plus6.fontSize").withDefault(typeRampDefault.plus6.fontSize);
 
 /** @deprecated Use `typeRampDefault.plus6.lineHeight` directly. @public */
-export const typeRampPlus6LineHeight = typeRampDefault.plus6.lineHeight;
+export const typeRampPlus6LineHeight = createTokenFontSize("typography.ramp.plus6.lineHeight").withDefault(typeRampDefault.plus6.lineHeight);
 
 /** @deprecated Use `typeRampDefault.plus6.fontVariations` directly. @public */
-export const typeRampPlus6FontVariations = typeRampDefault.plus6.fontVariations;
+export const typeRampPlus6FontVariations = createTokenFontSize("typography.ramp.plus6.fontVariations").withDefault(typeRampDefault.plus6.fontVariations);
