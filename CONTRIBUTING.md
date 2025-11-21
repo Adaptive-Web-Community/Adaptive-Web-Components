@@ -54,25 +54,18 @@ If you'd like to contribute by fixing a bug, implementing a feature, or even cor
 
 Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `npm run change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
 
-:::note
-When working across feature branches, you'll need to target the branch using the following command: `npm run change --branch origin/{branch-name}`.
-:::
-
 **Example: Generated change file:**
-```json
-{
-  "type": "minor",
-  "comment": "add fancy new feature for awc",
-  "packageName": "@adaptive-web/adaptive-web-components",
-  "email": "name@example.com",
-  "dependentChangeType": "minor",
-  "date": "2021-03-01T19:10:06.323Z"
-}
+```markdown
+---
+"@adaptive-web/adaptive-web-components": patch
+---
+
+add fancy new feature for awc
 ```
 
-Running `npm run change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes that do not affect the published package(s), please use "none" when selecting the change type*.
+Running `npm run change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes.
 
-More information on the change process and change types can be found on the [Beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
+More information on the change process can be found on the [Changesets repository](https://github.com/changesets/changesets).
 
 :::note
 If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generating separate change files to ensure accurate generation of changelogs and versioning of packages.
@@ -115,7 +108,6 @@ The development, release, and work management processes must reflect this princi
 * Aaron Wentzel
 * Brian Heston
 * Jason Falk
-* Rob Eisenberg
 * Nathan Brown
 
 ### Collaborators
