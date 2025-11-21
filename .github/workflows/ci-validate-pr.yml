@@ -3,44 +3,44 @@ name: Validate PRs
 on:
   push:
     branches:
-    - main
-    - releases/*
+      - main
+      - releases/*
   pull_request:
     branches:
-    - main
-    - releases/*
-    - features/*
+      - main
+      - releases/*
+      - features/*
 
 jobs:
   build_linux:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Get npm cache directory path
-      id: npm-cache-dir-path
-      run: echo '::set-output name=dir::$(npm cache dir)'
+      - name: Get npm cache directory path
+        id: npm-cache-dir-path
+        run: echo '::set-output name=dir::$(npm cache dir)'
 
-    - name: Set up node_modules cache
-      uses: actions/cache@v3
-      id: npm-cache
-      with:
-        path: |
-          ${{ steps.npm-cache-dir-path.outputs.dir }}
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-npm_cache-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-npm_cache-
+      - name: Set up node_modules cache
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: |
+            ${{ steps.npm-cache-dir-path.outputs.dir }}
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-npm_cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm_cache-
 
-    - name: Install package dependencies
-      run: npm ci --ignore-scripts
-    
-    - name: Build all packages
-      run: npm run build
+      - name: Install package dependencies
+        run: npm ci --ignore-scripts
 
-    - name: Validate workspaces
-      run: npm run test
+      - name: Build all packages
+        run: npm run build
+
+      - name: Validate workspaces
+        run: npm run test

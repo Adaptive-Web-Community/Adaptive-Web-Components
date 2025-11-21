@@ -9,33 +9,33 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   changelog:
-      name: Generate Changelog
-      if: ${{ github.repository_owner == 'Adaptive-Web-Community' }}
-      runs-on: ubuntu-latest
-      environment: release
-      permissions:
-          id-token: write
-          contents: write
-          pull-requests: write
-      steps:
-          - uses: actions/checkout@v3
-            with:
-              fetch-depth: 0
-          - uses: actions/setup-node@v3
-            with:
-              node-version: '24.x'
-              cache: 'npm'
-          - run: npm ci
-          - run: npm run build
-              
-          - name: Create Releas Pull Request
-            id: changesets
-            uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
-            with:
-              version: npm run version
-              publish: npm run publish:ci
-              commit: "[AWC] Release"
-              title: "[AWC] Release"
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              NPM_TOKEN: ''
+    name: Generate Changelog
+    if: ${{ github.repository_owner == 'Adaptive-Web-Community' }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "24.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+
+      - name: Create Releas Pull Request
+        id: changesets
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
+        with:
+          version: npm run version
+          publish: npm run publish:ci
+          commit: "[AWC] Release"
+          title: "[AWC] Release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ""
