@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-npm_cache-
 
       - name: Install package dependencies
-        run: npm ci --ignore-scripts
+        run: npm install --ignore-scripts
 
       - name: Build all packages
         run: npm run build
