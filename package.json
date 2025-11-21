@@ -11,12 +11,9 @@
         "url": "https://github.com/adaptive-web-community/adaptive-web-components"
     },
     "scripts": {
-        "bump": "beachball bump",
-        "change": "beachball change",
-        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'npm run change' to generate a change file\"",
-        "check": "beachball check",
-        "publish": "beachball publish --access public --no-push",
-        "publish-ci": "beachball publish -y --access public",
+        "version": "changeset version",
+        "change": "changeset",
+        "publish:ci": "changeset publish",
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
@@ -36,9 +33,10 @@
         "npm": ">=8.19.2"
     },
     "devDependencies": {
+        "@changesets/changelog-github": "^0.5.1",
+        "@changesets/cli": "^2.29.7",
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "@typescript-eslint/parser": "^6.21.0",
-        "beachball": "^2.31.11",
         "eslint": "^8.57.0",
         "eslint-plugin-import": "^2.25.0",
         "typescript": "^4.9.5"
