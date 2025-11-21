@@ -1,42 +1,41 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
-name: release npm packages
+name: Release NPM Packages
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  build_linux:
-    environment: release
-    runs-on: ubuntu-latest
-    if: contains('kingoftac,bheston,nicholasrice', github.actor)
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
-
-      - name: Check for the presence of changed files inside ./change
-        run: npm run checkchange
-
-      - name: Build Packages
-        run: |
-          npm run build
-
-      - name: Set Git Credentials
-        run: |
-          git config --global user.name "${{ vars.CI_SERVICE_NAME }}"
-          git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
-          git remote set-url origin "https://$REPO_PAT@github.com/Adaptive-Web-Community/Adaptive-Web-Components"
-        env:
-          REPO_PAT: ${{ secrets.REPO_PAT }}
-      
-      - name: Publish to NPM
-        run: npm run publish-ci -n "$NODE_AUTH_TOKEN"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  changelog:
+      name: Generate Changelog
+      if: ${{ github.repository_owner == 'Adaptive-Web-Community' }}
+      runs-on: ubuntu-latest
+      environment: release
+      permissions:
+          id-token: write
+          contents: write
+          pull-requests: write
+      steps:
+          - uses: actions/checkout@v3
+            with:
+              fetch-depth: 0
+          - uses: actions/setup-node@v3
+            with:
+              node-version: '24.x'
+              cache: 'npm'
+          - run: npm ci
+          - run: npm run build
+              
+          - name: Create Releas Pull Request
+            id: changesets
+            uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
+            with:
+              version: npm run version
+              publish: npm run publish:ci
+              commit: "[AWC] Release"
+              title: "[AWC] Release"
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              NPM_TOKEN: ''

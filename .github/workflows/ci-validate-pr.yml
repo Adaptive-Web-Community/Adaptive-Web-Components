@@ -37,10 +37,7 @@ jobs:
           ${{ runner.os }}-npm_cache-
 
     - name: Install package dependencies
-      run: npm install --ignore-scripts
-
-    - name: Check for the presence of changed files inside ./change
-      run: npm run checkchange
+      run: npm ci --ignore-scripts
     
     - name: Build all packages
       run: npm run build
