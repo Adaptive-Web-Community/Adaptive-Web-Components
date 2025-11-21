@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Bump glob from 10.3.12 to 10.5.0",
-  "packageName": "@adaptive-web/adaptive-ui",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Add subtle inverse recipes to Designer plugin",
-  "packageName": "@adaptive-web/adaptive-ui-designer-core",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
