@@ -23,7 +23,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adaptive-web-community/adaptive-web-components.git"
+    "url": "https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
+    "directory": "packages/adaptive-ui-designer-figma"
   },
   "author": {
     "name": "Adaptive Web Community",

@@ -15,7 +15,7 @@
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/adaptive-web-community/adaptive-web-components.git",
+    "url": "https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
     "directory": "packages/adaptive-web-components"
   },
   "main": "dist/adaptive-web-components.cjs",
