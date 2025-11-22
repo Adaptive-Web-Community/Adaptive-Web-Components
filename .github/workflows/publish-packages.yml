@@ -18,7 +18,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Create Releas Pull Request
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
         with:
