@@ -4,11 +4,11 @@
 
 ### Minor Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - AUI: Refactored Swatch to Color
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
 
 ### Patch Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Rename fillColor to colorContext
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
 
 -   Updated dependencies [[`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5)]:
     -   @adaptive-web/adaptive-ui@0.13.0

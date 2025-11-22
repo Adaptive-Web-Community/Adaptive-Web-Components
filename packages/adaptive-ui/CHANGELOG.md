@@ -4,29 +4,29 @@
 
 ### Minor Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - AUI: Refactored Swatch to Color
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Add gradient recipes
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add gradient recipes
 
 ### Patch Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Bump glob from 10.3.12 to 10.5.0
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Bump glob from 10.3.12 to 10.5.0
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Add full tests for Color and Swatch classes
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add full tests for Color and Swatch classes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Added support for generated type scale token values
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added support for generated type scale token values
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Fix a style generation bug on placement of state selector
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Fix a style generation bug on placement of state selector
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Rename fillColor to colorContext
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Updated style properties to readonly, adjusted token group types
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated style properties to readonly, adjusted token group types
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Updated typography tokens into token group
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated typography tokens into token group
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Add legacy alias tokens for updated typography tokens
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add legacy alias tokens for updated typography tokens
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@KingOfTac](https://github.com/KingOfTac)! - Added token for multiline line height in type ramp
+-   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added token for multiline line height in type ramp
 
 This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
