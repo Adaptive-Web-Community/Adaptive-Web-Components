@@ -75,10 +75,12 @@ export class Color extends PaintBase {
     }): Color;
     static fromRgb(r: number, g: number, b: number, alpha?: number): Color;
     protected readonly _intendedColor?: Color;
+    static isTransparent(color: Color_2): boolean;
     static parse(color: string): Color | undefined;
     // @deprecated
     toColorString: () => string;
     toString(): string;
+    static transparent: Color;
     static unsafeOpacity(color: Color, alpha: number): Color;
 }
 

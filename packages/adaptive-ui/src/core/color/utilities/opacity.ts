@@ -34,6 +34,11 @@ function calcRgbOverlay(rgbMatch: Rgb, rgbBackground: Rgb, rgbOverlay: Rgb): num
  */
 export function calculateOverlayColor(match: CuloriColor, background: CuloriColor): Rgb {
     const rgbMatch = rgb(match);
+
+    if (Color.isTransparent(rgbMatch) || Color.isTransparent(background)) {
+        return rgbMatch;
+    }
+
     const rgbBackground = rgb(background);
     let overlay = rgbBlack;
     let alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);

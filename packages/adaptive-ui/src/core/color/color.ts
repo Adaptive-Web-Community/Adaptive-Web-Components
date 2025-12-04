@@ -1,11 +1,14 @@
 import { cssDirective } from "@microsoft/fast-element";
 import { type Color as CuloriColor, formatHex, formatRgb, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { parseTransparent } from "culori";
 import { PaintBase } from "./paint.js";
 import { calculateOverlayColor } from "./utilities/opacity.js";
 
 useMode(modeRgb);
 // For luminance
 useMode(modeLrgb);
+
+const _transparent: Rgb = parseTransparent("transparent");
 
 /**
  * Represents a color.
@@ -44,6 +47,9 @@ export class Color extends PaintBase {
      * @returns The color value in string format
      */
     public toString(): string {
+        if (Color.isTransparent(this.color)) {
+            return "transparent";
+        }
         return this.color.alpha !== undefined && this.color.alpha < 1 ? formatRgb(this.color) : formatHex(this.color);
     }
 
@@ -97,6 +103,21 @@ export class Color extends PaintBase {
         if (parsedColor) {
             return new Color(parsedColor);
         }
+    }
+
+    /**
+     * A Color representing the full transparent.
+     */
+    public static transparent: Color = new Color(_transparent);
+
+    /**
+     * Checks if a color is transparent.
+     *
+     * @param color - The color to check.
+     * @returns True if the color is transparent, false otherwise.
+     */
+    public static isTransparent(color: CuloriColor): boolean {
+        return color.alpha === 0;
     }
 
     /**
