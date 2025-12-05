@@ -37,7 +37,7 @@
   "dependencies": {
     "@adaptive-web/adaptive-ui-designer-core": "^0.6.0",
     "@adaptive-web/adaptive-ui-designer-figma": "^0.5.3",
-    "@adaptive-web/adaptive-web-components": "0.9.0",
+    "@adaptive-web/adaptive-web-components": "0.9.1",
     "@csstools/css-calc": "^1.1.1",
     "@csstools/css-parser-algorithms": "^2.2.0",
     "@csstools/css-tokenizer": "^2.1.1",
@@ -46,7 +46,7 @@
     "transformation-matrix": "^3.0.0"
   },
   "peerDependencies": {
-    "@adaptive-web/adaptive-ui": "0.13.0",
+    "@adaptive-web/adaptive-ui": "0.13.1",
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31"
   },
