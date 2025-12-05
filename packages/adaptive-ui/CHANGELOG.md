@@ -1,5 +1,11 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 0.13.1
+
+### Patch Changes
+
+-   [#281](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/281) [`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935) Thanks [@bheston](https://github.com/bheston)! - Fixed an issue with overlay handling of transparent colors
+
 ## 0.13.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
+## 0.9.1
+
+### Patch Changes
+
+-   Updated dependencies [[`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935)]:
+    -   @adaptive-web/adaptive-ui@0.13.1
+
 ## 0.9.0
 
 ### Minor Changes
