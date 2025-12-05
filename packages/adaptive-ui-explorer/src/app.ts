@@ -14,6 +14,7 @@ import {
     layerFillFixedMinus2,
     layerFillFixedMinus3,
     layerFillFixedPlus1,
+    neutralAsOverlay,
     neutralBaseColor,
     neutralPalette,
     wcagContrastLevel
@@ -242,6 +243,9 @@ export class App extends FASTElement {
                             highlightBaseColor.setValueFor(app.canvas, source.highlightColor);
 
                             app.highlightPalette = highlightPalette.getValueFor(app.canvas);
+                            break;
+                        case "neutralAsOverlay":
+                            neutralAsOverlay.setValueFor(app.canvas, source.neutralAsOverlay);
                             break;
                         case "showOnlyLayerBackgrounds":
                             app.updateBackgrounds();

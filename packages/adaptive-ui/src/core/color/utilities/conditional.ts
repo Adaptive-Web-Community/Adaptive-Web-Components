@@ -1,8 +1,5 @@
 import { Color } from "../color.js";
 import { InteractiveColorSet } from "../recipe.js";
-import { _white } from "./color-constants.js";
-
-const _transparentWhite = Color.unsafeOpacity(_white, 0);
 
 /**
  * Return an interactive set of the provided tokens or a no-op "transparent" set of tokens.
@@ -20,10 +17,10 @@ export function conditionalSwatchSet(
     }
 
     return {
-        rest: _transparentWhite,
-        hover: _transparentWhite,
-        active: _transparentWhite,
-        focus: _transparentWhite,
-        disabled: _transparentWhite,
+        rest: Color.transparent,
+        hover: Color.transparent,
+        active: Color.transparent,
+        focus: Color.transparent,
+        disabled: Color.transparent,
     };
 }

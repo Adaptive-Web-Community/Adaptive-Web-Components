@@ -8,6 +8,7 @@ export const State = Context.create<State>("State");
 export interface State {
     componentType: ComponentType;
     neutralColor: Color;
+    neutralAsOverlay: boolean;
     accentColor: Color;
     highlightColor: Color;
     showOnlyLayerBackgrounds: boolean;
@@ -30,6 +31,9 @@ export class DefaultState implements State {
 
     @observable
     public neutralColor: Color = PLACEHOLDER_COLOR;
+
+    @observable
+    public neutralAsOverlay: boolean = false;
 
     @observable
     public accentColor: Color = PLACEHOLDER_COLOR;

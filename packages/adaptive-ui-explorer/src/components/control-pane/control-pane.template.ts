@@ -41,6 +41,11 @@ export function controlPaneTemplate<T extends ControlPane>(): ElementViewTemplat
         </div>
 
         <adaptive-switch
+            id="neutralAsOverlay"
+            :checked=${twoWay((x) => x.state.neutralAsOverlay)}
+        >Neutral as overlay</adaptive-switch>
+
+        <adaptive-switch
             id="showOnlyLayerBackgrounds"
             :checked=${twoWay((x) => x.state.showOnlyLayerBackgrounds)}
         >Show layer backgrounds only</adaptive-switch>
