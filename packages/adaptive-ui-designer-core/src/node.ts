@@ -1,6 +1,8 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { TokenNameMapping } from "@adaptive-web/adaptive-ui/reference";
 import { type Color, formatHex8 } from "culori/fn";
+import { Logger } from "tslog";
+import { getLogger, indent } from "./logger.js";
 import {
     AdditionalData,
     AdditionalDataKeys,
@@ -102,6 +104,8 @@ export interface PluginNodeDataAccessor {
  * for each design tool.
  */
 export abstract class PluginNode {
+    public static logger = getLogger().getSubLogger({ name: "PluginNode", minLevel: 3 });
+
     /**
      * Accessor for plugin node data storage.
      */
@@ -157,7 +161,22 @@ export abstract class PluginNode {
     protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
-     * Gets the design token values set on ancestor nodes.
+     * Convenience logger for the subclass.
+     */
+    protected _logger: Logger<unknown>;
+
+    /**
+     * The level of the node in the hierarchy, used for indentation of logging.
+     */
+    protected _level: number;
+
+    constructor(level: number = 0) {
+        this._logger = PluginNode.logger;
+        this._level = level;
+    }
+
+    /**
+     * Gets the design token values set on ancestor nodes, that is, hierarchical parent nodes, not reference nodes.
      */
     public async getInheritedDesignTokens(): Promise<ReadonlyDesignTokenValues> {
         // Return value from the cache if we have it
@@ -453,7 +472,7 @@ export abstract class PluginNode {
         if (parent) {
             const fillColor = await parent.getEffectiveFillColor();
             if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && fillColor) {
-                // console.log("PluginNode.get_additionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(parent.effectiveFillColor));
+                this._logger.debug(indent(this._level) + "    PluginNode.getAdditionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(fillColor));
                 this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(fillColor));
             }
         }

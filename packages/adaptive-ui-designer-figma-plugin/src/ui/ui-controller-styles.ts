@@ -90,7 +90,7 @@ export class StylesController {
             .sort(this.styleModuleSort)
             .reduce<StyleModuleDisplayList>(this.styleModuleReduce, new Map());
 
-        // console.log("getAppliedStyleModules", modules);
+        UIController.logger.debug("getAppliedStyleModules", modules);
         
         return modules;
     }

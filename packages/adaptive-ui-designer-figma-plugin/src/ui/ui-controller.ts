@@ -16,12 +16,15 @@ import {
     registerTokens,
     STYLE_REMOVE
 } from "@adaptive-web/adaptive-ui-designer-core";
+import { getLogger } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage} from "../core/messages.js";
 import { CodeController } from './ui-controller-code.js';
 import { ElementsController } from "./ui-controller-elements.js";
 import { StatesController } from './ui-controller-states.js';
 import { StylesController } from "./ui-controller-styles.js";
 import { DesignTokenController } from "./ui-controller-tokens.js";
+
+const logger = getLogger().getSubLogger({ name: "UIController", minLevel: 2 });
 
 /**
  * The source of an applied design token.
@@ -80,6 +83,8 @@ type AppliedStyleValueInfo = {
  * setting or applying design tokens and evaluating the changes for the selected nodes.
  */
 export class UIController {
+    public static logger = logger;
+
     private readonly _messageCallback: (
         message: PluginMessage,
     ) => void | undefined;
@@ -156,8 +161,8 @@ export class UIController {
      * @param nodes - The selected nodes
      */
     public set selectedNodes(nodes: PluginUINodeData[]) {
-        // console.log("--------------------------------");
-        // console.log("UIController.set_selectedNodes", nodes);
+        logger.debug("--------------------------------");
+        logger.debug("UIController.set_selectedNodes", nodes);
 
         this._selectedNodes = nodes;
 
@@ -186,7 +191,7 @@ export class UIController {
      * @param reason - A description used for debug logging
      */
     public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
-        // console.log("  Evaluating all design tokens for all selected nodes");
+        logger.debug("  Evaluating all design tokens for all selected nodes");
         this._elements.resetFillColor();
 
         this.evaluateEffectiveAppliedStyleValues(this._selectedNodes);
@@ -213,8 +218,8 @@ export class UIController {
      */
     public resetNodes(): void {
         this._selectedNodes.forEach(node => {
-            // console.log("--------------------------------");
-            // console.log("UIController.resetNodes", node);
+            logger.debug("--------------------------------");
+            logger.debug("UIController.resetNodes", node);
 
             node.designTokens.clear();
             node.appliedStyleModules = new AppliedStyleModules();
@@ -247,18 +252,18 @@ export class UIController {
                                 source,
                             });
                         } else if (token instanceof DesignToken) {
-                            console.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id);
+                            logger.error("Token is not appliable:", applied.tokenID, node.name, node.type, node.id);
                         } else {
                             const group = (token as InteractiveTokenGroup<any>);
                             if (group && group[state]) {
-                                // console.log("    applying group >", state, group);
+                                logger.debug("    applying group >", state, group);
                                 allApplied.set(target, {
                                     name: group.name,
                                     value: group[state],
                                     source,
                                 });
                             } else {
-                                console.warn("    token type not supported >", typeof token, token, applied.tokenID);
+                                logger.warn("    token type not supported >", typeof token, token, applied.tokenID);
                             }
                         }
                     } else if (applied.tokenID) {
@@ -274,10 +279,10 @@ export class UIController {
                                     source,
                                 });
                             } else {
-                                console.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
+                                logger.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
                             }
                         } else {
-                            console.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
+                            logger.error("Token not found:", applied.tokenID, node.name, node.type, node.id);
                         }
                     }
                 } else { // Removed
@@ -302,11 +307,11 @@ export class UIController {
                     if (moduleID.startsWith("font.")) {
                         const prevID = moduleID;
                         moduleID = moduleID.replace("font.", "text.");
-                        console.warn(`Renaming style ${prevID} to ${moduleID}`);
+                        logger.warn(`Renaming style ${prevID} to ${moduleID}`);
                         styles = Styles.Shared.get(moduleID);
                     }
                     if (!styles) {
-                        console.error(`Style module not found: ${moduleID}`);
+                        logger.error(`Style module not found: ${moduleID}`);
                         return;
                     }
                 }
@@ -319,14 +324,14 @@ export class UIController {
                     } else {
                         // TODO: Support other properties.
                         if (value instanceof CSSDesignToken) {
-                            // console.log("    applying token >", value);
+                            logger.debug("    applying token >", value);
                             allApplied.set(target, {
                                 name: value.name,
                                 value,
                                 source,
                             });
                         } else if (typeof value === "string") {
-                            // console.log("    applying string >", value);
+                            logger.debug("    applying string >", value);
                             allApplied.set(target, {
                                 value,
                                 source,
@@ -334,14 +339,14 @@ export class UIController {
                         } else {
                             const group = (value as InteractiveTokenGroup<any>);
                             if (group && group[state]) {
-                                // console.log("    applying group >", state, group);
+                                logger.debug("    applying group >", state, group);
                                 allApplied.set(target, {
                                     name: group.name,
                                     value: group[state],
                                     source,
                                 });
                             } else {
-                                console.warn("    token type not supported >", typeof value, value, target);
+                                logger.warn("    token type not supported >", typeof value, value, target);
                             }
                         }
                     }
@@ -372,15 +377,15 @@ export class UIController {
     }
 
     private evaluateEffectiveAppliedStyleValues(nodes: PluginUINodeData[]) {
-        // console.log("evaluateEffectiveAppliedStyleValues", nodes.length, nodes);
+        logger.debug("evaluateEffectiveAppliedStyleValues", nodes.length, nodes);
         nodes.forEach(node => {
-            // console.log("  evaluateEffectiveAppliedStyleValues", node);
+            logger.debug("  evaluateEffectiveAppliedStyleValues", node);
 
             // See `evaluateEffectiveAppliedDesignToken` for a note on this.
             const colorHex = node.additionalData.get(AdditionalDataKeys.toolParentFillColor);
             if (colorHex) {
                 const parentElement = this._elements.getElementForNode(node).parentElement as FASTElement;
-                // console.log("    setting fill color token on parent element", colorHex, parentElement.id, parentElement.title);
+                logger.debug("    setting fill color token on parent element", colorHex, parentElement.id, parentElement.title);
                 this._elements.setDesignTokenForElement(parentElement, colorContext, Color.parse(colorHex));
             }
 
@@ -389,11 +394,11 @@ export class UIController {
                 if (info.value) {
                     this.evaluateEffectiveAppliedDesignToken(target, info, node);
                 } else {
-                    console.warn("Token not found in appliable tokens", info.source);
+                    logger.warn("Token not found in appliable tokens", info.source);
                 }
             });
 
-            // console.log("      evaluations", node.effectiveAppliedStyleValues);
+            logger.debug("      evaluations", node.effectiveAppliedStyleValues);
 
             if (node.children.length > 0) {
                 this.evaluateEffectiveAppliedStyleValues(node.children);
@@ -403,25 +408,25 @@ export class UIController {
 
     private evaluateEffectiveAppliedDesignToken(target: StyleProperty, info: AppliedStyleValueInfo, node: PluginUINodeData) {
         if (typeof info.value === "string") {
-            // console.log("    evaluateEffectiveAppliedStyleValues", target, " : ", "string", " -> ", info.value, `(from ${info.source})`);
+            logger.debug("    evaluateEffectiveAppliedStyleValues", target, " : ", "string", " -> ", info.value, `(from ${info.source})`);
             const applied = new AppliedStyleValue(info.value);
             node.effectiveAppliedStyleValues.set(target, applied);
         } else {
             const token = info.value;
             const valueOriginal: any = this._elements.getDesignTokenValue(node, token);
             let value: any = valueOriginal;
-            // let valueDebug: any;
+            let valueDebug: any;
             if (valueOriginal instanceof Color) {
-                // valueDebug = valueOriginal.toString();
+                valueDebug = valueOriginal.toString();
             } else if (typeof valueOriginal === "string") {
                 if (valueOriginal.startsWith("calc")) {
                     const ret = calc(valueOriginal as string);
-                    // console.log(`    calc ${value} returns ${ret}`);
+                    logger.debug(`    calc ${value} returns ${ret}`);
                     value = ret;
                 }
             }
-            // const colorContextValue = (this._elements.getDesignTokenValue(node, colorContext) as Color).toColorString();
-            // console.log("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "colorContext", colorContextValue);
+            const colorContextValue = (this._elements.getDesignTokenValue(node, colorContext) as Color).toString();
+            logger.debug("    evaluateEffectiveAppliedDesignToken", target, " : ", token.name, " -> ", value, valueDebug, `(from ${info.source})`, "colorContext", colorContextValue);
 
             const applied = new AppliedStyleValue(value);
             node.effectiveAppliedStyleValues.set(target, applied);
@@ -444,9 +449,9 @@ export class UIController {
             // the foreground can be evaluated in the context of the background color, removing the reliance on the `fill-color` token.
             if (target === StyleProperty.backgroundFill) {
                 if (node.children.length > 0) {
-                    // console.log(`        Setting '${AdditionalDataKeys.toolParentFillColor}' additional data on children`, value, valueOriginal);
+                    logger.debug(`        Setting '${AdditionalDataKeys.toolParentFillColor}' additional data on children`, value, valueOriginal);
                     node.children.forEach(child => {
-                        // console.log("          Child", child.id, child.name);
+                        logger.debug("          Child", child.id, child.name);
                         child.additionalData.set(AdditionalDataKeys.toolParentFillColor, value);
                     });
                 }
@@ -455,7 +460,7 @@ export class UIController {
     }
 
     public dispatchMessage(message: PluginMessage, reason: string): void {
-        // console.log("UIController.dispatchMessage", reason);
+        logger.debug("UIController.dispatchMessage", reason);
         this._messageCallback(message);
     }
 }

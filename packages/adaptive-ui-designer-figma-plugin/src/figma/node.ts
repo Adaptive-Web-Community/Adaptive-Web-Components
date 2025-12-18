@@ -1,6 +1,7 @@
 import { type Color as CuloriColor, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
 import { AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { logger as baseLogger } from '../core/logger.js';
 import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLayoutNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
 import { PluginDataResolver } from "./plugin-data-resolver.js";
@@ -10,6 +11,8 @@ useMode(modeLrgb);
 
 const stateVariant = "State";
 const disabledVariant = "Disabled";
+
+// PluginNode.logger.settings.minLevel = 2;
 
 export class FigmaPluginNode extends PluginNode {
     public id: string;
@@ -29,8 +32,8 @@ export class FigmaPluginNode extends PluginNode {
         PluginNode.pluginDataAccessor = new PluginDataResolver();
     }
 
-    private constructor(node: BaseNode) {
-        super();
+    private constructor(node: BaseNode, level: number) {
+        super(level);
 
         Controller.nodeCount++;
 
@@ -39,7 +42,7 @@ export class FigmaPluginNode extends PluginNode {
         this.type = node.type;
         this.name = node.name;
 
-        // console.log("  new FigmaPluginNode", this.debugInfo, "node", node);
+        this._logger.debug(indent(this._level) + "  new FigmaPluginNode", { ...this.debugInfo, node: node });
     }
 
     private async init() {
@@ -97,12 +100,14 @@ export class FigmaPluginNode extends PluginNode {
 
         this.fillColor = this.getFillColor();
 
+        // Setup component set states configuration
         this.states = this._node.type === "COMPONENT_SET" ?
             this._node.componentPropertyDefinitions[stateVariant] === undefined ?
                 StatesState.available :
                 StatesState.configured :
             StatesState.notAvailable;
 
+        // Setup code generation
         this.supportsCodeGen = this._node.type === "COMPONENT_SET" ||
             this._node.type === "COMPONENT" ||
             this._node.type === "INSTANCE";
@@ -127,6 +132,7 @@ export class FigmaPluginNode extends PluginNode {
             }
         }
 
+        // Setup interactivity states
         if (this._node.type === "COMPONENT") {
             const disabled: string | null = this._node.variantProperties ? this._node.variantProperties[disabledVariant]?.toLowerCase() : null;
             const state: State | undefined = this._node.variantProperties ? this._node.variantProperties[stateVariant] as State : undefined;
@@ -138,12 +144,13 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public static async get(node: BaseNode, deep: boolean): Promise<FigmaPluginNode> {
+    public static async get(node: BaseNode, deep: boolean, level: number = 0): Promise<FigmaPluginNode> {
         if (FigmaPluginNode.NodeCache.has(node.id)) {
+            logger.debug(indent(level) + "  node already in cache", { id: node.id, type: node.type, name: node.name });
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return FigmaPluginNode.NodeCache.get(node.id)!;
         } else {
-            const pluginNode = new FigmaPluginNode(node);
+            const pluginNode = new FigmaPluginNode(node, level);
             await pluginNode.init();
             FigmaPluginNode.NodeCache.set(node.id, pluginNode);
             if (deep) {
@@ -202,9 +209,7 @@ export class FigmaPluginNode extends PluginNode {
      */
     public async getChildren(): Promise<FigmaPluginNode[]> {
         if (canHaveChildren(this._node) && !this._childrenLoaded) {
-            // console.log("    get children", this.debugInfo);
-            for (const child of this._node.children) {
-                const childNode = await FigmaPluginNode.get(child, true);
+            this._logger.debug(indent(this._level) + "    getting children of", this.debugInfo);
                 // Promote the focus indicator node to the parent's parent (`this` is the parent here)
                 if (childNode.name === focusIndicatorNodeName && childNode._node.type === "INSTANCE") {
                     // console.log("      Found focus indicator node", childNode.debugInfo);
@@ -900,5 +905,14 @@ export class FigmaPluginNode extends PluginNode {
 
             this._node.resize(x - spacing + paddingRight, y - spacing + paddingBottom);
         }
+    }
+
+    public get debugInfo() {
+        return {
+            id: this.id,
+            type: this.type,
+            name: this.name,
+            ...(this.type === "COMPONENT" && { remote: (this._node as ComponentNode).remote === true ? "remote" : "local" }),
+        };
     }
 }

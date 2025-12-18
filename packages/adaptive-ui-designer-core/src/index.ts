@@ -1,4 +1,5 @@
 export { Controller, PluginUIState, STYLE_REMOVE } from "./controller.js";
+export { getLogger, indent } from "./logger.js";
 export {
     Config,
     PluginNodeData,
