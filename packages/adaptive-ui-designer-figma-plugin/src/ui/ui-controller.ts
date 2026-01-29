@@ -354,8 +354,8 @@ export class UIController {
             }
         }
 
-        node.componentAppliedStyleModules?.forEach(appliedStyleModulesHandler(AppliedTokenSource.componentModules));
-        node.componentAppliedDesignTokens?.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
+        node.refAppliedStyleModules?.forEach(appliedStyleModulesHandler(AppliedTokenSource.componentModules));
+        node.refAppliedDesignTokens?.forEach(appliedDesignTokensHandler(AppliedTokenSource.component));
         node.appliedStyleModules.forEach(appliedStyleModulesHandler(AppliedTokenSource.localModules));
         node.appliedDesignTokens.forEach(appliedDesignTokensHandler(AppliedTokenSource.local));
 

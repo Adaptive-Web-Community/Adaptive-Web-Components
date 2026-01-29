@@ -1,7 +1,6 @@
-import { type Color as CuloriColor, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
+import { type Color as CuloriColor, formatHex8, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
 import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedStyleValues, Controller, focusIndicatorNodeName, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
-import { logger as baseLogger } from '../core/logger.js';
+import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, Controller, DesignTokenValues, focusIndicatorNodeName, indent, PluginNode, serializeMap, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLayoutNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
 import { PluginDataResolver } from "./plugin-data-resolver.js";
@@ -22,6 +21,9 @@ export class FigmaPluginNode extends PluginNode {
     public states?: StatesState;
     private _node: BaseNode;
     private _refNode: FigmaPluginNode | null = null;
+    private _designTokensRawData: string | null = null;
+    private _appliedDesignTokensRawData: string | null = null;
+    private _appliedStyleModulesRawData: string | null = null;
     private _state?: State;
     public supportsCodeGen: boolean = false;
     public codeGenName: string | undefined;
@@ -32,7 +34,7 @@ export class FigmaPluginNode extends PluginNode {
         PluginNode.pluginDataAccessor = new PluginDataResolver();
     }
 
-    private constructor(node: BaseNode, level: number) {
+    private constructor(node: BaseNode, refNode: FigmaPluginNode | null, level: number) {
         super(level);
 
         Controller.nodeCount++;
@@ -42,50 +44,185 @@ export class FigmaPluginNode extends PluginNode {
         this.type = node.type;
         this.name = node.name;
 
+        this._refNode = refNode;
+
         this._logger.debug(indent(this._level) + "  new FigmaPluginNode", { ...this.debugInfo, node: node });
     }
 
     private async init() {
-        // Find the reference node if this node is part of an instance or composition.
-        let refNode: BaseNode | null = null;
-        if (this.id.startsWith("I")) {
-            // Check this first to handle nested components, we want the overrides on the reference instance before the main component.
-            // Child nodes of an instance have an ID like `I##:##;##:##;##:##`
-            // where each `##:##` points to the containing instance, and the last always points to the main node.
-            const ids = this.id.split(";");
-            // Updated to support more complex nested instances of instances
-            while (ids.length >= 2 && !refNode) {
-                ids.shift();
-                // First look with the I
-                const refId = "I" + ids.join(";");
-                // console.log("    looking for ref (I)", refId);
-                refNode = await figma.getNodeByIdAsync(refId);
-                if (!refNode) {
-                    // Then look without the I
-                    const refId = ids.join(";");
-                    // console.log("    looking for ref (no I)", refId);
-                    refNode = await figma.getNodeByIdAsync(refId);
+        if (!this._refNode) {
+            // Find the reference node if this node is part of an instance or composition.
+            let refBaseNode: BaseNode | null = null;
+
+            if (isInstanceNode(this._node)) {
+                refBaseNode = await this._node.getMainComponentAsync();
+                if (this.id.startsWith("I")) {
+                    this._logger.warn(indent(this._level) + "    instance node is a child of another instance, may be missing overrides");
+                } else {
+                    this._logger.debug(indent(this._level) + "    instance, getting main component");
                 }
             }
-        } else if (isInstanceNode(this._node)) {
-            // console.log("    getting main component");
-            refNode = await this._node.getMainComponentAsync();
-        }
 
-        if (refNode) {
-            // console.log("    getting refNode");
-            this._refNode = await FigmaPluginNode.get(refNode, false);
-            // console.log("      refNode for", this.debugInfo, " is ", this._refNode.debugInfo);
-
-            this._componentDesignTokens = this._refNode.localDesignTokens;
-            this._componentAppliedStyleModules = this._refNode.appliedStyleModules;
-            this._componentAppliedDesignTokens = this._refNode.appliedDesignTokens;
+            if (refBaseNode) {
+                this._refNode = await FigmaPluginNode.get(refBaseNode, true, this._level + 2);
+                this._logger.debug(indent(this._level) + "      refNode for", this.debugInfo, " is ", this._refNode.debugInfo);
+            }
         }
 
         this.config = JSON.parse(PluginNode.pluginDataAccessor.getPluginData(this, "config") || "{}");
-        this._localDesignTokens = await PluginNode.pluginDataAccessor.getLocalDesignTokens(this);
-        this._appliedStyleModules = await PluginNode.pluginDataAccessor.getAppliedStyleModules(this);
-        this._appliedDesignTokens = await PluginNode.pluginDataAccessor.getAppliedDesignTokens(this);
+
+        /*
+        This data model and token processing is to handle an unfortunate consequence of the Figma component model.
+
+        An instance component will inherit plugin data from the main component by default. For instance:
+
+        Main component (set plugin data "A=1") --> Instance (get plugin data "A=1")
+
+        This is mostly beneficial as when it comes to applying design tokens, we want to apply whatever references exist up the chain.
+
+        However, once you override the value at an instance level, you no longer directly get the value from main:
+
+        Instance (set plugin data "A=2") --> Instance (get plugin data "A=2")
+
+        This probably seems fine, as you would expect to have the overridden value on the instance.
+
+        The problem is that once we've updated the values on the instance, we don't directly get any _changes_ made on the main.
+
+        Main component (set plugin data "A=1, B=2") --> Instance (get plugin data "A=2")
+
+        Notice we don't have the addition of "B=2". It's a simple string and the value is already set, so it doesn't change.
+
+        The solution is to store any local overrides on the instance node, but to read back from the entire reference chain,
+        and to deduplicate them as necessary.
+
+        In the example above, we'd read "A=2" from the instance, "A=1, B=2" from the main, then assemble the full list, keeping
+        any overrides from the instance: "A=2, B=2".
+
+        This is complicated by component nesting, where another component places an instance of a main, overrides a value, and then an instance
+        of the second component is being evaluated.
+
+        This is further complicated by publishing from a team library, at which point the node IDs get completely changed, so there is no way
+        to key the plugin data from the node to which it was originally applied.
+
+        In the case of the "design tokens" the key will be the name of the token, like "corner-radius". This is stored on the instance node.
+        In the case of the "applied design tokens" the key will be the style target, like "backgroundFill". This is stored on the instance node.
+        */
+
+        // Deserialize and deduplicate the design tokens from the local data.
+        this._designTokensRawData = await PluginNode.pluginDataAccessor.getDesignTokensRawData(this);
+        if (this._designTokensRawData === null) {
+            // Default case, do this silently.
+            this._designTokens = new DesignTokenValues();
+        } else {
+            if (this._refNode !== null) {
+                this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate design tokens");
+                if (this._refNode._designTokensRawData === this._designTokensRawData) {
+                    this._logger.debug(indent(this._level) + "      ref node has the same design token raw data as this node, ignoring local data");
+                    this._designTokens = new DesignTokenValues();
+                } else {
+                    this._logger.debug(indent(this._level) + "      ref node has different design token raw data, using local data");
+                    const deserializedDesignTokens = this.deserializeDesignTokens(this._designTokensRawData);
+                    // Deduplicate just in case
+                    this._refNode._designTokens.forEach((value, tokenId) => {
+                        // If the token values are the same between the nodes, remove it from the local.
+                        if (deserializedDesignTokens.get(tokenId)?.value === value.value) {
+                            this._logger.debug(indent(this._level) + "        removing design token", this.debugInfo, tokenId);
+                            deserializedDesignTokens.delete(tokenId);
+                        }
+                    });
+                    this._designTokens = deserializedDesignTokens;
+                }
+            } else {
+                this._logger.debug(indent(this._level) + "    no ref node, using local data");
+                this._designTokens = this.deserializeDesignTokens(this._designTokensRawData);
+            }
+            
+            if (this._designTokens.size) {
+                this._logger.debug(indent(this._level) + "    design tokens", this.debugInfo, serializeMap(this._designTokens));
+            }
+
+            // Check to see if we should write back in the updated format
+            if (this._designTokensRawData.indexOf("dataType") > -1) {
+                PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", serializeMap(this._designTokens));
+            }
+        }
+
+        // Deserialize and deduplicate the applied design tokens from the local data.
+        this._appliedDesignTokensRawData = await PluginNode.pluginDataAccessor.getAppliedDesignTokensRawData(this);
+        if (this._appliedDesignTokensRawData === null) {
+            // Default case, do this silently.
+            this._appliedDesignTokens = new AppliedDesignTokens();
+        } else {
+            // There is a historic data issue problem we're cleaning up here.
+            if (!(await this.getRemote()) && this._node.name === "Focus indicator" && this._node.id !== "1548:20317") {
+                this._logger.warn(indent(this._level) + "      cleaning up errant focus indicator overrides", this.debugInfo);
+                PluginNode.pluginDataAccessor.deletePluginData(this, "appliedDesignTokens");
+            } else {
+                if (this._refNode !== null) {
+                    this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate applied design tokens");
+                    if (this._refNode._appliedDesignTokensRawData === this._appliedDesignTokensRawData) {
+                        this._logger.debug(indent(this._level) + "      ref node has the same applied design tokens raw data as this node, ignoring local data");
+                        this._appliedDesignTokens = new AppliedDesignTokens();
+                    } else {
+                        this._logger.debug(indent(this._level) + "      ref node has different applied design tokens raw data, using local data");
+                        const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens(this._appliedDesignTokensRawData);
+                        // Deduplicate just in case
+                        this._refNode._appliedDesignTokens.forEach((value, target) => {
+                            if (deserializedAppliedDesignTokens.get(target)?.tokenID === value.tokenID) {
+                                this._logger.debug(indent(this._level) + "        removing applied design token", this.debugInfo, target, value.tokenID);
+                                deserializedAppliedDesignTokens.delete(target);
+                            }
+                        });
+                        this._appliedDesignTokens = deserializedAppliedDesignTokens;
+                    }
+                } else {
+                    this._logger.debug(indent(this._level) + "    no ref node, using local data");
+                    this._appliedDesignTokens = this.deserializeAppliedDesignTokens(this._appliedDesignTokensRawData);
+                }
+            }
+
+            if (this._appliedDesignTokens.size) {
+                this._logger.debug(indent(this._level) + "    applied design tokens", this.debugInfo, serializeMap(this._appliedDesignTokens));
+            }
+
+            // Check to see if we should write back in the updated format
+            if (this._appliedDesignTokensRawData.indexOf("dataType") > -1) {
+                PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", serializeMap(this._appliedDesignTokens));
+            }
+        }
+
+        // Deserialize and deduplicate the applied style modules from the local data.
+        this._appliedStyleModulesRawData = await PluginNode.pluginDataAccessor.getAppliedStyleModulesRawData(this);
+        if (this._appliedStyleModulesRawData === null) {
+            // Default case, do this silently.
+            this._appliedStyleModules = new AppliedStyleModules();
+        } else {
+            if (this._refNode !== null) {
+                this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate applied style modules");
+                if (this._refNode._appliedStyleModulesRawData === this._appliedStyleModulesRawData) {
+                    this._logger.debug(indent(this._level) + "      ref node has the same applied style modules raw data as this node, ignoring local data");
+                    this._appliedStyleModules = new AppliedStyleModules();
+                } else {
+                    this._logger.debug(indent(this._level) + "      ref node has different applied style modules raw data, using local data");
+                    const deserializedAppliedStyleModules = this.deserializeAppliedStyleModules(this._appliedStyleModulesRawData);
+                    // Deduplicate just in case
+                    let filteredAppliedStyleModules = deserializedAppliedStyleModules
+                        .filter((parsedName) => this._refNode!.appliedStyleModules.indexOf(parsedName) === -1);
+                    // Remove duplicates while preserving order (legacy data bug, should not happen)
+                    filteredAppliedStyleModules.reverse();
+                    filteredAppliedStyleModules = [...new Set(filteredAppliedStyleModules)];
+                    filteredAppliedStyleModules.reverse();
+                    this._appliedStyleModules = filteredAppliedStyleModules;
+                }
+            } else {
+                this._logger.debug(indent(this._level) + "    no ref node, using local data");
+                this._appliedStyleModules = this.deserializeAppliedStyleModules(this._appliedStyleModulesRawData);
+            }
+
+            if (this._appliedStyleModules.length) {
+                this._logger.debug(indent(this._level) + "    applied style modules", this.debugInfo, this._appliedStyleModules.join(","));
+            }
+        }
 
         // Check for and/or remove legacy FAST plugin data.
         // const fastKeys = this._node.getSharedPluginDataKeys("fast");
@@ -145,12 +282,16 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     public static async get(node: BaseNode, deep: boolean, level: number = 0): Promise<FigmaPluginNode> {
+        return this._getWithRef(node, null, deep, level);
+    }
+
+    private static async _getWithRef(node: BaseNode, refNode: FigmaPluginNode | null, deep: boolean, level: number = 0): Promise<FigmaPluginNode> {
         if (FigmaPluginNode.NodeCache.has(node.id)) {
-            logger.debug(indent(level) + "  node already in cache", { id: node.id, type: node.type, name: node.name });
+            FigmaPluginNode.logger.debug(indent(level) + "  node already in cache", { id: node.id, type: node.type, name: node.name });
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return FigmaPluginNode.NodeCache.get(node.id)!;
         } else {
-            const pluginNode = new FigmaPluginNode(node, level);
+            const pluginNode = new FigmaPluginNode(node, refNode, level);
             await pluginNode.init();
             FigmaPluginNode.NodeCache.set(node.id, pluginNode);
             if (deep) {
@@ -210,6 +351,12 @@ export class FigmaPluginNode extends PluginNode {
     public async getChildren(): Promise<FigmaPluginNode[]> {
         if (canHaveChildren(this._node) && !this._childrenLoaded) {
             this._logger.debug(indent(this._level) + "    getting children of", this.debugInfo);
+            for (let i = 0, n = this._node.children.length; i < n; i++) {
+                const child = this._node.children[i];
+                const refChild = (await this._refNode?.getChildren())?.[i] || null;
+                this._logger.debug(indent(this._level) + "      getting child", { id: child.id, type: child.type, name: child.name }, "with refNode", refChild?.debugInfo);
+                const childNode = await FigmaPluginNode._getWithRef(child, refChild, true, this._level + 3);
+
                 // Promote the focus indicator node to the parent's parent (`this` is the parent here)
                 if (childNode.name === focusIndicatorNodeName && childNode._node.type === "INSTANCE") {
                     // console.log("      Found focus indicator node", childNode.debugInfo);
@@ -485,8 +632,7 @@ export class FigmaPluginNode extends PluginNode {
         if (isContainerNode(this._node) && (
             target === StyleProperty.foregroundFill ||
             target === StyleProperty.fontSize ||
-            target === StyleProperty.lineHeight))
-        {
+            target === StyleProperty.lineHeight)) {
             for (const child of await this.getChildren()) {
                 await (child).paintOne(target, value, true);
             }
@@ -623,23 +769,29 @@ export class FigmaPluginNode extends PluginNode {
      */
     public focusIndicatorParentNode: FigmaPluginNode | null = null;
 
+    private _parent: FigmaPluginNode | null = null;
+
     public async getParent(): Promise<FigmaPluginNode | null> {
         if (this.focusIndicatorParentNode !== null) {
             return this.focusIndicatorParentNode;
         }
 
-        const parent = this._node.parent;
+        if (this._parent) {
+            return this._parent;
+        }
 
-        if (parent === null) {
+        const parentBaseNode = this._node.parent;
+
+        if (parentBaseNode === null) {
             return null;
         }
 
-        // console.log("    get parent", this.debugInfo);
-        return await FigmaPluginNode.get(parent, false);
+        this._logger.debug(indent(this._level) + "    getting parent of", this.debugInfo);
+        this._parent = await FigmaPluginNode.get(parentBaseNode, false, this._level + 2);
+        return this._parent;
     }
 
     private getFillColor(): CuloriColor | null {
-        // console.log("FigmaPluginNode.getFillColor", this.debugInfo);
         if ((this._node as GeometryMixin).fills) {
             const fills = (this._node as GeometryMixin).fills;
 
@@ -652,7 +804,7 @@ export class FigmaPluginNode extends PluginNode {
                 if (paints.length === 1) {
                     const rgb = paints[0].color;
                     const color: Rgb = { mode: "rgb", r: rgb.r, g: rgb.g, b: rgb.b, alpha: paints[0].opacity };
-                    // console.log("FigmaPluginNode.getFillColor", this.debugInfo, formatHex8(color));
+                    this._logger.debug(indent(this._level) + "    FigmaPluginNode.getFillColor", this.debugInfo, formatHex8(color));
                     return color;
                 }
             }
@@ -905,6 +1057,15 @@ export class FigmaPluginNode extends PluginNode {
 
             this._node.resize(x - spacing + paddingRight, y - spacing + paddingBottom);
         }
+    }
+
+    public async getRemote(): Promise<boolean> {
+        if (this.type === "COMPONENT") {
+            return Promise.resolve((this._node as ComponentNode).remote);
+        }
+
+        const parent = await this.getParent();
+        return parent?.getRemote() ?? false;
     }
 
     public get debugInfo() {

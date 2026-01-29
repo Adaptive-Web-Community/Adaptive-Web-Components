@@ -26,6 +26,11 @@ export abstract class Controller {
     public static nodeCount: number = 0;
 
     /**
+     * Resets the node cache.
+     */
+    public abstract resetNodeCache(): Promise<void>;
+
+    /**
      * Gets a Node from the design tool by ID.
      * @param id - The ID of the node.
      * @returns The PluginNode or null if no node by the provided ID exists.
@@ -77,6 +82,8 @@ export abstract class Controller {
     }
 
     private async getPluginUIState(ids: string[]): Promise<PluginUIState> {
+        await this.resetNodeCache();
+
         const nodes = await Promise.all(ids
             .map(async id => await this.getNode(id))
         );

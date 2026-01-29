@@ -73,28 +73,25 @@ export interface PluginNodeDataAccessor {
     deletePluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): void;
 
     /**
-     * Gets the local design tokens for a given node, without inherited values.
-     * @param node - The node to get the local design tokens for.
-     * @param rawData - The raw data to extract the design tokens from.
-     * @returns The local design tokens for the node.
+     * Gets the raw data for the local design tokens for a given node, without reference node values.
+     * @param node - The node to get the raw data for the local design tokens for.
+     * @returns The raw data for the local design tokens for the node.
      */
-    getLocalDesignTokens(node: PluginNode): Promise<DesignTokenValues>;
+    getDesignTokensRawData(node: PluginNode): Promise<string | null>;
 
     /**
-     * Gets the local applied design tokens for a given node, without inherited values.
-     * @param node - The node to get the local applied design tokens for.
-     * @param rawData - The raw data to extract the applied design tokens from.
-     * @returns The local applied design tokens for the node.
+     * Gets the raw data for the local applied design tokens for a given node, without reference node values.
+     * @param node - The node to get the raw data for the local applied design tokens for.
+     * @returns The raw data for the local applied design tokens for the node.
      */
-    getAppliedDesignTokens(node: PluginNode): Promise<AppliedDesignTokens>;
+    getAppliedDesignTokensRawData(node: PluginNode): Promise<string | null>;
 
     /**
-     * Gets the local styles for a given node, without inherited values.
-     * @param node - The node to get the local styles for.
-     * @param rawData - The raw data to extract the styles from.
-     * @returns The local styles for the node.
+     * Gets the raw data for the local applied style modules for a given node, without reference node values.
+     * @param node - The node to get the raw data for the local applied style modules for.
+     * @returns The raw data for the local applied style modules for the node.
      */
-    getAppliedStyleModules(node: PluginNode): Promise<AppliedStyleModules>;
+    getAppliedStyleModulesRawData(node: PluginNode): Promise<string | null>;
 }
 
 /**
@@ -112,32 +109,11 @@ export abstract class PluginNode {
     public static pluginDataAccessor: PluginNodeDataAccessor;
 
     /**
-     * Design tokens inherited by an instance node from the main component.
-     *
-     * It is the responsibility of the subclass to load this field.
-     */
-    protected _componentDesignTokens?: ReadonlyDesignTokenValues;
-
-    /**
-     * Applied style modules inherited by an instance node from the main component.
-     *
-     * It is the responsibility of the subclass to load this field.
-     */
-    protected _componentAppliedStyleModules?: ReadonlyAppliedStyleModules;
-
-    /**
-     * Applied design tokens inherited by an instance node from the main component.
-     *
-     * It is the responsibility of the subclass to load this field.
-     */
-    protected _componentAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
-
-    /**
      * Design tokens set for this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _localDesignTokens: DesignTokenValues = new DesignTokenValues();
+    protected _designTokens: DesignTokenValues = new DesignTokenValues();
 
     /**
      * Design tokens applied to the style of this node.
@@ -184,15 +160,18 @@ export abstract class PluginNode {
             return DesignTokenCache.get(this.id) as ReadonlyDesignTokenValues;
         }
 
+        // TODO Revisit this logic to make sure we actually want to include the reference node's design tokens.
+
         let designTokens = new DesignTokenValues();
         const parent = await this.getParent();
+        const parentRefNode = parent?.getRefNode();
         if (parent !== null) {
             designTokens = new DesignTokenValues([
                 ...await parent.getInheritedDesignTokens(),
-                ...(parent.componentDesignTokens
-                    ? parent.componentDesignTokens
-                    : []),
-                ...parent.localDesignTokens,
+                ...(parentRefNode)
+                    ? await parentRefNode.getInheritedDesignTokens()
+                    : [],
+                ...parent.designTokens,
             ]);
         }
 
@@ -204,51 +183,50 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets the applied style modules inherited by an instance node from the main component.
+     * Gets the applied style modules from the chain of reference nodes, like the main component for an instance node.
      */
-    public get componentAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
+    public get refAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
         const refNode = this.getRefNode();
         const appliedStyleModules = new AppliedStyleModules();
         
-        if (refNode && refNode.componentAppliedStyleModules) {
-            appliedStyleModules.push(...refNode.componentAppliedStyleModules);
-        }
-        
-        if (this._componentAppliedStyleModules) {
-            appliedStyleModules.push(...this._componentAppliedStyleModules);
+        if (refNode) {
+            if (refNode.refAppliedStyleModules) {
+                appliedStyleModules.push(...refNode.refAppliedStyleModules);
+            }
+            appliedStyleModules.push(...refNode.appliedStyleModules);
         }
 
         return appliedStyleModules;
     }
 
     /**
-     * Gets the applied design tokens inherited by an instance node from the main component.
+     * Gets the applied design tokens from the chain of reference nodes, like the main component for an instance node.
      */
-    public get componentAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
+    public get refAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
         const refNode = this.getRefNode();
         const appliedDesignTokens = new AppliedDesignTokens([
-            ...(refNode && refNode.componentAppliedDesignTokens
-                ? refNode.componentAppliedDesignTokens
+            ...(refNode && refNode.refAppliedDesignTokens
+                ? refNode.refAppliedDesignTokens
                 : []),
-            ...this._componentAppliedDesignTokens
-                ? this._componentAppliedDesignTokens
-                : [],
+            ...(refNode && refNode.appliedDesignTokens
+                ? refNode.appliedDesignTokens
+                : []),
         ]);
         return appliedDesignTokens;
     }
 
     /**
-     * Gets the design tokens inherited by an instance node from the main component.
+     * Gets the design tokens from the chain of reference nodes, like the main component for an instance node.
      */
-    public get componentDesignTokens(): ReadonlyDesignTokenValues | undefined {
+    public get refDesignTokens(): ReadonlyDesignTokenValues | undefined {
         const refNode = this.getRefNode();
         const designTokens = new DesignTokenValues([
-            ...(refNode && refNode.componentDesignTokens
-                ? refNode.componentDesignTokens
+            ...(refNode && refNode.refDesignTokens
+                ? refNode.refDesignTokens
                 : []),
-            ...this._componentDesignTokens
-                ? this._componentDesignTokens
-                : [],
+            ...(refNode && refNode.designTokens
+                ? refNode.designTokens
+                : []),
         ]);
         return designTokens;
     }
@@ -331,8 +309,8 @@ export abstract class PluginNode {
     /**
      * Gets the design tokens set for this node.
      */
-    public get localDesignTokens(): ReadonlyDesignTokenValues {
-        return this._localDesignTokens;
+    public get designTokens(): ReadonlyDesignTokenValues {
+        return this._designTokens;
     }
 
     /**
@@ -340,7 +318,7 @@ export abstract class PluginNode {
      * @param json - The raw plugin data string.
      * @returns The deserialized design tokens set to the node.
      */
-    public deserializeLocalDesignTokens(json: string | null): DesignTokenValues {
+    public deserializeDesignTokens(json: string | null): DesignTokenValues {
         if (json !== null) {
             // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
         }
@@ -361,7 +339,7 @@ export abstract class PluginNode {
      * @param tokens - The complete design tokens override map.
      */
     public async setDesignTokens(tokens: DesignTokenValues) {
-        this._localDesignTokens = tokens;
+        this._designTokens = tokens;
         if (tokens.size) {
             const json = serializeMap(tokens);
             PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", json);
