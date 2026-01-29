@@ -11,6 +11,10 @@ export class FigmaController extends Controller {
         figma.skipInvisibleInstanceChildren = true;
     }
 
+    public async resetNodeCache(): Promise<void> {
+        FigmaPluginNode.clearCache();
+    }
+
     public async getNode(id: string): Promise<FigmaPluginNode | null> {
         const node = await figma.getNodeByIdAsync(id);
         if (node) {

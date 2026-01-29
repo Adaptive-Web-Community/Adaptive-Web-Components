@@ -164,7 +164,7 @@ export class ElementsController {
 
         // Set all design token values from the main component for the local element (an instance component).
         // console.log("    setting main component tokens", node.componentDesignTokens);
-        node.componentDesignTokens?.forEach(
+        node.refDesignTokens?.forEach(
             this.designTokenValuesHandler(nodeElement),
             this
         );

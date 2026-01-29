@@ -136,14 +136,14 @@ export interface PluginNodeData {
     designTokens: DesignTokenValues;
 
     /**
-     * Style modules applied to the node.
-     */
-    appliedStyleModules: AppliedStyleModules;
-
-    /**
      * Token + value pairs applied to the style of a node, evaluated from local and inherited design tokens.
      */
     appliedDesignTokens: AppliedDesignTokens;
+
+    /**
+     * Style modules applied to the node.
+     */
+    appliedStyleModules: AppliedStyleModules;
 }
 
 /**
@@ -181,19 +181,19 @@ export interface PluginUINodeData extends PluginNodeData {
     inheritedDesignTokens: ReadonlyDesignTokenValues;
 
     /**
-     * The design token values inherited by an instance node from the main component.
+     * The design token values from the chain of reference nodes, like the main component for an instance node.
      */
-    componentDesignTokens?: ReadonlyDesignTokenValues;
+    refDesignTokens?: ReadonlyDesignTokenValues;
 
     /**
-     * Applied style modules inherited by an instance node from the main component.
+     * Applied style modules from the chain of reference nodes, like the main component for an instance node.
      */
-    componentAppliedStyleModules?: ReadonlyAppliedStyleModules;
+    refAppliedStyleModules?: ReadonlyAppliedStyleModules;
 
     /**
-     * Applied design tokens inherited by an instance node from the main component.
+     * Applied design tokens from the chain of reference nodes, like the main component for an instance node.
      */
-    componentAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
+    refAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
 
     /**
      * The resultant set of effective applied design tokens and values that need to be updated
@@ -228,13 +228,13 @@ export const pluginNodesToUINodes = async (
                 supports: await node.getSupports(),
                 additionalData: await node.getAdditionalData(),
                 inheritedDesignTokens,
-                componentDesignTokens: node.componentDesignTokens,
-                componentAppliedStyleModules: node.componentAppliedStyleModules,
-                componentAppliedDesignTokens: node.componentAppliedDesignTokens,
+                refDesignTokens: node.refDesignTokens,
+                refAppliedStyleModules: node.refAppliedStyleModules,
+                refAppliedDesignTokens: node.refAppliedDesignTokens,
                 effectiveAppliedStyleValues: new AppliedStyleValues(),
                 children,
                 config: node.config,
-                designTokens: node.localDesignTokens as DesignTokenValues,
+                designTokens: node.designTokens as DesignTokenValues,
                 appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
                 appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,
             };

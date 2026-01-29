@@ -26,6 +26,7 @@
         "Lrgb",
         "okhsl",
         "tablist",
+        "tslog",
         "Unregisters"
     ],
     "editor.insertSpaces": true,
