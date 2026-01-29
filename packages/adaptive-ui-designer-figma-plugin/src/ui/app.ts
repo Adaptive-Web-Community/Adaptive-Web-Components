@@ -3,7 +3,7 @@ import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
 import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
 import { neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
-import type { AdaptiveDesignTokenOrGroup, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import type { AdaptiveDesignTokenOrGroup, AppliedDesignToken, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage, SkipInvisibleNodesMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
@@ -183,6 +183,108 @@ const syncLabel = "Evaluate and apply all design tokens for the current selectio
 const genStylesLabel = "Copies styling code for this component.";
 const revertLabel = "Remove all plugin data from the current selection.";
 
+const viewNodeTemplate = html<PluginUINodeData>`
+    <adaptive-tree-item ?expanded="${(_) => true}" ?nested="${(_) => true}">
+        ${(x) => x.name} (${(x) => x.id}, ${(x) => x.type})
+        ${when(
+            (x) => x.designTokens.size > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Design tokens
+                    ${repeat(
+                        (x) => [...x.designTokens.entries()],
+                        html<[string, DesignTokenValue]>`
+                            <adaptive-tree-item>
+                                ${(x) => x[0]}: ${(x) => x[1].value}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${when(
+            (x) => x.appliedDesignTokens.size > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Applied design tokens
+                    ${repeat(
+                        (x) => [...x.appliedDesignTokens.entries()],
+                        html<[StyleProperty, AppliedDesignToken]>`
+                            <adaptive-tree-item>
+                                ${(x) => x[0]}: ${(x) => x[1].tokenID}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${when(
+            (x) => x.appliedStyleModules.length > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Applied style modules
+                    ${repeat(
+                        (x) => x.appliedStyleModules,
+                        html<string>`
+                            <adaptive-tree-item>
+                                ${(x) => x}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${when(
+            (x) => x.refDesignTokens.size > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Ref design tokens
+                    ${repeat(
+                        (x) => [...x.refDesignTokens.entries()],
+                        html<[string, DesignTokenValue]>`
+                            <adaptive-tree-item>
+                                ${(x) => x[0]}: ${(x) => x[1].value}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${when(
+            (x) => x.refAppliedDesignTokens.size > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Ref applied design tokens
+                    ${repeat(
+                        (x) => [...x.refAppliedDesignTokens.entries()],
+                        html<[StyleProperty, AppliedDesignToken]>`
+                            <adaptive-tree-item>
+                                ${(x) => x[0]}: ${(x) => x[1].tokenID}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${when(
+            (x) => x.refAppliedStyleModules.length > 0,
+            html<PluginUINodeData>`
+                <adaptive-tree-item ?expanded="${(_) => true}">
+                    Ref applied style modules
+                    ${repeat(
+                        (x) => x.refAppliedStyleModules,
+                        html<string>`
+                            <adaptive-tree-item>
+                                ${(x) => x}
+                            </adaptive-tree-item>
+                        `)}
+                </adaptive-tree-item>
+            `
+        )}
+        ${repeat(
+            (x) => x.children,
+            html<PluginUINodeData>`
+                ${(_) => viewNodeTemplate}
+            `,
+        )}
+    </adaptive-tree-item>
+`;
+
 const footerTemplate = html<App>`
     <footer>
         <p class="selection-label" title=${(x) => x.selectionDescription}>
@@ -224,6 +326,7 @@ const template = html<App>`
         <adaptive-tab id="styling">Styling</adaptive-tab>
         <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
         <adaptive-tab id="settings">Settings</adaptive-tab>
+        <adaptive-tab id="view">View</adaptive-tab>
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
                 ${when(
@@ -445,6 +548,18 @@ const template = html<App>`
             <div class="settings-layout">
                 <adaptive-switch :checked="${twoWay((x) => x.controller.autoRefreshEnabled)}">Auto refresh</adaptive-switch>
                 <adaptive-switch :checked="${twoWay((x) => x.skipInvisibleNodes)}">Skip invisible nodes (composition mode)</adaptive-switch>
+            </div>
+        </adaptive-tab-panel>
+        <adaptive-tab-panel id="viewPanel">
+            <div class="view-layout">
+                <adaptive-tree-view>
+                    ${repeat(
+                        (x) => x.selectedNodes,
+                        html<PluginUINodeData, App>`
+                            ${(_) => viewNodeTemplate}
+                        `,
+                    )}
+                </adaptive-tree-view>
             </div>
         </adaptive-tab-panel>
     </adaptive-tabs>

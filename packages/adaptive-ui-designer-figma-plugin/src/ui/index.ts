@@ -5,6 +5,8 @@ import { switchDefinition } from "@adaptive-web/adaptive-web-components/switch";
 import { tabDefinition } from "@adaptive-web/adaptive-web-components/tab";
 import { tabPanelDefinition } from "@adaptive-web/adaptive-web-components/tab-panel";
 import { tabsDefinition } from "@adaptive-web/adaptive-web-components/tabs";
+import { treeItemDefinition } from "@adaptive-web/adaptive-web-components/tree-item";
+import { treeViewDefinition } from "@adaptive-web/adaptive-web-components/tree-view";
 import { DesignToken } from "@microsoft/fast-foundation";
 import { mapReplacer, mapReviver, PluginUIState  } from '@adaptive-web/adaptive-ui-designer-core';
 import type { PluginMessage} from "../core/messages.js";
@@ -17,6 +19,8 @@ AdaptiveDesignSystem.defineComponents({
     tabDefinition,
     tabPanelDefinition,
     tabsDefinition,
+    treeItemDefinition,
+    treeViewDefinition,
 });
 
 DesignToken.registerDefaultStyleTarget();
