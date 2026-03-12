@@ -2,7 +2,7 @@ import { DesignTokenResolver } from "@microsoft/fast-foundation";
 import { DesignTokenType } from "../core/adaptive-design-tokens.js";
 import { Palette, PaletteDirectionValue } from "../core/color/palette.js";
 import { ColorRecipeParams, InteractivePaintSet } from "../core/color/recipe.js";
-import { deltaSwatch, deltaSwatchSet } from "../core/color/recipes/index.js";
+import { deltaSwatch, deltaSwatchSet, invertingPaletteDeltasForSet } from "../core/color/recipes/index.js";
 import { Color } from "../core/color/color.js";
 import { luminanceSwatch } from "../core/color/utilities/luminance-swatch.js";
 import { StyleProperty } from "../core/modules/types.js";
@@ -50,7 +50,7 @@ export const layerFillRestDelta = createTokenDelta(layerFillName, "layer", -2);
 
 /**
  * @public
- * @deprecated Use `layerFillLayerDelta` instead.
+ * @deprecated Use `layerFillRestDelta` instead.
  */
 export const layerFillDelta = layerFillRestDelta;
 
@@ -246,18 +246,27 @@ export const layerFillDisabledDelta = createTokenDelta(layerFillInteractiveName,
  * @public
  */
 export const layerFillInteractiveRecipe = createTokenColorRecipe<InteractivePaintSet>(layerFillInteractiveName, StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params?: ColorRecipeParams): InteractivePaintSet =>
-        deltaSwatchSet(
-            resolve(layerPalette),
-            params?.reference || resolve(colorContext),
-            resolve(layerFillRestDelta),
-            resolve(layerFillHoverDelta),
-            resolve(layerFillActiveDelta),
-            resolve(layerFillFocusDelta),
-            resolve(layerFillDisabledDelta),
+    (resolve: DesignTokenResolver, params?: ColorRecipeParams): InteractivePaintSet => {
+        const palette = resolve(layerPalette);
+        const reference = params?.reference || resolve(colorContext);
+        const restDelta = resolve(layerFillRestDelta);
+        const hoverDelta = resolve(layerFillHoverDelta);
+        const activeDelta = resolve(layerFillActiveDelta);
+        const focusDelta = resolve(layerFillFocusDelta);
+        const disabledDelta = resolve(layerFillDisabledDelta);
+        const deltas = invertingPaletteDeltasForSet(palette, reference, restDelta, hoverDelta, activeDelta, focusDelta, disabledDelta);
+        return deltaSwatchSet(
+            palette,
+            reference,
+            deltas.rest,
+            deltas.hover,
+            deltas.active,
+            deltas.focus,
+            deltas.disabled,
             undefined,
             PaletteDirectionValue.darker,
-        ),
+        );
+    }
 );
 
 export const layerFillInteractive = createTokenColorSet(layerFillInteractiveRecipe);
