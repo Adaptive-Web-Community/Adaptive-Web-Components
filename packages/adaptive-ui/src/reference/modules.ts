@@ -81,7 +81,7 @@ import {
 } from "./color.js";
 import { densityControl, densityControlList, densityItemContainer, densityLayer, densityText } from "./density.js";
 import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
-import { layerFillFixedPlus1 } from "./layer.js";
+import { layerFillFixedPlus1, layerFillInteractive } from "./layer.js";
 import {
     fontFamily,
     fontWeight,
@@ -1135,6 +1135,24 @@ export const criticalForegroundReadableControlStyles: Styles = Styles.fromProper
         foregroundFill: criticalStrokeReadable,
     },
     "color.critical-foreground-readable-control",
+);
+
+/**
+ * Convenience style module for a layer-filled control (interactive).
+ *
+ * By default, only the foreground color meets accessibility, useful for a button or similar:
+ * - layer interactive background
+ * - neutral strong foreground (a11y)
+ * - transparent border
+ *
+ * @public
+ */
+export const layerFillInteractiveControlStyles: Styles = Styles.fromProperties(
+    {
+        ...Fill.backgroundAndForeground(layerFillInteractive, neutralStrokeStrongRecipe),
+        ...densityBorderStyles(transparent),
+    },
+    "color.layer-fill-interactive-control",
 );
 
 /**

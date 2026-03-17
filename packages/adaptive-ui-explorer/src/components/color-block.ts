@@ -19,6 +19,7 @@ import {
     highlightFillSubtleInverseControlStyles,
     highlightForegroundReadableControlStyles,
     highlightOutlineDiscernibleControlStyles,
+    layerFillInteractiveControlStyles,
     neutralDividerDiscernibleElementStyles,
     neutralDividerSubtleElementStyles,
     neutralFillDiscernibleControlStyles,
@@ -80,6 +81,10 @@ const backplateComponents = html<ColorBlock>`
 
     <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => accentFillSubtleInverseControlStyles}">
         Accent subtle inverse
+    </app-style-example>
+
+    <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => layerFillInteractiveControlStyles}">
+        Layer interactive
     </app-style-example>
 
     <app-style-example :disabledState=${x => x.disabledState} :showSwatches=${x => x.showSwatches} :styles="${x => neutralFillIdealControlStyles}">

@@ -467,6 +467,9 @@ export type InteractivityDefinition = {
 };
 
 // @public
+export function invertingPaletteDeltasForSet(palette: Palette, reference: RelativeLuminance, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number): InteractiveValues<number>;
+
+// @public
 export function isDark(color: RelativeLuminance): boolean;
 
 // @public
