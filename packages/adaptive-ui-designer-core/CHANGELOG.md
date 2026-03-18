@@ -1,5 +1,14 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-core
 
+## 0.6.1
+
+### Patch Changes
+
+-   [#283](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/283) [`46beeb4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/46beeb4d472267085dd1f3f0d9a08421f28ef03c) Thanks [@bheston](https://github.com/bheston)! - Fix plugin data storage
+
+-   Updated dependencies [[`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
+    -   @adaptive-web/adaptive-ui@0.13.2
+
 ## 0.6.0
 
 ### Minor Changes
