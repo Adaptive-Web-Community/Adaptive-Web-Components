@@ -35,29 +35,39 @@ async function main({ library }: ProgramOptions) {
 
   logger.success('Library config is valid!');
 
-  const patRequest = {
-    type: 'password',
-    name: 'pat',
-    message: 'Please provide your Figma personal access token',
-  };
+  let pat = process.env.FIGMA_ACCESS_TOKEN;
 
-  const response = await inquirer.prompt([patRequest]);
+  if (!pat) {
+    const patRequest = {
+      type: 'password',
+      name: 'pat',
+      message: 'Please provide your Figma personal access token (or set the FIGMA_ACCESS_TOKEN environment variable)',
+    };
+    const response = await inquirer.prompt([patRequest]);
+    pat = response.pat;
+  }
+
+  if (!pat) {
+    logger.fail(`No Figma personal access token provided`);
+    process.exit(1);
+  }
+
   const client = Client.create({
-    pat: response.pat
+    pat
   });
 
   logger.neutral('Requesting Figma Library.');
   const libraryComponentSetsResponse = await client.getFileComponentSets(libraryConfig.file);
 
   if (libraryComponentSetsResponse.error || libraryComponentSetsResponse.status !== 200) {
-    logger.fail(`Accessing Figma library failed with status code ${libraryComponentSetsResponse.status}`);
+    logger.fail(`Accessing Figma library component sets failed with status code ${libraryComponentSetsResponse.status}`);
     process.exit(1);
   }
 
   const libraryComponentsResponse = await client.getFileComponents(libraryConfig.file);
 
   if (libraryComponentsResponse.error || libraryComponentsResponse.status !== 200) {
-    logger.fail(`Accessing Figma library failed with status code ${libraryComponentsResponse.status}`);
+    logger.fail(`Accessing Figma library components failed with status code ${libraryComponentsResponse.status}`);
     process.exit(1);
   }
 
@@ -67,14 +77,15 @@ async function main({ library }: ProgramOptions) {
   const { components: libraryComponents } = libraryComponentsResponse.meta;
 
   // The file components endpoint returns _all_ components including within a set, filter those out.
-  const uniqueComponents = libraryComponents.filter(component =>
+  const uniqueComponents = libraryComponents.filter(component => {
+    // Filter out components which are in a component set
+    const hasComponentSet = component.containing_frame?.containingComponentSet !== undefined;
+
     // Also filter out components which aren't in a container frame (assume they are helper/utility for now)
-    component.containing_frame !== undefined &&
-    libraryComponentSets.find(componentSet =>
-        componentSet.containing_frame?.nodeId === component.containing_frame?.nodeId ||
-        componentSet.node_id === component.containing_frame?.nodeId
-    ) === undefined
-  );
+    const hasContainingFrame = component.containing_frame !== undefined;
+
+    return !hasComponentSet && !hasContainingFrame;
+  });
   const allComponents = libraryComponentSets.concat(uniqueComponents);
 
   const componentNames = allComponents.map((value) => value.name).sort(alphabetize);
