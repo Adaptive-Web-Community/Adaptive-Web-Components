@@ -262,11 +262,11 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
 
         const appliedDesignTokens = new AppliedDesignTokens([
             ...(node.refAppliedDesignTokens
-                ? node.refAppliedDesignTokens
+                ? Array.from(node.refAppliedDesignTokens.entries())
                 : []),
-            ...node.appliedDesignTokens
-                ? node.appliedDesignTokens
-                : [],
+            ...(node.appliedDesignTokens
+                ? Array.from(node.appliedDesignTokens.entries())
+                : []),
         ]);
 
         if (appliedStyleModules.length > 0 || appliedDesignTokens.size > 0) {
