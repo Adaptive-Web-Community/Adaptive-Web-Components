@@ -45,7 +45,7 @@
     "deepmerge-ts": "^7.1.3",
     "glob": "^10.5.0",
     "matcher": "^5.0.0",
-    "postcss": "^8.4.39",
+    "postcss": "^8.5.10",
     "postcss-merge-border-radius": "^1.0.1",
     "postcss-merge-longhand": "^7.0.2",
     "postcss-merge-rules": "^7.0.2",
