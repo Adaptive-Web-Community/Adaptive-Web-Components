@@ -48,9 +48,20 @@ export function parseNode(node: FigmaRestAPI.Node): PluginUINodeData {
     const appliedDesignTokens: AppliedDesignTokens = appliedTokensPluginData
         ? deserializeMap(appliedTokensPluginData)
         : new AppliedDesignTokens();
-    const appliedStyleModules: AppliedStyleModules = appliedStylesPluginData
-        ? JSON.parse(appliedStylesPluginData)
-        : new AppliedStyleModules();
+    
+    // Parse appliedStyleModules and ensure it's an array
+    let appliedStyleModules: AppliedStyleModules = new AppliedStyleModules();
+    if (appliedStylesPluginData) {
+        try {
+            const parsed = JSON.parse(appliedStylesPluginData);
+            // Ensure we have an array - if parsed data is not an array, ignore it
+            if (Array.isArray(parsed)) {
+                appliedStyleModules = new AppliedStyleModules(...parsed);
+            }
+        } catch (e) {
+            console.warn('Failed to parse appliedStyleModules:', e);
+        }
+    }
 
     return {
         id: node.id,
