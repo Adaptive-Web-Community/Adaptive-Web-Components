@@ -1,5 +1,11 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 0.13.2
+
+### Patch Changes
+
+-   [#289](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/289) [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d) Thanks [@bheston](https://github.com/bheston)! - AUI: Updated layer fill interactive to invert colors to avoid white on white scenario
+
 ## 0.13.1
 
 ### Patch Changes
