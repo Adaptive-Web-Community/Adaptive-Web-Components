@@ -17,13 +17,60 @@ program
   .name(programName)
   .description('A CLI tool for generating CSS stylesheets from Figma Library Components')
   .requiredOption('-l, --library <path>', 'Path to the library configuration file.')
+  .option('-c, --components <names>', 'Comma-delimited list or wildcard pattern of components to generate (e.g., "anchor,button" or "content navigation *")')
   .action(main);
 
 interface ProgramOptions {
   library: string;
+  components?: string;
 }
 
-async function main({ library }: ProgramOptions) {
+/**
+ * Matches a component name against a pattern that may include wildcards.
+ * @param componentName - The component name to test
+ * @param pattern - The pattern to match against (supports * wildcard)
+ * @returns true if the component name matches the pattern
+ */
+function matchesPattern(componentName: string, pattern: string): boolean {
+  const normalizedComponent = componentName.toLowerCase().trim();
+  const normalizedPattern = pattern.toLowerCase().trim();
+  
+  // Convert wildcard pattern to regex
+  const regexPattern = normalizedPattern
+    .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // Escape special regex chars except *
+    .replace(/\*/g, '.*'); // Convert * to .*
+  
+  const regex = new RegExp(`^${regexPattern}$`);
+  return regex.test(normalizedComponent);
+}
+
+/**
+ * Filters component names based on comma-delimited patterns or wildcards.
+ * @param componentNames - Array of all available component names
+ * @param filterString - Comma-delimited patterns (e.g., "button,card" or "content navigation *")
+ * @returns Array of matching component names
+ */
+function filterComponentNames(componentNames: string[], filterString: string): string[] {
+  const patterns = filterString.split(',').map(p => p.trim()).filter(p => p.length > 0);
+  
+  if (patterns.length === 0) {
+    return componentNames;
+  }
+  
+  const matchedNames = new Set<string>();
+  
+  for (const pattern of patterns) {
+    for (const componentName of componentNames) {
+      if (matchesPattern(componentName, pattern)) {
+        matchedNames.add(componentName);
+      }
+    }
+  }
+  
+  return Array.from(matchedNames).sort(alphabetize);
+}
+
+async function main({ library, components }: ProgramOptions) {
   const configPath = path.resolve(process.cwd(), library);
   logger.neutral('Validating library config file: ' + configPath);
   const libraryConfig = await LibraryConfig.create(configPath);
@@ -60,14 +107,14 @@ async function main({ library }: ProgramOptions) {
   const libraryComponentSetsResponse = await client.getFileComponentSets(libraryConfig.file);
 
   if (libraryComponentSetsResponse.error || libraryComponentSetsResponse.status !== 200) {
-    logger.fail(`Accessing Figma library component sets failed with status code ${libraryComponentSetsResponse.status}`);
+    logger.fail(`Accessing Figma library component sets failed with status code ${libraryComponentSetsResponse.status}: ${(libraryComponentSetsResponse as any).err}`);
     process.exit(1);
   }
 
   const libraryComponentsResponse = await client.getFileComponents(libraryConfig.file);
 
   if (libraryComponentsResponse.error || libraryComponentsResponse.status !== 200) {
-    logger.fail(`Accessing Figma library components failed with status code ${libraryComponentsResponse.status}`);
+    logger.fail(`Accessing Figma library components failed with status code ${libraryComponentsResponse.status}: ${(libraryComponentsResponse as any).err}`);
     process.exit(1);
   }
 
@@ -84,32 +131,48 @@ async function main({ library }: ProgramOptions) {
     // Also filter out components which aren't in a container frame (assume they are helper/utility for now)
     const hasContainingFrame = component.containing_frame !== undefined;
 
-    return !hasComponentSet && !hasContainingFrame;
+    return !hasComponentSet && hasContainingFrame;
   });
   const allComponents = libraryComponentSets.concat(uniqueComponents);
 
   const componentNames = allComponents.map((value) => value.name).sort(alphabetize);
-  const pickComponentsRequest = {
-    type: 'list',
-    name: 'all',
-    message: 'Which component stylesheets would you like to generate?',
-    choices: ['All', 'Choose which'],
-  };
+  let componentNamesToRender: string[] = [];
 
-  const pickComponentsResponse = await inquirer.prompt([pickComponentsRequest]);
-  const componentNamesToRender: string[] = [];
-
-  if (pickComponentsResponse.all !== 'All') {
-    const chooseComponentsRequest = {
-      type: 'checkbox',
-      name: 'which',
-      message: 'Choose components:',
-      choices: componentNames,
-    };
-    const components = await inquirer.prompt([chooseComponentsRequest]);
-    componentNamesToRender.push(...components.which);
+  // If components filter is provided via CLI, use it directly
+  if (components) {
+    componentNamesToRender = filterComponentNames(componentNames, components);
+    
+    if (componentNamesToRender.length === 0) {
+      logger.fail(`No components matched the pattern: "${components}"`);
+      logger.neutral(`Available components:\n${componentNames.join(', ')}`);
+      process.exit(1);
+    }
+    
+    logger.success(`Found ${componentNamesToRender.length} component${componentNamesToRender.length === 1 ? '' : 's'} matching "${components}":`);
+    logger.neutral(componentNamesToRender.join(', '));
   } else {
-    componentNamesToRender.push(...componentNames);
+    // Interactive mode when no -c parameter is provided
+    const pickComponentsRequest = {
+      type: 'list',
+      name: 'all',
+      message: 'Which component stylesheets would you like to generate?',
+      choices: ['All', 'Choose which'],
+    };
+
+    const pickComponentsResponse = await inquirer.prompt([pickComponentsRequest]);
+
+    if (pickComponentsResponse.all !== 'All') {
+      const chooseComponentsRequest = {
+        type: 'checkbox',
+        name: 'which',
+        message: 'Choose components:',
+        choices: componentNames,
+      };
+      const chosenComponents = await inquirer.prompt([chooseComponentsRequest]);
+      componentNamesToRender.push(...chosenComponents.which);
+    } else {
+      componentNamesToRender.push(...componentNames);
+    }
   }
 
   if (componentNamesToRender.length === 0) {
@@ -123,10 +186,17 @@ async function main({ library }: ProgramOptions) {
     }\n${componentNamesToRender.join(', ')}`
   );
 
-  const confirm = await inquirer.prompt({ type: 'confirm', message: 'Would you like to continue?', name: 'confirm' });
+  // Only prompt for confirmation in interactive mode
+  if (!components) {
+    const confirm = await inquirer.prompt({ type: 'confirm', message: 'Would you like to continue?', name: 'confirm' });
 
-  if (confirm.confirm) {
-    logger.success('Generating component stylesheets. This may take a moment.');
+    if (!confirm.confirm) {
+      logger.neutral(`Exiting ${programName}`);
+      process.exit(0);
+    }
+  }
+
+  logger.success('Generating component stylesheets. This may take a moment.');
 
     const nameLookup = new Set(componentNamesToRender);
     const componentsToRender = allComponents.filter((value) => {
@@ -158,11 +228,6 @@ async function main({ library }: ProgramOptions) {
         } 
       })
     );
-
-    // process components
-  } else {
-    logger.neutral(`Exiting ${programName}`);
-  }
 
   process.exit(0);
 }
