@@ -1,5 +1,21 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
+## 0.6.0
+
+### Minor Changes
+
+-   [#290](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/290) [`5bf0946`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/5bf094691838b8433a9c8b4554505f91ea5fa90f) Thanks [@bheston](https://github.com/bheston)! - Figma Designer: Update CLI to allow PAT in env var
+
+### Patch Changes
+
+-   [#283](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/283) [`46beeb4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/46beeb4d472267085dd1f3f0d9a08421f28ef03c) Thanks [@bheston](https://github.com/bheston)! - Fix plugin data storage
+
+-   [#295](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/295) [`f9ce9bc`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f9ce9bc9f7d5e77add44035e983e67b127238f6d) Thanks [@bheston](https://github.com/bheston)! - Added `components` CLI option and fixed processing issues
+
+-   Updated dependencies [[`46beeb4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/46beeb4d472267085dd1f3f0d9a08421f28ef03c), [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
+    -   @adaptive-web/adaptive-ui-designer-core@0.6.1
+    -   @adaptive-web/adaptive-ui@0.13.2
+
 ## 0.5.3
 
 ### Patch Changes
