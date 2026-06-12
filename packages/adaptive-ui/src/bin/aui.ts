@@ -8,6 +8,7 @@ import * as prettier from "prettier";
 import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
 import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Command } from 'commander';
+import { kebabCase } from "change-case";
 import { deepmerge } from "deepmerge-ts";
 import { glob } from "glob";
 import postcss, { type Processor} from "postcss";
@@ -60,9 +61,9 @@ program.command('compile-style <inFile> <outFile>')
 
         ensureFileExists(inFilePath);
 
-        const fileData = await compileFile(inFilePath, outFilePath, exportNames.s, exportNames.a);
+        const { css } = await compileFile(inFilePath, exportNames.s, exportNames.a, outFilePath);
 
-        writeStyleFile(fileData, outFilePath)
+        writeStyleFile(css, outFilePath)
         process.exit(0);
     })
 
@@ -72,55 +73,44 @@ program.command("compile-styles <glob>")
     .option("-s <name>, --styles <name>", "The name of the styles exports. This option supports wildcards.", "styles")
     .option("-e <extension>, --extension <extension>", "The file extension of the file to write.", ".css")
     .action(async (globPath, args: { a: string, s: string, e: string }) => {
-        glob(globPath, { absolute: true }).then(async (paths) => {
-            await Promise.all(paths.map(async (inFilePath) => {
-                ensureFileExists(inFilePath)
-                const outFilePath = path.format({ ...path.parse(inFilePath), base: '', ext: args.e });
-                const fileData = await compileFile(inFilePath, outFilePath, args.s, args.a);
-                writeStyleFile(fileData, outFilePath);
-            }));
+        const paths = await glob(globPath, { absolute: true });
 
-            process.exit(0);
-        })
+        await Promise.all(paths.map(async (inFilePath) => {
+            ensureFileExists(inFilePath);
+
+            let outFilePath: string | undefined;
+
+            if (isJsonAnatomyFile(inFilePath)) {
+                const jsonData = JSON.parse((await fsp.readFile(inFilePath)).toString()) as SerializableAnatomyWithImports;
+                if (!jsonData.name) {
+                    console.warn(warnColor, `Skipping ${inFilePath}: JSON anatomy has no name property.`);
+                    return;
+                }
+
+                outFilePath = resolveStylesheetOutputPath(inFilePath, jsonData.name, args.e);
+            }
+
+            const { css, anatomyName } = await compileFile(inFilePath, args.s, args.a, outFilePath);
+
+            if (!outFilePath) {
+                outFilePath = resolveStylesheetOutputPath(inFilePath, anatomyName, args.e);
+            }
+
+            writeStyleFile(css, outFilePath);
+        }));
+
+        process.exit(0);
     });
 
 program.command("compile-json-anatomy <anatomyPath>")
     .description("Compile a stylesheet from a JSON anatomy")
     .action(async (jsonPath: string) => {
-        const data = (await fsp.readFile(jsonPath)).toString();
-        await import("../reference/index.js");
+        const jsonData = await readJsonAnatomyWithImports(jsonPath);
+        const styles = jsonToAUIStyleSheet(jsonData);
+        const outFilePath = resolveStylesheetOutputPath(jsonPath, jsonData.name, ".css");
+        const css = await compileStylesheet(styles, jsonPath, outFilePath);
 
-        let jsonData = JSON.parse(data) as SerializableAnatomyWithImports;
-
-        if (jsonData.imports) {
-            for (const imp of jsonData.imports) {
-                const impWithExt = imp.toLowerCase().endsWith(".json") ? imp : `${imp}.json`;
-                const impFilePath = path.format({ ...path.parse(path.join(path.parse(jsonPath).dir, impWithExt)) });
-                const impData = (await fsp.readFile(impFilePath)).toString();
-                const impJsonData = JSON.parse(impData) as SerializableAnatomy;
-
-                // If `parts` are in the import, they are either for validation/consistency of that file
-                // or additive to the main anatomy definition.
-                // If the part selector is empty, remove it an use the value from the main anatomy definition.
-                for (const part in impJsonData.parts) {
-                    if (impJsonData.parts.hasOwnProperty(part)) {
-                        if (impJsonData.parts[part] === "") {
-                            delete impJsonData.parts[part];
-                        }
-                    }
-                }
-
-                jsonData = deepmerge(jsonData, impJsonData);
-            }
-        }
-
-        const compiler = new SheetCompilerImpl();
-        const sheet = jsonToAUIStyleSheet(jsonData);
-        const compiledSheet = compiler.compile(sheet);
-        const formatted = await prettier.format(compiledSheet, { filepath: "foo.css" });
-        const minified = await mergeCSSRules(formatted);
-        process.stdout.write("/* This file is generated. Do not edit directly */\n",);
-        process.stdout.write(minified)
+        process.stdout.write(css);
         process.stdout.end();
     });
 
@@ -139,51 +129,131 @@ function ensureFileExists(inFilePath: string) {
 }
 
 /**
- * Compile a single style file
+ * Resolve the output CSS path from an anatomy name, matching the designer convention.
  */
-async function compileFile(inFilePath: string, outFilePath: string, stylesName: string, anatomyName: string): Promise<string> {
-    // Ensure inFile exists
-    ensureFileExists(inFilePath)
+function resolveStylesheetOutputPath(inFilePath: string, anatomyName: string, extension: string): string {
+    return path.resolve(path.dirname(inFilePath), `../stylesheets/${kebabCase(anatomyName)}${extension}`);
+}
 
-    const module = await import(pathToFileURL(inFilePath).href);
-    const exportKeys = Object.keys(module);
-
-    const stylesExportName = matcher(exportKeys, stylesName);
-    const anatomyExportsName = matcher(exportKeys, anatomyName);
-
-    if (stylesExportName.length === 0) {
-        console.error(failColor, `No style rules for export matching '${stylesName}'.`)
-        process.exit(1);
-    } else if (stylesExportName.length > 1) {
-        console.warn(
-            warnColor,
-            `Multiple exports for style rules found in ${inFilePath}.\nConsider re-naming exports or fixing the --styles matcher.`
-        );
+function resolveAnatomyName(anatomy: ComponentAnatomy<any, any>, inFilePath: string): string {
+    if (anatomy.name) {
+        return anatomy.name;
     }
 
+    return path.basename(path.dirname(inFilePath));
+}
 
-    if (anatomyExportsName.length === 0) {
-        console.error(failColor, `No anatomy for export matching '${stylesName}'.`)
-        process.exit(1);
-    } else if (stylesExportName.length > 1) {
-        console.warn(
-            warnColor,
-            `Multiple exports for anatomy found in ${inFilePath}.\nConsider re-naming exports or fixing the --anatomy matcher.`
-        );
+function isJsonAnatomyFile(inFilePath: string): boolean {
+    return inFilePath.toLowerCase().endsWith(".json");
+}
+
+async function readJsonAnatomyWithImports(jsonPath: string): Promise<SerializableAnatomyWithImports> {
+    await import("../reference/index.js");
+
+    const data = (await fsp.readFile(jsonPath)).toString();
+    let jsonData = JSON.parse(data) as SerializableAnatomyWithImports;
+
+    if (jsonData.imports) {
+        for (const imp of jsonData.imports) {
+            const impWithExt = imp.toLowerCase().endsWith(".json") ? imp : `${imp}.json`;
+            const impFilePath = path.format({ ...path.parse(path.join(path.parse(jsonPath).dir, impWithExt)) });
+            const impData = (await fsp.readFile(impFilePath)).toString();
+            const impJsonData = JSON.parse(impData) as SerializableAnatomy;
+
+            // If `parts` are in the import, they are either for validation/consistency of that file
+            // or additive to the main anatomy definition.
+            // If the part selector is empty, remove it an use the value from the main anatomy definition.
+            for (const part in impJsonData.parts) {
+                if (impJsonData.parts.hasOwnProperty(part)) {
+                    if (impJsonData.parts[part] === "") {
+                        delete impJsonData.parts[part];
+                    }
+                }
+            }
+
+            jsonData = deepmerge(jsonData, impJsonData);
+        }
     }
 
+    return jsonData;
+}
 
+function createGeneratedStylesheetHeader(inFilePath: string, outFilePath: string): string {
+    const sourcePath = path.relative(path.dirname(outFilePath), inFilePath);
 
-    const styles: AUIStyleSheet = {
-        rules: module[stylesExportName[0]],
-        anatomy: module[anatomyExportsName[0]]
-    }
+    return `/* This file is generated by Adaptive UI from ${sourcePath}. Do not edit directly. */\n`;
+}
 
+async function compileStylesheet(
+    styles: AUIStyleSheet,
+    inFilePath: string,
+    outFilePath: string
+): Promise<string> {
     const compiler = new SheetCompilerImpl();
     const compiled = compiler.compile(styles);
-
     const formatted = await prettier.format(compiled, { filepath: outFilePath });
-    return (`/* This file is generated by Adaptive UI from ${path.relative(outFilePath, inFilePath)} */\n`) + formatted;
+    const minified = await mergeCSSRules(formatted);
+
+    return createGeneratedStylesheetHeader(inFilePath, outFilePath) + minified;
+}
+
+/**
+ * Compile a single input file to CSS.
+ */
+async function compileFile(
+    inFilePath: string,
+    stylesName: string,
+    anatomyName: string,
+    outFilePath?: string
+): Promise<{ css: string, anatomyName: string }> {
+    ensureFileExists(inFilePath);
+
+    const formatPath = outFilePath ?? path.format({ ...path.parse(inFilePath), ext: ".css" });
+    let styles: AUIStyleSheet;
+    let resolvedAnatomyName: string;
+
+    if (isJsonAnatomyFile(inFilePath)) {
+        const jsonData = await readJsonAnatomyWithImports(inFilePath);
+        resolvedAnatomyName = jsonData.name;
+        styles = jsonToAUIStyleSheet(jsonData);
+    } else {
+        const module = await import(pathToFileURL(inFilePath).href);
+        const exportKeys = Object.keys(module);
+
+        const stylesExportName = matcher(exportKeys, stylesName);
+        const anatomyExportsName = matcher(exportKeys, anatomyName);
+
+        if (stylesExportName.length === 0) {
+            console.error(failColor, `No style rules for export matching '${stylesName}'.`)
+            process.exit(1);
+        } else if (stylesExportName.length > 1) {
+            console.warn(
+                warnColor,
+                `Multiple exports for style rules found in ${inFilePath}.\nConsider re-naming exports or fixing the --styles matcher.`
+            );
+        }
+
+
+        if (anatomyExportsName.length === 0) {
+            console.error(failColor, `No anatomy for export matching '${anatomyName}'.`)
+            process.exit(1);
+        } else if (anatomyExportsName.length > 1) {
+            console.warn(
+                warnColor,
+                `Multiple exports for anatomy found in ${inFilePath}.\nConsider re-naming exports or fixing the --anatomy matcher.`
+            );
+        }
+
+        styles = {
+            rules: module[stylesExportName[0]],
+            anatomy: module[anatomyExportsName[0]]
+        };
+        resolvedAnatomyName = resolveAnatomyName(styles.anatomy, inFilePath);
+    }
+
+    const css = await compileStylesheet(styles, inFilePath, formatPath);
+
+    return { css, anatomyName: resolvedAnatomyName };
 }
 
 /**
