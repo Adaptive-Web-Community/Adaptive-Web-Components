@@ -1709,6 +1709,20 @@ export const disabledStyles: Styles = Styles.fromProperties(
 );
 
 /**
+ * Style module for the interactive cursor.
+ *
+ * By default, sets the cursor to "pointer".
+ *
+ * @public
+ */
+export const interactiveCursorStyles: Styles = Styles.fromProperties(
+    {
+        cursor: "pointer",
+    },
+    "styles.interactiveCursor",
+);
+
+/**
  * @public
  */
 export const focusIndicatorStyles: Styles = Styles.fromProperties(

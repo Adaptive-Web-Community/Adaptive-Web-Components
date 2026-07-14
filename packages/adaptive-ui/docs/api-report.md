@@ -116,6 +116,7 @@ export type ColorRecipeParams = {
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     conditions: TConditions;
     context?: string;
+    cursor?: CursorDefinition | false;
     focus?: FocusDefinition<TParts>;
     interactivity?: InteractivityDefinition;
     name?: string;
@@ -245,6 +246,12 @@ export function createTokenSwatch(name: string, intendedFor?: StyleProperty | St
 
 // @public
 export const createTyped: typeof TypedCSSDesignToken.createTyped;
+
+// @public
+export interface CursorDefinition {
+    cursorType?: string;
+    part?: string;
+}
 
 // @public
 export function deltaSwatch(palette: Palette, reference: Paint, delta: number, direction?: PaletteDirection): Color;
@@ -598,6 +605,8 @@ export interface SerializableAnatomy {
     conditions: Record<string, SerializableCondition>;
     // (undocumented)
     context: string;
+    // (undocumented)
+    cursor?: CursorDefinition | false;
     // (undocumented)
     focus?: FocusDefinition<any>;
     // (undocumented)

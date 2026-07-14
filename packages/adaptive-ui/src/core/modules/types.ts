@@ -72,6 +72,13 @@ export interface ComponentAnatomy<TConditions extends ComponentConditions, TPart
      * Description of the focus structure of the component.
      */
     focus?: FocusDefinition<TParts>;
+
+    /**
+     * Description of cursor behavior for interactive elements.
+     * If not provided, defaults to using focus.focusTarget.part with cursor: pointer.
+     * Set to false to explicitly disable automatic cursor generation.
+     */
+    cursor?: CursorDefinition | false;
 }
 
 /**
@@ -284,6 +291,25 @@ export const Focus = {
         } as FocusDefinition<TParts>;
     },
 } as const;
+
+/**
+ * Defines cursor behavior for interactive elements.
+ *
+ * @public
+ */
+export interface CursorDefinition {
+    /**
+     * The part that should receive the cursor style when interactive.
+     * If undefined, uses the same part as focus.focusTarget.part.
+     */
+    part?: string;
+
+    /**
+     * The cursor type to apply (defaults to "pointer").
+     * Common values: "pointer", "text", "move", "grab", "default".
+     */
+    cursorType?: string;
+}
 
 /**
  * Parameters used to evaluate style modules for a component.
@@ -525,6 +551,7 @@ export interface SerializableAnatomy {
     parts: Record<string, string>,
     interactivity?: InteractivityDefinition,
     focus?: FocusDefinition<any>,
+    cursor?: CursorDefinition | false,
     styleRules: SerializableStyleRule[]
 }
 

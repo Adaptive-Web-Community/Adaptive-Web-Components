@@ -278,6 +278,35 @@ export class ElementStylesRenderer {
                 );
             }
 
+            // Apply interactive cursor styles (skip if explicitly disabled)
+            if (anatomy.interactivity?.interactive !== undefined && anatomy.cursor !== false) {
+                // Determine which part gets the cursor (already resolved to selector by aui.ts)
+                let cursorPart: string | undefined;
+                let cursorType = "pointer";
+
+                if (anatomy.cursor && typeof anatomy.cursor === "object") {
+                    // Explicit cursor definition (part already resolved to selector)
+                    cursorPart = anatomy.cursor.part ?? anatomy.focus?.focusTarget.part;
+                    cursorType = anatomy.cursor.cursorType ?? "pointer";
+                } else if (anatomy.focus) {
+                    // Default: use focus target part (already resolved to selector)
+                    cursorPart = anatomy.focus.focusTarget.part;
+                }
+
+                // Only apply if we determined a cursor target or want to apply to root
+                if (cursorPart !== undefined || anatomy.focus) {
+                    globalStyleRules.push(
+                        {
+                            target: {
+                                contextCondition: anatomy.interactivity.interactive,
+                                part: cursorPart,
+                            },
+                            styles: Styles.fromProperties({ cursor: cursorType }),
+                        },
+                    );
+                }
+            }
+
             // If this component can get focus, apply the focus indicator styles.
             if (anatomy.focus) {
                 if (ElementStylesRenderer._focusResetStylesAdjusted && anatomy.focus?.resetTarget) {

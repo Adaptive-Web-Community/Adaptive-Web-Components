@@ -347,6 +347,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             parts: obj.parts,
             interactivity: obj.interactivity,
             focus: obj.focus,
+            cursor: obj.cursor,
         },
         rules: obj.styleRules.map(style => {
             const styles = style.styles?.map(name => {
@@ -394,6 +395,10 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
         if (sheet.anatomy.focus.resetTarget) {
             sheet.anatomy.focus.resetTarget.part = resolvePart(obj, sheet.anatomy.focus.resetTarget.part);
         }
+    }
+
+    if (sheet.anatomy.cursor && typeof sheet.anatomy.cursor === "object") {
+        sheet.anatomy.cursor.part = resolvePart(obj, sheet.anatomy.cursor.part);
     }
 
     return sheet;
