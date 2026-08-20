@@ -1,5 +1,17 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 0.13.2
+
+### Patch Changes
+
+-   [#296](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/296) [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623) Thanks [@bheston](https://github.com/bheston)! - Consolidate style generation and enable bulk update.
+
+-   [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
+
+-   [#298](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/298) [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d) Thanks [@bheston](https://github.com/bheston)! - AUI: Fix part resolution
+
+-   [#289](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/289) [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d) Thanks [@bheston](https://github.com/bheston)! - AUI: Updated layer fill interactive to invert colors to avoid white on white scenario
+
 ## 0.13.1
 
 ### Patch Changes
