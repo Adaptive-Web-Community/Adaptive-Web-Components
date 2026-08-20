@@ -334,8 +334,30 @@ function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule)
     }
 }
 
-function resolvePart(anatomy: SerializableAnatomy, part?: string): string | undefined {
-    return part ? anatomy.parts[part] : undefined;
+type PartResolution =
+    | { kind: "context" }
+    | { kind: "resolved"; selector: string }
+    | { kind: "invalid"; partName: string };
+
+function resolvePart(anatomy: SerializableAnatomy, part?: string): PartResolution {
+    if (!part) {
+        return { kind: "context" };
+    }
+
+    const selector = anatomy.parts[part];
+    if (selector === undefined) {
+        return { kind: "invalid", partName: part };
+    }
+
+    return { kind: "resolved", selector };
+}
+
+function partFromResolution(resolution: PartResolution): string | undefined {
+    return resolution.kind === "resolved" ? resolution.selector : undefined;
+}
+
+function warnUnknownPart(partName: string, context: string): void {
+    console.warn(warnColor, `Unknown part "${partName}" in ${context}, skipping.`);
 }
 
 function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
@@ -349,7 +371,13 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             focus: obj.focus,
             cursor: obj.cursor,
         },
-        rules: obj.styleRules.map(style => {
+        rules: obj.styleRules.flatMap(style => {
+            const partResolution = resolvePart(obj, style.part);
+            if (partResolution.kind === "invalid") {
+                warnUnknownPart(partResolution.partName, "style rule");
+                return [];
+            }
+
             const styles = style.styles?.map(name => {
                 return Styles.Shared.get(name)!;
             });
@@ -377,7 +405,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                 context: obj.context,
                 contextCondition: createCondition(obj, style),
                 stateOnContext: style.stateOnContext,
-                part: resolvePart(obj, style.part),
+                part: partFromResolution(partResolution),
             };
 
             const rule: StyleRule = {
@@ -386,19 +414,38 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                 properties,
             };
 
-            return rule;
+            return [rule];
         }),
     }
 
     if (sheet.anatomy.focus) {
-        sheet.anatomy.focus.focusTarget.part = resolvePart(obj, sheet.anatomy.focus.focusTarget.part);
-        if (sheet.anatomy.focus.resetTarget) {
-            sheet.anatomy.focus.resetTarget.part = resolvePart(obj, sheet.anatomy.focus.resetTarget.part);
+        const focusTargetResolution = resolvePart(obj, sheet.anatomy.focus.focusTarget.part);
+        if (focusTargetResolution.kind === "invalid") {
+            warnUnknownPart(focusTargetResolution.partName, "focus.focusTarget");
+            delete sheet.anatomy.focus;
+        } else {
+            sheet.anatomy.focus.focusTarget.part = partFromResolution(focusTargetResolution);
+
+            if (sheet.anatomy.focus.resetTarget) {
+                const resetTargetResolution = resolvePart(obj, sheet.anatomy.focus.resetTarget.part);
+                if (resetTargetResolution.kind === "invalid") {
+                    warnUnknownPart(resetTargetResolution.partName, "focus.resetTarget");
+                    delete sheet.anatomy.focus.resetTarget;
+                } else {
+                    sheet.anatomy.focus.resetTarget.part = partFromResolution(resetTargetResolution);
+                }
+            }
         }
     }
 
-    if (sheet.anatomy.cursor && typeof sheet.anatomy.cursor === "object") {
-        sheet.anatomy.cursor.part = resolvePart(obj, sheet.anatomy.cursor.part);
+    if (sheet.anatomy.cursor && typeof sheet.anatomy.cursor === "object" && sheet.anatomy.cursor.part) {
+        const cursorPartResolution = resolvePart(obj, sheet.anatomy.cursor.part);
+        if (cursorPartResolution.kind === "invalid") {
+            warnUnknownPart(cursorPartResolution.partName, "cursor");
+            sheet.anatomy.cursor.part = undefined;
+        } else {
+            sheet.anatomy.cursor.part = partFromResolution(cursorPartResolution);
+        }
     }
 
     return sheet;
