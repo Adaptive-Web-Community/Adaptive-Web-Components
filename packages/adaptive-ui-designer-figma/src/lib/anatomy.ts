@@ -294,6 +294,11 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
         }
     }
 
+    if (node.type === "SLOT") {
+        // We'll take styles and properties from the slot node, but not the children.
+        return;
+    }
+
     node.children.forEach((child) => {
         walkNode(child, componentName, condition, anatomy);
     });
