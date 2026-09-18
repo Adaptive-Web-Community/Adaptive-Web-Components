@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@figma/eslint-plugin-figma-plugins": "^0.15.0",
-    "@figma/plugin-typings": "^1.103.0",
+    "@figma/plugin-typings": "^1.138.0",
     "@types/culori": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",

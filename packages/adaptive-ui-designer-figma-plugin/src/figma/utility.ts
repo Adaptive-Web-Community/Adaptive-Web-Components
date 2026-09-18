@@ -32,6 +32,7 @@ export const isDocumentNode = isNodeType<DocumentNode>("DOCUMENT");
 export const isPageNode = isNodeType<PageNode>("PAGE");
 export const isFrameNode = isNodeType<FrameNode>("FRAME");
 export const isGroupNode = isNodeType<GroupNode>("GROUP");
+export const isSlotNode = isNodeType<SlotNode>("SLOT");
 export const isComponentNode = isNodeType<ComponentNode>("COMPONENT");
 export const isComponentSetNode = isNodeType<ComponentSetNode>("COMPONENT_SET");
 export const isInstanceNode = isNodeType<InstanceNode>("INSTANCE");
@@ -46,10 +47,12 @@ export const isTextNode = isNodeType<TextNode>("TEXT");
 
 export function isContainerNode(node: BaseNode): node is
     FrameNode |
+    SlotNode |
     ComponentNode |
     InstanceNode {
     return [
         isFrameNode,
+        isSlotNode,
         isComponentNode,
         isInstanceNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
@@ -58,6 +61,7 @@ export function isContainerNode(node: BaseNode): node is
 export function isLayoutNode(node: BaseNode): node is
     FrameNode |
     GroupNode |
+    SlotNode |
     ComponentSetNode |
     ComponentNode |
     InstanceNode |
@@ -72,6 +76,7 @@ export function isLayoutNode(node: BaseNode): node is
     return [
         isFrameNode,
         isGroupNode,
+        isSlotNode,
         isComponentSetNode,
         isComponentNode,
         isInstanceNode,
@@ -100,6 +105,7 @@ export function isShapeNode(node: BaseNode): node is
 
 export function canHaveIndividualStrokes(node: BaseNode): node is
     FrameNode |
+    SlotNode |
     ComponentNode |
     InstanceNode |
     RectangleNode {
@@ -114,6 +120,7 @@ export function canHaveChildren(node: BaseNode): node is
     PageNode |
     FrameNode |
     GroupNode |
+    SlotNode |
     BooleanOperationNode |
     InstanceNode |
     ComponentNode |
@@ -123,6 +130,7 @@ export function canHaveChildren(node: BaseNode): node is
         isPageNode,
         isFrameNode,
         isGroupNode,
+        isSlotNode,
         isBooleanOperationNode,
         isInstanceNode,
         isComponentNode,
