@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/adaptive-ui-designer-core",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Core infrastructure for the Adaptive UI Designer",
   "main": "dist/esm/index.js",
   "exports": {
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^0.13.0",
+    "@adaptive-web/adaptive-ui": "^0.13.2",
     "@microsoft/fast-foundation": "^3.0.0-alpha.31",
     "tslog": "^4.10.2"
   },
