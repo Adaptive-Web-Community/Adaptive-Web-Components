@@ -106,11 +106,42 @@ describe("Swatch", () => {
 
         const halfTransparent = swatch.toTransparent(0.5);
         expect(halfTransparent).to.be.instanceof(Swatch);
-        expect(halfTransparent.color).to.deep.equal(Object.assign(greyColor, { alpha: 0.5 }));
+        expect(halfTransparent.color).to.deep.equal({ ...greyColor, alpha: 0.5 });
         expect(halfTransparent.toColorString()).to.equal("rgba(128, 128, 128, 0.5)");
         expect(halfTransparent.toString()).to.equal("rgba(128, 128, 128, 0.5)");
         expect(halfTransparent.createCSS()).to.equal("rgba(128, 128, 128, 0.5)");
         expect(halfTransparent.relativeLuminance).to.approximately(0.21, 0.01);
         expect(halfTransparent.contrast(_white)).to.approximately(3.9, 0.1);
+    });
+
+    it("should not modify the original when creating a transparent equivalent", () => {
+        const swatch = Swatch.from(greyObject);
+
+        swatch.toTransparent(0.5);
+
+        expect(swatch.color).to.deep.equal(greyColor);
+    });
+
+    it("should default to fully transparent", () => {
+        const swatch = Swatch.from(greyObject).toTransparent();
+
+        expect(swatch.color.alpha).to.equal(0);
+        expect(swatch.toString()).to.equal("transparent");
+    });
+
+    it("should return undefined when parsing an invalid string", () => {
+        expect(Swatch.parse("not a color")).to.be.undefined;
+    });
+
+    it("should use the intended color of the reference when creating an overlay", () => {
+        const lightGrey = Swatch.from(lightGreyObject);
+        const grey = Swatch.from(greyObject);
+        const overlay = Swatch.asOverlay(lightGrey, grey);
+        // The overlay is semitransparent, so its luminance comes from the intended color.
+        const darker = Swatch.asOverlay(Swatch.from(darkGreyObject), overlay);
+
+        expect(overlay.relativeLuminance).to.equal(lightGrey.relativeLuminance);
+        // Calculated against the intended light grey (0.25 - 0.75) / (0 - 0.75), not the semitransparent white.
+        expect(darker.color).to.deep.equal({ mode: "rgb", r: 0, g: 0, b: 0, alpha: 0.667 });
     });
 });

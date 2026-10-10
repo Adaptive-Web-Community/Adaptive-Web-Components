@@ -1,5 +1,6 @@
 import chai from "chai";
 import { Color } from "../color.js";
+import { PaletteDirectionValue } from "../palette.js";
 import { PaletteRGB } from "../palette-rgb.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { idealColorDeltaSwatchSet } from "./ideal-color-delta-swatch-set.js";
@@ -68,5 +69,30 @@ describe("idealColorDeltaSwatchSet", (): void => {
                 expect(swatch.contrast(largeColors.hover!)).to.be.gte(3);
             });
         });
+    });
+
+    it("should swap the rest and hover positions when the hover delta is lower than the rest delta", (): void => {
+        const normal = idealColorDeltaSwatchSet(neutralPalette, _white, 3, neutralPalette.source, 0, 2, 0, 0, 0);
+        const swapped = idealColorDeltaSwatchSet(neutralPalette, _white, 3, neutralPalette.source, 2, 0, 0, 0, 0);
+
+        // The same two colors are used, but in the opposite states.
+        expect(swapped.rest).to.equal(normal.hover);
+        expect(swapped.hover).to.equal(normal.rest);
+        expect(swapped.rest).not.to.equal(swapped.hover);
+    });
+
+    it("should swap the rest and hover positions in the lighter direction", (): void => {
+        const lighter = PaletteDirectionValue.lighter;
+        const normal = idealColorDeltaSwatchSet(neutralPalette, _black, 3, neutralPalette.source, 0, 2, 0, 0, 0, neutralPalette, lighter);
+        const swapped = idealColorDeltaSwatchSet(neutralPalette, _black, 3, neutralPalette.source, 2, 0, 0, 0, 0, neutralPalette, lighter);
+
+        expect(swapped.rest).to.equal(normal.hover);
+        expect(swapped.hover).to.equal(normal.rest);
+    });
+
+    it("should use the disabled palette and delta from the reference for the disabled state", (): void => {
+        const set = idealColorDeltaSwatchSet(neutralPalette, _white, 3, neutralPalette.source, 0, 2, 0, 0, 3, accentPalette, PaletteDirectionValue.darker);
+
+        expect(set.disabled).to.equal(accentPalette.get(accentPalette.closestIndexOf(_white) + 3));
     });
 });
