@@ -74,6 +74,14 @@ describe("makeSelector", () => {
             );
         });
 
+        it("should not add a disabled condition when the disabled selector is empty", () => {
+            expect(makeSelector({ interactive: ":not(.x)", disabled: "" }, disabled)).to.equal(":host");
+        });
+
+        it("should combine the context condition with an empty disabled selector", () => {
+            expect(makeSelector({ contextCondition: "[a]", disabled: "" }, disabled)).to.equal(":host([a])");
+        });
+
         it("should not add conditions with interactivity of never", () => {
             expect(makeSelector({ ...Interactivity.never }, hover)).to.equal(":host");
         });

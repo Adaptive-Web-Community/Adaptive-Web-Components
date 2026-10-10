@@ -110,6 +110,42 @@ describe("PaletteRGB.from", () => {
         });
     });
 
+    describe("preserveSource", () => {
+        ["#808080", "#0078D4", "#D83B01", "#5C2D91", "#404040", "#c0c0c0"].forEach(hex => {
+            it(`should include the source color ${hex} in the palette`, () => {
+                const source = Color.parse(hex)!;
+                const palette = PaletteRGB.from(source, { preserveSource: true });
+
+                expect(palette.swatches).to.include(source);
+            });
+
+            it(`should span white to black for ${hex}`, () => {
+                const palette = PaletteRGB.from(hex, { preserveSource: true });
+
+                expect(palette.swatches[0].toString()).to.equal("#ffffff");
+                expect(palette.swatches[palette.lastIndex].toString()).to.equal("#000000");
+            });
+
+            it(`should progress from light to dark for ${hex}`, () => {
+                const palette = PaletteRGB.from(hex, { preserveSource: true });
+
+                for (let i = 1; i < palette.swatches.length; i++) {
+                    expect(palette.swatches[i].relativeLuminance, `swatch ${i}`).to.be.lessThan(
+                        palette.swatches[i - 1].relativeLuminance
+                    );
+                }
+            });
+        });
+
+        it("should keep nearly the step contrast between swatches", () => {
+            const palette = PaletteRGB.from("#0078D4", { preserveSource: true });
+
+            for (let i = 1; i < palette.swatches.length; i++) {
+                expect(contrast(palette.swatches[i - 1], palette.swatches[i]), `between ${i - 1} and ${i}`).to.be.gte(1.04);
+            }
+        });
+    });
+
     // TODO: Fix with https://github.com/microsoft/fast/issues/5852
     // it("should create a palette with preserved source", () => {
     //     const options: Partial<PaletteRGBOptions> = {

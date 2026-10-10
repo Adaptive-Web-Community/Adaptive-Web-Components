@@ -1,5 +1,5 @@
 import chai from "chai";
-import { ElementStyles } from "@microsoft/fast-element";
+import { cssDirective, ElementStyles } from "@microsoft/fast-element";
 import { Color } from "../color/color.js";
 import { createTokenDimension, createTokenPaint } from "../token-helpers.js";
 import { ElementStylesRenderer } from "./element-styles-renderer.js";
@@ -104,6 +104,30 @@ describe("ElementStylesRenderer", () => {
             const rules = norm(render(Styles.fromProperties({ cursor: "pointer" }), {}, Interactivity.disabledAttribute));
 
             expect(rules).to.deep.equal([":host { cursor: pointer; }"]);
+        });
+    });
+
+    describe("render with behaviors", () => {
+        it("should attach behaviors added by css directives to the styles", () => {
+            const behavior = { addedCallback: () => undefined, removedCallback: () => undefined } as any;
+            @cssDirective()
+            class BehaviorDirective {
+                createCSS(add: (b: any) => void) {
+                    add(behavior);
+                    return "red";
+                }
+            }
+            const directive = new BehaviorDirective();
+            const result = new ElementStylesRenderer(Styles.fromProperties({ outlineColor: directive })).render({});
+
+            expect(result.behaviors).to.deep.equal([behavior]);
+            expect(norm(result.styles as string[])).to.deep.equal([":host { outline-color: red; }"]);
+        });
+
+        it("should not have behaviors when no directive adds one", () => {
+            const result = new ElementStylesRenderer(Styles.fromProperties({ cursor: "pointer" })).render({});
+
+            expect(result.behaviors).to.be.null;
         });
     });
 
