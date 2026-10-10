@@ -30,6 +30,19 @@ describe("Styles", () => {
             expect(styles.properties!.size).to.equal(0);
         });
 
+        it("should keep a value of zero", () => {
+            const styles = Styles.fromProperties({ opacity: 0 });
+
+            expect(styles.properties!.get("opacity")).to.equal(0);
+            expect(styles.effectiveProperties.get("opacity")).to.equal(0);
+        });
+
+        it("should skip null values", () => {
+            const styles = Styles.fromProperties({ opacity: null as any });
+
+            expect(styles.properties!.size).to.equal(0);
+        });
+
         it("should have no name by default", () => {
             expect(Styles.fromProperties({ cursor: "pointer" }).name).to.be.undefined;
         });

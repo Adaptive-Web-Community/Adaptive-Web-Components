@@ -291,7 +291,8 @@ export class Styles {
             for (const k in propertiesOrStyles) {
                 const key: keyof StyleProperties = k as keyof StyleProperties;
                 const value = propertiesOrStyles[key];
-                if (value) {
+                // Zero is a meaningful value, for example `opacity: 0`.
+                if (value !== undefined && value !== null && value !== "") {
                     this._properties.set(key, value);
                 }
             }

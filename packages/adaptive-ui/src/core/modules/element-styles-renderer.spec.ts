@@ -40,6 +40,12 @@ describe("ElementStylesRenderer", () => {
             expect(rules).to.deep.equal([":host { opacity: 0.5; }"]);
         });
 
+        it("should render a number value of zero", () => {
+            const rules = norm(render(Styles.fromProperties({ opacity: 0 })));
+
+            expect(rules).to.deep.equal([":host { opacity: 0; }"]);
+        });
+
         it("should render a design token as a custom property reference", () => {
             const token = createTokenDimension(uniqueName("dim")).withDefault("4px");
             const rules = norm(render(Styles.fromProperties({ gap: token })));
