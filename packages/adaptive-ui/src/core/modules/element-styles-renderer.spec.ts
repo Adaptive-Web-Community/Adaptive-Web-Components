@@ -113,6 +113,26 @@ describe("ElementStylesRenderer", () => {
         });
     });
 
+    describe("render with multiple renders", () => {
+        it("should render the same result each time", () => {
+            const renderer = new ElementStylesRenderer(Styles.fromProperties({ cursor: "pointer" }));
+            const first = norm(renderer.render({}).styles as string[]);
+            const second = norm(renderer.render({}).styles as string[]);
+
+            expect(first).to.deep.equal([":host { cursor: pointer; }"]);
+            expect(second).to.deep.equal(first);
+        });
+
+        it("should not include rules from a previous render with a different target", () => {
+            const renderer = new ElementStylesRenderer(Styles.fromProperties({ cursor: "pointer" }));
+
+            renderer.render({ context: ".a" });
+            const result = norm(renderer.render({ context: ".b" }).styles as string[]);
+
+            expect(result).to.deep.equal([".b { cursor: pointer; }"]);
+        });
+    });
+
     describe("render with behaviors", () => {
         it("should attach behaviors added by css directives to the styles", () => {
             const behavior = { addedCallback: () => undefined, removedCallback: () => undefined } as any;
