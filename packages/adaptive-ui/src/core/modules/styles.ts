@@ -239,7 +239,7 @@ export const convertStylesToFocusState = (styles: Styles) => {
     const props: StyleProperties = {};
     styles.effectiveProperties.forEach((value, target) => {
         let focusValue: StyleValue | null;
-        if (typeof value === "string" || value instanceof CSSDesignToken) {
+        if (typeof value === "string" || typeof value === "number" || value instanceof CSSDesignToken) {
             focusValue = value;
         } else if (value && typeof (value as any).createCSS === "function") {
             focusValue = value;
@@ -247,7 +247,8 @@ export const convertStylesToFocusState = (styles: Styles) => {
             focusValue = (value as InteractiveValues<any>).focus;
         }
 
-        if (focusValue) {
+        // Zero is a meaningful value, for example `outlineOffset: 0`.
+        if (focusValue !== undefined && focusValue !== null && focusValue !== "") {
             props[target] = {
                 rest: undefined,
                 hover: undefined,

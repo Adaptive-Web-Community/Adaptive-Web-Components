@@ -310,6 +310,24 @@ describe("convertStylesToFocusState", () => {
         expect(value.rest).to.be.undefined;
     });
 
+    it("should keep number values for the focus state", () => {
+        const result = convertStylesToFocusState(Styles.fromProperties({ outlineOffset: 2 }));
+
+        expect((result.effectiveProperties.get("outlineOffset") as any).focus).to.equal(2);
+    });
+
+    it("should keep a value of zero for the focus state", () => {
+        const result = convertStylesToFocusState(
+            Styles.fromProperties({
+                outlineOffset: 0,
+                outlineThickness: { rest: 1, hover: 1, active: 1, focus: 0, disabled: 1 },
+            })
+        );
+
+        expect((result.effectiveProperties.get("outlineOffset") as any).focus).to.equal(0);
+        expect((result.effectiveProperties.get("outlineThickness") as any).focus).to.equal(0);
+    });
+
     it("should keep css directives for the focus state", () => {
         const color = Color.fromRgb(1, 0, 0);
         const result = convertStylesToFocusState(Styles.fromProperties({ outlineColor: color }));
