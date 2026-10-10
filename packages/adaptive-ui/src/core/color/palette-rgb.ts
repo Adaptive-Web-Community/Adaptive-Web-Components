@@ -32,6 +32,17 @@ class HighResolutionPaletteRGB extends BasePalette {
     }
 
     /**
+     * Checks whether every channel of a color is exactly the provided value, with no tolerance.
+     *
+     * @param color - The color to check
+     * @param channelValue - The value for each channel, 0 for black or 1 for white
+     * @returns True if the color is exactly black or white respectively
+     */
+    private static isExactly(color: Rgb, channelValue: 0 | 1): boolean {
+        return color.r === channelValue && color.g === channelValue && color.b === channelValue;
+    }
+
+    /**
      * Scales input from 0 to 100 to 0 to 0.5.
      *
      * @param l - Input number, 0 to 100
@@ -59,8 +70,11 @@ class HighResolutionPaletteRGB extends BasePalette {
         const rgbMin = _black.color;
         const rgbMax = _white.color;
 
-        const lAbove = lab100 === rgbMax ? 0 : 14;
-        const lBelow = lab0 === rgbMin ? 0 : 14;
+        // Only extend past the lab ends when they are not already exactly white or black. This must be an exact
+        // comparison, the palette algorithm relies on the reference palette ending in exactly white (luminance 1)
+        // and black (luminance 0), so a near match would leave an end short.
+        const lAbove = HighResolutionPaletteRGB.isExactly(lab100, 1) ? 0 : 14;
+        const lBelow = HighResolutionPaletteRGB.isExactly(lab0, 0) ? 0 : 14;
 
         // 257 levels max, depending on whether lab0 or lab100 are black or white respectively.
         for (let l = 100 + lAbove; l >= 0 - lBelow; l -= 0.5) {
@@ -147,12 +161,14 @@ export class PaletteRGB extends BasePalette {
      * @param referencePalette - The high resolution palette
      * @param targetPalette - The contrast-based palette to adjust
      * @param direction - The end to adjust
+     * @param preserved - A color in `targetPalette` that must not be moved or removed
      */
     private static adjustEnd(
         swatchContrast: (swatch: Color) => number,
         referencePalette: HighResolutionPaletteRGB,
         targetPalette: Color[],
-        direction: 1 | -1
+        direction: 1 | -1,
+        preserved?: Color
     ) {
         // Careful with the use of referencePalette as only the refSwatches is reversed.
         const refSwatches = direction === -1 ? referencePalette.swatches : referencePalette.reversedSwatches;
@@ -168,7 +184,10 @@ export class PaletteRGB extends BasePalette {
 
         const targetContrast = swatchContrast(targetPalette[targetPalette.length - 2]);
         const actualContrast = contrast(targetPalette[targetPalette.length - 1], targetPalette[targetPalette.length - 2]);
-        if (actualContrast < targetContrast) {
+        // The last two swatches are replaced below, so there is nothing to adjust if one is preserved.
+        const preservedIndex = preserved ? targetPalette.indexOf(preserved) : -1;
+        const endIsPreserved = preservedIndex >= targetPalette.length - 2;
+        if (actualContrast < targetContrast && !endIsPreserved) {
             // Remove last swatch if not sufficient contrast
             targetPalette.pop();
 
@@ -182,13 +201,17 @@ export class PaletteRGB extends BasePalette {
             const safeSecondRefIndex = refIndex(safeSecondSwatch);
             const targetSwatchCurrentRefIndex = refIndex(targetPalette[targetPalette.length - 2]);
             const swatchesToSpace = safeSecondRefIndex - targetSwatchCurrentRefIndex;
-            let space = 1;
-            for (let i = targetPalette.length - swatchesToSpace - 1; i < targetPalette.length; i++) {
+            // The shift grows by one reference step for each swatch toward the end. With a large step contrast
+            // the palette can have fewer swatches than the distance to space, so keep the shifts aligned to the
+            // end of the palette and never move the swatch at the opposite end (index 0). A preserved color
+            // is not moved either, so only swatches after it are shifted.
+            const unclampedStart = targetPalette.length - swatchesToSpace - 1;
+            for (let i = Math.max(1, unclampedStart, preservedIndex + 1); i < targetPalette.length; i++) {
+                const space = i - unclampedStart + 1;
                 const currentRefIndex = refIndex(targetPalette[i]);
                 const nextRefIndex =
                     i === targetPalette.length - 1 ? referencePalette.lastIndex : currentRefIndex + space;
                 targetPalette[i] = refSwatches[nextRefIndex];
-                space++;
             }
         }
 
@@ -219,29 +242,29 @@ export class PaletteRGB extends BasePalette {
         swatches.push(ref);
 
         // Add swatches by contrast toward dark
-        do {
+        while (ref.relativeLuminance > 0) {
             const targetContrast = nextContrast(ref);
             ref = referencePalette.colorContrast(ref, targetContrast, undefined, 1);
             swatches.push(ref);
-        } while (ref.relativeLuminance > 0);
+        }
 
         // Add swatches by contrast toward light
         if (options.preserveSource) {
             ref = source;
-            do {
+            while (ref.relativeLuminance < 1) {
                 // This is off from the dark direction because `ref` here is the darker swatch, probably subtle
                 const targetContrast = nextContrast(ref);
                 ref = referencePalette.colorContrast(ref, targetContrast, undefined, -1);
                 swatches.unshift(ref);
-            } while (ref.relativeLuminance < 1);
+            }
         }
 
         // Cleanup dark end
-        this.adjustEnd(nextContrast, referencePalette, swatches, -1);
+        this.adjustEnd(nextContrast, referencePalette, swatches, -1, options.preserveSource ? source : undefined);
 
         // Cleanup light end
         if (options.preserveSource) {
-            this.adjustEnd(nextContrast, referencePalette, swatches, 1);
+            this.adjustEnd(nextContrast, referencePalette, swatches, 1, source);
         }
 
         return swatches;

@@ -239,7 +239,7 @@ export const convertStylesToFocusState = (styles: Styles) => {
     const props: StyleProperties = {};
     styles.effectiveProperties.forEach((value, target) => {
         let focusValue: StyleValue | null;
-        if (typeof value === "string" || value instanceof CSSDesignToken) {
+        if (typeof value === "string" || typeof value === "number" || value instanceof CSSDesignToken) {
             focusValue = value;
         } else if (value && typeof (value as any).createCSS === "function") {
             focusValue = value;
@@ -247,7 +247,8 @@ export const convertStylesToFocusState = (styles: Styles) => {
             focusValue = (value as InteractiveValues<any>).focus;
         }
 
-        if (focusValue) {
+        // Zero is a meaningful value, for example `outlineOffset: 0`.
+        if (focusValue !== undefined && focusValue !== null && focusValue !== "") {
             props[target] = {
                 rest: undefined,
                 hover: undefined,
@@ -291,7 +292,8 @@ export class Styles {
             for (const k in propertiesOrStyles) {
                 const key: keyof StyleProperties = k as keyof StyleProperties;
                 const value = propertiesOrStyles[key];
-                if (value) {
+                // Zero is a meaningful value, for example `opacity: 0`.
+                if (value !== undefined && value !== null && value !== "") {
                     this._properties.set(key, value);
                 }
             }
@@ -393,10 +395,12 @@ export class Styles {
      * @returns A new Styles object representing the composed styles.
      */
     public static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles {
+        // Copy so the caller's array is not modified here or by `appendComposed`.
+        const composed = [...styles];
         if (properties) {
-            styles.push(Styles.fromProperties(properties));
+            composed.push(Styles.fromProperties(properties));
         }
-        return new Styles(name, styles);
+        return new Styles(name, composed);
     }
 
     /**

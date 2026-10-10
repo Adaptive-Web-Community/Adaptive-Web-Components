@@ -40,6 +40,12 @@ describe("ElementStylesRenderer", () => {
             expect(rules).to.deep.equal([":host { opacity: 0.5; }"]);
         });
 
+        it("should render a number value of zero", () => {
+            const rules = norm(render(Styles.fromProperties({ opacity: 0 })));
+
+            expect(rules).to.deep.equal([":host { opacity: 0; }"]);
+        });
+
         it("should render a design token as a custom property reference", () => {
             const token = createTokenDimension(uniqueName("dim")).withDefault("4px");
             const rules = norm(render(Styles.fromProperties({ gap: token })));
@@ -104,6 +110,26 @@ describe("ElementStylesRenderer", () => {
             const rules = norm(render(Styles.fromProperties({ cursor: "pointer" }), {}, Interactivity.disabledAttribute));
 
             expect(rules).to.deep.equal([":host { cursor: pointer; }"]);
+        });
+    });
+
+    describe("render with multiple renders", () => {
+        it("should render the same result each time", () => {
+            const renderer = new ElementStylesRenderer(Styles.fromProperties({ cursor: "pointer" }));
+            const first = norm(renderer.render({}).styles as string[]);
+            const second = norm(renderer.render({}).styles as string[]);
+
+            expect(first).to.deep.equal([":host { cursor: pointer; }"]);
+            expect(second).to.deep.equal(first);
+        });
+
+        it("should not include rules from a previous render with a different target", () => {
+            const renderer = new ElementStylesRenderer(Styles.fromProperties({ cursor: "pointer" }));
+
+            renderer.render({ context: ".a" });
+            const result = norm(renderer.render({ context: ".b" }).styles as string[]);
+
+            expect(result).to.deep.equal([".b { cursor: pointer; }"]);
         });
     });
 

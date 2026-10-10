@@ -56,6 +56,31 @@ describe("PaletteRGB.from", () => {
         }
     });
 
+    [1.2, 1.5, 2, 3].forEach(stepContrast => {
+        ["#808080", "#0078D4", "#F2C812", "#D83B01", "#80DEEA"].forEach(hex => {
+            it(`should create a palette for ${hex} with a large step contrast of ${stepContrast}`, () => {
+                const palette = PaletteRGB.from(hex, { stepContrast });
+
+                expect(palette.swatches.length).to.be.gte(3);
+                expect(palette.swatches[0].toString()).to.equal("#ffffff");
+                expect(palette.swatches[palette.lastIndex].toString()).to.equal("#000000");
+                for (let i = 1; i < palette.swatches.length; i++) {
+                    expect(palette.swatches[i].relativeLuminance, `swatch ${i}`).to.be.lessThan(
+                        palette.swatches[i - 1].relativeLuminance
+                    );
+                }
+            });
+        });
+    });
+
+    it("should have contrast between swatches close to a large step contrast", () => {
+        const palette = PaletteRGB.from("#808080", { stepContrast: 1.5 });
+
+        for (let i = 1; i < palette.swatches.length; i++) {
+            expect(contrast(palette.swatches[i - 1], palette.swatches[i]), `between ${i - 1} and ${i}`).to.be.gte(1.45);
+        }
+    });
+
     it("should maintain at least the step contrast between every swatch", () => {
         const palette = PaletteRGB.from("#0078D4");
 
@@ -87,6 +112,27 @@ describe("PaletteRGB.from", () => {
         expect(withEmptyOptions.swatches.map(s => s.toString())).to.deep.equal(
             withoutOptions.swatches.map(s => s.toString())
         );
+    });
+
+    it("should not have duplicate swatches for neutral sources, where the lab end is exactly black", () => {
+        for (let value = 0; value < 256; value += 17) {
+            const hex = "#" + value.toString(16).padStart(2, "0").repeat(3);
+            const colors = PaletteRGB.from(hex).swatches.map(s => s.toString());
+
+            expect(new Set(colors).size, hex).to.equal(colors.length);
+            expect(colors[0], hex).to.equal("#ffffff");
+            expect(colors[colors.length - 1], hex).to.equal("#000000");
+        }
+    });
+
+    it("should reach exact white and black at the ends for any source", () => {
+        // The ends of the palette must be exact white and black for any source, including chromatic ones.
+        ["#0078D4", "#F2C812", "#808080", "#ffffff", "#000000"].forEach(hex => {
+            const palette = PaletteRGB.from(hex);
+
+            expect(palette.swatches[0].relativeLuminance, hex).to.equal(1);
+            expect(palette.swatches[palette.lastIndex].relativeLuminance, hex).to.equal(0);
+        });
     });
 
     it("should freeze the swatches", () => {
@@ -134,6 +180,34 @@ describe("PaletteRGB.from", () => {
                         palette.swatches[i - 1].relativeLuminance
                     );
                 }
+            });
+        });
+
+        [1.2, 1.5, 2].forEach(stepContrast => {
+            ["#808080", "#0078D4", "#F2C812", "#5C2D91", "#80DEEA"].forEach(hex => {
+                it(`should include the source ${hex} with a step contrast of ${stepContrast}`, () => {
+                    const source = Color.parse(hex)!;
+                    const palette = PaletteRGB.from(source, { preserveSource: true, stepContrast });
+
+                    expect(palette.swatches).to.include(source);
+                    expect(palette.swatches[0].toString()).to.equal("#ffffff");
+                    for (let i = 1; i < palette.swatches.length; i++) {
+                        expect(palette.swatches[i].relativeLuminance, `swatch ${i}`).to.be.lessThan(
+                            palette.swatches[i - 1].relativeLuminance
+                        );
+                    }
+                });
+            });
+        });
+
+        it("should not duplicate a black or white source", () => {
+            ["#000000", "#ffffff"].forEach(hex => {
+                const palette = PaletteRGB.from(hex, { preserveSource: true });
+                const colors = palette.swatches.map(s => s.toString());
+
+                expect(new Set(colors).size, hex).to.equal(colors.length);
+                expect(colors[0], hex).to.equal("#ffffff");
+                expect(colors[colors.length - 1], hex).to.equal("#000000");
             });
         });
 

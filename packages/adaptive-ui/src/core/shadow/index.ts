@@ -37,8 +37,9 @@ export class Shadow implements CSSDirective {
             `${this.xOffset}px`,
             `${this.yOffset}px`,
         ];
-        if (this.blurRadius) {
-            values.push(`${this.blurRadius}px`);
+        // The spread is positional, so a blur radius must be written when there is a spread.
+        if (this.blurRadius || this.spread) {
+            values.push(`${this.blurRadius ?? 0}px`);
         }
         if (this.spread) {
             values.push(`${this.spread}px`);

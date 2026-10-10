@@ -30,6 +30,19 @@ describe("Styles", () => {
             expect(styles.properties!.size).to.equal(0);
         });
 
+        it("should keep a value of zero", () => {
+            const styles = Styles.fromProperties({ opacity: 0 });
+
+            expect(styles.properties!.get("opacity")).to.equal(0);
+            expect(styles.effectiveProperties.get("opacity")).to.equal(0);
+        });
+
+        it("should skip null values", () => {
+            const styles = Styles.fromProperties({ opacity: null as any });
+
+            expect(styles.properties!.size).to.equal(0);
+        });
+
         it("should have no name by default", () => {
             expect(Styles.fromProperties({ cursor: "pointer" }).name).to.be.undefined;
         });
@@ -149,6 +162,17 @@ describe("Styles", () => {
             expect(composed.effectiveProperties.get("paddingTop")).to.equal("4px");
         });
 
+        it("should not modify the provided array", () => {
+            const a = Styles.fromProperties({ cursor: "pointer" });
+            const array = [a];
+
+            const composed = Styles.compose(array, { opacity: "0.5" });
+            composed.appendComposed(Styles.fromProperties({ gap: "4px" }));
+
+            expect(array).to.deep.equal([a]);
+            expect(composed.composed).to.have.length(3);
+        });
+
         it("should register with a name", () => {
             const name = uniqueName();
             const composed = Styles.compose([], undefined, name);
@@ -193,6 +217,15 @@ describe("Styles", () => {
             const result = Styles.fromDeclaration({});
 
             expect(result.effectiveProperties.size).to.equal(0);
+        });
+
+        it("should not modify the declaration's styles array", () => {
+            const a = Styles.fromProperties({ cursor: "pointer" });
+            const array = [a];
+
+            Styles.fromDeclaration({ styles: array, properties: { opacity: "1" } });
+
+            expect(array).to.deep.equal([a]);
         });
 
         it("should accept a name", () => {
@@ -275,6 +308,24 @@ describe("convertStylesToFocusState", () => {
 
         expect(value.focus).to.equal(token);
         expect(value.rest).to.be.undefined;
+    });
+
+    it("should keep number values for the focus state", () => {
+        const result = convertStylesToFocusState(Styles.fromProperties({ outlineOffset: 2 }));
+
+        expect((result.effectiveProperties.get("outlineOffset") as any).focus).to.equal(2);
+    });
+
+    it("should keep a value of zero for the focus state", () => {
+        const result = convertStylesToFocusState(
+            Styles.fromProperties({
+                outlineOffset: 0,
+                outlineThickness: { rest: 1, hover: 1, active: 1, focus: 0, disabled: 1 },
+            })
+        );
+
+        expect((result.effectiveProperties.get("outlineOffset") as any).focus).to.equal(0);
+        expect((result.effectiveProperties.get("outlineThickness") as any).focus).to.equal(0);
     });
 
     it("should keep css directives for the focus state", () => {

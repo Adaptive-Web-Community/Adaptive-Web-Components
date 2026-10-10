@@ -45,11 +45,6 @@ export class ElementStylesRenderer {
     private readonly _evaluateFunctions: StyleModuleEvaluate[];
 
     /**
-     * The rules produced by evaluating the provided `Styles`.
-     */
-    private readonly _rules: Map<string, Array<CSSDirective>> = new Map();
-
-    /**
      * Creates a new ElementStylesRenderer.
      *
      * @param styles - A collection of individual styling properties.
@@ -151,21 +146,23 @@ export class ElementStylesRenderer {
         return modules;
     }
 
-    private appendRule(selector: string, declarations: DeclarationMap) {
+    private static appendRule(rules: Map<string, Array<CSSDirective>>, selector: string, declarations: DeclarationMap) {
         const cssProperties = new Array(...declarations.entries()).map(([property, value]) => {
             const valueToUse = typeof value === "number" ? value.toString() : value;
             return css.partial`${property}: ${valueToUse};`;
         });
-        if (this._rules.has(selector)) {
+        if (rules.has(selector)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this._rules.get(selector)!.push(...cssProperties);
+            rules.get(selector)!.push(...cssProperties);
         } else {
-            this._rules.set(selector, cssProperties);
+            rules.set(selector, cssProperties);
         }
     }
 
     /**
      * Convert style definitions to `ElementStyles`.
+     *
+     * Each call is independent, so a renderer can be rendered more than once, for example with different targets.
      *
      * @param target - Parameters for creating the selectors for component states.
      * @param interactivity - The interactivity configuration for the component.
@@ -179,11 +176,12 @@ export class ElementStylesRenderer {
         }
         const params: StyleModuleEvaluateParameters = Object.assign({}, effectiveInteractivity, target);
 
-        // Combine the selectors
+        // Combine the selectors. Rules are local so each render is independent.
+        const rules: Map<string, Array<CSSDirective>> = new Map();
         this._evaluateFunctions.forEach((module) => {
             const rule = module(params);
             for (const ruleEntry of rule) {
-                this.appendRule(ruleEntry[0], ruleEntry[1]);
+                ElementStylesRenderer.appendRule(rules, ruleEntry[0], ruleEntry[1]);
             }
         });
 
@@ -195,7 +193,7 @@ export class ElementStylesRenderer {
 
         const strings = [];
 
-        for (const entry of this._rules) {
+        for (const entry of rules) {
             const properties = entry[1].map((prop) => prop.createCSS(add)).join(" ");
             const rule = `${entry[0]} { ${properties} }`;
             strings.push(rule);
