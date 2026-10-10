@@ -134,6 +134,7 @@ export class BasePalette<T extends Color = Color> implements Palette<T> {
      * {@inheritdoc Palette.get}
      */
     get(index: number): T {
-        return this.swatches[index] || this.swatches[this.clamp(index, 0, this.lastIndex)];
+        // Round so a fractional index resolves to a swatch rather than `undefined`.
+        return this.swatches[this.clamp(Math.round(index), 0, this.lastIndex)];
     }
 }

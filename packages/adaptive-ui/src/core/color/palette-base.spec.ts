@@ -53,6 +53,13 @@ describe("BasePalette", () => {
             expect(palette.get(100)).to.equal(swatches[10]);
         });
 
+        it("should round a fractional index to the nearest swatch", () => {
+            expect(palette.get(2.4)).to.equal(swatches[2]);
+            expect(palette.get(2.6)).to.equal(swatches[3]);
+            expect(palette.get(-0.4)).to.equal(swatches[0]);
+            expect(palette.get(10.4)).to.equal(swatches[10]);
+        });
+
         it("should clamp NaN to the first swatch", () => {
             expect(palette.get(Number.NaN)).to.equal(swatches[0]);
         });
@@ -116,6 +123,11 @@ describe("BasePalette", () => {
 
         it("should invert when the delta is negative", () => {
             expect(palette.delta(swatches[3], -2, PaletteDirectionValue.darker)).to.equal(swatches[1]);
+        });
+
+        it("should round a fractional delta to a swatch", () => {
+            expect(palette.delta(swatches[3], 1.5, PaletteDirectionValue.darker)).to.equal(swatches[5]);
+            expect(palette.delta(swatches[3], 1.4, PaletteDirectionValue.darker)).to.equal(swatches[4]);
         });
 
         it("should clamp at the ends of the palette", () => {
