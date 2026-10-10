@@ -1,0 +1,8 @@
+{
+    "all": true,
+    "src": ["dist/esm"],
+    "include": ["dist/esm/**/*.js"],
+    "exclude": ["**/*.spec.js"],
+    "reporter": ["text-summary", "html"],
+    "reports-dir": "coverage"
+}
