@@ -1,0 +1,10 @@
+{
+  "context": ".stress-no-name",
+  "conditions": {},
+  "parts": {},
+  "styleRules": [
+    {
+      "properties": { "opacity": "1" }
+    }
+  ]
+}

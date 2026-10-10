@@ -1,0 +1,92 @@
+{
+  "imports": [
+    "_input-common",
+    "_input-read-only-text",
+    "_input-validation"
+  ],
+  "name": "Text Field",
+  "context": ".text-field",
+  "conditions": {
+    "Placeholder": ".placeholder"
+  },
+  "parts": {
+    "Label": ".label",
+    "Required": ".required",
+    "Info toggletip": ".info-toggletip",
+    "Control container": ".control-container",
+    "Control": ".control",
+    "Field": ".field",
+    "Placeholder": ".field::placeholder",
+    "Native Element": ".field"
+  },
+  "interactivity": {
+    "interactive": ":not(.disabled):not(.read-only)",
+    "disabled": ".disabled",
+    "hover": ".hover",
+    "active": ".active",
+    "focus": ".focus"
+  },
+  "focus": {
+    "focusTarget": {
+      "part": "Control",
+      "focus": ":focus-within",
+      "ignoreInteractivity": true
+    },
+    "resetTarget": {
+      "part": "Field",
+      "focus": ":focus-visible",
+      "ignoreInteractivity": true
+    }
+  },
+  "cursor": {
+    "cursorType": "text"
+  },
+  "styleRules": [
+    {
+      "properties": {
+        "gap": "density.control.vertical.gap"
+      }
+    },
+    {
+      "part": "Label",
+      "styles": [
+        "styles.text-label"
+      ],
+      "properties": {
+        "gap": "density.itemContainer.horizontal.gap"
+      }
+    },
+    {
+      "part": "Required",
+      "styles": [
+        "styles.text-plain",
+        "color.critical-foreground-readable-control"
+      ]
+    },
+    {
+      "part": "Control container",
+      "properties": {
+        "gap": "density.itemContainer.horizontal.gap"
+      }
+    },
+    {
+      "part": "Control",
+      "styles": [
+        "styles.input-control",
+        "density.autofill-outer"
+      ]
+    },
+    {
+      "part": "Field",
+      "styles": [
+        "density.autofill-inner"
+      ]
+    },
+    {
+      "part": "Placeholder",
+      "styles": [
+        "color.neutral-foreground-readable-element"
+      ]
+    }
+  ]
+}

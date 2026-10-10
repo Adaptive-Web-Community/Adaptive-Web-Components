@@ -1,0 +1,50 @@
+{
+  "name": "Stress State On Context",
+  "context": ".stress-state-on-context",
+  "conditions": {
+    "Expanded": "[aria-expanded='true']"
+  },
+  "parts": {
+    "Header": ".header",
+    "Icon": ".icon"
+  },
+  "interactivity": {
+    "interactive": ":not(.disabled)",
+    "disabled": ".disabled",
+    "hover": ".is-hover",
+    "active": ".is-active",
+    "focus": ".is-focus"
+  },
+  "focus": {
+    "focusTarget": {
+      "part": "Header",
+      "stateOnContext": true,
+      "ignoreInteractivity": true
+    },
+    "resetTarget": {
+      "part": "Header",
+      "ignoreInteractivity": true
+    }
+  },
+  "cursor": {
+    "part": "Icon",
+    "cursorType": "grab"
+  },
+  "styleRules": [
+    {
+      "part": "Header",
+      "stateOnContext": true,
+      "properties": { "backgroundFill": "color.neutral.fill.stealth" }
+    },
+    {
+      "part": "Header",
+      "properties": { "foregroundFill": "color.neutral.stroke.readable" }
+    },
+    {
+      "contextCondition": { "Expanded": true },
+      "part": "Icon",
+      "stateOnContext": true,
+      "properties": { "backgroundFill": "color.accent.fill.subtle" }
+    }
+  ]
+}

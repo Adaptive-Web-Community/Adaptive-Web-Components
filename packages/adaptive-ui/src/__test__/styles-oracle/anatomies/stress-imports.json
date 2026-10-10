@@ -1,0 +1,28 @@
+{
+  "imports": ["_stress-base"],
+  "name": "Stress Imports",
+  "context": ".stress-imports",
+  "conditions": {
+    "Open": ".open"
+  },
+  "parts": {
+    "Footer": ".footer-from-main",
+    "Body": ".body"
+  },
+  "styleRules": [
+    {
+      "part": "Footer",
+      "styles": ["styles.text-plain"]
+    },
+    {
+      "contextCondition": { "Open": true },
+      "part": "Body",
+      "properties": { "opacity": "1" }
+    },
+    {
+      "contextCondition": { "Open": false },
+      "part": "Body",
+      "properties": { "opacity": "0" }
+    }
+  ]
+}

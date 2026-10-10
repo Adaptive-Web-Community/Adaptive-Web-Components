@@ -31,6 +31,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "start": "tsc --watch",
     "test": "npm run lint && npm run build && npm run unit-tests",
+    "styles:oracle": "node ./scripts/styles-oracle.mjs",
+    "styles:oracle:update": "node ./scripts/styles-oracle.mjs --update",
     "unit-tests": "mocha",
     "unit-tests:update-snapshots": "mocha --update-snapshots",
     "unit-tests:watch": "mocha --watch",

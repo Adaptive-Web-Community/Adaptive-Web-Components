@@ -21,3 +21,6 @@ tsconfig.json
 # cache
 .rollupcache
 temp
+
+# Scripts
+scripts/

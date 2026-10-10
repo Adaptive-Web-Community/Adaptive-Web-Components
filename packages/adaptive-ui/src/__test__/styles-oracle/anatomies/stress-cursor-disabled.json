@@ -1,0 +1,25 @@
+{
+  "name": "Stress Cursor Disabled",
+  "context": ".stress-cursor-disabled",
+  "conditions": {},
+  "parts": {
+    "Control": ".control"
+  },
+  "interactivity": {
+    "interactive": ":not(:disabled)",
+    "disabled": ":disabled"
+  },
+  "focus": {
+    "focusTarget": {
+      "part": "Control",
+      "ignoreInteractivity": true
+    }
+  },
+  "cursor": false,
+  "styleRules": [
+    {
+      "part": "Control",
+      "properties": { "backgroundFill": "color.neutral.fill.subtle" }
+    }
+  ]
+}

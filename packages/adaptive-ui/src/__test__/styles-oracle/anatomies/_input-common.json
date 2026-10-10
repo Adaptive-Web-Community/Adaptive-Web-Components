@@ -1,0 +1,14 @@
+{
+  "parts": {
+    "Description": ".description"
+  },
+  "styleRules": [
+    {
+      "part": "Description",
+      "styles": [
+        "styles.text-plain",
+        "color.neutral-foreground-readable-element"
+      ]
+    }
+  ]
+}

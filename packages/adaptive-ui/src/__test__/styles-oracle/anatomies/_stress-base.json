@@ -1,0 +1,21 @@
+{
+  "conditions": {
+    "Compact": ".compact"
+  },
+  "parts": {
+    "Header": ".header",
+    "Footer": "",
+    "Body": ".body-from-import"
+  },
+  "styleRules": [
+    {
+      "part": "Header",
+      "properties": { "fontWeight": "typography.fontWeight.default" }
+    },
+    {
+      "contextCondition": { "Compact": true },
+      "part": "Header",
+      "properties": { "gap": "density.text.horizontal.gap" }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Stress Unknown Reset Target",
+  "context": ".stress-unknown-reset-target",
+  "conditions": {},
+  "parts": {
+    "Known": ".known"
+  },
+  "interactivity": {
+    "interactive": ":not(.disabled)",
+    "disabled": ".disabled"
+  },
+  "focus": {
+    "focusTarget": {
+      "part": "Known",
+      "ignoreInteractivity": true
+    },
+    "resetTarget": {
+      "part": "Missing reset target",
+      "ignoreInteractivity": true
+    }
+  },
+  "styleRules": [
+    {
+      "part": "Known",
+      "properties": { "opacity": "1" }
+    }
+  ]
+}

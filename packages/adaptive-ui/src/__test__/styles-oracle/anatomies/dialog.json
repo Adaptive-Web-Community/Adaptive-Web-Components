@@ -1,0 +1,68 @@
+{
+  "name": "Dialog",
+  "context": ".dialog",
+  "conditions": {
+    "Purpose": {
+      "Normal": ".purpose-normal",
+      "Navigation": ".purpose-navigation",
+      "Support": ".purpose-support",
+      "Canvas": ".purpose-canvas"
+    }
+  },
+  "parts": {
+    "Control": ".control"
+  },
+  "styleRules": [
+    {
+      "part": "Control",
+      "styles": [
+        "shape.layer"
+      ],
+      "properties": {
+        "borderFill": "color.neutral.stroke.subtle.rest",
+        "borderStyle": "solid",
+        "borderThickness": "shape.strokeThickness.default",
+        "minHeight": "min(480px, 100vh)",
+        "maxHeight": "min(720px, 100vh)"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Normal"
+      },
+      "part": "Control",
+      "properties": {
+        "width": "min(602px, 100vw)"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Navigation"
+      },
+      "part": "Control",
+      "properties": {
+        "width": "min(843px, 100vw)"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Support"
+      },
+      "part": "Control",
+      "properties": {
+        "width": "min(843px, 100vw)"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Canvas"
+      },
+      "part": "Control",
+      "properties": {
+        "width": "min(100vw, max(843px, calc(100vw - 64px)))",
+        "height": "min(100vh, max(480px, calc(100vh - 64px)))",
+        "maxHeight": "unset"
+      }
+    }
+  ]
+}

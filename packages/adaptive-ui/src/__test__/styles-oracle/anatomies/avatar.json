@@ -1,0 +1,114 @@
+{
+  "name": "Avatar",
+  "context": ".avatar",
+  "conditions": {
+    "Purpose": {
+      "Title": ".purpose-title",
+      "Preview": ".purpose-preview",
+      "Control": ".purpose-control",
+      "In control": ".purpose-in-control"
+    }
+  },
+  "parts": {
+    "Content": ".content"
+  },
+  "styleRules": [
+    {
+      "properties": {
+        "layoutInner": "flex",
+        "layoutCrossAxisAlignItems": "center",
+        "layoutMainAxisAlignItems": "center"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Title"
+      },
+      "properties": {
+        "width": "72px",
+        "height": "72px"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Preview"
+      },
+      "properties": {
+        "width": "128px",
+        "height": "128px"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Control"
+      },
+      "properties": {
+        "width": "36px",
+        "height": "36px"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "In control"
+      },
+      "properties": {
+        "height": "24px",
+        "width": "24px",
+        "marginTop": "-4px",
+        "marginBottom": "-4px"
+      }
+    },
+    {
+      "part": "Content",
+      "styles": [
+        "shape.round"
+      ],
+      "properties": {
+        "layoutInner": "flex",
+        "layoutCrossAxisAlignItems": "center",
+        "layoutMainAxisAlignItems": "center",
+        "backgroundFill": "#cccccc",
+        "foregroundFill": "#ffffff"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Title"
+      },
+      "part": "Content",
+      "styles": [
+        "text.type-ramp-plus-5"
+      ]
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Preview"
+      },
+      "part": "Content",
+      "properties": {
+        "fontFamily": "typography.fontFamily.default",
+        "fontSize": "64px",
+        "lineHeight": "78px",
+        "fontWeight": "typography.fontWeight.default"
+      }
+    },
+    {
+      "contextCondition": {
+        "Purpose": "Control"
+      },
+      "part": "Content",
+      "styles": [
+        "text.type-ramp-plus-2"
+      ]
+    },
+    {
+      "contextCondition": {
+        "Purpose": "In control"
+      },
+      "part": "Content",
+      "styles": [
+        "text.type-ramp-base"
+      ]
+    }
+  ]
+}
