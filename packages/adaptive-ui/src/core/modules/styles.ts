@@ -394,10 +394,12 @@ export class Styles {
      * @returns A new Styles object representing the composed styles.
      */
     public static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles {
+        // Copy so the caller's array is not modified here or by `appendComposed`.
+        const composed = [...styles];
         if (properties) {
-            styles.push(Styles.fromProperties(properties));
+            composed.push(Styles.fromProperties(properties));
         }
-        return new Styles(name, styles);
+        return new Styles(name, composed);
     }
 
     /**

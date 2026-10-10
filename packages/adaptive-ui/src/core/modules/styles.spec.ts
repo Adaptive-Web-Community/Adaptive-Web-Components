@@ -162,6 +162,17 @@ describe("Styles", () => {
             expect(composed.effectiveProperties.get("paddingTop")).to.equal("4px");
         });
 
+        it("should not modify the provided array", () => {
+            const a = Styles.fromProperties({ cursor: "pointer" });
+            const array = [a];
+
+            const composed = Styles.compose(array, { opacity: "0.5" });
+            composed.appendComposed(Styles.fromProperties({ gap: "4px" }));
+
+            expect(array).to.deep.equal([a]);
+            expect(composed.composed).to.have.length(3);
+        });
+
         it("should register with a name", () => {
             const name = uniqueName();
             const composed = Styles.compose([], undefined, name);
@@ -206,6 +217,15 @@ describe("Styles", () => {
             const result = Styles.fromDeclaration({});
 
             expect(result.effectiveProperties.size).to.equal(0);
+        });
+
+        it("should not modify the declaration's styles array", () => {
+            const a = Styles.fromProperties({ cursor: "pointer" });
+            const array = [a];
+
+            Styles.fromDeclaration({ styles: array, properties: { opacity: "1" } });
+
+            expect(array).to.deep.equal([a]);
         });
 
         it("should accept a name", () => {
