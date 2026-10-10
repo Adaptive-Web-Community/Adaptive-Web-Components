@@ -32,6 +32,15 @@ describe("Shadow", () => {
         expect(new Shadow(black, 1, 2, 3, 4).createCSS()).to.equal("1px 2px 3px 4px #000000");
     });
 
+    it("should write a zero blur radius when there is a spread", () => {
+        expect(new Shadow(black, 1, 2, 0, 3).createCSS()).to.equal("1px 2px 0px 3px #000000");
+        expect(new Shadow(black, 1, 2, undefined, 3).createCSS()).to.equal("1px 2px 0px 3px #000000");
+    });
+
+    it("should omit a zero blur radius and spread", () => {
+        expect(new Shadow(black, 1, 2, 0, 0).createCSS()).to.equal("1px 2px #000000");
+    });
+
     it("should support negative values", () => {
         expect(new Shadow(black, -1, -2, 3, -4).createCSS()).to.equal("-1px -2px 3px -4px #000000");
     });
