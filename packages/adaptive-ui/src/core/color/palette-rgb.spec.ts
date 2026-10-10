@@ -89,6 +89,27 @@ describe("PaletteRGB.from", () => {
         );
     });
 
+    it("should not have duplicate swatches for neutral sources, where the lab end is exactly black", () => {
+        for (let value = 0; value < 256; value += 17) {
+            const hex = "#" + value.toString(16).padStart(2, "0").repeat(3);
+            const colors = PaletteRGB.from(hex).swatches.map(s => s.toString());
+
+            expect(new Set(colors).size, hex).to.equal(colors.length);
+            expect(colors[0], hex).to.equal("#ffffff");
+            expect(colors[colors.length - 1], hex).to.equal("#000000");
+        }
+    });
+
+    it("should reach exact white and black at the ends for any source", () => {
+        // The ends of the palette must be exact white and black for any source, including chromatic ones.
+        ["#0078D4", "#F2C812", "#808080", "#ffffff", "#000000"].forEach(hex => {
+            const palette = PaletteRGB.from(hex);
+
+            expect(palette.swatches[0].relativeLuminance, hex).to.equal(1);
+            expect(palette.swatches[palette.lastIndex].relativeLuminance, hex).to.equal(0);
+        });
+    });
+
     it("should freeze the swatches", () => {
         expect(Object.isFrozen(PaletteRGB.from(greyColor).swatches)).to.be.true;
     });

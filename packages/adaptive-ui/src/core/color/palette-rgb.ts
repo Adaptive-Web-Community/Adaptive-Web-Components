@@ -32,6 +32,17 @@ class HighResolutionPaletteRGB extends BasePalette {
     }
 
     /**
+     * Checks whether every channel of a color is exactly the provided value, with no tolerance.
+     *
+     * @param color - The color to check
+     * @param channelValue - The value for each channel, 0 for black or 1 for white
+     * @returns True if the color is exactly black or white respectively
+     */
+    private static isExactly(color: Rgb, channelValue: 0 | 1): boolean {
+        return color.r === channelValue && color.g === channelValue && color.b === channelValue;
+    }
+
+    /**
      * Scales input from 0 to 100 to 0 to 0.5.
      *
      * @param l - Input number, 0 to 100
@@ -59,8 +70,11 @@ class HighResolutionPaletteRGB extends BasePalette {
         const rgbMin = _black.color;
         const rgbMax = _white.color;
 
-        const lAbove = lab100 === rgbMax ? 0 : 14;
-        const lBelow = lab0 === rgbMin ? 0 : 14;
+        // Only extend past the lab ends when they are not already exactly white or black. This must be an exact
+        // comparison, the palette algorithm relies on the reference palette ending in exactly white (luminance 1)
+        // and black (luminance 0), so a near match would leave an end short.
+        const lAbove = HighResolutionPaletteRGB.isExactly(lab100, 1) ? 0 : 14;
+        const lBelow = HighResolutionPaletteRGB.isExactly(lab0, 0) ? 0 : 14;
 
         // 257 levels max, depending on whether lab0 or lab100 are black or white respectively.
         for (let l = 100 + lAbove; l >= 0 - lBelow; l -= 0.5) {
