@@ -1,0 +1,94 @@
+{
+  "imports": [
+    "_input-common",
+    "_input-read-only-symbolic",
+    "_input-validation"
+  ],
+  "name": "Checkbox",
+  "context": ".checkbox",
+  "conditions": {
+    "Checked": ".checked",
+    "Indeterminate": ".indeterminate"
+  },
+  "parts": {
+    "Control Container": ".control-container",
+    "Control": ".control",
+    "Label": ".label",
+    "Required": ".required"
+  },
+  "interactivity": {
+    "interactive": ":not(.disabled):not(.read-only)",
+    "disabled": ".disabled",
+    "hover": ".hovered",
+    "active": ".active",
+    "focus": ".focused"
+  },
+  "focus": {
+    "focusTarget": {
+      "stateOnContext": true,
+      "part": "Control Container",
+      "ignoreInteractivity": true
+    }
+  },
+  "styleRules": [
+    {
+      "styles": [
+        "shape.control"
+      ],
+      "properties": {
+        "gap": "density.control.horizontal.gap"
+      }
+    },
+    {
+      "part": "Control Container",
+      "styles": [
+        "shape.control"
+      ],
+      "properties": {
+        "gap": "density.control.horizontal.gap"
+      }
+    },
+    {
+      "part": "Control",
+      "styles": [
+        "density.item-container",
+        "styles.selectable-control-unselected",
+        "shape.control"
+      ]
+    },
+    {
+      "part": "Label",
+      "styles": [
+        "styles.text-plain"
+      ],
+      "properties": {
+        "gap": "density.itemContainer.horizontal.gap"
+      }
+    },
+    {
+      "part": "Required",
+      "styles": [
+        "styles.text-plain",
+        "color.critical-foreground-readable-control"
+      ]
+    },
+    {
+      "contextCondition": {
+        "Checked": true
+      },
+      "part": "Control",
+      "styles": [
+        "styles.selectable-control-selected"
+      ]
+    },
+    {
+      "contextCondition": {
+        "Indeterminate": true
+      },
+      "part": "Control",
+      "styles": [
+        "styles.selectable-control-unselected"
+      ]
+    }
+  ]
+}

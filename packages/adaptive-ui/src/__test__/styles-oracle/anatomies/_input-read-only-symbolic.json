@@ -1,0 +1,27 @@
+{
+  "conditions": {
+    "Read-only": ".read-only"
+  },
+  "styleRules": [
+    {
+      "contextCondition": {
+        "Checked": false,
+        "Read-only": true
+      },
+      "part": "Control",
+      "properties": {
+        "backgroundFill": "color.neutral.fill.subtle.rest"
+      }
+    },
+    {
+      "contextCondition": {
+        "Checked": true,
+        "Read-only": true
+      },
+      "part": "Control",
+      "properties": {
+        "backgroundFill": "color.neutral.fill.readable.rest"
+      }
+    }
+  ]
+}

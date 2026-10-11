@@ -208,7 +208,9 @@ async function compileFile(
 ): Promise<{ css: string, anatomyName: string }> {
     ensureFileExists(inFilePath);
 
-    const formatPath = outFilePath ?? path.format({ ...path.parse(inFilePath), ext: ".css" });
+    // Only used to select the prettier parser. `base` must be excluded, otherwise `path.format` ignores `ext`.
+    const { dir, name } = path.parse(inFilePath);
+    const formatPath = outFilePath ?? path.format({ dir, name, ext: ".css" });
     let styles: AUIStyleSheet;
     let resolvedAnatomyName: string;
 

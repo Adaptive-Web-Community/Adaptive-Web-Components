@@ -1,0 +1,45 @@
+{
+  "name": "Stress Properties",
+  "context": ".stress-properties",
+  "conditions": {},
+  "parts": {
+    "Inner": ".inner"
+  },
+  "styleRules": [
+    {
+      "properties": {
+        "backgroundFill": "color.neutral.fill.subtle",
+        "foregroundFill": "color.neutral.stroke.readable.rest",
+        "borderFill": "color.neutral.stroke.subtle.rest",
+        "borderStyle": "solid",
+        "borderThickness": "shape.strokeThickness.default",
+        "cornerRadius": "shape.cornerRadius.default",
+        "paddingHorizontal": "density.control.horizontal.padding",
+        "paddingVertical": "density.control.vertical.padding",
+        "gap": "density.control.horizontal.gap"
+      }
+    },
+    {
+      "part": "Inner",
+      "properties": {
+        "layoutInner": "flex",
+        "layoutDirection": "column",
+        "layoutMainAxisAlignItems": "space-between",
+        "layoutCrossAxisAlignItems": "stretch",
+        "layoutWrap": "wrap",
+        "width": "calc(100% - 8px)",
+        "minWidth": "0",
+        "maxHeight": "min(50vh, 400px)",
+        "opacity": "0.5",
+        "marginTop": "-2px",
+        "outlineStyle": "dashed",
+        "outlineThickness": "2px",
+        "outlineOffset": "1px",
+        "fontSize": "typography.ramp.default.fontSize.base",
+        "lineHeight": "typography.ramp.default.lineHeight.base",
+        "letterSpacing": "0.02em",
+        "transition": "opacity 0.2s ease-in-out"
+      }
+    }
+  ]
+}

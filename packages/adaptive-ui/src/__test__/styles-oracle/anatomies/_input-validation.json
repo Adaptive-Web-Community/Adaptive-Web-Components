@@ -1,0 +1,64 @@
+{
+  "conditions": {
+    "Validation": {
+      "None": "",
+      "Invalid": ".invalid",
+      "Success": ".success"
+    }
+  },
+  "parts": {
+    "Control": "",
+    "Validation": ".validation",
+    "Content Block": ".content-block"
+  },
+  "styleRules": [
+    {
+      "part": "Validation",
+      "styles": [
+        "styles.text-plain"
+      ]
+    },
+    {
+      "part": "Content Block",
+      "properties": {
+        "gap": "density.itemContainer.horizontal.gap"
+      }
+    },
+    {
+      "contextCondition": {
+        "Validation": "Invalid"
+      },
+      "part": "Control",
+      "properties": {
+        "borderFill": "color.critical.stroke.discernible"
+      }
+    },
+    {
+      "contextCondition": {
+        "Validation": "Invalid"
+      },
+      "part": "Validation",
+      "properties": {
+        "foregroundFill": "color.critical.stroke.readable.rest"
+      }
+    },
+    {
+      "contextCondition": {
+        "Validation": "Success"
+      },
+      "part": "Control",
+      "properties": {
+        "borderFill": "color.success.stroke.discernible"
+      }
+    },
+    {
+      "contextCondition": {
+        "Validation": "Success"
+      },
+      "part": "Validation",
+      "properties": {
+        "foregroundFill": "color.success.stroke.readable.rest"
+      }
+    }
+  ]
+}

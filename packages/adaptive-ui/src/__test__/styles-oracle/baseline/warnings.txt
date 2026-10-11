@@ -1,0 +1,5 @@
+Skipping <root>/dist/esm/__test__/styles-oracle/anatomies/stress-no-name.json: JSON anatomy has no name property.
+Unknown part "Missing cursor part" in cursor, skipping.
+Unknown part "Missing focus target" in focus.focusTarget, skipping.
+Unknown part "Missing reset target" in focus.resetTarget, skipping.
+Unknown part "Missing rule part" in style rule, skipping.

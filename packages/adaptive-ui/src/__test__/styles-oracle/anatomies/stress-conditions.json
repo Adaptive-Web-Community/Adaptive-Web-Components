@@ -1,0 +1,54 @@
+{
+  "name": "Stress Conditions",
+  "context": ".stress-conditions",
+  "conditions": {
+    "Size": {
+      "Small": ".size-small",
+      "Large": ".size-large"
+    },
+    "Emphasis": {
+      "Low": "[emphasis='low']",
+      "High": "[emphasis='high']"
+    },
+    "Selected": ".selected",
+    "Busy": "[aria-busy='true']"
+  },
+  "parts": {
+    "Content": ".content"
+  },
+  "interactivity": {
+    "interactive": ":not([aria-busy='true'])",
+    "disabled": "[aria-busy='true']"
+  },
+  "focus": {
+    "focusTarget": {
+      "ignoreInteractivity": true
+    }
+  },
+  "styleRules": [
+    {
+      "styles": ["shape.control"]
+    },
+    {
+      "contextCondition": { "Size": "Small" },
+      "styles": ["density.control"]
+    },
+    {
+      "contextCondition": { "Size": "Large" },
+      "properties": { "paddingHorizontal": "density.layer.horizontal.padding" }
+    },
+    {
+      "contextCondition": { "Selected": true },
+      "properties": { "backgroundFill": "color.accent.fill.ideal" }
+    },
+    {
+      "contextCondition": { "Selected": false },
+      "properties": { "backgroundFill": "color.neutral.fill.subtle" }
+    },
+    {
+      "contextCondition": { "Size": "Small", "Emphasis": "High", "Selected": true, "Busy": false },
+      "part": "Content",
+      "properties": { "foregroundFill": "color.accent.stroke.readable" }
+    }
+  ]
+}

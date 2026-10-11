@@ -1,0 +1,29 @@
+{
+  "conditions": {
+    "Read-only": ".read-only"
+  },
+  "styleRules": [
+    {
+      "contextCondition": {
+        "Read-only": true
+      },
+      "part": "Control",
+      "properties": {
+        "backgroundFill": "color.neutral.fill.subtle.rest",
+        "borderFillTop": "color.neutral.stroke.safety.rest",
+        "borderFillRight": "color.neutral.stroke.safety.rest",
+        "borderFillBottom": "color.neutral.stroke.safety.rest",
+        "borderFillLeft": "color.neutral.stroke.safety.rest"
+      }
+    },
+    {
+      "contextCondition": {
+         "Read-only": true
+      },
+      "part": "Native Element",
+      "properties": {
+        "cursor": "default"
+      }
+    }
+  ]
+}
