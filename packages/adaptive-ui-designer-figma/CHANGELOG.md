@@ -1,5 +1,15 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
+## 0.6.1
+
+### Patch Changes
+
+-   [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
+
+-   Updated dependencies [[`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013)]:
+    -   @adaptive-web/adaptive-ui@0.14.0
+    -   @adaptive-web/adaptive-ui-designer-core@0.6.2
+
 ## 0.6.0
 
 ### Minor Changes
