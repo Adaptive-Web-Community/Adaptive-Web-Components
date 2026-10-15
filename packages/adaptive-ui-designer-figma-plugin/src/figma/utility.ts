@@ -1,4 +1,4 @@
-import { Rgb } from "culori/fn/index.js";
+import { Rgb } from "culori/fn";
 
 export const SOLID_BLACK: SolidPaint = {
     type: "SOLID",

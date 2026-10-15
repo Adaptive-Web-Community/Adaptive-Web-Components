@@ -526,7 +526,7 @@ export class FigmaPluginNode extends PluginNode {
         try {
             await figma.loadFontAsync(fontName);
             return fontName;
-        } catch (e) {
+        } catch {
             if (index < styles.length - 1) {
                 return this.tryFont(family, styles, italic, index + 1);
             } else {

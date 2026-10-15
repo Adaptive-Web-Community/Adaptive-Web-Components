@@ -8,7 +8,7 @@ useMode(modeRgb);
 // For luminance
 useMode(modeLrgb);
 
-const _transparent: Rgb = parseTransparent("transparent");
+const _transparent: Rgb = parseTransparent("transparent") as Rgb;
 
 /**
  * Represents a color.
