@@ -11,6 +11,9 @@
     "@adaptive-web/example-customize-component",
     "@adaptive-web/example-use-adaptive-components",
     "@adaptive-web/adaptive-ui-designer-figma-plugin",
-    "@adaptive-web/adaptive-ui-explorer"
+    "@adaptive-web/adaptive-ui-explorer",
+    "@adaptive-web/adaptive-web-components",
+    "@adaptive-web/adaptive-ui-designer-core",
+    "@adaptive-web/adaptive-ui-designer-figma"
   ]
 }

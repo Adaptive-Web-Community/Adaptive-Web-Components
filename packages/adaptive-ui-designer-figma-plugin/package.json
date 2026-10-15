@@ -35,6 +35,7 @@
     "test": "npm run lint && npm run compile"
   },
   "dependencies": {
+    "@adaptive-web/adaptive-ui": "0.14.0",
     "@adaptive-web/adaptive-ui-designer-core": "^0.6.2",
     "@adaptive-web/adaptive-ui-designer-figma": "^0.6.1",
     "@adaptive-web/adaptive-web-components": "0.10.0",
@@ -47,7 +48,6 @@
     "tslog": "^4.10.2"
   },
   "peerDependencies": {
-    "@adaptive-web/adaptive-ui": "0.14.0",
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31"
   },
