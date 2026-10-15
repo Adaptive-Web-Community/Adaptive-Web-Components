@@ -1,5 +1,32 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 0.13.2
+
+### Patch Changes
+
+-   [#314](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/314) [`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27) Thanks [@bheston](https://github.com/bheston)! - Fixed several issues found while improving test coverage of `core`:
+
+    -   `Shadow` now writes a zero blur radius when a spread is set.
+    -   `Styles` keeps property values of `0`, and `Styles.compose` no longer modifies the array it is given.
+    -   `convertStylesToFocusState` keeps number and zero values.
+    -   `ElementStylesRenderer.render` no longer accumulates rules between calls.
+    -   `BasePalette.get` rounds a fractional index.
+    -   `PaletteRGB` no longer throws with a larger `stepContrast`, and `preserveSource` keeps the source color and no longer duplicates a black or white source.
+
+-   [#307](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/307) [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4) Thanks [@bheston](https://github.com/bheston)! - Figma: Added support for slot layers
+
+-   [#296](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/296) [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623) Thanks [@bheston](https://github.com/bheston)! - Consolidate style generation and enable bulk update.
+
+-   [#309](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/309) [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3) Thanks [@bheston](https://github.com/bheston)! - AUI: Added full test coverage to `core` capabilities.
+
+-   [#316](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/316) [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046) Thanks [@bheston](https://github.com/bheston)! - Fixed `aui compile-styles` failing to format the stylesheet for components with a TypeScript or JavaScript anatomy, which caused prettier to parse the CSS as JavaScript.
+
+-   [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
+
+-   [#298](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/298) [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d) Thanks [@bheston](https://github.com/bheston)! - AUI: Fix part resolution
+
+-   [#289](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/289) [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d) Thanks [@bheston](https://github.com/bheston)! - AUI: Updated layer fill interactive to invert colors to avoid white on white scenario
+
 ## 0.13.1
 
 ### Patch Changes
