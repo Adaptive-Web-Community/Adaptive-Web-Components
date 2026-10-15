@@ -79,7 +79,7 @@ import {
     warningStrokeReadableRecipe,
     warningStrokeSafety,
 } from "./color.js";
-import { densityControl, densityControlList, densityItemContainer, densityLayer, densityText } from "./density.js";
+import { densityControl, densityControlList, densityLayer, densityText } from "./density.js";
 import { elevationCardInteractive, elevationCardRest, elevationDialog, elevationFlyout, elevationTooltip } from "./elevation.js";
 import { layerFillFixedPlus1, layerFillInteractive } from "./layer.js";
 import {
@@ -155,7 +155,7 @@ export const textDensityStyles: Styles = Styles.fromProperties(
  *
  * By default, sets the padding and gap, useful for buttons, list items, etc.
  *
- * See {@link autofillOuterDensityStyles} or {@link itemContainerDensityStyles}.
+ * See {@link autofillOuterDensityStyles} or {@link controlListDensityStyles}.
  *
  * @public
  */
@@ -173,7 +173,7 @@ export const controlDensityStyles: Styles = Styles.fromProperties(
  *
  * By default, sets the padding and gap, useful for icon-only buttons or other elements which should be square based on vertical size.
  *
- * See {@link autofillOuterDensityStyles} or {@link itemContainerDensityStyles}.
+ * See {@link autofillOuterDensityStyles} or {@link controlListDensityStyles}.
  *
  * @public
  */
@@ -238,23 +238,6 @@ export const controlListDensityStyles: Styles = Styles.fromProperties(
         gap: densityControlList.horizontalGap,
     },
     "density.control-list",
-);
-
-/**
- * Style module for the density and spacing of an item container.
- *
- * By default, sets the padding and gap, useful for buttons, list items, etc.
- *
- * @public
- * @deprecated Use controlListDensityStyles
- */
-export const itemContainerDensityStyles: Styles = Styles.fromProperties(
-    {
-        paddingHorizontal: densityItemContainer.horizontalPadding,
-        paddingVertical: densityItemContainer.verticalPadding,
-        gap: densityItemContainer.horizontalGap,
-    },
-    "density.item-container",
 );
 
 /**
@@ -1762,7 +1745,8 @@ export const StyleNameMapping = {
     "density.control-square": "controlSquareDensityStyles",
     "density.autofill-outer": "autofillOuterDensityStyles",
     "density.autofill-inner": "autofillInnerDensityStyles",
-    "density.item-container": "itemContainerDensityStyles",
+    "density.control-list": "controlListDensityStyles",
+    "density.item-container": "controlListDensityStyles",
     "density.layer": "layerDensityStyles",
     "color.accent-fill-stealth-control": "accentFillStealthControlStyles",
     "color.accent-fill-subtle-control": "accentFillSubtleControlStyles",

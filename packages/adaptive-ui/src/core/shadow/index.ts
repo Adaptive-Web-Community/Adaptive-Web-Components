@@ -44,7 +44,7 @@ export class Shadow implements CSSDirective {
         if (this.spread) {
             values.push(`${this.spread}px`);
         }
-        values.push(this.color.toColorString());
+        values.push(this.color.toString());
         return values.join(" ");
     }
 }

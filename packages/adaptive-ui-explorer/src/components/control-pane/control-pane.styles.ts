@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { typeRampPlus1FontSize, typeRampPlus1LineHeight } from "@adaptive-web/adaptive-ui/reference";
+import { typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 
 export const controlPaneStyles = css`
@@ -13,8 +13,8 @@ export const controlPaneStyles = css`
     }
 
     .title {
-        font-size: ${typeRampPlus1FontSize};
-        line-height: ${typeRampPlus1LineHeight};
+        font-size: ${typeRampDefault.plus1.fontSize};
+        line-height: ${typeRampDefault.plus1.lineHeight};
     }
 
     .radio-group {

@@ -83,21 +83,18 @@ describe("stylePropertyToCssProperty", () => {
         expect(stylePropertyToCssProperty(StyleProperty.shadow)).to.equal("box-shadow");
     });
 
-    it("should map outlines, including the deprecated outline width", () => {
+    it("should map outlines", () => {
         expect(stylePropertyToCssProperty(StyleProperty.outlineColor)).to.equal("outline-color");
         expect(stylePropertyToCssProperty(StyleProperty.outlineOffset)).to.equal("outline-offset");
         expect(stylePropertyToCssProperty(StyleProperty.outlineStyle)).to.equal("outline-style");
         expect(stylePropertyToCssProperty(StyleProperty.outlineThickness)).to.equal("outline-width");
-        expect(stylePropertyToCssProperty(StyleProperty.outlineWidth)).to.equal("outline-width");
     });
 
-    it("should map each StyleProperty to a unique css property except the deprecated alias", () => {
+    it("should map each StyleProperty to a unique css property", () => {
         const seen = new Map<string, string>();
         Object.values(StyleProperty).forEach(property => {
             const css = stylePropertyToCssProperty(property);
-            if (seen.has(css)) {
-                expect([property, seen.get(css)].sort()).to.deep.equal(["outlineThickness", "outlineWidth"]);
-            }
+            expect(seen.has(css), `${property} and ${seen.get(css)} both map to ${css}`).to.be.false;
             seen.set(css, property);
         });
     });

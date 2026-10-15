@@ -1,18 +1,8 @@
-import { DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Color } from "./color/color.js";
 import { Paint } from "./color/paint.js";
-import { Swatch } from "./color/swatch.js";
 import { StyleProperty } from "./modules/types.js";
 import { Recipe, RecipeEvaluate } from "./recipes.js";
-
-/** @internal @deprecated Use one of the typed `createTokenX` functions instead */
-export const { create } = DesignToken;
-
-/** @internal @deprecated Use `createTokenNonCss` instead */
-export function createNonCss<T>(name: string): DesignToken<T> {
-    return DesignToken.create<T>({ name });
-}
 
 /**
  * Creates a typed design token of a custom type. Use one of `createTokenX` if exists instead.
@@ -181,15 +171,3 @@ export function createTokenPaint(name: string, intendedFor?: StyleProperty | Sty
     return TypedCSSDesignToken.createTyped<Paint>(name, DesignTokenType.paint, intendedFor);
 }
 
-/**
- * Creates a DesignToken that can be used as a color in styles.
- *
- * @param name - The token name in `dotted.camelCase` casing.
- * @param intendedFor - The style properties where this token is intended to be used.
- *
- * @public
- * @deprecated Use createTokenColor or createTokenPaint
- */
-export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch> {
-    return TypedCSSDesignToken.createTyped<Swatch>(name, DesignTokenType.color, intendedFor);
-}

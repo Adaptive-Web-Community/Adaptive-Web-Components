@@ -1,5 +1,5 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import { neutralFillStealthHover, neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
+import { neutralFillStealth, neutralStrokeReadable } from "@adaptive-web/adaptive-ui/reference";
 
 const template = html<CornerRadius>`
     <template
@@ -20,7 +20,7 @@ const styles = css`
         display: inline-flex;
         align-items: center;
         text-align: center;
-        color: ${neutralStrokeReadableRest};
+        color: ${neutralStrokeReadable.rest};
     }
 
     .indicator {
@@ -58,7 +58,7 @@ const styles = css`
 
     :host(.interactive:hover) {
         cursor: pointer;
-        background: ${neutralFillStealthHover};
+        background: ${neutralFillStealth.hover};
     }
 
     :host(.selected),

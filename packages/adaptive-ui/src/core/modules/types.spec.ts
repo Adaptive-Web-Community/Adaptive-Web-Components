@@ -4,11 +4,6 @@ import {
     Interactivity,
     StyleProperty,
     StylePropertyShorthand,
-    stylePropertyBorderFillAll,
-    stylePropertyBorderStyleAll,
-    stylePropertyBorderThicknessAll,
-    stylePropertyCornerRadiusAll,
-    stylePropertyPaddingAll,
 } from "./types.js";
 
 const { expect } = chai;
@@ -67,13 +62,6 @@ describe("StylePropertyShorthand", () => {
         expect(StylePropertyShorthand.paddingVertical).to.deep.equal(["paddingTop", "paddingBottom"]);
     });
 
-    it("should provide the legacy `all` aliases", () => {
-        expect(stylePropertyBorderFillAll).to.equal(StylePropertyShorthand.borderFill);
-        expect(stylePropertyBorderThicknessAll).to.equal(StylePropertyShorthand.borderThickness);
-        expect(stylePropertyBorderStyleAll).to.equal(StylePropertyShorthand.borderStyle);
-        expect(stylePropertyCornerRadiusAll).to.equal(StylePropertyShorthand.cornerRadius);
-        expect(stylePropertyPaddingAll).to.equal(StylePropertyShorthand.padding);
-    });
 });
 
 describe("Interactivity", () => {

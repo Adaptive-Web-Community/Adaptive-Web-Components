@@ -379,8 +379,6 @@ export const StyleProperty = {
     outlineOffset: "outlineOffset",
     outlineStyle: "outlineStyle",
     outlineThickness: "outlineThickness",
-    /** @deprecated Use outlineThickness */
-    outlineWidth: "outlineWidth",
     shadow: "shadow",
 } as const;
 
@@ -458,55 +456,6 @@ export const StylePropertyShorthand = {
  * @public
  */
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
-
-
-/**
- * Any style property, either an {@link (StyleProperty:type)} or a string for any other CSS property.
- *
- * @public
- * @deprecated Use StyleKey instead
- */
-export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
-
-/**
- * A convenience shorthand for all border fill {@link (StyleProperty:type)} values.
- *
- * @public
- * @deprecated Use StylePropertyShorthand instead
- */
-export const stylePropertyBorderFillAll = StylePropertyShorthand.borderFill;
-
-/**
- * A convenience shorthand for all border thickness {@link (StyleProperty:type)} values.
- *
- * @public
- * @deprecated Use StylePropertyShorthand instead
- */
-export const stylePropertyBorderThicknessAll = StylePropertyShorthand.borderThickness;
-
-/**
- * A convenience shorthand for all border style {@link (StyleProperty:type)} values.
- *
- * @public
- * @deprecated Use StylePropertyShorthand instead
- */
-export const stylePropertyBorderStyleAll = StylePropertyShorthand.borderStyle;
-
-/**
- * A convenience shorthand for all corner radius {@link (StyleProperty:type)} values.
- *
- * @public
- * @deprecated Use StylePropertyShorthand instead
- */
-export const stylePropertyCornerRadiusAll = StylePropertyShorthand.cornerRadius;
-
-/**
- * A convenience shorthand for all padding {@link (StyleProperty:type)} values.
- *
- * @public
- * @deprecated Use StylePropertyShorthand instead
- */
-export const stylePropertyPaddingAll = StylePropertyShorthand.padding;
 
 /**
  * A list of {@link StyleRule}s in the context of a component.

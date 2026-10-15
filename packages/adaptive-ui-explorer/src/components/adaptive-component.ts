@@ -1,6 +1,6 @@
 import { ElementStylesRenderer, Interactivity } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
-import { cornerRadiusControl, densityControl, typeRampBaseFontSize } from "@adaptive-web/adaptive-ui/reference";
+import { cornerRadiusControl, densityControl, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
@@ -32,7 +32,7 @@ const styles = css`
         justify-items: start;
         border-radius: ${cornerRadiusControl};
         padding: ${densityControl.padding};
-        font-size: ${typeRampBaseFontSize};
+        font-size: ${typeRampDefault.base.fontSize};
         cursor: pointer;
     }
 `;

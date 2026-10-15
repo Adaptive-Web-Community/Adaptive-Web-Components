@@ -25,7 +25,7 @@
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   fill: currentcolor;
   font-style: var(--typography-fontStyle-label);
-  gap: var(--density-itemContainer-horizontal-gap);
+  gap: var(--density-controlList-horizontal-gap);
 }
 .text-field .label,.text-field:not(.disabled):not(.read-only) .label.focus,.text-field:not(.disabled):not(.read-only) .label.hover,.text-field:not(.disabled):not(.read-only) .label.active {
   color: var(--color-neutral-stroke-strong-rest);
@@ -55,7 +55,7 @@
   color: var(--color-critical-stroke-readable-disabled);
 }
 .text-field .control-container {
-  gap: var(--density-itemContainer-horizontal-gap);
+  gap: var(--density-controlList-horizontal-gap);
 }
 .text-field .control {
   border-radius: var(--shape-cornerRadius-default);
@@ -156,7 +156,7 @@
   color: var(--color-neutral-stroke-strong-disabled);
 }
 .text-field .content-block {
-  gap: var(--density-itemContainer-horizontal-gap);
+  gap: var(--density-controlList-horizontal-gap);
 }
 .text-field.invalid .control {
   border-color: var(--color-critical-stroke-discernible-rest);

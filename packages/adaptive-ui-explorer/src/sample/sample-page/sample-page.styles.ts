@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { accentFillReadableRest, cornerRadiusControl, designUnit, highlightFillSubtleRest, neutralStrokeStrongRest } from "@adaptive-web/adaptive-ui/reference";
+import { accentFillReadable, cornerRadiusControl, designUnit, highlightFillSubtle, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 
 export const samplePageStyles = css`
@@ -14,7 +14,7 @@ export const samplePageStyles = css`
     }
 
     .image-container {
-        background: ${highlightFillSubtleRest};
+        background: ${highlightFillSubtle.rest};
         width: 100%;
         height: 215px;
         display: flex;
@@ -30,7 +30,7 @@ export const samplePageStyles = css`
         flex-direction: column;
         padding: calc(var(--gutter) * 1px);
         text-align: start;
-        color: ${neutralStrokeStrongRest};
+        color: ${neutralStrokeStrong.rest};
     }
 
     .sample-control {
@@ -45,7 +45,7 @@ export const samplePageStyles = css`
     .sample-control-icon {
         width: 21px;
         height: 21px;
-        background-color: ${accentFillReadableRest};
+        background-color: ${accentFillReadable.rest};
         border-radius: ${cornerRadiusControl};
     }
 

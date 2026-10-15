@@ -1,10 +1,8 @@
 import {
     cornerRadiusControl,
-    neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
-    neutralStrokeStrongRest,
-    neutralStrokeSubtleRest,
+    neutralFillStealth,
+    neutralStrokeStrong,
+    neutralStrokeSubtle,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
@@ -32,21 +30,21 @@ const styles = css`
         height: 32px;
         border: none;
         border-radius: ${cornerRadiusControl};
-        background: ${neutralFillStealthRest};
-        fill: ${neutralStrokeStrongRest};
+        background: ${neutralFillStealth.rest};
+        fill: ${neutralStrokeStrong.rest};
         outline: none;
         font-size: inherit;
     }
 
     button:focus {
-        border-color: ${neutralStrokeSubtleRest};
+        border-color: ${neutralStrokeSubtle.rest};
     }
     button:hover {
-        background: ${neutralFillStealthHover};
+        background: ${neutralFillStealth.hover};
     }
 
     button:active {
-        background: ${neutralFillStealthActive};
+        background: ${neutralFillStealth.active};
     }
 
     :host([aria-expanded="true"]) button {

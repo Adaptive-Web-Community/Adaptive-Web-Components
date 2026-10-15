@@ -3,9 +3,8 @@ import {
     bodyFontFamily,
     colorContext,
     cornerRadiusLayer,
-    neutralStrokeStrongRest,
-    typeRampPlus3FontSize,
-    typeRampPlus3LineHeight
+    neutralStrokeStrong,
+    typeRampDefault,
 } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 
@@ -15,7 +14,7 @@ export const sampleAppStyles = css`
     :host {
         display: flex;
         font-family: ${bodyFontFamily};
-        color: ${neutralStrokeStrongRest};
+        color: ${neutralStrokeStrong.rest};
         min-height: 650px;
         min-width: 775px;
         background: ${colorContext};
@@ -87,8 +86,8 @@ export const sampleAppStyles = css`
     }
 
     .content .heading {
-        font-size: ${typeRampPlus3FontSize};
-        line-height: ${typeRampPlus3LineHeight};
+        font-size: ${typeRampDefault.plus3.fontSize};
+        line-height: ${typeRampDefault.plus3.lineHeight};
         margin: 0;
         margin-bottom: 10px;
         font-weight: bold;

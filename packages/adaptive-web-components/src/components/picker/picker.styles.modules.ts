@@ -2,15 +2,15 @@ import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
+    controlListDensityStyles,
     flyoutStyles,
-    itemContainerDensityStyles,
     plainTextStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
 const menuStyles = [
     plainTextStyles,
-    itemContainerDensityStyles,
+    controlListDensityStyles,
     flyoutStyles,
 ];
 

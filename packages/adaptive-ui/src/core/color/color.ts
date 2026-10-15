@@ -54,13 +54,6 @@ export class Color extends PaintBase {
     }
 
     /**
-     * {@inheritdoc Color.toString}
-     *
-     * @deprecated Use toString
-     */
-    public toColorString = this.toString;
-    
-    /**
      * Gets this color value as a string for use in css.
      *
      * @returns The color value in a valid css string format

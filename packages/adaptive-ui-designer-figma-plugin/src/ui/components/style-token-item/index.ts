@@ -1,6 +1,6 @@
 import { attr, css, customElement, FASTElement, html, observable, ref, when } from "@microsoft/fast-element";
 import { Styles } from "@adaptive-web/adaptive-ui";
-import { cornerRadiusControl, neutralFillStealthHover, neutralStrokeStrongRest } from "@adaptive-web/adaptive-ui/reference";
+import { cornerRadiusControl, neutralFillStealth, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
 import { TokenGlyph, TokenGlyphValueType } from "../token-glyph/index.js";
 
 // TODO, make a button
@@ -45,7 +45,7 @@ const styles = css`
         justify-content: space-between;
         flex-grow: 1;
         border-radius: ${cornerRadiusControl};
-        color: ${neutralStrokeStrongRest};
+        color: ${neutralStrokeStrong.rest};
         padding: 8px 4px;
     }
 
@@ -62,7 +62,7 @@ const styles = css`
     }
 
     .content[role="button"]:hover {
-        background: ${neutralFillStealthHover};
+        background: ${neutralFillStealth.hover};
         cursor: pointer;
     }
 `;

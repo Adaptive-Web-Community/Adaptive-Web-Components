@@ -51,7 +51,7 @@
     {
       "part": "Control",
       "styles": [
-        "density.item-container",
+        "density.control-list",
         "styles.selectable-control-unselected",
         "shape.control"
       ]
@@ -62,7 +62,7 @@
         "styles.text-plain"
       ],
       "properties": {
-        "gap": "density.itemContainer.horizontal.gap"
+        "gap": "density.controlList.horizontal.gap"
       }
     },
     {

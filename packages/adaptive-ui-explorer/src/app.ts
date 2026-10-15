@@ -17,7 +17,7 @@ import {
     neutralAsOverlay,
     neutralBaseColor,
     neutralPalette,
-    wcagContrastLevel
+    wcagContrastLevel,
 } from "@adaptive-web/adaptive-ui/reference";
 import {
     css,
@@ -230,7 +230,7 @@ export class App extends FASTElement {
                             neutralBaseColor.setValueFor(app.canvas, source.neutralColor);
 
                             app.neutralPalette = neutralPalette.getValueFor(app.canvas);
-                            app.neutralColors = app.neutralPalette.swatches.map((x) => x.toColorString());
+                            app.neutralColors = app.neutralPalette.swatches.map((x) => x.toString());
 
                             app.updateBackgrounds();
                             break;
@@ -333,7 +333,7 @@ export class App extends FASTElement {
 
             return this.layerTokens
                 .map((conf: [DesignToken<Color>, string]): SwatchInfo => {
-                    const color = conf[0].getValueFor(ds).toColorString();
+                    const color = conf[0].getValueFor(ds).toString();
                     return {
                         index: this.neutralColors.indexOf(color),
                         color: color,

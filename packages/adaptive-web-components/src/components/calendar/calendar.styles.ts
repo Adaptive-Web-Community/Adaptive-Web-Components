@@ -1,11 +1,11 @@
 import {
-    accentFillReadableRest,
+    accentFillReadable,
     colorContext,
     cornerRadiusControl,
     designUnit,
-    neutralFillSubtleRest,
-    neutralStrokeReadableRest,
-    neutralStrokeStrongRest,
+    neutralFillSubtle,
+    neutralStrokeReadable,
+    neutralStrokeStrong,
     strokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
@@ -77,7 +77,7 @@ export const aestheticStyles: ElementStyles = css`
 
     .inactive .date,
     .inactive.disabled::before {
-        color: ${neutralStrokeReadableRest};
+        color: ${neutralStrokeReadable.rest};
     }
 
     .disabled::before {
@@ -93,8 +93,8 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .selected {
-        color: ${accentFillReadableRest};
-        border: 1px solid ${accentFillReadableRest};
+        color: ${accentFillReadable.rest};
+        border: 1px solid ${accentFillReadable.rest};
         background: ${colorContext};
     }
 
@@ -107,12 +107,12 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .today.disabled::before {
-        color: ${neutralStrokeStrongRest};
+        color: ${neutralStrokeStrong.rest};
     }
 
     .today .date {
-        color: ${neutralStrokeStrongRest};
-        background: ${neutralFillSubtleRest};
+        color: ${neutralStrokeStrong.rest};
+        background: ${neutralFillSubtle.rest};
         border-radius: 50%;
         position: relative;
     }

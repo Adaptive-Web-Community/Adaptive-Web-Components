@@ -2,9 +2,9 @@ import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
+    controlListDensityStyles,
     flyoutStyles,
     inputStyles,
-    itemContainerDensityStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { ComboboxAnatomy } from "./combobox.template.js";
 
@@ -25,7 +25,7 @@ export const styleModules: StyleRules = [
             part: ComboboxAnatomy.parts.listbox,
         },
         styles: [
-            itemContainerDensityStyles,
+            controlListDensityStyles,
             flyoutStyles,
         ],
     },

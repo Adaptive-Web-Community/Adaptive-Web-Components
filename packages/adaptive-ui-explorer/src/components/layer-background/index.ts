@@ -12,7 +12,7 @@ import {
     layerFillFixedPlus3,
     layerFillFixedPlus4,
     layerPalette,
-    neutralStrokeStrongRest,
+    neutralStrokeStrong,
 } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from '@adaptive-web/adaptive-web-components';
 import { attr, css, customElement, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
@@ -24,7 +24,7 @@ const layerBackgroundStyles = css`
     :host {
         display: block;
         background: ${colorContext};
-        color: ${neutralStrokeStrongRest};
+        color: ${neutralStrokeStrong.rest};
     }
 `;
 

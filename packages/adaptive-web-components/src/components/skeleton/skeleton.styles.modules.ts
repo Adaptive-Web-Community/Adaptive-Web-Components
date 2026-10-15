@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { controlShapeStyles, neutralFillSubtleRest, roundShapeStyles } from "@adaptive-web/adaptive-ui/reference";
+import { controlShapeStyles, neutralFillSubtle, roundShapeStyles } from "@adaptive-web/adaptive-ui/reference";
 import { SkeletonAnatomy } from "./skeleton.template.js";
 
 /**
@@ -10,7 +10,7 @@ import { SkeletonAnatomy } from "./skeleton.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            backgroundFill: neutralFillSubtleRest,
+            backgroundFill: neutralFillSubtle.rest,
         },
     },
     {

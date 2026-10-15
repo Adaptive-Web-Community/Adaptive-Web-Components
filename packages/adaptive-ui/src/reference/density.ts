@@ -18,11 +18,5 @@ export const densityControlList = new DensityPaddingAndGapTokenGroup("density.co
 
 /**
  * @public
- * @deprecated Use densityControlList
- */
-export const densityItemContainer = new DensityPaddingAndGapTokenGroup("density.itemContainer", 1, 0, 1, 0, designUnit, strokeThickness);
-
-/**
- * @public
  */
 export const densityLayer = new DensityPaddingAndGapTokenGroup("density.layer", 4, 4, 4, 4, designUnit, "0px");
