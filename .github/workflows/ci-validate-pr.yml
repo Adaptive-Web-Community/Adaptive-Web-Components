@@ -20,6 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "24.x"
+
       - name: Get npm cache directory path
         id: npm-cache-dir-path
         run: echo '::set-output name=dir::$(npm cache dir)'
