@@ -2,8 +2,8 @@ import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
+    controlListDensityStyles,
     controlShapeStyles,
-    itemContainerDensityStyles,
     neutralOutlineDiscernibleControlStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 
@@ -16,7 +16,7 @@ export const styleModules: StyleRules = [
     {
         styles: [
             controlShapeStyles,
-            itemContainerDensityStyles,
+            controlListDensityStyles,
             neutralOutlineDiscernibleControlStyles,
         ],
     },

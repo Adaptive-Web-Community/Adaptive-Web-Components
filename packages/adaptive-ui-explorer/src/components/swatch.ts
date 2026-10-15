@@ -1,5 +1,5 @@
 import { Color } from "@adaptive-web/adaptive-ui";
-import { colorContext, densityControl, neutralStrokeReadableRest, typeRampMinus1FontSize } from "@adaptive-web/adaptive-ui/reference";
+import { colorContext, densityControl, neutralStrokeReadable, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
 import {
     attr,
@@ -40,8 +40,8 @@ const styles = css`
         align-items: center;
         justify-items: start;
         grid-column-gap: ${densityControl.horizontalGap};
-        color: ${neutralStrokeReadableRest};
-        font-size: ${typeRampMinus1FontSize};
+        color: ${neutralStrokeReadable.rest};
+        font-size: ${typeRampDefault.minus1.fontSize};
     }
 
     :host([type="foreground"]) .icon::before {
@@ -143,7 +143,7 @@ export class AppSwatch extends FASTElement {
     }
 
     private evaluateToken(token?: DesignToken<Color>): string {
-        return token?.getValueFor(this).toColorString() || "";
+        return token?.getValueFor(this).toString() || "";
     }
 
     private updateIconStyle(): void {

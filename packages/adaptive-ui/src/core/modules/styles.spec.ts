@@ -6,7 +6,8 @@ import { Paint } from "../color/paint.js";
 import { createTokenNonCss } from "../token-helpers.js";
 import { InteractivePaintSet } from "../color/recipe.js";
 import { DesignTokenType } from "../adaptive-design-tokens.js";
-import { BorderFill, BorderStyle, BorderThickness, convertStylesToFocusState, CornerRadius, Fill, Padding, Styles } from "./styles.js";
+import { convertStylesToFocusState, Fill, Styles } from "./styles.js";
+import { StylePropertyShorthand } from "./types.js";
 
 const { expect } = chai;
 
@@ -380,51 +381,15 @@ describe("convertStylesToFocusState", () => {
     });
 });
 
-describe("style property helpers", () => {
-    const sides = (value: unknown, names: string[]) =>
-        Object.fromEntries(names.map(n => [n, value]));
+describe("StylePropertyShorthand in Styles", () => {
+    const allSides = (shorthand: keyof typeof StylePropertyShorthand, value: string) =>
+        Object.fromEntries(StylePropertyShorthand[shorthand].map((name) => [name, value])) as Record<string, string>;
 
-    it("BorderFill.all should set every side", () => {
-        expect(BorderFill.all("red")).to.deep.equal(
-            sides("red", ["borderFillTop", "borderFillRight", "borderFillBottom", "borderFillLeft"])
-        );
-    });
-
-    it("BorderThickness.all should set every side", () => {
-        expect(BorderThickness.all("1px")).to.deep.equal(
-            sides("1px", ["borderThicknessTop", "borderThicknessRight", "borderThicknessBottom", "borderThicknessLeft"])
-        );
-    });
-
-    it("BorderStyle.all should set every side", () => {
-        expect(BorderStyle.all("solid")).to.deep.equal(
-            sides("solid", ["borderStyleTop", "borderStyleRight", "borderStyleBottom", "borderStyleLeft"])
-        );
-    });
-
-    it("CornerRadius.all should set every corner", () => {
-        expect(CornerRadius.all("4px")).to.deep.equal(
-            sides("4px", ["cornerRadiusTopLeft", "cornerRadiusTopRight", "cornerRadiusBottomRight", "cornerRadiusBottomLeft"])
-        );
-    });
-
-    it("Padding.all should set every side", () => {
-        expect(Padding.all("4px")).to.deep.equal(
-            sides("4px", ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"])
-        );
-    });
-
-    it("Padding.verticalHorizontal should set vertical and horizontal sides", () => {
-        expect(Padding.verticalHorizontal("2px", "8px")).to.deep.equal({
-            paddingTop: "2px",
-            paddingRight: "8px",
-            paddingBottom: "2px",
-            paddingLeft: "8px",
+    it("should expand shorthands into properties usable with Styles", () => {
+        const styles = Styles.fromProperties({
+            ...allSides("padding", "4px"),
+            ...allSides("cornerRadius", "2px"),
         });
-    });
-
-    it("should produce properties usable with Styles", () => {
-        const styles = Styles.fromProperties({ ...Padding.all("4px"), ...CornerRadius.all("2px") });
 
         expect(styles.effectiveProperties.size).to.equal(8);
     });

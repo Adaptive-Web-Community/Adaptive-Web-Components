@@ -2,10 +2,10 @@ import { Color } from"@adaptive-web/adaptive-ui";
 import {
     cornerRadiusControl,
     focusStrokeThickness,
-    highlightStrokeReadableRest,
+    highlightStrokeReadable,
     neutralFillStealthRecipe,
+    neutralFillSubtle,
     neutralFillSubtleRecipe,
-    neutralFillSubtleRest,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
@@ -112,7 +112,7 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([selected]) .control {
-        background: ${neutralFillSubtleRest};
+        background: ${neutralFillSubtle.rest};
     }
 
     :host([selected]) .expand-collapse-button:hover {
@@ -128,6 +128,6 @@ export const aestheticStyles: ElementStyles = css`
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
         border-radius: ${cornerRadiusControl};
-        background: ${highlightStrokeReadableRest};
+        background: ${highlightStrokeReadable.rest};
     }
 `;

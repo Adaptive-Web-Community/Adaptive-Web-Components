@@ -4,8 +4,6 @@ import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignT
 import { Color } from "./color/color.js";
 import { StyleProperty } from "./modules/types.js";
 import {
-    create,
-    createNonCss,
     createTokenColor,
     createTokenDimension,
     createTokenFontFamily,
@@ -19,32 +17,12 @@ import {
     createTokenNumberNonStyling,
     createTokenPaint,
     createTokenRecipe,
-    createTokenSwatch,
     createTyped,
 } from "./token-helpers.js";
 
 const { expect } = chai;
 
 describe("token-helpers", () => {
-    describe("create", () => {
-        it("should create a css design token", () => {
-            const token = create<string>("helpers-test.create");
-
-            expect(token).to.be.instanceOf(CSSDesignToken);
-            expect(token.name).to.equal("helpers-test.create");
-        });
-    });
-
-    describe("createNonCss", () => {
-        it("should create a design token that is not a css design token", () => {
-            const token = createNonCss<number>("helpers-test.noncss");
-
-            expect(token).to.be.instanceOf(DesignToken);
-            expect(token).not.to.be.instanceOf(CSSDesignToken);
-            expect(token.name).to.equal("helpers-test.noncss");
-        });
-    });
-
     describe("createTyped", () => {
         it("should create a typed css design token", () => {
             const token = createTyped<string>("helpers-test.typed", DesignTokenType.dimension, StyleProperty.gap);
@@ -110,7 +88,6 @@ describe("token-helpers", () => {
             ["createTokenNumber", n => createTokenNumber(n), "number", undefined, true],
             ["createTokenNumberNonStyling", n => createTokenNumberNonStyling(n), "number", undefined, false],
             ["createTokenPaint", n => createTokenPaint(n), "paint", undefined, true],
-            ["createTokenSwatch", n => createTokenSwatch(n), "color", undefined, true],
         ];
 
         cases.forEach(([fn, factory, type, intendedFor, css]) => {
@@ -134,9 +111,6 @@ describe("token-helpers", () => {
             ).to.deep.equal([StyleProperty.opacity, StyleProperty.gap]);
             expect(createTokenPaint("helpers-test.paint-for", StyleProperty.foregroundFill).intendedFor).to.deep.equal([
                 StyleProperty.foregroundFill,
-            ]);
-            expect(createTokenSwatch("helpers-test.swatch-for", StyleProperty.backgroundFill).intendedFor).to.deep.equal([
-                StyleProperty.backgroundFill,
             ]);
         });
 

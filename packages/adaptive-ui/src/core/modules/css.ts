@@ -111,8 +111,6 @@ export const stylePropertyToCssProperty = (usage: StyleProperty): string => {
             return "outline-style";
         case StyleProperty.outlineThickness:
             return "outline-width";
-        case StyleProperty.outlineWidth:
-            return "outline-width";
         case StyleProperty.shadow:
             return "box-shadow";
     }

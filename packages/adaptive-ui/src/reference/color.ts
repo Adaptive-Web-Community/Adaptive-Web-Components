@@ -181,9 +181,6 @@ export const minContrastReadable = createTokenNonCss<number>("color.wcagContrast
 /** @public */
 export const colorContext = createTokenColor("color.context", [StyleProperty.backgroundFill, StyleProperty.foregroundFill, ...StylePropertyShorthand.borderFill]).withDefault(_white);
 
-/** @public @deprecated Use colorContext */
-export const fillColor = colorContext;
-
 /** @public */
 export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOverlay", DesignTokenType.boolean).withDefault(false);
 
@@ -650,18 +647,6 @@ export const accentFillStealthRecipe = createTokenColorRecipeAccent(fillStealthR
 /** @public */
 export const accentFillStealth = createTokenColorSet(accentFillStealthRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillStealthRest = accentFillStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillStealthHover = accentFillStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillStealthActive = accentFillStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillStealthFocus = accentFillStealth.focus;
-
 // Accent Fill Subtle
 
 /** @public */
@@ -669,18 +654,6 @@ export const accentFillSubtleRecipe = createTokenColorRecipeAccent(fillSubtleRec
 
 /** @public */
 export const accentFillSubtle = createTokenColorSet(accentFillSubtleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillSubtleRest = accentFillSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillSubtleHover = accentFillSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillSubtleActive = accentFillSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillSubtleFocus = accentFillSubtle.focus;
 
 // Accent Fill Subtle Inverse
 
@@ -706,18 +679,6 @@ export const accentFillDiscernibleRecipe = createTokenColorRecipeAccent(fillDisc
 /** @public */
 export const accentFillDiscernible = createTokenColorSet(accentFillDiscernibleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillDiscernibleRest = accentFillDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillDiscernibleHover = accentFillDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillDiscernibleActive = accentFillDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillDiscernibleFocus = accentFillDiscernible.focus;
-
 // Accent Fill Readable (previously just "Accent Fill")
 
 /** @public */
@@ -725,18 +686,6 @@ export const accentFillReadableRecipe = createTokenColorRecipeAccent(fillReadabl
 
 /** @public */
 export const accentFillReadable = createTokenColorSet(accentFillReadableRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillReadableRest = accentFillReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillReadableHover = accentFillReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillReadableActive = accentFillReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentFillReadableFocus = accentFillReadable.focus;
 
 // Accent Stroke Safety
 
@@ -746,18 +695,6 @@ export const accentStrokeSafetyRecipe = createTokenColorRecipeAccent(strokeSafet
 /** @public */
 export const accentStrokeSafety = createTokenColorSet(accentStrokeSafetyRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSafetyRest = accentStrokeSafety.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSafetyHover = accentStrokeSafety.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSafetyActive = accentStrokeSafety.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSafetyFocus = accentStrokeSafety.focus;
-
 // Accent Stroke Stealth
 
 /** @public */
@@ -765,18 +702,6 @@ export const accentStrokeStealthRecipe = createTokenColorRecipeAccent(strokeStea
 
 /** @public */
 export const accentStrokeStealth = createTokenColorSet(accentStrokeStealthRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStealthRest = accentStrokeStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStealthHover = accentStrokeStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStealthActive = accentStrokeStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStealthFocus = accentStrokeStealth.focus;
 
 // Accent Stroke Subtle
 
@@ -786,18 +711,6 @@ export const accentStrokeSubtleRecipe = createTokenColorRecipeAccent(strokeSubtl
 /** @public */
 export const accentStrokeSubtle = createTokenColorSet(accentStrokeSubtleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSubtleRest = accentStrokeSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSubtleHover = accentStrokeSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSubtleActive = accentStrokeSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeSubtleFocus = accentStrokeSubtle.focus;
-
 // Accent Stroke Discernible
 
 /** @public */
@@ -805,18 +718,6 @@ export const accentStrokeDiscernibleRecipe = createTokenColorRecipeAccent(stroke
 
 /** @public */
 export const accentStrokeDiscernible = createTokenColorSet(accentStrokeDiscernibleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeDiscernibleRest = accentStrokeDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeDiscernibleHover = accentStrokeDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeDiscernibleActive = accentStrokeDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeDiscernibleFocus = accentStrokeDiscernible.focus;
 
 // Accent Stroke Readable (previously "Foreground")
 
@@ -826,18 +727,6 @@ export const accentStrokeReadableRecipe = createTokenColorRecipeAccent(strokeRea
 /** @public */
 export const accentStrokeReadable = createTokenColorSet(accentStrokeReadableRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeReadableRest = accentStrokeReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeReadableHover = accentStrokeReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeReadableActive = accentStrokeReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeReadableFocus = accentStrokeReadable.focus;
-
 // Accent Stroke Strong
 
 /** @public */
@@ -845,18 +734,6 @@ export const accentStrokeStrongRecipe = createTokenColorRecipeAccent(strokeStron
 
 /** @public */
 export const accentStrokeStrong = createTokenColorSet(accentStrokeStrongRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStrongRest = accentStrokeStrong.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStrongHover = accentStrokeStrong.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStrongActive = accentStrokeStrong.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const accentStrokeStrongFocus = accentStrokeStrong.focus;
 
 // Highlight Fill Stealth
 
@@ -866,18 +743,6 @@ export const highlightFillStealthRecipe = createTokenColorRecipeHighlight(fillSt
 /** @public */
 export const highlightFillStealth = createTokenColorSet(highlightFillStealthRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillStealthRest = highlightFillStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillStealthHover = highlightFillStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillStealthActive = highlightFillStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillStealthFocus = highlightFillStealth.focus;
-
 // Highlight Fill Subtle
 
 /** @public */
@@ -885,18 +750,6 @@ export const highlightFillSubtleRecipe = createTokenColorRecipeHighlight(fillSub
 
 /** @public */
 export const highlightFillSubtle = createTokenColorSet(highlightFillSubtleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillSubtleRest = highlightFillSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillSubtleHover = highlightFillSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillSubtleActive = highlightFillSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillSubtleFocus = highlightFillSubtle.focus;
 
 // Highlight Fill Subtle Inverse
 
@@ -922,18 +775,6 @@ export const highlightFillDiscernibleRecipe = createTokenColorRecipeHighlight(fi
 /** @public */
 export const highlightFillDiscernible = createTokenColorSet(highlightFillDiscernibleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillDiscernibleRest = highlightFillDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillDiscernibleHover = highlightFillDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillDiscernibleActive = highlightFillDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillDiscernibleFocus = highlightFillDiscernible.focus;
-
 // Highlight Fill Readable
 
 /** @public */
@@ -941,18 +782,6 @@ export const highlightFillReadableRecipe = createTokenColorRecipeHighlight(fillR
 
 /** @public */
 export const highlightFillReadable = createTokenColorSet(highlightFillReadableRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillReadableRest = highlightFillReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillReadableHover = highlightFillReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillReadableActive = highlightFillReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightFillReadableFocus = highlightFillReadable.focus;
 
 // Highlight Stroke Safety
 
@@ -962,18 +791,6 @@ export const highlightStrokeSafetyRecipe = createTokenColorRecipeHighlight(strok
 /** @public */
 export const highlightStrokeSafety = createTokenColorSet(highlightStrokeSafetyRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSafetyRest = highlightStrokeSafety.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSafetyHover = highlightStrokeSafety.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSafetyActive = highlightStrokeSafety.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSafetyFocus = highlightStrokeSafety.focus;
-
 // Highlight Stroke Stealth
 
 /** @public */
@@ -981,18 +798,6 @@ export const highlightStrokeStealthRecipe = createTokenColorRecipeHighlight(stro
 
 /** @public */
 export const highlightStrokeStealth = createTokenColorSet(highlightStrokeStealthRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStealthRest = highlightStrokeStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStealthHover = highlightStrokeStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStealthActive = highlightStrokeStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStealthFocus = highlightStrokeStealth.focus;
 
 // Highlight Stroke Subtle
 
@@ -1002,18 +807,6 @@ export const highlightStrokeSubtleRecipe = createTokenColorRecipeHighlight(strok
 /** @public */
 export const highlightStrokeSubtle = createTokenColorSet(highlightStrokeSubtleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSubtleRest = highlightStrokeSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSubtleHover = highlightStrokeSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSubtleActive = highlightStrokeSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeSubtleFocus = highlightStrokeSubtle.focus;
-
 // Highlight Stroke Discernible
 
 /** @public */
@@ -1021,18 +814,6 @@ export const highlightStrokeDiscernibleRecipe = createTokenColorRecipeHighlight(
 
 /** @public */
 export const highlightStrokeDiscernible = createTokenColorSet(highlightStrokeDiscernibleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeDiscernibleRest = highlightStrokeDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeDiscernibleHover = highlightStrokeDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeDiscernibleActive = highlightStrokeDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeDiscernibleFocus = highlightStrokeDiscernible.focus;
 
 // Highlight Stroke Readable
 
@@ -1042,18 +823,6 @@ export const highlightStrokeReadableRecipe = createTokenColorRecipeHighlight(str
 /** @public */
 export const highlightStrokeReadable = createTokenColorSet(highlightStrokeReadableRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeReadableRest = highlightStrokeReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeReadableHover = highlightStrokeReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeReadableActive = highlightStrokeReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeReadableFocus = highlightStrokeReadable.focus;
-
 // Highlight Stroke Strong
 
 /** @public */
@@ -1061,18 +830,6 @@ export const highlightStrokeStrongRecipe = createTokenColorRecipeHighlight(strok
 
 /** @public */
 export const highlightStrokeStrong = createTokenColorSet(highlightStrokeStrongRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStrongRest = highlightStrokeStrong.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStrongHover = highlightStrokeStrong.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStrongActive = highlightStrokeStrong.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const highlightStrokeStrongFocus = highlightStrokeStrong.focus;
 
 // Critical Fill Stealth
 
@@ -1082,18 +839,6 @@ export const criticalFillStealthRecipe = createTokenColorRecipeCritical(fillStea
 /** @public */
 export const criticalFillStealth = createTokenColorSet(criticalFillStealthRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillStealthRest = criticalFillStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillStealthHover = criticalFillStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillStealthActive = criticalFillStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillStealthFocus = criticalFillStealth.focus;
-
 // Critical Fill Subtle
 
 /** @public */
@@ -1101,18 +846,6 @@ export const criticalFillSubtleRecipe = createTokenColorRecipeCritical(fillSubtl
 
 /** @public */
 export const criticalFillSubtle = createTokenColorSet(criticalFillSubtleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillSubtleRest = criticalFillSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillSubtleHover = criticalFillSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillSubtleActive = criticalFillSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillSubtleFocus = criticalFillSubtle.focus;
 
 // Critical Fill Subtle Inverse
 
@@ -1138,18 +871,6 @@ export const criticalFillDiscernibleRecipe = createTokenColorRecipeCritical(fill
 /** @public */
 export const criticalFillDiscernible = createTokenColorSet(criticalFillDiscernibleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillDiscernibleRest = criticalFillDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillDiscernibleHover = criticalFillDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillDiscernibleActive = criticalFillDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillDiscernibleFocus = criticalFillDiscernible.focus;
-
 // Critical Fill Readable
 
 /** @public */
@@ -1157,18 +878,6 @@ export const criticalFillReadableRecipe = createTokenColorRecipeCritical(fillRea
 
 /** @public */
 export const criticalFillReadable = createTokenColorSet(criticalFillReadableRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillReadableRest = criticalFillReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillReadableHover = criticalFillReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillReadableActive = criticalFillReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalFillReadableFocus = criticalFillReadable.focus;
 
 // Critical Stroke Safety
 
@@ -1178,18 +887,6 @@ export const criticalStrokeSafetyRecipe = createTokenColorRecipeCritical(strokeS
 /** @public */
 export const criticalStrokeSafety = createTokenColorSet(criticalStrokeSafetyRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSafetyRest = criticalStrokeSafety.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSafetyHover = criticalStrokeSafety.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSafetyActive = criticalStrokeSafety.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSafetyFocus = criticalStrokeSafety.focus;
-
 // Critical Stroke Stealth
 
 /** @public */
@@ -1197,18 +894,6 @@ export const criticalStrokeStealthRecipe = createTokenColorRecipeCritical(stroke
 
 /** @public */
 export const criticalStrokeStealth = createTokenColorSet(criticalStrokeStealthRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStealthRest = criticalStrokeStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStealthHover = criticalStrokeStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStealthActive = criticalStrokeStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStealthFocus = criticalStrokeStealth.focus;
 
 // Critical Stroke Subtle
 
@@ -1218,18 +903,6 @@ export const criticalStrokeSubtleRecipe = createTokenColorRecipeCritical(strokeS
 /** @public */
 export const criticalStrokeSubtle = createTokenColorSet(criticalStrokeSubtleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSubtleRest = criticalStrokeSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSubtleHover = criticalStrokeSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSubtleActive = criticalStrokeSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeSubtleFocus = criticalStrokeSubtle.focus;
-
 // Critical Stroke Discernible
 
 /** @public */
@@ -1237,18 +910,6 @@ export const criticalStrokeDiscernibleRecipe = createTokenColorRecipeCritical(st
 
 /** @public */
 export const criticalStrokeDiscernible = createTokenColorSet(criticalStrokeDiscernibleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeDiscernibleRest = criticalStrokeDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeDiscernibleHover = criticalStrokeDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeDiscernibleActive = criticalStrokeDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeDiscernibleFocus = criticalStrokeDiscernible.focus;
 
 // Critical Stroke Readable
 
@@ -1258,18 +919,6 @@ export const criticalStrokeReadableRecipe = createTokenColorRecipeCritical(strok
 /** @public */
 export const criticalStrokeReadable = createTokenColorSet(criticalStrokeReadableRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeReadableRest = criticalStrokeReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeReadableHover = criticalStrokeReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeReadableActive = criticalStrokeReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeReadableFocus = criticalStrokeReadable.focus;
-
 // Critical Stroke Strong
 
 /** @public */
@@ -1277,18 +926,6 @@ export const criticalStrokeStrongRecipe = createTokenColorRecipeCritical(strokeS
 
 /** @public */
 export const criticalStrokeStrong = createTokenColorSet(criticalStrokeStrongRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStrongRest = criticalStrokeStrong.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStrongHover = criticalStrokeStrong.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStrongActive = criticalStrokeStrong.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const criticalStrokeStrongFocus = criticalStrokeStrong.focus;
 
 // Warning color recipes
 
@@ -1520,18 +1157,6 @@ export const neutralFillStealthRecipe = createTokenColorRecipeNeutral(fillStealt
 /** @public */
 export const neutralFillStealth = createTokenColorSet(neutralFillStealthRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillStealthRest = neutralFillStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillStealthHover = neutralFillStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillStealthActive = neutralFillStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillStealthFocus = neutralFillStealth.focus;
-
 // Neutral Fill Subtle (previously just "Neutral Fill")
 
 /** @public */
@@ -1539,18 +1164,6 @@ export const neutralFillSubtleRecipe = createTokenColorRecipeNeutral(fillSubtleR
 
 /** @public */
 export const neutralFillSubtle = createTokenColorSet(neutralFillSubtleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillSubtleRest = neutralFillSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillSubtleHover = neutralFillSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillSubtleActive = neutralFillSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillSubtleFocus = neutralFillSubtle.focus;
 
 // Neutral Fill Subtle Inverse
 
@@ -1576,18 +1189,6 @@ export const neutralFillDiscernibleRecipe = createTokenColorRecipeNeutral(fillDi
 /** @public */
 export const neutralFillDiscernible = createTokenColorSet(neutralFillDiscernibleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillDiscernibleRest = neutralFillDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillDiscernibleHover = neutralFillDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillDiscernibleActive = neutralFillDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillDiscernibleFocus = neutralFillDiscernible.focus;
-
 // Neutral Fill Readable
 
 /** @public */
@@ -1595,18 +1196,6 @@ export const neutralFillReadableRecipe = createTokenColorRecipeNeutral(fillReada
 
 /** @public */
 export const neutralFillReadable = createTokenColorSet(neutralFillReadableRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillReadableRest = neutralFillReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillReadableHover = neutralFillReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillReadableActive = neutralFillReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralFillReadableFocus = neutralFillReadable.focus;
 
 // Neutral Stroke Safety
 
@@ -1616,18 +1205,6 @@ export const neutralStrokeSafetyRecipe = createTokenColorRecipeNeutral(strokeSaf
 /** @public */
 export const neutralStrokeSafety = createTokenColorSet(neutralStrokeSafetyRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSafetyRest = neutralStrokeSafety.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSafetyHover = neutralStrokeSafety.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSafetyActive = neutralStrokeSafety.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSafetyFocus = neutralStrokeSafety.focus;
-
 // Neutral Stroke Stealth
 
 /** @public */
@@ -1635,18 +1212,6 @@ export const neutralStrokeStealthRecipe = createTokenColorRecipeNeutral(strokeSt
 
 /** @public */
 export const neutralStrokeStealth = createTokenColorSet(neutralStrokeStealthRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStealthRest = neutralStrokeStealth.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStealthHover = neutralStrokeStealth.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStealthActive = neutralStrokeStealth.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStealthFocus = neutralStrokeStealth.focus;
 
 // Neutral Stroke Subtle (previously just "Neutral Stroke")
 
@@ -1656,18 +1221,6 @@ export const neutralStrokeSubtleRecipe = createTokenColorRecipeNeutral(strokeSub
 /** @public */
 export const neutralStrokeSubtle = createTokenColorSet(neutralStrokeSubtleRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSubtleRest = neutralStrokeSubtle.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSubtleHover = neutralStrokeSubtle.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSubtleActive = neutralStrokeSubtle.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeSubtleFocus = neutralStrokeSubtle.focus;
-
 // Neutral Stroke Discernible (previously "Strong")
 
 /** @public */
@@ -1675,18 +1228,6 @@ export const neutralStrokeDiscernibleRecipe = createTokenColorRecipeNeutral(stro
 
 /** @public */
 export const neutralStrokeDiscernible = createTokenColorSet(neutralStrokeDiscernibleRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeDiscernibleRest = neutralStrokeDiscernible.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeDiscernibleHover = neutralStrokeDiscernible.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeDiscernibleActive = neutralStrokeDiscernible.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeDiscernibleFocus = neutralStrokeDiscernible.focus;
 
 // Neutral Stroke Readable (previously "Foreground Hint")
 
@@ -1696,18 +1237,6 @@ export const neutralStrokeReadableRecipe = createTokenColorRecipeNeutral(strokeR
 /** @public */
 export const neutralStrokeReadable = createTokenColorSet(neutralStrokeReadableRecipe);
 
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeReadableRest = neutralStrokeReadable.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeReadableHover = neutralStrokeReadable.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeReadableActive = neutralStrokeReadable.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeReadableFocus = neutralStrokeReadable.focus;
-
 // Neutral Stroke Strong (previously "Foreground")
 
 /** @public */
@@ -1715,18 +1244,6 @@ export const neutralStrokeStrongRecipe = createTokenColorRecipeNeutral(strokeStr
 
 /** @public */
 export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe);
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStrongRest = neutralStrokeStrong.rest;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStrongHover = neutralStrokeStrong.hover;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStrongActive = neutralStrokeStrong.active;
-
-/** @public @deprecated Use baseColorSet.state format instead */
-export const neutralStrokeStrongFocus = neutralStrokeStrong.focus;
 
 /**
  * The {@link Palette} to use for focus stroke recipes.

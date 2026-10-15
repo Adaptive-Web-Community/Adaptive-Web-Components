@@ -89,7 +89,7 @@ function serialize(value: any): any {
         return value ?? null;
     }
     if (value instanceof Color) {
-        return value.toColorString();
+        return value.toString();
     }
     if (Array.isArray(value)) {
         return value.map(serialize);
@@ -97,9 +97,6 @@ function serialize(value: any): any {
     if (Array.isArray((value as any).swatches)) {
         // Palette
         return (value as any).swatches.map(serialize);
-    }
-    if (typeof value.toColorString === "function") {
-        return value.toColorString();
     }
     const result: Record<string, any> = {};
     Object.keys(value).sort().forEach(key => {

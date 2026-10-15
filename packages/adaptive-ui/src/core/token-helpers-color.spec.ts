@@ -18,7 +18,7 @@ import {
     createTokenDelta,
     createTokenMinContrast,
 } from "./token-helpers-color.js";
-import { createNonCss, createTokenNonCss } from "./token-helpers.js";
+import { createTokenNonCss } from "./token-helpers.js";
 import { InteractiveState } from "./types.js";
 
 const { expect } = chai;
@@ -97,7 +97,7 @@ describe("token-helpers-color", () => {
 
     describe("createTokenColorRecipeWithPalette", () => {
         it("should name the token from the palette and recipe names", () => {
-            const paletteToken = createNonCss<Palette>("color-test.accent.palette");
+            const paletteToken = createTokenNonCss<Palette>("color-test.accent.palette", DesignTokenType.palette);
             const recipeToken = createTokenColorRecipeForPalette<Color>(
                 "color.shared.fill.rest",
                 StyleProperty.backgroundFill,
@@ -112,7 +112,7 @@ describe("token-helpers-color", () => {
 
         it("should evaluate the recipe with the palette", () => {
             const palette = PaletteRGB.from("#808080");
-            const paletteToken = createNonCss<Palette>("color-test.neutral.palette").withDefault(palette);
+            const paletteToken = createTokenNonCss<Palette>("color-test.neutral.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(
                 "color.shared.test-eval",
@@ -133,7 +133,7 @@ describe("token-helpers-color", () => {
 
         it("should resolve the palette when no params are provided", () => {
             const palette = PaletteRGB.from("#808080");
-            const paletteToken = createNonCss<Palette>("color-test.neutral2.palette").withDefault(palette);
+            const paletteToken = createTokenNonCss<Palette>("color-test.neutral2.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(
                 "color.shared.test-no-params",
@@ -154,7 +154,7 @@ describe("token-helpers-color", () => {
         it("should allow params to override the palette", () => {
             const palette = PaletteRGB.from("#808080");
             const other = PaletteRGB.from("#0078D4");
-            const paletteToken = createNonCss<Palette>("color-test.neutral3.palette").withDefault(palette);
+            const paletteToken = createTokenNonCss<Palette>("color-test.neutral3.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(
                 "color.shared.test-override",

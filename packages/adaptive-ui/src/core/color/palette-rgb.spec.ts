@@ -18,7 +18,7 @@ describe("PaletteRGB.from", () => {
     it("should create a palette from the provided hex color", () => {
         const palette = PaletteRGB.from(greyHex);
 
-        expect(palette.source.toColorString()).to.equal(greyHex);
+        expect(palette.source.toString()).to.equal(greyHex);
     });
 
     it("should create a palette with increased contrast", () => {

@@ -130,7 +130,7 @@ export class CodeGen {
         let adjustedID = tokenID;
 
         // TODO: Clean up naming and grouping
-        const densityGroups = ["control", "item-container", "layer"];
+        const densityGroups = ["control", "control-list", "item-container", "layer"];
         if (tokenID.startsWith("density_")) {
             for (let i = 0; i < densityGroups.length; i++) {
                 const group = densityGroups[i];

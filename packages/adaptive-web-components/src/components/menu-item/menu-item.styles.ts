@@ -1,6 +1,6 @@
 import {
-    neutralFillStealthActive,
-    neutralStrokeReadableRest,
+    neutralFillStealth,
+    neutralStrokeReadable,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
@@ -128,10 +128,10 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host([aria-expanded="true"]) {
-        background: ${neutralFillStealthActive};
+        background: ${neutralFillStealth.active};
     }
 
     ::slotted([slot="end"]:not(svg)) {
-        color: ${neutralStrokeReadableRest};
+        color: ${neutralStrokeReadable.rest};
     }
 `;

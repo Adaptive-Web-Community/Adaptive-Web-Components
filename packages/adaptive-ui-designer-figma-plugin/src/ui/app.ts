@@ -2,7 +2,7 @@ import { css, customElement, FASTElement, html, observable, repeat, when } from 
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
 import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
-import { neutralStrokeReadableRest } from "@adaptive-web/adaptive-ui/reference";
+import { neutralStrokeReadable } from "@adaptive-web/adaptive-ui/reference";
 import type { AdaptiveDesignTokenOrGroup, AppliedDesignToken, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage, SkipInvisibleNodesMessage} from "../core/messages.js";
@@ -631,7 +631,7 @@ const styles = css`
 
     .title {
         padding: 0 calc(var(--global-designUnit) * 3);
-        color: ${neutralStrokeReadableRest}
+        color: ${neutralStrokeReadable.rest}
     }
 
     .tokens-panel-content {

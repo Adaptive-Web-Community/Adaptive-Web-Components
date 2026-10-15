@@ -1,4 +1,4 @@
-import { neutralFillSubtleHover } from "@adaptive-web/adaptive-ui/reference";
+import { neutralFillSubtle } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 
 /**
@@ -52,7 +52,7 @@ export const aestheticStyles: ElementStyles = css`
         background-image: linear-gradient(
             90deg,
             transparent 0%,
-            ${neutralFillSubtleHover} 50%,
+            ${neutralFillSubtle.hover} 50%,
             transparent 100%
         );
         background-size: 0px 0px / 90% 100%;

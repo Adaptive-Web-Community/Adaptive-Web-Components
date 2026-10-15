@@ -21,7 +21,7 @@
     {
       "part": "Content Block",
       "properties": {
-        "gap": "density.itemContainer.horizontal.gap"
+        "gap": "density.controlList.horizontal.gap"
       }
     },
     {

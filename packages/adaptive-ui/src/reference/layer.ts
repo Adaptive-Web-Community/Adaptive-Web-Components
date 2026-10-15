@@ -48,12 +48,6 @@ const layerFillName = "color.layer.fill";
  */
 export const layerFillRestDelta = createTokenDelta(layerFillName, "layer", -2);
 
-/**
- * @public
- * @deprecated Use `layerFillRestDelta` instead.
- */
-export const layerFillDelta = layerFillRestDelta;
-
 const layerFillFixedName = `${layerFillName}.ramp`;
 
 /**

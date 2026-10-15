@@ -16,8 +16,8 @@
   gap: var(--density-control-horizontal-gap);
 }
 .checkbox .control {
-  padding: var(--density-itemContainer-vertical-padding) var(--density-itemContainer-horizontal-padding);
-  gap: var(--density-itemContainer-horizontal-gap);
+  padding: var(--density-controlList-vertical-padding) var(--density-controlList-horizontal-padding);
+  gap: var(--density-controlList-horizontal-gap);
   border-radius: var(--shape-cornerRadius-default);
   font-family: var(--typography-fontFamily-default);
   font-size: var(--typography-ramp-default-fontSize-base);
@@ -52,7 +52,7 @@
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   fill: currentcolor;
-  gap: var(--density-itemContainer-horizontal-gap);
+  gap: var(--density-controlList-horizontal-gap);
 }
 .checkbox .label,.checkbox:not(.disabled):not(.read-only) .label.focused,.checkbox:not(.disabled):not(.read-only) .label.hovered,.checkbox:not(.disabled):not(.read-only) .label.active {
   color: var(--color-neutral-stroke-strong-rest);
@@ -172,7 +172,7 @@
   color: var(--color-neutral-stroke-strong-disabled);
 }
 .checkbox .content-block {
-  gap: var(--density-itemContainer-horizontal-gap);
+  gap: var(--density-controlList-horizontal-gap);
 }
 .checkbox.invalid .control {
   border-color: var(--color-critical-stroke-discernible-rest);

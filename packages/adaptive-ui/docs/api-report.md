@@ -43,21 +43,6 @@ export function blackOrWhiteByContrastSet(set: InteractivePaintSet, minContrast:
 // @public
 export type BooleanCondition = string;
 
-// @public @deprecated (undocumented)
-export const BorderFill: {
-    all: (value: StyleValue) => StyleProperties;
-};
-
-// @public @deprecated (undocumented)
-export const BorderStyle: {
-    all: (value: StyleValue) => StyleProperties;
-};
-
-// @public @deprecated (undocumented)
-export const BorderThickness: {
-    all: (value: StyleValue) => StyleProperties;
-};
-
 // @public
 export function calculateOverlayColor(match: Color_2, background: Color_2): Rgb;
 
@@ -77,8 +62,6 @@ export class Color extends PaintBase {
     protected readonly _intendedColor?: Color;
     static isTransparent(color: Color_2): boolean;
     static parse(color: string): Color | undefined;
-    // @deprecated
-    toColorString: () => string;
     toString(): string;
     static transparent: Color;
     static unsafeOpacity(color: Color, alpha: number): Color;
@@ -154,26 +137,11 @@ export function contrastSwatch(palette: Palette, reference: Paint, minContrast: 
 // @public
 export const convertStylesToFocusState: (styles: Styles) => Styles;
 
-// @public @deprecated (undocumented)
-export const CornerRadius: {
-    all: (value: StyleValue) => StyleProperties;
-};
-
-// Warning: (ae-internal-missing-underscore) The name "create" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export const create: typeof DesignToken.create;
-
 // @public
 export function createForegroundSet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>, background: InteractiveTokenGroup<Paint>): InteractiveTokenGroup<Paint>;
 
 // @public
 export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Paint>): InteractiveTokenGroup<Paint>;
-
-// Warning: (ae-internal-missing-underscore) The name "createNonCss" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal @deprecated (undocumented)
-export function createNonCss<T>(name: string): DesignToken<T>;
 
 // @public
 export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color>;
@@ -240,9 +208,6 @@ export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor
 
 // @public
 export const createTokenShadow: (name: string) => TypedCSSDesignToken_2<ShadowValue>;
-
-// @public @deprecated
-export function createTokenSwatch(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Swatch>;
 
 // @public
 export const createTyped: typeof TypedCSSDesignToken.createTyped;
@@ -502,12 +467,6 @@ export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<P
 // @public
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
-// @public @deprecated (undocumented)
-export const Padding: {
-    all: (value: StyleValue) => StyleProperties;
-    verticalHorizontal: (valueVertical: StyleValue, valueHorizontal: StyleValue) => StyleProperties;
-};
-
 // @public
 export type Paint = PaintBase | DesignTokenMultiValuePaint;
 
@@ -753,30 +712,11 @@ export const StyleProperty: {
     readonly outlineOffset: "outlineOffset";
     readonly outlineStyle: "outlineStyle";
     readonly outlineThickness: "outlineThickness";
-    readonly outlineWidth: "outlineWidth";
     readonly shadow: "shadow";
 };
 
 // @public
 export type StyleProperty = ValuesOf<typeof StyleProperty>;
-
-// @public @deprecated
-export const stylePropertyBorderFillAll: ("borderFillTop" | "borderFillRight" | "borderFillBottom" | "borderFillLeft")[];
-
-// @public @deprecated
-export const stylePropertyBorderStyleAll: ("borderStyleTop" | "borderStyleRight" | "borderStyleBottom" | "borderStyleLeft")[];
-
-// @public @deprecated
-export const stylePropertyBorderThicknessAll: ("borderThicknessTop" | "borderThicknessRight" | "borderThicknessBottom" | "borderThicknessLeft")[];
-
-// @public @deprecated
-export const stylePropertyCornerRadiusAll: ("cornerRadiusTopLeft" | "cornerRadiusTopRight" | "cornerRadiusBottomRight" | "cornerRadiusBottomLeft")[];
-
-// @public @deprecated
-export type StylePropertyCss = StyleProperty | (string & Record<never, never>);
-
-// @public @deprecated
-export const stylePropertyPaddingAll: ("paddingTop" | "paddingRight" | "paddingBottom" | "paddingLeft")[];
 
 // @public (undocumented)
 export const StylePropertyShorthand: {
@@ -823,22 +763,6 @@ export class Styles {
 
 // @public
 export type StyleValue = CSSDesignToken<any> | InteractiveValues<any | null> | CSSDirective | string | number;
-
-// @public @deprecated
-export class Swatch extends Color {
-    static asOverlay(intendedColor: Swatch, reference: Swatch): Swatch;
-    static from(obj: {
-        r: number;
-        g: number;
-        b: number;
-        alpha?: number;
-    }): Swatch;
-    static fromColor(color: Color): Swatch;
-    static fromRgb(r: number, g: number, b: number, alpha?: number): Swatch;
-    static parse(color: string): Swatch | undefined;
-    // @deprecated
-    toTransparent(alpha?: number): Swatch;
-}
 
 // @public
 export function swatchAsOverlay(color: Color | null, reference: Color, asOverlay: boolean): Color | null;

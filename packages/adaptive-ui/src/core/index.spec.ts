@@ -7,7 +7,6 @@ describe("core index", () => {
     it("should export the public api", () => {
         [
             "Color",
-            "Swatch",
             "PaletteRGB",
             "PaletteOkhsl",
             "LinearGradient",

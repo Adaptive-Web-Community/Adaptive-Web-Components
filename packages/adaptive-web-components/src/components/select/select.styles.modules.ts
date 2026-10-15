@@ -2,10 +2,10 @@ import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
 import {
+    controlListDensityStyles,
     controlShapeStyles,
     flyoutStyles,
     inputStyles,
-    itemContainerDensityStyles,
     neutralOutlineDiscernibleControlStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { SelectAnatomy } from "./select.template.js";
@@ -26,7 +26,7 @@ export const styleModules: StyleRules = [
         target : {
             part: SelectAnatomy.parts.listbox,
         },
-        styles: itemContainerDensityStyles,
+        styles: controlListDensityStyles,
     },
     {
         target : {

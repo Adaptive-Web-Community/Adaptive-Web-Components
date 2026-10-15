@@ -19,7 +19,7 @@ describe("Color", () => {
 
         expect(color).to.be.instanceof(Color);
         expect(color.color).to.deep.equal(greyColor);
-        expect(color.toColorString()).to.equal(greyHex);
+        expect(color.toString()).to.equal(greyHex);
     });
 
     it("should create a Color from the provided RGB values", () => {
@@ -27,14 +27,14 @@ describe("Color", () => {
 
         expect(color).to.be.instanceof(Color);
         expect(color.color).to.deep.equal(greyColor);
-        expect(color.toColorString()).to.equal(greyHex);
+        expect(color.toString()).to.equal(greyHex);
     });
 
     it("should create a Color from the provided hex color", () => {
         const color = Color.parse(greyHex)!;
 
         expect(color).to.be.instanceof(Color);
-        expect(color.toColorString()).to.equal(greyHex);
+        expect(color.toString()).to.equal(greyHex);
     });
 
     it("should create a Color with opacity", () => {
@@ -42,7 +42,7 @@ describe("Color", () => {
 
         expect(color).to.be.instanceof(Color);
         expect(color.color).to.deep.equal(opacityColor);
-        expect(color.toColorString()).to.equal(opacityRgba);
+        expect(color.toString()).to.equal(opacityRgba);
     });
 
     it("should provide the correct relative luminance", () => {
@@ -94,7 +94,7 @@ describe("Color", () => {
         const color = Color.parse(opacityHex)!;
 
         expect(color.toString()).to.equal(opacityRgba);
-        expect(color.toColorString()).to.equal(opacityRgba);
+        expect(color.toString()).to.equal(opacityRgba);
         expect(color.createCSS()).to.equal(opacityRgba);
     });
 
@@ -135,6 +135,13 @@ describe("Color", () => {
             const result = Color.unsafeOpacity(Color.from(greyObject), 0.25);
 
             expect(result.relativeLuminance).to.be.NaN;
+        });
+
+        it("should default alpha to fully transparent when zero", () => {
+            const result = Color.unsafeOpacity(Color.from(greyObject), 0);
+
+            expect(result.color.alpha).to.equal(0);
+            expect(result.toString()).to.equal("transparent");
         });
     });
 

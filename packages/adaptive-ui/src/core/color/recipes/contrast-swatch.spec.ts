@@ -15,7 +15,7 @@ describe("contrastSwatch", (): void => {
     const accentPalette = PaletteRGB.from(accentBase);
 
     neutralPalette.swatches.concat(accentPalette.swatches).forEach((swatch): void => {
-        it(`${swatch.toColorString()} should resolve a color from the neutral palette`, (): void => {
+        it(`${swatch.toString()} should resolve a color from the neutral palette`, (): void => {
             expect(
                 neutralPalette.swatches.indexOf(contrastSwatch(neutralPalette, swatch, 4.5))
             ).not.to.equal(-1);
@@ -23,12 +23,12 @@ describe("contrastSwatch", (): void => {
     });
 
     neutralPalette.swatches.concat(accentPalette.swatches).forEach((swatch): void => {
-        it(`${swatch.toColorString()} should always be at least 4.5 : 1 against the background`, (): void => {
+        it(`${swatch.toString()} should always be at least 4.5 : 1 against the background`, (): void => {
             expect(
                 swatch.contrast(contrastSwatch(neutralPalette, swatch, 4.5))
                 // Because contrastSwatch follows the direction patterns of neutralForeground,
                 // a backgroundColor #777777 is impossible to hit 4.5 against.
-            ).to.be.gte(swatch.toColorString().toUpperCase() === "#777777" ? 4.48 : 4.5);
+            ).to.be.gte(swatch.toString().toUpperCase() === "#777777" ? 4.48 : 4.5);
             expect(swatch.contrast(contrastSwatch(neutralPalette, swatch, 4.5))).to.be.lessThan(5);
         });
     });
