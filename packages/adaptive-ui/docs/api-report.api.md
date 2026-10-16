@@ -4,34 +4,20 @@
 
 ```ts
 
-import { AddBehavior } from '@microsoft/fast-element';
 import { Color as Color_2 } from 'culori/fn';
-import { ComposableStyles } from '@microsoft/fast-element';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
-import { DesignToken } from '@microsoft/fast-foundation';
+import type { DesignToken } from 'design-token-library';
+import { DesignToken as DesignToken_2 } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
-import { ElementStyles } from '@microsoft/fast-element';
-import { Rgb } from 'culori/fn';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
-export class BasePalette<T extends Color = Color> implements Palette<T> {
-    constructor(source: Color, swatches: ReadonlyArray<T>);
-    readonly closestIndexCache: Map<number, number>;
-    closestIndexOf(reference: RelativeLuminance): number;
-    colorContrast(reference: RelativeLuminance, contrastTarget: number, initialSearchIndex?: number, direction?: PaletteDirection): T;
-    delta(reference: RelativeLuminance, delta: number, direction: PaletteDirection): T;
-    get(index: number): T;
-    readonly lastIndex: number;
-    readonly reversedSwatches: ReadonlyArray<T>;
-    readonly source: Color;
-    readonly swatches: ReadonlyArray<T>;
-}
+export function asOverlay(intendedColor: Color, reference: Color): OverlayColor;
 
-// @internal
-export const _black: Color;
+// @public
+export const black: Color;
 
 // @public
 export function blackOrWhiteByContrast(reference: Paint, minContrast: number, defaultBlack: boolean): Color;
@@ -43,56 +29,29 @@ export function blackOrWhiteByContrastSet(set: InteractivePaintSet, minContrast:
 export type BooleanCondition = string;
 
 // @public
-export function calculateOverlayColor(match: Color_2, background: Color_2): Rgb;
+export function calculateOverlayColor(match: Color, background: Color): Color;
 
 // @public
-export class Color extends PaintBase {
-    constructor(color: Color_2, intendedColor?: Color);
-    static asOverlay(intendedColor: Color, reference: Color): Color;
-    readonly color: Color_2;
-    createCSS: () => string;
-    static from(obj: {
-        r: number;
-        g: number;
-        b: number;
-        alpha?: number;
-    }): Color;
-    static fromRgb(r: number, g: number, b: number, alpha?: number): Color;
-    protected readonly _intendedColor?: Color;
-    static isTransparent(color: Color_2): boolean;
-    static parse(color: string): Color | undefined;
-    toString(): string;
-    static transparent: Color;
-    static unsafeOpacity(color: Color, alpha: number): Color;
+export function closestSwatchIndex(palette: Palette, reference: Paint): number;
+
+// @public
+export type Color = DesignToken.Values.Readonly.Color;
+
+// @public
+export function colorAsOverlay(color: Color | null, reference: Color, overlay: boolean): Color | null;
+
+// @public
+export function colorLuminance(color: Color): number;
+
+// @public
+export function colorSetAsOverlay(set: InteractiveColorSet, reference: Color, overlay: boolean): InteractiveColorSet;
+
+// @public
+export interface ColorSetOptions {
+    direction?: PaletteDirection;
+    disabledPalette?: Palette;
+    zeroAsTransparent?: boolean;
 }
-
-// @public
-export type ColorRecipe<T = Color> = RecipeOptional<ColorRecipeParams, T>;
-
-// @public
-export type ColorRecipeBySet<T = Color> = Recipe<InteractivePaintSet, T>;
-
-// @public
-export type ColorRecipeBySetEvaluate<T = Color> = RecipeEvaluate<InteractivePaintSet, T>;
-
-// @public
-export type ColorRecipeEvaluate<T = Color> = RecipeEvaluateOptional<ColorRecipeParams, T>;
-
-// @public
-export type ColorRecipePalette<T = Color> = Recipe<ColorRecipePaletteParams, T>;
-
-// @public
-export type ColorRecipePaletteEvaluate<T = Color> = RecipeEvaluate<ColorRecipePaletteParams, T>;
-
-// @public
-export type ColorRecipePaletteParams = ColorRecipeParams & {
-    palette: Palette;
-};
-
-// @public
-export type ColorRecipeParams = {
-    reference: Paint | null;
-};
 
 // @public
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
@@ -115,56 +74,35 @@ export type ComponentParts = Record<string, string>;
 export type Condition = BooleanCondition | StringCondition;
 
 // @public
-export class ConicGradient extends Gradient {
-    constructor(stops: GradientStop[], angle?: number);
+export function conditionalColorSet(set: InteractiveColorSet, condition: boolean): InteractiveColorSet;
+
+// @public
+export interface ConicGradient extends GradientBase {
     readonly angle: number;
     // (undocumented)
-    toString(): string;
-    // (undocumented)
-    readonly type: GradientType;
+    readonly type: "conic";
 }
 
 // @public
-export function contrast(a: RelativeLuminance, b: RelativeLuminance): number;
+export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number): ConicGradient;
 
 // @public
-export function contrastAndDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveColorSet;
+export function contrast(a: Paint, b: Paint): number;
 
 // @public
-export function contrastSwatch(palette: Palette, reference: Paint, minContrast: number, direction?: PaletteDirection): Color;
+export function contrastAndDeltaColorSet(palette: Palette, reference: Paint, minContrast: number, deltas: InteractiveValues<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // @public
-export const convertStylesToFocusState: (styles: Styles) => Styles;
+export function contrastColor(palette: Palette, reference: Paint, minContrast: number, direction?: PaletteDirection, startIndex?: number): Color;
 
 // @public
-export function createForegroundSet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>, background: InteractiveTokenGroup<Paint>): InteractiveTokenGroup<Paint>;
+export function createPalette(source: Color, swatches: ReadonlyArray<Color>): Palette;
 
 // @public
-export function createForegroundSetBySet(foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>, background: InteractiveTokenGroup<Paint>): InteractiveTokenGroup<Paint>;
+export function createPaletteOkhsl(source: Color | string, options?: Partial<PaletteOkhslOptions>): Palette;
 
 // @public
 export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color>;
-
-// @public
-export function createTokenColorRecipe<T = Paint>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeEvaluate<T>): TypedDesignToken<ColorRecipe<T>>;
-
-// @public
-export function createTokenColorRecipeBySet<T = Paint>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipeBySetEvaluate<T>): TypedDesignToken<ColorRecipeBySet<T>>;
-
-// @public
-export function createTokenColorRecipeForPalette<T = Paint>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: ColorRecipePaletteEvaluate<T>): TypedDesignToken<ColorRecipePalette<T>>;
-
-// @public
-export function createTokenColorRecipeValue(recipeToken: TypedDesignToken<ColorRecipe<Paint>>): TypedCSSDesignToken<Paint>;
-
-// @public
-export function createTokenColorRecipeWithPalette<T = Paint>(recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>, paletteToken: DesignToken<Palette>): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>>;
-
-// @public
-export function createTokenColorSet(recipeToken: TypedDesignToken<InteractiveColorRecipe>): InteractiveTokenGroup<Paint>;
-
-// @public
-export function createTokenDelta(baseName: string, state: InteractiveState | string, value: number | DesignToken<number>): TypedDesignToken<number>;
 
 // @public
 export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
@@ -188,9 +126,6 @@ export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>
 export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>;
 
 // @public
-export function createTokenMinContrast(baseName: string, value: number | DesignToken<number>): TypedDesignToken<number>;
-
-// @public
 export function createTokenNonCss<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
 
 // @public
@@ -206,9 +141,6 @@ export function createTokenPaint(name: string, intendedFor?: StyleProperty | Sty
 export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
 
 // @public
-export const createTokenShadow: (name: string) => TypedCSSDesignToken<ShadowValue>;
-
-// @public
 export const createTyped: typeof TypedCSSDesignToken.createTyped;
 
 // @public
@@ -218,17 +150,17 @@ export interface CursorDefinition {
 }
 
 // @public
-export function deltaSwatch(palette: Palette, reference: Paint, delta: number, direction?: PaletteDirection): Color;
+export function deltaColor(palette: Palette, reference: Paint, delta: number, direction?: PaletteDirection): Color;
 
 // @public
-export function deltaSwatchSet(palette: Palette, reference: Paint, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta?: number, disabledPalette?: Palette, direction?: PaletteDirection, zeroAsTransparent?: boolean): InteractiveColorSet;
+export function deltaColorSet(palette: Palette, reference: Paint, deltas: InteractiveValues<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // @public
 export const densityAdjustmentUnits: TypedDesignToken<number>;
 
 // @public
 export class DensityPaddingAndGapTokenGroup implements TokenGroup {
-    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number, designUnit: string | DesignToken<string>, borderThickness: string | DesignToken<string>);
+    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number, designUnit: string | DesignToken_2<string>, borderThickness: string | DesignToken_2<string>);
     readonly borderThickness: TypedCSSDesignToken<string>;
     readonly designUnit: TypedCSSDesignToken<string>;
     readonly horizontalGap: TypedCSSDesignToken<string>;
@@ -256,15 +188,9 @@ export class DesignTokenMultiValue<T extends CSSDirective | string> extends Arra
 }
 
 // @public
-export class DesignTokenMultiValuePaint extends DesignTokenMultiValue<PaintBase> implements RelativeLuminance {
-    contrast(b: RelativeLuminance): number;
-    get relativeLuminance(): number;
-}
-
-// @public
 export abstract class DesignTokenRegistry {
     static Groups: Map<string, InteractiveTokenGroup<any>>;
-    static Shared: Map<string, DesignToken<any>>;
+    static Shared: Map<string, DesignToken_2<any>>;
 }
 
 // @public
@@ -295,36 +221,10 @@ export const DesignTokenType: {
 export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 // @public
-export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue;
+export function directionByIsDark(color: Paint): PaletteDirection;
 
 // @public
-export type EffectiveStylePropertiesMap = Map<string, StyleValue>;
-
-// @public
-export class ElementStylesRenderer {
-    constructor(styles: Styles);
-    static disabledStyles: Styles;
-    static get focusResetStyles(): Styles;
-    static set focusResetStyles(styles: Styles);
-    static get focusStateStyles(): Styles;
-    static set focusStateStyles(styles: Styles);
-    render(target: StyleModuleTarget, interactivity?: InteractivityDefinition): ElementStyles;
-    static renderStyleRules(baseStyles: ComposableStyles[] | undefined, styleRules: StyleRules, anatomy?: ComponentAnatomy<any, any>): ElementStyles;
-}
-
-// @public
-export type ElevationRecipe = Recipe<number, string>;
-
-// @public
-export type ElevationRecipeEvaluate = RecipeEvaluate<number, string>;
-
-// @public (undocumented)
-export const Fill: {
-    backgroundAndForeground: (background: InteractiveTokenGroup<Paint>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipe>) => StyleProperties;
-    backgroundAndForegroundBySet: (background: InteractiveTokenGroup<Paint>, foregroundRecipe: TypedDesignToken<InteractiveColorRecipeBySet>) => StyleProperties;
-    backgroundNonInteractive: (background: TypedCSSDesignToken<Paint>, disabled?: TypedCSSDesignToken<Paint>) => StyleProperties;
-    foregroundNonInteractive: (foreground: TypedCSSDesignToken<Paint>, disabled?: TypedCSSDesignToken<Paint>) => StyleProperties;
-};
+export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
 
 // @public
 export const Focus: {
@@ -341,63 +241,66 @@ export interface FocusDefinition<TParts> {
 }
 
 // @public
-export abstract class Gradient extends PaintBase {
-    constructor(stops: GradientStop[]);
-    createCSS: () => string;
-    readonly stops: GradientStop[];
-    // (undocumented)
-    protected get stopsListCSS(): string;
-    abstract toString(): string;
-    abstract readonly type: GradientType;
+export function formatColor(color: Color): string;
+
+// @public
+export function formatGradient(value: Gradient | DtcgGradient): string;
+
+// @public
+export function formatPaint(paint: Paint): string;
+
+// Warning: (ae-internal-missing-underscore) The name "fromCulori" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function fromCulori(color: Color_2): Color;
+
+// @public
+export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient;
+
+// @public
+export type Gradient = ConicGradient | LinearGradient | RadialGradient;
+
+// @public
+export interface GradientBase {
+    readonly stops: ReadonlyArray<GradientStop>;
+    readonly type: GradientType;
 }
 
 // @public
 export type GradientStop = {
-    color: Color;
-    position: GradientStopPosition;
-    endPosition?: GradientStopPosition;
+    readonly color: Color;
+    readonly position: GradientStopPosition;
+    readonly endPosition?: GradientStopPosition;
 };
 
 // @public
 export type GradientStopPosition = {
-    value: number;
-    unit: "%" | "px" | "deg";
+    readonly value: number;
+    readonly unit: "%" | "px" | "deg";
 };
 
 // @public
 export type GradientType = "conic" | "linear" | "radial";
 
 // @beta
-export function hueShiftGradient(palette: Palette, reference: Paint, delta: number, angle?: number, startShift?: number, endShift?: number, direction?: PaletteDirection): Gradient;
+export function hueShiftGradient(palette: Palette, reference: Paint, delta: number, options?: HueShiftGradientOptions): Gradient;
 
-// @public
-export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: PaletteDirection): InteractiveColorSet;
-
-// @public
-export type InteractiveColorRecipe = ColorRecipe<InteractivePaintSet>;
-
-// @public
-export type InteractiveColorRecipeBySet = ColorRecipeBySet<InteractivePaintSet>;
-
-// @public
-export type InteractiveColorRecipeBySetEvaluate = ColorRecipeBySetEvaluate<InteractivePaintSet>;
-
-// @public
-export type InteractiveColorRecipeEvaluate = ColorRecipeEvaluate<InteractivePaintSet>;
-
-// @public
-export type InteractiveColorRecipePalette = ColorRecipePalette<InteractivePaintSet>;
-
-// @public
-export type InteractiveColorRecipePaletteEvaluate = ColorRecipePaletteEvaluate<InteractivePaintSet>;
-
-// @public
-export interface InteractiveColorSet extends InteractiveValues<Color | null> {
+// @beta
+export interface HueShiftGradientOptions {
+    angle?: number;
+    direction?: PaletteDirection;
+    endShift?: number;
+    startShift?: number;
 }
 
 // @public
-export interface InteractivePaintSet extends InteractiveValues<Paint | null> {
-}
+export function idealColorDeltaSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color, deltas: InteractiveValues<number>, options?: Omit<ColorSetOptions, "zeroAsTransparent">): InteractiveColorSet;
+
+// @public
+export type InteractiveColorSet = InteractiveValues<Color | null>;
+
+// @public
+export type InteractivePaintSet = InteractiveValues<Paint | null>;
 
 // @public
 export enum InteractiveState {
@@ -407,9 +310,6 @@ export enum InteractiveState {
     hover = "hover",
     rest = "rest"
 }
-
-// @public
-export function interactiveSwatchSetAsOverlay(set: InteractiveColorSet, reference: Color, asOverlay: boolean): InteractiveColorSet;
 
 // @public
 export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {
@@ -437,22 +337,32 @@ export type InteractivityDefinition = {
 };
 
 // @public
-export function invertingPaletteDeltasForSet(palette: Palette, reference: RelativeLuminance, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number): InteractiveValues<number>;
+export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveValues<number>): InteractiveValues<number>;
 
 // @public
-export function isDark(color: RelativeLuminance): boolean;
+export function isDark(color: Paint): boolean;
 
 // @public
-export class LinearGradient extends Gradient {
-    constructor(stops: GradientStop[], angle?: number);
+export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is DtcgGradient;
+
+// @public
+export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
+
+// @public
+export function isTransparent(color: Color): boolean;
+
+// @public
+export interface LinearGradient extends GradientBase {
     readonly angle: number;
-    toString(): string;
     // (undocumented)
-    readonly type: GradientType;
+    readonly type: "linear";
 }
 
 // @public
-export function luminanceSwatch(luminance: number): Color;
+export function linearGradient(stops: ReadonlyArray<GradientStop>, angle?: number): LinearGradient;
+
+// @public
+export function luminanceColor(luminance: number): Color;
 
 // @public (undocumented)
 export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & {
@@ -466,43 +376,27 @@ export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<P
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
 // @public
-export type Paint = PaintBase | DesignTokenMultiValuePaint;
-
-// @public
-export abstract class PaintBase implements RelativeLuminance, CSSDirective {
-    protected constructor(relativeLuminance: number);
-    contrast(b: RelativeLuminance): number;
-    createCSS(add: AddBehavior): ComposableStyles;
-    get relativeLuminance(): number;
+export interface OverlayColor extends Color {
+    intendedColor: Color;
 }
 
 // @public
-export interface Palette<T extends Color = Color> {
-    closestIndexOf(reference: RelativeLuminance): number;
-    colorContrast(reference: RelativeLuminance, minContrast: number, initialIndex?: number, direction?: PaletteDirection): T;
-    delta(reference: RelativeLuminance, delta: number, direction: PaletteDirection): T;
-    get(index: number): T;
+export type Paint = Color | Gradient | DtcgGradient;
+
+// @public
+export interface Palette {
     readonly source: Color;
-    readonly swatches: ReadonlyArray<T>;
+    readonly swatches: ReadonlyArray<Color>;
 }
 
 // @public
-export type PaletteDirection = PaletteDirectionValue | (() => PaletteDirectionValue);
-
-// @public
-export const PaletteDirectionValue: Readonly<{
+export const PaletteDirection: Readonly<{
     readonly darker: 1;
     readonly lighter: -1;
 }>;
 
 // @public
-export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
-
-// @public
-export class PaletteOkhsl extends BasePalette {
-    // (undocumented)
-    static from(source: Color | string, options?: Partial<PaletteOkhslOptions>): PaletteOkhsl;
-}
+export type PaletteDirection = typeof PaletteDirection[keyof typeof PaletteDirection];
 
 // @public
 export interface PaletteOkhslOptions {
@@ -512,12 +406,16 @@ export interface PaletteOkhslOptions {
 }
 
 // @public
-export class RadialGradient extends Gradient {
-    constructor(stops: GradientStop[]);
-    toString(): string;
+export function parseColor(color: string): Color | undefined;
+
+// @public
+export interface RadialGradient extends GradientBase {
     // (undocumented)
-    readonly type: GradientType;
+    readonly type: "radial";
 }
+
+// @public
+export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient;
 
 // @public
 export interface Recipe<TParam, TResult> {
@@ -536,13 +434,13 @@ export interface RecipeOptional<TParam, TResult> {
 }
 
 // @public
-export interface RelativeLuminance {
-    contrast: (a: RelativeLuminance) => number;
-    readonly relativeLuminance: number;
-}
+export function relativeLuminance(paint: Paint): number;
 
 // @public
-export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue;
+export function reversedSwatches(palette: Palette): ReadonlyArray<Color>;
+
+// @public
+export function rgbColor(r: number, g: number, b: number, alpha?: number): Color;
 
 // @beta (undocumented)
 export interface SerializableAnatomy {
@@ -594,35 +492,7 @@ export interface SerializableStyleRule {
 }
 
 // @public
-export class Shadow implements CSSDirective {
-    constructor(color: Color, xOffset: number, yOffset: number, blurRadius?: number | undefined, spread?: number | undefined);
-    // (undocumented)
-    blurRadius?: number | undefined;
-    // (undocumented)
-    color: Color;
-    createCSS(): string;
-    // (undocumented)
-    spread?: number | undefined;
-    // (undocumented)
-    xOffset: number;
-    // (undocumented)
-    yOffset: number;
-}
-
-// @public
-export type ShadowValue = Shadow | DesignTokenMultiValue<Shadow> | string;
-
-// @public
 export type StringCondition = Record<string, string>;
-
-// @public
-export type StyleDeclaration = {
-    styles?: Styles | Iterable<Styles>;
-    properties?: StyleProperties;
-};
-
-// @public
-export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
 
 // @public
 export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
@@ -637,12 +507,6 @@ export interface StyleModuleTarget {
     partCondition?: string;
     stateOnContext?: boolean;
 }
-
-// @public
-export type StyleProperties = Partial<Record<StyleKey, StyleValue>>;
-
-// @public
-export type StylePropertiesMap = Map<StyleKey, StyleValue>;
 
 // @public
 export const StyleProperty: {
@@ -721,36 +585,15 @@ export const StylePropertyShorthand: {
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
 // @public
-export type StyleRule = {
-    target?: StyleModuleTarget;
-} & StyleDeclaration;
+export function swatchAt(palette: Palette, index: number): Color;
+
+// Warning: (ae-internal-missing-underscore) The name "toCulori" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function toCulori(color: Color): Color_2;
 
 // @public
-export type StyleRules = Array<StyleRule>;
-
-// @public
-export class Styles {
-    // (undocumented)
-    appendComposed(styles: Styles): void;
-    clearComposed(): void;
-    static compose(styles: Styles[], properties?: StyleProperties, name?: string): Styles;
-    get composed(): Styles[] | undefined;
-    get effectiveAdaptiveProperties(): Map<StyleProperty, StyleValue>;
-    get effectiveProperties(): EffectiveStylePropertiesMap;
-    static fromDeclaration(declaration: StyleDeclaration, name?: string): Styles;
-    static fromProperties(properties: StyleProperties, name?: string): Styles;
-    readonly name: string | undefined;
-    get properties(): Readonly<StylePropertiesMap> | undefined;
-    set properties(properties: StylePropertiesMap | undefined);
-    // (undocumented)
-    static Shared: Map<string, Styles>;
-}
-
-// @public
-export type StyleValue = CSSDesignToken<any> | InteractiveValues<any | null> | CSSDirective | string | number;
-
-// @public
-export function swatchAsOverlay(color: Color | null, reference: Color, asOverlay: boolean): Color | null;
+export function toGradient(gradient: Gradient | DtcgGradient): Gradient;
 
 // @public
 export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "type"> {
@@ -759,8 +602,17 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
     type?: DesignTokenType;
 }
 
+// @public
+export const transparent: Color;
+
 // @beta
-export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, angle?: number, direction?: PaletteDirection): Gradient;
+export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, options?: TwoPaletteGradientOptions): Gradient;
+
+// @beta
+export interface TwoPaletteGradientOptions {
+    angle?: number;
+    direction?: PaletteDirection;
+}
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedCSSDesignToken" because one of its declarations is marked as @internal
@@ -779,7 +631,7 @@ export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedDesignToken" because one of its declarations is marked as @internal
 //
 // @public
-export class TypedDesignToken<T> extends DesignToken<T> implements DesignTokenMetadata {
+export class TypedDesignToken<T> extends DesignToken_2<T> implements DesignTokenMetadata {
     constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
     static createTyped<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
 }
@@ -829,8 +681,11 @@ export class TypeScaleTokenGroup extends TypeRampTokenGroup {
     readonly multiplier: TypedDesignToken<number>;
 }
 
-// @internal
-export const _white: Color;
+// @public
+export const white: Color;
+
+// @public
+export function withAlpha(color: Color, alpha: number): Color;
 
 // (No @packageDocumentation comment for this package)
 

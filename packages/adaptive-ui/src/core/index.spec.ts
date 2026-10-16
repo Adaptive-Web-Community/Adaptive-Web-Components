@@ -6,11 +6,10 @@ const { expect } = chai;
 describe("core index", () => {
     it("should export the public api", () => {
         [
-            "Color",
-            "PaletteOkhsl",
-            "LinearGradient",
-            "Styles",
-            "ElementStylesRenderer",
+            "rgbColor",
+            "parseColor",
+            "createPaletteOkhsl",
+            "linearGradient",
             "Interactivity",
             "StyleProperty",
             "DesignTokenType",
@@ -18,10 +17,8 @@ describe("core index", () => {
             "TypedDesignToken",
             "DensityPaddingAndGapTokenGroup",
             "TypeScaleTokenGroup",
-            "Shadow",
             "createTokenColor",
-            "createTokenColorSet",
-            "contrastSwatch",
+            "contrastColor",
             "blackOrWhiteByContrast",
         ].forEach(name => {
             expect(core, name).to.have.property(name);

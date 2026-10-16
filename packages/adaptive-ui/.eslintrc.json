@@ -1,1 +1,15 @@
-{}
+{
+    "ignorePatterns": [
+        "src/bin",
+        "src/reference",
+        "src/__test__",
+        "src/core/elevation",
+        "src/core/shadow",
+        "src/core/token-helpers-color.ts",
+        "src/core/token-helpers-color.spec.ts",
+        "src/core/modules/element-styles-renderer.ts",
+        "src/core/modules/element-styles-renderer.spec.ts",
+        "src/core/modules/styles.ts",
+        "src/core/modules/styles.spec.ts"
+    ]
+}
