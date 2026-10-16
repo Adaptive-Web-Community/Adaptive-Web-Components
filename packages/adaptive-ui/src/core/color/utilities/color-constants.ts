@@ -1,15 +1,22 @@
-import { Color } from "../color.js";
+import { Color, rgbColor } from "../color.js";
 
 /**
- * A {@link Color} convenience for white.
+ * Opaque white.
  *
- * @internal
+ * @public
  */
-export const _white = Color.fromRgb(1, 1, 1);
+export const white: Color = rgbColor(1, 1, 1);
 
 /**
- * A {@link Color} convenience for black.
+ * Opaque black.
  *
- * @internal
+ * @public
  */
-export const _black = Color.fromRgb(0, 0, 0);
+export const black: Color = rgbColor(0, 0, 0);
+
+/**
+ * Fully transparent, the `transparent` of CSS.
+ *
+ * @public
+ */
+export const transparent: Color = rgbColor(0, 0, 0, 0);

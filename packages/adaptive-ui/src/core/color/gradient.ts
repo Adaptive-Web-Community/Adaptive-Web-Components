@@ -1,6 +1,5 @@
-import { cssDirective } from "@microsoft/fast-element";
-import { PaintBase } from "./paint.js";
-import { Color } from "./color.js";
+import type { DesignToken } from "design-token-library";
+import { Color, formatColor } from "./color.js";
 
 /**
  * Represents the position of a single {@link GradientStop}.
@@ -11,7 +10,7 @@ export type GradientStopPosition = {
     /**
      * The value of the gradient stop position.
      */
-    value: number;
+    readonly value: number;
 
     /**
      * The unit of the gradient stop position.
@@ -20,7 +19,7 @@ export type GradientStopPosition = {
      * Percentage values are represented as a decimal value between 0 and 1.
      * "deg" is valid for conic gradient stops only.
      */
-    unit: "%" | "px" | "deg";
+    readonly unit: "%" | "px" | "deg";
 };
 
 /**
@@ -32,17 +31,17 @@ export type GradientStop = {
     /**
      * The {@link Color} at this gradient stop.
      */
-    color: Color,
+    readonly color: Color;
 
     /**
      * The position of the start of the gradient stop.
      */
-    position: GradientStopPosition,
+    readonly position: GradientStopPosition;
 
     /**
      * The position of the end of the gradient stop.
      */
-    endPosition?: GradientStopPosition,
+    readonly endPosition?: GradientStopPosition;
 };
 
 /**
@@ -53,62 +52,20 @@ export type GradientStop = {
 export type GradientType = "conic" | "linear" | "radial";
 
 /**
- * Represents a gradient.
+ * The properties shared by all gradients.
  *
  * @public
  */
-export abstract class Gradient extends PaintBase {
+export interface GradientBase {
     /**
      * The type of gradient.
      */
-    public abstract readonly type: GradientType;
+    readonly type: GradientType;
 
     /**
      * The stops on the gradient.
      */
-    public readonly stops: GradientStop[];
-
-    /**
-     * Creates a new Gradient.
-     */
-    constructor(stops: GradientStop[]) {
-        if (stops.length < 2) {
-            throw new Error("A Gradient must have at least two stops");
-        }
-
-        // TODO, assumes the stops are equivalent luminance
-        super(stops[0].color.relativeLuminance);
-
-        this.stops = stops;
-    }
-
-    protected get stopsListCSS() {
-        function getPosition(position: GradientStopPosition): string {
-            if (position.unit === "%") {
-                return (position.value * 100).toFixed(0) + "%";
-            } else {
-                return position.value + position.unit;
-            }
-        }
-
-        return this.stops.map(stop => 
-            `${stop.color.toString()} ${getPosition(stop.position)} ${stop.endPosition ? getPosition(stop.endPosition) : ""}`.trim()
-        ).join(", ");
-    }
-
-    /**
-     * Gets this gradient value as a string.
-     *
-     * @returns The gradient value in string format
-     */
-    public abstract toString(): string;
-
-    /**
-     * Gets this gradient value as a string for use in css.
-     *
-     * @returns The gradient value in a valid css string format
-     */
-    public createCSS = this.toString;
+    readonly stops: ReadonlyArray<GradientStop>;
 }
 
 /**
@@ -116,31 +73,13 @@ export abstract class Gradient extends PaintBase {
  *
  * @public
  */
-@cssDirective()
-export class ConicGradient extends Gradient {
-    public readonly type: GradientType = "conic";
+export interface ConicGradient extends GradientBase {
+    readonly type: "conic";
 
     /**
      * The angle of the gradient in degrees.
      */
-    public readonly angle: number;
-
-    /**
-     *
-     */
-    constructor(stops: GradientStop[], angle: number = 0) {
-        const invalidStops = stops.filter(stop => stop.position.unit !== "deg" || (stop.endPosition && stop.endPosition?.unit !== "deg"));
-        if (invalidStops.length > 0) {
-            throw new Error("All stop positions must have a unit of 'deg'");
-        }
-
-        super(stops);
-        this.angle = angle;
-    }
-
-    public toString(): string {
-        return `conic-gradient(from ${this.angle}deg, ${this.stopsListCSS})`;
-    }
+    readonly angle: number;
 }
 
 /**
@@ -148,38 +87,13 @@ export class ConicGradient extends Gradient {
  *
  * @public
  */
-@cssDirective()
-export class LinearGradient extends Gradient {
-    public readonly type: GradientType = "linear";
+export interface LinearGradient extends GradientBase {
+    readonly type: "linear";
 
     /**
      * The angle of the gradient in degrees.
      */
-    public readonly angle: number;
-
-    /**
-     *
-     */
-    constructor(stops: GradientStop[], angle: number = 0) {
-        const invalidStops = stops.filter(stop => 
-            (stop.position.unit !== "%" && stop.position.unit !== "px") ||
-            (stop.endPosition && stop.endPosition?.unit !== "%" && stop.endPosition?.unit !== "px"));
-        if (invalidStops.length > 0) {
-            throw new Error("All stop positions must have a unit of '%' or 'px'");
-        }
-
-        super(stops);
-        this.angle = angle;
-    }
-
-    /**
-     * Gets this gradient value as a string.
-     *
-     * @returns The gradient value in string format
-     */
-    public toString(): string {
-        return `linear-gradient(${this.angle}deg, ${this.stopsListCSS})`;
-    }
+    readonly angle: number;
 }
 
 /**
@@ -187,30 +101,158 @@ export class LinearGradient extends Gradient {
  *
  * @public
  */
-@cssDirective()
-export class RadialGradient extends Gradient {
-    public readonly type: GradientType = "radial";
+export interface RadialGradient extends GradientBase {
+    readonly type: "radial";
+}
 
-    /**
-     *
-     */
-    constructor(stops: GradientStop[]) {
-        const invalidStops = stops.filter(stop => 
-            (stop.position.unit !== "%" && stop.position.unit !== "px") ||
-            (stop.endPosition && stop.endPosition?.unit !== "%" && stop.endPosition?.unit !== "px"));
-        if (invalidStops.length > 0) {
-            throw new Error("All stop positions must have a unit of '%' or 'px'");
-        }
+/**
+ * Represents a gradient.
+ *
+ * @remarks
+ * This extends what a {@link https://www.designtokens.org/tr/2025.10/format/#gradient | DTCG gradient} has, which is
+ * the color of each stop and its position, with the type of the gradient, its angle, and the unit and end of the
+ * position of a stop. The functions that work with a gradient also work with a {@link DtcgGradient}.
+ *
+ * @public
+ */
+export type Gradient = ConicGradient | LinearGradient | RadialGradient;
 
-        super(stops);
+/**
+ * A {@link https://www.designtokens.org/tr/2025.10/format/#gradient | DTCG gradient}, which is a list of the stops with
+ * a color and a position from 0 to 1, and has nothing about what kind of gradient it is.
+ *
+ * @public
+ */
+export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
+
+/**
+ * Checks if a gradient is a {@link DtcgGradient}, which is a list.
+ *
+ * @param gradient - The gradient to check
+ * @returns True if the gradient is a DTCG gradient, false if it is a {@link Gradient}
+ *
+ * @public
+ */
+export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is DtcgGradient {
+    return Array.isArray(gradient);
+}
+
+function assertStops(stops: ReadonlyArray<GradientStop>, units: ReadonlyArray<GradientStopPosition["unit"]>) {
+    if (stops.length < 2) {
+        throw new Error("A Gradient must have at least two stops");
     }
 
-    /**
-     * Gets this gradient value as a string.
-     *
-     * @returns The gradient value in string format
-     */
-    public toString(): string {
-        return `radial-gradient(${this.stopsListCSS})`;
+    const isInvalid = (position?: GradientStopPosition) => position !== undefined && !units.includes(position.unit);
+    if (stops.some(stop => isInvalid(stop.position) || isInvalid(stop.endPosition))) {
+        throw new Error(`All stop positions must have a unit of ${units.map(unit => `'${unit}'`).join(" or ")}`);
+    }
+}
+
+function frozenStops(stops: ReadonlyArray<GradientStop>): ReadonlyArray<GradientStop> {
+    return Object.freeze([...stops]);
+}
+
+/**
+ * Creates a conic gradient.
+ *
+ * @param stops - The stops, which must all have a unit of "deg"
+ * @param angle - The angle of the gradient in degrees
+ * @returns A new gradient
+ *
+ * @public
+ */
+export function conicGradient(stops: ReadonlyArray<GradientStop>, angle: number = 0): ConicGradient {
+    assertStops(stops, ["deg"]);
+    return Object.freeze({ type: "conic", stops: frozenStops(stops), angle });
+}
+
+/**
+ * Creates a linear gradient.
+ *
+ * @param stops - The stops, which must all have a unit of "%" or "px"
+ * @param angle - The angle of the gradient in degrees
+ * @returns A new gradient
+ *
+ * @public
+ */
+export function linearGradient(stops: ReadonlyArray<GradientStop>, angle: number = 0): LinearGradient {
+    assertStops(stops, ["%", "px"]);
+    return Object.freeze({ type: "linear", stops: frozenStops(stops), angle });
+}
+
+/**
+ * Creates a radial gradient.
+ *
+ * @param stops - The stops, which must all have a unit of "%" or "px"
+ * @returns A new gradient
+ *
+ * @public
+ */
+export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient {
+    assertStops(stops, ["%", "px"]);
+    return Object.freeze({ type: "radial", stops: frozenStops(stops) });
+}
+
+/**
+ * Creates a {@link Gradient} from a {@link DtcgGradient}.
+ *
+ * @remarks
+ * A DTCG gradient doesn't say which kind it is. It is a linear gradient from the top to the bottom, which is what CSS
+ * does without an angle, and the positions are percentages.
+ *
+ * @param gradient - The DTCG gradient
+ * @param angle - The angle of the gradient in degrees, which is 180 for from the top to the bottom
+ * @returns A new gradient
+ *
+ * @public
+ */
+export function fromDtcgGradient(gradient: DtcgGradient, angle: number = 180): LinearGradient {
+    return linearGradient(
+        gradient.map(stop => ({ color: stop.color, position: { value: stop.position, unit: "%" as const } })),
+        angle
+    );
+}
+
+/**
+ * Gets a gradient that is a {@link Gradient}, from a gradient that may be a {@link DtcgGradient}.
+ *
+ * @param gradient - A gradient of either kind
+ * @returns The gradient, or a linear gradient for a DTCG gradient
+ *
+ * @public
+ */
+export function toGradient(gradient: Gradient | DtcgGradient): Gradient {
+    return isDtcgGradient(gradient) ? fromDtcgGradient(gradient) : gradient;
+}
+
+function formatPosition(position: GradientStopPosition): string {
+    return position.unit === "%" ? (position.value * 100).toFixed(0) + "%" : position.value + position.unit;
+}
+
+function formatStops(stops: ReadonlyArray<GradientStop>): string {
+    return stops
+        .map(stop =>
+            `${formatColor(stop.color)} ${formatPosition(stop.position)} ${stop.endPosition ? formatPosition(stop.endPosition) : ""}`.trim()
+        )
+        .join(", ");
+}
+
+/**
+ * Gets a gradient as a string for use in CSS.
+ *
+ * @param gradient - The gradient, of either kind
+ * @returns The gradient value in a valid CSS string format
+ *
+ * @public
+ */
+export function formatGradient(value: Gradient | DtcgGradient): string {
+    const gradient = toGradient(value);
+    switch (gradient.type) {
+        case "conic":
+            return `conic-gradient(from ${gradient.angle}deg, ${formatStops(gradient.stops)})`;
+        case "linear":
+            return `linear-gradient(${gradient.angle}deg, ${formatStops(gradient.stops)})`;
+        case "radial":
+            return `radial-gradient(${formatStops(gradient.stops)})`;
     }
 }

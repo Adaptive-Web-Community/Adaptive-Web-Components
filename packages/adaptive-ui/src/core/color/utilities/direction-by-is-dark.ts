@@ -1,6 +1,6 @@
-import { PaletteDirectionValue } from "../palette.js";
+import { PaletteDirection } from "../palette.js";
+import { Paint } from "../paint.js";
 import { isDark } from "./is-dark.js";
-import { RelativeLuminance } from "./relative-luminance.js";
 
 /**
  * Gets an inverse directional multiplier based on whether the `color` is dark or light.
@@ -10,6 +10,6 @@ import { RelativeLuminance } from "./relative-luminance.js";
  *
  * @public
  */
-export function directionByIsDark(color: RelativeLuminance): PaletteDirectionValue {
-    return isDark(color) ? PaletteDirectionValue.lighter : PaletteDirectionValue.darker;
+export function directionByIsDark(color: Paint): PaletteDirection {
+    return isDark(color) ? PaletteDirection.lighter : PaletteDirection.darker;
 }

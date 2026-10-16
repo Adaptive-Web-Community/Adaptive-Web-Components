@@ -1,74 +1,36 @@
-import { AddBehavior, ComposableStyles, CSSDirective } from "@microsoft/fast-element";
-import { DesignTokenMultiValue } from "../adaptive-design-tokens.js";
-import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
+import { Color, formatColor } from "./color.js";
+import { DtcgGradient, formatGradient, Gradient, isDtcgGradient } from "./gradient.js";
 
 /**
- * Abstract representation of a value which can be used to paint a style like a fill or border.
+ * The type of a value which can be used to paint a style like a fill or border.
  *
- * See {@link Color} of {@link Gradient} for concrete implementations.
+ * @remarks
+ * A gradient may be a {@link Gradient} or a {@link DtcgGradient}, which has less.
  *
  * @public
  */
-export abstract class PaintBase implements RelativeLuminance, CSSDirective {
-    readonly #relativeLuminance: number;
+export type Paint = Color | Gradient | DtcgGradient;
 
-    /**
-     * Creates a new Color.
-     *
-     * @param color - The underlying Color value
-     */
-    protected constructor(relativeLuminance: number) {
-        this.#relativeLuminance = relativeLuminance;
-    }
-
-    /**
-     * Creates a CSS fragment to interpolate into the CSS document.
-     *
-     * @returns - the string to interpolate into CSS
-     */
-    createCSS(add: AddBehavior): ComposableStyles {
-        throw new Error("Method not implemented.");
-    }
-
-    /**
-     * {@inheritdoc RelativeLuminance.relativeLuminance}
-     */
-    public get relativeLuminance(): number {
-        return this.#relativeLuminance;
-    }
-
-    /**
-     * {@inheritdoc RelativeLuminance.contrast}
-     */
-    public contrast(b: RelativeLuminance): number {
-        return contrast(this, b);
-    }
+/**
+ * Checks if a paint is a gradient of either kind.
+ *
+ * @param paint - The paint to check
+ * @returns True if the paint is a gradient, false if it is a color
+ *
+ * @public
+ */
+export function isGradient(paint: Paint): paint is Gradient | DtcgGradient {
+    return isDtcgGradient(paint as DtcgGradient) || "stops" in paint;
 }
 
 /**
- * A design token value for paint purposes which can have multiple values, like `background`.
+ * Gets a paint as a string for use in CSS.
+ *
+ * @param paint - The color or gradient
+ * @returns The paint in a valid CSS string format
  *
  * @public
  */
-export class DesignTokenMultiValuePaint extends DesignTokenMultiValue<PaintBase> implements RelativeLuminance {
-    /**
-     * {@inheritdoc RelativeLuminance.relativeLuminance}
-     */
-    public get relativeLuminance(): number {
-        return this[0].relativeLuminance;
-    }
-
-    /**
-     * {@inheritdoc RelativeLuminance.contrast}
-     */
-    public contrast(b: RelativeLuminance): number {
-        return contrast(this, b);
-    }
+export function formatPaint(paint: Paint): string {
+    return isGradient(paint) ? formatGradient(paint) : formatColor(paint);
 }
-
-/**
- * The type of a Paint token value.
- *
- * @public
- */
-export type Paint = PaintBase | DesignTokenMultiValuePaint;

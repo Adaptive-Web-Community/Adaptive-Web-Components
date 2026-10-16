@@ -1,36 +1,38 @@
+import { colorLuminance } from "../color.js";
+import { isDtcgGradient } from "../gradient.js";
+import { isGradient, Paint } from "../paint.js";
+
 /**
- * An interface for storing the relative luminance value of a color to aid in contrast calculations.
+ * Gets the relative luminance of a paint.
+ *
+ * @remarks
+ * The relative luminance of a gradient is that of its first stop, this assumes the stops have similar luminance.
+ *
+ * @param paint - The color or gradient
+ * @returns A number between 0 and 1, calculated by {@link https://www.w3.org/WAI/GL/wiki/Relative_luminance}
  *
  * @public
  */
-export interface RelativeLuminance {
-    /**
-     * A number between 0 and 1, calculated by {@link https://www.w3.org/WAI/GL/wiki/Relative_luminance}
-     */
-    readonly relativeLuminance: number;
-
-    /**
-     * Gets the contrast between this relative luminance and another.
-     *
-     * @returns The contrast between the two luminance values, for example, 4.54
-     */
-    contrast: (a: RelativeLuminance) => number;
+export function relativeLuminance(paint: Paint): number {
+    return colorLuminance(isGradient(paint) ? (isDtcgGradient(paint) ? paint[0].color : paint.stops[0].color) : paint);
 }
 
 /**
- * Gets the contrast ratio between two colors expressed as relative luminance values.
+ * Gets the contrast ratio between two paints.
  *
  * For example, the contrast between #FFFFFF and #767676 is 4.5:1
  *
- * @param a - One color relative luminance, for example, 1 for white
- * @param b - Another color relative luminance, for example, 0.18116 for #767676
- * @returns The contrast between the two luminance values, for example, 4.54
+ * @param a - One color or gradient
+ * @param b - Another color or gradient
+ * @returns The contrast between the two paints, for example, 4.54
  *
  * @public
  */
-export function contrast(a: RelativeLuminance, b: RelativeLuminance): number {
-    const y1 = a.relativeLuminance > b.relativeLuminance ? a : b;
-    const y2 = a.relativeLuminance > b.relativeLuminance ? b : a;
+export function contrast(a: Paint, b: Paint): number {
+    const luminanceA = relativeLuminance(a);
+    const luminanceB = relativeLuminance(b);
+    const y1 = luminanceA > luminanceB ? luminanceA : luminanceB;
+    const y2 = luminanceA > luminanceB ? luminanceB : luminanceA;
 
-    return (y1.relativeLuminance + 0.05) / (y2.relativeLuminance + 0.05);
+    return (y1 + 0.05) / (y2 + 0.05);
 }
