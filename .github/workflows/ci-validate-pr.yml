@@ -16,32 +16,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v6
         with:
           node-version: "24.x"
-
-      - name: Get npm cache directory path
-        id: npm-cache-dir-path
-        run: echo '::set-output name=dir::$(npm cache dir)'
-
-      - name: Set up node_modules cache
-        uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: |
-            ${{ steps.npm-cache-dir-path.outputs.dir }}
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-npm_cache-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm_cache-
+          cache: "npm"
 
       - name: Install package dependencies
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
 
       - name: Build all packages
         run: npm run build
