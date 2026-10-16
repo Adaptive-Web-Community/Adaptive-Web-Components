@@ -13,6 +13,12 @@ import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
+// @public
+export const AdaptiveDesignToken: {
+    readonly fontStyle: "fontStyle";
+    readonly fontVariations: "fontVariations";
+};
+
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
 //
 // @public
@@ -266,6 +272,9 @@ export function directionByIsDark(color: Paint): PaletteDirection;
 export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
 
 // @public
+export const extensionKey = "adaptive-ui";
+
+// @public
 export const Focus: {
     readonly contextFocused: () => FocusDefinition<any>;
     readonly contextChildFocused: <TParts>(indicatorPart: keyof TParts & string) => FocusDefinition<TParts>;
@@ -278,6 +287,12 @@ export interface FocusDefinition<TParts> {
     focusTarget: StyleModuleTarget;
     resetTarget?: StyleModuleTarget;
 }
+
+// @public
+export type FontStyleToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontStyle, string>;
+
+// @public
+export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontVariations, string>;
 
 // @public
 export function formatColor(color: Color_2): string;
@@ -297,6 +312,11 @@ export function fromCulori(color: Color_3): Color_2;
 //
 // @public
 export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient_2;
+
+// @public
+export function getIntendedFor(token: {
+    $extensions: Record<string, any>;
+}): StyleProperty[];
 
 // Warning: (ae-forgotten-export) The symbol "RadialGradient_2" needs to be exported by the entry point index.d.ts
 //
@@ -341,6 +361,9 @@ export function idealColorDeltaSet(palette: Palette, reference: Paint, minContra
 
 // @public @deprecated (undocumented)
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: Direction): InteractiveColorSet;
+
+// @public
+export function intendedFor(...properties: StyleProperty[]): Record<string, unknown>;
 
 // @public
 export type InteractiveColorSet = InteractiveValues<Color_2 | null>;

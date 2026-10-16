@@ -5,4 +5,6 @@ export * from "./adaptive-design-tokens.js";
 export * from "./recipes.js";
 export * from "./typography/index.js";
 export * from "./token-helpers.js";
+export * from "./token-metadata.js";
+export * from "./token-types.js";
 export * from "./types.js";
