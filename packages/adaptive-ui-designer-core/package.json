@@ -35,11 +35,11 @@
   "dependencies": {
     "@adaptive-web/adaptive-ui": "^0.14.0",
     "@microsoft/fast-foundation": "^3.0.0-alpha.31",
+    "culori": "^4.0.2",
     "tslog": "^4.10.2"
   },
   "devDependencies": {
-    "@types/culori": "^2.0.0",
-    "rimraf": "^3.0.2",
-    "typescript": "^5.4.5"
+    "@types/culori": "^4.0.1",
+    "rimraf": "^3.0.2"
   }
 }

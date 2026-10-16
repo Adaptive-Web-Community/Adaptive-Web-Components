@@ -20,6 +20,8 @@ module.exports = {
             { allow: ["asyncMethods", "methods"] },
         ],
         "@typescript-eslint/no-unsafe-declaration-merging": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-empty-object-type": ["error", { allowInterfaces: "with-single-extends" }],
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/typedef": "off",
         "@typescript-eslint/explicit-function-return-type": "off",

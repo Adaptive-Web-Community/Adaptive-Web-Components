@@ -14,7 +14,6 @@ import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
 import { ElementStyles } from '@microsoft/fast-element';
 import { Rgb } from 'culori/fn';
-import { TypedCSSDesignToken as TypedCSSDesignToken_2 } from '../adaptive-design-tokens.js';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
@@ -207,7 +206,7 @@ export function createTokenPaint(name: string, intendedFor?: StyleProperty | Sty
 export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
 
 // @public
-export const createTokenShadow: (name: string) => TypedCSSDesignToken_2<ShadowValue>;
+export const createTokenShadow: (name: string) => TypedCSSDesignToken<ShadowValue>;
 
 // @public
 export const createTyped: typeof TypedCSSDesignToken.createTyped;
@@ -253,7 +252,6 @@ export type DesignTokenMetadata = {
 
 // @public
 export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
-    // (undocumented)
     createCSS(): string;
 }
 
@@ -332,8 +330,8 @@ export const Fill: {
 export const Focus: {
     readonly contextFocused: () => FocusDefinition<any>;
     readonly contextChildFocused: <TParts>(indicatorPart: keyof TParts & string) => FocusDefinition<TParts>;
-    readonly partFocused: <TParts_1>(part: keyof TParts_1 & string) => FocusDefinition<TParts_1>;
-    readonly partWithin: <TParts_2>(indicatorPart: keyof TParts_2 & string, focusablePart: keyof TParts_2 & string) => FocusDefinition<TParts_2>;
+    readonly partFocused: <TParts>(part: keyof TParts & string) => FocusDefinition<TParts>;
+    readonly partWithin: <TParts>(indicatorPart: keyof TParts & string, focusablePart: keyof TParts & string) => FocusDefinition<TParts>;
 };
 
 // @public
@@ -614,7 +612,6 @@ export class Shadow implements CSSDirective {
     blurRadius?: number | undefined;
     // (undocumented)
     color: Color;
-    // (undocumented)
     createCSS(): string;
     // (undocumented)
     spread?: number | undefined;
