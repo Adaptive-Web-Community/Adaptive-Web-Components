@@ -84,6 +84,7 @@
     "dist",
     "docs",
     "CHANGELOG.md",
+    "MIGRATION.md",
     "!dist/**/*.spec.*",
     "!dist/**/__test__",
     "!dist/*.api.json",
