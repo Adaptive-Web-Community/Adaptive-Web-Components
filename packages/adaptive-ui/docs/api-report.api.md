@@ -12,7 +12,6 @@ import { CSSPropertiesOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
 import { DesignToken as DesignToken_2 } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
-import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
 import { Library } from 'design-token-library';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
@@ -840,45 +839,43 @@ export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
 
 // @public
-export class TypeRampPosition {
-    constructor(baseName: string, position: string, config: TypeRampPositionConfig);
-    readonly fontSize: TypedCSSDesignToken<string>;
-    readonly fontVariations: TypedCSSDesignToken<string>;
-    readonly lineHeight: TypedCSSDesignToken<string>;
-    readonly lineHeightMultiline: TypedCSSDesignToken<string>;
-}
+export function typeRamp(config: Record<TypeRampPosition, TypeRampPositionConfig>): Library.Config<TypeRampTokens, any>;
+
+// @public
+export type TypeRampPosition = (typeof typeRampPositions)[number];
 
 // @public
 export interface TypeRampPositionConfig {
-    fontSize: DesignTokenValue<string>;
-    lineHeight: DesignTokenValue<string>;
-    lineHeightMultiline: DesignTokenValue<string>;
+    fontSize: Operand;
+    lineHeight: Operand;
+    lineHeightMultiline: Operand;
 }
 
 // @public
-export class TypeRampTokenGroup implements TokenGroup {
-    constructor(name: string, minus2: TypeRampPositionConfig, minus1: TypeRampPositionConfig, base: TypeRampPositionConfig, plus1: TypeRampPositionConfig, plus2: TypeRampPositionConfig, plus3: TypeRampPositionConfig, plus4: TypeRampPositionConfig, plus5: TypeRampPositionConfig, plus6: TypeRampPositionConfig);
-    readonly base: TypeRampPosition;
-    readonly minus1: TypeRampPosition;
-    readonly minus2: TypeRampPosition;
-    // (undocumented)
-    readonly name: string;
-    readonly plus1: TypeRampPosition;
-    readonly plus2: TypeRampPosition;
-    readonly plus3: TypeRampPosition;
-    readonly plus4: TypeRampPosition;
-    readonly plus5: TypeRampPosition;
-    readonly plus6: TypeRampPosition;
-}
+export const typeRampPositions: readonly ["minus2", "minus1", "base", "plus1", "plus2", "plus3", "plus4", "plus5", "plus6"];
+
+// Warning: (ae-forgotten-export) The symbol "RampProperty" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "RampToken" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type TypeRampTokens = {
+    [P in RampProperty]: {
+        $type: RampToken[P]["$type"];
+    } & {
+        [Position in TypeRampPosition]: RampToken[P];
+    };
+};
 
 // @public
-export class TypeScaleTokenGroup extends TypeRampTokenGroup {
-    constructor(name: string, baseSize: string, multiplier: number, lineHeightRatio?: number, lineHeightMultilineRatio?: number, lineHeightSnap?: string);
-    readonly lineHeightMultilineRatio: TypedDesignToken<number>;
-    readonly lineHeightRatio: TypedDesignToken<number>;
-    readonly lineHeightSnap: TypedCSSDesignToken<string>;
-    readonly multiplier: TypedDesignToken<number>;
-}
+export function typeScale<Root extends object>(select: (tokens: Library.Context<Root>) => Library.Context<TypeScaleTokens>, baseSize: DesignToken.Values.Dimension, multiplier: number, lineHeightRatio?: number, lineHeightMultilineRatio?: number, lineHeightSnap?: DesignToken.Values.Dimension): Library.Config<TypeScaleTokens, Root>;
+
+// @public
+export type TypeScaleTokens = TypeRampTokens & {
+    multiplier: DesignToken.Number;
+    lineHeightRatio: DesignToken.Number;
+    lineHeightMultilineRatio: DesignToken.Number;
+    lineHeightSnap: DesignToken.Dimension;
+};
 
 // @public
 export const white: Color_2;
