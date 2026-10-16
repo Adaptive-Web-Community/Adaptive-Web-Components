@@ -1,4 +1,5 @@
 import { DesignToken } from "design-token-library";
+import { OperandValue } from "./expression.js";
 
 /**
  * The custom token types of Adaptive UI, which are the types that are not defined by DTCG.
@@ -10,11 +11,20 @@ import { DesignToken } from "design-token-library";
  * @public
  */
 export const AdaptiveDesignToken = {
+    /** A number or dimension that may be calculated from other tokens, see {@link Expression}. */
+    expression: "expression",
     /** The `font-style` of text, like `normal` or `italic`. */
     fontStyle: "fontStyle",
     /** The `font-variation-settings` of text. */
     fontVariations: "fontVariations",
 } as const;
+
+/**
+ * A number or a dimension, which may be an {@link Expression} that is calculated from other tokens.
+ *
+ * @public
+ */
+export type ExpressionToken = DesignToken.Custom<typeof AdaptiveDesignToken.expression, OperandValue>;
 
 /**
  * A `font-style`.

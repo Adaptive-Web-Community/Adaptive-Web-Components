@@ -5,19 +5,33 @@
 ```ts
 
 import { Color as Color_3 } from 'culori/fn';
+import { CSSConverter } from 'design-token-library';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
+import { CSSPropertiesOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
 import { DesignToken as DesignToken_2 } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
+import { Library } from 'design-token-library';
 import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
+export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
+    fontStyle: (value: string) => string;
+    fontVariations: (value: string) => string;
+    expression: CSSConverter<OperandValue, any>;
+};
+
+// @public
 export const AdaptiveDesignToken: {
+    readonly expression: "expression";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
 };
+
+// @public
+export const add: (...args: Operand[]) => Expression;
 
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
 //
@@ -272,7 +286,29 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 export function directionByIsDark(color: Paint): PaletteDirection;
 
 // @public
+export const divide: (...args: Operand[]) => Expression;
+
+// @public
 export type DtcgGradient = DesignToken.Values.Gradient;
+
+// @public
+export function evaluate(value: OperandValue, resolve: (token: string) => OperandValue): Evaluated;
+
+// Warning: (ae-forgotten-export) The symbol "Dimension" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type Evaluated = number | Dimension;
+
+// @public
+export interface Expression {
+    // (undocumented)
+    args: Operand[];
+    // (undocumented)
+    fn: MathFunction;
+}
+
+// @public
+export type ExpressionToken = DesignToken.Custom<typeof AdaptiveDesignToken.expression, OperandValue>;
 
 // @public
 export const extensionKey = "adaptive-ui";
@@ -299,6 +335,9 @@ export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.
 
 // @public
 export function formatColor(color: Color_2): string;
+
+// @public
+export function formatExpression(value: OperandValue, property: (token: string) => string): string;
 
 // @public
 export function formatGradient(value: Gradient | DtcgGradient): string;
@@ -453,6 +492,27 @@ export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<P
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
 // @public
+export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
+
+// @public
+export const max: (...args: Operand[]) => Expression;
+
+// @public
+export const min: (...args: Operand[]) => Expression;
+
+// @public
+export const multiply: (...args: Operand[]) => Expression;
+
+// @public
+export type Operand = number | Dimension | Reference | Expression;
+
+// @public
+export type OperandValue = number | Dimension | Reference | {
+    fn: MathFunction;
+    args: unknown[];
+};
+
+// @public
 export interface OverlayColor extends Color_2 {
     intendedColor: Color_2;
 }
@@ -518,6 +578,12 @@ export interface PaletteRGBOptions {
 export function parseColor(color: string): Color_2 | undefined;
 
 // @public
+export const pow: (...args: Operand[]) => Expression;
+
+// @public
+export function propertyResolver(library: Library.Library<any>, options?: CSSPropertiesOptions): (name: string) => string;
+
+// @public
 export type RadialGradient = RadialGradient_2;
 
 // @public @deprecated (undocumented)
@@ -543,6 +609,15 @@ export interface RecipeOptional<TParam, TResult> {
 }
 
 // @public
+export function ref(token: DesignToken.Shape): Reference;
+
+// @public
+export interface Reference {
+    // (undocumented)
+    ref: string;
+}
+
+// @public
 export function relativeLuminance(paint: Paint): number;
 
 // @public @deprecated
@@ -553,6 +628,9 @@ export function reversedSwatches(palette: Palette): ReadonlyArray<Color_2>;
 
 // @public
 export function rgbColor(r: number, g: number, b: number, alpha?: number): Color_2;
+
+// @public
+export const round: (...args: Operand[]) => Expression;
 
 // @beta (undocumented)
 export interface SerializableAnatomy {
@@ -696,6 +774,9 @@ export const StylePropertyShorthand: {
 // @public
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
+// @public
+export const subtract: (...args: Operand[]) => Expression;
+
 // @public @deprecated (undocumented)
 export const swatchAsOverlay: typeof colorAsOverlay;
 
@@ -716,6 +797,9 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
     name: string;
     type?: DesignTokenType;
 }
+
+// @public
+export function tokenResolver(library: Library.Library<any>): (name: string) => OperandValue;
 
 // @public
 export const transparent: Color_2;

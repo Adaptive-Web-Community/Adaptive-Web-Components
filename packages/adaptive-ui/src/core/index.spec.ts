@@ -19,6 +19,8 @@ describe("core index", () => {
             "DensityPaddingAndGapTokenGroup",
             "TypeScaleTokenGroup",
             "createTokenColor",
+            "evaluate",
+            "adaptiveConverters",
             "contrastColor",
             "blackOrWhiteByContrast",
         ].forEach(name => {
