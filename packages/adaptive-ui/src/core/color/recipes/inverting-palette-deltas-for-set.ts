@@ -1,58 +1,42 @@
-import { InteractiveValues } from "../../types.js";
-import { Palette } from "../palette.js";
-import { RelativeLuminance } from "../utilities/relative-luminance.js";
+import { InteractiveValues } from "../../interactive.js";
+import { Paint } from "../paint.js";
+import { closestSwatchIndex, Palette } from "../palette.js";
 
 /**
- * Checks if the supplied delta set for palette access is valid, or flips sign if not to keep deltas in bounds.
- * 
- * Returns a new set of deltas so the indices for all states (rest, hover, active, focus) are in bounds.
- * Flipping is always based on the rest delta; the other deltas are adjusted to preserve their *relative* difference to rest.
+ * Inverts the deltas of an interactive set when they would go beyond the end of the palette.
  *
- * @param palette - The Palette used to find the Colors
+ * @param palette - The Palette the deltas apply to
  * @param reference - The reference color
- * @param restDelta - The rest state offset from `reference`
- * @param hoverDelta - The hover state offset from `reference`
- * @param activeDelta - The active state offset from `reference`
- * @param focusDelta - The focus state offset from `reference`
- * @param disabledDelta - The disabled state offset from `reference`
- * @returns An interactive set of deltas with possibly flipped and shifted values
+ * @param deltas - The offsets of each state from `reference`
+ * @returns The `deltas` if the rest, hover, active, and focus states are within the palette, or the deltas moving the
+ * other direction
  *
  * @public
  */
-export function invertingPaletteDeltasForSet(palette: Palette, reference: RelativeLuminance, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number): InteractiveValues<number> {
-    const referenceIndex = palette.closestIndexOf(reference);
-    const deltas = [restDelta, hoverDelta, activeDelta, focusDelta];
+export function invertingPaletteDeltasForSet(
+    palette: Palette,
+    reference: Paint,
+    deltas: InteractiveValues<number>
+): InteractiveValues<number> {
+    const referenceIndex = closestSwatchIndex(palette, reference);
 
-    // Compute the indices they'll hit
-    const indices = deltas.map(d => referenceIndex + d);
-
-    // Check if all indices are within palette bounds
-    const withinBounds = indices.every(idx => idx >= 0 && idx < palette.swatches.length);
+    // Check if the indices the deltas will hit are all within palette bounds
+    const withinBounds = [deltas.rest, deltas.hover, deltas.active, deltas.focus]
+        .map(delta => referenceIndex + delta)
+        .every(index => index >= 0 && index < palette.swatches.length);
 
     if (withinBounds) {
-        // All are in bounds as-is
-        return {
-            rest: restDelta,
-            hover: hoverDelta,
-            active: activeDelta,
-            focus: focusDelta,
-            disabled: disabledDelta,
-        };
+        return deltas;
     }
 
-    // The offset of other deltas from restDelta
-    const hoverOffset = hoverDelta - restDelta;
-    const activeOffset = activeDelta - restDelta;
-    const focusOffset = focusDelta - restDelta;
-    const disabledOffset = disabledDelta - restDelta;
-
-    const flippedRestDelta = restDelta * -1;
+    // The offset of other deltas from the rest delta
+    const flippedRestDelta = deltas.rest * -1;
 
     return {
         rest: flippedRestDelta,
-        hover: flippedRestDelta + hoverOffset,
-        active: flippedRestDelta + activeOffset,
-        focus: flippedRestDelta + focusOffset,
-        disabled: flippedRestDelta + disabledOffset,
+        hover: flippedRestDelta + (deltas.hover - deltas.rest),
+        active: flippedRestDelta + (deltas.active - deltas.rest),
+        focus: flippedRestDelta + (deltas.focus - deltas.rest),
+        disabled: flippedRestDelta + (deltas.disabled - deltas.rest),
     };
 }

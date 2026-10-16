@@ -1,6 +1,6 @@
 import { Color } from "../color.js";
 import { Paint } from "../paint.js";
-import { Palette, PaletteDirection } from "../palette.js";
+import { closestSwatchIndex, Palette, PaletteDirection, swatchAt } from "../palette.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /**
@@ -14,11 +14,11 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
  *
  * @public
  */
-export function deltaSwatch(
+export function deltaColor(
     palette: Palette,
     reference: Paint,
     delta: number,
     direction: PaletteDirection = directionByIsDark(reference)
 ): Color {
-    return palette.delta(reference, delta, direction);
+    return swatchAt(palette, closestSwatchIndex(palette, reference) + direction * delta);
 }
