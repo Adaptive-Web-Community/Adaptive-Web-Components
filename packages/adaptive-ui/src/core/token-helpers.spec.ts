@@ -1,7 +1,7 @@
 import chai from "chai";
 import { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
-import { Color } from "./color/color.js";
+import { rgbColor } from "./color/color.js";
 import { StyleProperty } from "./modules/types.js";
 import {
     createTokenColor,
@@ -115,7 +115,7 @@ describe("token-helpers", () => {
         });
 
         it("should hold values of their type", () => {
-            expect(createTokenPaint("helpers-test.paint-value").withDefault(Color.fromRgb(1, 0, 0)).default).to.be.instanceOf(Color);
+            expect(createTokenPaint("helpers-test.paint-value").withDefault(rgbColor(1, 0, 0)).default).to.deep.equal(rgbColor(1, 0, 0));
             expect(createTokenFontWeight("helpers-test.weight-value").withDefault(700).default).to.equal(700);
         });
     });

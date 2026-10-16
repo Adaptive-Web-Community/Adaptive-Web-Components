@@ -345,3 +345,10 @@ export class Styles {
         return composed;
     }
 }
+
+/**
+ * A list of {@link StyleRule}s in the context of a component.
+ *
+ * @public
+ */
+export type StyleRules = Array<StyleRule>;

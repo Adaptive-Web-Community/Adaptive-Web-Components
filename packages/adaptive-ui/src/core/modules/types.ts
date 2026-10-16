@@ -1,6 +1,5 @@
 import type { ValuesOf } from "@microsoft/fast-foundation";
 import { InteractiveState } from "../types.js";
-import { StyleRule } from "./styles.js";
 
 /**
  * The selector for a true/false condition.
@@ -456,13 +455,6 @@ export const StylePropertyShorthand = {
  * @public
  */
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
-
-/**
- * A list of {@link StyleRule}s in the context of a component.
- *
- * @public
- */
-export type StyleRules = Array<StyleRule>;
 
 /**
  * @beta
