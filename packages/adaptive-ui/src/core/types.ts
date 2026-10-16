@@ -1,5 +1,8 @@
 import type { DesignTokenMetadata, DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
+import { InteractiveState, type InteractiveValues } from "./interactive.js";
 import { StyleProperty } from "./modules/types.js";
+
+export { InteractiveState, type InteractiveValues };
 
 /**
  * @public
@@ -31,47 +34,6 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
      * The style properties where tokens within this group are intended to be used.
      */
     intendedFor?: StyleProperty[];
-}
-
-/**
- * An interactive element's states.
- *
- * @public
- */
-export enum InteractiveState {
-    /**
-     * The rest state.
-     */
-    rest = "rest",
-
-    /**
-     * The hover state.
-     */
-    hover = "hover",
-
-    /**
-     * The active state.
-     */
-    active = "active",
-
-    /**
-     * The focus state.
-     */
-    focus = "focus",
-
-    /**
-     * The disabled state.
-     */
-    disabled = "disabled",
-}
-
-/**
- * Values for an interactive element's states.
- *
- * @public
- */
-export type InteractiveValues<T> = {
-    [key in InteractiveState]: T;
 }
 
 /**
