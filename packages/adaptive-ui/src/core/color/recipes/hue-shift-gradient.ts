@@ -1,12 +1,40 @@
-import { clampChroma, modeOkhsl, modeRgb, useMode} from "culori/fn";
-import { Gradient, GradientStop, LinearGradient } from "../gradient.js";
+import { clampChroma, modeOkhsl, modeRgb, useMode } from "culori/fn";
+import { fromCulori, toCulori } from "../color.js";
+import { Gradient, GradientStop, linearGradient } from "../gradient.js";
 import { Paint } from "../paint.js";
 import { Palette, PaletteDirection } from "../palette.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
-import { Color } from "../color.js";
+import { deltaColor } from "./delta-color.js";
 
 const okhsl = useMode(modeOkhsl);
-const rgb = useMode(modeRgb);
+useMode(modeRgb);
+
+/**
+ * Options for {@link hueShiftGradient}.
+ *
+ * @beta
+ */
+export interface HueShiftGradientOptions {
+    /**
+     * The angle of the gradient.
+     */
+    angle?: number;
+
+    /**
+     * The amount and direction of the hue shift at the start, defaults to -15.
+     */
+    startShift?: number;
+
+    /**
+     * The amount and direction of the hue shift at the end, defaults to 15.
+     */
+    endShift?: number;
+
+    /**
+     * The direction the delta moves on the palette, defaults to {@link directionByIsDark} based on `reference`.
+     */
+    direction?: PaletteDirection;
+}
 
 /**
  * Color algorithm for a gradient with the source palette in the middle and the hue shifted for the start and end.
@@ -14,31 +42,27 @@ const rgb = useMode(modeRgb);
  * @param palette - The Palette used for the base of the hue shift
  * @param reference - The reference color
  * @param delta - The offset from the `reference`
- * @param angle - The angle of the gradient
- * @param startShift - The amount and direction of the hue shift at the start
- * @param endShift - The amount and direction of the hue shift at the end
- * @param direction - The direction the delta moves on the palettes, defaults to {@link directionByIsDark} based on `reference`
+ * @param options - The angle, the hue shift at the start and end, and the direction
  * @returns The Gradient
- * 
+ *
  * @beta
  */
 export function hueShiftGradient(
     palette: Palette,
     reference: Paint,
     delta: number,
-    angle?: number,
-    startShift: number = -15,
-    endShift: number = 15,
-    direction: PaletteDirection = directionByIsDark(reference)
+    options: HueShiftGradientOptions = {}
 ): Gradient {
-    const centerColor = palette.delta(reference, delta, direction);
-    const centerHsl = okhsl(centerColor.color);
+    const { angle, startShift = -15, endShift = 15, direction = directionByIsDark(reference) } = options;
+
+    const centerColor = deltaColor(palette, reference, delta, direction);
+    const centerHsl = okhsl(toCulori(centerColor));
     const startAdjust = centerHsl.h! + startShift;
-    const startHsl = Object.assign({}, centerHsl, {h: startAdjust < 0 ? 360 + startAdjust : startAdjust});
-    const startColor = Color.from(rgb(clampChroma(startHsl, "okhsl")));
+    const startHsl = Object.assign({}, centerHsl, { h: startAdjust < 0 ? 360 + startAdjust : startAdjust });
+    const startColor = fromCulori(clampChroma(startHsl, "okhsl"));
     const endAdjust = centerHsl.h! + endShift;
-    const endHsl = Object.assign({}, centerHsl, {h: endAdjust > 360 ? endAdjust - 360 : endAdjust});
-    const endColor = Color.from(rgb(clampChroma(endHsl, "okhsl")));
+    const endHsl = Object.assign({}, centerHsl, { h: endAdjust > 360 ? endAdjust - 360 : endAdjust });
+    const endColor = fromCulori(clampChroma(endHsl, "okhsl"));
 
     const stops: GradientStop[] = [
         {
@@ -54,5 +78,5 @@ export function hueShiftGradient(
             position: { value: 1, unit: "%" },
         },
     ];
-    return new LinearGradient(stops, angle);
+    return linearGradient(stops, angle);
 }

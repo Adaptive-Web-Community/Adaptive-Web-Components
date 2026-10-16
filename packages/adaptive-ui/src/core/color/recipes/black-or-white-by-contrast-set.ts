@@ -1,6 +1,7 @@
-import { Color } from "../color.js";
+import { Color, withAlpha } from "../color.js";
+import { InteractiveColorSet, InteractivePaintSet } from "../interactive-set.js";
 import { Paint } from "../paint.js";
-import { InteractiveColorSet, InteractivePaintSet } from "../recipe.js";
+import { relativeLuminance } from "../utilities/relative-luminance.js";
 import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
 
 /**
@@ -12,10 +13,7 @@ import { blackOrWhiteByContrast } from "./black-or-white-by-contrast.js";
  * color directly. This is because many times something like a Button has slight luminance variation between rest, hover,
  * and active states, but generally flipping the text color produces a flash and is more unexpected.
  *
- * @param restReference - The rest state reference color
- * @param hoverReference - The hover state reference color
- * @param activeReference - The active state reference color
- * @param focusReference - The focus state reference color
+ * @param set - The reference color for each state
  * @param minContrast - The minimum contrast required for black or white from each reference color
  * @param defaultBlack - True to default to black if both black or white meet contrast
  * @returns The interactive set of black or white Colors.
@@ -35,14 +33,14 @@ export function blackOrWhiteByContrastSet(
     // Active does not have contrast requirements, so if rest and hover use the same color, use that for active
     // even if it would not have passed the contrast check.
     const activeForeground =
-        restForeground && hoverForeground && restForeground.relativeLuminance === hoverForeground.relativeLuminance
+        restForeground && hoverForeground && relativeLuminance(restForeground) === relativeLuminance(hoverForeground)
             ? restForeground
             : defaultRule(set.active);
     const focusForeground = defaultRule(set.focus);
     const disabled = defaultRule(set.disabled);
     // TODO: Reasonable disabled opacity, but not configurable.
     // Considering replacing these recipes anyway.
-    const disabledForeground = disabled ? Color.unsafeOpacity(disabled, 0.3) : null;
+    const disabledForeground = disabled ? withAlpha(disabled, 0.3) : null;
 
     return {
         rest: restForeground,

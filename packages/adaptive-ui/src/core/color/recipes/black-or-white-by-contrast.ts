@@ -1,6 +1,7 @@
 import { Color } from "../color.js";
 import { Paint } from "../paint.js";
-import { _black, _white } from "../utilities/color-constants.js";
+import { black, white } from "../utilities/color-constants.js";
+import { contrast } from "../utilities/relative-luminance.js";
 
 /**
  * Gets a black or white Color based on the reference color and minimum contrast.
@@ -16,10 +17,10 @@ import { _black, _white } from "../utilities/color-constants.js";
  * @public
  */
 export function blackOrWhiteByContrast(reference: Paint, minContrast: number, defaultBlack: boolean): Color {
-    const defaultColor = defaultBlack ? _black : _white;
-    const otherColor = defaultBlack ? _white : _black;
-    const defaultContrast = reference.contrast(defaultColor);
-    const otherContrast = reference.contrast(otherColor);
+    const defaultColor = defaultBlack ? black : white;
+    const otherColor = defaultBlack ? white : black;
+    const defaultContrast = contrast(reference, defaultColor);
+    const otherContrast = contrast(reference, otherColor);
     return defaultContrast >= minContrast
         ? defaultColor
         : otherContrast >= minContrast
