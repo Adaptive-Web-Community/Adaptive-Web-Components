@@ -16,10 +16,11 @@ describe("core index", () => {
             "TypedCSSDesignToken",
             "TypedDesignToken",
             "DensityPaddingAndGapTokenGroup",
-            "TypeScaleTokenGroup",
-            "createTokenColor",
+            "typeScale",
+            "AdaptiveDesignToken",
             "evaluate",
             "adaptiveConverters",
+            "createTokenColor",
             "contrastColor",
             "blackOrWhiteByContrast",
         ].forEach(name => {

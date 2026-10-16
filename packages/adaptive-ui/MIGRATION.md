@@ -103,7 +103,28 @@ or dimension of an expression when it is needed in code, with the values of the 
 units that CSS has. Any `calc()` string that was written for a
 value of a token needs to be written as an expression, since a string is no longer a value of a token that is calculated.
 
+## Type ramps
+
+A type ramp is a set of tokens in a library, from `minus2` to `plus6`, whose positions are fixed or calculated from a
+scale. It is one thing, so a scale is a ramp that has the tokens of the scale next to the positions
+(`docs/decisions/0005-a-type-ramp-is-a-ramp.md`).
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `new TypeRampTokenGroup(name, ...positions)` | `typeRamp({ minus2, minus1, base, ... })`, the configuration of a group of the library |
+| `new TypeScaleTokenGroup(name, baseSize, multiplier, lineHeightRatio, lineHeightMultilineRatio, lineHeightSnap)` | `typeScale(scale, baseSize, multiplier, lineHeightRatio, lineHeightMultilineRatio, lineHeightSnap)`, where `scale` is the refs of its group, `refs<Tokens>().typography.ramp.body` |
+| `ramp.base.fontSize` (the tokens of a position) | `ramp.fontSize.base` (the positions of a property), which is the name the tokens had: `typography.ramp.default.fontSize.base` |
+| `TypeRampPosition` (a class of the tokens of a position) | `TypeRampPosition` is the name of a position, `"minus2"` to `"plus6"`, and `typeRampPositions` is the list |
+| a size or a line height as a string, `"14px"` | a dimension, `px(14)`, or any expression |
+
+The name of the group is where the group is in the library, not an argument, and `typeScale` takes the refs of its group,
+since the positions refer to the tokens next to them. The base size and the line height snap of a scale
+are dimensions, and the positions are expressions of the tokens of the scale (`calc(base * pow(multiplier, 2))`, and
+`round(fontSize * lineHeightRatio, lineHeightSnap)` for the line heights), where they were `calc()` strings that the class
+wrote, so a change to the multiplier, the ratios, or the snap changes the whole ramp as before. The font variations of a
+position are still empty.
+
 ## Not migrated yet
 
-The tokens, the type ramps, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
+The tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
 and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.
