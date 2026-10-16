@@ -1,26 +1,25 @@
-import { Color } from "../color.js";
-import { InteractiveColorSet } from "../recipe.js";
+import { transparent } from "../color.js";
+import { InteractiveColorSet } from "../interactive-set.js";
 
 /**
- * Return an interactive set of the provided tokens or a no-op "transparent" set of tokens.
+ * Returns the provided set, or a set of transparent colors when the condition isn't met.
  *
- * @param set - The swatch set to return if the condition is true.
- * @param condition - The condition.
- * @returns The provided swatch set or a "transparent" swatch set.
+ * @param set - The color set to use when the condition is met
+ * @param condition - Whether to use the set
+ * @returns The set, or a transparent set
+ *
+ * @public
  */
-export function conditionalSwatchSet(
-    set: InteractiveColorSet,
-    condition: boolean
-): InteractiveColorSet {
+export function conditionalColorSet(set: InteractiveColorSet, condition: boolean): InteractiveColorSet {
     if (condition) {
         return set;
     }
 
     return {
-        rest: Color.transparent,
-        hover: Color.transparent,
-        active: Color.transparent,
-        focus: Color.transparent,
-        disabled: Color.transparent,
+        rest: transparent,
+        hover: transparent,
+        active: transparent,
+        focus: transparent,
+        disabled: transparent,
     };
 }

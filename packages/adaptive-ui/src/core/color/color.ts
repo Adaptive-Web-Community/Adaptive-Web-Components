@@ -1,148 +1,243 @@
-import { cssDirective } from "@microsoft/fast-element";
-import { type Color as CuloriColor, formatHex, formatRgb, modeLrgb, modeRgb, parse, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { parseTransparent } from "culori";
-import { PaintBase } from "./paint.js";
-import { calculateOverlayColor } from "./utilities/opacity.js";
+import type { DesignToken } from "design-token-library";
+import {
+    type Color as CuloriColor,
+    formatHex,
+    formatRgb,
+    modeA98,
+    modeHsl,
+    modeHwb,
+    modeLab,
+    modeLch,
+    modeLrgb,
+    modeOklab,
+    modeOklch,
+    modeP3,
+    modeProphoto,
+    modeRec2020,
+    modeRgb,
+    modeXyz50,
+    modeXyz65,
+    parse,
+    useMode,
+    wcagLuminance,
+} from "culori/fn";
 
-useMode(modeRgb);
+const rgb = useMode(modeRgb);
 // For luminance
 useMode(modeLrgb);
-
-const _transparent: Rgb = parseTransparent("transparent") as Rgb;
+// For the other color spaces of a `Color`
+[modeA98, modeHsl, modeHwb, modeLab, modeLch, modeOklab, modeOklch, modeP3, modeProphoto, modeRec2020, modeXyz50, modeXyz65].forEach(
+    mode => useMode(mode)
+);
 
 /**
- * Represents a color.
+ * A color, as plain data.
+ *
+ * @remarks
+ * This is a {@link https://www.designtokens.org/tr/2025.10/color/ | DTCG color}, the type of the design token library,
+ * so a color is a token value as is. For `srgb` the components are red, green, and blue from 0 to 1. For the other
+ * color spaces the range of the components is defined by the DTCG Color module.
+ *
+ * The functions of this module and the recipes work on any color space, but colors they create are `srgb`.
  *
  * @public
  */
-@cssDirective()
-export class Color extends PaintBase {
-    /**
-     * The underlying Color value.
-     */
-    public readonly color: CuloriColor;
+export type Color = DesignToken.Values.Color;
 
+/**
+ * A semitransparent {@link Color} that stands in for an opaque one.
+ *
+ * @remarks
+ * See {@link asOverlay}. Contrast and palette calculations use the opaque `intendedColor`, since the color of the
+ * overlay itself depends on what is under it.
+ *
+ * @public
+ */
+export interface OverlayColor extends Color {
     /**
-     * The opaque value this Color represents if opacity is used.
+     * The opaque color this overlay is meant to look like.
      */
-    protected readonly _intendedColor?: Color;
+    intendedColor: Color;
+}
 
-    /**
-     * Creates a new Color.
-     *
-     * @param color - The underlying color value.
-     * @param intendedColor - If `color.alpha` &lt; 1 this tracks the intended opaque color value for dependent calculations.
-     */
-    constructor(color: CuloriColor, intendedColor?: Color) {
-        const lum = intendedColor ? intendedColor.relativeLuminance :
-            color.alpha !== undefined && color.alpha < 1 ? Number.NaN : wcagLuminance(color);
-        super(lum);
-        this.color = Object.freeze(color);
-        this._intendedColor = intendedColor;
+/**
+ * Creates a color from red, green, and blue values expressed as a number between 0 to 1.
+ *
+ * @param r - Red channel expressed as a number between 0 and 1.
+ * @param g - Green channel expressed as a number between 0 and 1.
+ * @param b - Blue channel expressed as a number between 0 and 1.
+ * @param alpha - Alpha channel expressed as a number between 0 and 1.
+ * @returns A new color
+ *
+ * @public
+ */
+export function rgbColor(r: number, g: number, b: number, alpha?: number): Color {
+    const color: Color = { colorSpace: "srgb", components: Object.freeze([r, g, b]) as unknown as Color["components"] };
+    if (alpha !== undefined) {
+        color.alpha = alpha;
     }
+    return Object.freeze(color);
+}
 
-    /**
-     * Gets this color value as a string.
-     *
-     * @returns The color value in string format
-     */
-    public toString(): string {
-        if (Color.isTransparent(this.color)) {
-            return "transparent";
-        }
-        return this.color.alpha !== undefined && this.color.alpha < 1 ? formatRgb(this.color) : formatHex(this.color);
+/**
+ * Creates a color from a parsable string.
+ *
+ * @param color - A string representation of the color, like `#336699` or `rgb(51 102 153)`.
+ * @returns The color, or undefined if the string can't be parsed.
+ *
+ * @public
+ */
+export function parseColor(color: string): Color | undefined {
+    const parsed = parse(color);
+    if (parsed) {
+        const { r, g, b, alpha } = rgb(parsed);
+        return rgbColor(r, g, b, alpha);
     }
+}
 
-    /**
-     * Gets this color value as a string for use in css.
-     *
-     * @returns The color value in a valid css string format
-     */
-    public createCSS = this.toString;
+/**
+ * A color representing full transparent.
+ *
+ * @public
+ */
+export const transparent: Color = rgbColor(0, 0, 0, 0);
 
-    /**
-     * Creates a new Color from an object with R, G, and B values expressed as a number between 0 to 1.
-     *
-     * @param obj - An object with `r`, `g`, and `b`, and optional `alpha` values expressed as a number between 0 and 1.
-     * @returns A new Color
-     */
-    public static from(obj: { r: number; g: number; b: number, alpha?: number }): Color {
-        const color: Rgb = { mode: "rgb", ...obj };
-        return new Color(color);
+/**
+ * Checks if a color is transparent.
+ *
+ * @param color - The color to check.
+ * @returns True if the color is fully transparent, false otherwise.
+ *
+ * @public
+ */
+export function isTransparent(color: Color): boolean {
+    return color.alpha === 0;
+}
+
+/**
+ * Converts a color to the representation used for calculations.
+ *
+ * @param color - The color
+ * @returns The same color as a culori color, in any color space culori supports
+ *
+ * @internal
+ */
+export function toCulori(color: Color): CuloriColor {
+    // A missing component is 0 for the conversions.
+    const [c1, c2, c3] = color.components.map(c => (c === "none" ? 0 : c));
+    const converted = toCuloriComponents(color.colorSpace, c1, c2, c3);
+    if (color.alpha !== undefined) {
+        converted.alpha = color.alpha;
     }
+    return converted;
+}
 
-    /**
-     * Creates a new Color from R, G, and B values expressed as a number between 0 to 1.
-     *
-     * @param r - Red channel expressed as a number between 0 and 1.
-     * @param g - Green channel expressed as a number between 0 and 1.
-     * @param b - Blue channel expressed as a number between 0 and 1.
-     * @param alpha - Alpha channel expressed as a number between 0 and 1.
-     * @returns A new Color
-     */
-    public static fromRgb(r: number, g: number, b: number, alpha?: number): Color {
-        const color: Rgb = { mode: "rgb", r, g, b, alpha };
-        return new Color(color);
+// The components of each color space in the shape culori expects. DTCG uses percent for the saturation, lightness,
+// whiteness, and blackness components of the polar and cylindrical spaces where culori uses a fraction.
+function toCuloriComponents(space: Color["colorSpace"], c1: number, c2: number, c3: number): CuloriColor {
+    switch (space) {
+        case "srgb":
+            return { mode: "rgb", r: c1, g: c2, b: c3 };
+        case "srgb-linear":
+            return { mode: "lrgb", r: c1, g: c2, b: c3 };
+        case "hsl":
+            return { mode: "hsl", h: c1, s: c2 / 100, l: c3 / 100 };
+        case "hwb":
+            return { mode: "hwb", h: c1, w: c2 / 100, b: c3 / 100 };
+        case "lab":
+            return { mode: "lab", l: c1, a: c2, b: c3 };
+        case "lch":
+            return { mode: "lch", l: c1, c: c2, h: c3 };
+        case "oklab":
+            return { mode: "oklab", l: c1, a: c2, b: c3 };
+        case "oklch":
+            return { mode: "oklch", l: c1, c: c2, h: c3 };
+        case "display-p3":
+            return { mode: "p3", r: c1, g: c2, b: c3 };
+        case "a98-rgb":
+            return { mode: "a98", r: c1, g: c2, b: c3 };
+        case "prophoto-rgb":
+            return { mode: "prophoto", r: c1, g: c2, b: c3 };
+        case "rec2020":
+            return { mode: "rec2020", r: c1, g: c2, b: c3 };
+        case "xyz-d65":
+            return { mode: "xyz65", x: c1, y: c2, z: c3 };
+        case "xyz-d50":
+            return { mode: "xyz50", x: c1, y: c2, z: c3 };
     }
+}
 
-    /**
-     * Creates a new Color from a parsable string.
-     *
-     * @param color - A string representation of the Color.
-     * @returns The Color object or undefined.
-     */
-    public static parse(color: string): Color | undefined {
-        const parsedColor = parse(color);
-        if (parsedColor) {
-            return new Color(parsedColor);
-        }
+/**
+ * Converts a culori color to a {@link Color} in `srgb`.
+ *
+ * @param color - The culori color
+ * @returns The same color as an `srgb` color
+ *
+ * @internal
+ */
+export function fromCulori(color: CuloriColor): Color {
+    const { r, g, b, alpha } = rgb(color);
+    return rgbColor(r, g, b, alpha);
+}
+
+/**
+ * Gets a color as a string for use in CSS.
+ *
+ * @param color - The color
+ * @returns A hex color, or `rgb()` if the color has opacity, or `transparent`
+ *
+ * @public
+ */
+export function formatColor(color: Color): string {
+    if (isTransparent(color)) {
+        return "transparent";
     }
+    const culori = toCulori(color);
+    return color.alpha !== undefined && color.alpha < 1 ? formatRgb(culori) : formatHex(culori);
+}
 
-    /**
-     * A Color representing the full transparent.
-     */
-    public static transparent: Color = new Color(_transparent);
+const luminances = new WeakMap<Color, number>();
 
-    /**
-     * Checks if a color is transparent.
-     *
-     * @param color - The color to check.
-     * @returns True if the color is transparent, false otherwise.
-     */
-    public static isTransparent(color: CuloriColor): boolean {
-        return color.alpha === 0;
+/**
+ * Gets the relative luminance of a color.
+ *
+ * @remarks
+ * A semitransparent color has an unknown luminance, since it depends on what is under it, so it is `NaN` unless it
+ * is an {@link OverlayColor}, which uses the luminance of the color it stands in for.
+ *
+ * @param color - The color
+ * @returns The relative luminance, from 0 (black) to 1 (white)
+ *
+ * @public
+ */
+export function colorLuminance(color: Color): number {
+    let luminance = luminances.get(color);
+    if (luminance === undefined) {
+        luminance =
+            "intendedColor" in color
+                ? colorLuminance((color as OverlayColor).intendedColor)
+                : color.alpha !== undefined && color.alpha < 1
+                  ? Number.NaN
+                  : wcagLuminance(toCulori(color));
+        luminances.set(color, luminance);
     }
+    return luminance;
+}
 
-    /**
-     * Creates a new Color as an overlay representation of the `intendedColor` over `reference`.
-     *
-     * Currently the overlay will only be black or white, so this works best with a plain grey neutral palette.
-     * Otherwise it will attempt to match the luminance value of the Color, so it will likely be close, but not an
-     * exact match to the color from another palette.
-     *
-     * @param intendedColor - The Color the overlay should look like over the `reference` Color.
-     * @param reference - The Color under the overlay color.
-     * @returns A semitransparent Color that represents the `intendedColor` over the `reference` Color.
-     */
-    public static asOverlay(intendedColor: Color, reference: Color): Color {
-        const refColor = reference instanceof Color && reference._intendedColor ? reference._intendedColor.color : reference.color;
-        const colorWithAlpha = calculateOverlayColor(intendedColor.color, refColor);
-
-        return new Color(colorWithAlpha, intendedColor);
-    }
-
-    /**
-     * Creates a new Color from another Color and the target opacity.
-     *
-     * @remarks It's "unsafe" because it can't be used for contrast calculations.
-     *
-     * @param color - A Color object without opacity.
-     * @param alpha - The opacity expressed as a number between 0 and 1.
-     * @returns A new Color
-     */
-    public static unsafeOpacity(color: Color, alpha: number): Color {
-        const transparentColor = { ...color.color };
-        transparentColor.alpha = alpha;
-        return new Color(transparentColor);
-    }
+/**
+ * Creates a color from another color and an opacity.
+ *
+ * @remarks
+ * The relative luminance of the result is unknown, so it can't be used for contrast calculations. See {@link asOverlay}.
+ *
+ * @param color - A color without opacity.
+ * @param alpha - The opacity expressed as a number between 0 and 1.
+ * @returns A new color
+ *
+ * @public
+ */
+export function withAlpha(color: Color, alpha: number): Color {
+    const result: Partial<OverlayColor> = { ...color, alpha };
+    delete result.intendedColor;
+    return Object.freeze(result as Color);
 }

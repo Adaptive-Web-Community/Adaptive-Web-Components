@@ -1,4 +1,5 @@
-import { RelativeLuminance } from "./relative-luminance.js";
+import { Paint } from "../paint.js";
+import { relativeLuminance } from "./relative-luminance.js";
 
 /*
  * A color is "dark" if there is more contrast between #000000 and a reference
@@ -17,6 +18,6 @@ const target = (-0.1 + Math.sqrt(0.21)) / 2;
  *
  * @public
  */
-export function isDark(color: RelativeLuminance): boolean {
-    return color.relativeLuminance <= target;
+export function isDark(color: Paint): boolean {
+    return relativeLuminance(color) <= target;
 }
