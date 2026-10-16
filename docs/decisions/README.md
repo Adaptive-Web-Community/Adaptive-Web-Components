@@ -25,3 +25,4 @@ reason with the code.
 | [0001](0001-colors-are-plain-data.md) | Colors, palettes, and gradients are plain data with functions | Accepted |
 | [0002](0002-deprecated-names-for-the-beta.md) | The 1.0 beta keeps deprecated names in one file, with a ledger | Accepted |
 | [0003](0003-migrate-behind-an-exclusion-frontier.md) | Migrate in steps, with what isn't migrated excluded from the build | Accepted |
+| [0004](0004-derived-values-are-expressions.md) | A value calculated from other tokens is an expression, written as `calc()` | Accepted |

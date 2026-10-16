@@ -86,6 +86,23 @@ These were types and functions of the design tokens that are replaced by the tok
 `InteractiveColorRecipeBySet`, `InteractiveColorRecipeBySetEvaluate`, `InteractiveColorRecipeEvaluate`,
 `InteractiveColorRecipePalette` and `InteractiveColorRecipePaletteEvaluate`.
 
+## Derived values are expressions
+
+A value that is calculated from other tokens is an expression, plain data of numbers, dimensions, references to tokens,
+and math. It is written to CSS as a `calc()` of the custom properties of the tokens it refers to, so a change to one of
+the tokens still changes the result in the browser. This is new, there is nothing to replace, except a `calc()` string
+that was the value of a token.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| a `calc(...)` string as the value of a token | an expression of `add`, `subtract`, `multiply`, `divide`, `pow`, `round`, `min`, and `max`, with a ref of the library (`refs<Tokens>().size`, or `ref("size")`) for a token in it |
+| `resolve(token)` in a function value | a ref of the library, which is typed by the value of the token |
+
+A token of the `expression` type holds a number, a dimension, or an expression. `evaluate(value, library)` gets the number
+or dimension of an expression when it is needed in code, with the values of the tokens of the library and the rules of
+units that CSS has. Any `calc()` string that was written for a
+value of a token needs to be written as an expression, since a string is no longer a value of a token that is calculated.
+
 ## Not migrated yet
 
 The tokens, the type ramps, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
