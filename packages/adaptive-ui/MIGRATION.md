@@ -117,7 +117,20 @@ are dimensions, and the positions are expressions of the tokens of the scale (`c
 wrote, so a change to the multiplier, the ratios, or the snap changes the whole ramp as before. The font variations of a
 position are still empty.
 
+## Typography tokens
+
+The tokens of the default, body, and label fonts and the type ramps are a group `typography` of a library, `typography` is
+its configuration, and `createTypographyLibrary()` creates a library of only these. The names of the tokens and their
+values are the same as before, with these changes:
+
+- A font family is a list, as DTCG has it: `["Arial", "Helvetica", "sans-serif"]`.
+- A font weight is a number or a DTCG keyword, and the default is `"normal"`. `StandardFontWeight` is not needed.
+- There is a new type ramp for body copy, `typography.ramp.body`, a scale of `16px` with a multiplier of `1.21` and a line
+  height ratio of `1.35`.
+- The tokens are not instances of a class, so they don't have `withDefault`, `getValueFor`, or `setValueFor`. A token of the
+  library has its value, `token.$value`, and `token.set(value)`.
+
 ## Not migrated yet
 
-The tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
+The other tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
 and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.

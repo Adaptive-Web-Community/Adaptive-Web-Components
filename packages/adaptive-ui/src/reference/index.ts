@@ -7,4 +7,4 @@ export * from "./layer.js";
 export * from "./modules.js";
 export * from "./palette.js";
 export * from "./token-naming.js";
-export * from "./type.js";
+export * from "./typography.js";

@@ -89,7 +89,7 @@ import {
     labelFontStyle,
     labelFontWeight,
     typeRampDefault,
-} from "./type.js";
+} from "./typography.js";
 import { densityBorderStyles, transparent } from "./util.js";
 
 /**
