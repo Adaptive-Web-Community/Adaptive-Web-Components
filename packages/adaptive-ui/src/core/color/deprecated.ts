@@ -3,7 +3,7 @@
  *
  * @remarks
  * Everything here is deprecated and will be removed before 1.0. See MIGRATION.md for what to use, and for what has
- * no replacement because it was an instance method of a class, or a token.
+ * no replacement because it was an instance method of a class, or a token. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
 import { Color as ColorValue, isTransparent, parseColor, rgbColor, withAlpha } from "./color.js";
 import type { ConicGradient as ConicGradientValue, LinearGradient as LinearGradientValue, RadialGradient as RadialGradientValue } from "./gradient.js";

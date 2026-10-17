@@ -40,6 +40,8 @@ useMode(modeLrgb);
  *
  * The functions of this module and the recipes work on any color space, but colors they create are `srgb`.
  *
+ * Why a color is plain data: `docs/decisions/0001-colors-are-plain-data.md`.
+ *
  * @public
  */
 export type Color = DesignToken.Values.Readonly.Color;
