@@ -14,7 +14,6 @@
     // Why: docs/decisions/0003-migrate-behind-an-exclusion-frontier.md
     "exclude": [
         "src/bin",
-        "src/reference/appearance.ts",
         "src/reference/density.ts",
         "src/reference/experimental.ts",
         "src/reference/index.ts",
