@@ -1,7 +1,6 @@
 {
     "ignorePatterns": [
         "src/bin",
-        "src/reference/appearance.ts",
         "src/reference/color.ts",
         "src/reference/density.ts",
         "src/reference/elevation.ts",
