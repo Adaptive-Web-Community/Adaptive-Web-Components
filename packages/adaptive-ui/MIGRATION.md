@@ -130,6 +130,24 @@ values are the same as before, with these changes:
 - The tokens are not instances of a class, so they don't have `withDefault`, `getValueFor`, or `setValueFor`. A token of the
   library has its value, `token.$value`, and `token.set(value)`.
 
+### Deprecated, the old name is the token
+
+The design tokens that were exported are still exported, and each is the token of the same name in a library, so what
+used them keeps one name. Everything is deprecated, and what a token is has changed (above), so a use of `withDefault`,
+`getValueFor`, or `setValueFor` needs to be updated.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `fontFamily`, `bodyFontFamily`, `labelFontFamily` | `typography.fontFamily.default`, `.body`, `.label` |
+| `fontWeight`, `bodyFontWeight`, `labelFontWeight` | `typography.fontWeight.default`, `.body`, `.label` |
+| `fontStyle`, `bodyFontStyle`, `labelFontStyle` | `typography.fontStyle.default`, `.body`, `.label` |
+| `typeRampDefault` | `typography.ramp.default` (and `typeRampDefault.fontSize.base`, not `typeRampDefault.base.fontSize`) |
+| `StandardFontWeight` | a number, or a keyword like `"normal"` and `"bold"` |
+
+These are the tokens of one library that Adaptive UI creates, so the tokens of a library that is made with `extend` are not
+the ones that are exported. `TypeRampTokenGroup` and `TypeScaleTokenGroup` have no replacement of the name, see the type
+ramps.
+
 ## Not migrated yet
 
 The other tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
