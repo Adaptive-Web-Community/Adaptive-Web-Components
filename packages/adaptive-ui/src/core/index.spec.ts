@@ -16,7 +16,7 @@ describe("core index", () => {
             "DesignTokenType",
             "TypedCSSDesignToken",
             "TypedDesignToken",
-            "DensityPaddingAndGapTokenGroup",
+            "createDensity",
             "typeScale",
             "AdaptiveDesignToken",
             "evaluate",

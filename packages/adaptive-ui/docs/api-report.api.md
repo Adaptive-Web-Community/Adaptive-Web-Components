@@ -153,6 +153,13 @@ export function contrastColor(palette: Palette, reference: Paint, minContrast: n
 // @public @deprecated (undocumented)
 export const contrastSwatch: typeof contrastColor;
 
+// Warning: (ae-forgotten-export) The symbol "Dimension_2" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function createDensity<N extends string, Root extends DensityRootTokens<N>>(name: N, units: DensityUnits, designUnit: Dimension_2 | Library.ValueAlias<Dimension_2, Library.Context<Root>>, borderThickness: Dimension_2 | Library.ValueAlias<Dimension_2, Library.Context<Root>>): Library.Config<{
+    [K in N]: DensitySetTokens;
+}, Root>;
+
 // @public
 export function createPalette(source: Color_2, swatches: ReadonlyArray<Color_2>): Palette;
 
@@ -223,24 +230,43 @@ export const deltaSwatch: typeof deltaColor;
 export function deltaSwatchSet(palette: Palette, reference: Paint, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta?: number, disabledPalette?: Palette, direction?: Direction, zeroAsTransparent?: boolean): InteractiveColorSet;
 
 // @public
-export const densityAdjustmentUnits: TypedDesignToken<number>;
+export interface DensityAxisTokens {
+    gap: ExpressionToken;
+    gapUnits: DesignToken.Number;
+    padding: ExpressionToken;
+    paddingUnits: DesignToken.Number;
+}
 
 // @public
-export class DensityPaddingAndGapTokenGroup implements TokenGroup {
-    constructor(name: string, horizontalPaddingUnits: number, horizontalGapUnits: number, verticalPaddingUnits: number, verticalGapUnits: number, designUnit: string | DesignToken_2<string>, borderThickness: string | DesignToken_2<string>);
-    readonly borderThickness: TypedCSSDesignToken<string>;
-    readonly designUnit: TypedCSSDesignToken<string>;
-    readonly horizontalGap: TypedCSSDesignToken<string>;
-    readonly horizontalGapUnits: TypedDesignToken<number>;
-    readonly horizontalPadding: TypedCSSDesignToken<string>;
-    readonly horizontalPaddingUnits: TypedDesignToken<number>;
+export interface DensityRootTokens<N extends string> {
     // (undocumented)
-    readonly name: string;
-    get padding(): CSSDirective;
-    readonly verticalGap: TypedCSSDesignToken<string>;
-    readonly verticalGapUnits: TypedDesignToken<number>;
-    readonly verticalPadding: TypedCSSDesignToken<string>;
-    readonly verticalPaddingUnits: TypedDesignToken<number>;
+    density: {
+        adjustmentUnits: DesignToken.Number;
+    } & {
+        [K in N]: DensitySetTokens;
+    };
+}
+
+// @public
+export interface DensitySetTokens {
+    borderThickness: DesignToken.Dimension;
+    designUnit: DesignToken.Dimension;
+    // (undocumented)
+    horizontal: DensityAxisTokens;
+    // (undocumented)
+    vertical: DensityAxisTokens;
+}
+
+// @public
+export interface DensityUnits {
+    // (undocumented)
+    horizontalGap: number;
+    // (undocumented)
+    horizontalPadding: number;
+    // (undocumented)
+    verticalGap: number;
+    // (undocumented)
+    verticalPadding: number;
 }
 
 // @public
