@@ -1,5 +1,13 @@
 import chai from "chai";
 import {
+    cornerRadiusControl,
+    cornerRadiusLayer,
+    densityAdjustmentUnits,
+    densityControl,
+    densityLayer,
+    designUnit,
+    focusStrokeThickness,
+    strokeThickness,
     bodyFontFamily,
     bodyFontStyle,
     bodyFontWeight,
@@ -87,5 +95,24 @@ describe("deprecated palette, color context, and layer tokens", () => {
         expect(formatColor(colorContext.$value)).to.equal("#ffffff");
         expect(formatColor(layerFillFixedPlus1.$value)).to.equal(formatColor(color.layer.fill.ramp.plus1.$value));
         expect(layerFillInteractive.$value.rest).to.deep.equal(color.layer.fill.interactive.$value.rest);
+    });
+});
+
+describe("deprecated appearance and density tokens", () => {
+    it("should be the tokens with the names they had", () => {
+        expect(designUnit.name).to.equal("global.designUnit");
+        expect(cornerRadiusControl.name).to.equal("shape.cornerRadius.default");
+        expect(cornerRadiusLayer.name).to.equal("shape.cornerRadius.layer");
+        expect(strokeThickness.name).to.equal("shape.strokeThickness.default");
+        expect(focusStrokeThickness.name).to.equal("shape.strokeThickness.focus");
+        expect(densityAdjustmentUnits.name).to.equal("density.adjustmentUnits");
+    });
+
+    it("should have the properties that a density group had, as the tokens of the set", () => {
+        expect(densityControl.horizontalPadding.name).to.equal("density.control.horizontal.padding");
+        expect(densityControl.verticalGapUnits.name).to.equal("density.control.vertical.gapUnits");
+        expect(densityControl.designUnit.name).to.equal("density.control.designUnit");
+        expect(densityLayer.horizontalGap.name).to.equal("density.layer.horizontal.gap");
+        expect(densityControl.horizontalPaddingUnits.$value).to.equal(3);
     });
 });

@@ -7,18 +7,22 @@
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
 import { Library } from "design-token-library";
+import { appearance } from "./appearance.js";
 import { colorContext as colorContextConfig } from "./color-context.js";
+import { density, DensityLibraryTokens } from "./density.js";
 import { layer, LayerLibraryTokens } from "./layer.js";
 import { palettes } from "./palette.js";
 import { typography, TypographyLibraryTokens } from "./typography.js";
 
 // The library for the tokens that are exported here. Each system that is migrated adds its configuration to this.
-const library = Library.create<TypographyLibraryTokens & LayerLibraryTokens>({
+const library = Library.create<TypographyLibraryTokens & LayerLibraryTokens & DensityLibraryTokens>({
     typography,
     color: { ...palettes, ...colorContextConfig, layer },
+    ...appearance,
+    density,
 });
 
-const { color } = library.tokens;
+const { color, global, shape, density: densities } = library.tokens;
 
 const { fontFamily: fontFamilies, fontWeight: fontWeights, fontStyle: fontStyles, ramp } = library.tokens.typography;
 
@@ -303,3 +307,77 @@ export const layerFillFixedPlus3 = color.layer.fill.ramp.plus3;
  * @public
  */
 export const layerFillFixedPlus4 = color.layer.fill.ramp.plus4;
+
+/**
+ * @deprecated Use the token `global.designUnit` of a library.
+ * @public
+ */
+export const designUnit = global.designUnit;
+
+/**
+ * @deprecated Use the token `shape.cornerRadius.default` of a library.
+ * @public
+ */
+export const cornerRadiusControl = shape.cornerRadius.default;
+
+/**
+ * @deprecated Use the token `shape.cornerRadius.layer` of a library.
+ * @public
+ */
+export const cornerRadiusLayer = shape.cornerRadius.layer;
+
+/**
+ * @deprecated Use the token `shape.strokeThickness.default` of a library.
+ * @public
+ */
+export const strokeThickness = shape.strokeThickness.default;
+
+/**
+ * @deprecated Use the token `shape.strokeThickness.focus` of a library.
+ * @public
+ */
+export const focusStrokeThickness = shape.strokeThickness.focus;
+
+/**
+ * @deprecated Use the token `density.adjustmentUnits` of a library.
+ * @public
+ */
+export const densityAdjustmentUnits = densities.adjustmentUnits;
+
+// The tokens of a density set, with the names of the properties of DensityPaddingAndGapTokenGroup.
+const densityPaddingAndGap = (set: typeof densities.control) => ({
+    designUnit: set.designUnit,
+    borderThickness: set.borderThickness,
+    horizontalPaddingUnits: set.horizontal.paddingUnits,
+    horizontalPadding: set.horizontal.padding,
+    horizontalGapUnits: set.horizontal.gapUnits,
+    horizontalGap: set.horizontal.gap,
+    verticalPaddingUnits: set.vertical.paddingUnits,
+    verticalPadding: set.vertical.padding,
+    verticalGapUnits: set.vertical.gapUnits,
+    verticalGap: set.vertical.gap,
+});
+
+/**
+ * @deprecated Use the tokens `density.text` of a library, where `horizontalPadding` is `horizontal.padding`. There is no `padding`.
+ * @public
+ */
+export const densityText = densityPaddingAndGap(densities.text);
+
+/**
+ * @deprecated Use the tokens `density.control` of a library, where `horizontalPadding` is `horizontal.padding`. There is no `padding`.
+ * @public
+ */
+export const densityControl = densityPaddingAndGap(densities.control);
+
+/**
+ * @deprecated Use the tokens `density.controlList` of a library, where `horizontalPadding` is `horizontal.padding`. There is no `padding`.
+ * @public
+ */
+export const densityControlList = densityPaddingAndGap(densities.controlList);
+
+/**
+ * @deprecated Use the tokens `density.layer` of a library, where `horizontalPadding` is `horizontal.padding`. There is no `padding`.
+ * @public
+ */
+export const densityLayer = densityPaddingAndGap(densities.layer);
