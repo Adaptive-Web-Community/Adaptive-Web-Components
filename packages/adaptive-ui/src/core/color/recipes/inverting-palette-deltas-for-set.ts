@@ -1,4 +1,4 @@
-import { InteractiveValues } from "../../interactive.js";
+import { InteractiveSet, mapStates } from "../../interactive.js";
 import { Paint } from "../paint.js";
 import { closestSwatchIndex, Palette } from "../palette.js";
 
@@ -7,21 +7,18 @@ import { closestSwatchIndex, Palette } from "../palette.js";
  *
  * @param palette - The Palette the deltas apply to
  * @param reference - The reference color
- * @param deltas - The offsets of each state from `reference`
+ * @param deltas - The offsets of the states from `reference`, of which the states that have an offset are checked
  * @returns The `deltas` if the rest, hover, active, and focus states are within the palette, or the deltas moving the
  * other direction
  *
  * @public
  */
-export function invertingPaletteDeltasForSet(
-    palette: Palette,
-    reference: Paint,
-    deltas: InteractiveValues<number>
-): InteractiveValues<number> {
+export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveSet<number>): InteractiveSet<number> {
     const referenceIndex = closestSwatchIndex(palette, reference);
 
     // Check if the indices the deltas will hit are all within palette bounds
     const withinBounds = [deltas.rest, deltas.hover, deltas.active, deltas.focus]
+        .filter((delta): delta is number => typeof delta === "number")
         .map(delta => referenceIndex + delta)
         .every(index => index >= 0 && index < palette.swatches.length);
 
@@ -29,14 +26,9 @@ export function invertingPaletteDeltasForSet(
         return deltas;
     }
 
-    // The offset of other deltas from the rest delta
-    const flippedRestDelta = deltas.rest * -1;
+    // The offset of other deltas from the rest delta, which is where the rest is if it has none
+    const restDelta = deltas.rest ?? 0;
+    const flippedRestDelta = restDelta * -1;
 
-    return {
-        rest: flippedRestDelta,
-        hover: flippedRestDelta + (deltas.hover - deltas.rest),
-        active: flippedRestDelta + (deltas.active - deltas.rest),
-        focus: flippedRestDelta + (deltas.focus - deltas.rest),
-        disabled: flippedRestDelta + (deltas.disabled - deltas.rest),
-    };
+    return mapStates(deltas, delta => flippedRestDelta + (delta - restDelta));
 }

@@ -1,5 +1,4 @@
-import { InteractiveValues } from "../../interactive.js";
-import { Color } from "../color.js";
+import { InteractiveSet, InteractiveState, mapStates } from "../../interactive.js";
 import { ColorSetOptions, InteractiveColorSet } from "../interactive-set.js";
 import { Paint } from "../paint.js";
 import { closestSwatchIndex, Palette, swatchAt } from "../palette.js";
@@ -15,11 +14,12 @@ import { contrastColor } from "./contrast-color.js";
  * @param palette - The Palette used to find the Colors
  * @param reference - The reference color
  * @param minContrast - The minimum contrast from `reference`
- * @param deltas - The offsets of each state. The rest and hover offsets decide which of the two has the
- * accessible color, the active and focus offsets are from the rest state and the disabled offset from `reference`.
+ * @param deltas - The offsets of the states, which has a Color for each state that has an offset. The rest and hover offsets decide which of the two
+ * has the accessible color (a state that has no offset is where the rest is), the active and focus offsets are from the rest state and the disabled
+ * offset from `reference`.
  * @param options - The palette for the disabled color, the direction the deltas move on the `palette` (defaults to
  * {@link directionByIsDark} based on `reference`), and whether to treat the color at the reference as transparent
- * @returns The interactive set of Colors
+ * @returns The interactive set of Colors, for the states that have a delta
  *
  * @public
  */
@@ -27,7 +27,7 @@ export function contrastAndDeltaColorSet(
     palette: Palette,
     reference: Paint,
     minContrast: number,
-    deltas: InteractiveValues<number>,
+    deltas: InteractiveSet<number>,
     options: ColorSetOptions = {}
 ): InteractiveColorSet {
     const { disabledPalette = palette, direction = directionByIsDark(reference), zeroAsTransparent = false } = options;
@@ -35,36 +35,33 @@ export function contrastAndDeltaColorSet(
     const referenceIndex = closestSwatchIndex(palette, reference);
     const accessibleColor = contrastColor(palette, reference, minContrast, direction, referenceIndex);
 
+    // The rest and hover place the accessible color, and a state that has no delta is where the rest is.
+    const restDelta = deltas.rest ?? 0;
+    const hoverDelta = deltas.hover ?? restDelta;
     const accessibleIndex1 = closestSwatchIndex(palette, accessibleColor);
-    const accessibleIndex2 = accessibleIndex1 + direction * Math.abs(deltas.rest - deltas.hover);
+    const accessibleIndex2 = accessibleIndex1 + direction * Math.abs(restDelta - hoverDelta);
     const indexOneIsRestState =
-        direction === PaletteDirection.darker ? deltas.rest < deltas.hover : direction * deltas.rest > direction * deltas.hover;
+        direction === PaletteDirection.darker ? restDelta < hoverDelta : direction * restDelta > direction * hoverDelta;
 
-    let restIndex: number;
-    let hoverIndex: number;
+    const restIndex = indexOneIsRestState ? accessibleIndex1 : accessibleIndex2;
+    const hoverIndex = indexOneIsRestState ? accessibleIndex2 : accessibleIndex1;
 
-    if (indexOneIsRestState) {
-        restIndex = accessibleIndex1;
-        hoverIndex = accessibleIndex2;
-    } else {
-        restIndex = accessibleIndex2;
-        hoverIndex = accessibleIndex1;
-    }
-
-    function getColor(palette: Palette, index: number): Color {
-        const color = swatchAt(palette, index);
-        if (zeroAsTransparent === true && index === referenceIndex) {
-            return asOverlay(color, color);
-        } else {
-            return color;
+    const indexOf = (state: InteractiveState, delta: number): number => {
+        switch (state) {
+            case InteractiveState.rest:
+                return restIndex;
+            case InteractiveState.hover:
+                return hoverIndex;
+            case InteractiveState.disabled:
+                return referenceIndex + direction * delta;
+            default:
+                return restIndex + direction * delta;
         }
-    }
-
-    return {
-        rest: getColor(palette, restIndex),
-        hover: getColor(palette, hoverIndex),
-        active: getColor(palette, restIndex + direction * deltas.active),
-        focus: getColor(palette, restIndex + direction * deltas.focus),
-        disabled: getColor(disabledPalette, referenceIndex + direction * deltas.disabled),
     };
+
+    return mapStates(deltas, (delta, state) => {
+        const index = indexOf(state, delta);
+        const color = swatchAt(state === InteractiveState.disabled ? disabledPalette : palette, index);
+        return zeroAsTransparent === true && index === referenceIndex ? asOverlay(color, color) : color;
+    });
 }

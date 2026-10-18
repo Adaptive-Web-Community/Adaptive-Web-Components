@@ -27,3 +27,4 @@ reason with the code.
 | [0003](0003-migrate-behind-an-exclusion-frontier.md) | Migrate in steps, with what isn't migrated excluded from the build | Accepted |
 | [0004](0004-derived-values-are-expressions.md) | A value calculated from other tokens is an expression, written as `calc()` | Accepted |
 | [0005](0005-a-type-ramp-is-a-ramp.md) | A type ramp is a ramp, whether its values are fixed or come from a scale | Accepted |
+| [0006](0006-interactive-values-are-one-token.md) | The values of an interactive element are one composite token | Accepted |

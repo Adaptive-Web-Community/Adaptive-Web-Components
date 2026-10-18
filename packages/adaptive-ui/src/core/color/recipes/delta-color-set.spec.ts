@@ -112,3 +112,23 @@ describe("deltaColorSet", (): void => {
         });
     });
 });
+
+describe("deltaColorSet with only some of the states", (): void => {
+    it("should have a color only for the states that have a delta", (): void => {
+        const set = deltaColorSet(palette, swatches[2], { focus: 2 }, { direction: darker });
+
+        expect(set).to.deep.equal({ focus: swatches[4] });
+        expect(Object.keys(set)).to.deep.equal(["focus"]);
+    });
+
+    it("should clear a state that has a null delta", (): void => {
+        expect(deltaColorSet(palette, swatches[2], { rest: 0, hover: null }, { direction: darker })).to.deep.equal({ rest: swatches[2], hover: null });
+    });
+
+    it("should use the disabled palette for the disabled state alone", (): void => {
+        const other = createPalette(swatches[5], [...swatches].reverse());
+        const set = deltaColorSet(palette, swatches[2], { disabled: 1 }, { direction: darker, disabledPalette: other });
+
+        expect(set.disabled).to.equal(other.swatches[3]);
+    });
+});

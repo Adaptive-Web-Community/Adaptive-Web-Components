@@ -1,4 +1,5 @@
 import { Color, withAlpha } from "../color.js";
+import { InteractiveState, mapStates } from "../../interactive.js";
 import { InteractiveColorSet, InteractivePaintSet } from "../interactive-set.js";
 import { Paint } from "../paint.js";
 import { relativeLuminance } from "../utilities/relative-luminance.js";
@@ -25,28 +26,22 @@ export function blackOrWhiteByContrastSet(
     minContrast: number,
     defaultBlack: boolean
 ): InteractiveColorSet {
-    const defaultRule: (reference: Paint | null) => Color | null = (reference) =>
-        reference ? blackOrWhiteByContrast(reference, minContrast, defaultBlack) : null;
+    const defaultRule = (reference: Paint): Color => blackOrWhiteByContrast(reference, minContrast, defaultBlack);
 
-    const restForeground = defaultRule(set.rest);
-    const hoverForeground = defaultRule(set.hover);
     // Active does not have contrast requirements, so if rest and hover use the same color, use that for active
     // even if it would not have passed the contrast check.
-    const activeForeground =
-        restForeground && hoverForeground && relativeLuminance(restForeground) === relativeLuminance(hoverForeground)
-            ? restForeground
-            : defaultRule(set.active);
-    const focusForeground = defaultRule(set.focus);
-    const disabled = defaultRule(set.disabled);
-    // TODO: Reasonable disabled opacity, but not configurable.
-    // Considering replacing these recipes anyway.
-    const disabledForeground = disabled ? withAlpha(disabled, 0.3) : null;
+    const restForeground = set.rest ? defaultRule(set.rest) : undefined;
+    const hoverForeground = set.hover ? defaultRule(set.hover) : undefined;
+    const activeFollowsRest =
+        restForeground && hoverForeground && relativeLuminance(restForeground) === relativeLuminance(hoverForeground);
 
-    return {
-        rest: restForeground,
-        hover: hoverForeground,
-        active: activeForeground,
-        focus: focusForeground,
-        disabled: disabledForeground,
-    };
+    return mapStates(set, (reference, state) => {
+        if (state === InteractiveState.active && activeFollowsRest) {
+            return restForeground;
+        }
+        const foreground = defaultRule(reference);
+        // TODO: Reasonable disabled opacity, but not configurable.
+        // Considering replacing these recipes anyway.
+        return state === InteractiveState.disabled ? withAlpha(foreground, 0.3) : foreground;
+    });
 }
