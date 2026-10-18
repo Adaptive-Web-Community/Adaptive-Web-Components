@@ -448,10 +448,10 @@ export const interactiveSwatchSetAsOverlay: typeof colorSetAsOverlay;
 export type InteractiveToken<V> = DesignToken.Custom<typeof AdaptiveDesignToken.interactive, InteractiveSet<V>>;
 
 // @public
-export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {
+export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, Record<InteractiveState, TypedCSSDesignToken<T>> {
 }
 
-// @public
+// @public @deprecated
 export type InteractiveValues<T> = {
     [key in InteractiveState]: T;
 };

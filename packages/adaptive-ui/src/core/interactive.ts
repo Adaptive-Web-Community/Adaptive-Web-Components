@@ -31,8 +31,9 @@ export enum InteractiveState {
 }
 
 /**
- * Values for an interactive element's states.
+ * Values for an interactive element's states, one for each of them.
  *
+ * @deprecated Use {@link InteractiveSet}, in which every state is optional, or `Record<InteractiveState, T>` where there has to be one for each.
  * @public
  */
 export type InteractiveValues<T> = {
