@@ -38,6 +38,22 @@ export interface PaletteOkhslOptions {
     darkEndSaturation: number;
 }
 
+/**
+ * The number of swatches of a palette that has a swatch every `stepSize` points of lightness, on a scale of 100.
+ *
+ * @remarks
+ * The step is the distance that is a discernible step between swatches, and `1.5` gives the 66 swatches of the default palette. A palette is
+ * defined by the step, and the number of swatches follows from it, to a whole number.
+ *
+ * @param stepSize - The points of lightness (0 to 100) between swatches, greater than 0
+ * @returns The `stepCount` of the options of the palette
+ *
+ * @public
+ */
+export function stepCountFor(stepSize: number): number {
+    return Math.floor(100 / stepSize);
+}
+
 const defaultPaletteOkhslOptions: PaletteOkhslOptions = {
     stepCount: 66,
     lightEndSaturation: 0,

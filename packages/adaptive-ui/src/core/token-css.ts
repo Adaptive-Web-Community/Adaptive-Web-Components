@@ -41,6 +41,8 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     return {
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
+        // A palette is not CSS. The library has no way yet to leave a token out (library #58), so it is an empty value.
+        palette: () => "",
         expression: ((value: OperandValue) => formatExpression(value, property)) as CSSConverter<OperandValue, any>,
     };
 }

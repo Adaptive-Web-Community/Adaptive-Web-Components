@@ -9,7 +9,6 @@
         "src/reference/index.ts",
         "src/reference/layer.ts",
         "src/reference/modules.ts",
-        "src/reference/palette.ts",
         "src/reference/parity.spec.ts",
         "src/reference/token-naming.ts",
         "src/reference/util.ts",

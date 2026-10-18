@@ -1,6 +1,6 @@
 import chai from "chai";
 import { Color, formatColor, parseColor } from "./color.js";
-import { createPaletteOkhsl } from "./palette-okhsl.js";
+import { createPaletteOkhsl, stepCountFor } from "./palette-okhsl.js";
 import { closestSwatchIndex, swatchAt } from "./palette.js";
 import { relativeLuminance } from "./utilities/relative-luminance.js";
 
@@ -109,5 +109,18 @@ describe("createPaletteOkhsl", () => {
 
     it("should accept null options", () => {
         expect(() => createPaletteOkhsl(accentHex, null as any)).not.to.throw();
+    });
+});
+
+describe("stepCountFor", () => {
+    it("should be the number of swatches that have a step of points of lightness on a scale of 100, to a whole number", () => {
+        expect(stepCountFor(1.5)).to.equal(66);
+        expect(stepCountFor(1)).to.equal(100);
+        expect(stepCountFor(2)).to.equal(50);
+        expect(stepCountFor(7)).to.equal(14);
+    });
+
+    it("should give the palette that has the number of swatches", () => {
+        expect(createPaletteOkhsl(accentHex, { stepCount: stepCountFor(1.5) }).swatches.length).to.equal(66);
     });
 });
