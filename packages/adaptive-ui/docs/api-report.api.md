@@ -18,6 +18,7 @@ import { ValuesOf } from '@microsoft/fast-foundation';
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
     fontStyle: (value: string) => string;
     fontVariations: (value: string) => string;
+    palette: false;
     expression: (value: Operand) => string;
 };
 
@@ -26,6 +27,7 @@ export const AdaptiveDesignToken: {
     readonly expression: "expression";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
+    readonly palette: "palette";
 };
 
 // @public
@@ -549,6 +551,9 @@ export interface PaletteOkhslOptions {
 }
 
 // @public
+export type PaletteToken = DesignToken.Custom<typeof AdaptiveDesignToken.palette, Palette>;
+
+// @public
 export function parseColor(color: string): Color_2 | undefined;
 
 // @public
@@ -651,6 +656,9 @@ export interface SerializableStyleRule {
     // (undocumented)
     styles?: string[];
 }
+
+// @public
+export function stepCountFor(stepSize: number): number;
 
 // @public
 export type StringCondition = Record<string, string>;

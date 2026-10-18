@@ -41,6 +41,8 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     return {
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
+        // A palette is not CSS.
+        palette: false as const,
         expression: (value: Operand) => formatExpression(value, property),
     };
 }

@@ -28,4 +28,5 @@ and `nicholasrice/design-token-library` on GitHub, which we contribute to).
 
 - Token values are plain data (a DTCG color, not a class), and behavior is a function. A custom token type is treated the same as a standard one.
 - Prefer types that can't be wrong over a cast or a string. Reuse what the library does (naming, conversion) and don't copy it.
+- Name a group of tokens for what it is. What configures how something is generated is `<thing>Options` (`color.paletteOptions`, not `color.palette`), so it isn't read as the thing itself. A group of numbers that a recipe reads is its deltas, and nothing more.
 - A gap in the library is an issue and a pull request there, with a reproduction and a test that fails without the fix.

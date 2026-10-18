@@ -1,4 +1,5 @@
 import { DesignToken } from "design-token-library";
+import type { Palette } from "./color/palette.js";
 import { Operand } from "./expression.js";
 
 /**
@@ -17,6 +18,8 @@ export const AdaptiveDesignToken = {
     fontStyle: "fontStyle",
     /** The `font-variation-settings` of text. */
     fontVariations: "fontVariations",
+    /** A `Palette`, which is not written to CSS. */
+    palette: "palette",
 } as const;
 
 /**
@@ -39,3 +42,10 @@ export type FontStyleToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontS
  * @public
  */
 export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontVariations, string>;
+
+/**
+ * A {@link Palette}.
+ *
+ * @public
+ */
+export type PaletteToken = DesignToken.Custom<typeof AdaptiveDesignToken.palette, Palette>;
