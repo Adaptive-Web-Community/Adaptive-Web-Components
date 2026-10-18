@@ -1,5 +1,7 @@
 import { CSSConverter, CSSPropertiesOptions, Library, toProperties } from "design-token-library";
+import { formatPaint, Paint } from "./color/paint.js";
 import { formatExpression, OperandValue } from "./expression.js";
+import { InteractiveSet } from "./interactive.js";
 
 // Gets what is at the name of a token in a tree of the tokens of a library.
 function atName<T>(tree: any, name: string): T {
@@ -27,6 +29,24 @@ export function propertyResolver(library: Library.Library<any>, options?: CSSPro
     return (name: string) => atName<{ property: string }>(properties, name).property;
 }
 
+type Dimensional = { value: number; unit: string };
+
+/**
+ * Writes a value of an interactive token. They are plain data, so the shape tells what one is.
+ */
+function formatMember(value: unknown): string {
+    if (typeof value === "object" && value !== null) {
+        if ("colorSpace" in value || "stops" in value) {
+            return formatPaint(value as Paint);
+        }
+        if ("unit" in value) {
+            const { value: amount, unit } = value as Dimensional;
+            return `${amount}${unit}`;
+        }
+    }
+    return String(value);
+}
+
 /**
  * The converters for the custom token types of Adaptive UI, to give to the library when writing CSS.
  *
@@ -41,6 +61,15 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     return {
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
+        // The `rest` is the value of the property and the other states are more declarations after it, named `--name-<state>`,
+        // until the library can write more than one property for a token (library #64). A state that has no value is not written,
+        // and the property of a set that has no `rest` is empty.
+        interactive: (value: InteractiveSet<unknown>, token: { name: string }) => {
+            const base = property(token.name);
+            const given = Object.entries(value).filter(([, v]) => v !== undefined && v !== null);
+            const others = given.filter(([state]) => state !== "rest").map(([state, v]) => `${base}-${state}:${formatMember(v)}`);
+            return [value.rest === undefined || value.rest === null ? "" : formatMember(value.rest), ...others].join(";");
+        },
         // A palette is not CSS. The library has no way yet to leave a token out (library #58), so it is an empty value.
         palette: () => "",
         expression: ((value: OperandValue) => formatExpression(value, property)) as CSSConverter<OperandValue, any>,

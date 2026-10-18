@@ -79,3 +79,22 @@ describe("invertingPaletteDeltasForSet", (): void => {
         expect(result.rest).to.equal(-(10 - index + 1));
     });
 });
+
+describe("invertingPaletteDeltasForSet with only some of the states", (): void => {
+    it("should return the deltas unchanged when the ones that it has are within the palette", (): void => {
+        expect(invertingPaletteDeltasForSet(palette, swatches[5], { hover: 2, focus: 4 })).to.deep.equal({ hover: 2, focus: 4 });
+    });
+
+    it("should invert the rest delta and keep the offsets, for the states that it has", (): void => {
+        // Reference index 8 + 3 = 11 is out of bounds.
+        expect(invertingPaletteDeltasForSet(palette, swatches[8], { rest: 1, hover: 3, disabled: 2 })).to.deep.equal({
+            rest: -1,
+            hover: -1 + 2,
+            disabled: -1 + 1,
+        });
+    });
+
+    it("should have the rest where it is when it has no delta, so inverting it changes nothing", (): void => {
+        expect(invertingPaletteDeltasForSet(palette, swatches[8], { hover: 3, disabled: 1 })).to.deep.equal({ hover: 3, disabled: 1 });
+    });
+});

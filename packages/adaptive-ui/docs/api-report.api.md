@@ -19,6 +19,9 @@ import { ValuesOf } from '@microsoft/fast-foundation';
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
     fontStyle: (value: string) => string;
     fontVariations: (value: string) => string;
+    interactive: (value: InteractiveSet<unknown>, token: {
+        name: string;
+    }) => string;
     palette: () => string;
     expression: CSSConverter<OperandValue, any>;
 };
@@ -28,6 +31,7 @@ export const AdaptiveDesignToken: {
     readonly expression: "expression";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
+    readonly interactive: "interactive";
     readonly palette: "palette";
 };
 
@@ -136,7 +140,7 @@ export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number
 export function contrast(a: Paint, b: Paint): number;
 
 // @public
-export function contrastAndDeltaColorSet(palette: Palette, reference: Paint, minContrast: number, deltas: InteractiveValues<number>, options?: ColorSetOptions): InteractiveColorSet;
+export function contrastAndDeltaColorSet(palette: Palette, reference: Paint, minContrast: number, deltas: InteractiveSet<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // Warning: (ae-forgotten-export) The symbol "Direction" needs to be exported by the entry point index.d.ts
 //
@@ -210,7 +214,7 @@ export interface CursorDefinition {
 export function deltaColor(palette: Palette, reference: Paint, delta: number, direction?: PaletteDirection): Color_2;
 
 // @public
-export function deltaColorSet(palette: Palette, reference: Paint, deltas: InteractiveValues<number>, options?: ColorSetOptions): InteractiveColorSet;
+export function deltaColorSet(palette: Palette, reference: Paint, deltas: InteractiveSet<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // @public @deprecated (undocumented)
 export const deltaSwatch: typeof deltaColor;
@@ -400,7 +404,7 @@ export interface HueShiftGradientOptions {
 }
 
 // @public
-export function idealColorDeltaSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, deltas: InteractiveValues<number>, options?: Omit<ColorSetOptions, "zeroAsTransparent">): InteractiveColorSet;
+export function idealColorDeltaSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, deltas: InteractiveSet<number>, options?: Omit<ColorSetOptions, "zeroAsTransparent">): InteractiveColorSet;
 
 // @public @deprecated (undocumented)
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: Direction): InteractiveColorSet;
@@ -409,10 +413,24 @@ export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, min
 export function intendedFor(...properties: StyleProperty[]): Record<string, unknown>;
 
 // @public
-export type InteractiveColorSet = InteractiveValues<Color_2 | null>;
+export type InteractiveColorSet = InteractiveSet<Color_2>;
 
 // @public
-export type InteractivePaintSet = InteractiveValues<Paint | null>;
+export function interactiveDeltas(group: {
+    readonly [key in InteractiveState]?: {
+        readonly $value: number;
+    };
+}): InteractiveSet<number>;
+
+// @public
+export type InteractiveDeltaTokens<S extends InteractiveState = InteractiveState> = {
+    $type: DesignToken.Type.Number;
+} & {
+    [key in S]: DesignToken.Number;
+};
+
+// @public
+export type InteractivePaintSet = InteractiveSet<Paint>;
 
 // @public
 export enum InteractiveState {
@@ -425,6 +443,9 @@ export enum InteractiveState {
 
 // @public @deprecated (undocumented)
 export const interactiveSwatchSetAsOverlay: typeof colorSetAsOverlay;
+
+// @public
+export type InteractiveToken<V> = DesignToken.Custom<typeof AdaptiveDesignToken.interactive, InteractiveSet<V>>;
 
 // @public
 export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {
@@ -452,7 +473,7 @@ export type InteractivityDefinition = {
 };
 
 // @public
-export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveValues<number>): InteractiveValues<number>;
+export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveSet<number>): InteractiveSet<number>;
 
 // @public
 export function isDark(color: Paint): boolean;
@@ -893,6 +914,10 @@ export const _white: DesignToken;
 
 // @public
 export function withAlpha(color: Color_2, alpha: number): Color_2;
+
+// Warnings were encountered during analysis:
+//
+// dist/dts/core/token-css.d.ts:26:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

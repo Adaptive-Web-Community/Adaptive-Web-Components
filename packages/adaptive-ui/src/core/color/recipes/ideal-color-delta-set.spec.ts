@@ -88,3 +88,20 @@ describe("idealColorDeltaSet", (): void => {
         expect(set.disabled).to.equal(swatchAt(accentPalette, closestSwatchIndex(accentPalette, white) + 3));
     });
 });
+
+describe("idealColorDeltaSet with only some of the states", (): void => {
+    const palette = createPaletteRGB(accentBase);
+
+    it("should have a color only for the states that have a delta, from the same accessible color", (): void => {
+        const full = idealColorDeltaSet(palette, white, 4.5, palette.source, deltas(0, 0, 2, 0, 1));
+        const sparse = idealColorDeltaSet(palette, white, 4.5, palette.source, { active: 2, disabled: 1 });
+
+        expect(Object.keys(sparse)).to.deep.equal(["active", "disabled"]);
+        expect(sparse.active).to.equal(full.active);
+        expect(sparse.disabled).to.equal(full.disabled);
+    });
+
+    it("should clear a state that has a null delta", (): void => {
+        expect(idealColorDeltaSet(palette, white, 4.5, palette.source, { rest: 0, focus: null }).focus).to.be.null;
+    });
+});
