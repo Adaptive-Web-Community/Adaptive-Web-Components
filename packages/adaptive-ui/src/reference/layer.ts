@@ -1,19 +1,18 @@
-import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { DesignTokenType } from "../core/adaptive-design-tokens.js";
-import { Palette, PaletteDirectionValue } from "../core/color/palette.js";
-import { ColorRecipeParams, InteractivePaintSet } from "../core/color/recipe.js";
-import { deltaSwatch, deltaSwatchSet, invertingPaletteDeltasForSet } from "../core/color/recipes/index.js";
+import { DesignToken, Library } from "design-token-library";
 import { Color } from "../core/color/color.js";
-import { luminanceSwatch } from "../core/color/utilities/luminance-swatch.js";
+import { deltaColor } from "../core/color/recipes/delta-color.js";
+import { deltaColorSet } from "../core/color/recipes/delta-color-set.js";
+import { invertingPaletteDeltasForSet } from "../core/color/recipes/inverting-palette-deltas-for-set.js";
+import { luminanceColor } from "../core/color/utilities/luminance-color.js";
+import { PaletteDirection } from "../core/color/palette.js";
 import { StyleProperty } from "../core/modules/types.js";
-import { createTokenColor, createTokenNonCss, createTokenRecipe } from "../core/token-helpers.js";
-import { createTokenColorRecipe, createTokenColorSet, createTokenDelta } from "../core/token-helpers-color.js";
-import { InteractiveState } from "../core/types.js";
-import { colorContext } from "./color.js";
-import { neutralPalette } from "./palette.js";
+import { intendedFor } from "../core/token-metadata.js";
+import { AdaptiveDesignToken, interactiveDeltas, InteractiveDeltaTokens, InteractiveToken, PaletteToken } from "../core/token-types.js";
+import { colorContext, ColorContextLibraryTokens } from "./color-context.js";
+import { PaletteLibraryTokens, palettes } from "./palette.js";
 
 /**
- * Baseline values for light and dark mode for {@link layerFillBaseLuminance}.
+ * Baseline values for light and dark mode for the `baseLuminance` of the layers.
  *
  * @remarks
  * These values represent reasonable starting points for light and dark modes, but custom values can be used instead.
@@ -26,291 +25,138 @@ export const LayerBaseLuminance = Object.freeze({
 } as const);
 
 /**
- * The {@link Palette} to use for Layer recipes.
+ * The fills of the "Fixed" layers, which represent the backgrounds commonly used to define the structure of an app.
  *
  * @remarks
- * By default this maps to the {@link neutralPalette}.
- * Use a custom palette like `layerPalette.withDefault(PaletteRGB.from("#[HEX_COLOR]"))`.
+ * The primary content is `base`. Underlying sections like a navigation or a header are logically *beneath*, `minus1` and so
+ * on. Layers above the base, like a flyout or a dialog, are `plus1` and so on. Each position is one `restDelta` from the
+ * one before it.
  *
  * @public
  */
-export const layerPalette = createTokenNonCss<Palette>("color.layer.palette", DesignTokenType.palette).withDefault(neutralPalette);
-
-const layerFillName = "color.layer.fill";
+export interface LayerRampTokens {
+    /**
+     * The ideal luminance of the `base` layer, 0 to 1, where 0 is black and 1 is white.
+     */
+    baseLuminance: DesignToken.Number;
+    minus4: DesignToken.Color;
+    minus3: DesignToken.Color;
+    minus2: DesignToken.Color;
+    minus1: DesignToken.Color;
+    base: DesignToken.Color;
+    plus1: DesignToken.Color;
+    plus2: DesignToken.Color;
+    plus3: DesignToken.Color;
+    plus4: DesignToken.Color;
+}
 
 /**
- * The offset between "Fixed" layers, or from the container for "Interactive" rest state, {@link layerFillInteractiveRest}.
- *
- * @remarks
- * A negative value causes "Minus" recipes to go darker and "Plus" recipes to go lighter. A positive value causes the reverse.
+ * The tokens of the layers, under `color`.
  *
  * @public
  */
-export const layerFillRestDelta = createTokenDelta(layerFillName, "layer", -2);
+export interface LayerTokens {
+    /**
+     * The palette to use for the layers, which is the neutral palette until it is set.
+     */
+    palette: PaletteToken;
+    fill: {
+        /**
+         * The offset between the "Fixed" layers, or from the container for the "Interactive" rest state.
+         *
+         * @remarks
+         * A negative value goes darker for the layers beneath and lighter for those above. A positive value does the reverse.
+         */
+        restDelta: DesignToken.Number;
+        ramp: LayerRampTokens;
 
-const layerFillFixedName = `${layerFillName}.ramp`;
+        /**
+         * The deltas of the interactive fill, which are the offset from the context of each state. The `rest` is the `restDelta` until it is set.
+         */
+        interactiveDeltas: InteractiveDeltaTokens;
+
+        /**
+         * The fill of an interactive layer, like a card: a color for each state, relative to the context, made once. The recipe decides if a state has a color.
+         */
+        interactive: InteractiveToken<Color>;
+    };
+}
 
 /**
- * The ideal luminance value for the "Base" layer, {@link layerFillFixedBase}.
- *
- * @remarks
- * 0...1, 0 = black, 1 = white.
+ * The tokens of a library that has the layers, with the palette and the color context they are made from.
  *
  * @public
  */
-export const layerFillBaseLuminance = createTokenNonCss<number>(`${layerFillFixedName}.baseLuminance`, DesignTokenType.number).withDefault(LayerBaseLuminance.LightMode);
+export interface LayerLibraryTokens extends PaletteLibraryTokens, ColorContextLibraryTokens {
+    color: PaletteLibraryTokens["color"] & ColorContextLibraryTokens["color"] & { layer: LayerTokens };
+}
 
-/**
- * The "Fixed" layers represent background fills commonly used to define app structure.
- *
- * @remarks
- * The primary content is {@link layerFillFixedBase}.
- * Underlying sections like navigation or header are logically *beneath* using {@link layerFillFixedMinus1}, etc.
- * Layers above the "Base" like flyouts or dialogs use {@link layerFillFixedPlus1}, etc.
- *
- * See {@link layerFillRestDelta}.
- *
- * @public
- */
-export const layerFillFixedRecipe = createTokenRecipe<number, Color>(
-    layerFillFixedName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, index: number) =>
-        deltaSwatch(
-            resolve(layerPalette),
-            luminanceSwatch(resolve(layerFillBaseLuminance)),
-            resolve(layerFillRestDelta) * index,
-            PaletteDirectionValue.darker
-        ),
-);
+const fillFor = intendedFor(StyleProperty.backgroundFill);
 
-/**
- * The fill of the "Base" or primary content layer.
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedBase = createTokenColor(`${layerFillFixedName}.base`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, 0)
-);
-
-/**
- * The fill of the layer 1 level beneath "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedMinus1 = createTokenColor(`${layerFillFixedName}.minus1`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, -1)
-);
-
-/**
- * The fill of the layer 2 levels beneath "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedMinus2 = createTokenColor(`${layerFillFixedName}.minus2`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, -2)
-);
-
-/**
- * The fill of the layer 3 levels beneath "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedMinus3 = createTokenColor(`${layerFillFixedName}.minus3`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, -3)
-);
-
-/**
- * The fill of the layer 4 levels beneath "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedMinus4 = createTokenColor(`${layerFillFixedName}.minus4`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, -4)
-);
-
-/**
- * The fill of the layer 1 level above "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedPlus1 = createTokenColor(`${layerFillFixedName}.plus1`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, 1)
-);
-
-/**
- * The fill of the layer 2 levels above "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedPlus2 = createTokenColor(`${layerFillFixedName}.plus2`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, 2)
-);
-
-/**
- * The fill of the layer 3 levels above "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedPlus3 = createTokenColor(`${layerFillFixedName}.plus3`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, 3)
-);
-
-/**
- * The fill of the layer 4 levels above "Base".
- *
- * @remarks
- * See {@link layerFillFixedRecipe}.
- *
- * @public
- */
-export const layerFillFixedPlus4 = createTokenColor(`${layerFillFixedName}.plus4`, StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(layerFillFixedRecipe).evaluate(resolve, 4)
-);
-
-const layerFillInteractiveName = `${layerFillName}.interactive`;
-
-/**
- * The offset from the container for "Interactive" hover state, {@link layerFillInteractiveHover}.
- *
- * @public
- */
-export const layerFillHoverDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.hover, -3);
-
-/**
- * The offset from the container for "Interactive" active state, {@link layerFillInteractiveActive}.
- *
- * @public
- */
-export const layerFillActiveDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.active, -1);
-
-/**
- * The offset from the container for "Interactive" focus state, {@link layerFillInteractiveFocus}.
- *
- * @public
- */
-export const layerFillFocusDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.focus, -3);
-
-/**
- * The offset from the container for "Interactive" disabled state, {@link layerFillInteractiveDisabled}.
- *
- * @public
- */
-export const layerFillDisabledDelta = createTokenDelta(layerFillInteractiveName, InteractiveState.disabled, -1);
-
-/**
- * The recipe for a layer relative to its context (as opposed to {@link layerFillBaseLuminance}).
- *
- * @remarks
- * Useful for a `Card` or other container that's interactive.
- *
- * @public
- */
-export const layerFillInteractiveRecipe = createTokenColorRecipe<InteractivePaintSet>(layerFillInteractiveName, StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params?: ColorRecipeParams): InteractivePaintSet => {
-        const palette = resolve(layerPalette);
-        const reference = params?.reference || resolve(colorContext);
-        const restDelta = resolve(layerFillRestDelta);
-        const hoverDelta = resolve(layerFillHoverDelta);
-        const activeDelta = resolve(layerFillActiveDelta);
-        const focusDelta = resolve(layerFillFocusDelta);
-        const disabledDelta = resolve(layerFillDisabledDelta);
-        const deltas = invertingPaletteDeltasForSet(palette, reference, restDelta, hoverDelta, activeDelta, focusDelta, disabledDelta);
-        return deltaSwatchSet(
-            palette,
-            reference,
-            deltas.rest,
-            deltas.hover,
-            deltas.active,
-            deltas.focus,
-            deltas.disabled,
-            undefined,
-            PaletteDirectionValue.darker,
+// A step of the ramp, which is the `index` steps of the rest delta from the ideal luminance.
+const rampStep = (index: number): Library.ConfigValue<DesignToken.Color, LayerLibraryTokens> => ({
+    $type: DesignToken.Type.Color,
+    $value: t => {
+        const { palette, fill } = t.color.layer;
+        return deltaColor(
+            palette.$value,
+            luminanceColor(fill.ramp.baseLuminance.$value),
+            fill.restDelta.$value * index,
+            PaletteDirection.darker
         );
-    }
-);
-
-export const layerFillInteractive = createTokenColorSet(layerFillInteractiveRecipe);
+    },
+    $extensions: fillFor,
+});
 
 /**
- * The fill of an interactive layer at rest.
+ * The configuration of the layer tokens, for the library.
  *
  * @remarks
- * See {@link layerFillRestDelta}.
+ * The interactive fill is for a container that is interactive, like a card. It is made relative to the color context, so
+ * it is made again for the content of a layer, which is the library extended with the layer as its context.
  *
  * @public
  */
-export const layerFillInteractiveRest = layerFillInteractive.rest;
+export const layer: Library.Config<LayerTokens, LayerLibraryTokens> = {
+    palette: { $type: AdaptiveDesignToken.palette, $value: t => t.color.neutral.palette },
+    fill: {
+        restDelta: { $type: DesignToken.Type.Number, $value: -2 },
+        ramp: {
+            baseLuminance: { $type: DesignToken.Type.Number, $value: LayerBaseLuminance.LightMode },
+            minus4: rampStep(-4),
+            minus3: rampStep(-3),
+            minus2: rampStep(-2),
+            minus1: rampStep(-1),
+            base: rampStep(0),
+            plus1: rampStep(1),
+            plus2: rampStep(2),
+            plus3: rampStep(3),
+            plus4: rampStep(4),
+        },
+        interactiveDeltas: {
+            $type: DesignToken.Type.Number,
+            rest: { $value: tokens => tokens.color.layer.fill.restDelta },
+            hover: { $value: -3 },
+            active: { $value: -1 },
+            focus: { $value: -3 },
+            disabled: { $value: -1 },
+        },
+        interactive: {
+            $type: AdaptiveDesignToken.interactive,
+            $value: tokens => {
+                const { palette, fill } = tokens.color.layer;
+                const reference = tokens.color.context.$value;
+                const deltas = invertingPaletteDeltasForSet(palette.$value, reference, interactiveDeltas(fill.interactiveDeltas));
+                return deltaColorSet(palette.$value, reference, deltas, { direction: PaletteDirection.darker });
+            },
+            $extensions: fillFor,
+        },
+    },
+};
 
 /**
- * The fill of an interactive layer while hovered.
- *
- * @remarks
- * See {@link layerFillHoverDelta}.
+ * Creates a library with the layer tokens, and the palette and color context they are made from.
  *
  * @public
  */
-export const layerFillInteractiveHover = layerFillInteractive.hover;
-
-/**
- * The fill of an interactive layer while pressed.
- *
- * @remarks
- * See {@link layerFillActiveDelta}.
- *
- * @public
- */
-export const layerFillInteractiveActive = layerFillInteractive.active;
-
-/**
- * The fill of an interactive layer while focused.
- *
- * @remarks
- * See {@link layerFillFocusDelta}.
- *
- * @public
- */
-export const layerFillInteractiveFocus = layerFillInteractive.focus;
-
-/**
- * The fill of an interactive layer while disabled.
- *
- * @remarks
- * See {@link layerFillDisabledDelta}.
- *
- * @public
- */
-export const layerFillInteractiveDisabled = layerFillInteractive.disabled;
+export const createLayerLibrary = () => Library.create<LayerLibraryTokens>({ color: { ...palettes, ...colorContext, layer } });
