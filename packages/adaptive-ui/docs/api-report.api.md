@@ -17,22 +17,26 @@ import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
+    boolean: (value: boolean) => string;
     fontStyle: (value: string) => string;
     fontVariations: (value: string) => string;
     interactive: (value: InteractiveSet<unknown>, token: {
         name: string;
     }) => string;
     palette: () => string;
+    wcagContrastLevel: (value: string) => string;
     expression: CSSConverter<OperandValue, any>;
 };
 
 // @public
 export const AdaptiveDesignToken: {
+    readonly boolean: "boolean";
     readonly expression: "expression";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
     readonly interactive: "interactive";
     readonly palette: "palette";
+    readonly wcagContrastLevel: "wcagContrastLevel";
 };
 
 // @public
@@ -57,6 +61,9 @@ export function blackOrWhiteByContrastSet(set: InteractivePaintSet, minContrast:
 
 // @public
 export type BooleanCondition = string;
+
+// @public
+export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean, boolean>;
 
 // @public
 export function calculateOverlayColor(match: Color_2, background: Color_2): Color_2;
@@ -907,6 +914,18 @@ export type TypeScaleTokens = TypeRampTokens & {
 };
 
 // @public
+export const WcagContrastLevel: {
+    readonly aa: "aa";
+    readonly aaa: "aaa";
+};
+
+// @public (undocumented)
+export type WcagContrastLevel = (typeof WcagContrastLevel)[keyof typeof WcagContrastLevel];
+
+// @public
+export type WcagContrastLevelToken = DesignToken.Custom<typeof AdaptiveDesignToken.wcagContrastLevel, WcagContrastLevel>;
+
+// @public
 export const white: Color_2;
 
 // @public @deprecated (undocumented)
@@ -917,7 +936,7 @@ export function withAlpha(color: Color_2, alpha: number): Color_2;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/core/token-css.d.ts:26:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
+// dist/dts/core/token-css.d.ts:27:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

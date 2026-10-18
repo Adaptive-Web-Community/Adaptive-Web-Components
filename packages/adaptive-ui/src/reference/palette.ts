@@ -37,12 +37,6 @@ export interface PaletteTokens {
     warning: ColorPaletteTokens;
     success: ColorPaletteTokens;
     info: ColorPaletteTokens;
-    disabled: {
-        /**
-         * The palette to use for the disabled state.
-         */
-        palette: PaletteToken;
-    };
 }
 
 /**
@@ -114,9 +108,6 @@ export const palettes: Library.Config<PaletteTokens, PaletteLibraryTokens> = {
     warning: { base: baseColor(hex("#D526D9")), palette: palette(t => t.color.warning.base.$value) },
     success: { base: baseColor(hex("#6AD926")), palette: palette(t => t.color.success.base.$value) },
     info: { base: baseColor(hex("#0DA1F2")), palette: palette(t => t.color.info.base.$value) },
-    disabled: {
-        palette: { $type: AdaptiveDesignToken.palette, $value: t => t.color.neutral.palette },
-    },
 };
 
 /**

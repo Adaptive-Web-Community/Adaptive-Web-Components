@@ -59,6 +59,7 @@ function formatMember(value: unknown): string {
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions) {
     const property = propertyResolver(library, options);
     return {
+        boolean: (value: boolean) => String(value),
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
         // The `rest` is the value of the property and the other states are more declarations after it, named `--name-<state>`,
@@ -72,6 +73,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         },
         // A palette is not CSS. The library has no way yet to leave a token out (library #58), so it is an empty value.
         palette: () => "",
+        wcagContrastLevel: (value: string) => value,
         expression: ((value: OperandValue) => formatExpression(value, property)) as CSSConverter<OperandValue, any>,
     };
 }

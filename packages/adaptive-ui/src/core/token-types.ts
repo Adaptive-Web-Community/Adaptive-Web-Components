@@ -13,6 +13,8 @@ import { InteractiveSet, InteractiveState } from "./interactive.js";
  * @public
  */
 export const AdaptiveDesignToken = {
+    /** A `boolean`, a switch that a token may be. */
+    boolean: "boolean",
     /** A number or dimension that may be calculated from other tokens, see {@link Expression}. */
     expression: "expression",
     /** The `font-style` of text, like `normal` or `italic`. */
@@ -23,7 +25,36 @@ export const AdaptiveDesignToken = {
     interactive: "interactive",
     /** A `Palette`, which is not written to CSS. */
     palette: "palette",
+    /** The WCAG contrast level, see {@link WcagContrastLevel}. */
+    wcagContrastLevel: "wcagContrastLevel",
 } as const;
+
+/**
+ * WCAG contrast level (AA or AAA).
+ *
+ * @public
+ */
+export const WcagContrastLevel = {
+    aa: "aa",
+    aaa: "aaa",
+} as const;
+
+/** @public */
+export type WcagContrastLevel = (typeof WcagContrastLevel)[keyof typeof WcagContrastLevel];
+
+/**
+ * A `boolean`.
+ *
+ * @public
+ */
+export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean, boolean>;
+
+/**
+ * The WCAG contrast level that the minimum contrasts follow.
+ *
+ * @public
+ */
+export type WcagContrastLevelToken = DesignToken.Custom<typeof AdaptiveDesignToken.wcagContrastLevel, WcagContrastLevel>;
 
 /**
  * A number or a dimension, which may be an {@link Expression} that is calculated from other tokens.

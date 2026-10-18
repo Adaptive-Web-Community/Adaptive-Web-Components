@@ -7,15 +7,13 @@
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
 import { Library } from "design-token-library";
-import { colorContext as colorContextConfig } from "./color-context.js";
-import { layer, LayerLibraryTokens } from "./layer.js";
-import { palettes } from "./palette.js";
+import { color as colorConfig, ColorLibraryTokens } from "./color.js";
 import { typography, TypographyLibraryTokens } from "./typography.js";
 
 // The library for the tokens that are exported here. Each system that is migrated adds its configuration to this.
-const library = Library.create<TypographyLibraryTokens & LayerLibraryTokens>({
+const library = Library.create<TypographyLibraryTokens & ColorLibraryTokens>({
     typography,
-    color: { ...palettes, ...colorContextConfig, layer },
+    color: colorConfig,
 });
 
 const { color } = library.tokens;

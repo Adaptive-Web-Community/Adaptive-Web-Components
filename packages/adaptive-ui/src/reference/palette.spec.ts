@@ -44,9 +44,6 @@ describe("palettes", () => {
                     expected.palettes[`color.${name}.palette`]
                 );
             });
-            expect(swatches(library.tokens.color.disabled.palette.$value), `${key} disabled`).to.deep.equal(
-                expected.palettes["color.disabled.palette"]
-            );
         });
     });
 
@@ -66,7 +63,6 @@ describe("palettes", () => {
         color.paletteOptions.stepSize.set(10);
 
         expect(color.neutral.palette.$value.swatches.length).to.equal(10);
-        expect(color.disabled.palette.$value.swatches.length).to.equal(10);
     });
 
     it("should have the 66 swatches by default, from the step of 1.5 points", () => {
@@ -74,15 +70,6 @@ describe("palettes", () => {
 
         expect(color.paletteOptions.stepSize.$value).to.equal(1.5);
         expect(color.neutral.palette.$value.swatches.length).to.equal(66);
-    });
-
-    it("should have a disabled palette that is the neutral palette until it is set", () => {
-        const { color } = createPaletteLibrary().tokens;
-        const own = createPaletteOkhsl("#336699");
-
-        expect(color.disabled.palette.$value).to.deep.equal(color.neutral.palette.$value);
-        color.disabled.palette.set(own);
-        expect(color.disabled.palette.$value).to.deep.equal(own);
     });
 
     it("should be made by any system for a color of its own, with paletteFrom", () => {
@@ -119,7 +106,6 @@ describe("palettes", () => {
         expect(color.neutral.base.name).to.equal("color.neutral.base");
         expect(color.critical.palette.name).to.equal("color.critical.palette");
         expect(color.paletteOptions.stepSize.name).to.equal("color.paletteOptions.stepSize");
-        expect(color.disabled.palette.name).to.equal("color.disabled.palette");
     });
 
     it("should have base colors intended for the background fill", () => {
