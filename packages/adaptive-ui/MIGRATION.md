@@ -155,7 +155,42 @@ These are the tokens of one library that Adaptive UI creates, so the tokens of a
 the ones that are exported. `TypeRampTokenGroup` and `TypeScaleTokenGroup` have no replacement of the name, see the type
 ramps.
 
+## Palettes, the color context, and the layers
+
+These tokens are in the token library now, as a tree of tokens (`palettes`, `colorContext` and `layer` are the configs, and
+`createLayerLibrary()` is a library with all of them). The tokens of the legacy `reference` that were the same value have the
+same name (the CSS of a state is the exception, below), and the parity snapshot gives the same swatches and layer colors. There is no shim for a token:
+`neutralPalette` and the like were tokens of FAST, which have no equal in a library that is a value.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `neutralBaseColor`, `neutralPalette` (and `accent`, `highlight`, `critical`, `warning`, `success`, `info`) | `color.neutral.base`, `color.neutral.palette` |
+| `paletteStepCount` | `color.paletteOptions.stepSize`, the step between swatches in points of lightness on a scale of 100, where the count is `floor(100 / stepSize)` (`1.5` is the 66 swatches). `stepCountFor(stepSize)` is the function. No deprecated name: the token is a size and not a count |
+| `paletteLightEndSaturation`, `paletteDarkEndSaturation` | no tokens: they are the `lightEndSaturation` and `darkEndSaturation` options of `createPaletteOkhsl`, which a palette that is set as the value of a palette token can use |
+| `disabledPalette` | `color.disabled.palette`, the neutral palette until it is set |
+| `colorContext` | `color.context`. A layer is `library.extend({ color: { context: { $value: layerColor } } })` |
+| `layerPalette` | `color.layer.palette` |
+| `layerFillBaseLuminance` | `color.layer.fill.ramp.baseLuminance` |
+| `layerFillRestDelta` | `color.layer.fill.restDelta` |
+| `layerFillHoverDelta`, `layerFillActiveDelta`, `layerFillFocusDelta`, `layerFillDisabledDelta` | `color.layer.fill.interactiveDeltas.<state>`, where `rest` is a ref to `restDelta` |
+| `layerFillFixedBase`, `layerFillFixedMinus1`..`4`, `layerFillFixedPlus1`..`4` | `color.layer.fill.ramp.base`, `minus1`..`minus4`, `plus1`..`plus4` |
+| `layerFillFixedRecipe`, `layerFillInteractiveRecipe` | not tokens: `layerRecipes.rampFill` and `layerRecipes.interactiveFill`, recipes of the library, which `override()` replaces in an extended library |
+| `layerFillInteractive`, `layerFillInteractiveRest`, `Hover`, `Active`, `Focus`, `Disabled` | `color.layer.fill.interactive`, one token whose value is `{ rest, hover, active, focus, disabled }`. In CSS the rest is `--color-layer-fill-interactive`, not `...-interactive-rest` |
+| `LayerBaseLuminance` | `LayerBaseLuminance` |
+
+A palette is a token of the `palette` type, and is not CSS: it has no custom property. `paletteRecipes.paletteFrom(color, stepSize)` makes the
+palette of a color token, for a palette of a system's own. A delta is a token of the `delta` type, and is not CSS either, as it wasn't in 0.14,
+since only a recipe reads it.
+
+### Interactive values
+
+The values of the states of an interactive element (`rest`, `hover`, `active`, `focus`, `disabled`) are one token of the `interactive` type, `InteractiveToken<V>`, whose value is `InteractiveSet<V>`, and not a token for each
+state, see [decision 0006](../../docs/decisions/0006-interactive-values-are-one-token.md). The value of the token is a recipe of the library, so it is calculated once. The deltas that it reads are tokens of the `delta` type in a group
+(`InteractiveDeltaTokens`, of the states that it says, all five unless it says `InteractiveDeltaTokens<InteractiveState.hover | InteractiveState.active>`), and the recipes take them as an `InteractiveSet<number>` and give a color for each state that has one. In CSS `--x` is the rest and a state is `--x-<state>`, and only a state that has a value is written. The recipe functions (`deltaColorSet` and the others) are as they were,
+and a set of colors is an `InteractiveToken<Color>`, the `InteractiveColorSet` that they give: the recipe decides which states have a color, and a state that has no value is not there
+(`null` clears one on purpose), so not even the `rest` is needed.
+
 ## Not migrated yet
 
-The other tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
+The rest of the tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
 and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.
