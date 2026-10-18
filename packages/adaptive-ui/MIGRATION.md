@@ -152,8 +152,8 @@ ramps.
 
 These tokens are in the token library now, as a tree of tokens (`palettes`, `colorContext` and `layer` are the configs, and
 `createLayerLibrary()` is a library with all of them). The tokens of the legacy `reference` that were the same value have the
-same name (the CSS of a state is the exception, below), and the parity snapshot gives the same swatches and layer colors. There is no shim for a token:
-`neutralPalette` and the like were tokens of FAST, which have no equal in a library that is a value.
+same name (the CSS of a state is the exception, below), and the parity snapshot gives the same swatches and layer colors. The tokens that were exported are still
+exported, deprecated, as in the typography tokens, see below.
 
 | 0.14 | 1.0 |
 | --- | --- |
@@ -170,6 +170,20 @@ same name (the CSS of a state is the exception, below), and the parity snapshot 
 | `layerFillFixedRecipe`, `layerFillInteractiveRecipe` | not tokens, the ramp and the interactive fill are what the recipes made |
 | `layerFillInteractive`, `layerFillInteractiveRest`, `Hover`, `Active`, `Focus`, `Disabled` | `color.layer.fill.interactive`, one token whose value is `{ rest, hover, active, focus, disabled }`. In CSS the rest is `--color-layer-fill-interactive`, not `...-interactive-rest` |
 | `LayerBaseLuminance` | `LayerBaseLuminance` |
+
+### Deprecated, the old name is the token
+
+`neutralBaseColor`, `neutralPalette` (and the other palettes), `disabledPalette`, `colorContext`, `layerPalette`, `layerFillBaseLuminance`, `layerFillRestDelta`,
+`layerFillHoverDelta`, `layerFillActiveDelta`, `layerFillFocusDelta`, `layerFillDisabledDelta`, `layerFillFixedBase`,
+`layerFillFixedMinus1`..`4`, `layerFillFixedPlus1`..`4` and `layerFillInteractive` are exported from `reference/deprecated.ts`, each the
+token of the table above in the library that Adaptive UI creates. What a token is has changed, see the typography tokens.
+
+Not exported, with what to use: `layerFillInteractiveRest`, `Hover`, `Active`, `Focus` and `Disabled` (a state of an interactive token is not a
+token: use `layerFillInteractive.$value.rest`, or `--color-layer-fill-interactive-<state>` in CSS), and `layerFillFixedRecipe` and
+`layerFillInteractiveRecipe` (the recipes are not tokens).
+
+`InteractiveValues<T>` (a value for each of the five states) is renamed `InteractiveSet<T>`, in which every state is optional: a set has the states that it has, and `null` clears one. The old name is
+still exported, deprecated, with the meaning it had. Use `Record<InteractiveState, T>` where there has to be a value for each state.
 
 A palette is a token of the `palette` type, and is not CSS: the custom property is empty until the library can leave a token
 out (design-token-library #58).

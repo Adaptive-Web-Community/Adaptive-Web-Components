@@ -41,4 +41,4 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
  *
  * @public
  */
-export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, InteractiveValues<TypedCSSDesignToken<T>> {}
+export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, Record<InteractiveState, TypedCSSDesignToken<T>> {}

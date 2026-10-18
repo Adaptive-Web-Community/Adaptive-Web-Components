@@ -7,10 +7,18 @@
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
 import { Library } from "design-token-library";
+import { colorContext as colorContextConfig } from "./color-context.js";
+import { layer, LayerLibraryTokens } from "./layer.js";
+import { palettes } from "./palette.js";
 import { typography, TypographyLibraryTokens } from "./typography.js";
 
 // The library for the tokens that are exported here. Each system that is migrated adds its configuration to this.
-const library = Library.create<TypographyLibraryTokens>({ typography });
+const library = Library.create<TypographyLibraryTokens & LayerLibraryTokens>({
+    typography,
+    color: { ...palettes, ...colorContextConfig, layer },
+});
+
+const { color } = library.tokens;
 
 const { fontFamily: fontFamilies, fontWeight: fontWeights, fontStyle: fontStyles, ramp } = library.tokens.typography;
 
@@ -94,3 +102,204 @@ export const labelFontStyle = fontStyles.label;
  * @public
  */
 export const typeRampDefault = ramp.default;
+
+/**
+ * @deprecated Use the token `color.neutral.base` of a library.
+ * @public
+ */
+export const neutralBaseColor = color.neutral.base;
+
+/**
+ * @deprecated Use the token `color.neutral.palette` of a library.
+ * @public
+ */
+export const neutralPalette = color.neutral.palette;
+
+/**
+ * @deprecated Use the token `color.accent.base` of a library.
+ * @public
+ */
+export const accentBaseColor = color.accent.base;
+
+/**
+ * @deprecated Use the token `color.accent.palette` of a library.
+ * @public
+ */
+export const accentPalette = color.accent.palette;
+
+/**
+ * @deprecated Use the token `color.highlight.base` of a library.
+ * @public
+ */
+export const highlightBaseColor = color.highlight.base;
+
+/**
+ * @deprecated Use the token `color.highlight.palette` of a library.
+ * @public
+ */
+export const highlightPalette = color.highlight.palette;
+
+/**
+ * @deprecated Use the token `color.critical.base` of a library.
+ * @public
+ */
+export const criticalBaseColor = color.critical.base;
+
+/**
+ * @deprecated Use the token `color.critical.palette` of a library.
+ * @public
+ */
+export const criticalPalette = color.critical.palette;
+
+/**
+ * @deprecated Use the token `color.warning.base` of a library.
+ * @public
+ */
+export const warningBaseColor = color.warning.base;
+
+/**
+ * @deprecated Use the token `color.warning.palette` of a library.
+ * @public
+ */
+export const warningPalette = color.warning.palette;
+
+/**
+ * @deprecated Use the token `color.success.base` of a library.
+ * @public
+ */
+export const successBaseColor = color.success.base;
+
+/**
+ * @deprecated Use the token `color.success.palette` of a library.
+ * @public
+ */
+export const successPalette = color.success.palette;
+
+/**
+ * @deprecated Use the token `color.info.base` of a library.
+ * @public
+ */
+export const infoBaseColor = color.info.base;
+
+/**
+ * @deprecated Use the token `color.info.palette` of a library.
+ * @public
+ */
+export const infoPalette = color.info.palette;
+
+/**
+ * @deprecated Use the token `color.disabled.palette` of a library.
+ * @public
+ */
+export const disabledPalette = color.disabled.palette;
+
+/**
+ * @deprecated Use the token `color.context` of a library.
+ * @public
+ */
+export const colorContext = color.context;
+
+/**
+ * @deprecated Use the token `color.layer.palette` of a library.
+ * @public
+ */
+export const layerPalette = color.layer.palette;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.baseLuminance` of a library.
+ * @public
+ */
+export const layerFillBaseLuminance = color.layer.fill.ramp.baseLuminance;
+
+/**
+ * @deprecated Use the token `color.layer.fill.restDelta` of a library.
+ * @public
+ */
+export const layerFillRestDelta = color.layer.fill.restDelta;
+
+/**
+ * @deprecated Use the token `color.layer.fill.interactiveDeltas.hover` of a library.
+ * @public
+ */
+export const layerFillHoverDelta = color.layer.fill.interactiveDeltas.hover;
+
+/**
+ * @deprecated Use the token `color.layer.fill.interactiveDeltas.active` of a library.
+ * @public
+ */
+export const layerFillActiveDelta = color.layer.fill.interactiveDeltas.active;
+
+/**
+ * @deprecated Use the token `color.layer.fill.interactiveDeltas.focus` of a library.
+ * @public
+ */
+export const layerFillFocusDelta = color.layer.fill.interactiveDeltas.focus;
+
+/**
+ * @deprecated Use the token `color.layer.fill.interactiveDeltas.disabled` of a library.
+ * @public
+ */
+export const layerFillDisabledDelta = color.layer.fill.interactiveDeltas.disabled;
+
+/**
+ * The fill of an interactive layer, a set of the states.
+ *
+ * @deprecated Use the token `color.layer.fill.interactive` of a library, whose value is `{ rest, hover, active, focus, disabled }`.
+ * There is no token for a state, like `layerFillInteractiveRest`, so use the state of the value, or `--color-layer-fill-interactive-<state>` in CSS.
+ * @public
+ */
+export const layerFillInteractive = color.layer.fill.interactive;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.base` of a library.
+ * @public
+ */
+export const layerFillFixedBase = color.layer.fill.ramp.base;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.minus1` of a library.
+ * @public
+ */
+export const layerFillFixedMinus1 = color.layer.fill.ramp.minus1;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.minus2` of a library.
+ * @public
+ */
+export const layerFillFixedMinus2 = color.layer.fill.ramp.minus2;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.minus3` of a library.
+ * @public
+ */
+export const layerFillFixedMinus3 = color.layer.fill.ramp.minus3;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.minus4` of a library.
+ * @public
+ */
+export const layerFillFixedMinus4 = color.layer.fill.ramp.minus4;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.plus1` of a library.
+ * @public
+ */
+export const layerFillFixedPlus1 = color.layer.fill.ramp.plus1;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.plus2` of a library.
+ * @public
+ */
+export const layerFillFixedPlus2 = color.layer.fill.ramp.plus2;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.plus3` of a library.
+ * @public
+ */
+export const layerFillFixedPlus3 = color.layer.fill.ramp.plus3;
+
+/**
+ * @deprecated Use the token `color.layer.fill.ramp.plus4` of a library.
+ * @public
+ */
+export const layerFillFixedPlus4 = color.layer.fill.ramp.plus4;
