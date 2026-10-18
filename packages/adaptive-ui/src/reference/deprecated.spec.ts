@@ -25,8 +25,20 @@ import {
     layerPalette,
     neutralBaseColor,
     neutralPalette,
+    accentFillStealth,
+    criticalStrokeStrong,
+    fillSubtleDisabledDelta,
+    focusStroke,
+    focusStrokeInner,
+    infoFillSubtleInverse,
+    minContrastReadable,
+    neutralAsOverlay,
+    strokeStealthHoverDelta,
+    strokeStrongMinContrast,
+    wcagContrastLevel,
 } from "./deprecated.js";
 import { formatColor } from "../core/color/color.js";
+import { createColorLibrary } from "./color.js";
 import { createLayerLibrary } from "./layer.js";
 import { createTypographyLibrary } from "./typography.js";
 
@@ -87,5 +99,30 @@ describe("deprecated palette, color context, and layer tokens", () => {
         expect(formatColor(colorContext.$value)).to.equal("#ffffff");
         expect(formatColor(layerFillFixedPlus1.$value)).to.equal(formatColor(color.layer.fill.ramp.plus1.$value));
         expect(layerFillInteractive.$value.rest).to.deep.equal(color.layer.fill.interactive.$value.rest);
+    });
+});
+
+describe("deprecated color set tokens", () => {
+    const { color } = createColorLibrary().tokens;
+
+    it("should be the tokens of the color group with the names they had", () => {
+        expect(accentFillStealth.name).to.equal("color.accent.fill.stealth");
+        expect(criticalStrokeStrong.name).to.equal("color.critical.stroke.strong");
+        expect(infoFillSubtleInverse.name).to.equal("color.info.fill.subtleInverse");
+        expect(fillSubtleDisabledDelta.name).to.equal("color.deltas.fill.subtle.disabled");
+        expect(strokeStealthHoverDelta.name).to.equal("color.deltas.stroke.stealth.hover");
+        expect(wcagContrastLevel.name).to.equal("color.wcagContrast.level");
+        expect(minContrastReadable.name).to.equal("color.wcagContrast.minContrast.readable");
+        expect(strokeStrongMinContrast.name).to.equal("color.wcagContrast.minContrast.strong");
+        expect(neutralAsOverlay.name).to.equal("color.neutral.asOverlay");
+        expect(focusStroke.name).to.equal("color.focusStroke.$root");
+        expect(focusStrokeInner.name).to.equal("color.focusStroke.inner");
+    });
+
+    it("should have the values of the tokens of a library", () => {
+        expect(formatColor(accentFillStealth.$value.hover!)).to.equal(formatColor(color.accent.fill.stealth.$value.hover!));
+        expect(fillSubtleDisabledDelta.$value).to.equal(color.deltas.fill.subtle.disabled.$value);
+        expect(minContrastReadable.$value).to.equal(4.5);
+        expect(neutralAsOverlay.$value).to.equal(false);
     });
 });

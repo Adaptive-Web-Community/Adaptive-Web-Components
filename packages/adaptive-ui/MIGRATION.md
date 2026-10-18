@@ -220,6 +220,15 @@ and not a token for each state. The recipes are the same functions as before.
 | `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe` (a recipe that a style module composed with a background) | `blackOrWhiteDiscernible(background)` and `blackOrWhiteReadable(background)`, the config of an interactive token that follows the background, for the pairs that a system makes |
 | `WcagContrastLevel` | `WcagContrastLevel`, with `WcagContrastLevelToken` |
 
+### Deprecated, the old name is the token
+
+The sets (`accentFillStealth` and the other 83), the deltas (`fillStealthRestDelta` and the other 54), `wcagContrastLevel`, `minContrastSafety`..`minContrastReadable`,
+`strokeStrongMinContrast`, `neutralAsOverlay`, `focusStrokePalette`, `focusStrokeMinContrast`, `focusStroke`, `focusStrokeOuter`, and `focusStrokeInner` are exported from
+`reference/deprecated.ts`, each the token of the table above in the library that Adaptive UI creates. What a token is has changed, see the typography tokens.
+
+Not exported, with what to use: the token of a state of a set (`accentFillStealthRest`, `Hover`, and so on: use `accentFillStealth.$value.rest`, or the property `--<name>-<state>` in CSS), and the recipes
+(`accentFillStealthRecipe` and the others, `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe`, and `createTokenColorRecipeAccent` and the others).
+
 ### Disabled
 
 The disabled color is fixed in tokens (decision [0008](../../docs/decisions/0008-disabled-is-fixed-in-tokens.md)), so the colors are the same:
