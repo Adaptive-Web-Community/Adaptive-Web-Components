@@ -67,15 +67,16 @@ export class ToolbarController {
     }
 }
 
-// An element takes focus itself when it is focusable (a native control, `tabIndex` 0), or has a `tabindex`, which a component that is
-// focusable sets on its host. The items in a plain element that isn't one are found in it; a custom element that isn't one is left as it is,
-// since what is in it is its own: a radio group moves the focus between its radios, and a text field is focusable in its shadow root.
+// An element takes focus when it is focusable (a native control, `tabIndex` 0), has a `tabindex`, which a component that is focusable sets
+// on its host, or delegates its focus to its shadow root (a link, a text field), where the host's `tabindex` is its native element's. The
+// items in a plain element that isn't one are found in it; a custom element that isn't one is left as it is, since what is in it is its own:
+// a radio group moves the focus between its radios.
 function findItems(elements: readonly Element[]): HTMLElement[] {
     return elements.flatMap(element => {
         if (!(element instanceof HTMLElement) || element.hidden) {
             return [];
         }
-        if (element.tabIndex >= 0 || element.hasAttribute("tabindex")) {
+        if (element.tabIndex >= 0 || element.hasAttribute("tabindex") || element.shadowRoot?.delegatesFocus) {
             return [element];
         }
         return element.localName.includes("-") ? [] : findItems(Array.from(element.children));

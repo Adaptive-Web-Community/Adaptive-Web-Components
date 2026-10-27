@@ -5,7 +5,8 @@ import { type AnchorElement, AriaForwardingController, isIconOnly } from "@adapt
  * A link. Implements {@link @adaptive-web/components-foundation#AnchorElement}.
  *
  * @remarks
- * Has the `icon-only` custom state when its content is one SVG element and no text.
+ * Has the `icon-only` custom state when its content is one SVG element and no text. Defined with `delegatesFocus`, so focusing the element
+ * focuses its link, and its `tabindex` is the link's: `-1` takes it out of the tab order, as in a toolbar.
  *
  * @public
  */
@@ -81,13 +82,6 @@ export class Anchor extends FASTElement implements AnchorElement {
         } else {
             this.internals.states.delete("icon-only");
         }
-    }
-
-    /**
-     * Focuses the native link.
-     */
-    public focus(options?: FocusOptions): void {
-        this.control?.focus(options);
     }
 
     public connectedCallback(): void {

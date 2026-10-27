@@ -19,5 +19,9 @@ export const breadcrumbItemDefinition = composeBreadcrumbItem(
             [BreadcrumbItemStatics.separator]: chevronRightIcon,
         },
         styleModules,
+        shadowOptions: {
+            // Focusing the element focuses the native link, as the Anchor's.
+            delegatesFocus: true,
+        },
     }
 );

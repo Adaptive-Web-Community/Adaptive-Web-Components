@@ -17,7 +17,7 @@ element: its context menu (open in a new tab, copy the address), a click with th
 | The author's ARIA | About twenty `aria-*` properties, written to the `<a>` by the template. The ids of `aria-describedby` and the like don't resolve inside the shadow root | Every `aria-*` attribute of the host, forwarded to the `<a>` as it changes; the ids as the elements (element reflection), found where the host is |
 | Link attributes | `download`, `href`, `hreflang`, `ping`, `referrerpolicy`, `rel`, `target`, `type`, given to the `<a>` | The same, with `referrerPolicy` named as the native property |
 | `target` values | `AnchorTarget` (`_self`, `_blank`, `_parent`, `_top`) | A string: a target can also be the name of a frame |
-| Focus | `delegatesFocus`, and `focus()` focuses the `<a>` (AWC) | `focus()` focuses the `<a>`, as the accordion item does its button |
+| Focus | `delegatesFocus`, and `focus()` focuses the `<a>` (AWC) | `delegatesFocus`, as the text fields: focusing the host focuses the `<a>`, and a `tabindex` of `-1` on the host takes the `<a>` out of the tab order, which a toolbar's roving focus needs |
 | Icon only | A class on the `<a>` (AWC) | The `icon-only` custom state, from the content, with `isIconOnly`, which the button shares |
 | Slots and parts | `start`, the `content` part, `end`, in the `control` part | FAST Foundation |
 

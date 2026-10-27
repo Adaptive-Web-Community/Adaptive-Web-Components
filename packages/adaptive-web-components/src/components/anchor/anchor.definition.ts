@@ -14,5 +14,9 @@ export const anchorDefinition = composeAnchor(
     DefaultDesignSystem,
     {
         styleModules,
+        shadowOptions: {
+            // Focusing the element focuses the native link, and the element's tabindex is the link's (a toolbar's roving focus).
+            delegatesFocus: true,
+        },
     }
 );

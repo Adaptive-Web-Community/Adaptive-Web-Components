@@ -171,11 +171,13 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     as WCAG 1.4.13 asks.
     Used by: Accordion, Button, Checkbox, Switch, Radio, Radio Group (a key of a radio, not of its content), Tablist (a key of a tab),
     Toolbar (a key of an item, not of a text input), Listbox, Select (its combobox's), Picker (its input's).
-32. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
-    implements `focus()` to focus it, instead of `delegatesFocus`, unless it wraps a native form control, whose host delegates its focus
-    (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control.
-    Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host),
-    Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host), Breadcrumb Item (its link, as the Anchor),
+32. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element that wraps a native control (a link, a form
+    control) delegates its focus to it (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control, and the host's
+    `tabindex` is the control's: `-1` takes it out of the tab order, which a composite's roving focus needs. Another element whose focusable
+    part is in its shadow root implements `focus()` to focus it.
+    Used by: Button (the host), Accordion Item (its button, by `focus()`), Anchor (`delegatesFocus`, to its link), Checkbox (the host),
+    Switch (the host), Radio (the host), Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host),
+    Breadcrumb Item (its link, as the Anchor),
     Listbox (the host), Select (`delegatesFocus`, to its combobox), Picker (`delegatesFocus`, to its input).
 33. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
     their `tabindex`. An item that gets the focus by a click becomes the active one. A list whose items the arrows don't move between isn't a

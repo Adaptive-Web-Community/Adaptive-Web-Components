@@ -11,16 +11,26 @@ class TestToolbar extends HTMLElement implements ToolbarElement {
 }
 customElements.define("test-toolbar", TestToolbar);
 
-// A component whose focusable part is in its shadow root, such as a text field: its host isn't focusable.
+// A component whose focusable part is in its shadow root, without delegating its focus: its host isn't focusable.
 class TestWrapper extends HTMLElement {
-    public readonly input: HTMLInputElement;
-
     constructor() {
         super();
-        this.input = this.attachShadow({ mode: "open" }).appendChild(document.createElement("input"));
+        this.attachShadow({ mode: "open" }).appendChild(document.createElement("button"));
     }
 }
 customElements.define("test-toolbar-wrapper", TestWrapper);
+
+// A component that delegates its focus to a native element in its shadow root, such as a link. JSDOM keeps no `delegatesFocus`, so the
+// shadow root has it here.
+class TestLink extends HTMLElement {
+    constructor() {
+        super();
+        const root = this.attachShadow({ mode: "open", delegatesFocus: true });
+        Object.defineProperty(root, "delegatesFocus", { value: true });
+        root.appendChild(document.createElement("a")).href = "#";
+    }
+}
+customElements.define("test-toolbar-link", TestLink);
 
 function setup(markup: string) {
     const host = document.body.appendChild(new TestToolbar());
@@ -77,6 +87,14 @@ describe("ToolbarController", () => {
         expect(tabIndexes(elements)).to.deep.equal([0, -1, -1, 0]);
         press(elements[0], "ArrowRight");
         expect(document.activeElement).to.equal(elements[0]);
+    });
+
+    it("should take an element that delegates its focus as an item", () => {
+        const { elements } = setup(`<button>a</button><test-toolbar-link></test-toolbar-link>`);
+
+        expect(elements[1].getAttribute("tabindex")).to.equal("-1");
+        press(elements[0], "ArrowRight");
+        expect(document.activeElement).to.equal(elements[1]);
     });
 
     it("should find the items in a plain element around them, and not in a custom element", () => {

@@ -15,10 +15,10 @@ export const ToolbarParts = {
  * {@link https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/ | ARIA toolbar pattern} with {@link ToolbarController}.
  *
  * @remarks
- * Its items are the elements in its slots that take focus themselves: native controls, and hosts that are focusable (a button, a
- * checkbox), and those in a plain element around them, such as a `<label>`. A component whose focusable part is in its shadow root, such as a
- * link or a text field, isn't an item: it stays in the tab order, and the arrow keys don't move from it. Nor are the items of a component
- * that has its own, such as the radios of a radio group.
+ * Its items are the elements in its slots that take focus: native controls, hosts that are focusable (a button, a checkbox), hosts that
+ * delegate their focus to a native element in their shadow root (a link, a text field), and those in a plain element around them, such as a
+ * `<label>`. The items of a component that has its own, such as the radios of a radio group, aren't. The keys of a text the user edits stay
+ * the text's, so a text field is best last.
  *
  * Slots: `label` for the toolbar's label, which names it, the default slot for the items, and `start` and `end` for items before and after
  * them.
