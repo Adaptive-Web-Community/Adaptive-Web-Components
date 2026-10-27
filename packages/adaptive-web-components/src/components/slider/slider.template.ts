@@ -1,8 +1,9 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-// import { sliderTemplate } from "@microsoft/fast-foundation";
-import { FASTSlider, staticallyCompose } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { SliderParts } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import type { Slider } from "./slider.js";
 
 /**
  * @public
@@ -12,63 +13,39 @@ export const SliderConditions = {
         horizontal: "[orientation='horizontal']",
         vertical: "[orientation='vertical']",
     },
+    readOnly: "[readonly]",
 };
 
-/**
- * @public
- */
-export const SliderParts = {
-    positioningRegion: "positioning-region",
-    track: "track",
-    trackStart: "track-start",
-    thumbContainer: "thumb-container",
-    thumb: "thumb",
-};
+export { SliderParts };
 
 /**
  * @public
  */
 export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof SliderParts> = {
-    interactivity: Interactivity.never,
+    interactivity: controlInteractivity,
     conditions: SliderConditions,
     parts: SliderParts,
     focus: Focus.contextFocused(),
 };
 
-// TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
-
 /**
- * Default Slider template, {@link @microsoft/fast-foundation#sliderTemplate}.
+ * Default Slider template: the track, the labels, and the thumb, placed by the `--slider-position` custom property.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSlider> =
-    (ds: DesignSystem) =>
-        html<FASTSlider>`
-            <template
-                role="slider"
-                tabindex="${x => (x.disabled ? null : 0)}"
-                aria-valuetext="${x => x.valueTextFormatter(x.value)}"
-                aria-valuenow="${x => x.value}"
-                aria-valuemin="${x => x.min}"
-                aria-valuemax="${x => x.max}"
-                aria-disabled="${x => (x.disabled ? true : void 0)}"
-                aria-readonly="${x => (x.readOnly ? true : void 0)}"
-                aria-orientation="${x => x.orientation}"
-            >
-                <div part="positioning-region" class="positioning-region">
-                    <div ${ref("track")} part="track" class="track">
-                        <slot name="track"></slot>
-                        <div part="track-start" class="track-start" style="${x => x.position}">
-                            <slot name="track-start"></slot>
-                        </div>
-                    </div>
-                    <slot></slot>
-                    <div ${ref("thumb")} part="thumb-container" class="thumb-container" style="${x => x.position}">
-                        <slot name="thumb">
-                            ${staticallyCompose(`<div class="thumb" part="thumb"></div>`)}
-                        </slot>
-                    </div>
+export const template: (ds: DesignSystem) => ElementViewTemplate<Slider> =
+    (ds: DesignSystem) => html<Slider>`
+        <div class="positioning-region" part="positioning-region" style="--slider-position: ${x => x.percent}">
+            <div class="track" part="track" ${ref("track")}>
+                <slot name="track"></slot>
+                <div class="track-start" part="track-start">
+                    <slot name="track-start"></slot>
                 </div>
-            </template>
-        `
-        // sliderTemplate();
+            </div>
+            <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+            <div class="thumb-container" part="thumb-container">
+                <slot name="thumb">
+                    <div class="thumb" part="thumb"></div>
+                </slot>
+            </div>
+        </div>
+    `;

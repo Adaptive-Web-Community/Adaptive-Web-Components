@@ -25,6 +25,8 @@ export * from "./radio-group/index.js";
 export * from "./search/index.js";
 export * from "./select/index.js";
 export * from "./skeleton/index.js";
+export * from "./slider/index.js";
+export * from "./slider-label/index.js";
 export * from "./switch/index.js";
 export * from "./tab/index.js";
 export * from "./tab-panel/index.js";

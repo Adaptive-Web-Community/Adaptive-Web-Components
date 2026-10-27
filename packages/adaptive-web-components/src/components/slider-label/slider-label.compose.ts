@@ -1,7 +1,7 @@
-import { FASTSliderLabel } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { SliderLabel } from "./slider-label.js";
 import { aestheticStyles, templateStyles } from "./slider-label.styles.js";
 import { SliderLabelAnatomy, template } from "./slider-label.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeSliderLabel(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTSliderLabel>
-): FASTElementDefinition {
+    options?: ComposeOptions<SliderLabel>
+): Promise<FASTElementDefinition<typeof SliderLabel>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, SliderLabelAnatomy, options);
 
-    return FASTSliderLabel.compose({
+    return FASTElementDefinition.compose(SliderLabel, {
         name: `${ds.prefix}-slider-label`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

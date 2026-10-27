@@ -1,11 +1,10 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTSliderLabel } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { SliderLabel as SliderLabelElement } from "./slider-label.js";
 
-export const storyTemplate = html<StoryArgs<FASTSliderLabel>>`
+export const storyTemplate = html<StoryArgs<SliderLabelElement>>`
     <adaptive-slider-label
-        ?disabled="${(x) => x.disabled}"
         ?hide-mark="${(x) => x.hideMark}"
         position="${(x) => x.position}"
     >
@@ -18,15 +17,13 @@ export default {
     excludeStories: ["storyTemplate"],
     args: {
         storyContent: "Slider label",
-        disabled: false,
         hideMark: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
-        disabled: { control: "boolean" },
         hideMark: { control: "boolean" },
         position: { control: "number" },
     },
-} as Meta<FASTSliderLabel>;
+} as Meta<SliderLabelElement>;
 
-export const SliderLabel: Story<FASTSliderLabel> = renderComponent(storyTemplate).bind({});
+export const SliderLabel: Story<SliderLabelElement> = renderComponent(storyTemplate).bind({});

@@ -1,3 +1,4 @@
+export { Slider } from "./slider.js";
 export { composeSlider } from "./slider.compose.js";
 export {
     templateStyles as sliderTemplateStyles,

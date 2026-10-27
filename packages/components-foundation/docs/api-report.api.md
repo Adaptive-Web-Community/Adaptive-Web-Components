@@ -785,6 +785,73 @@ export const SkeletonShape: {
 export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
 
 // @public
+export class SliderController {
+    constructor(host: SliderElement, internals: SliderInternals, options: SliderOptions);
+    connect(track: HTMLElement): void;
+    defaultValueChanged(): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    setLabels(labels: readonly SliderLabelElement[]): void;
+    stateChanged(): void;
+    stepBy(count: number): void;
+    get value(): string;
+    set value(value: string);
+}
+
+// @public
+export interface SliderElement extends FormControlElement {
+    defaultValue: string | null;
+    disabled: boolean;
+    max: number;
+    min: number;
+    name: string | null;
+    orientation: Orientation;
+    readOnly: boolean;
+    step: number;
+    stepDown(count?: number): void;
+    stepUp(count?: number): void;
+    value: string;
+    readonly valueAsNumber: number;
+    valueTextFormatter: ((value: string) => string) | null;
+}
+
+// @public
+export type SliderInternals = Pick<ElementInternals, "role" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue">;
+
+// @public
+export interface SliderLabelElement extends HTMLElement {
+    hideMark: boolean;
+    orientation: Orientation;
+    percent: number;
+    position: number;
+}
+
+// @public
+export const SliderLabelParts: {
+    readonly container: "container";
+    readonly mark: "mark";
+    readonly content: "content";
+};
+
+// @public
+export type SliderOptions = {
+    onValueChange: () => void;
+};
+
+// @public
+export const SliderParts: {
+    readonly positioningRegion: "positioning-region";
+    readonly track: "track";
+    readonly trackStart: "track-start";
+    readonly thumbContainer: "thumb-container";
+    readonly thumb: "thumb";
+};
+
+// @public
+export function sliderPercent(value: number, min: number, max: number): number;
+
+// @public
 export class SpacePressController {
     constructor(host: HTMLElement, states: Pick<CustomStateSet, "add" | "delete">);
     connect(): void;

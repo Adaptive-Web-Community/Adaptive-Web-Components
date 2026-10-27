@@ -1,17 +1,19 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { FASTSlider, SliderMode } from "@microsoft/fast-foundation";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as sliderLabelStoryTemplate } from "../slider-label/slider-label.stories.js";
+import type { Slider as SliderElement } from "./slider.js";
 
-const storyTemplate = html<StoryArgs<FASTSlider>>`
+const storyTemplate = html<StoryArgs<SliderElement>>`
     <adaptive-slider
         min="${(x) => x.min}"
         max="${(x) => x.max}"
         orientation="${(x) => x.orientation}"
         step="${(x) => x.step}"
         value="${(x) => x.value}"
+        ?disabled="${(x) => x.disabled}"
+        ?readonly="${(x) => x.readOnly}"
     >
         ${(x) => x.storyContent}
     </adaptive-slider>
@@ -29,17 +31,16 @@ export default {
         disabled: { control: "boolean" },
         max: { control: "number" },
         min: { control: "number" },
-        mode: { control: "radio", options: Object.values(SliderMode) },
         orientation: { control: "radio", options: Object.values(Orientation) },
         readOnly: { control: "boolean" },
         step: { control: "number" },
         value: { control: "number" },
     },
-} as Meta<FASTSlider>;
+} as Meta<SliderElement>;
 
-export const Slider: Story<FASTSlider> = renderComponent(storyTemplate).bind({});
+export const Slider: Story<SliderElement> = renderComponent(storyTemplate).bind({});
 
-export const SliderWithLabels: Story<FASTSlider> = Slider.bind({});
+export const SliderWithLabels: Story<SliderElement> = Slider.bind({});
 SliderWithLabels.args = {
     min: 0,
     max: 100,
@@ -56,7 +57,7 @@ SliderWithLabels.args = {
 };
 /*SliderWithLabels.decorators = [
     Story => {
-        const renderedStory = Story() as FASTSlider;
+        const renderedStory = Story() as SliderElement;
 
         Updates.enqueue(() => {
             renderedStory.$fastController.addStyles(css`
@@ -70,8 +71,8 @@ SliderWithLabels.args = {
     },
 ];*/
 
-export const SliderVertical: Story<FASTSlider> = renderComponent(
-    html<StoryArgs<FASTSlider>>`
+export const SliderVertical: Story<SliderElement> = renderComponent(
+    html<StoryArgs<SliderElement>>`
         <div style="height: 300px;">
             ${storyTemplate}
         </div>
@@ -81,8 +82,8 @@ SliderVertical.args = {
     orientation: Orientation.vertical,
 };
 
-export const SliderVerticalWithLabels: Story<FASTSlider> = renderComponent(
-    html<StoryArgs<FASTSlider>>`
+export const SliderVerticalWithLabels: Story<SliderElement> = renderComponent(
+    html<StoryArgs<SliderElement>>`
         <div style="height: 300px;">
             ${storyTemplate}
         </div>

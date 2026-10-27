@@ -11,6 +11,10 @@ export class TestInternals {
     public ariaMultiSelectable: string | null = null;
     public ariaHasPopup: string | null = null;
     public ariaExpanded: string | null = null;
+    public ariaValueNow: string | null = null;
+    public ariaValueMin: string | null = null;
+    public ariaValueMax: string | null = null;
+    public ariaValueText: string | null = null;
     public form: HTMLFormElement | null = null;
     public labels: NodeList = document.createDocumentFragment().childNodes;
     public readonly states = new Set<string>();

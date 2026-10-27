@@ -1,27 +1,20 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-// import { sliderLabelTemplate } from "@microsoft/fast-foundation";
-import type { FASTSliderLabel } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { SliderLabelParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { SliderLabel } from "./slider-label.js";
 
 /**
  * @public
  */
 export const SliderLabelConditions = {
     orientation: {
-        horizontal: "[orientation='horizontal']",
-        vertical: "[orientation='vertical']",
+        horizontal: ":not(:state(vertical))",
+        vertical: ":state(vertical)",
     },
 };
 
-/**
- * @public
- */
-export const SliderLabelParts = {
-    container: "container",
-    mark: "mark",
-    content: "content",
-};
+export { SliderLabelParts };
 
 /**
  * @public
@@ -32,28 +25,16 @@ export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, 
     parts: SliderLabelParts,
 };
 
-// TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
-
 /**
- * Default Slider Label template, {@link @microsoft/fast-foundation#sliderLabelTemplate}.
+ * Default Slider Label template: the mark and the content, placed by the `--slider-label-position` custom property.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSliderLabel> =
-    (ds: DesignSystem) =>
-        html<FASTSliderLabel>`
-            <template aria-disabled="${x => x.disabled}">
-                <div part="container" class="container" style="${(x) => x.positionStyle}">
-                    ${when(
-                        (x) => !x.hideMark,
-                        html`
-                            <div class="mark" part="mark"></div>
-                        `
-                    )}
-                    <span class="content" part="content">
-                        <slot></slot>
-                    </span>
-                </div>
-            </template>
-        `
-
-        // sliderLabelTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<SliderLabel> =
+    (ds: DesignSystem) => html<SliderLabel>`
+        <div class="container" part="container" style="--slider-label-position: ${x => x.percent}">
+            <div class="mark" part="mark" ?hidden="${x => x.hideMark}"></div>
+            <span class="content" part="content">
+                <slot></slot>
+            </span>
+        </div>
+    `;

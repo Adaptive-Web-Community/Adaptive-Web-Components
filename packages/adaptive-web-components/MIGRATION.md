@@ -459,3 +459,25 @@ A menu that opens is a popover now: give it `popover`, and open it with a button
 | `expanded-change` and `selected-change` events | `toggle` and `change`, which bubble |
 | A disabled item | Still focusable, as the ARIA practices ask; not selected, expanded, or collapsed |
 | `ValuesOf` (of `TreeItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+
+## Slider
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTSlider` (FAST Foundation) | `Slider` |
+| `role` and `aria-*` written to the element, and a proxy `<input>` | `ElementInternals`, as a form control |
+| `max` 10 by default | `max` 100, as a native range |
+| The `value` attribute and property, the same | The `value` attribute is `defaultValue`, the value until the user or code changes it, and after a reset |
+| `mode` | Gone: one value |
+| `increment()`, `decrement()` | `stepUp()`, `stepDown()`, as a native range |
+| `position`, `isDragging`, and the track's measures | `--slider-position` on the `positioning-region` part, and the `:state(dragging)` custom state |
+| `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
+
+## Slider Label
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTSliderLabel` (FAST Foundation) | `SliderLabel` |
+| `positionStyle`, inline styles | `--slider-label-position` on the `container` part, given by the slider |
+| `disabled`, given by the slider | Gone: style the slider's `:disabled` |
+| `[orientation]` in selectors | `:state(vertical)` |
