@@ -1,7 +1,8 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTRadioGroup, radioGroupTemplate } from "@microsoft/fast-foundation";
+import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { RadioGroupParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { RadioGroup } from "./radio-group.js";
 
 /**
  * @public
@@ -13,26 +14,25 @@ export const RadioGroupConditions = {
     },
 };
 
-/**
- * @public
- */
-export const RadioGroupParts = {
-    positioningRegion: "positioning-region",
-};
+export { RadioGroupParts };
 
 /**
  * @public
  */
 export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, typeof RadioGroupParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: Interactivity.never,
     conditions: RadioGroupConditions,
     parts: RadioGroupParts,
 };
 
 /**
- * Default Radio Group template, {@link @microsoft/fast-foundation#radioGroupTemplate}.
+ * Default Radio Group template: the `label` slot, which names the group, and the radios.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTRadioGroup> =
-    (ds: DesignSystem) =>
-        radioGroupTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<RadioGroup> =
+    (ds: DesignSystem) => html<RadioGroup>`
+        <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}></slot>
+        <div class="positioning-region" part="positioning-region">
+            <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+        </div>
+    `;

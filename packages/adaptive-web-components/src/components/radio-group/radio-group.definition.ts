@@ -3,7 +3,7 @@ import { composeRadioGroup } from "./radio-group.compose.js";
 import { styleModules } from "./radio-group.styles.modules.js";
 
 /**
- * The Radio Group custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadioGroup}.
+ * The Radio Group custom element definition. Implements {@link RadioGroup}.
  *
  * @remarks
  * HTML Element: \<adaptive-radio-group\>

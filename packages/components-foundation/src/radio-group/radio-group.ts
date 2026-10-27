@@ -1,0 +1,47 @@
+import type { Orientation } from "../utilities/orientation.js";
+
+/**
+ * The parts of a {@link RadioGroupElement}.
+ *
+ * @public
+ */
+export const RadioGroupParts = {
+    /** The container of the radios, laid out in the orientation. */
+    positioningRegion: "positioning-region",
+} as const;
+
+/**
+ * A radio group (`role="radiogroup"`): radios of which one is checked. The arrow keys move the focus between the radios and check the one
+ * they move to, and only that one is in the tab order.
+ *
+ * @remarks
+ * Each radio is the form control (see `RadioElement`). A disabled `<fieldset>` around the group disables its radios, as for native radios.
+ *
+ * Slots: `label` for the group's label, which names it, and the default slot for the radios.
+ *
+ * Events: the `input` and `change` of a radio bubble through it.
+ *
+ * @public
+ */
+export interface RadioGroupElement extends HTMLElement {
+    /**
+     * The name of the radios in the form data, given to each of them when it is set.
+     *
+     * @remarks
+     * HTML attribute: `name`.
+     */
+    name: string | null;
+
+    /**
+     * The direction in which the radios are laid out.
+     *
+     * @remarks
+     * HTML attribute: `orientation`. The default is `horizontal`.
+     */
+    orientation: Orientation;
+
+    /**
+     * The value of the checked radio, or `null` when none is. Setting it checks the radio with that value.
+     */
+    value: string | null;
+}

@@ -1,3 +1,4 @@
+export { RadioGroup } from "./radio-group.js";
 export { composeRadioGroup } from "./radio-group.compose.js";
 export {
     templateStyles as radioGroupTemplateStyles,

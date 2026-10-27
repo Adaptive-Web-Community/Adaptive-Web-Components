@@ -1,5 +1,6 @@
 import { attr, FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
 import { AccordionController, type AccordionElement, AccordionExpandMode } from "@adaptive-web/components-foundation";
+import { onDefined } from "../../utilities/defined.js";
 import { AccordionItem } from "../accordion-item/accordion-item.js";
 
 /**
@@ -58,12 +59,6 @@ export class Accordion extends FASTElement implements AccordionElement {
 
         this.controller.setItems(this.items);
 
-        // An item that isn't defined yet is an item once it is, which doesn't change what is slotted.
-        const registry = this.$fastController.definition.registry;
-        for (const element of this.slottedElements) {
-            if (!element.matches(":defined")) {
-                void registry.whenDefined(element.localName).then(() => this.updateItems());
-            }
-        }
+        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateItems());
     }
 }

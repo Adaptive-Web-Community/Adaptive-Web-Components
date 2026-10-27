@@ -262,9 +262,56 @@ export interface RadioElement extends CheckableElement {
 }
 
 // @public
+export class RadioGroupController {
+    constructor(host: RadioGroupElement, internals: RadioGroupInternals);
+    connect(): void;
+    disconnect(): void;
+    labelsChanged(labels: readonly Element[]): void;
+    nameChanged(): void;
+    orientationChanged(): void;
+    radioCheckedChanged(radio: RadioElement): void;
+    setRadios(radios: readonly RadioElement[]): void;
+    get value(): string | null;
+    set value(value: string | null);
+}
+
+// @public
+export interface RadioGroupElement extends HTMLElement {
+    name: string | null;
+    orientation: Orientation;
+    value: string | null;
+}
+
+// @public
+export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements">;
+
+// @public
+export const RadioGroupParts: {
+    readonly positioningRegion: "positioning-region";
+};
+
+// @public
 export const RadioParts: {
     readonly control: "control";
     readonly label: "label";
+};
+
+// @public
+export class RovingFocusController {
+    constructor(host: HTMLElement, options: RovingFocusOptions);
+    connect(): void;
+    disconnect(): void;
+    setActive(item: HTMLElement | null): void;
+    setItems(items: readonly HTMLElement[]): void;
+}
+
+// @public
+export type RovingFocusKeys = Orientation | "both";
+
+// @public
+export type RovingFocusOptions = {
+    keys: RovingFocusKeys;
+    onMove?: (item: HTMLElement) => void;
 };
 
 // @public

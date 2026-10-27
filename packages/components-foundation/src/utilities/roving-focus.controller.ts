@@ -1,0 +1,115 @@
+import type { Orientation } from "./orientation.js";
+
+/**
+ * The arrow keys a {@link RovingFocusController} moves with: those of an orientation, or all four.
+ *
+ * @public
+ */
+export type RovingFocusKeys = Orientation | "both";
+
+/**
+ * The options of a {@link RovingFocusController}.
+ *
+ * @public
+ */
+export type RovingFocusOptions = {
+    /**
+     * The arrow keys that move: Left and Right for `horizontal` (swapped right to left), Up and Down for `vertical`, or all four.
+     */
+    keys: RovingFocusKeys;
+
+    /**
+     * What else to do when the focus moves to an item, such as checking the radio it moved to.
+     */
+    onMove?: (item: HTMLElement) => void;
+};
+
+/**
+ * Focus that roves among the items of a composite (a radio group): one item is in the tab order (`tabindex="0"`), the active one, or the
+ * first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are `:disabled`.
+ *
+ * @remarks
+ * The composite's controller creates it, connects and disconnects it with its own, and gives it the items and the active item as they change.
+ * A key is handled when its target is an item, so a key in an item's content isn't taken.
+ *
+ * @public
+ */
+export class RovingFocusController {
+    private items: readonly HTMLElement[] = [];
+    private active: HTMLElement | null = null;
+
+    constructor(private readonly host: HTMLElement, private readonly options: RovingFocusOptions) {}
+
+    /**
+     * Starts handling the arrow keys. For when the composite is connected.
+     */
+    public connect(): void {
+        this.host.addEventListener("keydown", this.handleKeydown);
+    }
+
+    /**
+     * Stops handling the arrow keys. For when the composite is disconnected.
+     */
+    public disconnect(): void {
+        this.host.removeEventListener("keydown", this.handleKeydown);
+    }
+
+    /**
+     * The items changed.
+     */
+    public setItems(items: readonly HTMLElement[]): void {
+        this.items = items;
+        this.update();
+    }
+
+    /**
+     * The active item, which is in the tab order, changed. `null` is the first item that isn't disabled.
+     */
+    public setActive(item: HTMLElement | null): void {
+        this.active = item;
+        this.update();
+    }
+
+    private enabledItems(): HTMLElement[] {
+        return this.items.filter(item => !item.matches(":disabled"));
+    }
+
+    private update(): void {
+        const enabled = this.enabledItems();
+        const active = this.active && enabled.includes(this.active) ? this.active : enabled[0];
+        for (const item of this.items) {
+            item.tabIndex = item === active ? 0 : -1;
+        }
+    }
+
+    private step(key: string): number {
+        const { keys } = this.options;
+        if (keys !== "vertical" && (key === "ArrowRight" || key === "ArrowLeft")) {
+            const forward = key === "ArrowRight" ? 1 : -1;
+            return getComputedStyle(this.host).direction === "rtl" ? -forward : forward;
+        }
+        if (keys !== "horizontal" && (key === "ArrowDown" || key === "ArrowUp")) {
+            return key === "ArrowDown" ? 1 : -1;
+        }
+        return 0;
+    }
+
+    private readonly handleKeydown = (event: KeyboardEvent): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        const enabled = this.enabledItems();
+        const index = enabled.findIndex(item => item === event.target);
+        const step = this.step(event.key);
+        if (index < 0 || step === 0) {
+            return;
+        }
+
+        event.preventDefault();
+        const next = enabled[(index + step + enabled.length) % enabled.length];
+        this.setActive(next);
+        next.focus();
+        this.options.onMove?.(next);
+    };
+}
