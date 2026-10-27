@@ -179,3 +179,19 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The `value` attribute | `value` is a property: the checked radio's value, which sets the checked radio. The radios' `checked` attributes are the default |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
 | `RadioGroupParts` from this package | The components foundation's (`positioning-region`), also exported here |
+
+## Text Field
+
+The element wraps a native `<input>`, as it did, and is the form control itself, through `ElementInternals`, instead of a proxy `<input>`.
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveTextField` (extends FAST Foundation's `FASTTextField`) | `TextField`, which extends `BaseTextInput` (with `TextArea`, `NumberField`, `Search`) |
+| A proxy `<input>` in the light DOM | `ElementInternals`: the form value and the input's validity |
+| The `aria-*` properties written to the input | The `aria-*` attributes of the element, forwarded to the input |
+| `maxlength`, `minlength` properties | `maxLength`, `minLength` (the attributes are the same) |
+| | `autocomplete` |
+| `list`, `size`, `spellcheck` | Gone for now |
+| `focus()` focused the input | `delegatesFocus`: a label of the element, a click on it, and `focus()` reach the input |
+| `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
+| `TextFieldType` from `@microsoft/fast-foundation`, `TextFieldParts` from this package | From the components foundation, also exported here |

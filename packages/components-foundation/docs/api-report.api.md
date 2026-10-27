@@ -396,6 +396,85 @@ export const SwitchParts: {
 };
 
 // @public
+export type TextControl = HTMLInputElement | HTMLTextAreaElement;
+
+// @public
+export class TextFieldController extends TextInputController<TextFieldElement> {
+    constructor(host: TextFieldElement, internals: TextInputInternals);
+    // (undocumented)
+    protected sync(control: TextControl): void;
+}
+
+// @public
+export interface TextFieldElement extends TextInputElement {
+    pattern: string | null;
+    type: TextFieldType;
+}
+
+// @public
+export const TextFieldParts: {
+    readonly label: "label";
+    readonly root: "root";
+    readonly control: "control";
+};
+
+// @public
+export const TextFieldType: {
+    readonly text: "text";
+    readonly email: "email";
+    readonly password: "password";
+    readonly tel: "tel";
+    readonly url: "url";
+};
+
+// @public
+export type TextFieldType = ValuesOf<typeof TextFieldType>;
+
+// @public
+export class TextInputController<T extends TextInputElement = TextInputElement> {
+    constructor(host: T, internals: TextInputInternals, options: TextInputOptions);
+    connect(control: TextControl): void;
+    // (undocumented)
+    protected control: TextControl | null;
+    defaultValueChanged(): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    // (undocumented)
+    protected readonly host: T;
+    // (undocumented)
+    protected readonly internals: TextInputInternals;
+    labelsChanged(): void;
+    protected setControlAttribute(control: TextControl, name: string, value: string | number | null): void;
+    protected setValueAsUser(value: string): void;
+    stateChanged(): void;
+    protected sync(control: TextControl): void;
+    valueChanged(): void;
+}
+
+// @public
+export interface TextInputElement extends FormControlElement {
+    autocomplete: string | null;
+    defaultValue: string;
+    disabled: boolean;
+    maxLength: number | null;
+    minLength: number | null;
+    name: string | null;
+    placeholder: string | null;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
+
+// @public
+export type TextInputInternals = Pick<ElementInternals, "form" | "labels" | "setFormValue" | "setValidity">;
+
+// @public
+export type TextInputOptions = {
+    implicitSubmission: boolean;
+};
+
+// @public
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public

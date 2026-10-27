@@ -8,6 +8,7 @@ export class TestInternals {
     public ariaOrientation: string | null = null;
     public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
     public form: HTMLFormElement | null = null;
+    public labels: NodeList = document.createDocumentFragment().childNodes;
     public readonly states = new Set<string>();
     public formValue: File | string | FormData | null = null;
     public validity: Partial<ValidityState> = {};

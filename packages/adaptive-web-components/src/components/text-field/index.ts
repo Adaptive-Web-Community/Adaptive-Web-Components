@@ -1,3 +1,5 @@
+export { BaseTextInput } from "./base-text-input.js";
+export { TextField } from "./text-field.js";
 export { composeTextField } from "./text-field.compose.js";
 export {
     templateStyles as textFieldTemplateStyles,

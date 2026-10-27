@@ -13,6 +13,8 @@ export * from "./radio/index.js";
 export * from "./radio-group/index.js";
 export * from "./skeleton/index.js";
 export * from "./switch/index.js";
+export * from "./text-field/index.js";
+export * from "./text-input/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
 export { AriaForwardingController } from "./utilities/aria-forwarding.controller.js";
 export { hasContent, isIconOnly } from "./utilities/content.js";
