@@ -1,76 +1,47 @@
 import { html, ref } from "@microsoft/fast-element";
-import type { FASTDialog } from "@microsoft/fast-foundation";
+import { DialogClosedBy } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Dialog as DialogElement } from "./dialog.js";
 
-const storyTemplate = html<StoryArgs<FASTDialog>>`
-    <adaptive-dialog
-        ?hidden="${(x) => x.hidden}"
-        ?modal="${(x) => x.modal}"
-        ?no-focus-trap="${(x) => x.noFocusTrap}"
-        :ariaDescribedby="${(x) => x.ariaDescribedby}"
-        :ariaLabel="${(x) => x.ariaLabel}"
-        :ariaLabelledby="${(x) => x.ariaLabelledby}"
-    >
-        ${(x) => x.storyContent}
-    </adaptive-dialog>
+const storyTemplate = html<StoryArgs<DialogElement>>`
+    <div>
+        <adaptive-button @click="${(x) => x.dialogRef.showModal()}">Open dialog</adaptive-button>
+        <adaptive-dialog
+            closedby="${(x) => x.closedBy}"
+            aria-label="${(x) => x.ariaLabel}"
+            ${ref("dialogRef")}
+        >
+            ${(x) => x.storyContent}
+            <adaptive-button @click="${(x) => x.dialogRef.close()}">Close</adaptive-button>
+        </adaptive-dialog>
+    </div>
 `;
 
 export default {
     title: "Components/Dialog",
+    args: {
+        ariaLabel: "Example dialog",
+        closedBy: DialogClosedBy.closeRequest,
+    },
     argTypes: {
         storyContent: { table: { disable: true } },
-        hidden: { control: "boolean" },
-        modal: { control: "boolean" },
-        noFocusTrap: { control: "boolean" },
-        ariaDescribedby: { control: "text" },
         ariaLabel: { control: "text" },
-        ariaLabelledby: { control: "text" },
+        closedBy: { control: "radio", options: Object.values(DialogClosedBy) },
     },
-    // docs are disabled since the modals would all load at once on the docs page
-    parameters: {
-        docs: { disable: true },
-    },
-} as Meta<FASTDialog>;
+} as Meta<DialogElement>;
 
-export const Dialog: Story<FASTDialog> = renderComponent(storyTemplate).bind({});
+export const Dialog: Story<DialogElement> = renderComponent(storyTemplate).bind({});
 Dialog.args = {
     storyContent: html`
-        <adaptive-button>Button A</adaptive-button>
-        <button>Button B</button>
+        <p>Press Escape, or the button, to close.</p>
         <adaptive-checkbox>A checkbox</adaptive-checkbox>
-        <adaptive-toolbar>
-            <adaptive-button>One</adaptive-button>
-            <adaptive-button>Three</adaptive-button>
-        </adaptive-toolbar>
+        <adaptive-text-field autofocus>A text field, which takes the focus</adaptive-text-field>
     `,
 };
 
-export const DialogModal: Story<FASTDialog> = renderComponent(storyTemplate).bind({});
-DialogModal.args = {
-    modal: true,
-    storyContent: "A modal dialog element",
-};
-
-export const DialogWithDismiss: Story<FASTDialog> = renderComponent(
-    html<StoryArgs<FASTDialog>>`
-        <div>
-            <adaptive-button @click="${(x) => x.dialogRef.show()}" class="show-dialog"> Show dialog </adaptive-button>
-            <adaptive-dialog
-                ?modal="${(x) => x.modal}"
-                ?no-focus-trap="${(x) => x.noFocusTrap}"
-                @dismiss="${(x) => x.dialogRef.hide()}"
-                ${ref("dialogRef")}
-            >
-                ${(x) => x.storyContent}
-            </adaptive-dialog>
-        </div>
-    `
-).bind({});
-DialogWithDismiss.args = {
-    modal: true,
-    storyContent: html`
-        <p>Press Escape or click the button below to close</p>
-        <adaptive-button @click="${(x) => x.dialogRef.hide()}" class="hide-dialog">Dismiss dialog</adaptive-button>
-    `,
+export const DialogClosedByAny: Story<DialogElement> = renderComponent(storyTemplate).bind({});
+DialogClosedByAny.args = {
+    closedBy: DialogClosedBy.any,
+    storyContent: html`<p>Click outside, or press Escape, to close.</p>`,
 };

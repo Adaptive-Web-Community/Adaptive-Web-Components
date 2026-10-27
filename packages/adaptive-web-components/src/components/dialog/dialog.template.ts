@@ -1,22 +1,17 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { dialogTemplate, FASTDialog } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { DialogParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Dialog } from "./dialog.js";
 
 /**
  * @public
  */
 export const DialogConditions = {
+    modal: ":state(modal)",
 };
 
-/**
- * @public
- */
-export const DialogParts = {
-    positioningRegion: "positioning-region",
-    overlay: "overlay",
-    control: "control",
-};
+export { DialogParts };
 
 /**
  * @public
@@ -28,9 +23,13 @@ export const DialogAnatomy: ComponentAnatomy<typeof DialogConditions, typeof Dia
 };
 
 /**
- * Default Dialog template, {@link @microsoft/fast-foundation#dialogTemplate}.
+ * Default Dialog template: the native `<dialog>`, which has the role, the top layer, and the backdrop (`::backdrop` of the `control`
+ * part).
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTDialog> =
-    (ds: DesignSystem) =>
-        dialogTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Dialog> =
+    (ds: DesignSystem) => html<Dialog>`
+        <dialog class="control" part="control" ${ref("control")}>
+            <slot></slot>
+        </dialog>
+    `;

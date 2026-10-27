@@ -39,16 +39,18 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 9. **A control's label is its content**, in a `label` part that is hidden when it is empty. The role takes its name from it, clicking it
    activates the control, and a `<label for>` outside works too, through `ElementInternals`.
    Used by: Checkbox, Switch, Radio, Text Field (in a `<label for>` of its input), Text Area, Number Field, Search.
-10. **A link or a text field wraps the native element.** What the browser does for a link (its context menu, opening it in a new tab, its
-    URL, `:visited`) or a text field (selection, input methods, spelling, autofill) can't be done for a custom element, so the native element
-    is inside and has the role. A text field's host is still the form control, through `ElementInternals`.
-    Used by: Anchor, Text Field, Text Area, Number Field, Search. Next: Breadcrumb Item and the links of a menu.
+10. **A link, a text field, or a dialog wraps the native element.** What the browser does for a link (its context menu, opening it in a new
+    tab, its URL, `:visited`), a text field (selection, input methods, spelling, autofill), or a dialog (the top layer, the inert page, focus
+    moved in and back) can't be done for a custom element, so the native element is inside and has the role. A text field's host is still the
+    form control, through `ElementInternals`.
+    Used by: Anchor, Text Field, Text Area, Number Field, Search, Dialog. Next: Breadcrumb Item and the links of a menu.
 11. **A pattern that nests roles uses native elements in the shadow root for the inner ones**, and the host has no role: the accordion item's
     heading is a `role="heading"` element with a native `<button>` in it.
     Used by: Accordion Item.
 12. **The author's ARIA is on the host.** Where the host has the role, it reaches it as written, and nothing is copied. Where a native
     element inside has the role, the `AriaForwardingController` forwards it there.
-    Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field, Search.
+    Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field, Search,
+    Dialog (forwarded to its `<dialog>`).
 13. **The default ARIA of a host is a function of its properties** (a `DefaultAria`), which the binding assigns to the element's
     `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
     the default needs no property to turn it off (`role="presentation"` on a divider). In the value, a property that is absent is left as it
@@ -82,7 +84,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     and `type` are attributes. `:state(active)` and `:state(icon-only)` are states of `ElementInternals`. A component doesn't add classes or
     attributes to its host for its own state, except `tabindex`, which focus needs.
     Used by: Accordion, Accordion Item, Anchor (`:state(icon-only)`), Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
-    Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`).
+    Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`), Dialog (`:state(open)`,
+    `:state(modal)`).
 20. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
     Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search.
@@ -91,7 +94,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons),
     Checkbox (`:disabled`; `hidden` on its indicators and an empty label), Switch (`:disabled`; `hidden` on an empty label),
     Radio (`:disabled`; `hidden` on its indicator and an empty label), Text Field (`:disabled`; the input's own `readonly`, `required`,
-    and validity), Text Area, Number Field (also its range and step), Search (and `hidden` on its clear button without a value).
+    and validity), Text Area, Number Field (also its range and step), Search (and `hidden` on its clear button without a value),
+    Dialog (the `<dialog>`'s top layer, `::backdrop`, and inert page).
 22. **What is only decoration or a placeholder is hidden from assistive technology**: `aria-hidden` on an element, `alt=""` on an image.
     Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image), Number Field (its step buttons, which the arrow keys do),
     Search (its clear button, which Escape does).
@@ -136,22 +140,25 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Accordion Item (`change`), Button (`click`), Checkbox (`input`, `change`), Switch (the same), Radio (`input`, `change`,
     only when it becomes checked), Radio Group (none of its own: its radios' bubble through it),
     Text Field (the input's `input`; `change` dispatched again from the host, since the input's isn't composed), Text Area,
-    Number Field (and `input` and `change` from its step buttons, as the user's), Search (and from its clear button, as the user's).
+    Number Field (and `input` and `change` from its step buttons, as the user's), Search (and from its clear button, as the user's),
+    Dialog (the `<dialog>`'s `cancel`, cancelable, and `close`, dispatched again from the host).
 31. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
-    Used by: Button, Checkbox, Switch, Radio.
+    Used by: Button, Checkbox, Switch, Radio, Dialog (a cancelled `cancel` keeps it open).
 
 ## Properties
 
 32. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
     (`formaction`, `heading-level`).
     Used by: Accordion (`expandMode`), Accordion Item (`headingLevel`), Anchor (`referrerPolicy`), Button, Checkbox (`defaultChecked`,
-    `indeterminate`), Text Field (`maxLength`, `minLength`), Number Field (`stepUp()`, `stepDown()`).
+    `indeterminate`), Text Field (`maxLength`, `minLength`), Number Field (`stepUp()`, `stepDown()`), Dialog (`showModal()`, `returnValue`,
+    `closedBy`).
 33. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
     Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`),
-    Radio (`value` is `on`), Radio Group (`horizontal`), Text Field (`type` is `text`), Text Area (`resize` is `none`).
+    Radio (`value` is `on`), Radio Group (`horizontal`), Text Field (`type` is `text`), Text Area (`resize` is `none`),
+    Dialog (`closedby` is `closerequest`).
 34. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`).
@@ -166,7 +173,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 37. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
-    `SearchParts`.
+    `SearchParts`, `DialogParts`.
 38. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box).

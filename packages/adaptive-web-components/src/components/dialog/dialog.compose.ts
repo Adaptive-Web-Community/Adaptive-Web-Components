@@ -1,7 +1,7 @@
-import { FASTDialog } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { Dialog } from "./dialog.js";
 import { aestheticStyles, templateStyles } from "./dialog.styles.js";
 import { DialogAnatomy, template } from "./dialog.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeDialog(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTDialog>
-): FASTElementDefinition {
+    options?: ComposeOptions<Dialog>
+): Promise<FASTElementDefinition<typeof Dialog>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, DialogAnatomy, options);
 
-    return FASTDialog.compose({
+    return FASTElementDefinition.compose(Dialog, {
         name: `${ds.prefix}-dialog`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

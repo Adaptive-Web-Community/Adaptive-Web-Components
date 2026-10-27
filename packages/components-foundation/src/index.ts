@@ -6,6 +6,7 @@ export * from "./badge/index.js";
 export * from "./button/index.js";
 export * from "./checkable/index.js";
 export * from "./checkbox/index.js";
+export * from "./dialog/index.js";
 export * from "./divider/index.js";
 export * from "./number-field/index.js";
 export * from "./progress/index.js";

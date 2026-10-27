@@ -22,7 +22,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            part: DialogAnatomy.parts.overlay,
+            part: `${DialogAnatomy.parts.control}::backdrop`,
         },
         properties: {
             backgroundFill: Color.fromRgb(0, 0, 0, 0.3),

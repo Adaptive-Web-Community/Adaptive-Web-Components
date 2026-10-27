@@ -5,36 +5,18 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * @public
  */
 export const templateStyles: ElementStyles = css`
+    /* The element stays where it is in the page; its <dialog> is in the top layer. */
     :host {
-        --dialog-height: 480px;
-        --dialog-width: 640px;
-        display: flex;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        overflow: auto;
-        justify-content: center;
-    }
-
-    .overlay {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        touch-action: none;
+        display: contents;
     }
 
     .control {
-        position: relative;
-        z-index: 1;
-        margin-top: auto;
-        margin-bottom: auto;
+        --dialog-height: 480px;
+        --dialog-width: 640px;
         width: var(--dialog-width);
         height: var(--dialog-height);
+        max-width: 100%;
+        max-height: 100%;
     }
 `;
 

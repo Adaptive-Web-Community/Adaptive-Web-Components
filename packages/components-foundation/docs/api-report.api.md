@@ -200,6 +200,53 @@ export const CheckboxParts: {
 export type DefaultAria = Partial<ARIAMixin>;
 
 // @public
+export const DialogClosedBy: {
+    readonly any: "any";
+    readonly closeRequest: "closerequest";
+    readonly none: "none";
+};
+
+// @public
+export type DialogClosedBy = ValuesOf<typeof DialogClosedBy>;
+
+// @public
+export type DialogControl = HTMLElement & Pick<HTMLDialogElement, "open" | "returnValue" | "show" | "showModal" | "close">;
+
+// @public
+export class DialogController {
+    constructor(host: DialogElement, internals: DialogInternals);
+    close(returnValue?: string): void;
+    connect(control: DialogControl): void;
+    disconnect(): void;
+    get open(): boolean;
+    requestClose(): void;
+    get returnValue(): string;
+    set returnValue(value: string);
+    show(): void;
+    showModal(): void;
+}
+
+// @public
+export interface DialogElement extends HTMLElement {
+    close(returnValue?: string): void;
+    closedBy: DialogClosedBy;
+    readonly open: boolean;
+    returnValue: string;
+    show(): void;
+    showModal(): void;
+}
+
+// @public
+export type DialogInternals = {
+    readonly states: Pick<CustomStateSet, "add" | "delete">;
+};
+
+// @public
+export const DialogParts: {
+    readonly control: "control";
+};
+
+// @public
 export function dividerAria(divider: DividerElement): DefaultAria;
 
 // @public

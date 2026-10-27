@@ -230,3 +230,17 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | The `clear-button__hidden` class | The `hidden` attribute, keeping the button's place |
 | | `clear()`, which the clear button calls: it emits `input` and `change`, and focuses the field |
 | `SearchParts` from this package | The components foundation's, which adds `input-wrapper`, also exported here |
+
+## Dialog
+
+The element wraps a native `<dialog>`, which has the top layer, the backdrop, the inert page, and the focus.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTDialog` (FAST Foundation) | `Dialog` |
+| `modal`, `show()`, `hide()`, `hidden` | The native `show()`, `showModal()`, `close(returnValue)`, `returnValue`, and `open` |
+| The `dismiss` event | `cancel` (cancelable), from Escape or, with `closedby="any"`, a click outside |
+| `no-focus-trap` | Gone: a modal native dialog makes the page inert |
+| The `positioning-region` and `overlay` parts | Gone: the `control` part is the `<dialog>`, and the overlay is its `::backdrop` |
+| `aria-label`, `aria-labelledby`, `aria-describedby` properties | The `aria-*` attributes of the element, forwarded to the `<dialog>` |
+| | An invoker's `command` opens and closes it (`show-modal`, `close`, `request-close`, or with `--` from a native button) |
