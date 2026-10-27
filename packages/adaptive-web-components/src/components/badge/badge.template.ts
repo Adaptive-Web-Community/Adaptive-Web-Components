@@ -1,19 +1,15 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { badgeTemplate, FASTBadge } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { BadgeParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Badge } from "./badge.js";
 
 /**
  * @public
  */
 export const BadgeConditions = {};
 
-/**
- * @public
- */
-export const BadgeParts = {
-    control: "control",
-};
+export { BadgeParts };
 
 /**
  * @public
@@ -25,9 +21,14 @@ export const BadgeAnatomy: ComponentAnatomy<typeof BadgeConditions, typeof Badge
 };
 
 /**
- * Default Badge template, {@link @microsoft/fast-foundation#badgeTemplate}.
+ * Default Badge template. The host is the badge's box, and the template is its content.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTBadge> =
-    (ds: DesignSystem) =>
-        badgeTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Badge> =
+    (ds: DesignSystem) => html<Badge>`
+        <slot name="start"></slot>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <slot name="end"></slot>
+    `;

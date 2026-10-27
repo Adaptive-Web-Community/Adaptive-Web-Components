@@ -10,7 +10,13 @@ import {
  */
 export const templateStyles: ElementStyles = css`
     :host {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
     }
 `;
 
@@ -19,7 +25,7 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    .control {
+    :host {
         padding:
             calc(((${designUnit} * 0.5) - ${strokeThickness}) * 1)
             calc((${designUnit} - ${strokeThickness}) * 1);

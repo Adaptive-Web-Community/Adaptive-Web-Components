@@ -52,3 +52,12 @@ The element is the button now, with the `button` role and form association throu
 | `shadowOptions: { delegatesFocus: true }` in its definition | No `delegatesFocus`: the host takes focus |
 | `type` absent: does nothing | `type` is `button` by default, which does nothing |
 | `proxy`, the hidden `<input>` in the light DOM | Gone. A submission adds a hidden native button to the form for its time, which a `submit` listener sees as `event.submitter` |
+
+## Badge
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTBadge` (FAST Foundation) | `Badge` |
+| The `control` part around the content | The host is the badge's box; styles target the host |
+| | `start` and `end` slots, and the `content` part around the default slot |
+| `BadgeParts` from this package | The components foundation's (`content`), also exported here |

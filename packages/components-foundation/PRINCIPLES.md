@@ -94,17 +94,20 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 ## Parts and styles
 
 24. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
-    Used by: `AccordionItemParts`, `ButtonParts`.
-25. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
+    Used by: `AccordionItemParts`, `BadgeParts`, `ButtonParts`.
+25. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
+    inside it to be the box.
+    Used by: Badge, Button.
+26. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-26. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+27. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
     Used by: Button.
 
 ## Forms
 
-27. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
+28. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button.
 

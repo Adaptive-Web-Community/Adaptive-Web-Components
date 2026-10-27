@@ -46,6 +46,11 @@ export const AccordionItemParts: {
 };
 
 // @public
+export const BadgeParts: {
+    readonly content: "content";
+};
+
+// @public
 export class ButtonController {
     constructor(host: ButtonElement, internals: ButtonInternals);
     connect(): void;
