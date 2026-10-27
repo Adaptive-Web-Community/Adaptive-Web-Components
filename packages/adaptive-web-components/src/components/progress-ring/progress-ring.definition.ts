@@ -3,7 +3,7 @@ import { composeProgressRing } from "./progress-ring.compose.js";
 import { styleModules } from "./progress-ring.styles.modules.js";
 
 /**
- * The Progress Ring custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgressRing}.
+ * The Progress Ring custom element definition. Implements {@link ProgressRing}.
  *
  * @remarks
  * HTML Element: \<adaptive-progress-ring\>

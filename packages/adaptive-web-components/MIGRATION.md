@@ -90,3 +90,11 @@ The element is the button now, with the `button` role and form association throu
 | `min` and `max` could be `null` | Numbers, 0 and 100 when the attribute is absent |
 | `percentComplete` | Gone: `progressPercent(progress)` of the components foundation, and `--percent-complete` on the `determinate` part |
 | `ProgressParts` from this package | The components foundation's, also exported here |
+
+## Progress Ring
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTProgressRing` (FAST Foundation) | `ProgressRing`, which extends `BaseProgress` |
+| | The rest is the progress's (see Progress) |
+| `ProgressRingParts` from this package | The components foundation's, which adds `background`, also exported here |

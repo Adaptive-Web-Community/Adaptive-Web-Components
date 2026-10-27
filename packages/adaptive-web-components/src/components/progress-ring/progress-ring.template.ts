@@ -1,7 +1,8 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-import { FASTProgressRing, StaticallyComposableHTML, staticallyCompose } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import { progressPercent, ProgressRingParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { ProgressRing } from "./progress-ring.js";
 
 /**
  * @public
@@ -9,14 +10,7 @@ import { DesignSystem } from "../../design-system.js";
 export const ProgressRingConditions = {
 };
 
-/**
- * @public
- */
-export const ProgressRingParts = {
-    indicator: "indicator",
-    determinate: "determinate",
-    indeterminate: "indeterminate",
-};
+export { ProgressRingParts };
 
 /**
  * @public
@@ -27,14 +21,7 @@ export const ProgressRingAnatomy: ComponentAnatomy<typeof ProgressRingConditions
     parts: ProgressRingParts,
 };
 
-// TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
-
-type ProgressRingOptions = {
-    determinateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
-    indeterminateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
-};
-
-const progressRingIndicatorTemplate = html`
+const indicator = html<ProgressRing>`
     <svg viewBox="0 0 16 16" class="progress">
         <circle class="background" part="background" cx="8px" cy="8px" r="7px"></circle>
         <circle class="indicator" part="indicator" cx="8px" cy="8px" r="7px"></circle>
@@ -42,47 +29,22 @@ const progressRingIndicatorTemplate = html`
 `;
 
 /**
- * Default Progress template, {@link @microsoft/fast-foundation#progressTemplate}.
+ * Default Progress Ring template. The percent complete is the `--percent-complete` custom property of the `determinate` part, for the styles.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTProgressRing> =
-    (ds: DesignSystem) => {
-        const options: ProgressRingOptions = {
-            determinateIndicator: progressRingIndicatorTemplate,
-            indeterminateIndicator: progressRingIndicatorTemplate,
-        };
-
-        return html<FASTProgressRing>`
-            <template
-                role="progressbar"
-                aria-valuenow="${x => x.value}"
-                aria-valuemin="${x => x.min}"
-                aria-valuemax="${x => x.max}"
-            >
-                ${when(
-                    x => typeof x.value === "number",
-                    html<FASTProgressRing>`
-                        <span
-                            class="determinate"
-                            part="determinate"
-                            style="--percent-complete: ${x => x.percentComplete}"
-                        >
-                            <slot name="determinate">
-                                ${staticallyCompose(options.determinateIndicator)}
-                            </slot>
-                        </span>
-                    `
-                )}
-                ${when(
-                    x => typeof x.value !== "number",
-                    html<FASTProgressRing>`
-                        <span class="indeterminate" part="indeterminate">
-                            <slot name="indeterminate">
-                                ${staticallyCompose(options.indeterminateIndicator)}
-                            </slot>
-                        </span>
-                    `
-                )}
-            </template>
-        `;
-    };
+export const template: (ds: DesignSystem) => ElementViewTemplate<ProgressRing> =
+    (ds: DesignSystem) => html<ProgressRing>`
+        ${when(
+            x => progressPercent(x) !== null,
+            html<ProgressRing>`
+                <span class="determinate" part="determinate" style="--percent-complete: ${x => progressPercent(x)}">
+                    <slot name="determinate">${indicator}</slot>
+                </span>
+            `,
+            html<ProgressRing>`
+                <span class="indeterminate" part="indeterminate">
+                    <slot name="indeterminate">${indicator}</slot>
+                </span>
+            `
+        )}
+    `;

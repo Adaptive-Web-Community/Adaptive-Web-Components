@@ -5,6 +5,7 @@ export * from "./badge/index.js";
 export * from "./button/index.js";
 export * from "./divider/index.js";
 export * from "./progress/index.js";
+export * from "./progress-ring/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
 export { Orientation } from "./utilities/orientation.js";
 export type { ValuesOf } from "./utilities/typings.js";

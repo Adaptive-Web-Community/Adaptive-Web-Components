@@ -149,6 +149,14 @@ export const ProgressParts: {
 export function progressPercent(progress: ProgressElement): number | null;
 
 // @public
+export const ProgressRingParts: {
+    readonly determinate: "determinate";
+    readonly indeterminate: "indeterminate";
+    readonly indicator: "indicator";
+    readonly background: "background";
+};
+
+// @public
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public
