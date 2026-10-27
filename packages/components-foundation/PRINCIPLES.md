@@ -24,11 +24,12 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    Used by: Progress and Progress Ring (`ProgressElement`).
 6. **Behavior that several components share is a controller of its own**, which their controllers use or extend.
    Used by: `SpacePressController` (Button, Checkbox, Switch, Radio), `CheckableController` (Checkbox, Switch, Radio),
-   `TextInputController` (Text Field, Text Area, Number Field), `RovingFocusController` (Radio Group; next: Toolbar, Tabs,
+   `TextInputController` (Text Field, Text Area, Number Field, Search), `RovingFocusController` (Radio Group; next: Toolbar, Tabs,
    Listbox, Menu, Tree).
 7. **The controller writes what the contract gives a native element**, not the template: the native element's state (its validity) is then
    right as soon as an attribute changes, and each framework's template has the bare element.
-   Used by: Text Field (its `<input>`), Text Area (its `<textarea>`), Number Field (its `<input type="number">`).
+   Used by: Text Field (its `<input>`), Text Area (its `<textarea>`), Number Field (its `<input type="number">`),
+   Search (its `<input type="search">`).
 
 ## Elements and roles
 
@@ -37,17 +38,17 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    Used by: Button, Checkbox, Switch, Radio. Next: the text fields, Slider.
 9. **A control's label is its content**, in a `label` part that is hidden when it is empty. The role takes its name from it, clicking it
    activates the control, and a `<label for>` outside works too, through `ElementInternals`.
-   Used by: Checkbox, Switch, Radio, Text Field (in a `<label for>` of its input), Text Area, Number Field.
+   Used by: Checkbox, Switch, Radio, Text Field (in a `<label for>` of its input), Text Area, Number Field, Search.
 10. **A link or a text field wraps the native element.** What the browser does for a link (its context menu, opening it in a new tab, its
     URL, `:visited`) or a text field (selection, input methods, spelling, autofill) can't be done for a custom element, so the native element
     is inside and has the role. A text field's host is still the form control, through `ElementInternals`.
-    Used by: Anchor, Text Field, Text Area, Number Field. Next: Breadcrumb Item and the links of a menu, the search.
+    Used by: Anchor, Text Field, Text Area, Number Field, Search. Next: Breadcrumb Item and the links of a menu.
 11. **A pattern that nests roles uses native elements in the shadow root for the inner ones**, and the host has no role: the accordion item's
     heading is a `role="heading"` element with a native `<button>` in it.
     Used by: Accordion Item.
 12. **The author's ARIA is on the host.** Where the host has the role, it reaches it as written, and nothing is copied. Where a native
     element inside has the role, the `AriaForwardingController` forwards it there.
-    Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field.
+    Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field, Search.
 13. **The default ARIA of a host is a function of its properties** (a `DefaultAria`), which the binding assigns to the element's
     `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
     the default needs no property to turn it off (`role="presentation"` on a divider). In the value, a property that is absent is left as it
@@ -73,7 +74,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     host is. An id never crosses a shadow root as an id: it doesn't resolve there.
     Used by: Anchor (the author's `aria-describedby`, `aria-labelledby`, and the like, forwarded to its link), Radio Group (its `label` slot,
     as the `ariaLabelledByElements` of its `ElementInternals`), Text Field (an outside `<label for>`,
-    as its input's `ariaLabelledByElements`), Text Area, Number Field.
+    as its input's `ariaLabelledByElements`), Text Area, Number Field, Search.
 
 ## State
 
@@ -84,26 +85,27 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`).
 20. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
-    Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field.
+    Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search.
 21. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
     that isn't shown has the `hidden` attribute, so it is hidden without the styles and from assistive technology.
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons),
     Checkbox (`:disabled`; `hidden` on its indicators and an empty label), Switch (`:disabled`; `hidden` on an empty label),
     Radio (`:disabled`; `hidden` on its indicator and an empty label), Text Field (`:disabled`; the input's own `readonly`, `required`,
-    and validity), Text Area, Number Field (also its range and step).
+    and validity), Text Area, Number Field (also its range and step), Search (and `hidden` on its clear button without a value).
 22. **What is only decoration or a placeholder is hidden from assistive technology**: `aria-hidden` on an element, `alt=""` on an image.
-    Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image), Number Field (its step buttons, which the arrow keys do).
+    Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image), Number Field (its step buttons, which the arrow keys do),
+    Search (its clear button, which Escape does).
 23. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
     A group of controls is a form control without a value, so it is `:disabled` from its own `disabled` or a fieldset around it, and it gives
     its controls that state (`groupDisabled`), which they show as `:state(disabled)`: their own `disabled` stays the author's.
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
     Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (its `disabled` or a fieldset), Text Field (its input,
-    from `formDisabledCallback`), Text Area, Number Field.
+    from `formDisabledCallback`), Text Area, Number Field, Search.
 24. **A control can be read only** (`readonly`): it takes focus, the user doesn't change it, it has `aria-readonly` and `:state(readonly)`,
     and it isn't validated, as a read only native input isn't. A group that is read only makes its controls read only.
     Used by: Checkbox, Switch, Radio Group (and its radios, through `groupReadOnly`), Text Field (natively), Text Area,
-    Number Field (no stepping).
+    Number Field (no stepping), Search (no clearing).
 25. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
     rewrite what the author set.
     Used by: Progress, Progress Ring.
@@ -122,7 +124,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     implements `focus()` to focus it, instead of `delegatesFocus`, unless it wraps a native form control, whose host delegates its focus
     (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control.
     Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host),
-    Text Field (`delegatesFocus`, to its input), Text Area, Number Field.
+    Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search.
 29. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
     their `tabindex`.
     Used by: Radio Group (the checked radio, with the `RovingFocusController`).
@@ -134,7 +136,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Accordion Item (`change`), Button (`click`), Checkbox (`input`, `change`), Switch (the same), Radio (`input`, `change`,
     only when it becomes checked), Radio Group (none of its own: its radios' bubble through it),
     Text Field (the input's `input`; `change` dispatched again from the host, since the input's isn't composed), Text Area,
-    Number Field (and `input` and `change` from its step buttons, as the user's).
+    Number Field (and `input` and `change` from its step buttons, as the user's), Search (and from its clear button, as the user's).
 31. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button, Checkbox, Switch, Radio.
@@ -163,7 +165,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 
 37. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
-    `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`.
+    `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
+    `SearchParts`.
 38. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box).
@@ -172,7 +175,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: all.
 40. **Interactive states are selected as the element has them**: `:disabled` and `:state(disabled)` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
-    Used by: Button, Checkbox, Switch, Radio, Text Field, Text Area, Number Field (all through AWC's `controlInteractivity`,
+    Used by: Button, Checkbox, Switch, Radio, Text Field, Text Area, Number Field, Search (all through AWC's `controlInteractivity`,
     with `:state(disabled)` for a radio its group
     disables), Radio Group (`:disabled`, for its label).
 41. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
@@ -185,10 +188,11 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same),
     Radio (its form value and reset), Radio Group (`required`, as the validity of the group, a form control without a value,
     shown at its first radio), Text Field (the input's value and validity, and Enter clicking the form's first submit button,
-    as native implicit submission), Text Area (its value and validity, without implicit submission), Number Field (the same).
+    as native implicit submission), Text Area (its value and validity, without implicit submission), Number Field (the same),
+    Search (the same).
 43. **A form control has what a native one has**: its form and labels, and the validity API (`validity`, `validationMessage`, `willValidate`,
     `checkValidity()`, `reportValidity()`), from its `ElementInternals` (`FormControlElement`).
-    Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`), Radio Group, Text Field, Text Area, Number Field.
+    Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`), Radio Group, Text Field, Text Area, Number Field, Search.
 
 ## To decide for all components
 

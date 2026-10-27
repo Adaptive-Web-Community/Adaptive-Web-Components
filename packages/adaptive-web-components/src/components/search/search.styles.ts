@@ -19,9 +19,8 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 
     .root,
@@ -52,20 +51,16 @@ export const templateStyles: ElementStyles = css`
         font: inherit;
     }
 
-    .clear-button__hidden {
-        opacity: 0;
+    /* Hidden without a value, keeping its place, so the field doesn't move as the user types. */
+    .clear-button[hidden] {
+        display: inline-block;
+        visibility: hidden;
     }
 
-    :host(:not([disabled], [readonly]):hover) .clear-button,
-    :host(:not([disabled], [readonly]):active) .clear-button,
-    :host(:not([disabled], [readonly]):focus-within) .clear-button {
+    :host(:not(:disabled, [readonly]):hover) .clear-button,
+    :host(:not(:disabled, [readonly]):active) .clear-button,
+    :host(:not(:disabled, [readonly]):focus-within) .clear-button {
         opacity: 1;
-    }
-
-    :host(:not([disabled], [readonly]):hover) .clear-button__hidden,
-    :host(:not([disabled], [readonly]):active) .clear-button__hidden,
-    :host(:not([disabled], [readonly]):focus-within) .clear-button__hidden {
-        opacity: 0;
     }
 
     ::slotted([slot="start"]),

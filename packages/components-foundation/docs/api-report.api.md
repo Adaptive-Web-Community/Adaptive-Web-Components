@@ -371,6 +371,29 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
 };
 
 // @public
+export class SearchController extends TextInputController<SearchElement> {
+    constructor(host: SearchElement, internals: TextInputInternals);
+    clear(): void;
+    // (undocumented)
+    protected sync(control: TextControl): void;
+}
+
+// @public
+export interface SearchElement extends TextInputElement {
+    clear(): void;
+    pattern: string | null;
+}
+
+// @public
+export const SearchParts: {
+    readonly label: "label";
+    readonly root: "root";
+    readonly inputWrapper: "input-wrapper";
+    readonly control: "control";
+    readonly clearButton: "clear-button";
+};
+
+// @public
 export function skeletonAria(): DefaultAria;
 
 // @public

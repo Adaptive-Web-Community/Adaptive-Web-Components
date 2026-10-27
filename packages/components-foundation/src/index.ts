@@ -12,6 +12,7 @@ export * from "./progress/index.js";
 export * from "./progress-ring/index.js";
 export * from "./radio/index.js";
 export * from "./radio-group/index.js";
+export * from "./search/index.js";
 export * from "./skeleton/index.js";
 export * from "./switch/index.js";
 export * from "./text-area/index.js";

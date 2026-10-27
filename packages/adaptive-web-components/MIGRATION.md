@@ -212,3 +212,12 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | An `<input type="text" inputmode="numeric">` with its own parsing and stepping | A native `<input type="number">`, which parses, steps, and validates its range and step |
 | `maxlength`, `minlength`, `size`, `list` | Gone: they don't apply to a number input |
 | `NumberFieldParts` from this package | The components foundation's, also exported here |
+
+## Search
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveSearch` (extends FAST Foundation's `FASTSearch`) | `Search`, which extends `BaseTextInput`; the rest is as for the text field |
+| The `clear-button__hidden` class | The `hidden` attribute, keeping the button's place |
+| | `clear()`, which the clear button calls: it emits `input` and `change`, and focuses the field |
+| `SearchParts` from this package | The components foundation's, which adds `input-wrapper`, also exported here |
