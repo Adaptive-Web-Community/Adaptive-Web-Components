@@ -1,34 +1,38 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTAvatar } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Avatar as AvatarElement } from "./avatar.js";
 
-const storyTemplate = html<StoryArgs<FASTAvatar>>`
-    <adaptive-avatar>
+const storyTemplate = html<StoryArgs<AvatarElement>>`
+    <adaptive-avatar name="${(x) => x.name}">
         ${(x) => x.storyContent}
     </adaptive-avatar>
 `;
 
 export default {
     title: "Components/Avatar",
+    args: {
+        name: "Cara Ruiz",
+    },
     argTypes: {
+        name: { control: "text" },
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTAvatar>;
+} as Meta<AvatarElement>;
 
-export const Avatar: Story<FASTAvatar> = renderComponent(storyTemplate).bind({});
+export const Avatar: Story<AvatarElement> = renderComponent(storyTemplate).bind({});
 Avatar.args = {
     storyContent: html`
-        <img slot="media" src="https://via.placeholder.com/32x32" alt="Annie's profile image" />
+        <img slot="media" src="https://via.placeholder.com/32x32" alt="" />
     `,
 };
 
-export const AvatarWithTextContent: Story<FASTAvatar> = renderComponent(storyTemplate).bind({});
+export const AvatarWithTextContent: Story<AvatarElement> = renderComponent(storyTemplate).bind({});
 AvatarWithTextContent.args = {
     storyContent: "CR",
 };
 
-export const AvatarWithBadge: Story<FASTAvatar> = renderComponent(storyTemplate).bind({});
+export const AvatarWithBadge: Story<AvatarElement> = renderComponent(storyTemplate).bind({});
 AvatarWithBadge.args = {
     storyContent: html`
         CR

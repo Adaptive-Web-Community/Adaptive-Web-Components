@@ -61,3 +61,12 @@ The element is the button now, with the `button` role and form association throu
 | The `control` part around the content | The host is the badge's box; styles target the host |
 | | `start` and `end` slots, and the `content` part around the default slot |
 | `BadgeParts` from this package | The components foundation's (`content`), also exported here |
+
+## Avatar
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTAvatar` (FAST Foundation) | `Avatar` |
+| No role: the `alt` of a slotted image or the text was read | `role="img"`, so the content of the slots isn't read |
+| | `name`, the accessible name. An `aria-label` on the element overrides it. Give a slotted image `alt=""` |
+| `AvatarParts` from this package | The components foundation's (`backplate`), also exported here |

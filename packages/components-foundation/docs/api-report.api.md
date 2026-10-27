@@ -46,6 +46,19 @@ export const AccordionItemParts: {
 };
 
 // @public
+export function avatarAria(avatar: AvatarElement): DefaultAria;
+
+// @public
+export interface AvatarElement extends HTMLElement {
+    name: string | null;
+}
+
+// @public
+export const AvatarParts: {
+    readonly backplate: "backplate";
+};
+
+// @public
 export const BadgeParts: {
     readonly content: "content";
 };
@@ -91,6 +104,9 @@ export const ButtonType: {
 
 // @public
 export type ButtonType = ValuesOf<typeof ButtonType>;
+
+// @public
+export type DefaultAria = Partial<ARIAMixin>;
 
 // @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;

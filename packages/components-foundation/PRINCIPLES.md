@@ -28,86 +28,90 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    Used by: Accordion Item.
 7. **The author's ARIA is on the host, and nothing is mirrored.** The host is the element with the role, so what an author writes reaches it.
    Used by: Button.
-8. **An element works alone.** A container coordinates its children by reacting to their state, not by doing their behavior for them.
+8. **The default ARIA of a host is a function of its properties** (a `DefaultAria`), which the binding assigns to the element's
+   `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
+   the default needs no property to turn it off. In the value, a property that is absent is left as it is, and `null` clears one.
+   Used by: Avatar (`img`, named by `name`).
+9. **An element works alone.** A container coordinates its children by reacting to their state, not by doing their behavior for them.
    Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`).
-9. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
-   defined yet is waited for with `whenDefined` of the container's registry.
-   Used by: Accordion.
+10. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
+    defined yet is waited for with `whenDefined` of the container's registry.
+    Used by: Accordion.
 
 ## ARIA references and ids
 
-10. **A reference inside a shadow root uses a fixed id of that shadow root, named for its part**: `aria-controls="panel"` and
+11. **A reference inside a shadow root uses a fixed id of that shadow root, named for its part**: `aria-controls="panel"` and
     `aria-labelledby="button"`. Ids don't leave the shadow root, so they can't collide, and nothing is generated.
     Used by: Accordion Item.
-11. **The host's `id` is the author's.** A component never sets or generates it.
+12. **The host's `id` is the author's.** A component never sets or generates it.
     Used by: Accordion, Accordion Item.
-12. **A reference across shadow roots** (a label, a tooltip, the listbox of a combobox) isn't used yet. It is decided with the first component
+13. **A reference across shadow roots** (a label, a tooltip, the listbox of a combobox) isn't used yet. It is decided with the first component
     that needs it, for all of them.
 
 ## State
 
-13. **What the author sets is a reflected attribute; what the component works out is a custom state.** `expanded`, `disabled`, `expand-mode`,
+14. **What the author sets is a reflected attribute; what the component works out is a custom state.** `expanded`, `disabled`, `expand-mode`,
     and `type` are attributes. `:state(active)` and `:state(icon-only)` are states of `ElementInternals`. A component doesn't add classes or
     attributes to its host for its own state, except `tabindex`, which focus needs.
     Used by: Accordion, Accordion Item, Button.
-14. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
+15. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
     that isn't shown has the `hidden` attribute, so it is hidden without the styles and from assistive technology.
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons).
-15. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
+16. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
     Used by: Button, Accordion Item.
 
 ## Keyboard and focus
 
-16. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
+17. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
     on Space when it is released, and not if the focus left in between.
     Used by: Accordion (Up, Down, Home, End), Button.
-17. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
+18. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles.
     Used by: Accordion, Button.
-18. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
+19. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
     implements `focus()` to focus it, instead of `delegatesFocus`.
     Used by: Button (the host), Accordion Item (its button).
 
 ## Events
 
-19. **Events are the native ones, or named and shaped like them.** They bubble, aren't composed, are for what the user did, and their target is
+20. **Events are the native ones, or named and shaped like them.** They bubble, aren't composed, are for what the user did, and their target is
     the element that changed, without an id in the detail.
     Used by: Accordion Item (`change`), Button (`click`).
-20. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
+21. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button.
 
 ## Properties
 
-21. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
+22. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
     (`formaction`, `heading-level`).
     Used by: Accordion (`expandMode`), Accordion Item (`headingLevel`), Button.
-22. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
+23. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`).
-23. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
+24. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`.
 
 ## Parts and styles
 
-24. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
-    Used by: `AccordionItemParts`, `BadgeParts`, `ButtonParts`.
-25. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
+25. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
+    Used by: `AccordionItemParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`.
+26. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
     inside it to be the box.
     Used by: Badge, Button.
-26. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
+27. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-27. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+28. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
     Used by: Button.
 
 ## Forms
 
-28. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
+29. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button.
 
