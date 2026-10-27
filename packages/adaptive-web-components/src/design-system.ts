@@ -17,6 +17,7 @@ import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "@adaptiv
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
+    CalendarStatics,
     CheckboxStatics,
     MenuItemStatics,
     NumberFieldStatics,
@@ -30,6 +31,7 @@ import type { StaticallyComposableHTML } from "./utilities/template-helpers.js";
 type ComponentStatics =
     AccordionItemStatics
     | BreadcrumbItemStatics
+    | CalendarStatics
     | CheckboxStatics
     | MenuItemStatics
     | NumberFieldStatics

@@ -6,6 +6,7 @@ export * from "./badge/index.js";
 export * from "./breadcrumb/index.js";
 export * from "./breadcrumb-item/index.js";
 export * from "./button/index.js";
+export * from "./calendar/index.js";
 export * from "./checkable/index.js";
 export * from "./checkbox/index.js";
 export * from "./dialog/index.js";

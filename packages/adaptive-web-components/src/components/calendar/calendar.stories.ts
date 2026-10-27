@@ -1,50 +1,52 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTCalendar } from "@microsoft/fast-foundation";
-import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "@microsoft/fast-foundation";
-import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
+import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Calendar as CalendarElement } from "./calendar.js";
 
-const storyTemplate = html<StoryArgs<FASTCalendar>>`
+const storyTemplate = html<StoryArgs<CalendarElement>>`
     <adaptive-calendar
-        day-format="${(x) => x.dayFormat}"
         disabled-dates="${(x) => x.disabledDates}"
-        locale="${(x) => x.locale ?? navigator.language}"
-        min-weeks="${(x) => x.minWeeks}"
+        first-day="${(x) => x.firstDay}"
+        locale="${(x) => x.locale}"
+        max="${(x) => x.max}"
+        min="${(x) => x.min}"
         month="${(x) => x.month}"
-        month-format="${(x) => x.monthFormat}"
-        ?readonly="${(x) => x.readonly}"
-        selected-dates="${(x) => x.selectedDates}"
-        weekday-format="${(x) => x.weekdayFormat}"
+        ?multiple="${(x) => x.multiple}"
+        ?readonly="${(x) => x.readOnly}"
+        ?disabled="${(x) => x.disabled}"
+        value="${(x) => x.value}"
         year="${(x) => x.year}"
-        year-format="${(x) => x.yearFormat}"
-    >
-        ${(x) => maybeStartSlotIcon(x)}
-        ${(x) => x.storyContent}
-        ${(x) => maybeEndSlotIcon(x)}
-    </adaptive-calendar>
+    ></adaptive-calendar>
 `;
 
 export default {
     title: "Components/Calendar",
     args: {
-        startSlotIcon: false,
-        endSlotIcon: false,
-        readonly: false,
+        disabled: false,
+        multiple: false,
+        readOnly: false,
     },
     argTypes: {
-        storyContent: { table: { disable: true } },
-        dayFormat: { control: "select", options: Object.values(DayFormat) },
+        disabled: { control: "boolean" },
         disabledDates: { control: "text" },
+        firstDay: { control: "number", min: 0, max: 6 },
         locale: { control: "text" },
-        minWeeks: { control: "number", min: 0 },
+        max: { control: "text" },
+        min: { control: "text" },
         month: { control: "number", min: 1, max: 12 },
-        monthFormat: { control: "select", options: Object.values(MonthFormat) },
-        readonly: { control: "boolean" },
-        selectedDates: { control: "text" },
-        weekdayFormat: { control: "select", options: Object.values(WeekdayFormat) },
+        multiple: { control: "boolean" },
+        readOnly: { control: "boolean" },
+        value: { control: "text" },
         year: { control: "number" },
-        yearFormat: { control: "select", options: Object.values(YearFormat) },
     },
-} as Meta<FASTCalendar>;
+} as Meta<CalendarElement>;
 
-export const Calendar: Story<FASTCalendar> = renderComponent(storyTemplate).bind({});
+export const Calendar: Story<CalendarElement> = renderComponent(storyTemplate).bind({});
+
+export const CalendarWithRange: Story<CalendarElement> = renderComponent(storyTemplate).bind({});
+CalendarWithRange.args = {
+    value: "2026-10-15",
+    min: "2026-10-05",
+    max: "2026-11-20",
+    disabledDates: "2026-10-10, 2026-10-11",
+};

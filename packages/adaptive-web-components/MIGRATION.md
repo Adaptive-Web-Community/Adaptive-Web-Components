@@ -481,3 +481,18 @@ A menu that opens is a popover now: give it `popover`, and open it with a button
 | `positionStyle`, inline styles | `--slider-label-position` on the `container` part, given by the slider |
 | `disabled`, given by the slider | Gone: style the slider's `:disabled` |
 | `[orientation]` in selectors | `:state(vertical)` |
+
+## Calendar
+
+The calendar is an interactive grid of days now, which selects dates, and a form control.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTCalendar` (FAST Foundation), on the Data Grid | `Calendar`, with its own `<table role="grid">` |
+| `selected-dates`, `m-d-yyyy` strings | `value` and `values`, ISO dates (`2026-10-27`); the `value` attribute is the default; `multiple` for several |
+| `disabled-dates`, `m-d-yyyy` | `disabled-dates`, ISO dates; and `min`, `max` |
+| `locale`, `en-US` by default | `locale`, or the element's `lang`, or the browser's |
+| `day-format`, `weekday-format`, `month-format`, `year-format`, `min-weeks` | Gone: the locale's formats, and the weeks of the month |
+| The `month`, `year`, `today` parts, and the `inactive`, `disabled`, `selected`, `today` classes | The `title` part; on the `day` part, `data-outside`, `aria-disabled`, `aria-selected`, `aria-current="date"` |
+| | `previous-month` and `next-month` buttons, with `CalendarStatics` icons; the keys of the date picker; `readonly` |
+| `getMonthInfo()` and the other methods | Gone |

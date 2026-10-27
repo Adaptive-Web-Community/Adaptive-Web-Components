@@ -157,6 +157,63 @@ export const ButtonType: {
 export type ButtonType = ValuesOf<typeof ButtonType>;
 
 // @public
+export class CalendarController {
+    constructor(host: CalendarElement, internals: CalendarInternals);
+    connect(elements: CalendarTemplateElements): void;
+    defaultValueChanged(): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    stateChanged(): void;
+    get value(): string;
+    set value(value: string);
+    get values(): readonly string[];
+}
+
+// @public
+export interface CalendarElement extends FormControlElement {
+    defaultValue: string | null;
+    disabled: boolean;
+    disabledDates: string | null;
+    firstDay: number | null;
+    locale: string | null;
+    max: string | null;
+    min: string | null;
+    month: number | null;
+    multiple: boolean;
+    name: string | null;
+    readOnly: boolean;
+    value: string;
+    readonly values: readonly string[];
+    year: number | null;
+}
+
+// @public
+export type CalendarInternals = Pick<ElementInternals, "setFormValue">;
+
+// @public
+export const CalendarParts: {
+    readonly header: "header";
+    readonly previousMonth: "previous-month";
+    readonly title: "title";
+    readonly nextMonth: "next-month";
+    readonly days: "days";
+    readonly weekDays: "week-days";
+    readonly weekDay: "week-day";
+    readonly week: "week";
+    readonly day: "day";
+    readonly date: "date";
+};
+
+// @public
+export type CalendarTemplateElements = {
+    title: HTMLElement;
+    previous: HTMLButtonElement;
+    next: HTMLButtonElement;
+    days: HTMLTableElement;
+};
+
+// @public
 export class CheckableController<T extends CheckableElement = CheckableElement> {
     constructor(host: T, internals: CheckableInternals, role: CheckableRole);
     protected activate(): boolean;

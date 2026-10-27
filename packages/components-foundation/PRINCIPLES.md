@@ -34,7 +34,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 8. **The controller writes what the contract gives a native element**, not the template: the native element's state (its validity) is then
    right as soon as an attribute changes, and each framework's template has the bare element.
    Used by: Text Field (its `<input>`), Text Area (its `<textarea>`), Number Field (its `<input type="number">`),
-   Search (its `<input type="search">`), Picker (its input, and the values it renders).
+   Search (its `<input type="search">`), Picker (its input, and the values it renders), Calendar (its grid, which it renders).
 
 ## Elements and roles
 
@@ -66,8 +66,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     with the field as its source), Menu (the author's `popover`; a submenu's, given by its item when the author gave none).
 15. **A pattern that nests roles uses native elements in the shadow root for the inner ones**, and the host has no role: the accordion item's
     heading is a `role="heading"` element with a native `<button>` in it.
-    Used by: Accordion Item, Breadcrumb (its list,
-    inside the landmark that the host is).
+    Used by: Accordion Item, Breadcrumb (its list, inside the landmark that the host is), Calendar (its `<table role="grid">`,
+    and its buttons).
 16. **The author's ARIA is on the host.** Where the host has the role, it reaches it as written, and nothing is copied. Where a native
     element inside has the role, the `AriaForwardingController` forwards it there.
     Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field, Search,
@@ -106,7 +106,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 
 20. **A reference inside a shadow root uses a fixed id of that shadow root, named for its part**: `aria-controls="panel"` and
     `aria-labelledby="button"`. Ids don't leave the shadow root, so they can't collide, and nothing is generated.
-    Used by: Accordion Item, Select (`aria-controls="listbox"`), Picker (`aria-controls="listbox"`).
+    Used by: Accordion Item, Select (`aria-controls="listbox"`), Picker (`aria-controls="listbox"`), Calendar (`aria-labelledby="title"`).
 21. **The host's `id` is the author's.** A component never sets or generates it.
     Used by: Accordion, Accordion Item, Tablist, Tab, Tab Panel, Menu, Menu Item, Tree View, Tree Item.
 22. **A reference across shadow roots is ARIA element reflection** (`ariaDescribedByElements`), with the elements found by their ids where the
@@ -131,11 +131,12 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Listbox Option (`:state(selected)`, `:state(active)`), Listbox (`multiple`, `readonly`), Select (`:state(open)`), Picker (`multiple`,
     `freeform`, `loading`, `:state(open)`), Menu Item (`type`, `checked`, `disabled`; `:state(expanded)`, `:state(start-columns-1)`,
     `:state(start-columns-2)`), Tree Item (`expanded`, `selected`, `disabled`; `:state(nested)`), Slider (`orientation`,
-    `readonly`; `:state(dragging)`), Slider Label (`:state(vertical)`).
+    `readonly`; `:state(dragging)`), Slider Label (`:state(vertical)`), Calendar (`month`, `year`, `multiple`, `readonly`).
 24. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
     Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search,
-    Listbox Option (the `selected` attribute is `defaultSelected`), Slider (the `value` attribute is `defaultValue`).
+    Listbox Option (the `selected` attribute is `defaultSelected`), Slider (the `value` attribute is `defaultValue`),
+    Calendar (the `value` attribute is `defaultValue`).
 25. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
     that isn't shown has the `hidden` attribute, so it is hidden without the styles and from assistive technology.
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons),
@@ -156,17 +157,18 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     its controls that state (`groupDisabled`), which they show as `:state(disabled)`: their own `disabled` stays the author's.
     The exception is an item of a composite where the ARIA practices ask that a disabled one stays focusable, so the user finds it
     ([Focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#focusabilityofdisabledcontrols)):
-    a menu item, a tree item, a tab, a listbox option. The arrows reach it, it has `aria-disabled`, and it can't be activated. Nowhere else,
+    a menu item, a tree item, a tab, a listbox option. The arrows reach it, it has `aria-disabled`, and it can't be activated. The cells of
+    a grid are reached by their position (a day, a week), so a disabled day of a calendar is reached too, and isn't selected. Nowhere else,
     a standalone control included: why a control is disabled is said in the interface, not in a tooltip on it.
     Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (its `disabled` or a fieldset), Text Field (its input,
     from `formDisabledCallback`), Text Area, Number Field, Search, Tab (focusable, as the exception), Listbox, Listbox Option (focusable,
     as the exception), Select (its combobox leaves the tab order), Picker (its input), Menu Item (focusable, as the exception),
-    Tree Item (focusable, as the exception), Slider.
+    Tree Item (focusable, as the exception), Slider, Calendar (its disabled days, in its grid).
 28. **A control can be read only** (`readonly`): it takes focus, the user doesn't change it, it has `aria-readonly` and `:state(readonly)`,
     and it isn't validated, as a read only native input isn't. A group that is read only makes its controls read only.
     Used by: Checkbox, Switch, Radio Group (and its radios, through `groupReadOnly`), Text Field (natively), Text Area,
     Number Field (no stepping), Search (no clearing), Listbox (the keys move, without selecting), Select (it opens, without selecting),
-    Picker (its input, natively), Slider.
+    Picker (its input, natively), Slider, Calendar (the keys move, without selecting).
 29. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
     rewrite what the author set.
     Used by: Progress, Progress Ring.
@@ -182,7 +184,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     and Control with A in multiple selection), Select (the select-only combobox's), Picker (the combobox's, with the input's own Home, End,
     and Space), Menu (Up, Down, wrapping, Home, End), Menu Item (Enter, Space when it is released, Right and Left for its submenu),
     Tree View (Up and Down between the items shown, without wrapping, Home, End, Right, Left, Enter), Slider (the arrows by a step,
-    swapped right to left, Page Up and Page Down, Home, End).
+    swapped right to left, Page Up and Page Down, Home, End), Calendar (the date picker's grid: the arrows, Home, End, Page Up and Page Down,
+    with Shift).
 31. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles. A key of a text that the user edits isn't
     taken: an input in a toolbar keeps its caret. A tooltip's Escape is the exception: it hides it wherever the focus is while it is shown,
@@ -197,13 +200,13 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Button (the host), Accordion Item (its button, by `focus()`), Anchor (`delegatesFocus`, to its link), Checkbox (the host),
     Switch (the host), Radio (the host), Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host),
     Breadcrumb Item (its link, as the Anchor), Listbox (the host), Select (`delegatesFocus`, to its combobox), Picker (`delegatesFocus`,
-    to its input), Menu Item (the host), Tree Item (the host), Slider (the host).
+    to its input), Menu Item (the host), Tree Item (the host), Slider (the host), Calendar (`delegatesFocus`, to its first button).
 33. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
     their `tabindex`. An item that gets the focus by a click becomes the active one. A list whose items the arrows don't move between isn't a
     composite: the content of its items is in the tab order.
     Used by: Radio Group (the checked radio, with the `RovingFocusController`), Tablist (the selected tab), Toolbar (the first,
     or the last focused); List (static: none), Menu (its first item has the focus when it opens, and the focus goes back to what opened it),
-    Tree View (the selected item, the first, or the last focused).
+    Tree View (the selected item, the first, or the last focused), Calendar (the selected day, today, or the first of the month).
 
 ## Events
 
@@ -219,7 +222,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     shaped as a native event; the input's `input`; `input` and `change` for the user's values), Menu Item (`click` when it is activated,
     by Enter and Space too; `change` when the user checks it),
     Tree Item (`change` when the user selects it; `toggle` when the user expands or collapses it, as a `<details>`'),
-    Slider (`input` and `change`, as a native range's: `change` when a drag ends).
+    Slider (`input` and `change`, as a native range's: `change` when a drag ends), Calendar (`input` and `change`, for the user's selection).
 35. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button, Checkbox, Switch, Radio, Dialog (a cancelled `cancel` keeps it open), Picker (a cancelled `filter` doesn't filter),
@@ -259,7 +262,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
     `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`, `BreadcrumbParts`, `BreadcrumbItemParts`, `ListboxOptionParts`, `SelectParts`,
-    `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`.
+    `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`, `CalendarParts`.
 43. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box), Tab, Breadcrumb Item (as the Anchor), Listbox Option.
@@ -285,9 +288,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     as native implicit submission), Text Area (its value and validity, without implicit submission), Number Field (the same),
     Search (the same), Listbox (its values as `FormData` under its name, `required` with the browser's message for a select),
     Select (`required` missing a value for an empty value, with the browser's message),
-    Picker (its values as `FormData` in multiple selection, `required` with the browser's message), Slider (its value, and reset).
+    Picker (its values as `FormData` in multiple selection, `required` with the browser's message), Slider (its value, and reset),
+    Calendar (its dates, as `FormData` with `multiple`).
 48. **A form control has what a native one has**: its form and labels, and the validity API (`validity`, `validationMessage`, `willValidate`,
     `checkValidity()`, `reportValidity()`), from its `ElementInternals` (`FormControlElement`).
     Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`), Radio Group, Text Field, Text Area, Number Field, Search, Listbox,
-    Select, Picker, Slider.
+    Select, Picker, Slider, Calendar.
 
