@@ -436,3 +436,24 @@ A menu that opens is a popover now: give it `popover`, and open it with a button
 | The `submenu-container` part, placed by Floating UI | Gone: the submenu is a popover |
 | `change`, for every item | `click` when it is activated; `change` when a checkbox or radio is checked |
 | `ValuesOf` (of `MenuItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+
+## Tree View
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTreeView` (FAST Foundation) | `TreeView` |
+| `role="tree"` written, and a `tabindex` on the element | `ElementInternals`; the items are in the tab order, one at a time |
+| `currentSelected`, `currentFocused` | Gone: the item's `selected`, and the focus |
+
+## Tree Item
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTreeItem` (FAST Foundation) | `TreeItem` |
+| `role`, `aria-expanded`, `aria-selected`, `aria-disabled`, and `slot` written to the element | `ElementInternals`; its parent item puts it in its `item` slot |
+| `[aria-selected='true']` in selectors | `[selected]` |
+| `nested`, an attribute | `nested`, given by the tree, and the `:state(nested)` custom state |
+| A click toggles `selected` | A click selects it; the button expands and collapses it without selecting |
+| `expanded-change` and `selected-change` events | `toggle` and `change`, which bubble |
+| A disabled item | Still focusable, as the ARIA practices ask; not selected, expanded, or collapsed |
+| `ValuesOf` (of `TreeItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |

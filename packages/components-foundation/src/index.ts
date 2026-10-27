@@ -34,6 +34,8 @@ export * from "./text-field/index.js";
 export * from "./text-input/index.js";
 export * from "./toolbar/index.js";
 export * from "./tooltip/index.js";
+export * from "./tree-item/index.js";
+export * from "./tree-view/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
 export { AriaForwardingController } from "./utilities/aria-forwarding.controller.js";
 export { hasContent, isIconOnly } from "./utilities/content.js";

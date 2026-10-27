@@ -24,6 +24,11 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     homeEnd?: boolean;
 
     /**
+     * Whether the arrows wrap from the last item to the first, and back. The default is `true`.
+     */
+    wrap?: boolean;
+
+    /**
      * What else to do when the focus moves to an item, such as checking the radio it moved to.
      */
     onMove?: (item: T) => void;
@@ -48,8 +53,8 @@ function isEditingText(event: KeyboardEvent): boolean {
 
 /**
  * Focus that roves among the items of a composite (a radio group, a tablist): one item is in the tab order (`tabindex="0"`), the active one, or
- * the first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are disabled
- * (`:disabled`, or as the options say), and Home and End when the options say. An item that gets the focus otherwise, by a click, becomes the
+ * the first that isn't disabled, and the arrow keys move the focus between them, wrapping unless the options say, and skipping those that
+ * are disabled (`:disabled`, or as the options say), and Home and End when the options say. An item that gets the focus otherwise, by a click, becomes the
  * active one. The keys of a text that the user edits in an item, such as the input of a text field, aren't taken.
  *
  * @remarks
@@ -158,7 +163,12 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
             if (step === 0) {
                 return;
             }
-            next = enabled[(index + step + enabled.length) % enabled.length];
+            const target = index + step;
+            if (this.options.wrap === false && (target < 0 || target >= enabled.length)) {
+                event.preventDefault();
+                return;
+            }
+            next = enabled[(target + enabled.length) % enabled.length];
         }
 
         event.preventDefault();

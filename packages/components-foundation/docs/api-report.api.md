@@ -579,6 +579,9 @@ export type PickerTemplateElements = {
 };
 
 // @public
+export function placeTreeItems(items: readonly TreeItemElement[]): void;
+
+// @public
 export function progressAria(progress: ProgressElement): DefaultAria;
 
 // @public
@@ -681,6 +684,7 @@ export type RovingFocusKeys = Orientation | "both";
 export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     keys: RovingFocusKeys;
     homeEnd?: boolean;
+    wrap?: boolean;
     onMove?: (item: T) => void;
     isDisabled?: (item: T) => boolean;
 };
@@ -748,6 +752,9 @@ export const SelectParts: {
 
 // @public
 export function selectTab(tab: TabElement): void;
+
+// @public
+export function selectTreeItem(item: TreeItemElement): void;
 
 // @public
 export function setBreadcrumbItems(items: readonly BreadcrumbItemElement[]): void;
@@ -969,6 +976,9 @@ export type TextInputOptions = {
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public
+export function toggleTreeItem(item: TreeItemElement): void;
+
+// @public
 export class ToolbarController {
     constructor(host: ToolbarElement, internals: ToolbarInternals);
     connect(): void;
@@ -1027,6 +1037,45 @@ export const TooltipPlacement: {
 
 // @public
 export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;
+
+// @public
+export function treeItemAria(item: TreeItemElement): DefaultAria;
+
+// @public
+export interface TreeItemElement extends HTMLElement {
+    disabled: boolean;
+    expanded: boolean;
+    readonly items: readonly TreeItemElement[];
+    nested: boolean;
+    selected: boolean;
+}
+
+// @public
+export const TreeItemParts: {
+    readonly control: "control";
+    readonly expandCollapseButton: "expand-collapse-button";
+    readonly content: "content";
+    readonly items: "items";
+};
+
+// @public
+export class TreeViewController {
+    constructor(host: TreeViewElement, internals: TreeViewInternals, options: TreeViewOptions);
+    connect(): void;
+    disconnect(): void;
+    setItems(items: readonly TreeItemElement[]): void;
+}
+
+// @public
+export type TreeViewElement = HTMLElement;
+
+// @public
+export type TreeViewInternals = Pick<ElementInternals, "role">;
+
+// @public
+export type TreeViewOptions = {
+    isItem: (element: Element) => element is TreeItemElement;
+};
 
 // @public
 export type ValuesOf<T> = T[keyof T];

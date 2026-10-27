@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTTreeItem } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { TreeItem as TreeItemElement } from "./tree-item.js";
 
-export const storyTemplate = html<StoryArgs<FASTTreeItem>>`
+export const storyTemplate = html<StoryArgs<TreeItemElement>>`
     <adaptive-tree-item
         ?disabled="${(x) => x.disabled}"
         ?expanded="${(x) => x.expanded}"
@@ -33,6 +33,6 @@ export default {
         nested: { control: "boolean" },
         selected: { control: "boolean" },
     },
-} as Meta<FASTTreeItem>;
+} as Meta<TreeItemElement>;
 
-export const TreeItem: Story<FASTTreeItem> = renderComponent(storyTemplate).bind({});
+export const TreeItem: Story<TreeItemElement> = renderComponent(storyTemplate).bind({});
