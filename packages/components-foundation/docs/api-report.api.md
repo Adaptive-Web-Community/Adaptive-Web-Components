@@ -287,21 +287,23 @@ export class RadioGroupController {
     orientationChanged(): void;
     radioCheckedChanged(radio: RadioElement): void;
     readOnlyChanged(): void;
+    requiredChanged(): void;
     setRadios(radios: readonly RadioElement[]): void;
     get value(): string | null;
     set value(value: string | null);
 }
 
 // @public
-export interface RadioGroupElement extends HTMLElement {
+export interface RadioGroupElement extends FormControlElement {
     name: string | null;
     orientation: Orientation;
     readOnly: boolean;
+    required: boolean;
     value: string | null;
 }
 
 // @public
-export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly">;
+export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity">;
 
 // @public
 export const RadioGroupParts: {

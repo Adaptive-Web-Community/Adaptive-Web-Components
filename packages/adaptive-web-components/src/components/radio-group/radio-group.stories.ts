@@ -10,6 +10,7 @@ const storyTemplate = html<StoryArgs<RadioGroupElement>>`
         name="${(x) => x.name}"
         orientation="${(x) => x.orientation}"
         ?readonly="${(x) => x.readOnly}"
+        ?required="${(x) => x.required}"
         :value="${(x) => x.value}"
     >
         ${(x) => x.storyContent}
@@ -42,6 +43,7 @@ export default {
         name: { control: "text" },
         orientation: { control: "radio", options: Object.values(Orientation) },
         readOnly: { control: "boolean" },
+        required: { control: "boolean" },
         value: { control: "text" },
     },
 } as Meta<RadioGroupElement>;

@@ -167,12 +167,12 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 41. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same),
-    Radio (its form value and reset).
+    Radio (its form value and reset), Radio Group (`required`, as the validity of the group, a form control without a value,
+    shown at its first radio).
 42. **A form control has what a native one has**: its form and labels, and the validity API (`validity`, `validationMessage`, `willValidate`,
     `checkValidity()`, `reportValidity()`), from its `ElementInternals` (`FormControlElement`).
-    Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`).
+    Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`), Radio Group.
 
 ## To decide for all components
 
 - Disabled but focusable (State).
-- Required for a group (a radio group's `required`), whose validity is its radios'.

@@ -11,13 +11,15 @@ export class TestInternals {
     public formValue: File | string | FormData | null = null;
     public validity: Partial<ValidityState> = {};
     public validationMessage = "";
+    public validationAnchor: HTMLElement | undefined;
 
     public setFormValue(value: File | string | FormData | null): void {
         this.formValue = value;
     }
 
-    public setValidity(flags: ValidityStateFlags = {}, message: string = ""): void {
+    public setValidity(flags: ValidityStateFlags = {}, message: string = "", anchor?: HTMLElement): void {
         this.validity = flags;
         this.validationMessage = message;
+        this.validationAnchor = anchor;
     }
 }

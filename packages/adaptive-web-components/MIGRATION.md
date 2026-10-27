@@ -163,7 +163,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The role and `aria-*` written to the element, and a proxy `<input type="radio">` | `ElementInternals`, as the checkbox; each radio still gives its value to the form |
 | `[aria-checked='true']` in selectors | `:state(checked)` |
 | Radios grouped by `name` without a radio group | Use a `RadioGroup` around them |
-| `required` | Gone for now: to decide with the radio group's `required` |
+| `required` | The radio group's `required` |
 | `readonly` | The group's `readonly` makes its radios read only, with `:state(readonly)` |
 | `RadioParts` from this package | The components foundation's (`control`, `label`), also exported here |
 
@@ -175,6 +175,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | `role` and `aria-*` written to the element | `ElementInternals`. The `label` slot now names the group |
 | `disabled` | Gone: put the group in a `<fieldset disabled>`, which disables its radios |
 | `readonly` | `readonly`, with `aria-readonly`, given to its radios |
+| | `required`: a radio must be checked; the group is a form control without a value of its own, for its validity |
 | The `value` attribute | `value` is a property: the checked radio's value, which sets the checked radio. The radios' `checked` attributes are the default |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
 | `RadioGroupParts` from this package | The components foundation's (`positioning-region`), also exported here |

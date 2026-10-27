@@ -1,5 +1,6 @@
-import { attr, FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
+import { attr, Observable, observable, type Subscriber } from "@microsoft/fast-element";
 import { Orientation, RadioGroupController, type RadioGroupElement } from "@adaptive-web/components-foundation";
+import { BaseFormControl } from "../../utilities/base-form-control.js";
 import { onDefined } from "../../utilities/defined.js";
 import { Radio } from "../radio/radio.js";
 
@@ -8,9 +9,8 @@ import { Radio } from "../radio/radio.js";
  *
  * @public
  */
-export class RadioGroup extends FASTElement implements RadioGroupElement {
+export class RadioGroup extends BaseFormControl implements RadioGroupElement {
     // Before the properties, whose change handlers use these while the element is constructed.
-    private readonly internals = this.attachInternals();
     private readonly controller = new RadioGroupController(this, this.internals);
     private radios: Radio[] = [];
     private readonly checkedSubscriber: Subscriber = {
@@ -42,6 +42,15 @@ export class RadioGroup extends FASTElement implements RadioGroupElement {
     public readOnly: boolean = false;
     protected readOnlyChanged(): void {
         this.controller.readOnlyChanged();
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#RadioGroupElement.required}
+     */
+    @attr({ mode: "boolean" })
+    public required: boolean = false;
+    protected requiredChanged(): void {
+        this.controller.requiredChanged();
     }
 
     /**

@@ -15,7 +15,7 @@ to the form. The radio group (`../radio-group`) keeps one checked and moves betw
 | Form value | Each radio, through its proxy | Each radio, as a native radio |
 | A click on a checked radio | Stays checked | Stays checked, without `input` or `change` |
 | Alone | Grouped with others of its `name`, and focusable | Used in a radio group, as the ARIA pattern has it; alone, it checks and stays checked |
-| Required | Its own, through its proxy | Not taken yet: a radio's validity depends on its whole group. To decide with the group's `required` |
+| Required | Its own, through its proxy | The group's (see the radio group) |
 | Read only | The group's `readonly` | The group's: it sets the radio's `groupReadOnly`, so the radio takes focus but isn't checked by the user, with `:state(readonly)` |
 | Label and parts | The default slot in a `label` part, and a `checked-indicator` slot in the `control` part | FAST Foundation, with the indicator shown by `hidden` |
 

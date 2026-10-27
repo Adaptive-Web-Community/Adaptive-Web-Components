@@ -38,10 +38,11 @@ class TestRadio extends TestFormControl implements RadioElement {
 }
 customElements.define("test-radio", TestRadio);
 
-class TestRadioGroup extends HTMLElement implements RadioGroupElement {
+class TestRadioGroup extends TestFormControl implements RadioGroupElement {
     public name: string | null = null;
     public orientation: Orientation = Orientation.horizontal;
     public readOnly = false;
+    public required = false;
     public get value(): string | null {
         return group!.value;
     }
@@ -142,6 +143,40 @@ describe("RadioGroupController", () => {
         controller.nameChanged();
 
         expect(radios.map(radio => radio.name)).to.deep.equal(["size", "size"]);
+    });
+
+    describe("required", () => {
+        it("should be missing its value when no radio is checked, shown at the first radio that isn't disabled", () => {
+            const { host, internals, controller, radios } = setup(["a", "b"]);
+            radios[0].disabled = true;
+
+            host.required = true;
+            controller.requiredChanged();
+
+            expect(internals.validity).to.deep.equal({ valueMissing: true });
+            expect(internals.validationAnchor).to.equal(radios[1]);
+            expect(internals.ariaRequired).to.equal("true");
+        });
+
+        it("should be valid when a radio is checked", () => {
+            const { host, internals, controller, radios } = setup(["a", "b"]);
+            host.required = true;
+            controller.requiredChanged();
+
+            radios[1].click();
+
+            expect(internals.validity).to.deep.equal({});
+        });
+
+        it("should not be validated when it is read only", () => {
+            const { host, internals, controller } = setup(["a"]);
+            host.required = true;
+            host.readOnly = true;
+
+            controller.requiredChanged();
+
+            expect(internals.validity).to.deep.equal({});
+        });
     });
 
     describe("read only", () => {

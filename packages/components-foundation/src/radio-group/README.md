@@ -16,13 +16,13 @@ its `label` slot.
 | Name | A `label` slot, not connected to the role | FAST Foundation's `label` slot, connected: its elements are the group's `ariaLabelledByElements` |
 | Keyboard | Arrows, by its own code, swapped right to left, and out of a toolbar at the ends | Our own `RovingFocusController` (no dependency): all four arrows, wrapping, skipping disabled radios, Left and Right swapped right to left. The focus moving checks the radio, as the ARIA pattern has it |
 | Tab order | The checked radio, or the first | The checked radio, or the first that isn't disabled |
-| Form | Each radio, through its proxy | Each radio, as native radios |
+| Form | Each radio, through its proxy | Each radio gives its value, as native radios. The group is a form control too, without a value, for its validity |
 | One checked | The group, on a change | The group reacts to each radio's `checked`, by the user or code; of several checked at the start, the last stays |
 | `value` | An attribute and a property | A property: the checked radio's value, which sets the checked radio |
 | `name` | Given to the radios | Given to the radios |
 | Disabled | `disabled`, which blocked clicks and focus | Not taken: a `<fieldset disabled>` around the group disables its radios, as for native radios |
 | Read only | `readonly` | `readonly`, with `aria-readonly`, given to the radios as `groupReadOnly`: the arrows move the focus without checking |
-| Required | | Not taken yet: a radio's validity depends on its whole group, to decide with the form fields |
+| Required | | `required`, the group missing its value when no radio is checked, shown at the first radio that isn't disabled, with the browser's message. Not validated when read only |
 | Orientation | `orientation`, `aria-orientation` written | `ariaOrientation` through `ElementInternals`, and the reflected attribute for the styles |
 | Children | By `role="radio"` among the slotted elements | By their class, among the slotted elements, waiting for those not defined yet |
 

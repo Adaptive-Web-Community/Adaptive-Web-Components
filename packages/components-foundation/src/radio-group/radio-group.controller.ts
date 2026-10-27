@@ -7,17 +7,21 @@ import type { RadioGroupElement } from "./radio-group.js";
  *
  * @public
  */
-export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly">;
+export type RadioGroupInternals = Pick<
+    ElementInternals,
+    "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity"
+>;
 
 /**
  * The behavior of a {@link RadioGroupElement}: the `radiogroup` role, named by its label; one radio checked; the arrow keys, which move the
- * focus and check the radio they move to (with a {@link RovingFocusController}); and the group's name and read only given to its radios.
+ * focus and check the radio they move to (with a {@link RovingFocusController}); the group's name and read only given to its radios; and
+ * its validity when it is required.
  *
  * @remarks
  * The element's binding creates it, calls {@link RadioGroupController.connect} and {@link RadioGroupController.disconnect} with the
  * element's lifecycle, and calls {@link RadioGroupController.setRadios}, {@link RadioGroupController.radioCheckedChanged},
  * {@link RadioGroupController.nameChanged}, {@link RadioGroupController.orientationChanged}, {@link RadioGroupController.readOnlyChanged},
- * and {@link RadioGroupController.labelsChanged}
+ * {@link RadioGroupController.requiredChanged}, and {@link RadioGroupController.labelsChanged}
  * when its framework observes those changes.
  *
  * @public
@@ -62,6 +66,7 @@ export class RadioGroupController {
 
         this.rovingFocus.setItems(radios);
         this.rovingFocus.setActive(this.checkedRadio());
+        this.updateValidity();
     }
 
     /**
@@ -77,6 +82,7 @@ export class RadioGroupController {
         }
 
         this.rovingFocus.setActive(this.checkedRadio());
+        this.updateValidity();
     }
 
     /**
@@ -100,6 +106,15 @@ export class RadioGroupController {
         for (const radio of this.radios) {
             radio.groupReadOnly = readOnly;
         }
+        this.updateValidity();
+    }
+
+    /**
+     * Required changed.
+     */
+    public requiredChanged(): void {
+        this.internals.ariaRequired = this.host.required ? "true" : null;
+        this.updateValidity();
     }
 
     /**
@@ -127,6 +142,27 @@ export class RadioGroupController {
             radio.checked = value !== null && radio.value === value;
         }
         this.rovingFocus.setActive(this.checkedRadio());
+        this.updateValidity();
+    }
+
+    // A required group without a checked radio is missing its value, shown at its first radio that isn't disabled. A read only group isn't
+    // validated, as a read only native input isn't.
+    private updateValidity(): void {
+        const { host, internals } = this;
+        if (host.required && !host.readOnly && !this.checkedRadio()) {
+            const anchor = this.radios.find(radio => !radio.matches(":disabled"));
+            internals.setValidity({ valueMissing: true }, this.valueMissingMessage(), anchor);
+        } else {
+            internals.setValidity({});
+        }
+    }
+
+    // The browser's message for a required radio that isn't checked, in the browser's language.
+    private valueMissingMessage(): string {
+        const input = this.host.ownerDocument.createElement("input");
+        input.type = "radio";
+        input.required = true;
+        return input.validationMessage;
     }
 
     private checkedRadio(): RadioElement | null {
