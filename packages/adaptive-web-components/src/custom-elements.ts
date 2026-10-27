@@ -9,7 +9,6 @@ import { buttonDefinition } from './components/button/button.definition.js';
 import { calendarDefinition } from './components/calendar/calendar.definition.js';
 import { cardDefinition } from './components/card/card.definition.js';
 import { checkboxDefinition } from './components/checkbox/checkbox.definition.js';
-import { comboboxDefinition } from './components/combobox/combobox.definition.js';
 import { dataGridDefinition } from './components/data-grid/data-grid.definition.js';
 import { dataGridCellDefinition } from './components/data-grid-cell/data-grid-cell.definition.js';
 import { dataGridRowDefinition } from './components/data-grid-row/data-grid-row.definition.js';
@@ -55,7 +54,6 @@ export const AllComponents = {
 	calendarDefinition,
 	cardDefinition,
 	checkboxDefinition,
-	comboboxDefinition,
 	dataGridDefinition,
 	dataGridCellDefinition,
 	dataGridRowDefinition,

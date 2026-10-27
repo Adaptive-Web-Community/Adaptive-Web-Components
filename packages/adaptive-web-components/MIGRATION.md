@@ -396,6 +396,16 @@ The picker is a form control of options now, with one value or several, and take
 | | `PickerStatics.removeValue`, the content of a value's remove button |
 | | `freeform`, `name`, `required`, `readonly`, `placeholder`, and the validity API |
 
+## Combobox
+
+Removed: a `Picker` with `freeform` is a combobox, whose text is the value when no option has it.
+
+| 0.10 | Now |
+| --- | --- |
+| `<adaptive-combobox>` | `<adaptive-picker freeform>` |
+| `autocomplete` (`inline`, `list`, `both`, `none`) | List autocomplete: the options that contain the text are shown |
+| `ComboboxStatics.indicator` | `PickerStatics.indicator` |
+
 ## Picker List, Picker List Item, Picker Menu, Picker Menu Option
 
 Removed: the picker's input and values are its own parts, and its options are `ListboxOption`s.

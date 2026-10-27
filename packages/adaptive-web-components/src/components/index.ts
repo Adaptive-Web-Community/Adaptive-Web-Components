@@ -12,7 +12,6 @@ export * from "./button/index.js";
 export * from "./calendar/index.js";
 export * from "./card/index.js";
 export * from "./checkbox/index.js";
-export * from "./combobox/index.js";
 export * from "./data-grid/index.js";
 export * from "./data-grid-cell/index.js";
 export * from "./data-grid-row/index.js";

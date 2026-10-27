@@ -18,7 +18,6 @@ import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
     CheckboxStatics,
-    ComboboxStatics,
     MenuItemStatics,
     NumberFieldStatics,
     PickerStatics,
@@ -32,7 +31,6 @@ type ComponentStatics =
     AccordionItemStatics
     | BreadcrumbItemStatics
     | CheckboxStatics
-    | ComboboxStatics
     | MenuItemStatics
     | NumberFieldStatics
     | PickerStatics
