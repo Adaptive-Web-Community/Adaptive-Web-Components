@@ -1,3 +1,4 @@
+export { Tab } from "./tab.js";
 export { composeTab } from "./tab.compose.js";
 export {
     templateStyles as tabTemplateStyles,

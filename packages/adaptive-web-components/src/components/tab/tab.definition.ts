@@ -3,7 +3,7 @@ import { composeTab } from "./tab.compose.js";
 import { styleModules } from "./tab.styles.modules.js";
 
 /**
- * The Tab custom element definition. Implements {@link @microsoft/fast-foundation#FASTTab}.
+ * The Tab custom element definition. Implements {@link Tab}.
  *
  * @remarks
  * HTML Element: \<adaptive-tab\>

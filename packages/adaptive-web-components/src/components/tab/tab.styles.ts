@@ -6,14 +6,18 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  */
 export const templateStyles: ElementStyles = css`
     :host {
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        grid-row: 1;
         cursor: pointer;
     }
 
-    :host([aria-selected="true"]) {
+    :host([disabled]) {
+        cursor: default;
+    }
+
+    :host([selected]) {
         z-index: 2;
     }
 `;

@@ -19,6 +19,11 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     keys: RovingFocusKeys;
 
     /**
+     * Whether Home and End move to the first and the last item that isn't disabled.
+     */
+    homeEnd?: boolean;
+
+    /**
      * What else to do when the focus moves to an item, such as checking the radio it moved to.
      */
     onMove?: (item: T) => void;
@@ -30,9 +35,9 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
 };
 
 /**
- * Focus that roves among the items of a composite (a radio group): one item is in the tab order (`tabindex="0"`), the active one, or the
- * first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are disabled (`:disabled`,
- * or as the options say).
+ * Focus that roves among the items of a composite (a radio group, a tablist): one item is in the tab order (`tabindex="0"`), the active one, or
+ * the first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are disabled
+ * (`:disabled`, or as the options say), and Home and End when the options say.
  *
  * @remarks
  * The composite's controller creates it, connects and disconnects it with its own, and gives it the items and the active item as they change.
@@ -43,8 +48,11 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
 export class RovingFocusController<T extends HTMLElement = HTMLElement> {
     private items: readonly T[] = [];
     private active: T | null = null;
+    private keys: RovingFocusKeys;
 
-    constructor(private readonly host: HTMLElement, private readonly options: RovingFocusOptions<T>) {}
+    constructor(private readonly host: HTMLElement, private readonly options: RovingFocusOptions<T>) {
+        this.keys = options.keys;
+    }
 
     /**
      * Starts handling the arrow keys. For when the composite is connected.
@@ -76,6 +84,13 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
         this.update();
     }
 
+    /**
+     * The arrow keys that move changed, with the composite's orientation.
+     */
+    public setKeys(keys: RovingFocusKeys): void {
+        this.keys = keys;
+    }
+
     private enabledItems(): T[] {
         const isDisabled = this.options.isDisabled ?? ((item: T) => item.matches(":disabled"));
         return this.items.filter(item => !isDisabled(item));
@@ -90,7 +105,7 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
     }
 
     private step(key: string): number {
-        const { keys } = this.options;
+        const { keys } = this;
         if (keys !== "vertical" && (key === "ArrowRight" || key === "ArrowLeft")) {
             const forward = key === "ArrowRight" ? 1 : -1;
             return getComputedStyle(this.host).direction === "rtl" ? -forward : forward;
@@ -108,13 +123,22 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
 
         const enabled = this.enabledItems();
         const index = enabled.findIndex(item => item === event.target);
-        const step = this.step(event.key);
-        if (index < 0 || step === 0) {
+        if (index < 0) {
             return;
         }
 
+        let next: T;
+        if (this.options.homeEnd && (event.key === "Home" || event.key === "End")) {
+            next = event.key === "Home" ? enabled[0] : enabled[enabled.length - 1];
+        } else {
+            const step = this.step(event.key);
+            if (step === 0) {
+                return;
+            }
+            next = enabled[(index + step + enabled.length) % enabled.length];
+        }
+
         event.preventDefault();
-        const next = enabled[(index + step + enabled.length) % enabled.length];
         this.setActive(next);
         next.focus();
         this.options.onMove?.(next);

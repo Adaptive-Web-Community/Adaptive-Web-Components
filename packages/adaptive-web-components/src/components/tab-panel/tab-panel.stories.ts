@@ -1,16 +1,16 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTTabPanel } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { TabPanel as TabPanelElement } from "./tab-panel.js";
 
-export const storyTemplate = html<StoryArgs<FASTTabPanel>>`
+export const storyTemplate = html<StoryArgs<TabPanelElement>>`
     <adaptive-tab-panel>
         ${(x) => x.storyContent}
     </adaptive-tab-panel>
 `;
 
 export default {
-    title: "Components/Tabs/Tab Panel",
+    title: "Components/Tablist/Tab Panel",
     excludeStories: ["storyTemplate"],
     args: {
         storyContent: "Tab panel",
@@ -18,6 +18,6 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTTabPanel>;
+} as Meta<TabPanelElement>;
 
-export const TabPanel: Story<FASTTabPanel> = renderComponent(storyTemplate).bind({});
+export const TabPanel: Story<TabPanelElement> = renderComponent(storyTemplate).bind({});

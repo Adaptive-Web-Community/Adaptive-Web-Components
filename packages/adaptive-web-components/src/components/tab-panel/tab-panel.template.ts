@@ -1,7 +1,7 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTTabPanel, tabPanelTemplate } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { TabPanel } from "./tab-panel.js";
 
 /**
  * @public
@@ -25,9 +25,10 @@ export const TabPanelAnatomy: ComponentAnatomy<typeof TabPanelConditions, typeof
 };
 
 /**
- * Default Tab Panel template, {@link @microsoft/fast-foundation#tabPanelTemplate}.
+ * Default Tab Panel template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTTabPanel> =
-    (ds: DesignSystem) =>
-        tabPanelTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<TabPanel> =
+    (ds: DesignSystem) => html<TabPanel>`
+        <slot></slot>
+    `;

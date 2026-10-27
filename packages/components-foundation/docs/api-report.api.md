@@ -427,6 +427,7 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
     disconnect(): void;
     setActive(item: T | null): void;
     setItems(items: readonly T[]): void;
+    setKeys(keys: RovingFocusKeys): void;
 }
 
 // @public
@@ -435,6 +436,7 @@ export type RovingFocusKeys = Orientation | "both";
 // @public
 export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     keys: RovingFocusKeys;
+    homeEnd?: boolean;
     onMove?: (item: T) => void;
     isDisabled?: (item: T) => boolean;
 };
@@ -461,6 +463,9 @@ export const SearchParts: {
     readonly control: "control";
     readonly clearButton: "clear-button";
 };
+
+// @public
+export function selectTab(tab: TabElement): void;
 
 // @public
 export function skeletonAria(): DefaultAria;
@@ -514,6 +519,55 @@ export const SwitchParts: {
     readonly switch: "switch";
     readonly label: "label";
     readonly thumb: "thumb";
+};
+
+// @public
+export function tabAria(tab: TabElement): DefaultAria;
+
+// @public
+export interface TabElement extends HTMLElement {
+    disabled: boolean;
+    panel: TabPanelElement | null;
+    selected: boolean;
+}
+
+// @public
+export class TablistController {
+    constructor(host: TablistElement, internals: TablistInternals, options: TablistOptions);
+    connect(): void;
+    disconnect(): void;
+    orientationChanged(): void;
+    panelsElementChanged(): void;
+    setTabs(tabs: readonly TabElement[]): void;
+    tabSelectedChanged(tab: TabElement): void;
+}
+
+// @public
+export interface TablistElement extends HTMLElement {
+    orientation: Orientation;
+    panelsElement: Element | null;
+}
+
+// @public
+export type TablistInternals = Pick<ElementInternals, "role" | "ariaOrientation">;
+
+// @public
+export type TablistOptions = {
+    isPanel: (element: Element) => element is TabPanelElement;
+    registry: CustomElementRegistry;
+};
+
+// @public
+export function tabPanelAria(panel: TabPanelElement): DefaultAria;
+
+// @public
+export interface TabPanelElement extends HTMLElement {
+    tab: TabElement | null;
+}
+
+// @public
+export const TabParts: {
+    readonly content: "content";
 };
 
 // @public

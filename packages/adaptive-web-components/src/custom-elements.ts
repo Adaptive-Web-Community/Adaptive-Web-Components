@@ -37,7 +37,7 @@ import { sliderLabelDefinition } from './components/slider-label/slider-label.de
 import { switchDefinition } from './components/switch/switch.definition.js';
 import { tabDefinition } from './components/tab/tab.definition.js';
 import { tabPanelDefinition } from './components/tab-panel/tab-panel.definition.js';
-import { tabsDefinition } from './components/tabs/tabs.definition.js';
+import { tablistDefinition } from './components/tablist/tablist.definition.js';
 import { textAreaDefinition } from './components/text-area/text-area.definition.js';
 import { textFieldDefinition } from './components/text-field/text-field.definition.js';
 import { toolbarDefinition } from './components/toolbar/toolbar.definition.js';
@@ -85,7 +85,7 @@ export const AllComponents = {
 	switchDefinition,
 	tabDefinition,
 	tabPanelDefinition,
-	tabsDefinition,
+	tablistDefinition,
 	textAreaDefinition,
 	textFieldDefinition,
 	toolbarDefinition,

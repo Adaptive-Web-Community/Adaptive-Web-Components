@@ -270,3 +270,37 @@ The element is a popover in the top layer, placed next to its anchor by CSS anch
 | `[visible]` in selectors | `:popover-open` |
 | | `anchorElement`, to set the anchor as an element |
 | The anchor's `aria-describedby`, by id | The anchor's `ariaDescribedByElements`, added to the author's |
+
+## Tablist
+
+The tabs and the panels are laid out apart now: the tablist is the strip of tabs, and its panels are another element's.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTabs` (FAST Foundation), `<adaptive-tabs>` with the tabs and the panels | `Tablist`, `<adaptive-tablist panels="id">` with the tabs; the `TabPanel`s are the children of the element with that id, in the order of the tabs |
+| `activeid`, the id of the active tab, and `activetab` | The `selected` attribute of a `Tab`. The tablist keeps one selected |
+| The tabs' `change` event, with the active tab as the detail | The tab's `change`, which bubbles; its target is the tab |
+| The tabs set an `id` on each tab and panel, generated when missing | The ids are the author's; the tabs and panels reference each other by ARIA element reflection |
+| `role="tablist"` on an element of the shadow root | The host is the tablist, through `ElementInternals` |
+| `TabsOrientation` | `Orientation` from `@adaptive-web/components-foundation` |
+| The `tablist` and `tabpanel` parts | Gone: the host is the strip, and the panels' element is the author's |
+| The `start` and `end` slots | Gone: put content beside the tablist |
+| Inline `grid-row` and `grid-column` styles, and a `vertical` class, on each tab | None: the tablist lays out its tabs in its orientation |
+| `adjust()` | Gone: select a tab, or press the arrows |
+
+## Tab
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTab` (FAST Foundation) | `Tab` |
+| `role`, `aria-selected`, `aria-controls`, and `slot` written to the element | `ElementInternals`; no slot |
+| `[aria-selected="true"]` in selectors | `[selected]` |
+| | `selected`, reflected; clicking the tab selects it |
+| | The `content` part, around the default slot |
+
+## Tab Panel
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTabPanel` (FAST Foundation) | `TabPanel` |
+| `role`, `aria-labelledby`, and `slot` written to the element | `ElementInternals`, named by its tab; it is a child of the tablist's panels' element |

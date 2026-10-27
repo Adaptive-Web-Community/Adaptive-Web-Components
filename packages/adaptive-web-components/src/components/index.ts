@@ -40,7 +40,7 @@ export * from "./slider-label/index.js";
 export * from "./switch/index.js";
 export * from "./tab/index.js";
 export * from "./tab-panel/index.js";
-export * from "./tabs/index.js";
+export * from "./tablist/index.js";
 export * from "./text-area/index.js";
 export * from "./text-field/index.js";
 export * from "./toolbar/index.js";
