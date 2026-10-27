@@ -152,3 +152,14 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | Enter turned it on and off | Space only, as a native checkbox switch |
 | `readonly` | Gone for now: to decide for all controls with the text fields |
 | `SwitchParts` from this package | The components foundation's (`switch`, `label`, `thumb`), also exported here |
+
+## Radio
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTRadio` (FAST Foundation) | `Radio`, which extends `BaseCheckable` |
+| The role and `aria-*` written to the element, and a proxy `<input type="radio">` | `ElementInternals`, as the checkbox; each radio still gives its value to the form |
+| `[aria-checked='true']` in selectors | `:state(checked)` |
+| Radios grouped by `name` without a radio group | Use a `RadioGroup` around them |
+| `required` and `readonly` | Gone for now: to decide with the radio group's `required` and the text fields |
+| `RadioParts` from this package | The components foundation's (`control`, `label`), also exported here |

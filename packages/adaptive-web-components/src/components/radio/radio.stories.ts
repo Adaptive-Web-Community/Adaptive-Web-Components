@@ -1,14 +1,13 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTRadio } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Radio as RadioElement } from "./radio.js";
 
-export const storyTemplate = html<StoryArgs<FASTRadio>>`
+export const storyTemplate = html<StoryArgs<RadioElement>>`
     <adaptive-radio
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         ?required="${(x) => x.required}"
-        ?readonly="${(x) => x.readOnly}"
         name="${(x) => x.name}"
         value="${(x) => x.value}"
     >
@@ -23,7 +22,6 @@ export default {
         storyContent: "Label",
         checked: false,
         disabled: false,
-        readOnly: false,
         required: false,
     },
     argTypes: {
@@ -31,16 +29,15 @@ export default {
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         name: { control: "text" },
-        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
     },
-} as Meta<FASTRadio>;
+} as Meta<RadioElement>;
 
-export const Radio: Story<FASTRadio> = renderComponent(storyTemplate).bind({});
+export const Radio: Story<RadioElement> = renderComponent(storyTemplate).bind({});
 
-export const RadioInForm: Story<FASTRadio> = renderComponent(
-    html<StoryArgs<FASTRadio>>`
+export const RadioInForm: Story<RadioElement> = renderComponent(
+    html<StoryArgs<RadioElement>>`
         <form @submit="${() => false}">
             ${storyTemplate}
             <adaptive-button type="submit">Submit</adaptive-button>

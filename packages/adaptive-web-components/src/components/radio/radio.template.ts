@@ -1,8 +1,10 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTRadio, radioTemplate } from "@microsoft/fast-foundation";
-import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { hasContent, RadioParts, type ValuesOf } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import { staticallyCompose } from "../../utilities/template-helpers.js";
+import type { Radio } from "./radio.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the radio.
@@ -22,33 +24,33 @@ export type RadioStatics = ValuesOf<typeof RadioStatics>;
  * @public
  */
 export const RadioConditions = {
-    checked: "[aria-checked='true']",
+    checked: ":state(checked)",
 };
 
-/**
- * @public
- */
-export const RadioParts = {
-    control: "control",
-    label: "label",
-};
+export { RadioParts };
 
 /**
  * @public
  */
 export const RadioAnatomy: ComponentAnatomy<typeof RadioConditions, typeof RadioParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: controlInteractivity,
     conditions: RadioConditions,
     parts: RadioParts,
     focus: Focus.contextFocused(),
 };
 
 /**
- * Default Radio template, {@link @microsoft/fast-foundation#radioTemplate}.
+ * Default Radio template. The element is the radio, and its content is the label.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTRadio> =
-    (ds: DesignSystem) =>
-        radioTemplate({
-            checkedIndicator: ds.statics.get(RadioStatics.checked),
-        });
+export const template: (ds: DesignSystem) => ElementViewTemplate<Radio> =
+    (ds: DesignSystem) => html<Radio>`
+        <div class="control" part="control">
+            <slot name="checked-indicator" ?hidden="${x => !x.checked}">
+                ${staticallyCompose(ds.statics.get(RadioStatics.checked))}
+            </slot>
+        </div>
+        <span class="label" part="label" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </span>
+    `;

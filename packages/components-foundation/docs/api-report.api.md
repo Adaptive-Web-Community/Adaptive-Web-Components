@@ -251,6 +251,23 @@ export const ProgressRingParts: {
 };
 
 // @public
+export class RadioController extends CheckableController<RadioElement> {
+    constructor(host: RadioElement, internals: CheckableInternals);
+    // (undocumented)
+    protected activate(): boolean;
+}
+
+// @public
+export interface RadioElement extends CheckableElement {
+}
+
+// @public
+export const RadioParts: {
+    readonly control: "control";
+    readonly label: "label";
+};
+
+// @public
 export function skeletonAria(): DefaultAria;
 
 // @public

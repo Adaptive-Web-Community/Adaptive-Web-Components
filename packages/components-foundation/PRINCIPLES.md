@@ -23,16 +23,16 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 5. **Components with the same behavior have one contract**, and a template each.
    Used by: Progress and Progress Ring (`ProgressElement`).
 6. **Behavior that several components share is a controller of its own**, which their controllers use or extend.
-   Used by: `SpacePressController` (Button, Checkbox, Switch), `CheckableController` (Checkbox, Switch).
+   Used by: `SpacePressController` (Button, Checkbox, Switch, Radio), `CheckableController` (Checkbox, Switch, Radio).
 
 ## Elements and roles
 
 7. **A control is its host element.** Its role and its form association are `ElementInternals`', and it takes focus itself. No native element
    inside, and no proxy element in the light DOM. ([0010](../../docs/decisions/0010-a-control-is-its-host-element.md))
-   Used by: Button, Checkbox, Switch. Next: Radio, the text fields, Slider.
+   Used by: Button, Checkbox, Switch, Radio. Next: the text fields, Slider.
 8. **A control's label is its content**, in a `label` part that is hidden when it is empty. The role takes its name from it, clicking it
    activates the control, and a `<label for>` outside works too, through `ElementInternals`.
-   Used by: Checkbox, Switch.
+   Used by: Checkbox, Switch, Radio.
 9. **A link wraps a native `<a>`.** What the browser does for a link (its context menu, opening it in a new tab, showing its URL, `:visited`,
    dragging it) can't be done for a custom element, so the link is native, and the host isn't the element with the role.
    Used by: Anchor. Next: Breadcrumb Item, and the links of a menu.
@@ -71,20 +71,21 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     and `type` are attributes. `:state(active)` and `:state(icon-only)` are states of `ElementInternals`. A component doesn't add classes or
     attributes to its host for its own state, except `tabindex`, which focus needs.
     Used by: Accordion, Accordion Item, Anchor (`:state(icon-only)`), Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
-    Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`).
+    Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`).
 19. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
-    Used by: Checkbox, Switch.
+    Used by: Checkbox, Switch, Radio.
 20. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
     that isn't shown has the `hidden` attribute, so it is hidden without the styles and from assistive technology.
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons),
-    Checkbox (`:disabled`; `hidden` on its indicators and an empty label), Switch (`:disabled`; `hidden` on an empty label).
+    Checkbox (`:disabled`; `hidden` on its indicators and an empty label), Switch (`:disabled`; `hidden` on an empty label),
+    Radio (`:disabled`; `hidden` on its indicator and an empty label).
 21. **What is only decoration or a placeholder is hidden from assistive technology**: `aria-hidden` on an element, `alt=""` on an image.
     Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image).
 22. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
-    Used by: Button, Accordion Item, Checkbox, Switch.
+    Used by: Button, Accordion Item, Checkbox, Switch, Radio.
 23. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
     rewrite what the author set.
     Used by: Progress, Progress Ring.
@@ -93,22 +94,24 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 
 24. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
     on Space when it is released, and not if the focus left in between.
-    Used by: Accordion (Up, Down, Home, End), Button, Checkbox (Space when it is released), Switch (the same).
+    Used by: Accordion (Up, Down, Home, End), Button, Checkbox (Space when it is released), Switch (the same),
+    Radio (Space checks it when it is released).
 25. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles.
-    Used by: Accordion, Button, Checkbox, Switch.
+    Used by: Accordion, Button, Checkbox, Switch, Radio.
 26. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
     implements `focus()` to focus it, instead of `delegatesFocus`.
-    Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host).
+    Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host).
 
 ## Events
 
 27. **Events are the native ones, or named and shaped like them.** They bubble, are composed only where the native one is (`input`), are for
     what the user did, and their target is the element that changed, without an id in the detail.
-    Used by: Accordion Item (`change`), Button (`click`), Checkbox (`input`, `change`), Switch (the same).
+    Used by: Accordion Item (`change`), Button (`click`), Checkbox (`input`, `change`), Switch (the same), Radio (`input`, `change`,
+    only when it becomes checked).
 28. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
-    Used by: Button, Checkbox, Switch.
+    Used by: Button, Checkbox, Switch, Radio.
 
 ## Properties
 
@@ -119,7 +122,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 30. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
-    Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`).
+    Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`),
+    Radio (`value` is `on`).
 31. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`).
@@ -133,7 +137,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 
 34. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
-    `SkeletonParts`, `CheckboxParts`, `SwitchParts`.
+    `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`.
 35. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box).
@@ -142,7 +146,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: all.
 37. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
-    Used by: Button, Checkbox, Switch (all through AWC's `controlInteractivity`).
+    Used by: Button, Checkbox, Switch, Radio (all through AWC's `controlInteractivity`).
 38. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
     Used by: Progress, Progress Ring (`--percent-complete`).
 
@@ -150,7 +154,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 
 39. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
-    Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same).
+    Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same),
+    Radio (its form value and reset).
 
 ## To decide for all components
 

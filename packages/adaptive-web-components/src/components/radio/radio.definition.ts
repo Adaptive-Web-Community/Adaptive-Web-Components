@@ -5,7 +5,7 @@ import { RadioStatics } from "./radio.template.js";
 import { styleModules } from "./radio.styles.modules.js";
 
 /**
- * The Radio custom element definition. Implements {@link @microsoft/fast-foundation#FASTRadio}.
+ * The Radio custom element definition. Implements {@link Radio}.
  *
  * @remarks
  * HTML Element: \<adaptive-radio\>

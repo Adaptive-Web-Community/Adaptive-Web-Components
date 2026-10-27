@@ -23,26 +23,16 @@ export const templateStyles: ElementStyles = css`
     }
 
     slot[name="checked-indicator"] * {
-        pointer-events: none;
-    }
-
-    slot[name="checked-indicator"] * {
-        /*opacity: 0;*/
-        display: none;
-    }
-
-    :host([aria-checked="true"]) slot[name="checked-indicator"] * {
-        /*opacity: 1;*/
         display: flex;
+        pointer-events: none;
     }
 
     .label {
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 `;
 

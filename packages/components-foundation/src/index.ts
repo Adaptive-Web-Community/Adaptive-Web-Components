@@ -9,6 +9,7 @@ export * from "./checkbox/index.js";
 export * from "./divider/index.js";
 export * from "./progress/index.js";
 export * from "./progress-ring/index.js";
+export * from "./radio/index.js";
 export * from "./skeleton/index.js";
 export * from "./switch/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
