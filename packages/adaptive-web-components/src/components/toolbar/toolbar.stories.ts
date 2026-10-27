@@ -1,10 +1,10 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTToolbar } from "@microsoft/fast-foundation";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@adaptive-web/components-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Toolbar as ToolbarElement } from "./toolbar.js";
 
-const storyTemplate = html<StoryArgs<FASTToolbar>>`
+const storyTemplate = html<StoryArgs<ToolbarElement>>`
     <adaptive-toolbar
         orientation="${(x) => x.orientation}"
     >
@@ -20,6 +20,7 @@ export default {
         startSlotIcon: false,
         endSlotIcon: false,
         storyContent: html`
+            <span slot="label">Formatting</span>
             <button slot="start">Start Slot Button</button>
             <adaptive-button>Adaptive Button</adaptive-button>
             <adaptive-anchor href="javascript:void;">Adaptive Anchor</adaptive-anchor>
@@ -49,6 +50,6 @@ export default {
         storyContent: { table: { disable: true } },
         orientation: { control: "radio", options: Object.values(Orientation) },
     },
-} as Meta<FASTToolbar>;
+} as Meta<ToolbarElement>;
 
 export const Toolbar = renderComponent(storyTemplate).bind({});

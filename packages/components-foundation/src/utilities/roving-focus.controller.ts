@@ -34,10 +34,23 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     isDisabled?: (item: T) => boolean;
 };
 
+// The keys move the caret in a text that the user edits, such as the input of a text field in a toolbar.
+function isEditingText(event: KeyboardEvent): boolean {
+    const [origin] = event.composedPath();
+    if (origin instanceof HTMLTextAreaElement) {
+        return true;
+    }
+    if (origin instanceof HTMLInputElement) {
+        return !["button", "checkbox", "color", "file", "image", "radio", "range", "reset", "submit"].includes(origin.type);
+    }
+    return origin instanceof HTMLElement && origin.isContentEditable;
+}
+
 /**
  * Focus that roves among the items of a composite (a radio group, a tablist): one item is in the tab order (`tabindex="0"`), the active one, or
  * the first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are disabled
- * (`:disabled`, or as the options say), and Home and End when the options say.
+ * (`:disabled`, or as the options say), and Home and End when the options say. An item that gets the focus otherwise, by a click, becomes the
+ * active one. The keys of a text that the user edits in an item, such as the input of a text field, aren't taken.
  *
  * @remarks
  * The composite's controller creates it, connects and disconnects it with its own, and gives it the items and the active item as they change.
@@ -59,6 +72,7 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
      */
     public connect(): void {
         this.host.addEventListener("keydown", this.handleKeydown);
+        this.host.addEventListener("focusin", this.handleFocusin);
     }
 
     /**
@@ -66,6 +80,7 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
      */
     public disconnect(): void {
         this.host.removeEventListener("keydown", this.handleKeydown);
+        this.host.removeEventListener("focusin", this.handleFocusin);
     }
 
     /**
@@ -116,8 +131,16 @@ export class RovingFocusController<T extends HTMLElement = HTMLElement> {
         return 0;
     }
 
+    // An item that gets the focus otherwise than by the keys, by a click or by code, becomes the active one, so the focus comes back to it.
+    private readonly handleFocusin = (event: FocusEvent): void => {
+        const item = this.items.find(item => item === event.target);
+        if (item && item !== this.active) {
+            this.setActive(item);
+        }
+    };
+
     private readonly handleKeydown = (event: KeyboardEvent): void => {
-        if (event.defaultPrevented) {
+        if (event.defaultPrevented || isEditingText(event)) {
             return;
         }
 

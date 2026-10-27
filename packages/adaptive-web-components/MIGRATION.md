@@ -304,3 +304,15 @@ The tabs and the panels are laid out apart now: the tablist is the strip of tabs
 | --- | --- |
 | `FASTTabPanel` (FAST Foundation) | `TabPanel` |
 | `role`, `aria-labelledby`, and `slot` written to the element | `ElementInternals`, named by its tab; it is a child of the tablist's panels' element |
+
+## Toolbar
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTToolbar` (FAST Foundation) | `Toolbar` |
+| `role` and `aria-*` written to the element | `ElementInternals`. The `label` slot now names the toolbar |
+| Items: anything focusable, found with `tabbable`, including inside components | Elements that take focus themselves, and those in a plain element around them. A link or a text field stays in the tab order on its own |
+| The arrows stop at the ends | They wrap; Home and End move to the ends. The keys of a text input aren't taken |
+| `activeIndex`, `direction` | Gone: the toolbar keeps the active item, and reads the direction when a key is pressed |
+| `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
+| `ToolbarParts` from this package | The components foundation's (`positioning-region`), also exported here |

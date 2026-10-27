@@ -1,7 +1,8 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTToolbar, toolbarTemplate } from "@microsoft/fast-foundation";
+import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { ToolbarParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Toolbar } from "./toolbar.js";
 
 /**
  * @public
@@ -13,12 +14,7 @@ export const ToolbarConditions = {
     },
 };
 
-/**
- * @public
- */
-export const ToolbarParts = {
-    positioningRegion: "positioning-region",
-};
+export { ToolbarParts };
 
 /**
  * @public
@@ -30,9 +26,15 @@ export const ToolbarAnatomy: ComponentAnatomy<typeof ToolbarConditions, typeof T
 };
 
 /**
- * Default Toolbar template, {@link @microsoft/fast-foundation#toolbarTemplate}.
+ * Default Toolbar template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTToolbar> =
-    (ds: DesignSystem) =>
-        toolbarTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Toolbar> =
+    (ds: DesignSystem) => html<Toolbar>`
+        <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}></slot>
+        <div class="positioning-region" part="positioning-region">
+            <slot name="start" ${slotted({ property: "startElements", filter: elements() })}></slot>
+            <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+            <slot name="end" ${slotted({ property: "endElements", filter: elements() })}></slot>
+        </div>
+    `;

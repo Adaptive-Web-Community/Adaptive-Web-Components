@@ -684,6 +684,29 @@ export type TextInputOptions = {
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public
+export class ToolbarController {
+    constructor(host: ToolbarElement, internals: ToolbarInternals);
+    connect(): void;
+    disconnect(): void;
+    labelsChanged(labels: readonly Element[]): void;
+    orientationChanged(): void;
+    setElements(elements: readonly Element[]): void;
+}
+
+// @public
+export interface ToolbarElement extends HTMLElement {
+    orientation: Orientation;
+}
+
+// @public
+export type ToolbarInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements">;
+
+// @public
+export const ToolbarParts: {
+    readonly positioningRegion: "positioning-region";
+};
+
+// @public
 export class TooltipController {
     constructor(host: TooltipElement, internals: TooltipInternals);
     anchorChanged(): void;

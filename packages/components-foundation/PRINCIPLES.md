@@ -16,7 +16,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 3. **A controller doesn't observe.** The binding observes with its framework's own reactivity and calls the controller's method for each
    change (`setItems`, `expandModeChanged`, `itemExpandedChanged`), and `connect` and `disconnect` with the element's lifecycle. What isn't
    in the contract, such as the author's ARIA to forward, the controller observes itself.
-   Used by: Accordion, Button; Anchor (its `AriaForwardingController` observes the author's ARIA); Tablist.
+   Used by: Accordion, Button; Anchor (its `AriaForwardingController` observes the author's ARIA); Tablist,
+   Toolbar.
 4. **A controller gets only what it uses**, as a narrow type (`ButtonInternals` is the role, the form, and the states of `ElementInternals`), so
    it can be tested without a browser feature it doesn't need.
    Used by: Button.
@@ -28,7 +29,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 7. **Behavior that several components share is a controller of its own**, which their controllers use or extend.
    Used by: `SpacePressController` (Button, Checkbox, Switch, Radio), `CheckableController` (Checkbox, Switch, Radio),
    `TextInputController` (Text Field, Text Area, Number Field, Search), `InvokerController` (Button),
-   `RovingFocusController` (Radio Group, Tablist; next: Toolbar, Menu, Tree).
+   `RovingFocusController` (Radio Group, Tablist, Toolbar; next: Menu, Tree).
 8. **The controller writes what the contract gives a native element**, not the template: the native element's state (its validity) is then
    right as soon as an attribute changes, and each framework's template has the bare element.
    Used by: Text Field (its `<input>`), Text Area (its `<textarea>`), Number Field (its `<input type="number">`),
@@ -69,7 +70,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Avatar (`img`, named by `name`), Divider (`separator`, in its orientation), Progress and Progress Ring (`progressbar`,
     with its values), Skeleton (hidden), Radio Group (`radiogroup`, in its orientation, through its controller), Tablist (`tablist`,
     in its orientation, through its controller), Tab (`tab`, selected,
-    disabled, and the panel it controls), Tab Panel (`tabpanel`, named by its tab).
+    disabled, and the panel it controls), Tab Panel (`tabpanel`, named by its tab), Toolbar (`toolbar`, in its orientation,
+    through its controller).
 17. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
     (a property each child reads), not by doing their behavior for them.
     Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
@@ -77,7 +79,9 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Tablist (it reacts to `selected`, and gives each tab its `panel` and each panel of its panels' element its `tab`).
 18. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
     defined yet is waited for with `whenDefined` of the container's registry.
-    Used by: Accordion, Radio Group (both with AWC's `onDefined`), Tablist (its tabs, and the panels of its panels' element).
+    Used by: Accordion, Radio Group (both with AWC's `onDefined`), Tablist (its tabs, and the panels of its panels' element),
+    Toolbar (its items by whether they take focus,
+    again when one is defined).
 
 ## ARIA references and ids
 
@@ -92,7 +96,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     as the `ariaLabelledByElements` of its `ElementInternals`), Text Field (an outside `<label for>`,
     as its input's `ariaLabelledByElements`), Text Area, Number Field, Search,
     Tooltip (it is added to its anchor's `ariaDescribedByElements`, after the author's), Tab and Tab Panel (each other,
-    through their `ElementInternals`, which can't take an id at all).
+    through their `ElementInternals`, which can't take an id at all), Toolbar (its `label` slot).
 
 ## State
 
@@ -102,7 +106,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     layer needs.
     Used by: Accordion, Accordion Item, Anchor (`:state(icon-only)`), Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
     Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`), Dialog (`:state(open)`,
-    `:state(modal)`), Tab (`selected`, `disabled`), Tablist (`orientation`, `panels`).
+    `:state(modal)`), Tab (`selected`, `disabled`), Tablist (`orientation`, `panels`), Toolbar (`orientation`).
 23. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
     Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search.
@@ -137,19 +141,23 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     on Space when it is released, and not if the focus left in between.
     Used by: Accordion (Up, Down, Home, End), Button, Checkbox (Space when it is released), Switch (the same),
     Radio (Space checks it when it is released), Radio Group (all four arrows, wrapping, Left and Right swapped right to left),
-    Number Field (the native input's arrows), Tablist (the arrows of its orientation, wrapping, Home, End).
+    Number Field (the native input's arrows), Tablist (the arrows of its orientation, wrapping, Home, End),
+    Toolbar (the arrows of its orientation, wrapping, Home, End).
 30. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
-    event whose default was already prevented; and it prevents the default of the keys it handles. A tooltip's Escape is the exception: it
-    hides it wherever the focus is while it is shown, as WCAG 1.4.13 asks.
-    Used by: Accordion, Button, Checkbox, Switch, Radio, Radio Group (a key of a radio, not of its content), Tablist (a key of a tab).
+    event whose default was already prevented; and it prevents the default of the keys it handles. A key of a text that the user edits isn't
+    taken: an input in a toolbar keeps its caret. A tooltip's Escape is the exception: it hides it wherever the focus is while it is shown,
+    as WCAG 1.4.13 asks.
+    Used by: Accordion, Button, Checkbox, Switch, Radio, Radio Group (a key of a radio, not of its content), Tablist (a key of a tab),
+    Toolbar (a key of an item, not of a text input).
 31. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
     implements `focus()` to focus it, instead of `delegatesFocus`, unless it wraps a native form control, whose host delegates its focus
     (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control.
     Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host),
     Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host).
 32. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
-    their `tabindex`.
-    Used by: Radio Group (the checked radio, with the `RovingFocusController`), Tablist (the selected tab).
+    their `tabindex`. An item that gets the focus by a click becomes the active one.
+    Used by: Radio Group (the checked radio, with the `RovingFocusController`), Tablist (the selected tab), Toolbar (the first,
+    or the last focused).
 
 ## Events
 
@@ -180,7 +188,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
     Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`),
     Radio (`value` is `on`), Radio Group (`horizontal`), Text Field (`type` is `text`), Text Area (`resize` is `none`),
-    Dialog (`closedby` is `closerequest`), Tooltip (`above`, a delay of 300), Tablist (`horizontal`).
+    Dialog (`closedby` is `closerequest`), Tooltip (`above`, a delay of 300), Tablist (`horizontal`), Toolbar (`horizontal`).
 38. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`).
@@ -188,14 +196,14 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`, `SkeletonShape`.
 40. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
-    Used by: `Orientation` (Divider, Radio Group, Tablist; next: Slider, Toolbar).
+    Used by: `Orientation` (Divider, Radio Group, Tablist, Toolbar; next: Slider).
 
 ## Parts and styles
 
 41. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
-    `SearchParts`, `DialogParts`, `TabParts`.
+    `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`.
 42. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box), Tab.

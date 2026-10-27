@@ -1,3 +1,4 @@
+export { Toolbar } from "./toolbar.js";
 export { composeToolbar } from "./toolbar.compose.js";
 export {
     templateStyles as toolbarTemplateStyles,
