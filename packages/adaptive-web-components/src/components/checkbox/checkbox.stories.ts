@@ -1,14 +1,13 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { FASTCheckbox } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Checkbox as CheckboxElement } from "./checkbox.js";
 
-const storyTemplate = html<StoryArgs<FASTCheckbox>>`
+const storyTemplate = html<StoryArgs<CheckboxElement>>`
     <adaptive-checkbox
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         :indeterminate="${(x) => x.indeterminate}"
-        ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
         value="${(x) => x.value}"
     >
@@ -23,7 +22,6 @@ export default {
         checked: false,
         disabled: false,
         indeterminate: false,
-        readOnly: false,
         required: false,
     },
     argTypes: {
@@ -32,16 +30,15 @@ export default {
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         indeterminate: { control: "boolean" },
-        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
     },
-} as Meta<FASTCheckbox>;
+} as Meta<CheckboxElement>;
 
-export const Checkbox: Story<FASTCheckbox> = renderComponent(storyTemplate).bind({});
+export const Checkbox: Story<CheckboxElement> = renderComponent(storyTemplate).bind({});
 
-export const CheckboxDisabled: Story<FASTCheckbox> = renderComponent(
-    html<StoryArgs<FASTCheckbox>>`
+export const CheckboxDisabled: Story<CheckboxElement> = renderComponent(
+    html<StoryArgs<CheckboxElement>>`
         <div style="align-items: start; display: flex; flex-direction: column; gap: 8px;">
             ${repeat((x) => x.storyItems, storyTemplate)}
         </div>
@@ -65,15 +62,15 @@ CheckboxDisabled.args = {
     ],
 };
 
-export const CheckboxIndeterminate: Story<FASTCheckbox> = Checkbox.bind({});
+export const CheckboxIndeterminate: Story<CheckboxElement> = Checkbox.bind({});
 CheckboxIndeterminate.args = {
     checked: true,
     indeterminate: true,
     storyContent: "Indeterminate",
 };
 
-export const CheckboxInForm: Story<FASTCheckbox> = renderComponent(
-    html<StoryArgs<FASTCheckbox>>`
+export const CheckboxInForm: Story<CheckboxElement> = renderComponent(
+    html<StoryArgs<CheckboxElement>>`
         <form @submit="${() => false}">
             ${storyTemplate}
             <adaptive-button type="submit">Submit</adaptive-button>
@@ -81,8 +78,8 @@ export const CheckboxInForm: Story<FASTCheckbox> = renderComponent(
     `
 ).bind({});
 
-export const CheckboxInFieldset: Story<FASTCheckbox> = renderComponent(
-    html<StoryArgs<FASTCheckbox>>`
+export const CheckboxInFieldset: Story<CheckboxElement> = renderComponent(
+    html<StoryArgs<CheckboxElement>>`
         <fieldset style="align-items: start; display: flex; flex-direction: column; gap: 8px;">
             <legend>${(x) => x.legendLabel}</legend>
             ${repeat((x) => x.storyItems, storyTemplate)}

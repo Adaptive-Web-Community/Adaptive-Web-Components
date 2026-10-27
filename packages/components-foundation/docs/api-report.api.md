@@ -131,6 +131,69 @@ export const ButtonType: {
 export type ButtonType = ValuesOf<typeof ButtonType>;
 
 // @public
+export class CheckableController<T extends CheckableElement = CheckableElement> {
+    constructor(host: T, internals: CheckableInternals, role: CheckableRole);
+    protected activate(): boolean;
+    protected ariaChecked(): string;
+    connect(): void;
+    defaultCheckedChanged(): void;
+    disconnect(): void;
+    formReset(): void;
+    // (undocumented)
+    protected readonly host: T;
+    // (undocumented)
+    protected readonly internals: CheckableInternals;
+    protected required(): boolean;
+    stateChanged(): void;
+    protected valueMissing(): boolean;
+    protected valueMissingMessage(): string;
+}
+
+// @public
+export interface CheckableElement extends HTMLElement {
+    checked: boolean;
+    defaultChecked: boolean;
+    disabled: boolean;
+    readonly form: HTMLFormElement | null;
+    readonly labels: NodeList;
+    name: string | null;
+    value: string;
+}
+
+// @public
+export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaRequired" | "form" | "setFormValue" | "setValidity"> & {
+    readonly states: Pick<CustomStateSet, "add" | "delete">;
+};
+
+// @public
+export type CheckableRole = "checkbox" | "switch" | "radio";
+
+// @public
+export class CheckboxController extends CheckableController<CheckboxElement> {
+    constructor(host: CheckboxElement, internals: CheckableInternals);
+    // (undocumented)
+    protected activate(): boolean;
+    // (undocumented)
+    protected ariaChecked(): string;
+    // (undocumented)
+    protected required(): boolean;
+    // (undocumented)
+    stateChanged(): void;
+}
+
+// @public
+export interface CheckboxElement extends CheckableElement {
+    indeterminate: boolean;
+    required: boolean;
+}
+
+// @public
+export const CheckboxParts: {
+    readonly control: "control";
+    readonly label: "label";
+};
+
+// @public
 export type DefaultAria = Partial<ARIAMixin>;
 
 // @public
@@ -140,6 +203,9 @@ export function dividerAria(divider: DividerElement): DefaultAria;
 export interface DividerElement extends HTMLElement {
     orientation: Orientation;
 }
+
+// @public
+export function hasContent(nodes: readonly Node[]): boolean;
 
 // @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -208,6 +274,13 @@ export const SkeletonShape: {
 
 // @public
 export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
+
+// @public
+export class SpacePressController {
+    constructor(host: HTMLElement, states: Pick<CustomStateSet, "add" | "delete">);
+    connect(): void;
+    disconnect(): void;
+}
 
 // @public
 export function toggleAccordionItem(item: AccordionItemElement): void;

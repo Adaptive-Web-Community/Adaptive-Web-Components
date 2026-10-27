@@ -128,3 +128,16 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | 0.10 | Now |
 | --- | --- |
 | `FASTCard` (FAST Foundation) | `Card`, an element with a default slot. It has no contract in the components foundation, since it has nothing to share |
+
+## Checkbox
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTCheckbox` (FAST Foundation) | `Checkbox`, which extends `BaseCheckable` (with `Switch` and `Radio`) |
+| The role and `aria-*` written to the element, and a proxy `<input>` in the light DOM | `ElementInternals`: the role, `ariaChecked`, the form value, and validity |
+| `[aria-checked='true']` and `[aria-checked='mixed']` in selectors | `:state(checked)` and `:state(indeterminate)` |
+| `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
+| `readonly` | Gone for now: to decide for all controls with the text fields |
+| The `label__hidden` class on an empty label | The `hidden` attribute |
+| | The `input` event before `change`, as a native checkbox's |
+| `CheckboxParts` from this package | The components foundation's (`control`, `label`), also exported here |

@@ -1,3 +1,5 @@
+export { BaseCheckable } from "./base-checkable.js";
+export { Checkbox } from "./checkbox.js";
 export { composeCheckbox } from "./checkbox.compose.js";
 export {
     templateStyles as checkboxTemplateStyles,

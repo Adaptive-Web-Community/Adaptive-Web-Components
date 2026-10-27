@@ -5,7 +5,7 @@ import { CheckboxStatics } from "./checkbox.template.js";
 import { styleModules } from "./checkbox.styles.modules.js";
 
 /**
- * The Checkbox custom element definition. Implements {@link @microsoft/fast-foundation#FASTCheckbox}.
+ * The Checkbox custom element definition. Implements {@link Checkbox}.
  *
  * @remarks
  * HTML Element: \<adaptive-checkbox\>

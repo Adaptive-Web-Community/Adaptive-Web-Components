@@ -1,8 +1,10 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { checkboxTemplate, FASTCheckbox } from "@microsoft/fast-foundation";
-import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { CheckboxParts, hasContent, type ValuesOf } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import { staticallyCompose } from "../../utilities/template-helpers.js";
+import type { Checkbox } from "./checkbox.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the checkbox.
@@ -23,36 +25,37 @@ export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
  * @public
  */
 export const CheckboxConditions = {
-    checked: "[aria-checked='true']",
-    indeterminate: "[aria-checked='mixed']"
+    checked: ":state(checked)",
+    indeterminate: ":state(indeterminate)",
 };
 
-/**
- * @public
- */
-export const CheckboxParts = {
-    control: "control",
-    label: "label"
-};
+export { CheckboxParts };
 
 /**
  * @public
  */
 export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof CheckboxParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: controlInteractivity,
     conditions: CheckboxConditions,
     parts: CheckboxParts,
     focus: Focus.contextFocused(),
 };
 
 /**
- * Default Checkbox template, {@link @microsoft/fast-foundation#checkboxTemplate}.
+ * Default Checkbox template. The element is the checkbox, and its content is the label.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTCheckbox> =
-    (ds: DesignSystem) => {
-        return checkboxTemplate({
-            checkedIndicator: ds.statics.get(CheckboxStatics.checked),
-            indeterminateIndicator: ds.statics.get(CheckboxStatics.indeterminate),
-        });
-    }
+export const template: (ds: DesignSystem) => ElementViewTemplate<Checkbox> =
+    (ds: DesignSystem) => html<Checkbox>`
+        <div class="control" part="control">
+            <slot name="checked-indicator" ?hidden="${x => !x.checked || x.indeterminate}">
+                ${staticallyCompose(ds.statics.get(CheckboxStatics.checked))}
+            </slot>
+            <slot name="indeterminate-indicator" ?hidden="${x => !x.indeterminate}">
+                ${staticallyCompose(ds.statics.get(CheckboxStatics.indeterminate))}
+            </slot>
+        </div>
+        <span class="label" part="label" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </span>
+    `;

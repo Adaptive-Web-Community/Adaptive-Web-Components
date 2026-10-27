@@ -1,5 +1,5 @@
 import chai from "chai";
-import { isIconOnly } from "./icon-only.js";
+import { hasContent, isIconOnly } from "./content.js";
 
 const { expect } = chai;
 
@@ -25,5 +25,17 @@ describe("isIconOnly", () => {
 
     it("should be false for two SVGs", () => {
         expect(isIconOnly(nodes("<svg></svg><svg></svg>"))).to.be.false;
+    });
+});
+
+describe("hasContent", () => {
+    it("should be true for text or an element", () => {
+        expect(hasContent(nodes("Label"))).to.be.true;
+        expect(hasContent(nodes("<span></span>"))).to.be.true;
+    });
+
+    it("should be false for nothing, or white space only", () => {
+        expect(hasContent([])).to.be.false;
+        expect(hasContent(nodes(" \n "))).to.be.false;
     });
 });

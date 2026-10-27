@@ -2,6 +2,7 @@ import { type ElementViewTemplate, html, slotted } from "@microsoft/fast-element
 import { ButtonParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
 import type { Button } from "./button.js";
 
 /**
@@ -17,12 +18,7 @@ export { ButtonParts };
  * @public
  */
 export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof ButtonParts> = {
-    interactivity: {
-        // A fieldset also disables the button, and Space doesn't make a custom element `:active`.
-        interactive: ":not(:disabled)",
-        disabled: ":disabled",
-        active: ":is(:active, :state(active))",
-    },
+    interactivity: controlInteractivity,
     conditions: ButtonConditions,
     parts: ButtonParts,
     focus: Focus.contextFocused(),

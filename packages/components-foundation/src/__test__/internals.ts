@@ -1,0 +1,22 @@
+// A stand-in for the `ElementInternals` that a controller uses, which JSDOM doesn't have, recording what it is given.
+export class TestInternals {
+    public role: string | null = null;
+    public ariaChecked: string | null = null;
+    public ariaRequired: string | null = null;
+    public ariaOrientation: string | null = null;
+    public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
+    public form: HTMLFormElement | null = null;
+    public readonly states = new Set<string>();
+    public formValue: File | string | FormData | null = null;
+    public validity: Partial<ValidityState> = {};
+    public validationMessage = "";
+
+    public setFormValue(value: File | string | FormData | null): void {
+        this.formValue = value;
+    }
+
+    public setValidity(flags: ValidityStateFlags = {}, message: string = ""): void {
+        this.validity = flags;
+        this.validationMessage = message;
+    }
+}
