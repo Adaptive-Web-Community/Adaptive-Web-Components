@@ -1,12 +1,12 @@
 import { html } from "@microsoft/fast-element";
-import { FASTAccordionItem } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { AccordionItem as AccordionItemElement } from "./accordion-item.js";
 
-const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
+const storyTemplate = html<StoryArgs<AccordionItemElement>>`
     <adaptive-accordion-item
         ?expanded="${(x) => x.expanded}"
-        heading-level="${(x) => x.headinglevel}"
+        heading-level="${(x) => x.headingLevel}"
         id="${(x) => x.id}"
     >
         ${(x) => maybeStartSlotIcon(x)}
@@ -25,12 +25,12 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
         expanded: { control: "boolean" },
-        headinglevel: { control: { type: "number", min: 1, max: 6 } },
+        headingLevel: { control: { type: "number", min: 1, max: 6 } },
         id: { control: "text" },
     },
-} as Meta<FASTAccordionItem>;
+} as Meta<AccordionItemElement>;
 
-export const AccordionItem: Story<FASTAccordionItem> = renderComponent(storyTemplate).bind({});
+export const AccordionItem: Story<AccordionItemElement> = renderComponent(storyTemplate).bind({});
 AccordionItem.args = {
     storyContent: html`
         <span slot="heading">Accordion Item Heading</span>

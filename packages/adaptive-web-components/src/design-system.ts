@@ -6,7 +6,6 @@ import {
     type PartialFASTElementDefinition,
     type ShadowRootOptions,
 } from '@microsoft/fast-element';
-import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
     type ComponentAnatomy,
     ElementStylesRenderer,
@@ -27,6 +26,7 @@ import type {
     SelectStatics,
     TreeItemStatics
 } from "./components/index.js";
+import type { StaticallyComposableHTML } from "./utilities/template-helpers.js";
 
 type ComponentStatics =
     AccordionItemStatics

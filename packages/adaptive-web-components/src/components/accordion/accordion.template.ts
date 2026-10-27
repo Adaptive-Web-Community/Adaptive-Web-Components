@@ -1,7 +1,7 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { accordionTemplate, FASTAccordion } from "@microsoft/fast-foundation";
+import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Accordion } from "./accordion.js";
 
 /**
  * @public
@@ -25,9 +25,10 @@ export const AccordionAnatomy: ComponentAnatomy<typeof AccordionConditions, type
 };
 
 /**
- * Default Accordion template, {@link @microsoft/fast-foundation#accordionTemplate}.
+ * Default Accordion template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAccordion> =
-    (ds: DesignSystem) =>
-        accordionTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Accordion> =
+    (ds: DesignSystem) => html<Accordion>`
+        <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+    `;

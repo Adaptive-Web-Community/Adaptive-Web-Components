@@ -49,7 +49,7 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            part: AccordionItemAnatomy.parts.region,
+            part: AccordionItemAnatomy.parts.panel,
         },
         styles: controlDensityStyles,
     },

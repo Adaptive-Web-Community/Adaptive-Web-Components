@@ -33,7 +33,8 @@
     "clean": "rimraf dist",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "npm run lint && npm run build",
+    "test": "npm run lint && npm run build && npm run unit-tests",
+    "unit-tests": "mocha",
     "doc": "api-extractor run --local",
     "postbuild": "npm run doc"
   },

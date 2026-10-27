@@ -20,3 +20,9 @@ them in `@adaptive-web/adaptive-web-components`.
 
 A control is the host element, made a form control through `ElementInternals`, and not a wrapper of a native element
 ([decision 0010](../../docs/decisions/0010-a-control-is-its-host-element.md)).
+
+## Testing
+
+The unit tests (`npm test`) run the controllers in JSDOM, which has no `ElementInternals` and doesn't match `:disabled` on a custom element.
+What depends on those (the role, the disabled state of a form control, the submitter of a form) needs a test in a browser, which this package
+doesn't have yet.

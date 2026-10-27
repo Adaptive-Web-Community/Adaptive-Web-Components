@@ -1,3 +1,4 @@
+export { Accordion } from "./accordion.js";
 export { composeAccordion } from "./accordion.compose.js";
 export {
     templateStyles as accordionTemplateStyles,

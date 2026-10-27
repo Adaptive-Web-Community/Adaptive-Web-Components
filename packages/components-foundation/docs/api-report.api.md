@@ -5,6 +5,53 @@
 ```ts
 
 // @public
+export class AccordionController {
+    constructor(host: AccordionElement);
+    connect(): void;
+    disconnect(): void;
+    expandModeChanged(): void;
+    itemExpandedChanged(item: AccordionItemElement): void;
+    setItems(items: readonly AccordionItemElement[]): void;
+}
+
+// @public
+export interface AccordionElement extends HTMLElement {
+    expandMode: AccordionExpandMode;
+}
+
+// @public
+export const AccordionExpandMode: {
+    readonly single: "single";
+    readonly multi: "multi";
+};
+
+// @public
+export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;
+
+// @public
+export interface AccordionItemElement extends HTMLElement {
+    collapsible: boolean;
+    disabled: boolean;
+    expanded: boolean;
+    headingLevel: HeadingLevel;
+}
+
+// @public
+export const AccordionItemParts: {
+    readonly heading: "heading";
+    readonly button: "button";
+    readonly headingContent: "heading-content";
+    readonly icon: "icon";
+    readonly panel: "panel";
+};
+
+// @public
+export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+// @public
+export function toggleAccordionItem(item: AccordionItemElement): void;
+
+// @public
 export type ValuesOf<T> = T[keyof T];
 
 // (No @packageDocumentation comment for this package)

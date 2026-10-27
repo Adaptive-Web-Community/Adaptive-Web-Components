@@ -50,19 +50,7 @@ export const templateStyles: ElementStyles = css`
         pointer-events: none;
     }
 
-    slot[name="collapsed-icon"] * {
-        display: flex;
-    }
-
-    :host([expanded]) slot[name="collapsed-icon"] * {
-        display: none;
-    }
-
-    slot[name="expanded-icon"] * {
-        display: none;
-    }
-
-    :host([expanded]) slot[name="expanded-icon"] * {
+    slot[name$="-icon"] * {
         display: flex;
     }
 
@@ -77,12 +65,12 @@ export const templateStyles: ElementStyles = css`
         order: -1;
     }
 
-    .region {
-        display: none;
+    .panel {
+        display: flex;
     }
 
-    :host([expanded]) .region {
-        display: flex;
+    .panel[hidden] {
+        display: none;
     }
 
     :host([disabled]) .button::before {
