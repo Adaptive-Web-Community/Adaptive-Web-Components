@@ -34,5 +34,5 @@ Considered and not taken:
 
 - The customizable `<select>` (`appearance: base-select`): only Chromium has it, and its options have to be its own children, so the
   component can't wrap it.
-- Multiple selection in the popup: a Listbox, or the Picker with chips.
+- Multiple selection in the popup: a Listbox, or the Picker with `multiple`.
 - `showPicker()`, as a native select's, to open it by code: add it on the first real use.

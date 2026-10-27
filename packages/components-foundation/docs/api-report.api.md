@@ -453,6 +453,71 @@ export const Orientation: {
 export type Orientation = ValuesOf<typeof Orientation>;
 
 // @public
+export class PickerController {
+    constructor(host: PickerElement, internals: PickerInternals);
+    close(): void;
+    connect(elements: PickerTemplateElements): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    labelsChanged(): void;
+    readonly list: OptionListController;
+    get open(): boolean;
+    optionSelectedChanged(option: ListboxOptionElement): void;
+    get query(): string;
+    setOptions(options: readonly ListboxOptionElement[]): void;
+    setValue(value: string): void;
+    show(): void;
+    stateChanged(): void;
+    get values(): string[];
+}
+
+// @public
+export interface PickerElement extends FormControlElement {
+    disabled: boolean;
+    freeform: boolean;
+    loading: boolean;
+    multiple: boolean;
+    name: string | null;
+    placeholder: string | null;
+    readonly query: string;
+    readOnly: boolean;
+    required: boolean;
+    readonly selectedOptions: readonly ListboxOptionElement[];
+    value: string;
+    readonly values: readonly string[];
+}
+
+// @public
+export type PickerInternals = Pick<ElementInternals, "labels" | "states" | "setFormValue" | "setValidity">;
+
+// @public
+export const PickerParts: {
+    readonly root: "root";
+    readonly values: "values";
+    readonly value: "value";
+    readonly valueLabel: "value-label";
+    readonly valueRemove: "value-remove";
+    readonly control: "control";
+    readonly indicator: "indicator";
+    readonly popup: "popup";
+    readonly listbox: "listbox";
+    readonly status: "status";
+};
+
+// @public
+export type PickerTemplateElements = {
+    root: HTMLElement;
+    control: HTMLInputElement;
+    values: HTMLElement;
+    popup: HTMLElement;
+    listbox: HTMLElement;
+    noResults: HTMLElement;
+    loading: HTMLElement;
+    removeContent: Element | null;
+};
+
+// @public
 export function progressAria(progress: ProgressElement): DefaultAria;
 
 // @public

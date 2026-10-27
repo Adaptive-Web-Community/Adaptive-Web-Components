@@ -15,6 +15,7 @@ export * from "./list-item/index.js";
 export * from "./listbox/index.js";
 export * from "./listbox-option/index.js";
 export * from "./number-field/index.js";
+export * from "./picker/index.js";
 export * from "./progress/index.js";
 export * from "./progress-ring/index.js";
 export * from "./radio/index.js";

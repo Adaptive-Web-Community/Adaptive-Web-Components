@@ -23,10 +23,6 @@ import { menuDefinition } from './components/menu/menu.definition.js';
 import { menuItemDefinition } from './components/menu-item/menu-item.definition.js';
 import { numberFieldDefinition } from './components/number-field/number-field.definition.js';
 import { pickerDefinition } from './components/picker/picker.definition.js';
-import { pickerListDefinition } from './components/picker-list/picker-list.definition.js';
-import { pickerListItemDefinition } from './components/picker-list-item/picker-list-item.definition.js';
-import { pickerMenuDefinition } from './components/picker-menu/picker-menu.definition.js';
-import { pickerMenuOptionDefinition } from './components/picker-menu-option/picker-menu-option.definition.js';
 import { progressDefinition } from './components/progress/progress.definition.js';
 import { progressRingDefinition } from './components/progress-ring/progress-ring.definition.js';
 import { radioDefinition } from './components/radio/radio.definition.js';
@@ -73,10 +69,6 @@ export const AllComponents = {
 	menuItemDefinition,
 	numberFieldDefinition,
 	pickerDefinition,
-	pickerListDefinition,
-	pickerListItemDefinition,
-	pickerMenuDefinition,
-	pickerMenuOptionDefinition,
 	progressDefinition,
 	progressRingDefinition,
 	radioDefinition,

@@ -18,3 +18,5 @@ export const chevronLeftIcon = svgIcon("M10 12.5L5.5 8L10 3.5");
 export const chevronRightIcon = svgIcon("M6 3.5L10.5 8L6 12.5");
 
 export const chevronUpIcon = svgIcon("M3.5 10L8 5.5L12.5 10");
+
+export const dismissIcon = svgIcon("M4.5 4.5L11.5 11.5M11.5 4.5L4.5 11.5");

@@ -377,3 +377,25 @@ The select's host is the form control, and its combobox is in its shadow root, b
 | `selectedIndex`, `displayValue`, and the other members of FAST's listbox | `value`, and the options' `selected` |
 | | `readonly`, and `required` with an empty value as a placeholder |
 | `ValuesOf` (of `SelectStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+
+## Picker
+
+The picker is a form control of options now, with one value or several, and takes the place of the Combobox (see there).
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTPicker` (FAST Foundation) | `Picker`, defined with `delegatesFocus` |
+| `options`, a comma-separated attribute | `ListboxOption`s in the default slot |
+| `selection`, a comma-separated attribute | `value` and `values`; the options' `selected` |
+| Several values, always; `max-selected` | `multiple`; one value without it. No maximum |
+| `filter-query` and `filter-selected` | Filtering by what the options contain, after a cancelable `filter` event |
+| `menu-placement` | Gone: the popup is placed by CSS anchor positioning |
+| `label`, `labelled-by` | An outside `<label for>`, or `aria-label` on the element |
+| `loading-text`, `no-suggestions-text`, `suggestions-available-text` | The `loading` and `no-results` slots of the popup's status ("Loading" and "No results" by default); `loading` while the author finds the options |
+| The `region`, `loading-display`, `no-options-display`, and `loading-progress` parts | `root`, `values`, `value`, `value-label`, `value-remove`, `control`, `indicator`, `popup`, `listbox`, `status` |
+| | `PickerStatics.removeValue`, the content of a value's remove button |
+| | `freeform`, `name`, `required`, `readonly`, `placeholder`, and the validity API |
+
+## Picker List, Picker List Item, Picker Menu, Picker Menu Option
+
+Removed: the picker's input and values are its own parts, and its options are `ListboxOption`s.

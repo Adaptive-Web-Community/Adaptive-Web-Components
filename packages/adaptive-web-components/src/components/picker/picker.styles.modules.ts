@@ -4,15 +4,9 @@ import {
 import {
     controlListDensityStyles,
     flyoutStyles,
-    plainTextStyles,
+    inputStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
-
-const menuStyles = [
-    plainTextStyles,
-    controlListDensityStyles,
-    flyoutStyles,
-];
 
 /**
  * Visual styles composed by style rules.
@@ -22,14 +16,26 @@ const menuStyles = [
 export const styleModules: StyleRules = [
     {
         target : {
-            part: PickerAnatomy.parts.loadingDisplay,
+            part: PickerAnatomy.parts.root,
         },
-        styles: menuStyles,
+        styles: inputStyles,
     },
     {
         target : {
-            part: PickerAnatomy.parts.noOptionsDisplay,
+            part: PickerAnatomy.parts.popup,
         },
-        styles: menuStyles,
+        styles: flyoutStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.listbox,
+        },
+        styles: controlListDensityStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.status,
+        },
+        styles: controlListDensityStyles,
     },
 ];

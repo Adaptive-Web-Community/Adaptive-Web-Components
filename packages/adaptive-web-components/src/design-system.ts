@@ -21,6 +21,7 @@ import type {
     ComboboxStatics,
     MenuItemStatics,
     NumberFieldStatics,
+    PickerStatics,
     RadioStatics,
     SelectStatics,
     TreeItemStatics
@@ -34,6 +35,7 @@ type ComponentStatics =
     | ComboboxStatics
     | MenuItemStatics
     | NumberFieldStatics
+    | PickerStatics
     | RadioStatics
     | SelectStatics
     | TreeItemStatics;
