@@ -1,7 +1,8 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-import type { FASTSkeleton } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import { SkeletonParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Skeleton } from "./skeleton.js";
 
 /**
  * @public
@@ -13,11 +14,7 @@ export const SkeletonConditions = {
     }
 };
 
-/**
- * @public
- */
-export const SkeletonParts = {
-};
+export { SkeletonParts };
 
 /**
  * @public
@@ -29,23 +26,20 @@ export const SkeletonAnatomy: ComponentAnatomy<typeof SkeletonConditions, typeof
 };
 
 /**
- * Default Skeleton template, {@link @microsoft/fast-foundation#skeletonTemplate}.
+ * Default Skeleton template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSkeleton> =
-    (ds: DesignSystem) =>
-        html<FASTSkeleton>`
-            ${when(x => x.shimmer === true,
-                html`
-                    <span class="shimmer"></span>
-                `
-            )}
-            ${when(x => x.pattern,
-                html`
-                    <object type="image/svg+xml" data="${x => x.pattern}" role="presentation">
-                        <img class="pattern" src="${x => x.pattern}" />
-                    </object>
-                `
-            )}
-            <slot></slot>
-        `;
+export const template: (ds: DesignSystem) => ElementViewTemplate<Skeleton> =
+    (ds: DesignSystem) => html<Skeleton>`
+        ${when(x => x.shimmer,
+            html`
+                <span class="shimmer" part="shimmer"></span>
+            `
+        )}
+        ${when(x => x.pattern,
+            html<Skeleton>`
+                <img class="pattern" part="pattern" src="${x => x.pattern}" alt="" />
+            `
+        )}
+        <slot></slot>
+    `;

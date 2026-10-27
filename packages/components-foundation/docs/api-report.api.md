@@ -157,6 +157,31 @@ export const ProgressRingParts: {
 };
 
 // @public
+export function skeletonAria(): DefaultAria;
+
+// @public
+export interface SkeletonElement extends HTMLElement {
+    pattern: string | null;
+    shape: SkeletonShape;
+    shimmer: boolean;
+}
+
+// @public
+export const SkeletonParts: {
+    readonly shimmer: "shimmer";
+    readonly pattern: "pattern";
+};
+
+// @public
+export const SkeletonShape: {
+    readonly rect: "rect";
+    readonly circle: "circle";
+};
+
+// @public
+export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
+
+// @public
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public

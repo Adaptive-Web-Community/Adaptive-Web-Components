@@ -98,3 +98,14 @@ The element is the button now, with the `button` role and form association throu
 | `FASTProgressRing` (FAST Foundation) | `ProgressRing`, which extends `BaseProgress` |
 | | The rest is the progress's (see Progress) |
 | `ProgressRingParts` from this package | The components foundation's, which adds `background`, also exported here |
+
+## Skeleton
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTSkeleton` (FAST Foundation) | `Skeleton` |
+| In the accessibility tree | Hidden (`aria-hidden` through `ElementInternals`). Put `aria-busy="true"` on the container that is loading |
+| `fill` | Gone: nothing used it |
+| The pattern in an `<object>` | An `<img alt="">`, the `pattern` part |
+| | The `shimmer` part |
+| `SkeletonShape` from `@microsoft/fast-foundation`, `SkeletonParts` from this package | From the components foundation, also exported here |
