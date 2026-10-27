@@ -2,7 +2,6 @@ import { ElementViewTemplate } from "@microsoft/fast-element";
 import { FASTPicker, pickerTemplate } from "@microsoft/fast-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { composeAnchoredRegion } from "../anchored-region/index.js";
 import { composePickerList } from "../picker-list/index.js";
 import { composePickerMenu } from '../picker-menu/index.js';
 import { composePickerListItem } from '../picker-list-item/index.js';
@@ -35,13 +34,13 @@ export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof Pic
 };
 
 /**
- * Default Picker template, {@link @microsoft/fast-foundation#pickerTemplate}.
+ * Default Picker template, {@link @microsoft/fast-foundation#pickerTemplate}. Its menu has no anchored region now: it becomes a popover,
+ * positioned by CSS anchor positioning, when the picker is migrated.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<FASTPicker> =
     (ds: DesignSystem) =>
         pickerTemplate({
-            anchoredRegion: composeAnchoredRegion(ds),
             pickerList: composePickerList(ds),
             pickerListItem: composePickerListItem(ds),
             pickerMenu:  composePickerMenu(ds),

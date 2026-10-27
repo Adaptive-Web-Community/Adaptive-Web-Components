@@ -55,6 +55,11 @@ The element is the button now, with the `button` role and form association throu
 | `type` absent: does nothing | `type` is `button` by default, which does nothing |
 | `proxy`, the hidden `<input>` in the light DOM | Gone. A submission adds a hidden native button to the form for its time, which a `submit` listener sees as `event.submitter` |
 
+## Anchored Region
+
+Removed: a popover, positioned by CSS anchor positioning, does what it worked around. The components that used it (the picker)
+are migrated to popovers.
+
 ## Disclosure
 
 Removed: an `AccordionItem` alone is a disclosure with a heading, and a native `<details>` is one without.

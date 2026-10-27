@@ -1,7 +1,6 @@
 import { accordionDefinition } from './components/accordion/accordion.definition.js'
 import { accordionItemDefinition } from './components/accordion-item/accordion-item.definition.js'
 import { anchorDefinition } from './components/anchor/anchor.definition.js';
-import { anchoredRegionDefinition } from './components/anchored-region/anchored-region.definition.js';
 import { avatarDefinition } from './components/avatar/avatar.definition.js';
 import { badgeDefinition } from './components/badge/badge.definition.js';
 import { breadcrumbDefinition } from './components/breadcrumb/breadcrumb.definition.js';
@@ -52,7 +51,6 @@ export const AllComponents = {
 	accordionDefinition,
 	accordionItemDefinition,
 	anchorDefinition,
-	anchoredRegionDefinition,
 	avatarDefinition,
 	badgeDefinition,
 	breadcrumbDefinition,
