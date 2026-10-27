@@ -7,4 +7,4 @@ export {
     styleModules as buttonStyleModules,
 } from "./button.styles.modules.js";
 export { template as buttonTemplate, ButtonAnatomy, ButtonConditions, ButtonParts } from "./button.template.js";
-export { AdaptiveButton } from "./button.js";
+export { Button } from "./button.js";

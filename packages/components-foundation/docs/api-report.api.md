@@ -46,6 +46,48 @@ export const AccordionItemParts: {
 };
 
 // @public
+export class ButtonController {
+    constructor(host: ButtonElement, internals: ButtonInternals);
+    connect(): void;
+    disconnect(): void;
+}
+
+// @public
+export interface ButtonElement extends HTMLElement {
+    disabled: boolean;
+    readonly form: HTMLFormElement | null;
+    formAction: string | null;
+    formEnctype: string | null;
+    formMethod: string | null;
+    formNoValidate: boolean;
+    formTarget: string | null;
+    readonly labels: NodeList;
+    name: string | null;
+    type: ButtonType;
+    value: string | null;
+}
+
+// @public
+export type ButtonInternals = Pick<ElementInternals, "form" | "role"> & {
+    readonly states: Pick<CustomStateSet, "add" | "delete">;
+};
+
+// @public
+export const ButtonParts: {
+    readonly content: "content";
+};
+
+// @public
+export const ButtonType: {
+    readonly submit: "submit";
+    readonly reset: "reset";
+    readonly button: "button";
+};
+
+// @public
+export type ButtonType = ValuesOf<typeof ButtonType>;
+
+// @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 // @public

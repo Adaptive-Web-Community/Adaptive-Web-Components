@@ -31,3 +31,24 @@ instead. A component that isn't listed hasn't changed yet.
 | An item expands only in an accordion | An item toggles itself, and alone works as a disclosure with a heading |
 | The `expandbutton` property | `expandButton`, internal. Use `focus()` to focus the button |
 | | `collapsible`, set by the accordion to `false` for the item it keeps expanded in the `single` mode |
+
+## Button
+
+The element is the button now, with the `button` role and form association through `ElementInternals`, and not a wrapper of a native
+`<button>`. See `docs/decisions/0010-a-control-is-its-host-element.md`.
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveButton` (extends FAST Foundation's `FASTButton`) | `Button` |
+| The `control` part, the native button | The host. Styles target the host, and its focus is the host's (`Focus.contextFocused()`) |
+| `ButtonParts.control` | Gone. `ButtonParts` is the foundation's (`content`), also exported here |
+| `ButtonType` from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+| The `aria-*` properties (`ariaLabel`, `ariaDescribedby`, and the others) mirrored onto the native button | The `aria-*` attributes of the host, as for any element |
+| `formaction`, `formenctype`, `formmethod`, `formnovalidate`, `formtarget` properties | `formAction`, `formEnctype`, `formMethod`, `formNoValidate`, `formTarget` (the attributes are the same) |
+| `formId` (the `form` attribute) | The `form` attribute, which the platform reads. `form` is the form element |
+| `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
+| `:active` | `:is(:active, :state(active))`, since Space doesn't make a custom element `:active` |
+| The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
+| `shadowOptions: { delegatesFocus: true }` in its definition | No `delegatesFocus`: the host takes focus |
+| `type` absent: does nothing | `type` is `button` by default, which does nothing |
+| `proxy`, the hidden `<input>` in the light DOM | Gone. A submission adds a hidden native button to the form for its time, which a `submit` listener sees as `event.submitter` |
