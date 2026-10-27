@@ -71,7 +71,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     with its values), Skeleton (hidden), Radio Group (`radiogroup`, in its orientation, through its controller), Tablist (`tablist`,
     in its orientation, through its controller), Tab (`tab`, selected,
     disabled, and the panel it controls), Tab Panel (`tabpanel`, named by its tab), Toolbar (`toolbar`, in its orientation,
-    through its controller).
+    through its controller), List (`list`), List Item (`listitem`).
 17. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
     (a property each child reads), not by doing their behavior for them.
     Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
@@ -106,7 +106,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     layer needs.
     Used by: Accordion, Accordion Item, Anchor (`:state(icon-only)`), Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
     Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`), Dialog (`:state(open)`,
-    `:state(modal)`), Tab (`selected`, `disabled`), Tablist (`orientation`, `panels`), Toolbar (`orientation`).
+    `:state(modal)`), Tab (`selected`, `disabled`), Tablist (`orientation`, `panels`), Toolbar (`orientation`), List (`orientation`).
 23. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
     Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search.
@@ -155,9 +155,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host),
     Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host).
 32. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
-    their `tabindex`. An item that gets the focus by a click becomes the active one.
+    their `tabindex`. An item that gets the focus by a click becomes the active one. A list whose items the arrows don't move between isn't a
+    composite: the content of its items is in the tab order.
     Used by: Radio Group (the checked radio, with the `RovingFocusController`), Tablist (the selected tab), Toolbar (the first,
-    or the last focused).
+    or the last focused); List (static: none).
 
 ## Events
 
@@ -188,7 +189,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
     Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`),
     Radio (`value` is `on`), Radio Group (`horizontal`), Text Field (`type` is `text`), Text Area (`resize` is `none`),
-    Dialog (`closedby` is `closerequest`), Tooltip (`above`, a delay of 300), Tablist (`horizontal`), Toolbar (`horizontal`).
+    Dialog (`closedby` is `closerequest`), Tooltip (`above`, a delay of 300), Tablist (`horizontal`), Toolbar (`horizontal`), List (`vertical`,
+    as a list is).
 38. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`).
@@ -196,7 +198,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`, `SkeletonShape`.
 40. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
-    Used by: `Orientation` (Divider, Radio Group, Tablist, Toolbar; next: Slider).
+    Used by: `Orientation` (Divider, Radio Group, Tablist, Toolbar, List; next: Slider).
 
 ## Parts and styles
 

@@ -15,6 +15,8 @@ import { dataGridCellDefinition } from './components/data-grid-cell/data-grid-ce
 import { dataGridRowDefinition } from './components/data-grid-row/data-grid-row.definition.js';
 import { dialogDefinition } from './components/dialog/dialog.definition.js';
 import { dividerDefinition } from './components/divider/divider.definition.js';
+import { listDefinition } from './components/list/list.definition.js';
+import { listItemDefinition } from './components/list-item/list-item.definition.js';
 import { listboxDefinition } from './components/listbox/listbox.definition.js';
 import { listboxOptionDefinition } from './components/listbox-option/listbox-option.definition.js';
 import { menuDefinition } from './components/menu/menu.definition.js';
@@ -63,6 +65,8 @@ export const AllComponents = {
 	dataGridRowDefinition,
 	dialogDefinition,
 	dividerDefinition,
+	listDefinition,
+	listItemDefinition,
 	listboxDefinition,
 	listboxOptionDefinition,
 	menuDefinition,

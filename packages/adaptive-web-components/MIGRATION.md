@@ -316,3 +316,8 @@ The tabs and the panels are laid out apart now: the tablist is the strip of tabs
 | `activeIndex`, `direction` | Gone: the toolbar keeps the active item, and reads the direction when a key is pressed |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
 | `ToolbarParts` from this package | The components foundation's (`positioning-region`), also exported here |
+
+## List and List Item
+
+New: a list (`role="list"`) of items (`role="listitem"`), in an `orientation` (`vertical` by default). In the `horizontal` orientation it
+takes the place of the Horizontal Scroll: its overflow scrolls, and the styles decide how.

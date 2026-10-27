@@ -297,6 +297,20 @@ export type InvokerInternals = Pick<ElementInternals, "ariaExpanded">;
 export function isIconOnly(nodes: readonly Node[]): boolean;
 
 // @public
+export function listAria(): DefaultAria;
+
+// @public
+export interface ListElement extends HTMLElement {
+    orientation: Orientation;
+}
+
+// @public
+export function listItemAria(): DefaultAria;
+
+// @public
+export type ListItemElement = HTMLElement;
+
+// @public
 export class NumberFieldController extends TextInputController<NumberFieldElement> {
     constructor(host: NumberFieldElement, internals: TextInputInternals);
     stepDown(): void;
