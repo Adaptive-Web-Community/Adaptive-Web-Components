@@ -168,6 +168,9 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same),
     Radio (its form value and reset).
+42. **A form control has what a native one has**: its form and labels, and the validity API (`validity`, `validationMessage`, `willValidate`,
+    `checkValidity()`, `reportValidity()`), from its `ElementInternals` (`FormControlElement`).
+    Used by: Checkbox, Switch, Radio (through AWC's `BaseFormControl`).
 
 ## To decide for all components
 

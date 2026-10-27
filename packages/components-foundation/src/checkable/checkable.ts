@@ -1,3 +1,5 @@
+import type { FormControlElement } from "../utilities/form-control.js";
+
 /**
  * A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. It is the host element, with its role
  * and its form association through `ElementInternals` (see `docs/decisions/0010-a-control-is-its-host-element.md`).
@@ -13,7 +15,7 @@
  *
  * @public
  */
-export interface CheckableElement extends HTMLElement {
+export interface CheckableElement extends FormControlElement {
     /**
      * Whether it is checked now.
      *
@@ -53,16 +55,6 @@ export interface CheckableElement extends HTMLElement {
      * HTML attribute: `value`. The default is `on`, as a native checkbox's is.
      */
     value: string;
-
-    /**
-     * Its form: its ancestor, or the form whose id is its `form` attribute.
-     */
-    readonly form: HTMLFormElement | null;
-
-    /**
-     * Its labels.
-     */
-    readonly labels: NodeList;
 }
 
 /**

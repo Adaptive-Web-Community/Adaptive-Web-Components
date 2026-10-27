@@ -1,5 +1,6 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import type { CheckableController, CheckableElement } from "@adaptive-web/components-foundation";
+import { BaseFormControl } from "../../utilities/base-form-control.js";
 import { stringConverter } from "../../utilities/converters.js";
 
 /**
@@ -8,14 +9,7 @@ import { stringConverter } from "../../utilities/converters.js";
  *
  * @public
  */
-export abstract class BaseCheckable<C extends CheckableController = CheckableController> extends FASTElement implements CheckableElement {
-    /**
-     * The element is a form control.
-     */
-    public static readonly formAssociated = true;
-
-    protected readonly internals = this.attachInternals();
-
+export abstract class BaseCheckable<C extends CheckableController = CheckableController> extends BaseFormControl implements CheckableElement {
     // Made before the properties, whose change handlers use it while the element is constructed.
     protected readonly controller: C = this.createController(this.internals);
 
@@ -61,20 +55,6 @@ export abstract class BaseCheckable<C extends CheckableController = CheckableCon
     public value: string = "on";
     protected valueChanged(): void {
         this.controller.stateChanged();
-    }
-
-    /**
-     * {@inheritDoc @adaptive-web/components-foundation#CheckableElement.form}
-     */
-    public get form(): HTMLFormElement | null {
-        return this.internals.form;
-    }
-
-    /**
-     * {@inheritDoc @adaptive-web/components-foundation#CheckableElement.labels}
-     */
-    public get labels(): NodeList {
-        return this.internals.labels;
     }
 
     /**

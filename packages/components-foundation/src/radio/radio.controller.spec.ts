@@ -1,19 +1,18 @@
 import chai from "chai";
+import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
 import type { RadioElement } from "./radio.js";
 import { RadioController } from "./radio.controller.js";
 
 const { expect } = chai;
 
-class TestRadio extends HTMLElement implements RadioElement {
+class TestRadio extends TestFormControl implements RadioElement {
     public checked = false;
     public defaultChecked = false;
     public disabled = false;
     public groupReadOnly = false;
     public name: string | null = null;
     public value = "on";
-    public readonly form: HTMLFormElement | null = null;
-    public readonly labels: NodeList = document.createDocumentFragment().childNodes;
 }
 customElements.define("test-radio-alone", TestRadio);
 

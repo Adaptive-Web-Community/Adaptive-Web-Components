@@ -8,6 +8,8 @@ instead. A component that isn't listed hasn't changed yet.
 - The components depend on `@microsoft/fast-element` 3 and `@adaptive-web/components-foundation`, and not on `@microsoft/fast-foundation`. The contract of
   each element (its properties, enumerations, and parts) and its behavior are in the foundation; the element classes and templates are here.
 - `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.
+- A form control has the validity API of a native one (`validity`, `validationMessage`, `willValidate`, `checkValidity()`,
+  `reportValidity()`), from `BaseFormControl`.
 - `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
 
 ## Accordion

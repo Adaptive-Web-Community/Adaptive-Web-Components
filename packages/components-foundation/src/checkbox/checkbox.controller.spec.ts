@@ -1,11 +1,12 @@
 import chai from "chai";
+import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
 import type { CheckboxElement } from "./checkbox.js";
 import { CheckboxController } from "./checkbox.controller.js";
 
 const { expect } = chai;
 
-class TestCheckbox extends HTMLElement implements CheckboxElement {
+class TestCheckbox extends TestFormControl implements CheckboxElement {
     public checked = false;
     public defaultChecked = false;
     public disabled = false;
@@ -14,8 +15,6 @@ class TestCheckbox extends HTMLElement implements CheckboxElement {
     public readOnly = false;
     public name: string | null = null;
     public value = "on";
-    public readonly form: HTMLFormElement | null = null;
-    public readonly labels: NodeList = document.createDocumentFragment().childNodes;
 }
 customElements.define("test-checkbox", TestCheckbox);
 

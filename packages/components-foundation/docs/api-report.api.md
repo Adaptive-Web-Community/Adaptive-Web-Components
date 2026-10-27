@@ -151,12 +151,10 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
 }
 
 // @public
-export interface CheckableElement extends HTMLElement {
+export interface CheckableElement extends FormControlElement {
     checked: boolean;
     defaultChecked: boolean;
     disabled: boolean;
-    readonly form: HTMLFormElement | null;
-    readonly labels: NodeList;
     name: string | null;
     value: string;
 }
@@ -206,6 +204,17 @@ export function dividerAria(divider: DividerElement): DefaultAria;
 // @public
 export interface DividerElement extends HTMLElement {
     orientation: Orientation;
+}
+
+// @public
+export interface FormControlElement extends HTMLElement {
+    checkValidity(): boolean;
+    readonly form: HTMLFormElement | null;
+    readonly labels: NodeList;
+    reportValidity(): boolean;
+    readonly validationMessage: string;
+    readonly validity: ValidityState;
+    readonly willValidate: boolean;
 }
 
 // @public

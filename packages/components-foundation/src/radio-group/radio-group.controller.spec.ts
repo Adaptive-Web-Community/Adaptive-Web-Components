@@ -1,4 +1,5 @@
 import chai from "chai";
+import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
 import type { RadioElement } from "../radio/radio.js";
 import { RadioController } from "../radio/radio.controller.js";
@@ -11,15 +12,13 @@ const { expect } = chai;
 // A binding observes `checked` and tells the group; this stands in for it.
 let group: RadioGroupController | null = null;
 
-class TestRadio extends HTMLElement implements RadioElement {
+class TestRadio extends TestFormControl implements RadioElement {
     private _checked = false;
     public defaultChecked = false;
     public disabled = false;
     public groupReadOnly = false;
     public name: string | null = null;
     public value = "on";
-    public readonly form: HTMLFormElement | null = null;
-    public readonly labels: NodeList = document.createDocumentFragment().childNodes;
     public readonly controller = new RadioController(this, new TestInternals());
 
     public get checked(): boolean {

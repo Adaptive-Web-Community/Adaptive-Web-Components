@@ -1,11 +1,12 @@
 import chai from "chai";
+import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
 import type { SwitchElement } from "./switch.js";
 import { SwitchController } from "./switch.controller.js";
 
 const { expect } = chai;
 
-class TestSwitch extends HTMLElement implements SwitchElement {
+class TestSwitch extends TestFormControl implements SwitchElement {
     public checked = false;
     public defaultChecked = false;
     public disabled = false;
@@ -13,8 +14,6 @@ class TestSwitch extends HTMLElement implements SwitchElement {
     public readOnly = false;
     public name: string | null = null;
     public value = "on";
-    public readonly form: HTMLFormElement | null = null;
-    public readonly labels: NodeList = document.createDocumentFragment().childNodes;
 }
 customElements.define("test-switch", TestSwitch);
 

@@ -16,6 +16,7 @@ export * from "./switch/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
 export { AriaForwardingController } from "./utilities/aria-forwarding.controller.js";
 export { hasContent, isIconOnly } from "./utilities/content.js";
+export type { FormControlElement } from "./utilities/form-control.js";
 export { SpacePressController } from "./utilities/space-press.controller.js";
 export { Orientation } from "./utilities/orientation.js";
 export { RovingFocusController } from "./utilities/roving-focus.controller.js";
