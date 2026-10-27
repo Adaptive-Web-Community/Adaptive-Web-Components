@@ -96,7 +96,7 @@ export class ButtonController {
 }
 
 // @public
-export interface ButtonElement extends HTMLElement {
+export interface ButtonElement extends InvokerElement {
     disabled: boolean;
     readonly form: HTMLFormElement | null;
     formAction: string | null;
@@ -111,7 +111,7 @@ export interface ButtonElement extends HTMLElement {
 }
 
 // @public
-export type ButtonInternals = Pick<ElementInternals, "form" | "role"> & {
+export type ButtonInternals = Pick<ElementInternals, "form" | "role" | "ariaExpanded"> & {
     readonly states: Pick<CustomStateSet, "add" | "delete">;
 };
 
@@ -255,6 +255,12 @@ export interface DividerElement extends HTMLElement {
 }
 
 // @public
+export function findById(from: Element, id: string | null): HTMLElement | null;
+
+// @public
+export function findByIds(from: Element, ids: string): HTMLElement[];
+
+// @public
 export interface FormControlElement extends HTMLElement {
     checkValidity(): boolean;
     readonly form: HTMLFormElement | null;
@@ -270,6 +276,22 @@ export function hasContent(nodes: readonly Node[]): boolean;
 
 // @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+// @public
+export class InvokerController {
+    constructor(host: InvokerElement, internals: InvokerInternals);
+    disconnect(): void;
+    invoke(): void;
+}
+
+// @public
+export interface InvokerElement extends HTMLElement {
+    command: string | null;
+    commandForElement: Element | null;
+}
+
+// @public
+export type InvokerInternals = Pick<ElementInternals, "ariaExpanded">;
 
 // @public
 export function isIconOnly(nodes: readonly Node[]): boolean;

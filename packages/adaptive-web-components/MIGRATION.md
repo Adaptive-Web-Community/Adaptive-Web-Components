@@ -53,6 +53,7 @@ The element is the button now, with the `button` role and form association throu
 | The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
 | `shadowOptions: { delegatesFocus: true }` in its definition | No `delegatesFocus`: the host takes focus |
 | `type` absent: does nothing | `type` is `button` by default, which does nothing |
+| | `commandfor` and `command`, as a native button: it opens and closes a popover or a dialog (ours too) |
 | `proxy`, the hidden `<input>` in the light DOM | Gone. A submission adds a hidden native button to the form for its time, which a `submit` listener sees as `event.submitter` |
 
 ## Anchored Region

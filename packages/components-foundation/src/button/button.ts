@@ -1,5 +1,7 @@
 import type { ValuesOf } from "../utilities/typings.js";
 
+import type { InvokerElement } from "../utilities/invoker.js";
+
 /**
  * What a {@link ButtonElement} does in its form.
  *
@@ -40,13 +42,15 @@ export const ButtonParts = {
  * @remarks
  * The element's class is form-associated (`static formAssociated = true`), and gives its `ElementInternals` to the {@link ButtonController}.
  *
+ * As a `button` (its `type`), it invokes its `command` on its `commandfor`, as a native button does: it opens a popover or a dialog.
+ *
  * Slots: the default slot for the content, and `start` and `end` around it.
  *
  * Custom states: `active` while the Space key is held, as `:active` is for a native button.
  *
  * @public
  */
-export interface ButtonElement extends HTMLElement {
+export interface ButtonElement extends InvokerElement {
     /**
      * Whether the button is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.
      *

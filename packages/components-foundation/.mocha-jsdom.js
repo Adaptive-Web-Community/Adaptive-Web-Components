@@ -6,3 +6,12 @@ import "jsdom-global/register.js";
 global.customElements = window.customElements;
 global.MutationObserver = window.MutationObserver;
 global.SVGElement = window.SVGElement;
+
+// JSDOM has no CommandEvent: this has what the HTML standard gives it.
+global.CommandEvent = class CommandEvent extends window.Event {
+    constructor(type, init = {}) {
+        super(type, init);
+        this.command = init.command ?? "";
+        this.source = init.source ?? null;
+    }
+};

@@ -1,4 +1,4 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { DialogClosedBy } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
@@ -6,14 +6,14 @@ import type { Dialog as DialogElement } from "./dialog.js";
 
 const storyTemplate = html<StoryArgs<DialogElement>>`
     <div>
-        <adaptive-button @click="${(x) => x.dialogRef.showModal()}">Open dialog</adaptive-button>
+        <adaptive-button commandfor="example-dialog" command="show-modal">Open dialog</adaptive-button>
         <adaptive-dialog
+            id="example-dialog"
             closedby="${(x) => x.closedBy}"
             aria-label="${(x) => x.ariaLabel}"
-            ${ref("dialogRef")}
         >
             ${(x) => x.storyContent}
-            <adaptive-button @click="${(x) => x.dialogRef.close()}">Close</adaptive-button>
+            <adaptive-button commandfor="example-dialog" command="close">Close</adaptive-button>
         </adaptive-dialog>
     </div>
 `;

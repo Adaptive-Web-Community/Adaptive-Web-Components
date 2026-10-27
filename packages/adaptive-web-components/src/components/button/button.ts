@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { ButtonController, type ButtonElement, ButtonType, isIconOnly } from "@adaptive-web/components-foundation";
+import { ButtonController, type ButtonElement, ButtonType, findById, isIconOnly } from "@adaptive-web/components-foundation";
 
 /**
  * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
@@ -71,6 +71,24 @@ export class Button extends FASTElement implements ButtonElement {
      */
     @attr({ attribute: "formtarget" })
     public formTarget: string | null = null;
+
+    private explicitCommandFor: Element | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#InvokerElement.commandForElement}
+     */
+    public get commandForElement(): Element | null {
+        return this.explicitCommandFor ?? findById(this, this.getAttribute("commandfor"));
+    }
+    public set commandForElement(element: Element | null) {
+        this.explicitCommandFor = element;
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#InvokerElement.command}
+     */
+    @attr
+    public command: string | null = null;
 
     /**
      * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.form}

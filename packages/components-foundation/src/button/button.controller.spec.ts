@@ -16,6 +16,8 @@ class TestButton extends HTMLElement implements ButtonElement {
     public formTarget: string | null = null;
     public readonly form: HTMLFormElement | null = null;
     public readonly labels: NodeList = document.createDocumentFragment().childNodes;
+    public commandForElement: Element | null = null;
+    public command: string | null = null;
 }
 customElements.define("test-button", TestButton);
 
@@ -24,7 +26,7 @@ function setup(type: ButtonType = ButtonType.button) {
     const host = form.appendChild(new TestButton());
     host.type = type;
     document.body.append(form);
-    const internals = { role: null as string | null, form: form as HTMLFormElement | null, states: new Set<string>() };
+    const internals = { role: null as string | null, ariaExpanded: null as string | null, form: form as HTMLFormElement | null, states: new Set<string>() };
     const controller = new ButtonController(host, internals);
     controller.connect();
     return { form, host, internals, controller };
@@ -63,7 +65,7 @@ describe("ButtonController", () => {
         const host = new TestButton();
         host.setAttribute("tabindex", "-1");
 
-        new ButtonController(host, { role: null, form: null, states: new Set() }).connect();
+        new ButtonController(host, { role: null, ariaExpanded: null, form: null, states: new Set() }).connect();
 
         expect(host.getAttribute("tabindex")).to.equal("-1");
     });
@@ -210,9 +212,25 @@ describe("ButtonController", () => {
         it("should do nothing without a form", () => {
             const host = document.body.appendChild(new TestButton());
             host.type = ButtonType.submit;
-            new ButtonController(host, { role: null, form: null, states: new Set() }).connect();
+            new ButtonController(host, { role: null, ariaExpanded: null, form: null, states: new Set() }).connect();
 
             expect(() => host.click()).to.not.throw();
+        });
+
+        it("should invoke its command as a button, and not as a submit button", () => {
+            const { form, host } = setup(ButtonType.button);
+            const target = form.appendChild(document.createElement("div"));
+            const commands: string[] = [];
+            target.addEventListener("command", event => commands.push((event as CommandEvent).command));
+            host.commandForElement = target;
+            host.command = "--open";
+
+            host.click();
+            host.type = ButtonType.submit;
+            form.addEventListener("submit", event => event.preventDefault());
+            host.click();
+
+            expect(commands).to.deep.equal(["--open"]);
         });
 
         it("should stop handling clicks when disconnected", () => {

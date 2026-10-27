@@ -1,3 +1,4 @@
+import { InvokerController } from "../utilities/invoker.controller.js";
 import { SpacePressController } from "../utilities/space-press.controller.js";
 import { type ButtonElement, ButtonType } from "./button.js";
 
@@ -6,13 +7,14 @@ import { type ButtonElement, ButtonType } from "./button.js";
  *
  * @public
  */
-export type ButtonInternals = Pick<ElementInternals, "form" | "role"> & {
+export type ButtonInternals = Pick<ElementInternals, "form" | "role" | "ariaExpanded"> & {
     readonly states: Pick<CustomStateSet, "add" | "delete">;
 };
 
 /**
  * The behavior of a {@link ButtonElement} that a native button has and a custom element doesn't: the `button` role, focus, activation by Enter
- * and Space, and submitting or resetting its form.
+ * and Space, submitting or resetting its form, and, as a `button`, invoking the command of `commandfor` and `command` (with an
+ * {@link InvokerController}).
  *
  * @remarks
  * The element's binding creates it with the element's `ElementInternals`, and calls {@link ButtonController.connect} and
@@ -24,10 +26,12 @@ export type ButtonInternals = Pick<ElementInternals, "form" | "role"> & {
  */
 export class ButtonController {
     private readonly spacePress: SpacePressController;
+    private readonly invoker: InvokerController;
 
     constructor(private readonly host: ButtonElement, private readonly internals: ButtonInternals) {
         internals.role = "button";
         this.spacePress = new SpacePressController(host, internals.states);
+        this.invoker = new InvokerController(host, internals);
     }
 
     /**
@@ -51,20 +55,27 @@ export class ButtonController {
         this.host.removeEventListener("click", this.handleClick);
         this.host.removeEventListener("keydown", this.handleKeydown);
         this.spacePress.disconnect();
+        this.invoker.disconnect();
     }
 
     private readonly handleClick = (event: MouseEvent): void => {
         const form = this.internals.form;
-        if (event.defaultPrevented || !form || this.host.matches(":disabled")) {
+        if (event.defaultPrevented || this.host.matches(":disabled")) {
             return;
         }
 
+        // As a native button: a submit or reset button acts on its form, and only a `button` invokes a command.
         switch (this.host.type) {
             case ButtonType.submit:
-                this.submit(form);
+                if (form) {
+                    this.submit(form);
+                }
                 break;
             case ButtonType.reset:
-                form.reset();
+                form?.reset();
+                break;
+            case ButtonType.button:
+                this.invoker.invoke();
                 break;
         }
     };

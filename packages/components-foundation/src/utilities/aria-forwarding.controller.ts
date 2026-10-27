@@ -1,3 +1,5 @@
+import { findByIds } from "./id-reference.js";
+
 // The ARIA attributes whose value is a list of ids, and the property of each that reflects the elements, which can reach out of a shadow root.
 const elementLists = {
     "aria-controls": "ariaControlsElements",
@@ -65,24 +67,11 @@ export class AriaForwardingController {
         const value = this.host.getAttribute(name);
 
         if (isElementList(name)) {
-            target[elementLists[name]] = value === null ? null : this.findElements(value);
+            target[elementLists[name]] = value === null ? null : findByIds(this.host, value);
         } else if (value === null) {
             target.removeAttribute(name);
         } else {
             target.setAttribute(name, value);
         }
-    }
-
-    private findElements(ids: string): Element[] {
-        const root = this.host.getRootNode();
-        if (!(root instanceof Document || root instanceof DocumentFragment)) {
-            return [];
-        }
-
-        return ids
-            .split(/\s+/)
-            .filter(id => id !== "")
-            .map(id => root.getElementById(id))
-            .filter((element): element is HTMLElement => element !== null);
     }
 }
