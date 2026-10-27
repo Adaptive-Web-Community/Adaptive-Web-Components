@@ -426,6 +426,7 @@ export class OptionListController {
     setActive(option: ListboxOptionElement | null): void;
     setOptions(options: readonly ListboxOptionElement[]): void;
     setValue(value: string): void;
+    get typing(): boolean;
     get value(): string;
 }
 
@@ -579,6 +580,44 @@ export const SearchParts: {
     readonly inputWrapper: "input-wrapper";
     readonly control: "control";
     readonly clearButton: "clear-button";
+};
+
+// @public
+export class SelectController {
+    constructor(host: SelectElement, internals: SelectInternals);
+    close(): void;
+    connect(control: HTMLElement, listbox: HTMLElement): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    labelsChanged(): void;
+    readonly list: OptionListController;
+    get open(): boolean;
+    optionSelectedChanged(option: ListboxOptionElement): void;
+    setOptions(options: readonly ListboxOptionElement[]): void;
+    setValue(value: string): void;
+    show(): void;
+    stateChanged(): void;
+}
+
+// @public
+export interface SelectElement extends FormControlElement {
+    disabled: boolean;
+    name: string | null;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
+
+// @public
+export type SelectInternals = Pick<ElementInternals, "labels" | "states" | "setFormValue" | "setValidity">;
+
+// @public
+export const SelectParts: {
+    readonly control: "control";
+    readonly selectedValue: "selected-value";
+    readonly indicator: "indicator";
+    readonly listbox: "listbox";
 };
 
 // @public

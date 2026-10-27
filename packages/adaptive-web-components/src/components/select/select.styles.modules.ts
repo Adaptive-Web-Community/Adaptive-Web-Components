@@ -3,10 +3,8 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlListDensityStyles,
-    controlShapeStyles,
     flyoutStyles,
     inputStyles,
-    neutralOutlineDiscernibleControlStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { SelectAnatomy } from "./select.template.js";
 
@@ -30,17 +28,6 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: SelectAnatomy.conditions.isListbox,
-            part: SelectAnatomy.parts.listbox,
-        },
-        styles: [
-            controlShapeStyles,
-            neutralOutlineDiscernibleControlStyles,
-        ],
-    },
-    {
-        target : {
-            contextCondition: SelectAnatomy.conditions.isDropdown,
             part: SelectAnatomy.parts.listbox,
         },
         styles: flyoutStyles,

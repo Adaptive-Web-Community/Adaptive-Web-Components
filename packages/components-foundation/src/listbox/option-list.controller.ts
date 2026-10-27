@@ -88,6 +88,13 @@ export class OptionListController {
     }
 
     /**
+     * Whether the user is typing to find an option, so that a space is part of what is typed.
+     */
+    public get typing(): boolean {
+        return this.typed !== "" && Date.now() - this.typedAt < typeaheadTimeout;
+    }
+
+    /**
      * The options changed. In single selection, of several selected, the last stays selected, as in a native select.
      */
     public setOptions(options: readonly ListboxOptionElement[]): void {
@@ -209,7 +216,7 @@ export class OptionListController {
                 return true;
             case " ":
                 // A space while typing to find an option is part of what is typed.
-                if (this.typed && Date.now() - this.typedAt < typeaheadTimeout) {
+                if (this.typing) {
                     return this.typeahead(key, available);
                 }
                 if (this.current) {

@@ -5,7 +5,7 @@ import { SelectStatics } from "./select.template.js";
 import { styleModules } from "./select.styles.modules.js";
 
 /**
- * The select custom element definition. Implements {@link @microsoft/fast-foundation#FASTSelect}.
+ * The Select custom element definition. Implements {@link Select}.
  *
  * @remarks
  * HTML Element: \<adaptive-select\>
@@ -19,5 +19,9 @@ export const selectDefinition = composeSelect(
             [SelectStatics.indicator]: chevronDownIcon,
         },
         styleModules,
+        shadowOptions: {
+            // Focusing the element, or a label of it, focuses the combobox.
+            delegatesFocus: true,
+        },
     }
 );

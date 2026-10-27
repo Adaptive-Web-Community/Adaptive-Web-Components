@@ -1,8 +1,10 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTSelect, selectTemplate } from "@microsoft/fast-foundation";
-import type { ValuesOf } from '@microsoft/fast-foundation';
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { SelectParts, type ValuesOf } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import { staticallyCompose } from "../../utilities/template-helpers.js";
+import type { Select } from "./select.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the select.
@@ -22,36 +24,46 @@ export type SelectStatics = ValuesOf<typeof SelectStatics>;
  * @public
  */
 export const SelectConditions = {
-    isDropdown: "[aria-haspopup]",
-    isListbox: ":not([aria-haspopup])",
+    open: ":state(open)",
+    readOnly: "[readonly]",
 };
 
-/**
- * @public
- */
-export const SelectParts = {
-    control: "control",
-    selectedValue: "selected-value",
-    indicator: "indicator",
-    listbox: "listbox",
-};
+export { SelectParts };
 
 /**
  * @public
  */
 export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof SelectParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: controlInteractivity,
     conditions: SelectConditions,
     parts: SelectParts,
-    focus: Focus.contextFocused(),
+    focus: Focus.partFocused("control"),
 };
 
 /**
- * Default Select template, {@link @microsoft/fast-foundation#selectTemplate}.
+ * Default Select template: the combobox, which shows the selected option, and the popup of the options next to it. The element's controller
+ * writes the combobox's state.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTSelect> =
-    (ds: DesignSystem) =>
-        selectTemplate({
-            indicator: ds.statics.get(SelectStatics.indicator),
-        });
+export const template: (ds: DesignSystem) => ElementViewTemplate<Select> =
+    (ds: DesignSystem) => html<Select>`
+        <div
+            class="control"
+            part="control"
+            role="combobox"
+            tabindex="0"
+            aria-haspopup="listbox"
+            aria-controls="listbox"
+            ${ref("control")}
+        >
+            <slot name="start"></slot>
+            <span class="selected-value" part="selected-value">${x => x.selectedText}</span>
+            <span class="indicator" part="indicator" aria-hidden="true">
+                <slot name="indicator">${staticallyCompose(ds.statics.get(SelectStatics.indicator))}</slot>
+            </span>
+            <slot name="end"></slot>
+        </div>
+        <div id="listbox" class="listbox" part="listbox" role="listbox" popover="auto" ${ref("listbox")}>
+            <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+        </div>
+    `;

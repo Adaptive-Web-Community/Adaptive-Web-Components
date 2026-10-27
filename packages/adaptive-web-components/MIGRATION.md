@@ -361,3 +361,19 @@ The listbox is a form control now, as a native `<select multiple>` or `<select s
 | `role`, `aria-selected`, and `aria-checked` written to the element | `ElementInternals`; `checked` is gone |
 | `[aria-selected="true"]` and `[aria-checked="true"]` in selectors | `:state(selected)`; the active option is `:state(active)` |
 | A proxy `<option>`, and the `Option`-like constructor arguments | Gone |
+
+## Select
+
+The select's host is the form control, and its combobox is in its shadow root, beside the popup, which is a popover now.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTSelect` and `AdaptiveSelect` | `Select`, defined with `delegatesFocus` |
+| `role="combobox"` and `aria-*` written to the element | The `control` part is the combobox; the element's ARIA is forwarded to it |
+| `multiple` and `size`, which showed the options inline | Gone: use a `Listbox` |
+| `open` | Gone: the `:state(open)` custom state while the popup is open |
+| The popup placed by script (`position: fixed`) | A popover, placed by CSS anchor positioning |
+| `[aria-haspopup]` and `:not([aria-haspopup])` in the anatomy (`isDropdown`, `isListbox`) | Gone; `open` and `readOnly` conditions |
+| `selectedIndex`, `displayValue`, and the other members of FAST's listbox | `value`, and the options' `selected` |
+| | `readonly`, and `required` with an empty value as a placeholder |
+| `ValuesOf` (of `SelectStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
