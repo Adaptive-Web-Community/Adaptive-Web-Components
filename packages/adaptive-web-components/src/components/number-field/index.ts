@@ -1,3 +1,4 @@
+export { NumberField } from "./number-field.js";
 export { composeNumberField } from "./number-field.compose.js";
 export {
     templateStyles as numberFieldTemplateStyles,

@@ -1,8 +1,7 @@
-import { FASTNumberField } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from '../../styles/styles.js';
-import { AdaptiveNumberField } from "./number-field.js";
+import { NumberField } from "./number-field.js";
 import { aestheticStyles, templateStyles } from "./number-field.styles.js";
 import { NumberFieldAnatomy, NumberFieldStatics, template } from "./number-field.template.js";
 
@@ -13,8 +12,8 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeNumberField(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTNumberField, NumberFieldStatics>
-): FASTElementDefinition {
+    options?: ComposeOptions<NumberField, NumberFieldStatics>
+): Promise<FASTElementDefinition<typeof NumberField>> {
     if (options?.statics) {
         if (!ds.statics.has(NumberFieldStatics.stepDown)) {
             ds.statics.set(
@@ -33,7 +32,7 @@ export function composeNumberField(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, NumberFieldAnatomy, options);
 
-    return AdaptiveNumberField.compose({
+    return FASTElementDefinition.compose(NumberField, {
         name: `${ds.prefix}-number-field`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

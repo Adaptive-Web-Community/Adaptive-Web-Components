@@ -7,6 +7,7 @@ export * from "./button/index.js";
 export * from "./checkable/index.js";
 export * from "./checkbox/index.js";
 export * from "./divider/index.js";
+export * from "./number-field/index.js";
 export * from "./progress/index.js";
 export * from "./progress-ring/index.js";
 export * from "./radio/index.js";

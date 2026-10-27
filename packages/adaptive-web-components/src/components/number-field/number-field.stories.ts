@@ -1,43 +1,39 @@
 import { html } from "@microsoft/fast-element";
-import { FASTNumberField } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { NumberField as NumberFieldElement } from "./number-field.js";
 
-const storyTemplate = html<StoryArgs<FASTNumberField>>`
+const storyTemplate = html<StoryArgs<NumberFieldElement>>`
     <adaptive-number-field
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
         ?hide-step="${(x) => x.hideStep}"
-        :list="${(x) => x.list}"
         max="${(x) => x.max}"
-        maxlength="${(x) => x.maxlength}"
         min="${(x) => x.min}"
-        minlength="${(x) => x.minlength}"
         placeholder="${(x) => x.placeholder}"
         ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
-        size="${(x) => x.size}"
         step="${(x) => x.step}"
         value="${(x) => x.value}"
-        :ariaAtomic="${(x) => x.ariaAtomic}"
-        :ariaBusy="${(x) => x.ariaBusy}"
-        :ariaControls="${(x) => x.ariaControls}"
-        :ariaCurrent="${(x) => x.ariaCurrent}"
-        :ariaDescribedby="${(x) => x.ariaDescribedby}"
-        :ariaDetails="${(x) => x.ariaDetails}"
-        :ariaDisabled="${(x) => x.ariaDisabled}"
-        :ariaErrormessage="${(x) => x.ariaErrormessage}"
-        :ariaFlowto="${(x) => x.ariaFlowto}"
-        :ariaHaspopup="${(x) => x.ariaHaspopup}"
-        :ariaHidden="${(x) => x.ariaHidden}"
-        :ariaInvalid="${(x) => x.ariaInvalid}"
-        :ariaKeyshortcuts="${(x) => x.ariaKeyshortcuts}"
-        :ariaLabel="${(x) => x.ariaLabel}"
-        :ariaLabelledby="${(x) => x.ariaLabelledby}"
-        :ariaLive="${(x) => x.ariaLive}"
-        :ariaOwns="${(x) => x.ariaOwns}"
-        :ariaRelevant="${(x) => x.ariaRelevant}"
-        :ariaRoledescription="${(x) => x.ariaRoledescription}"
+        aria-atomic="${(x) => x.ariaAtomic}"
+        aria-busy="${(x) => x.ariaBusy}"
+        aria-controls="${(x) => x.ariaControls}"
+        aria-current="${(x) => x.ariaCurrent}"
+        aria-describedby="${(x) => x.ariaDescribedby}"
+        aria-details="${(x) => x.ariaDetails}"
+        aria-disabled="${(x) => x.ariaDisabled}"
+        aria-errormessage="${(x) => x.ariaErrormessage}"
+        aria-flowto="${(x) => x.ariaFlowto}"
+        aria-haspopup="${(x) => x.ariaHaspopup}"
+        aria-hidden="${(x) => x.ariaHidden}"
+        aria-invalid="${(x) => x.ariaInvalid}"
+        aria-keyshortcuts="${(x) => x.ariaKeyshortcuts}"
+        aria-label="${(x) => x.ariaLabel}"
+        aria-labelledby="${(x) => x.ariaLabelledby}"
+        aria-live="${(x) => x.ariaLive}"
+        aria-owns="${(x) => x.ariaOwns}"
+        aria-relevant="${(x) => x.ariaRelevant}"
+        aria-roledescription="${(x) => x.ariaRoledescription}"
     >
         ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
@@ -62,15 +58,11 @@ export default {
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         hideStep: { control: "boolean" },
-        list: { control: "text" },
         max: { control: "number" },
-        maxlength: { control: "number" },
         min: { control: "number" },
-        minlength: { control: "number" },
         placeholder: { control: "text" },
         readOnly: { control: "boolean" },
         required: { control: "boolean" },
-        size: { control: "number" },
         step: { control: "number" },
         value: { control: "number" },
         valueAsNumber: { control: "number" },
@@ -94,6 +86,6 @@ export default {
         ariaRelevant: { control: "text" },
         ariaRoledescription: { control: "text" },
     },
-} as Meta<FASTNumberField>;
+} as Meta<NumberFieldElement>;
 
-export const NumberField: Story<FASTNumberField> = renderComponent(storyTemplate).bind({});
+export const NumberField: Story<NumberFieldElement> = renderComponent(storyTemplate).bind({});

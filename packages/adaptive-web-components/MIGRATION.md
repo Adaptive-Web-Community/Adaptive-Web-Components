@@ -203,3 +203,12 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `AdaptiveTextArea` (extends FAST Foundation's `FASTTextArea`) | `TextArea`, which extends `BaseTextInput`; the rest is as for the text field |
 | `TextAreaResize` from `@microsoft/fast-foundation`, `TextAreaParts` from this package | From the components foundation, also exported here |
 | `list`, `form` (a property), `spellcheck` | Gone for now; the `form` attribute works, as for any form control |
+
+## Number Field
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveNumberField` (extends FAST Foundation's `FASTNumberField`) | `NumberField`, which extends `BaseTextInput`; the rest is as for the text field |
+| An `<input type="text" inputmode="numeric">` with its own parsing and stepping | A native `<input type="number">`, which parses, steps, and validates its range and step |
+| `maxlength`, `minlength`, `size`, `list` | Gone: they don't apply to a number input |
+| `NumberFieldParts` from this package | The components foundation's, also exported here |

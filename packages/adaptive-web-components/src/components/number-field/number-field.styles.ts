@@ -15,9 +15,8 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 
     .root {
@@ -33,6 +32,19 @@ export const templateStyles: ElementStyles = css`
         color: inherit;
         font: inherit;
         padding: unset;
+        /* The step buttons are the template's, not the native input's. */
+        appearance: textfield;
+    }
+
+    .control::-webkit-inner-spin-button,
+    .control::-webkit-outer-spin-button {
+        appearance: none;
+        margin: 0;
+    }
+
+    .controls[hidden],
+    :host(:disabled) .controls {
+        display: none;
     }
 
     .controls {

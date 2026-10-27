@@ -228,6 +228,35 @@ export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 export function isIconOnly(nodes: readonly Node[]): boolean;
 
 // @public
+export class NumberFieldController extends TextInputController<NumberFieldElement> {
+    constructor(host: NumberFieldElement, internals: TextInputInternals);
+    stepDown(): void;
+    stepUp(): void;
+    // (undocumented)
+    protected sync(control: TextControl): void;
+}
+
+// @public
+export interface NumberFieldElement extends TextInputElement {
+    hideStep: boolean;
+    max: number | null;
+    min: number | null;
+    step: number | null;
+    stepDown(): void;
+    stepUp(): void;
+}
+
+// @public
+export const NumberFieldParts: {
+    readonly label: "label";
+    readonly root: "root";
+    readonly control: "control";
+    readonly controls: "controls";
+    readonly stepUp: "step-up";
+    readonly stepDown: "step-down";
+};
+
+// @public
 export const Orientation: {
     readonly horizontal: "horizontal";
     readonly vertical: "vertical";
