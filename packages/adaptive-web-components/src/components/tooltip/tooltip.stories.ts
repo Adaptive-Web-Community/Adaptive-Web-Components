@@ -1,13 +1,14 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { FASTTooltip, TooltipPlacement } from "@microsoft/fast-foundation";
+import { TooltipPlacement } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Tooltip as TooltipElement } from "./tooltip.js";
 
-const storyTemplate = html<StoryArgs<FASTTooltip>>`
+const storyTemplate = html<StoryArgs<TooltipElement>>`
     <adaptive-tooltip
         anchor="${(x) => x.anchor}"
         placement="${(x) => x.placement}"
-        show="${(x) => x.show}"
+        delay="${(x) => x.delay}"
     >
         ${(x) => x.storyContent}
     </adaptive-tooltip>
@@ -25,25 +26,23 @@ export default {
             control: "select",
             options: Object.values(TooltipPlacement),
         },
-        show: { control: "select", options: [undefined, true, false] },
+        delay: { control: "number" },
     },
-} as Meta<FASTTooltip>;
+} as Meta<TooltipElement>;
 
-export const Tooltip: Story<FASTTooltip> = renderComponent(html<StoryArgs<FASTTooltip>>`
+export const Tooltip: Story<TooltipElement> = renderComponent(html<StoryArgs<TooltipElement>>`
     <div>
         <adaptive-button id="${(x) => x.anchor}">Hover or focus me</adaptive-button>
         ${storyTemplate}
     </div>
 `).bind({});
 
-export const TooltipPlacements: Story<FASTTooltip> = renderComponent(
-    html<StoryArgs<FASTTooltip>>`
-        <adaptive-card
-            id="${(x) => x.anchor}"
-            style="height: 50%; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 50%;"
-        >
+export const TooltipPlacements: Story<TooltipElement> = renderComponent(
+    html<StoryArgs<TooltipElement>>`
+        <div style="left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%);">
+            <adaptive-button id="${(x) => x.anchor}">Hover or focus me to show every placement</adaptive-button>
             ${repeat((x) => x.storyItems, storyTemplate)}
-        </adaptive-card>
+        </div>
     `
 ).bind({});
 TooltipPlacements.args = {
@@ -51,7 +50,6 @@ TooltipPlacements.args = {
     storyItems: Object.values(TooltipPlacement).map((placement) => ({
         anchor: "placement-container",
         placement,
-        show: true,
         storyContent: placement,
     })),
 };

@@ -245,3 +245,17 @@ The element wraps a native `<dialog>`, which has the top layer, the backdrop, th
 | The `positioning-region` and `overlay` parts | Gone: the `control` part is the `<dialog>`, and the overlay is its `::backdrop` |
 | `aria-label`, `aria-labelledby`, `aria-describedby` properties | The `aria-*` attributes of the element, forwarded to the `<dialog>` |
 | | An invoker's `command` opens and closes it (`show-modal`, `close`, `request-close`, or with `--` from a native button) |
+
+## Tooltip
+
+The element is a popover in the top layer, placed next to its anchor by CSS anchor positioning instead of Floating UI.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTTooltip` (FAST Foundation) | `Tooltip` |
+| `placement`: `top`, `bottom`, `left`, `right`, `-start`, `-end` | `placement` in the writing direction: `above`, `below`, `before`, `after`, with `-start`, `-end` (above and below), `-top`, `-bottom` (before and after). The default is `above` |
+| `visible`, `show` | Gone: `showPopover()` and `hidePopover()` |
+| The `dismiss` event | Gone: Escape hides it |
+| `[visible]` in selectors | `:popover-open` |
+| | `anchorElement`, to set the anchor as an element |
+| The anchor's `aria-describedby`, by id | The anchor's `ariaDescribedByElements`, added to the author's |

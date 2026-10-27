@@ -19,6 +19,7 @@ export * from "./switch/index.js";
 export * from "./text-area/index.js";
 export * from "./text-field/index.js";
 export * from "./text-input/index.js";
+export * from "./tooltip/index.js";
 export type { DefaultAria } from "./utilities/aria.js";
 export { AriaForwardingController } from "./utilities/aria-forwarding.controller.js";
 export { hasContent, isIconOnly } from "./utilities/content.js";

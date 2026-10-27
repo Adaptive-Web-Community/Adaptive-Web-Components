@@ -630,6 +630,43 @@ export type TextInputOptions = {
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public
+export class TooltipController {
+    constructor(host: TooltipElement, internals: TooltipInternals);
+    anchorChanged(): void;
+    connect(): void;
+    disconnect(): void;
+}
+
+// @public
+export interface TooltipElement extends HTMLElement {
+    anchorElement: Element | null;
+    delay: number;
+    placement: TooltipPlacement;
+}
+
+// @public
+export type TooltipInternals = Pick<ElementInternals, "role">;
+
+// @public
+export const TooltipPlacement: {
+    readonly above: "above";
+    readonly aboveStart: "above-start";
+    readonly aboveEnd: "above-end";
+    readonly below: "below";
+    readonly belowStart: "below-start";
+    readonly belowEnd: "below-end";
+    readonly before: "before";
+    readonly beforeTop: "before-top";
+    readonly beforeBottom: "before-bottom";
+    readonly after: "after";
+    readonly afterTop: "after-top";
+    readonly afterBottom: "after-bottom";
+};
+
+// @public
+export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;
+
+// @public
 export type ValuesOf<T> = T[keyof T];
 
 // (No @packageDocumentation comment for this package)

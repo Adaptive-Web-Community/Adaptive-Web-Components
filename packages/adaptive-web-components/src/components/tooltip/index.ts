@@ -1,3 +1,4 @@
+export { Tooltip } from "./tooltip.js";
 export { composeTooltip } from "./tooltip.compose.js";
 export {
     templateStyles as tooltipTemplateStyles,

@@ -3,7 +3,7 @@ import { composeTooltip } from "./tooltip.compose.js";
 import { styleModules } from "./tooltip.styles.modules.js";
 
 /**
- * The Tooltip custom element definition. Implements {@link @microsoft/fast-foundation#FASTTooltip}.
+ * The Tooltip custom element definition. Implements {@link Tooltip}.
  *
  * @remarks
  * HTML Element: \<adaptive-tooltip\>
