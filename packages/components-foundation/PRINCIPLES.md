@@ -53,7 +53,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 13. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
     (a property each child reads), not by doing their behavior for them.
     Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
-    Radio Group (it reacts to `checked`, and gives `groupReadOnly`).
+    Radio Group (it reacts to `checked`, and gives `groupReadOnly` and `groupDisabled`).
 14. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
     defined yet is waited for with `whenDefined` of the container's registry.
     Used by: Accordion, Radio Group (both with AWC's `onDefined`).
@@ -88,10 +88,11 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 21. **What is only decoration or a placeholder is hidden from assistive technology**: `aria-hidden` on an element, `alt=""` on an image.
     Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image).
 22. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
-    A group of controls is disabled by a `<fieldset disabled>` around it, as native controls are, and has no `disabled` of its own.
+    A group of controls is a form control without a value, so it is `:disabled` from its own `disabled` or a fieldset around it, and it gives
+    its controls that state (`groupDisabled`), which they show as `:state(disabled)`: their own `disabled` stays the author's.
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
-    Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (a fieldset).
+    Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (its `disabled` or a fieldset).
 23. **A control can be read only** (`readonly`): it takes focus, the user doesn't change it, it has `aria-readonly` and `:state(readonly)`,
     and it isn't validated, as a read only native input isn't. A group that is read only makes its controls read only.
     Used by: Checkbox, Switch, Radio Group (and its radios, through `groupReadOnly`).
@@ -156,9 +157,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 38. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-39. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+39. **Interactive states are selected as the element has them**: `:disabled` and `:state(disabled)` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
-    Used by: Button, Checkbox, Switch, Radio (all through AWC's `controlInteractivity`).
+    Used by: Button, Checkbox, Switch, Radio (all through AWC's `controlInteractivity`, with `:state(disabled)` for a radio its group
+    disables), Radio Group (`:disabled`, for its label).
 40. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
     Used by: Progress, Progress Ring (`--percent-complete`).
 

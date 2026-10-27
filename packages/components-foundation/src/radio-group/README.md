@@ -20,7 +20,7 @@ its `label` slot.
 | One checked | The group, on a change | The group reacts to each radio's `checked`, by the user or code; of several checked at the start, the last stays |
 | `value` | An attribute and a property | A property: the checked radio's value, which sets the checked radio |
 | `name` | Given to the radios | Given to the radios |
-| Disabled | `disabled`, which blocked clicks and focus | Not taken: a `<fieldset disabled>` around the group disables its radios, as for native radios |
+| Disabled | `disabled`, which blocked clicks and focus | `disabled`. As a form control, the group is `:disabled` from its attribute or a fieldset around it (`formDisabledCallback`), so its label can show it. It gives its radios `groupDisabled`, so the radios' own `disabled` stays the author's; they act disabled, with `:state(disabled)` |
 | Read only | `readonly` | `readonly`, with `aria-readonly`, given to the radios as `groupReadOnly`: the arrows move the focus without checking |
 | Required | | `required`, the group missing its value when no radio is checked, shown at the first radio that isn't disabled, with the browser's message. Not validated when read only |
 | Orientation | `orientation`, `aria-orientation` written | `ariaOrientation` through `ElementInternals`, and the reflected attribute for the styles |

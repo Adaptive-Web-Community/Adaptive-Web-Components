@@ -12,7 +12,7 @@ export type RovingFocusKeys = Orientation | "both";
  *
  * @public
  */
-export type RovingFocusOptions = {
+export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     /**
      * The arrow keys that move: Left and Right for `horizontal` (swapped right to left), Up and Down for `vertical`, or all four.
      */
@@ -21,12 +21,18 @@ export type RovingFocusOptions = {
     /**
      * What else to do when the focus moves to an item, such as checking the radio it moved to.
      */
-    onMove?: (item: HTMLElement) => void;
+    onMove?: (item: T) => void;
+
+    /**
+     * Whether an item is disabled, which the focus skips. The default is whether it is `:disabled`.
+     */
+    isDisabled?: (item: T) => boolean;
 };
 
 /**
  * Focus that roves among the items of a composite (a radio group): one item is in the tab order (`tabindex="0"`), the active one, or the
- * first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are `:disabled`.
+ * first that isn't disabled, and the arrow keys move the focus between them, wrapping, and skipping those that are disabled (`:disabled`,
+ * or as the options say).
  *
  * @remarks
  * The composite's controller creates it, connects and disconnects it with its own, and gives it the items and the active item as they change.
@@ -34,11 +40,11 @@ export type RovingFocusOptions = {
  *
  * @public
  */
-export class RovingFocusController {
-    private items: readonly HTMLElement[] = [];
-    private active: HTMLElement | null = null;
+export class RovingFocusController<T extends HTMLElement = HTMLElement> {
+    private items: readonly T[] = [];
+    private active: T | null = null;
 
-    constructor(private readonly host: HTMLElement, private readonly options: RovingFocusOptions) {}
+    constructor(private readonly host: HTMLElement, private readonly options: RovingFocusOptions<T>) {}
 
     /**
      * Starts handling the arrow keys. For when the composite is connected.
@@ -57,7 +63,7 @@ export class RovingFocusController {
     /**
      * The items changed.
      */
-    public setItems(items: readonly HTMLElement[]): void {
+    public setItems(items: readonly T[]): void {
         this.items = items;
         this.update();
     }
@@ -65,13 +71,14 @@ export class RovingFocusController {
     /**
      * The active item, which is in the tab order, changed. `null` is the first item that isn't disabled.
      */
-    public setActive(item: HTMLElement | null): void {
+    public setActive(item: T | null): void {
         this.active = item;
         this.update();
     }
 
-    private enabledItems(): HTMLElement[] {
-        return this.items.filter(item => !item.matches(":disabled"));
+    private enabledItems(): T[] {
+        const isDisabled = this.options.isDisabled ?? ((item: T) => item.matches(":disabled"));
+        return this.items.filter(item => !isDisabled(item));
     }
 
     private update(): void {

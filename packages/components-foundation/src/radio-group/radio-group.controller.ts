@@ -14,26 +14,32 @@ export type RadioGroupInternals = Pick<
 
 /**
  * The behavior of a {@link RadioGroupElement}: the `radiogroup` role, named by its label; one radio checked; the arrow keys, which move the
- * focus and check the radio they move to (with a {@link RovingFocusController}); the group's name and read only given to its radios; and
- * its validity when it is required.
+ * focus and check the radio they move to (with a {@link RovingFocusController}); the group's name, read only, and disabled given to its
+ * radios; and its validity when it is required.
  *
  * @remarks
  * The element's binding creates it, calls {@link RadioGroupController.connect} and {@link RadioGroupController.disconnect} with the
  * element's lifecycle, and calls {@link RadioGroupController.setRadios}, {@link RadioGroupController.radioCheckedChanged},
  * {@link RadioGroupController.nameChanged}, {@link RadioGroupController.orientationChanged}, {@link RadioGroupController.readOnlyChanged},
- * {@link RadioGroupController.requiredChanged}, and {@link RadioGroupController.labelsChanged}
+ * {@link RadioGroupController.requiredChanged}, {@link RadioGroupController.labelsChanged}, and {@link RadioGroupController.disabledChanged}
+ * from `formDisabledCallback`, which the platform calls for the group's `disabled` attribute and for a fieldset around it
  * when its framework observes those changes.
  *
  * @public
  */
 export class RadioGroupController {
     private radios: readonly RadioElement[] = [];
-    private readonly rovingFocus: RovingFocusController;
+    private disabled = false;
+    private readonly rovingFocus: RovingFocusController<RadioElement>;
 
     constructor(private readonly host: RadioGroupElement, private readonly internals: RadioGroupInternals) {
         internals.role = "radiogroup";
         // Checking the radio the focus moves to emits its input and change, as a click does.
-        this.rovingFocus = new RovingFocusController(host, { keys: "both", onMove: radio => radio.click() });
+        this.rovingFocus = new RovingFocusController<RadioElement>(host, {
+            keys: "both",
+            onMove: radio => radio.click(),
+            isDisabled: radio => radio.matches(":disabled") || radio.groupDisabled,
+        });
     }
 
     /**
@@ -58,6 +64,7 @@ export class RadioGroupController {
         this.radios = radios;
         this.nameChanged();
         this.readOnlyChanged();
+        this.disabledChanged(this.disabled);
 
         const checked = radios.filter(radio => radio.checked);
         for (const radio of checked.slice(0, -1)) {
@@ -110,6 +117,17 @@ export class RadioGroupController {
     }
 
     /**
+     * The group was disabled or enabled, by its `disabled` attribute or a fieldset around it: it is given to the radios.
+     */
+    public disabledChanged(disabled: boolean): void {
+        this.disabled = disabled;
+        for (const radio of this.radios) {
+            radio.groupDisabled = disabled;
+        }
+        this.rovingFocus.setActive(this.checkedRadio());
+    }
+
+    /**
      * Required changed.
      */
     public requiredChanged(): void {
@@ -150,7 +168,7 @@ export class RadioGroupController {
     private updateValidity(): void {
         const { host, internals } = this;
         if (host.required && !host.readOnly && !this.checkedRadio()) {
-            const anchor = this.radios.find(radio => !radio.matches(":disabled"));
+            const anchor = this.radios.find(radio => !radio.matches(":disabled") && !radio.groupDisabled);
             internals.setValidity({ valueMissing: true }, this.valueMissingMessage(), anchor);
         } else {
             internals.setValidity({});

@@ -11,6 +11,7 @@ class TestRadio extends TestFormControl implements RadioElement {
     public defaultChecked = false;
     public disabled = false;
     public groupReadOnly = false;
+    public groupDisabled = false;
     public name: string | null = null;
     public value = "on";
 }
@@ -56,6 +57,21 @@ describe("RadioController", () => {
 
         expect(host.checked).to.be.true;
         expect(changes).to.equal(0);
+    });
+
+    it("should act disabled when its group disables it", () => {
+        const { host, internals, controller } = setup();
+        host.checked = true;
+        host.groupDisabled = true;
+        controller.stateChanged();
+
+        expect(internals.ariaDisabled).to.equal("true");
+        expect(internals.states.has("disabled")).to.be.true;
+        expect(internals.formValue).to.be.null;
+
+        host.checked = false;
+        host.click();
+        expect(host.checked).to.be.false;
     });
 
     it("should give its value to the form when it is checked", () => {

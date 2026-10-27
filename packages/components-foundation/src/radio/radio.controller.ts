@@ -3,10 +3,10 @@ import type { RadioElement } from "./radio.js";
 
 /**
  * The behavior of a {@link RadioElement}: a {@link CheckableController} with the `radio` role, which a click or Space only checks, and read
- * only when its group is.
+ * only or disabled when its group is.
  *
  * @remarks
- * The binding calls {@link CheckableController.stateChanged} when `groupReadOnly` changes too.
+ * The binding calls {@link CheckableController.stateChanged} when `groupReadOnly` or `groupDisabled` changes too.
  *
  * @public
  */
@@ -26,5 +26,9 @@ export class RadioController extends CheckableController<RadioElement> {
 
     protected readOnly(): boolean {
         return this.host.groupReadOnly;
+    }
+
+    protected disabled(): boolean {
+        return this.host.groupDisabled;
     }
 }

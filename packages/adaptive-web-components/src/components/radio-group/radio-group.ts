@@ -45,6 +45,12 @@ export class RadioGroup extends BaseFormControl implements RadioGroupElement {
     }
 
     /**
+     * {@inheritDoc @adaptive-web/components-foundation#RadioGroupElement.disabled}
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
+    /**
      * {@inheritDoc @adaptive-web/components-foundation#RadioGroupElement.required}
      */
     @attr({ mode: "boolean" })
@@ -93,6 +99,15 @@ export class RadioGroup extends BaseFormControl implements RadioGroupElement {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
         this.controller.disconnect();
+    }
+
+    /**
+     * The platform calls it for the `disabled` attribute and for a fieldset around the group.
+     *
+     * @internal
+     */
+    public formDisabledCallback(disabled: boolean): void {
+        this.controller.disabledChanged(disabled);
     }
 
     private updateRadios(): void {

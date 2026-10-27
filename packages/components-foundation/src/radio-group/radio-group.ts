@@ -17,7 +17,8 @@ export const RadioGroupParts = {
  *
  * @remarks
  * Each radio gives its value to the form (see `RadioElement`). The group is a form control too, without a value of its own, for its
- * validity when it is required. A disabled `<fieldset>` around the group disables its radios, as for native radios.
+ * validity when it is required, and for its disabled state: its `disabled` attribute or a disabled `<fieldset>` around it make it
+ * `:disabled`, and it disables its radios.
  *
  * Slots: `label` for the group's label, which names it, and the default slot for the radios.
  *
@@ -49,6 +50,15 @@ export interface RadioGroupElement extends FormControlElement {
      * HTML attribute: `readonly`.
      */
     readOnly: boolean;
+
+    /**
+     * Whether it is disabled, which disables its radios. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select
+     * `:disabled`.
+     *
+     * @remarks
+     * HTML attribute: `disabled`.
+     */
+    disabled: boolean;
 
     /**
      * Whether one of its radios must be checked for its form to be valid. With no radio checked by default, the user has to choose one.

@@ -17,6 +17,7 @@ class TestRadio extends TestFormControl implements RadioElement {
     public defaultChecked = false;
     public disabled = false;
     public groupReadOnly = false;
+    public groupDisabled = false;
     public name: string | null = null;
     public value = "on";
     public readonly controller = new RadioController(this, new TestInternals());
@@ -43,6 +44,7 @@ class TestRadioGroup extends TestFormControl implements RadioGroupElement {
     public orientation: Orientation = Orientation.horizontal;
     public readOnly = false;
     public required = false;
+    public disabled = false;
     public get value(): string | null {
         return group!.value;
     }
@@ -176,6 +178,39 @@ describe("RadioGroupController", () => {
             controller.requiredChanged();
 
             expect(internals.validity).to.deep.equal({});
+        });
+    });
+
+    describe("disabled", () => {
+        it("should disable its radios, which leave the tab order and aren't checked", () => {
+            const { controller, radios } = setup(["a", "b"]);
+
+            controller.disabledChanged(true);
+            radios[0].click();
+
+            expect(radios.map(radio => radio.groupDisabled)).to.deep.equal([true, true]);
+            expect(tabIndexes(radios)).to.deep.equal([-1, -1]);
+            expect(checkedValues(radios)).to.deep.equal([]);
+        });
+
+        it("should enable its radios again", () => {
+            const { controller, radios } = setup(["a", "b"]);
+            controller.disabledChanged(true);
+
+            controller.disabledChanged(false);
+
+            expect(radios.map(radio => radio.groupDisabled)).to.deep.equal([false, false]);
+            expect(tabIndexes(radios)).to.deep.equal([0, -1]);
+        });
+
+        it("should give radios added later the disabled state", () => {
+            const { host, controller, radios } = setup(["a"]);
+            controller.disabledChanged(true);
+            const added = Object.assign(host.appendChild(new TestRadio()), { value: "b" });
+
+            controller.setRadios([...radios, added]);
+
+            expect(added.groupDisabled).to.be.true;
         });
     });
 

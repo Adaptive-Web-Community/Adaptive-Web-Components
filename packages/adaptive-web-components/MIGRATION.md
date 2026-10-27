@@ -173,7 +173,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | --- | --- |
 | `FASTRadioGroup` (FAST Foundation) | `RadioGroup` |
 | `role` and `aria-*` written to the element | `ElementInternals`. The `label` slot now names the group |
-| `disabled` | Gone: put the group in a `<fieldset disabled>`, which disables its radios |
+| `disabled` | `disabled`, or a `<fieldset disabled>` around it: the group is `:disabled`, and its radios are `:state(disabled)` |
 | `readonly` | `readonly`, with `aria-readonly`, given to its radios |
 | | `required`: a radio must be checked; the group is a form control without a value of its own, for its validity |
 | The `value` attribute | `value` is a property: the checked radio's value, which sets the checked radio. The radios' `checked` attributes are the default |

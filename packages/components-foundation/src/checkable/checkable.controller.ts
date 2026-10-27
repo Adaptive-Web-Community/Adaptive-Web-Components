@@ -8,7 +8,7 @@ import type { CheckableElement, CheckableRole } from "./checkable.js";
  */
 export type CheckableInternals = Pick<
     ElementInternals,
-    "role" | "ariaChecked" | "ariaReadOnly" | "ariaRequired" | "form" | "setFormValue" | "setValidity"
+    "role" | "ariaChecked" | "ariaDisabled" | "ariaReadOnly" | "ariaRequired" | "form" | "setFormValue" | "setValidity"
 > & {
     readonly states: Pick<CustomStateSet, "add" | "delete">;
 };
@@ -78,7 +78,15 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
         } else {
             internals.states.delete("checked");
         }
-        internals.setFormValue(host.checked ? host.value : null);
+        // A control that is disabled by its group gives no value, as one that is `:disabled` doesn't.
+        const disabled = this.disabled();
+        internals.ariaDisabled = disabled ? "true" : null;
+        if (disabled) {
+            internals.states.add("disabled");
+        } else {
+            internals.states.delete("disabled");
+        }
+        internals.setFormValue(host.checked && !disabled ? host.value : null);
 
         const readOnly = this.readOnly();
         internals.ariaReadOnly = readOnly ? "true" : null;
@@ -129,6 +137,15 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
     }
 
     /**
+     * Whether the element is disabled by what isn't the platform's, as a component of it says (its group). It isn't checked or unchecked by the
+     * user, gives no value, isn't validated, and has `aria-disabled` and `:state(disabled)`. The platform's disabled (`:disabled`) needs none
+     * of that.
+     */
+    protected disabled(): boolean {
+        return false;
+    }
+
+    /**
      * Whether the element is read only, as a component of it says: it takes focus, and isn't checked or unchecked by the user.
      */
     protected readOnly(): boolean {
@@ -139,7 +156,7 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
      * Whether the element is required and has no value. A read only element isn't validated, as a read only native input isn't.
      */
     protected valueMissing(): boolean {
-        return this.required() && !this.readOnly() && !this.host.checked;
+        return this.required() && !this.readOnly() && !this.disabled() && !this.host.checked;
     }
 
     /**
@@ -153,7 +170,7 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
     }
 
     private readonly handleClick = (event: MouseEvent): void => {
-        if (event.defaultPrevented || this.host.matches(":disabled") || this.readOnly()) {
+        if (event.defaultPrevented || this.host.matches(":disabled") || this.disabled() || this.readOnly()) {
             return;
         }
 

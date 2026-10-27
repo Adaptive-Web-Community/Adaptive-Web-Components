@@ -20,4 +20,13 @@ export class Radio extends BaseCheckable<RadioController> implements RadioElemen
     protected groupReadOnlyChanged(): void {
         this.controller.stateChanged();
     }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#RadioElement.groupDisabled}
+     */
+    @observable
+    public groupDisabled: boolean = false;
+    protected groupDisabledChanged(): void {
+        this.controller.stateChanged();
+    }
 }

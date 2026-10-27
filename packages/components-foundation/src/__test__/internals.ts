@@ -4,6 +4,7 @@ export class TestInternals {
     public ariaChecked: string | null = null;
     public ariaRequired: string | null = null;
     public ariaReadOnly: string | null = null;
+    public ariaDisabled: string | null = null;
     public ariaOrientation: string | null = null;
     public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
     public form: HTMLFormElement | null = null;

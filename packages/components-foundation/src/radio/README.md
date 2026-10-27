@@ -13,6 +13,7 @@ to the form. The radio group (`../radio-group`) keeps one checked and moves betw
 | --- | --- | --- |
 | Element | The host, `role="radio"` written to it, and a proxy `<input type="radio">` | The host, with `ElementInternals`, on the shared checkable behavior |
 | Form value | Each radio, through its proxy | Each radio, as a native radio |
+| Disabled by its group | | `groupDisabled`, given by the group: no focus, no click, no value, `aria-disabled`, and `:state(disabled)` |
 | A click on a checked radio | Stays checked | Stays checked, without `input` or `change` |
 | Alone | Grouped with others of its `name`, and focusable | Used in a radio group, as the ARIA pattern has it; alone, it checks and stays checked |
 | Required | Its own, through its proxy | The group's (see the radio group) |

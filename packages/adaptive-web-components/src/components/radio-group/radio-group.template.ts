@@ -1,6 +1,6 @@
 import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import { RadioGroupParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { ComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { RadioGroup } from "./radio-group.js";
 
@@ -20,7 +20,10 @@ export { RadioGroupParts };
  * @public
  */
 export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, typeof RadioGroupParts> = {
-    interactivity: Interactivity.never,
+    // Its `disabled` attribute or a fieldset around it make it `:disabled`, for the styles of its label.
+    interactivity: {
+        disabled: ":disabled",
+    },
     conditions: RadioGroupConditions,
     parts: RadioGroupParts,
 };

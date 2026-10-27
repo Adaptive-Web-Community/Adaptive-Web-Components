@@ -137,6 +137,7 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
     protected ariaChecked(): string;
     connect(): void;
     defaultCheckedChanged(): void;
+    protected disabled(): boolean;
     disconnect(): void;
     formReset(): void;
     // (undocumented)
@@ -160,7 +161,7 @@ export interface CheckableElement extends FormControlElement {
 }
 
 // @public
-export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaReadOnly" | "ariaRequired" | "form" | "setFormValue" | "setValidity"> & {
+export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaDisabled" | "ariaReadOnly" | "ariaRequired" | "form" | "setFormValue" | "setValidity"> & {
     readonly states: Pick<CustomStateSet, "add" | "delete">;
 };
 
@@ -269,11 +270,14 @@ export class RadioController extends CheckableController<RadioElement> {
     // (undocumented)
     protected activate(): boolean;
     // (undocumented)
+    protected disabled(): boolean;
+    // (undocumented)
     protected readOnly(): boolean;
 }
 
 // @public
 export interface RadioElement extends CheckableElement {
+    groupDisabled: boolean;
     groupReadOnly: boolean;
 }
 
@@ -281,6 +285,7 @@ export interface RadioElement extends CheckableElement {
 export class RadioGroupController {
     constructor(host: RadioGroupElement, internals: RadioGroupInternals);
     connect(): void;
+    disabledChanged(disabled: boolean): void;
     disconnect(): void;
     labelsChanged(labels: readonly Element[]): void;
     nameChanged(): void;
@@ -295,6 +300,7 @@ export class RadioGroupController {
 
 // @public
 export interface RadioGroupElement extends FormControlElement {
+    disabled: boolean;
     name: string | null;
     orientation: Orientation;
     readOnly: boolean;
@@ -317,21 +323,22 @@ export const RadioParts: {
 };
 
 // @public
-export class RovingFocusController {
-    constructor(host: HTMLElement, options: RovingFocusOptions);
+export class RovingFocusController<T extends HTMLElement = HTMLElement> {
+    constructor(host: HTMLElement, options: RovingFocusOptions<T>);
     connect(): void;
     disconnect(): void;
-    setActive(item: HTMLElement | null): void;
-    setItems(items: readonly HTMLElement[]): void;
+    setActive(item: T | null): void;
+    setItems(items: readonly T[]): void;
 }
 
 // @public
 export type RovingFocusKeys = Orientation | "both";
 
 // @public
-export type RovingFocusOptions = {
+export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
     keys: RovingFocusKeys;
-    onMove?: (item: HTMLElement) => void;
+    onMove?: (item: T) => void;
+    isDisabled?: (item: T) => boolean;
 };
 
 // @public
