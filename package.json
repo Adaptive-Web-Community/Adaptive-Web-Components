@@ -14,10 +14,10 @@
         "version": "changeset version",
         "change": "changeset",
         "publish:ci": "changeset publish",
-        "clean": "npm run clean --workspace=@adaptive-web/adaptive-ui --if-present",
-        "build": "npm run build --workspace=@adaptive-web/adaptive-ui --if-present",
-        "lint": "npm run lint --workspace=@adaptive-web/adaptive-ui --if-present",
-        "test": "npm run test --workspace=@adaptive-web/adaptive-ui --if-present"
+        "clean": "npm run clean --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/components-foundation --if-present",
+        "build": "npm run build --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/components-foundation --if-present",
+        "lint": "npm run lint --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/components-foundation --if-present",
+        "test": "npm run test --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/components-foundation --if-present"
     },
     "workspaces": [
         "./packages/adaptive-ui",
