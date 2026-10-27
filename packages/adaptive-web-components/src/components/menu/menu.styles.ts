@@ -9,8 +9,22 @@ export const templateStyles: ElementStyles = css`
         display: block;
     }
 
+    /* A menu that opens is a popover, below its button, or after its item for a submenu. */
+    :host([popover]) {
+        margin: 0;
+        inset: auto;
+        position-area: block-end span-inline-end;
+        position-try-fallbacks: flip-block;
+    }
+
     :host([slot="submenu"]) {
         width: max-content;
+        position-area: inline-end span-block-end;
+        position-try-fallbacks: flip-inline;
+    }
+
+    :host([popover]:not(:popover-open)) {
+        display: none;
     }
 `;
 

@@ -385,6 +385,67 @@ export function listItemAria(): DefaultAria;
 export type ListItemElement = HTMLElement;
 
 // @public
+export class MenuController {
+    constructor(host: MenuElement, internals: MenuInternals, options: MenuOptions);
+    connect(): void;
+    disconnect(): void;
+    itemCheckedChanged(item: MenuItemElement): void;
+    setElements(elements: readonly Element[]): void;
+}
+
+// @public
+export type MenuElement = HTMLElement;
+
+// @public
+export type MenuInternals = Pick<ElementInternals, "role">;
+
+// @public
+export class MenuItemController {
+    constructor(host: MenuItemElement, internals: MenuItemInternals);
+    connect(): void;
+    disconnect(): void;
+    stateChanged(): void;
+    submenuChanged(): void;
+}
+
+// @public
+export interface MenuItemElement extends HTMLElement {
+    checked: boolean;
+    disabled: boolean;
+    startColumns: MenuItemStartColumns;
+    submenu: HTMLElement | null;
+    type: MenuItemType;
+}
+
+// @public
+export type MenuItemInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaDisabled" | "ariaHasPopup" | "ariaExpanded" | "states">;
+
+// @public
+export const MenuItemParts: {
+    readonly indicator: "indicator";
+    readonly content: "content";
+    readonly submenuIcon: "submenu-icon";
+};
+
+// @public
+export type MenuItemStartColumns = 0 | 1 | 2;
+
+// @public
+export const MenuItemType: {
+    readonly item: "item";
+    readonly checkbox: "checkbox";
+    readonly radio: "radio";
+};
+
+// @public
+export type MenuItemType = ValuesOf<typeof MenuItemType>;
+
+// @public
+export type MenuOptions = {
+    isItem: (element: Element) => element is MenuItemElement;
+};
+
+// @public
 export class NumberFieldController extends TextInputController<NumberFieldElement> {
     constructor(host: NumberFieldElement, internals: TextInputInternals);
     stepDown(): void;

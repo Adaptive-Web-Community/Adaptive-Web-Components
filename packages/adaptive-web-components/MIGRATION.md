@@ -410,3 +410,29 @@ Removed: a `Picker` with `freeform` is a combobox, whose text is the value when 
 ## Picker List, Picker List Item, Picker Menu, Picker Menu Option
 
 Removed: the picker's input and values are its own parts, and its options are `ListboxOption`s.
+
+## Menu
+
+A menu that opens is a popover now: give it `popover`, and open it with a button's `commandfor`.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTMenu` and `AdaptiveMenu` | `Menu` |
+| `role="menu"` written to the element | `ElementInternals` |
+| Shown inline, or in an anchored region | Inline, or a popover the author marks with `popover`; a submenu is a popover anchored to its item |
+| `focus()`, which focused the first item | The first item has the focus when it opens; `focus()` is the element's own |
+| `collapseExpandedItem()` and the other members | Gone |
+
+## Menu Item
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTMenuItem` and `AdaptiveMenuItem` | `MenuItem` |
+| The `role` attribute (`menuitem`, `menuitemcheckbox`, `menuitemradio`), and `MenuItemRole` | `type` (`item`, `checkbox`, `radio`), and `MenuItemType` from `@adaptive-web/components-foundation`; the role is through `ElementInternals` |
+| `expanded`, an attribute | The `:state(expanded)` custom state while the submenu is open |
+| `start-column-count`, given by the menu | `startColumns`, given by the menu, and the `:state(start-columns-1)` and `:state(start-columns-2)` custom states |
+| `[aria-checked="true"]` in selectors | `:state(checked)` |
+| The `checkbox-indicator` and `radio-indicator` parts | `indicator` |
+| The `submenu-container` part, placed by Floating UI | Gone: the submenu is a popover |
+| `change`, for every item | `click` when it is activated; `change` when a checkbox or radio is checked |
+| `ValuesOf` (of `MenuItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |

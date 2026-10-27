@@ -1,5 +1,5 @@
 // JSDOM has no popovers: an element that does what the HTML standard says a popover does, for what the controllers use, with a `toggle`
-// event when it opens and closes.
+// event when it opens and closes, after a `beforetoggle`.
 export class TestPopover extends HTMLElement {
     public readonly popover = "auto";
     public open = false;
@@ -25,8 +25,10 @@ export class TestPopover extends HTMLElement {
     }
 
     private setOpen(open: boolean): void {
+        const newState = open ? "open" : "closed";
+        this.dispatchEvent(Object.assign(new Event("beforetoggle"), { newState }));
         this.open = open;
-        this.dispatchEvent(new Event("toggle"));
+        this.dispatchEvent(Object.assign(new Event("toggle"), { newState }));
     }
 }
 customElements.define("test-popover", TestPopover);

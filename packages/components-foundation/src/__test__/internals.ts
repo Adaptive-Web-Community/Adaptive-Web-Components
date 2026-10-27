@@ -9,6 +9,8 @@ export class TestInternals {
     public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
     public ariaActiveDescendantElement: Element | null = null;
     public ariaMultiSelectable: string | null = null;
+    public ariaHasPopup: string | null = null;
+    public ariaExpanded: string | null = null;
     public form: HTMLFormElement | null = null;
     public labels: NodeList = document.createDocumentFragment().childNodes;
     public readonly states = new Set<string>();

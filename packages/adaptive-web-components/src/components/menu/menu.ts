@@ -1,59 +1,58 @@
-import { FASTMenu, MenuItemRole } from "@microsoft/fast-foundation";
-import { AdaptiveMenuItem, AdaptiveMenuItemColumnCount } from "../menu-item/menu-item.js";
+import { FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
+import { MenuController, type MenuElement } from "@adaptive-web/components-foundation";
+import { onDefined } from "../../utilities/defined.js";
+import { MenuItem } from "../menu-item/menu-item.js";
 
 /**
- * Type for menu item column count info.
- * @internal
- */
-type AdaptiveMenuIndentInfo = { hasControl: boolean; hasStart: boolean };
-
-/**
- * The Adaptive version of Menu. Extends {@link @microsoft/fast-foundation#FASTMenu}.
+ * A menu of {@link MenuItem}s. Implements {@link @adaptive-web/components-foundation#MenuElement}.
  *
  * @public
  */
-export class AdaptiveMenu extends FASTMenu {
-    private static elementIndent(el: HTMLElement): AdaptiveMenuIndentInfo {
-        const role = el.getAttribute("role");
-        const startSlot = el.querySelector("[slot=start]");
+export class Menu extends FASTElement implements MenuElement {
+    // Before the properties, whose change handlers use these while the element is constructed.
+    private readonly internals = this.attachInternals();
+    private readonly controller = new MenuController(this, this.internals, {
+        isItem: (element): element is MenuItem => element instanceof MenuItem,
+    });
+    private items: MenuItem[] = [];
+    private readonly checkedSubscriber: Subscriber = {
+        handleChange: (item: MenuItem) => this.controller.itemCheckedChanged(item),
+    };
 
-        return {
-            hasControl: role !== MenuItemRole.menuitem,
-            hasStart: startSlot !== null,
-        };
+    /**
+     * The elements in the default slot.
+     *
+     * @internal
+     */
+    @observable
+    public slottedElements: Element[] = [];
+    protected slottedElementsChanged(): void {
+        this.updateElements();
     }
 
-    protected setItems(): void {
-        super.setItems();
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.controller.connect();
+    }
 
-        const items = this.menuItems?.filter(this.isMenuItemElement);
-        
-        items?.forEach((item: HTMLElement) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const indentInfo: AdaptiveMenuIndentInfo = items.reduce(
-                (accum: AdaptiveMenuIndentInfo, current: HTMLElement) => {
-                    const elementValue = AdaptiveMenu.elementIndent(current);
-                    return {
-                        hasControl: accum.hasControl || elementValue.hasControl,
-                        hasStart: accum.hasStart || elementValue.hasStart,
-                    };
-                },
-                {
-                    hasControl: false,
-                    hasStart: false,
-                }
-            );
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.controller.disconnect();
+    }
 
-            const indent: AdaptiveMenuItemColumnCount =
-                indentInfo.hasControl && indentInfo.hasStart
-                    ? 2
-                    : indentInfo.hasControl || indentInfo.hasStart
-                        ? 1
-                        : 0;
+    private updateElements(): void {
+        for (const item of this.items) {
+            Observable.getNotifier(item).unsubscribe(this.checkedSubscriber, "checked");
+        }
 
-            if (item instanceof AdaptiveMenuItem) {
-                item.startColumnCount = indent;
-            }
-        });
+        this.items = this.slottedElements.filter((element): element is MenuItem => element instanceof MenuItem);
+
+        for (const item of this.items) {
+            Observable.getNotifier(item).subscribe(this.checkedSubscriber, "checked");
+        }
+
+        this.controller.setElements(this.slottedElements);
+
+        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateElements());
     }
 }

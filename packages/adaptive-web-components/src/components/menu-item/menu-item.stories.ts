@@ -1,15 +1,15 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { FASTMenuItem, MenuItemRole } from "@microsoft/fast-foundation";
+import { MenuItemType } from "@adaptive-web/components-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { MenuItem as MenuItemElement } from "./menu-item.js";
 
-export const storyTemplate = html<StoryArgs<FASTMenuItem>>`
+export const storyTemplate = html<StoryArgs<MenuItemElement>>`
     <adaptive-menu-item
         ?checked="${(x) =>x.checked}"
         ?disabled="${(x) =>x.disabled}"
-        ?expanded="${(x) =>x.expanded}"
-        role="${(x) =>x.role}"
-        start-column-count="${(x) =>x.startColumnCount}"
+        type="${(x) =>x.type}"
+        :startColumns="${(x) =>x.startColumns ?? 0}"
     >
         ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
@@ -26,24 +26,22 @@ export default {
         storyContent: "Menu item",
         checked: false,
         disabled: false,
-        expanded: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
-        checked: { control: "boolean", if: { arg: "role", neq: MenuItemRole.menuitem } },
+        checked: { control: "boolean", if: { arg: "type", neq: MenuItemType.item } },
         disabled: { control: "boolean" },
-        expanded: { control: "boolean" },
-        role: { control: "select", options: Object.values(MenuItemRole) },
-        // Managed by AdaptiveMenu, but here we need to set manually.
-        startColumnCount: { table: { disable: true } },
+        type: { control: "select", options: Object.values(MenuItemType) },
+        // Given by the menu, but set here for an item alone.
+        startColumns: { table: { disable: true } },
     },
-} as Meta<FASTMenuItem>;
+} as Meta<MenuItemElement>;
 
-export const MenuItem: Story<FASTMenuItem> = renderComponent(storyTemplate).bind({});
+export const MenuItem: Story<MenuItemElement> = renderComponent(storyTemplate).bind({});
 
-export const MenuItemCheckbox: Story<FASTMenuItem> = renderComponent(
-    html<StoryArgs<FASTMenuItem>>`
+export const MenuItemCheckbox: Story<MenuItemElement> = renderComponent(
+    html<StoryArgs<MenuItemElement>>`
         <div>
             ${repeat((x) => x.storyItems, storyTemplate)}
         </div>
@@ -53,34 +51,34 @@ MenuItemCheckbox.args = {
     storyItems: [
         {
             storyContent: "Menu item checkbox (unchecked)",
-            role: MenuItemRole.menuitemcheckbox,
-            startColumnCount: 1,
+            type: MenuItemType.checkbox,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item checkbox (checked)",
             checked: true,
-            role: MenuItemRole.menuitemcheckbox,
-            startColumnCount: 1,
+            type: MenuItemType.checkbox,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item checkbox (unchecked, disabled)",
             checked: false,
             disabled: true,
-            role: MenuItemRole.menuitemcheckbox,
-            startColumnCount: 1,
+            type: MenuItemType.checkbox,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item checkbox (checked, disabled)",
             checked: true,
             disabled: true,
-            role: MenuItemRole.menuitemcheckbox,
-            startColumnCount: 1,
+            type: MenuItemType.checkbox,
+            startColumns: 1,
         },
     ],
 };
 
-export const MenuItemRadio: Story<FASTMenuItem> = renderComponent(
-    html<StoryArgs<FASTMenuItem>>`
+export const MenuItemRadio: Story<MenuItemElement> = renderComponent(
+    html<StoryArgs<MenuItemElement>>`
         <div>
             ${repeat((x) => x.storyItems, storyTemplate)}
         </div>
@@ -90,28 +88,28 @@ MenuItemRadio.args = {
     storyItems: [
         {
             storyContent: "Menu item radio (unchecked)",
-            role: MenuItemRole.menuitemradio,
-            startColumnCount: 1,
+            type: MenuItemType.radio,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item radio (checked)",
             checked: true,
-            role: MenuItemRole.menuitemradio,
-            startColumnCount: 1,
+            type: MenuItemType.radio,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item radio (unchecked, disabled)",
             checked: false,
             disabled: true,
-            role: MenuItemRole.menuitemradio,
-            startColumnCount: 1,
+            type: MenuItemType.radio,
+            startColumns: 1,
         },
         {
             storyContent: "Menu item radio (checked, disabled)",
             checked: true,
             disabled: true,
-            role: MenuItemRole.menuitemradio,
-            startColumnCount: 1,
+            type: MenuItemType.radio,
+            startColumns: 1,
         },
     ],
 };
