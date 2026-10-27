@@ -1,3 +1,4 @@
+export { TextArea } from "./text-area.js";
 export { composeTextArea } from "./text-area.compose.js";
 export {
     templateStyles as textAreaTemplateStyles,

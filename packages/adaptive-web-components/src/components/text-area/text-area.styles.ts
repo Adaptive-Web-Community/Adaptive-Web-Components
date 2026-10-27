@@ -12,9 +12,8 @@ export const templateStyles: ElementStyles = css`
         user-select: none;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 
     .label {

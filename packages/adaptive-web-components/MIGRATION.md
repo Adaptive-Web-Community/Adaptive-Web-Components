@@ -195,3 +195,11 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `focus()` focused the input | `delegatesFocus`: a label of the element, a click on it, and `focus()` reach the input |
 | `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
 | `TextFieldType` from `@microsoft/fast-foundation`, `TextFieldParts` from this package | From the components foundation, also exported here |
+
+## Text Area
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveTextArea` (extends FAST Foundation's `FASTTextArea`) | `TextArea`, which extends `BaseTextInput`; the rest is as for the text field |
+| `TextAreaResize` from `@microsoft/fast-foundation`, `TextAreaParts` from this package | From the components foundation, also exported here |
+| `list`, `form` (a property), `spellcheck` | Gone for now; the `form` attribute works, as for any form control |

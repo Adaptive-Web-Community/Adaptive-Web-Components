@@ -1,7 +1,9 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTTextArea, textAreaTemplate } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { hasContent, TextAreaParts } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import type { TextArea } from "./text-area.js";
 
 /**
  * @public
@@ -9,28 +11,26 @@ import { DesignSystem } from "../../design-system.js";
 export const TextAreaConditions = {
 };
 
-/**
- * @public
- */
-export const TextAreaParts = {
-    label: "label",
-    control: "control",
-};
+export { TextAreaParts };
 
 /**
  * @public
  */
 export const TextAreaAnatomy: ComponentAnatomy<typeof TextAreaConditions, typeof TextAreaParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: controlInteractivity,
     conditions: TextAreaConditions,
     parts: TextAreaParts,
     focus: Focus.partFocused("control"),
 };
 
 /**
- * Default Text Area template, {@link @microsoft/fast-foundation#textAreaTemplate}.
+ * Default Text Area template: the label, and the native `<textarea>`, whose attributes the element's controller writes.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTTextArea> =
-    (ds: DesignSystem) =>
-        textAreaTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<TextArea> =
+    (ds: DesignSystem) => html<TextArea>`
+        <label class="label" part="label" for="control" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
+        <textarea class="control" part="control" id="control" ${ref("control")}></textarea>
+    `;

@@ -396,6 +396,37 @@ export const SwitchParts: {
 };
 
 // @public
+export class TextAreaController extends TextInputController<TextAreaElement> {
+    constructor(host: TextAreaElement, internals: TextInputInternals);
+    // (undocumented)
+    protected sync(control: TextControl): void;
+}
+
+// @public
+export interface TextAreaElement extends TextInputElement {
+    cols: number | null;
+    resize: TextAreaResize;
+    rows: number | null;
+}
+
+// @public
+export const TextAreaParts: {
+    readonly label: "label";
+    readonly control: "control";
+};
+
+// @public
+export const TextAreaResize: {
+    readonly none: "none";
+    readonly both: "both";
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type TextAreaResize = ValuesOf<typeof TextAreaResize>;
+
+// @public
 export type TextControl = HTMLInputElement | HTMLTextAreaElement;
 
 // @public
