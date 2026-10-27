@@ -3,7 +3,7 @@ import { composeListbox } from "./listbox.compose.js";
 import { styleModules } from "./listbox.styles.modules.js";
 
 /**
- * The Listbox custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxElement}.
+ * The Listbox custom element definition. Implements {@link Listbox}.
  *
  * @remarks
  * HTML Element: \<adaptive-listbox\>

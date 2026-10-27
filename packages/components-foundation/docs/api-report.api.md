@@ -223,6 +223,9 @@ export const CheckboxParts: {
 };
 
 // @public
+export function collapsedText(element: Element): string;
+
+// @public
 export type DefaultAria = Partial<ARIAMixin>;
 
 // @public
@@ -326,6 +329,51 @@ export function isIconOnly(nodes: readonly Node[]): boolean;
 export function listAria(): DefaultAria;
 
 // @public
+export class ListboxController {
+    constructor(host: ListboxElement, internals: ListboxInternals);
+    connect(): void;
+    disabledChanged(disabled: boolean): void;
+    disconnect(): void;
+    formReset(): void;
+    readonly list: OptionListController;
+    optionSelectedChanged(option: ListboxOptionElement): void;
+    setOptions(options: readonly ListboxOptionElement[]): void;
+    stateChanged(): void;
+}
+
+// @public
+export interface ListboxElement extends FormControlElement {
+    disabled: boolean;
+    multiple: boolean;
+    name: string | null;
+    readOnly: boolean;
+    required: boolean;
+    readonly selectedOptions: readonly ListboxOptionElement[];
+    value: string;
+}
+
+// @public
+export type ListboxInternals = Pick<ElementInternals, "role" | "ariaActiveDescendantElement" | "ariaMultiSelectable" | "ariaReadOnly" | "ariaRequired" | "ariaDisabled" | "setFormValue" | "setValidity">;
+
+// @public
+export function listboxOptionAria(option: ListboxOptionElement): DefaultAria;
+
+// @public
+export interface ListboxOptionElement extends HTMLElement {
+    active: boolean;
+    defaultSelected: boolean;
+    disabled: boolean;
+    selected: boolean;
+    readonly text: string;
+    value: string;
+}
+
+// @public
+export const ListboxOptionParts: {
+    readonly content: "content";
+};
+
+// @public
 export interface ListElement extends HTMLElement {
     orientation: Orientation;
 }
@@ -364,6 +412,35 @@ export const NumberFieldParts: {
     readonly stepUp: "step-up";
     readonly stepDown: "step-down";
 };
+
+// @public
+export class OptionListController {
+    constructor(owner: OptionListOwner, options: OptionListOptions);
+    activateSelected(): void;
+    get active(): ListboxOptionElement | null;
+    get all(): readonly ListboxOptionElement[];
+    handleKeydown(event: KeyboardEvent): boolean;
+    optionSelectedChanged(option: ListboxOptionElement): void;
+    selectByUser(option: ListboxOptionElement): void;
+    get selected(): readonly ListboxOptionElement[];
+    setActive(option: ListboxOptionElement | null): void;
+    setOptions(options: readonly ListboxOptionElement[]): void;
+    setValue(value: string): void;
+    get value(): string;
+}
+
+// @public
+export type OptionListOptions = {
+    selectionFollowsFocus: boolean;
+    onUserChange: () => void;
+    onActiveChange: (option: ListboxOptionElement | null) => void;
+};
+
+// @public
+export interface OptionListOwner {
+    readonly multiple: boolean;
+    readonly readOnly: boolean;
+}
 
 // @public
 export const Orientation: {

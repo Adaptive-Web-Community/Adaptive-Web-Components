@@ -7,6 +7,8 @@ export class TestInternals {
     public ariaDisabled: string | null = null;
     public ariaOrientation: string | null = null;
     public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
+    public ariaActiveDescendantElement: Element | null = null;
+    public ariaMultiSelectable: string | null = null;
     public form: HTMLFormElement | null = null;
     public labels: NodeList = document.createDocumentFragment().childNodes;
     public readonly states = new Set<string>();

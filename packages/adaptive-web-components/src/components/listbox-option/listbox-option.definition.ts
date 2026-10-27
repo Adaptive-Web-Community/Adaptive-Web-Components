@@ -3,7 +3,7 @@ import { composeListboxOption } from "./listbox-option.compose.js";
 import { styleModules } from "./listbox-option.styles.modules.js";
 
 /**
- * The option custom element definition. Implements {@link @microsoft/fast-foundation#FASTListboxOption}.
+ * The option custom element definition. Implements {@link ListboxOption}.
  *
  * @remarks
  * HTML Element: \<adaptive-option\>

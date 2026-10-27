@@ -1,22 +1,18 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTListboxOption, listboxOptionTemplate } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { ListboxOptionParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { ListboxOption } from "./listbox-option.js";
 
 /**
  * @public
  */
 export const ListboxOptionConditions = {
-    checked: "[aria-checked='true']",
-    selected: "[aria-selected='true']",
+    selected: ":state(selected)",
+    active: ":state(active)",
 };
 
-/**
- * @public
- */
-export const ListboxOptionParts = {
-    content: "content",
-};
+export { ListboxOptionParts };
 
 /**
  * @public
@@ -28,9 +24,14 @@ export const ListboxOptionAnatomy: ComponentAnatomy<typeof ListboxOptionConditio
 };
 
 /**
- * Default Listbox Option template, {@link @microsoft/fast-foundation#listboxOptionTemplate}.
+ * Default Listbox Option template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTListboxOption> =
-    (ds: DesignSystem) =>
-        listboxOptionTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<ListboxOption> =
+    (ds: DesignSystem) => html<ListboxOption>`
+        <slot name="start"></slot>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <slot name="end"></slot>
+    `;

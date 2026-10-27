@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTListboxOption } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { ListboxOption as ListboxOptionElement } from "./listbox-option.js";
 
-export const storyTemplate = html<StoryArgs<FASTListboxOption>>`
+export const storyTemplate = html<StoryArgs<ListboxOptionElement>>`
     <adaptive-option
         ?disabled="${(x) => x.disabled}"
         id="${(x) => x.id}"
@@ -32,11 +32,7 @@ export default {
         disabled: { control: "boolean" },
         selected: { control: "boolean" },
         value: { control: "text" },
-        ariaChecked: { control: "text" },
-        ariaPosInSet: { control: "text" },
-        ariaSelected: { control: "text" },
-        ariaSetSize: { control: "text" },
     },
-} as Meta<FASTListboxOption>;
+} as Meta<ListboxOptionElement>;
 
-export const ListboxOption: Story<FASTListboxOption> = renderComponent(storyTemplate).bind({});
+export const ListboxOption: Story<ListboxOptionElement> = renderComponent(storyTemplate).bind({});

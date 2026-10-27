@@ -338,3 +338,26 @@ takes the place of the Horizontal Scroll: its overflow scrolls, and the styles d
 | `role="listitem"` written to the element, and the `listitem` part | `ElementInternals`; the host is the list item |
 | `separator`, given by the breadcrumb | `current`, given by the breadcrumb: the separator is hidden for the current item |
 | `ValuesOf` (of `BreadcrumbItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+
+## Listbox
+
+The listbox is a form control now, as a native `<select multiple>` or `<select size>`.
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTListboxElement` (FAST Foundation) | `Listbox` |
+| `role`, `aria-multiselectable`, and `aria-activedescendant` (by id) written to the element | `ElementInternals`; the active option as an element |
+| | `name`, `required`, `readonly`, `value`, `selectedOptions`, and the validity API; the selected options' values go to the form |
+| `size` | Gone: the styles set the height |
+| `selectedIndex`, `selectFirstOption()`, and the other methods | Gone: `value`, or the options' `selected` |
+| The `change` event | `input` and `change`, for the user's changes |
+| The selected option outlined when the listbox has the focus | The active option, `:state(active)` |
+
+## Listbox Option
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTListboxOption` (FAST Foundation) | `ListboxOption` (still `<adaptive-option>`) |
+| `role`, `aria-selected`, and `aria-checked` written to the element | `ElementInternals`; `checked` is gone |
+| `[aria-selected="true"]` and `[aria-checked="true"]` in selectors | `:state(selected)`; the active option is `:state(active)` |
+| A proxy `<option>`, and the `Option`-like constructor arguments | Gone |

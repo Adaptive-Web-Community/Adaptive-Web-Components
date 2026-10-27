@@ -12,6 +12,11 @@ export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
         flex-direction: column;
+        overflow-y: auto;
+    }
+
+    ::slotted(*) {
+        flex: 0 0 auto;
     }
 `;
 
@@ -20,8 +25,7 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
-    :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
+    :host(:focus-visible) ::slotted(:state(active)) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
         outline-offset: 1px;
     }
