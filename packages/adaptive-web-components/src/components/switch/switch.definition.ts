@@ -3,7 +3,7 @@ import { composeSwitch } from "./switch.compose.js";
 import { styleModules } from "./switch.styles.modules.js";
 
 /**
- * The Switch custom element definition. Implements {@link @microsoft/fast-foundation#FASTSwitch}.
+ * The Switch custom element definition. Implements {@link Switch}.
  *
  * @remarks
  * HTML Element: \<adaptive-switch\>

@@ -19,9 +19,8 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 
     .switch {
@@ -29,7 +28,7 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    :host([aria-checked="true"]) .switch {
+    :host(:state(checked)) .switch {
         justify-content: flex-end;
     }
 `;

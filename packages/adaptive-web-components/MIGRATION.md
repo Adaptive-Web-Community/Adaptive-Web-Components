@@ -141,3 +141,14 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The `label__hidden` class on an empty label | The `hidden` attribute |
 | | The `input` event before `change`, as a native checkbox's |
 | `CheckboxParts` from this package | The components foundation's (`control`, `label`), also exported here |
+
+## Switch
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTSwitch` (FAST Foundation) | `Switch`, which extends `BaseCheckable` |
+| The role and `aria-*` written to the element, and a proxy `<input>` | `ElementInternals`, as the checkbox |
+| `[aria-checked='true']` in selectors | `:state(checked)` |
+| Enter turned it on and off | Space only, as a native checkbox switch |
+| `readonly` | Gone for now: to decide for all controls with the text fields |
+| `SwitchParts` from this package | The components foundation's (`switch`, `label`, `thumb`), also exported here |

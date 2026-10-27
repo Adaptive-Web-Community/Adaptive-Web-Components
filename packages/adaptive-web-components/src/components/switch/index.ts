@@ -1,3 +1,4 @@
+export { Switch } from "./switch.js";
 export { composeSwitch } from "./switch.compose.js";
 export {
     templateStyles as switchTemplateStyles,

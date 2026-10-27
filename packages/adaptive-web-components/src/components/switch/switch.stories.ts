@@ -1,13 +1,12 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTSwitch } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Switch as SwitchElement } from "./switch.js";
 
-const storyTemplate = html<StoryArgs<FASTSwitch>>`
+const storyTemplate = html<StoryArgs<SwitchElement>>`
     <adaptive-switch
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
-        ?readOnly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
         value="${(x) => x.value}"
     >
@@ -21,17 +20,15 @@ export default {
         storyContent: "Switch",
         checked: false,
         disabled: false,
-        readOnly: false,
         required: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
-        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
     },
-} as Meta<FASTSwitch>;
+} as Meta<SwitchElement>;
 
-export const Switch: Story<FASTSwitch> = renderComponent(storyTemplate).bind({});
+export const Switch: Story<SwitchElement> = renderComponent(storyTemplate).bind({});

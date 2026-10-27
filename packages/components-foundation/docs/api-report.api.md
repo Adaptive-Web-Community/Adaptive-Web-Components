@@ -283,6 +283,25 @@ export class SpacePressController {
 }
 
 // @public
+export class SwitchController extends CheckableController<SwitchElement> {
+    constructor(host: SwitchElement, internals: CheckableInternals);
+    // (undocumented)
+    protected required(): boolean;
+}
+
+// @public
+export interface SwitchElement extends CheckableElement {
+    required: boolean;
+}
+
+// @public
+export const SwitchParts: {
+    readonly switch: "switch";
+    readonly label: "label";
+    readonly thumb: "thumb";
+};
+
+// @public
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public
