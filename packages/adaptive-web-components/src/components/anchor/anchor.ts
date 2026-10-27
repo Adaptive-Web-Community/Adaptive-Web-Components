@@ -1,25 +1,104 @@
-import { FASTAnchor } from "@microsoft/fast-foundation";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { type AnchorElement, AriaForwardingController, isIconOnly } from "@adaptive-web/components-foundation";
 
 /**
- * The Adaptive version of Anchor. Extends {@link @microsoft/fast-foundation#FASTAnchor}.
+ * A link. Implements {@link @adaptive-web/components-foundation#AnchorElement}.
+ *
+ * @remarks
+ * Has the `icon-only` custom state when its content is one SVG element and no text.
  *
  * @public
  */
-export class AdaptiveAnchor extends FASTAnchor {
-    /**
-     * Applies 'icon-only' class when there is only an SVG in the default slot.
-     */
-    protected defaultSlottedContentChanged(): void {
-        const slottedElements = this.defaultSlottedContent.filter((x) => x.nodeType === Node.ELEMENT_NODE);
+export class Anchor extends FASTElement implements AnchorElement {
+    private readonly internals = this.attachInternals();
+    private readonly ariaForwarding = new AriaForwardingController(this);
 
-        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
-            this.control.classList.add("icon-only");
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.download}
+     */
+    @attr
+    public download: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.href}
+     */
+    @attr
+    public href: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.hreflang}
+     */
+    @attr
+    public hreflang: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.ping}
+     */
+    @attr
+    public ping: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.referrerPolicy}
+     */
+    @attr({ attribute: "referrerpolicy" })
+    public referrerPolicy: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.rel}
+     */
+    @attr
+    public rel: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.target}
+     */
+    @attr
+    public target: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement."type"}
+     */
+    @attr
+    public type: string | null = null;
+
+    /**
+     * The native link.
+     *
+     * @internal
+     */
+    public control?: HTMLAnchorElement;
+
+    /**
+     * The content of the default slot.
+     *
+     * @internal
+     */
+    @observable
+    public defaultSlottedContent: Node[] = [];
+    protected defaultSlottedContentChanged(): void {
+        if (isIconOnly(this.defaultSlottedContent)) {
+            this.internals.states.add("icon-only");
         } else {
-            this.control.classList.remove("icon-only");
+            this.internals.states.delete("icon-only");
         }
     }
 
+    /**
+     * Focuses the native link.
+     */
     public focus(options?: FocusOptions): void {
-        this.control.focus(options);
+        this.control?.focus(options);
+    }
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        if (this.control) {
+            this.ariaForwarding.connect(this.control);
+        }
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.ariaForwarding.disconnect();
     }
 }

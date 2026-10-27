@@ -1,39 +1,38 @@
 import { html } from "@microsoft/fast-element";
-import { AnchorTarget } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
-import { AdaptiveAnchor } from "./anchor.js";
+import type { Anchor as AnchorElement } from "./anchor.js";
 
-export const storyTemplate = html<StoryArgs<AdaptiveAnchor>>`
+export const storyTemplate = html<StoryArgs<AnchorElement>>`
     <adaptive-anchor
         download="${(x) => x.download}"
         href="${(x) => x.href}"
         hreflang="${(x) => x.hreflang}"
         ping="${(x) => x.ping}"
-        referrerpolicy="${(x) => x.referrerpolicy}"
+        referrerpolicy="${(x) => x.referrerPolicy}"
         rel="${(x) => x.rel}"
         target="${(x) => x.target}"
         type="${(x) => x.type}"
-        :ariaAtomic="${(x) => x.ariaAtomic}"
-        :ariaBusy="${(x) => x.ariaBusy}"
-        :ariaControls="${(x) => x.ariaControls}"
-        :ariaCurrent="${(x) => x.ariaCurrent}"
-        :ariaDescribedby="${(x) => x.ariaDescribedby}"
-        :ariaDetails="${(x) => x.ariaDetails}"
-        :ariaDisabled="${(x) => x.ariaDisabled}"
-        :ariaErrormessage="${(x) => x.ariaErrormessage}"
-        :ariaExpanded="${(x) => x.ariaExpanded}"
-        :ariaFlowto="${(x) => x.ariaFlowto}"
-        :ariaHaspopup="${(x) => x.ariaHaspopup}"
-        :ariaHidden="${(x) => x.ariaHidden}"
-        :ariaInvalid="${(x) => x.ariaInvalid}"
-        :ariaKeyshortcuts="${(x) => x.ariaKeyshortcuts}"
-        :ariaLabel="${(x) => x.ariaLabel}"
-        :ariaLabelledby="${(x) => x.ariaLabelledby}"
-        :ariaLive="${(x) => x.ariaLive}"
-        :ariaOwns="${(x) => x.ariaOwns}"
-        :ariaRelevant="${(x) => x.ariaRelevant}"
-        :ariaRoledescription="${(x) => x.ariaRoledescription}"
+        aria-atomic="${(x) => x.ariaAtomic}"
+        aria-busy="${(x) => x.ariaBusy}"
+        aria-controls="${(x) => x.ariaControls}"
+        aria-current="${(x) => x.ariaCurrent}"
+        aria-describedby="${(x) => x.ariaDescribedby}"
+        aria-details="${(x) => x.ariaDetails}"
+        aria-disabled="${(x) => x.ariaDisabled}"
+        aria-errormessage="${(x) => x.ariaErrormessage}"
+        aria-expanded="${(x) => x.ariaExpanded}"
+        aria-flowto="${(x) => x.ariaFlowto}"
+        aria-haspopup="${(x) => x.ariaHaspopup}"
+        aria-hidden="${(x) => x.ariaHidden}"
+        aria-invalid="${(x) => x.ariaInvalid}"
+        aria-keyshortcuts="${(x) => x.ariaKeyshortcuts}"
+        aria-label="${(x) => x.ariaLabel}"
+        aria-labelledby="${(x) => x.ariaLabelledby}"
+        aria-live="${(x) => x.ariaLive}"
+        aria-owns="${(x) => x.ariaOwns}"
+        aria-relevant="${(x) => x.ariaRelevant}"
+        aria-roledescription="${(x) => x.ariaRoledescription}"
     >
         ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
@@ -56,9 +55,9 @@ export default {
         href: { control: "text" },
         hreflang: { control: "text" },
         ping: { control: "text" },
-        referrerpolicy: { control: "text" },
+        referrerPolicy: { control: "text" },
         rel: { control: "text" },
-        target: { control: "select", options: Object.values(AnchorTarget) },
+        target: { control: "select", options: ["_self", "_blank", "_parent", "_top"] },
         type: { control: "text" },
         ariaAtomic: { control: "boolean" },
         ariaBusy: { control: "boolean" },
@@ -81,11 +80,11 @@ export default {
         ariaRelevant: { control: "text" },
         ariaRoledescription: { control: "text" },
     },
-} as Meta<AdaptiveAnchor>;
+} as Meta<AnchorElement>;
 
-export const Anchor: Story<AdaptiveAnchor> = renderComponent(storyTemplate).bind({});
+export const Anchor: Story<AnchorElement> = renderComponent(storyTemplate).bind({});
 
-export const AnchorIconOnly: Story<AdaptiveAnchor> = Anchor.bind({});
+export const AnchorIconOnly: Story<AnchorElement> = Anchor.bind({});
 AnchorIconOnly.args = {
     storyContent: html`
         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +93,7 @@ AnchorIconOnly.args = {
     `,
 };
 
-export const AnchorWithoutHref: Story<AdaptiveAnchor> = Anchor.bind({});
+export const AnchorWithoutHref: Story<AnchorElement> = Anchor.bind({});
 AnchorWithoutHref.args = {
     storyContent: "Anchor without href attribute",
     href: undefined,

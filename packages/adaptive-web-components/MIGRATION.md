@@ -109,3 +109,16 @@ The element is the button now, with the `button` role and form association throu
 | The pattern in an `<object>` | An `<img alt="">`, the `pattern` part |
 | | The `shimmer` part |
 | `SkeletonShape` from `@microsoft/fast-foundation`, `SkeletonParts` from this package | From the components foundation, also exported here |
+
+## Anchor
+
+The element wraps a native `<a>`, as it did, so the browser treats it as a link.
+
+| 0.10 | Now |
+| --- | --- |
+| `AdaptiveAnchor` (extends FAST Foundation's `FASTAnchor`) | `Anchor` |
+| The `aria-*` properties (`ariaLabel`, `ariaDescribedby`, and the others) written to the `<a>` | The `aria-*` attributes of the element, forwarded to the `<a>` as they change. Ids (`aria-describedby`) are forwarded as the elements, so they resolve |
+| `referrerpolicy` | `referrerPolicy` (the attribute is the same) |
+| `AnchorTarget` from `@microsoft/fast-foundation` | Gone: `target` is a string |
+| The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
+| `AnchorParts` from this package | The components foundation's (`control`, `content`), also exported here |

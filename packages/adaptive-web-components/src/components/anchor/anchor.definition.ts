@@ -3,7 +3,7 @@ import { composeAnchor } from "./anchor.compose.js";
 import { styleModules } from "./anchor.styles.modules.js";
 
 /**
- * The Anchor custom element definition. Implements {@link AdaptiveAnchor}.
+ * The Anchor custom element definition. Implements {@link Anchor}.
  *
  * @remarks
  * HTML Element: \<adaptive-anchor\>

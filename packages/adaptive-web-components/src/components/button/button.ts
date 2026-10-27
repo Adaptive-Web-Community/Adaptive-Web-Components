@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { ButtonController, type ButtonElement, ButtonType } from "@adaptive-web/components-foundation";
+import { ButtonController, type ButtonElement, ButtonType, isIconOnly } from "@adaptive-web/components-foundation";
 
 /**
  * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
@@ -94,11 +94,7 @@ export class Button extends FASTElement implements ButtonElement {
     @observable
     public defaultSlottedContent: Node[] = [];
     protected defaultSlottedContentChanged(): void {
-        const content = this.defaultSlottedContent.filter(node =>
-            node.nodeType === Node.ELEMENT_NODE || (node.nodeType === Node.TEXT_NODE && node.textContent?.trim())
-        );
-
-        if (content.length === 1 && content[0] instanceof SVGElement) {
+        if (isIconOnly(this.defaultSlottedContent)) {
             this.internals.states.add("icon-only");
         } else {
             this.internals.states.delete("icon-only");

@@ -46,6 +46,31 @@ export const AccordionItemParts: {
 };
 
 // @public
+export interface AnchorElement extends HTMLElement {
+    download: string | null;
+    href: string | null;
+    hreflang: string | null;
+    ping: string | null;
+    referrerPolicy: string | null;
+    rel: string | null;
+    target: string | null;
+    type: string | null;
+}
+
+// @public
+export const AnchorParts: {
+    readonly control: "control";
+    readonly content: "content";
+};
+
+// @public
+export class AriaForwardingController {
+    constructor(host: Element);
+    connect(target: Element): void;
+    disconnect(): void;
+}
+
+// @public
 export function avatarAria(avatar: AvatarElement): DefaultAria;
 
 // @public
@@ -118,6 +143,9 @@ export interface DividerElement extends HTMLElement {
 
 // @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+// @public
+export function isIconOnly(nodes: readonly Node[]): boolean;
 
 // @public
 export const Orientation: {
