@@ -15,7 +15,6 @@ import { dataGridDefinition } from './components/data-grid/data-grid.definition.
 import { dataGridCellDefinition } from './components/data-grid-cell/data-grid-cell.definition.js';
 import { dataGridRowDefinition } from './components/data-grid-row/data-grid-row.definition.js';
 import { dialogDefinition } from './components/dialog/dialog.definition.js';
-import { disclosureDefinition } from './components/disclosure/disclosure.definition.js';
 import { dividerDefinition } from './components/divider/divider.definition.js';
 import { flipperDefinition } from './components/flipper/flipper.definition.js';
 import { horizontalScrollDefinition } from './components/horizontal-scroll/horizontal-scroll.definition.js';
@@ -67,7 +66,6 @@ export const AllComponents = {
 	dataGridCellDefinition,
 	dataGridRowDefinition,
 	dialogDefinition,
-	disclosureDefinition,
 	dividerDefinition,
 	flipperDefinition,
 	horizontalScrollDefinition,

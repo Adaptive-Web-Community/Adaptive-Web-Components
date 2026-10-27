@@ -18,7 +18,6 @@ export * from "./data-grid/index.js";
 export * from "./data-grid-cell/index.js";
 export * from "./data-grid-row/index.js";
 export * from "./dialog/index.js";
-export * from "./disclosure/index.js";
 export * from "./divider/index.js";
 export * from "./flipper/index.js";
 export * from "./horizontal-scroll/index.js";
