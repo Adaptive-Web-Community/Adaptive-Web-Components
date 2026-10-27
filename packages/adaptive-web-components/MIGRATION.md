@@ -321,3 +321,20 @@ The tabs and the panels are laid out apart now: the tablist is the strip of tabs
 
 New: a list (`role="list"`) of items (`role="listitem"`), in an `orientation` (`vertical` by default). In the `horizontal` orientation it
 takes the place of the Horizontal Scroll: its overflow scrolls, and the styles decide how.
+
+## Breadcrumb
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTBreadcrumb` (FAST Foundation) | `Breadcrumb` |
+| `role="navigation"` written to the element | `ElementInternals`. Give it an `aria-label` |
+| The breadcrumb sets `aria-current` on the last item's `<a>`, wherever it is | The last item's `current`; the item sets `aria-current="page"` on its link |
+
+## Breadcrumb Item
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTBreadcrumbItem` and `AdaptiveBreadcrumbItem` | `BreadcrumbItem`, which extends `Anchor` |
+| `role="listitem"` written to the element, and the `listitem` part | `ElementInternals`; the host is the list item |
+| `separator`, given by the breadcrumb | `current`, given by the breadcrumb: the separator is hidden for the current item |
+| `ValuesOf` (of `BreadcrumbItemStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |

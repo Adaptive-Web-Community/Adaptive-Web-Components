@@ -3,7 +3,7 @@ import { composeBreadcrumb } from "./breadcrumb.compose.js";
 import { styleModules } from "./breadcrumb.styles.modules.js";
 
 /**
- * The Breadcrumb custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumb}.
+ * The Breadcrumb custom element definition. Implements {@link Breadcrumb}.
  *
  * @remarks
  * HTML Element: \<adaptive-breadcrumb\>

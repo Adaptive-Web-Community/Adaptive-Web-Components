@@ -10,7 +10,7 @@ import { type AnchorElement, AriaForwardingController, isIconOnly } from "@adapt
  * @public
  */
 export class Anchor extends FASTElement implements AnchorElement {
-    private readonly internals = this.attachInternals();
+    protected readonly internals = this.attachInternals();
     private readonly ariaForwarding = new AriaForwardingController(this);
 
     /**

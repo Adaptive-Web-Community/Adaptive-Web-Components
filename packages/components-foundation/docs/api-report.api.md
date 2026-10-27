@@ -89,6 +89,32 @@ export const BadgeParts: {
 };
 
 // @public
+export function breadcrumbAria(): DefaultAria;
+
+// @public
+export type BreadcrumbElement = HTMLElement;
+
+// @public
+export function breadcrumbItemAria(): DefaultAria;
+
+// @public
+export interface BreadcrumbItemElement extends AnchorElement {
+    current: boolean;
+}
+
+// @public
+export const BreadcrumbItemParts: {
+    readonly separator: "separator";
+    readonly control: "control";
+    readonly content: "content";
+};
+
+// @public
+export const BreadcrumbParts: {
+    readonly list: "list";
+};
+
+// @public
 export class ButtonController {
     constructor(host: ButtonElement, internals: ButtonInternals);
     connect(): void;
@@ -480,6 +506,9 @@ export const SearchParts: {
 
 // @public
 export function selectTab(tab: TabElement): void;
+
+// @public
+export function setBreadcrumbItems(items: readonly BreadcrumbItemElement[]): void;
 
 // @public
 export function skeletonAria(): DefaultAria;

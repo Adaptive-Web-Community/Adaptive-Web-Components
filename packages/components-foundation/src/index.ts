@@ -3,6 +3,8 @@ export * from "./accordion-item/index.js";
 export * from "./anchor/index.js";
 export * from "./avatar/index.js";
 export * from "./badge/index.js";
+export * from "./breadcrumb/index.js";
+export * from "./breadcrumb-item/index.js";
 export * from "./button/index.js";
 export * from "./checkable/index.js";
 export * from "./checkbox/index.js";

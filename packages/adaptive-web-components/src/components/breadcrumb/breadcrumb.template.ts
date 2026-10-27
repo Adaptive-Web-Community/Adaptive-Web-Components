@@ -1,7 +1,8 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { breadcrumbTemplate, FASTBreadcrumb } from "@microsoft/fast-foundation";
+import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { BreadcrumbParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Breadcrumb } from "./breadcrumb.js";
 
 /**
  * @public
@@ -9,12 +10,7 @@ import { DesignSystem } from "../../design-system.js";
 export const BreadcrumbConditions = {
 };
 
-/**
- * @public
- */
-export const BreadcrumbParts = {
-    list: "list",
-};
+export { BreadcrumbParts };
 
 /**
  * @public
@@ -26,9 +22,14 @@ export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, ty
 };
 
 /**
- * Default Breadcrumb template, {@link @microsoft/fast-foundation#breadcrumbTemplate}.
+ * Default Breadcrumb template: the list of the items.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTBreadcrumb> =
-    (ds: DesignSystem) =>
-        breadcrumbTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Breadcrumb> =
+    (ds: DesignSystem) => html<Breadcrumb>`
+        <slot name="start"></slot>
+        <div class="list" part="list" role="list">
+            <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
+        </div>
+        <slot name="end"></slot>
+    `;

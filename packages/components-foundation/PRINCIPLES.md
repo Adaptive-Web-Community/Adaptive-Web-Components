@@ -23,7 +23,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    Used by: Button.
 5. **Behavior without state or lifecycle is a function**, not a controller.
    Used by: Accordion Item (`toggleAccordionItem`), Button and Anchor (`isIconOnly`), Progress and Progress Ring (`progressPercent`),
-   Checkbox (`hasContent`, for its label), Tab (`selectTab`).
+   Checkbox (`hasContent`, for its label), Tab (`selectTab`), Breadcrumb (`setBreadcrumbItems`).
 6. **Components with the same behavior have one contract**, and a template each.
    Used by: Progress and Progress Ring (`ProgressElement`).
 7. **Behavior that several components share is a controller of its own**, which their controllers use or extend.
@@ -47,7 +47,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     tab, its URL, `:visited`), a text field (selection, input methods, spelling, autofill), or a dialog (the top layer, the inert page, focus
     moved in and back) can't be done for a custom element, so the native element is inside and has the role. A text field's host is still the
     form control, through `ElementInternals`.
-    Used by: Anchor, Text Field, Text Area, Number Field, Search, Dialog. Next: Breadcrumb Item and the links of a menu.
+    Used by: Anchor, Text Field, Text Area, Number Field, Search, Dialog, Breadcrumb Item (its link is the Anchor's). Next: the links of a
+    menu.
 12. **An element that invokes a command does it as a native button**: `commandfor` and `command` (the Invoker Commands API), a cancelable
     `command` event at the target first, then the native default for a popover or a `<dialog>`, with the invoker as the popover's source and
     anchor. A component whose native element would answer a command answers it from its host (a dialog's `show-modal`), since a native
@@ -58,11 +59,12 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Tooltip, and the popovers a Button opens.
 14. **A pattern that nests roles uses native elements in the shadow root for the inner ones**, and the host has no role: the accordion item's
     heading is a `role="heading"` element with a native `<button>` in it.
-    Used by: Accordion Item.
+    Used by: Accordion Item, Breadcrumb (its list,
+    inside the landmark that the host is).
 15. **The author's ARIA is on the host.** Where the host has the role, it reaches it as written, and nothing is copied. Where a native
     element inside has the role, the `AriaForwardingController` forwards it there.
     Used by: Button (as written), Anchor (forwarded to its link), Text Field (forwarded to its input), Text Area, Number Field, Search,
-    Dialog (forwarded to its `<dialog>`).
+    Dialog (forwarded to its `<dialog>`), Breadcrumb Item (forwarded to its link).
 16. **The default ARIA of a host is a function of its properties** (a `DefaultAria`), which the binding assigns to the element's
     `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
     the default needs no property to turn it off (`role="presentation"` on a divider). In the value, a property that is absent is left as it
@@ -71,17 +73,18 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     with its values), Skeleton (hidden), Radio Group (`radiogroup`, in its orientation, through its controller), Tablist (`tablist`,
     in its orientation, through its controller), Tab (`tab`, selected,
     disabled, and the panel it controls), Tab Panel (`tabpanel`, named by its tab), Toolbar (`toolbar`, in its orientation,
-    through its controller), List (`list`), List Item (`listitem`).
+    through its controller), List (`list`), List Item (`listitem`), Breadcrumb (`navigation`), Breadcrumb Item (`listitem`).
 17. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
     (a property each child reads), not by doing their behavior for them.
     Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
     Radio Group (it reacts to `checked`, and gives `groupReadOnly` and `groupDisabled`), Tab (it selects itself),
-    Tablist (it reacts to `selected`, and gives each tab its `panel` and each panel of its panels' element its `tab`).
+    Tablist (it reacts to `selected`, and gives each tab its `panel` and each panel of its panels' element its `tab`),
+    Breadcrumb (it gives its last item `current`, and its item puts `aria-current` on its own link).
 18. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
     defined yet is waited for with `whenDefined` of the container's registry.
     Used by: Accordion, Radio Group (both with AWC's `onDefined`), Tablist (its tabs, and the panels of its panels' element),
     Toolbar (its items by whether they take focus,
-    again when one is defined).
+    again when one is defined), Breadcrumb.
 
 ## ARIA references and ids
 
@@ -116,10 +119,11 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Checkbox (`:disabled`; `hidden` on its indicators and an empty label), Switch (`:disabled`; `hidden` on an empty label),
     Radio (`:disabled`; `hidden` on its indicator and an empty label), Text Field (`:disabled`; the input's own `readonly`, `required`,
     and validity), Text Area, Number Field (also its range and step), Search (and `hidden` on its clear button without a value),
-    Dialog (the `<dialog>`'s top layer, `::backdrop`, and inert page), Tablist (`hidden` on the panels it doesn't show).
+    Dialog (the `<dialog>`'s top layer, `::backdrop`, and inert page), Tablist (`hidden` on the panels it doesn't show),
+    Breadcrumb Item (`hidden` on its separator when it is the current page).
 25. **What is only decoration or a placeholder is hidden from assistive technology**: `aria-hidden` on an element, `alt=""` on an image.
     Used by: Accordion Item (its icons), Skeleton (itself, and its pattern image), Number Field (its step buttons, which the arrow keys do),
-    Search (its clear button, which Escape does).
+    Search (its clear button, which Escape does), Breadcrumb Item (its separator).
 26. **Disabled isn't focusable.** A control's disabled is the platform's; an element that isn't a control disables its native element.
     A group of controls is a form control without a value, so it is `:disabled` from its own `disabled` or a fieldset around it, and it gives
     its controls that state (`groupDisabled`), which they show as `:state(disabled)`: their own `disabled` stays the author's.
@@ -153,7 +157,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     implements `focus()` to focus it, instead of `delegatesFocus`, unless it wraps a native form control, whose host delegates its focus
     (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control.
     Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host),
-    Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host).
+    Text Field (`delegatesFocus`, to its input), Text Area, Number Field, Search, Tab (the host), Breadcrumb Item (its link, as the Anchor).
 32. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
     their `tabindex`. An item that gets the focus by a click becomes the active one. A list whose items the arrows don't move between isn't a
     composite: the content of its items is in the tab order.
@@ -205,10 +209,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 41. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
-    `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`.
+    `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`, `BreadcrumbParts`, `BreadcrumbItemParts`.
 42. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
-    Used by: Badge, Button; Anchor (its link is the box), Tab.
+    Used by: Badge, Button; Anchor (its link is the box), Tab, Breadcrumb Item (as the Anchor).
 43. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.

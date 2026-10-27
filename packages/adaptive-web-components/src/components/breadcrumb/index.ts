@@ -1,3 +1,4 @@
+export { Breadcrumb } from "./breadcrumb.js";
 export { composeBreadcrumb } from "./breadcrumb.compose.js";
 export {
     templateStyles as breadcrumbTemplateStyles,

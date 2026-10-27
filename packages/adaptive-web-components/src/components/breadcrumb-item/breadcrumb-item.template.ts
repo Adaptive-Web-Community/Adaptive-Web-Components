@@ -1,8 +1,9 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { breadcrumbItemTemplate, FASTBreadcrumbItem } from "@microsoft/fast-foundation";
-import type { ValuesOf } from '@microsoft/fast-foundation';
+import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { BreadcrumbItemParts, type ValuesOf } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { staticallyCompose } from "../../utilities/template-helpers.js";
+import type { BreadcrumbItem } from "./breadcrumb-item.js";
 
 /**
  * Keys for {@link DesignSystem} `statics` registration for the breadcrumb item.
@@ -26,15 +27,7 @@ export const BreadcrumbItemConditions = {
     current: "[aria-current]",
 };
 
-/**
- * @public
- */
-export const BreadcrumbItemParts = {
-    control: "control",
-    content: "content",
-    listitem: "listitem",
-    separator: "separator",
-};
+export { BreadcrumbItemParts };
 
 /**
  * @public
@@ -47,11 +40,33 @@ export const BreadcrumbItemAnatomy: ComponentAnatomy<typeof BreadcrumbItemCondit
 };
 
 /**
- * Default Breadcrumb Item template, {@link @microsoft/fast-foundation#breadcrumbItemTemplate}.
+ * Default Breadcrumb Item template: a native link, as the {@link Anchor}'s, `aria-current="page"` for the current item, and a separator,
+ * hidden for the current item.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTBreadcrumbItem> =
-    (ds: DesignSystem) =>
-        breadcrumbItemTemplate({
-            separator: ds.statics.get(BreadcrumbItemStatics.separator),
-        });
+export const template: (ds: DesignSystem) => ElementViewTemplate<BreadcrumbItem> =
+    (ds: DesignSystem) => html<BreadcrumbItem>`
+        <a
+            class="control"
+            part="control"
+            download="${x => x.download}"
+            href="${x => x.href}"
+            hreflang="${x => x.hreflang}"
+            ping="${x => x.ping}"
+            referrerpolicy="${x => x.referrerPolicy}"
+            rel="${x => x.rel}"
+            target="${x => x.target}"
+            type="${x => x.type}"
+            aria-current="${x => x.current ? "page" : null}"
+            ${ref("control")}
+        >
+            <slot name="start"></slot>
+            <span class="content" part="content">
+                <slot ${slotted("defaultSlottedContent")}></slot>
+            </span>
+            <slot name="end"></slot>
+        </a>
+        <span class="separator" part="separator" aria-hidden="true" ?hidden="${x => x.current}">
+            <slot name="separator">${staticallyCompose(ds.statics.get(BreadcrumbItemStatics.separator))}</slot>
+        </span>
+    `;

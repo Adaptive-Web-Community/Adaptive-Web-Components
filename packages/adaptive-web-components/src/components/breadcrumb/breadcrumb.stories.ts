@@ -1,10 +1,10 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTBreadcrumb } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Breadcrumb as BreadcrumbElement } from "./breadcrumb.js";
 
-const storyTemplate = html<StoryArgs<FASTBreadcrumb>>`
-    <adaptive-breadcrumb>
+const storyTemplate = html<StoryArgs<BreadcrumbElement>>`
+    <adaptive-breadcrumb aria-label="Breadcrumb">
         ${(x) => x.storyContent}
     </adaptive-breadcrumb>
 `;
@@ -14,9 +14,9 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTBreadcrumb>;
+} as Meta<BreadcrumbElement>;
 
-export const Breadcrumb: Story<FASTBreadcrumb> = renderComponent(storyTemplate).bind({});
+export const Breadcrumb: Story<BreadcrumbElement> = renderComponent(storyTemplate).bind({});
 Breadcrumb.args = {
     storyContent: html`
         <adaptive-breadcrumb-item href="#">Breadcrumb Item 1</adaptive-breadcrumb-item>
@@ -25,7 +25,7 @@ Breadcrumb.args = {
     `,
 };
 
-export const BreadcrumbsWithTextSeparators: Story<FASTBreadcrumb> = renderComponent(storyTemplate).bind({});
+export const BreadcrumbsWithTextSeparators: Story<BreadcrumbElement> = renderComponent(storyTemplate).bind({});
 BreadcrumbsWithTextSeparators.args = {
     storyContent: html`
         <adaptive-breadcrumb-item href="#">
