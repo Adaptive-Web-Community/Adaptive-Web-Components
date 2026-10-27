@@ -19,7 +19,6 @@ import type {
     BreadcrumbItemStatics,
     CheckboxStatics,
     ComboboxStatics,
-    FlipperStatics,
     MenuItemStatics,
     NumberFieldStatics,
     RadioStatics,
@@ -33,7 +32,6 @@ type ComponentStatics =
     | BreadcrumbItemStatics
     | CheckboxStatics
     | ComboboxStatics
-    | FlipperStatics
     | MenuItemStatics
     | NumberFieldStatics
     | RadioStatics

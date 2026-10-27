@@ -65,6 +65,17 @@ are migrated to popovers.
 
 Removed: an `AccordionItem` alone is a disclosure with a heading, and a native `<details>` is one without.
 
+## Flipper
+
+Removed: it was a mouse-only control for scrolling a carousel, out of the tab order. A carousel, when there is one, follows the
+[ARIA carousel pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/), whose previous and next buttons are focusable controls, and
+can use CSS's `::scroll-button()` when every browser has it.
+
+## Horizontal Scroll
+
+Removed: it was a list laid out in a row, with flippers. A `List` in the `horizontal` orientation is the list, with its overflow scrolled;
+scroll snapping and the rest of how it scrolls are CSS.
+
 ## Badge
 
 | 0.10 | Now |
