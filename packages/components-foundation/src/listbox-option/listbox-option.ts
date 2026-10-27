@@ -49,7 +49,7 @@ export interface ListboxOptionElement extends HTMLElement {
     selected: boolean;
 
     /**
-     * Whether it is disabled: it can't be selected, and the keys skip it.
+     * Whether it is disabled: the keys reach it, as the ARIA practices ask of listbox options, and it can't be selected.
      *
      * @remarks
      * HTML attribute: `disabled`.

@@ -106,7 +106,7 @@ describe("ListboxController", () => {
             expect(selected(options)).to.equal("100");
         });
 
-        it("should skip disabled and hidden options", () => {
+        it("should reach a disabled option without selecting it, and skip a hidden one", () => {
             const { host, options } = setup(["a", "b", "c", "d"], (host, options) => {
                 options[1].disabled = true;
                 options[2].hidden = true;
@@ -114,7 +114,10 @@ describe("ListboxController", () => {
             host.focus();
 
             press(host, "ArrowDown");
+            expect(activeIndex(options)).to.equal(1);
+            expect(selected(options)).to.equal("0000");
 
+            press(host, "ArrowDown");
             expect(activeIndex(options)).to.equal(3);
         });
 

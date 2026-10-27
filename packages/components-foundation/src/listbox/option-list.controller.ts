@@ -47,7 +47,8 @@ const typeaheadTimeout = 500;
  * @remarks
  * The owner's controller creates it, and calls {@link OptionListController.setOptions} and
  * {@link OptionListController.optionSelectedChanged} when its binding observes those changes, and {@link OptionListController.handleKeydown}
- * for the keys it gives to the list. Hidden and disabled options are skipped.
+ * for the keys it gives to the list. Hidden options are skipped; disabled ones are reached, as the ARIA practices ask of listbox options, and
+ * aren't selected.
  *
  * @public
  */
@@ -231,9 +232,9 @@ export class OptionListController {
         return false;
     }
 
-    // The options the keys move between: not disabled, nor hidden (by a Picker's filter).
+    // The options the keys move between: not hidden (by a Picker's filter). Disabled ones too, so the user finds them.
     private available(): ListboxOptionElement[] {
-        return this.items.filter(option => !option.disabled && !option.hidden);
+        return this.items.filter(option => !option.hidden);
     }
 
     private move(option: ListboxOptionElement | undefined, select: boolean): void {

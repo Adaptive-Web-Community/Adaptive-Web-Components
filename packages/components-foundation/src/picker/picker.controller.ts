@@ -372,7 +372,7 @@ export class PickerController {
     }
 
     private available(): ListboxOptionElement[] {
-        return this.list.all.filter(option => !option.disabled && !option.hidden);
+        return this.list.all.filter(option => !option.hidden);
     }
 
     // The user typed: `filter`, which the author can cancel to find the options otherwise, then the options that don't contain the text are

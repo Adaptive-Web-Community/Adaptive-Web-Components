@@ -154,11 +154,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     its controls that state (`groupDisabled`), which they show as `:state(disabled)`: their own `disabled` stays the author's.
     The exception is an item of a composite where the ARIA practices ask that a disabled one stays focusable, so the user finds it
     ([Focusability of disabled controls](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#focusabilityofdisabledcontrols)):
-    a menu item, a tree item, a tab, a listbox option. The arrows reach it, it has `aria-disabled` and `:state(disabled)`, and it can't be
-    activated. Nowhere else, a standalone control included: why a control is disabled is said in the interface, not in a tooltip on it.
+    a menu item, a tree item, a tab, a listbox option. The arrows reach it, it has `aria-disabled`, and it can't be activated. Nowhere else, a standalone control included: why a control is disabled is said in the interface, not in a tooltip on it.
     Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (its `disabled` or a fieldset), Text Field (its input,
-    from `formDisabledCallback`), Text Area, Number Field, Search, Tab (`aria-disabled`, out of the tab order and skipped by the arrows),
-    Listbox, Listbox Option (skipped by the keys), Select (its combobox leaves the tab order), Picker (its input), Menu Item (focusable,
+    from `formDisabledCallback`), Text Area, Number Field, Search, Tab (focusable, as the exception),
+    Listbox, Listbox Option (focusable, as the exception), Select (its combobox leaves the tab order), Picker (its input), Menu Item (focusable,
     as the exception), Tree Item (focusable, as the exception).
 28. **A control can be read only** (`readonly`): it takes focus, the user doesn't change it, it has `aria-readonly` and `:state(readonly)`,
     and it isn't validated, as a read only native input isn't. A group that is read only makes its controls read only.

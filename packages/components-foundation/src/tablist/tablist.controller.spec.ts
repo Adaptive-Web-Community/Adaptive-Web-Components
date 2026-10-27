@@ -202,7 +202,7 @@ describe("TablistController", () => {
             expect(selected(items)).to.deep.equal([false, true]);
         });
 
-        it("should wrap, and skip a disabled tab", () => {
+        it("should wrap, and reach a disabled tab without selecting it", () => {
             const { items } = setup(3, 3, items => {
                 items[0].disabled = true;
             });
@@ -210,7 +210,8 @@ describe("TablistController", () => {
             press(items[1], "ArrowRight");
             press(items[2], "ArrowRight");
 
-            expect(document.activeElement).to.equal(items[1]);
+            expect(document.activeElement).to.equal(items[0]);
+            expect(selected(items)).to.deep.equal([false, false, true]);
         });
 
         it("should move to the first and the last tab with Home and End", () => {

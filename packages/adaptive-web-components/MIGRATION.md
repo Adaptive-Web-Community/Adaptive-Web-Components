@@ -298,6 +298,7 @@ The tabs and the panels are laid out apart now: the tablist is the strip of tabs
 | `[aria-selected="true"]` in selectors | `[selected]` |
 | | `selected`, reflected; clicking the tab selects it |
 | | The `content` part, around the default slot |
+| The arrows skip a disabled tab | They reach it, as the ARIA practices ask; it isn't selected |
 
 ## Tab Panel
 
@@ -362,6 +363,7 @@ The listbox is a form control now, as a native `<select multiple>` or `<select s
 | `role`, `aria-selected`, and `aria-checked` written to the element | `ElementInternals`; `checked` is gone |
 | `[aria-selected="true"]` and `[aria-checked="true"]` in selectors | `:state(selected)`; the active option is `:state(active)` |
 | A proxy `<option>`, and the `Option`-like constructor arguments | Gone |
+| The keys skip a disabled option | They reach it, as the ARIA practices ask; it isn't selected |
 
 ## Select
 

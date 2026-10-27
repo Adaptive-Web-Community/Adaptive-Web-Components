@@ -34,7 +34,7 @@ export interface TabElement extends HTMLElement {
     selected: boolean;
 
     /**
-     * Whether it is disabled: it can't be selected, and the focus skips it.
+     * Whether it is disabled: it stays focusable, as the ARIA practices ask of tabs, and can't be selected.
      *
      * @remarks
      * HTML attribute: `disabled`.

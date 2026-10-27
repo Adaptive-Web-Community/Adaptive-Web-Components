@@ -23,7 +23,7 @@ The source: FAST Foundation 3.0.0-alpha.33 (the archive).
 | Option's `value` | The `value` attribute, or the text | The same |
 | Visual focus | The selected option, outlined when the listbox is focused | `active`, given by the list, shown as `:state(active)`, scrolled into view |
 | Keys | Up, Down, Home, End, typing; in multiple, Shift and Control combinations, and Space; checked versus selected | The ARIA pattern: Up and Down without wrapping, Home, End, typing (500 ms, the same letter cycles); single selection follows the keys; multiple: Space toggles, Shift with Up and Down selects as it moves, Control with A selects all |
-| Disabled and hidden options | Skipped | Skipped: hidden ones are those a Picker filtered out |
+| Disabled and hidden options | Skipped | A disabled option is reached, as the ARIA practices ask of listbox options, and isn't selected; a hidden one, which a Picker filtered out, is skipped |
 | Read only | | `readonly`, with `aria-readonly`: the keys move, nothing is selected |
 | Events | `change` | `input` and `change` from the host, as a native select's, for the user's changes only |
 

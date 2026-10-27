@@ -23,9 +23,9 @@ The source: FAST Foundation 3.0.0-alpha.33 (the archive).
 | The selected tab | `activeid`, the id of the tab | A `selected` attribute on the tab, reflected, as an accordion item's `expanded`: of several, the last; with none, or a disabled one, the first that isn't disabled |
 | Panels not shown | `hidden` | `hidden`, set by the tablist |
 | Panels that change | `slotted` | The tablist observes its panels' element's children, and waits for the panels that aren't defined yet. A panels' element later in the document is looked for again once the document is parsed |
-| Keyboard | Arrows of the orientation, wrapping, Home and End | The `RovingFocusController`: the arrows of the orientation (Left and Right swapped right to left), wrapping, skipping disabled tabs, Home and End |
+| Keyboard | Arrows of the orientation, wrapping, Home and End | The `RovingFocusController`: the arrows of the orientation (Left and Right swapped right to left), wrapping, reaching disabled tabs, Home and End |
 | Activation | When the focus moves | The same, as the ARIA pattern recommends when a panel shows at once |
-| Disabled tab | `disabled`, as `aria-disabled`; the focus skips it | `disabled`, as `aria-disabled` through `ElementInternals`, out of the tab order and skipped by the arrows |
+| Disabled tab | `disabled`, as `aria-disabled`; the focus skips it | `disabled`, as `aria-disabled` through `ElementInternals`: the arrows reach it, as the ARIA practices ask of tabs, and it isn't selected or the tab stop |
 | Events | The tabs' `change`, with the active tab as the detail | The tab's `change`, which bubbles through the tablist, as an accordion item's |
 | Start and end slots | Around the tablist | Not taken: in a tablist, they would be children of the `tablist` role that aren't tabs |
 | Children | `slotted` per slot | By their class: the tabs among the tablist's children, and the panels among its panels' element's, waiting for those not defined yet |

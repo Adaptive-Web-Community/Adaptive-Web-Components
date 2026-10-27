@@ -30,7 +30,7 @@ export type TablistOptions = {
 /**
  * The behavior of a {@link TablistElement}: the `tablist` role, in its orientation; one tab selected, and its panel shown; each tab given
  * its panel and each panel its tab, in order, as the panels' element's children change; the arrow keys in the orientation, Home, and End,
- * which move the focus between the tabs and select the tab they move to (with a {@link RovingFocusController}).
+ * which move the focus between the tabs, disabled ones too, and select the tab they move to (with a {@link RovingFocusController}).
  *
  * @remarks
  * The element's binding creates it, calls {@link TablistController.connect} and {@link TablistController.disconnect} with the element's
@@ -49,12 +49,13 @@ export class TablistController {
 
     constructor(private readonly host: TablistElement, private readonly internals: TablistInternals, private readonly options: TablistOptions) {
         internals.role = "tablist";
-        // Selecting the tab the focus moves to emits its change, as a click does.
+        // Selecting the tab the focus moves to emits its change, as a click does. A disabled tab stays focusable, as the ARIA practices
+        // ask, so the user finds it, and isn't selected.
         this.rovingFocus = new RovingFocusController<TabElement>(host, {
             keys: host.orientation,
             homeEnd: true,
             onMove: tab => selectTab(tab),
-            isDisabled: tab => tab.disabled,
+            isDisabled: () => false,
         });
     }
 
