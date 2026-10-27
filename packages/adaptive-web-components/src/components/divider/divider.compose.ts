@@ -1,7 +1,7 @@
-import { FASTDivider } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { Divider } from "./divider.js";
 import { aestheticStyles, templateStyles } from "./divider.styles.js";
 import { DividerAnatomy, template } from "./divider.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeDivider(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTDivider>
-): FASTElementDefinition {
+    options?: ComposeOptions<Divider>
+): Promise<FASTElementDefinition<typeof Divider>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, DividerAnatomy, options);
 
-    return FASTDivider.compose({
+    return FASTElementDefinition.compose(Divider, {
         name: `${ds.prefix}-divider`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -1,3 +1,4 @@
+export { Divider } from "./divider.js";
 export { composeDivider } from "./divider.compose.js";
 export {
     templateStyles as dividerTemplateStyles,

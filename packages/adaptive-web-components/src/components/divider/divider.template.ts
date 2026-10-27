@@ -1,7 +1,7 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { dividerTemplate, FASTDivider } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui"; 
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Divider } from "./divider.js";
 
 /**
  * @public
@@ -29,9 +29,10 @@ export const DividerAnatomy: ComponentAnatomy<typeof DividerConditions, typeof D
 };
 
 /**
- * Default Divider template, {@link @microsoft/fast-foundation#dividerTemplate}.
+ * Default Divider template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTDivider> =
-    (ds: DesignSystem) =>
-        dividerTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Divider> =
+    (ds: DesignSystem) => html<Divider>`
+        <slot></slot>
+    `;

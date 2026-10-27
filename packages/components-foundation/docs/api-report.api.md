@@ -109,7 +109,24 @@ export type ButtonType = ValuesOf<typeof ButtonType>;
 export type DefaultAria = Partial<ARIAMixin>;
 
 // @public
+export function dividerAria(divider: DividerElement): DefaultAria;
+
+// @public
+export interface DividerElement extends HTMLElement {
+    orientation: Orientation;
+}
+
+// @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+// @public
+export const Orientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type Orientation = ValuesOf<typeof Orientation>;
 
 // @public
 export function toggleAccordionItem(item: AccordionItemElement): void;

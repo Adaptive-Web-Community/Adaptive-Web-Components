@@ -70,3 +70,12 @@ The element is the button now, with the `button` role and form association throu
 | No role: the `alt` of a slotted image or the text was read | `role="img"`, so the content of the slots isn't read |
 | | `name`, the accessible name. An `aria-label` on the element overrides it. Give a slotted image `alt=""` |
 | `AvatarParts` from this package | The components foundation's (`backplate`), also exported here |
+
+## Divider
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTDivider` (FAST Foundation) | `Divider` |
+| The `role` property, and `DividerRole` | The `separator` role is the default, through `ElementInternals`. For decoration, set the `role="presentation"` attribute |
+| `aria-orientation` written to the element | Through `ElementInternals` |
+| `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |

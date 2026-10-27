@@ -30,8 +30,9 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    Used by: Button.
 8. **The default ARIA of a host is a function of its properties** (a `DefaultAria`), which the binding assigns to the element's
    `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
-   the default needs no property to turn it off. In the value, a property that is absent is left as it is, and `null` clears one.
-   Used by: Avatar (`img`, named by `name`).
+   the default needs no property to turn it off (`role="presentation"` on a divider). In the value, a property that is absent is left as it
+   is, and `null` clears one.
+   Used by: Avatar (`img`, named by `name`), Divider (`separator`, in its orientation).
 9. **An element works alone.** A container coordinates its children by reacting to their state, not by doing their behavior for them.
    Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`).
 10. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
@@ -53,7 +54,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 14. **What the author sets is a reflected attribute; what the component works out is a custom state.** `expanded`, `disabled`, `expand-mode`,
     and `type` are attributes. `:state(active)` and `:state(icon-only)` are states of `ElementInternals`. A component doesn't add classes or
     attributes to its host for its own state, except `tabindex`, which focus needs.
-    Used by: Accordion, Accordion Item, Button.
+    Used by: Accordion, Accordion Item, Button, Divider (`orientation`).
 15. **The platform's state where there is one.** A form control is `:disabled` from its `disabled` attribute or a disabled fieldset. Content
     that isn't shown has the `hidden` attribute, so it is hidden without the styles and from assistive technology.
     Used by: Button (`:disabled`), Accordion Item (the panel and the icons).
@@ -90,28 +91,30 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: Accordion (`expandMode`), Accordion Item (`headingLevel`), Button.
 23. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
-    Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`).
+    Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`).
 24. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`.
+25. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
+    Used by: `Orientation` (Divider; next: Slider, Tabs, Toolbar, Radio Group).
 
 ## Parts and styles
 
-25. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
+26. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`.
-26. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
+27. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
     inside it to be the box.
     Used by: Badge, Button.
-27. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
+28. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-28. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+29. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
     Used by: Button.
 
 ## Forms
 
-29. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
+30. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button.
 
