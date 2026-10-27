@@ -1,0 +1,50 @@
+{
+  "name": "@adaptive-web/components-foundation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The behavior of web components, without a framework or styles: what each element exposes, and controllers that implement it.",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
+    "directory": "packages/components-foundation"
+  },
+  "main": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "npm run lint && npm run build",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.59.4",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "jsdom": "^16.2.2",
+    "jsdom-global": "3.0.2",
+    "mocha": "^10.2.0",
+    "rimraf": "^3.0.2"
+  }
+}

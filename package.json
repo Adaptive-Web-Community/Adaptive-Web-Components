@@ -21,6 +21,7 @@
     },
     "workspaces": [
         "./packages/adaptive-ui",
+        "./packages/components-foundation",
         "./packages/adaptive-web-components",
         "./packages/adaptive-ui-designer-core",
         "./packages/adaptive-ui-explorer",
