@@ -23,13 +23,12 @@ A checkbox, which the user checks and unchecks, and which can be indeterminate. 
 | Reset | The proxy's | `formResetCallback`: back to the default |
 | Required | Through the proxy | `valueMissing`, with the browser's message from a native checkbox |
 | Disabled | `aria-disabled` written, and `tabindex` removed | The platform's (decision 0010): the `disabled` attribute or a fieldset, selected as `:disabled` |
+| Read only | `readonly` (alpha.31) | `readonly`: it takes focus, a click and Space change nothing, `aria-readonly`, `:state(readonly)`, and it isn't validated, as a read only native input isn't |
 | Label | The default slot, in a `label` part, with a class when empty | FAST Foundation's default slot in the `label` part, hidden when empty, and a `<label for>` works too |
 | Indicators | `checked-indicator` and `indeterminate-indicator` slots in the `control` part, shown by the styles | The same slots, shown with `hidden` |
 
 Considered and not taken yet:
 
-- `readonly` (FAST Foundation's checkbox had it in alpha.31, and its switch): a native checkbox has none, and `aria-readonly` would need the
-  click and Space blocked by hand. To decide for all the controls together with the text fields, which have it natively.
 - `autofocus` for an element defined after the page loaded, as for the button.
 - Restoring the state on back navigation (`formStateRestoreCallback`).
 - `shape` and `size` attributes: appearance, for Adaptive UI.

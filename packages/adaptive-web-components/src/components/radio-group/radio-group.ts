@@ -36,6 +36,15 @@ export class RadioGroup extends FASTElement implements RadioGroupElement {
     }
 
     /**
+     * {@inheritDoc @adaptive-web/components-foundation#RadioGroupElement.readOnly}
+     */
+    @attr({ attribute: "readonly", mode: "boolean" })
+    public readOnly: boolean = false;
+    protected readOnlyChanged(): void {
+        this.controller.readOnlyChanged();
+    }
+
+    /**
      * {@inheritDoc @adaptive-web/components-foundation#RadioGroupElement.value}
      */
     public get value(): string | null {

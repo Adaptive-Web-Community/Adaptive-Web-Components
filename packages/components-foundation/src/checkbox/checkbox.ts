@@ -19,7 +19,7 @@ export const CheckboxParts = {
  * @remarks
  * Slots: the default slot for the label, and `checked-indicator` and `indeterminate-indicator`.
  *
- * Custom states: `checked`, `indeterminate`, and `active` while Space is held.
+ * Custom states: `checked`, `indeterminate`, `readonly`, and `active` while Space is held.
  *
  * @public
  */
@@ -40,4 +40,13 @@ export interface CheckboxElement extends CheckableElement {
      * HTML attribute: `required`.
      */
     required: boolean;
+
+    /**
+     * Whether it is read only: it takes focus, and the user can't check or uncheck it. A read only checkbox isn't validated, as a read only
+     * native input isn't.
+     *
+     * @remarks
+     * HTML attribute: `readonly`.
+     */
+    readOnly: boolean;
 }

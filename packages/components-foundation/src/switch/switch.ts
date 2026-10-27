@@ -22,7 +22,7 @@ export const SwitchParts = {
  * @remarks
  * Slots: the default slot for the label, and `switch` for a track of the author's.
  *
- * Custom states: `checked`, and `active` while Space is held.
+ * Custom states: `checked`, `readonly`, and `active` while Space is held.
  *
  * @public
  */
@@ -34,4 +34,13 @@ export interface SwitchElement extends CheckableElement {
      * HTML attribute: `required`.
      */
     required: boolean;
+
+    /**
+     * Whether it is read only: it takes focus, and the user can't check or uncheck it. A read only switch isn't validated, as a read only
+     * native input isn't.
+     *
+     * @remarks
+     * HTML attribute: `readonly`.
+     */
+    readOnly: boolean;
 }

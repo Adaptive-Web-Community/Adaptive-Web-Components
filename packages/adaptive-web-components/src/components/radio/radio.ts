@@ -1,3 +1,4 @@
+import { observable } from "@microsoft/fast-element";
 import { RadioController, type RadioElement } from "@adaptive-web/components-foundation";
 import { BaseCheckable } from "../checkbox/base-checkable.js";
 
@@ -9,5 +10,14 @@ import { BaseCheckable } from "../checkbox/base-checkable.js";
 export class Radio extends BaseCheckable<RadioController> implements RadioElement {
     protected createController(internals: ElementInternals): RadioController {
         return new RadioController(this, internals);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#RadioElement.groupReadOnly}
+     */
+    @observable
+    public groupReadOnly: boolean = false;
+    protected groupReadOnlyChanged(): void {
+        this.controller.stateChanged();
     }
 }

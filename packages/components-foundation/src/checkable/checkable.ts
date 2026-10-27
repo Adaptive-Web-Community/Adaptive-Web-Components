@@ -7,7 +7,7 @@
  *
  * Slots: the default slot for the label, whose text names the control.
  *
- * Custom states: `checked`, and `active` while Space is held.
+ * Custom states: `checked`, `readonly` when it is read only, and `active` while Space is held.
  *
  * Events: `input` and then `change`, both bubbling, when the user checks or unchecks it.
  *

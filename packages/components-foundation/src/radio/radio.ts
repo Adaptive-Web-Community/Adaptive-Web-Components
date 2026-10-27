@@ -20,8 +20,16 @@ export const RadioParts = {
  * @remarks
  * Slots: the default slot for the label, and `checked-indicator`.
  *
- * Custom states: `checked`, and `active` while Space is held.
+ * Custom states: `checked`, `readonly` when its group is read only, and `active` while Space is held.
  *
  * @public
  */
-export interface RadioElement extends CheckableElement {}
+export interface RadioElement extends CheckableElement {
+    /**
+     * Whether its radio group is read only, which makes it read only: it takes focus, and the user can't check it.
+     *
+     * @remarks
+     * Set by the radio group. The default is `false`.
+     */
+    groupReadOnly: boolean;
+}

@@ -7,6 +7,7 @@ const storyTemplate = html<StoryArgs<SwitchElement>>`
     <adaptive-switch
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
+        ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
         value="${(x) => x.value}"
     >
@@ -26,6 +27,7 @@ export default {
         storyContent: { table: { disable: true } },
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
+        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
     },

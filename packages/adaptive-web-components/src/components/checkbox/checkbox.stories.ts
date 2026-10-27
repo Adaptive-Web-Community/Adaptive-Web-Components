@@ -8,6 +8,7 @@ const storyTemplate = html<StoryArgs<CheckboxElement>>`
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         :indeterminate="${(x) => x.indeterminate}"
+        ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
         value="${(x) => x.value}"
     >
@@ -30,6 +31,7 @@ export default {
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         indeterminate: { control: "boolean" },
+        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
     },

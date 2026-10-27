@@ -21,7 +21,7 @@ its `label` slot.
 | `value` | An attribute and a property | A property: the checked radio's value, which sets the checked radio |
 | `name` | Given to the radios | Given to the radios |
 | Disabled | `disabled`, which blocked clicks and focus | Not taken: a `<fieldset disabled>` around the group disables its radios, as for native radios |
-| Read only | `readonly` | Not taken yet: to decide for all controls with the text fields |
+| Read only | `readonly` | `readonly`, with `aria-readonly`, given to the radios as `groupReadOnly`: the arrows move the focus without checking |
 | Required | | Not taken yet: a radio's validity depends on its whole group, to decide with the form fields |
 | Orientation | `orientation`, `aria-orientation` written | `ariaOrientation` through `ElementInternals`, and the reflected attribute for the styles |
 | Children | By `role="radio"` among the slotted elements | By their class, among the slotted elements, waiting for those not defined yet |

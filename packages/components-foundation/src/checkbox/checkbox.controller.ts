@@ -2,11 +2,11 @@ import { CheckableController, type CheckableInternals } from "../checkable/check
 import type { CheckboxElement } from "./checkbox.js";
 
 /**
- * The behavior of a {@link CheckboxElement}: a {@link CheckableController} with the `checkbox` role, and the indeterminate state, which the
- * user checking or unchecking ends.
+ * The behavior of a {@link CheckboxElement}: a {@link CheckableController} with the `checkbox` role, the indeterminate state, which the
+ * user checking or unchecking ends, `required`, and read only.
  *
  * @remarks
- * The binding calls {@link CheckableController.stateChanged} when `indeterminate` or `required` changes too.
+ * The binding calls {@link CheckableController.stateChanged} when `indeterminate`, `required`, or `readOnly` changes too.
  *
  * @public
  */
@@ -35,5 +35,9 @@ export class CheckboxController extends CheckableController<CheckboxElement> {
 
     protected required(): boolean {
         return this.host.required;
+    }
+
+    protected readOnly(): boolean {
+        return this.host.readOnly;
     }
 }

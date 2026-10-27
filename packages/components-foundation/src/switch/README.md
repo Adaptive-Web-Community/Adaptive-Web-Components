@@ -12,7 +12,7 @@ share and where it came from), with the `switch` role.
 | --- | --- | --- |
 | Element | The host, `role="switch"` written to it, and a proxy `<input>` | The host, with `ElementInternals`, on the shared checkable behavior |
 | Keyboard | Space and Enter on `keypress` | Space when released, as a native checkbox `switch` (and a checkbox). The ARIA pattern makes Enter optional |
-| Read only | `readonly`, with `aria-readonly` | Not taken yet: to decide for all controls with the text fields |
+| Read only | `readonly`, with `aria-readonly` | FAST Foundation's `readonly`, as the checkbox's: focus, no change, `aria-readonly`, `:state(readonly)`, not validated |
 | Required | Through the proxy | `valueMissing`, with the browser's message |
 | Label and parts | The default slot in a `label` part, then the `switch` part with a `thumb` (alpha.31) | FAST Foundation alpha.31: `label`, `switch`, `thumb`, with a `switch` slot for a track of the author's |
 | On | `aria-checked` written to the host, which the styles selected | `ariaChecked`, and `:state(checked)` |

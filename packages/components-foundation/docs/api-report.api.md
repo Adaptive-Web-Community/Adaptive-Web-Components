@@ -143,6 +143,7 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
     protected readonly host: T;
     // (undocumented)
     protected readonly internals: CheckableInternals;
+    protected readOnly(): boolean;
     protected required(): boolean;
     stateChanged(): void;
     protected valueMissing(): boolean;
@@ -161,7 +162,7 @@ export interface CheckableElement extends HTMLElement {
 }
 
 // @public
-export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaRequired" | "form" | "setFormValue" | "setValidity"> & {
+export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" | "ariaReadOnly" | "ariaRequired" | "form" | "setFormValue" | "setValidity"> & {
     readonly states: Pick<CustomStateSet, "add" | "delete">;
 };
 
@@ -176,6 +177,8 @@ export class CheckboxController extends CheckableController<CheckboxElement> {
     // (undocumented)
     protected ariaChecked(): string;
     // (undocumented)
+    protected readOnly(): boolean;
+    // (undocumented)
     protected required(): boolean;
     // (undocumented)
     stateChanged(): void;
@@ -184,6 +187,7 @@ export class CheckboxController extends CheckableController<CheckboxElement> {
 // @public
 export interface CheckboxElement extends CheckableElement {
     indeterminate: boolean;
+    readOnly: boolean;
     required: boolean;
 }
 
@@ -255,10 +259,13 @@ export class RadioController extends CheckableController<RadioElement> {
     constructor(host: RadioElement, internals: CheckableInternals);
     // (undocumented)
     protected activate(): boolean;
+    // (undocumented)
+    protected readOnly(): boolean;
 }
 
 // @public
 export interface RadioElement extends CheckableElement {
+    groupReadOnly: boolean;
 }
 
 // @public
@@ -270,6 +277,7 @@ export class RadioGroupController {
     nameChanged(): void;
     orientationChanged(): void;
     radioCheckedChanged(radio: RadioElement): void;
+    readOnlyChanged(): void;
     setRadios(radios: readonly RadioElement[]): void;
     get value(): string | null;
     set value(value: string | null);
@@ -279,11 +287,12 @@ export class RadioGroupController {
 export interface RadioGroupElement extends HTMLElement {
     name: string | null;
     orientation: Orientation;
+    readOnly: boolean;
     value: string | null;
 }
 
 // @public
-export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements">;
+export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly">;
 
 // @public
 export const RadioGroupParts: {
@@ -350,11 +359,14 @@ export class SpacePressController {
 export class SwitchController extends CheckableController<SwitchElement> {
     constructor(host: SwitchElement, internals: CheckableInternals);
     // (undocumented)
+    protected readOnly(): boolean;
+    // (undocumented)
     protected required(): boolean;
 }
 
 // @public
 export interface SwitchElement extends CheckableElement {
+    readOnly: boolean;
     required: boolean;
 }
 

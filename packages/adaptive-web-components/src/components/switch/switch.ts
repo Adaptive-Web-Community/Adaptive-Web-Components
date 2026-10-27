@@ -20,4 +20,13 @@ export class Switch extends BaseCheckable<SwitchController> implements SwitchEle
     protected requiredChanged(): void {
         this.controller.stateChanged();
     }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#SwitchElement.readOnly}
+     */
+    @attr({ attribute: "readonly", mode: "boolean" })
+    public readOnly: boolean = false;
+    protected readOnlyChanged(): void {
+        this.controller.stateChanged();
+    }
 }

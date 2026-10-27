@@ -11,6 +11,7 @@ class TestCheckbox extends HTMLElement implements CheckboxElement {
     public disabled = false;
     public indeterminate = false;
     public required = false;
+    public readOnly = false;
     public name: string | null = null;
     public value = "on";
     public readonly form: HTMLFormElement | null = null;
@@ -179,6 +180,35 @@ describe("CheckboxController", () => {
             controller.stateChanged();
             expect(internals.validity).to.deep.equal({});
             expect(internals.ariaRequired).to.be.null;
+        });
+    });
+
+    describe("read only", () => {
+        it("should not check on a click or Space, and say it is read only", () => {
+            const { host, internals, controller } = setup();
+            host.readOnly = true;
+            controller.stateChanged();
+            const fired = events(host);
+
+            host.click();
+            key(host, "keydown", " ");
+            key(host, "keyup", " ");
+
+            expect(host.checked).to.be.false;
+            expect(fired).to.deep.equal([]);
+            expect(internals.ariaReadOnly).to.equal("true");
+            expect(internals.states.has("readonly")).to.be.true;
+            expect(host.getAttribute("tabindex")).to.equal("0");
+        });
+
+        it("should not be validated", () => {
+            const { host, internals, controller } = setup();
+            host.required = true;
+            host.readOnly = true;
+
+            controller.stateChanged();
+
+            expect(internals.validity).to.deep.equal({});
         });
     });
 

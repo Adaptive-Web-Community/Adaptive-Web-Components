@@ -10,6 +10,7 @@ class TestSwitch extends HTMLElement implements SwitchElement {
     public defaultChecked = false;
     public disabled = false;
     public required = false;
+    public readOnly = false;
     public name: string | null = null;
     public value = "on";
     public readonly form: HTMLFormElement | null = null;
@@ -46,6 +47,17 @@ describe("SwitchController", () => {
 
         host.click();
         expect(host.checked).to.be.false;
+    });
+
+    it("should not turn on when it is read only", () => {
+        const { host, internals, controller } = setup();
+        host.readOnly = true;
+        controller.stateChanged();
+
+        host.click();
+
+        expect(host.checked).to.be.false;
+        expect(internals.ariaReadOnly).to.equal("true");
     });
 
     it("should be missing its value when it is required and off", () => {

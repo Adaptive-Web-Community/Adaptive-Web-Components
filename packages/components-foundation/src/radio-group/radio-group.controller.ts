@@ -7,16 +7,17 @@ import type { RadioGroupElement } from "./radio-group.js";
  *
  * @public
  */
-export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements">;
+export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly">;
 
 /**
  * The behavior of a {@link RadioGroupElement}: the `radiogroup` role, named by its label; one radio checked; the arrow keys, which move the
- * focus and check the radio they move to (with a {@link RovingFocusController}); and the group's name given to its radios.
+ * focus and check the radio they move to (with a {@link RovingFocusController}); and the group's name and read only given to its radios.
  *
  * @remarks
  * The element's binding creates it, calls {@link RadioGroupController.connect} and {@link RadioGroupController.disconnect} with the
  * element's lifecycle, and calls {@link RadioGroupController.setRadios}, {@link RadioGroupController.radioCheckedChanged},
- * {@link RadioGroupController.nameChanged}, {@link RadioGroupController.orientationChanged}, and {@link RadioGroupController.labelsChanged}
+ * {@link RadioGroupController.nameChanged}, {@link RadioGroupController.orientationChanged}, {@link RadioGroupController.readOnlyChanged},
+ * and {@link RadioGroupController.labelsChanged}
  * when its framework observes those changes.
  *
  * @public
@@ -52,6 +53,7 @@ export class RadioGroupController {
     public setRadios(radios: readonly RadioElement[]): void {
         this.radios = radios;
         this.nameChanged();
+        this.readOnlyChanged();
 
         const checked = radios.filter(radio => radio.checked);
         for (const radio of checked.slice(0, -1)) {
@@ -86,6 +88,17 @@ export class RadioGroupController {
             for (const radio of this.radios) {
                 radio.name = name;
             }
+        }
+    }
+
+    /**
+     * Read only changed: it is given to the radios.
+     */
+    public readOnlyChanged(): void {
+        const { readOnly } = this.host;
+        this.internals.ariaReadOnly = readOnly ? "true" : null;
+        for (const radio of this.radios) {
+            radio.groupReadOnly = readOnly;
         }
     }
 

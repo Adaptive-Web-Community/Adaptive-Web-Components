@@ -137,7 +137,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The role and `aria-*` written to the element, and a proxy `<input>` in the light DOM | `ElementInternals`: the role, `ariaChecked`, the form value, and validity |
 | `[aria-checked='true']` and `[aria-checked='mixed']` in selectors | `:state(checked)` and `:state(indeterminate)` |
 | `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
-| `readonly` | Gone for now: to decide for all controls with the text fields |
+| `readonly` (alpha.31) | `readonly`: focus, no change, `aria-readonly`, `:state(readonly)`, and not validated |
 | The `label__hidden` class on an empty label | The `hidden` attribute |
 | | The `input` event before `change`, as a native checkbox's |
 | `CheckboxParts` from this package | The components foundation's (`control`, `label`), also exported here |
@@ -150,7 +150,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The role and `aria-*` written to the element, and a proxy `<input>` | `ElementInternals`, as the checkbox |
 | `[aria-checked='true']` in selectors | `:state(checked)` |
 | Enter turned it on and off | Space only, as a native checkbox switch |
-| `readonly` | Gone for now: to decide for all controls with the text fields |
+| `readonly` | `readonly`, as the checkbox's, with `:state(readonly)` |
 | `SwitchParts` from this package | The components foundation's (`switch`, `label`, `thumb`), also exported here |
 
 ## Radio
@@ -161,7 +161,8 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The role and `aria-*` written to the element, and a proxy `<input type="radio">` | `ElementInternals`, as the checkbox; each radio still gives its value to the form |
 | `[aria-checked='true']` in selectors | `:state(checked)` |
 | Radios grouped by `name` without a radio group | Use a `RadioGroup` around them |
-| `required` and `readonly` | Gone for now: to decide with the radio group's `required` and the text fields |
+| `required` | Gone for now: to decide with the radio group's `required` |
+| `readonly` | The group's `readonly` makes its radios read only, with `:state(readonly)` |
 | `RadioParts` from this package | The components foundation's (`control`, `label`), also exported here |
 
 ## Radio Group
@@ -171,7 +172,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | `FASTRadioGroup` (FAST Foundation) | `RadioGroup` |
 | `role` and `aria-*` written to the element | `ElementInternals`. The `label` slot now names the group |
 | `disabled` | Gone: put the group in a `<fieldset disabled>`, which disables its radios |
-| `readonly` | Gone for now: to decide for all controls with the text fields |
+| `readonly` | `readonly`, with `aria-readonly`, given to its radios |
 | The `value` attribute | `value` is a property: the checked radio's value, which sets the checked radio. The radios' `checked` attributes are the default |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
 | `RadioGroupParts` from this package | The components foundation's (`positioning-region`), also exported here |

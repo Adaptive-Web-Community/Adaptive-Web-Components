@@ -9,6 +9,7 @@ const storyTemplate = html<StoryArgs<RadioGroupElement>>`
     <adaptive-radio-group
         name="${(x) => x.name}"
         orientation="${(x) => x.orientation}"
+        ?readonly="${(x) => x.readOnly}"
         :value="${(x) => x.value}"
     >
         ${(x) => x.storyContent}
@@ -40,6 +41,7 @@ export default {
         storyItems: { control: "object" },
         name: { control: "text" },
         orientation: { control: "radio", options: Object.values(Orientation) },
+        readOnly: { control: "boolean" },
         value: { control: "text" },
     },
 } as Meta<RadioGroupElement>;

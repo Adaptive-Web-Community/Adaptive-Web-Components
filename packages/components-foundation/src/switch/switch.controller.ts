@@ -2,10 +2,10 @@ import { CheckableController, type CheckableInternals } from "../checkable/check
 import type { SwitchElement } from "./switch.js";
 
 /**
- * The behavior of a {@link SwitchElement}: a {@link CheckableController} with the `switch` role, and `required`.
+ * The behavior of a {@link SwitchElement}: a {@link CheckableController} with the `switch` role, `required`, and read only.
  *
  * @remarks
- * The binding calls {@link CheckableController.stateChanged} when `required` changes too.
+ * The binding calls {@link CheckableController.stateChanged} when `required` or `readOnly` changes too.
  *
  * @public
  */
@@ -16,5 +16,9 @@ export class SwitchController extends CheckableController<SwitchElement> {
 
     protected required(): boolean {
         return this.host.required;
+    }
+
+    protected readOnly(): boolean {
+        return this.host.readOnly;
     }
 }

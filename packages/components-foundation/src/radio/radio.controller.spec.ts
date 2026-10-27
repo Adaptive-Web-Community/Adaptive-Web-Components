@@ -9,6 +9,7 @@ class TestRadio extends HTMLElement implements RadioElement {
     public checked = false;
     public defaultChecked = false;
     public disabled = false;
+    public groupReadOnly = false;
     public name: string | null = null;
     public value = "on";
     public readonly form: HTMLFormElement | null = null;

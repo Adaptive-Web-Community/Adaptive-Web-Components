@@ -29,4 +29,13 @@ export class Checkbox extends BaseCheckable<CheckboxController> implements Check
     protected requiredChanged(): void {
         this.controller.stateChanged();
     }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#CheckboxElement.readOnly}
+     */
+    @attr({ attribute: "readonly", mode: "boolean" })
+    public readOnly: boolean = false;
+    protected readOnlyChanged(): void {
+        this.controller.stateChanged();
+    }
 }

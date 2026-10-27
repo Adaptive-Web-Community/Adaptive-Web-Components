@@ -41,6 +41,14 @@ export interface RadioGroupElement extends HTMLElement {
     orientation: Orientation;
 
     /**
+     * Whether it is read only: the arrow keys move the focus between its radios, and the user can't check them. Its radios are read only too.
+     *
+     * @remarks
+     * HTML attribute: `readonly`.
+     */
+    readOnly: boolean;
+
+    /**
      * The value of the checked radio, or `null` when none is. Setting it checks the radio with that value.
      */
     value: string | null;

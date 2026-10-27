@@ -15,6 +15,7 @@ class TestRadio extends HTMLElement implements RadioElement {
     private _checked = false;
     public defaultChecked = false;
     public disabled = false;
+    public groupReadOnly = false;
     public name: string | null = null;
     public value = "on";
     public readonly form: HTMLFormElement | null = null;
@@ -41,6 +42,7 @@ customElements.define("test-radio", TestRadio);
 class TestRadioGroup extends HTMLElement implements RadioGroupElement {
     public name: string | null = null;
     public orientation: Orientation = Orientation.horizontal;
+    public readOnly = false;
     public get value(): string | null {
         return group!.value;
     }
@@ -141,6 +143,30 @@ describe("RadioGroupController", () => {
         controller.nameChanged();
 
         expect(radios.map(radio => radio.name)).to.deep.equal(["size", "size"]);
+    });
+
+    describe("read only", () => {
+        it("should make its radios read only, and say it is", () => {
+            const { host, internals, controller, radios } = setup(["a", "b"]);
+
+            host.readOnly = true;
+            controller.readOnlyChanged();
+
+            expect(radios.map(radio => radio.groupReadOnly)).to.deep.equal([true, true]);
+            expect(internals.ariaReadOnly).to.equal("true");
+        });
+
+        it("should move the focus with the arrows, without checking", () => {
+            const { host, controller, radios } = setup(["a", "b"]);
+            host.readOnly = true;
+            controller.readOnlyChanged();
+
+            press(radios[0], "ArrowDown");
+            radios[0].click();
+
+            expect(document.activeElement).to.equal(radios[1]);
+            expect(checkedValues(radios)).to.deep.equal([]);
+        });
     });
 
     describe("focus", () => {

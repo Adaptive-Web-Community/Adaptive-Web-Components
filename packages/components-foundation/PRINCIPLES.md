@@ -50,9 +50,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     is, and `null` clears one. A component that has a controller has the controller set it.
     Used by: Avatar (`img`, named by `name`), Divider (`separator`, in its orientation), Progress and Progress Ring (`progressbar`,
     with its values), Skeleton (hidden), Radio Group (`radiogroup`, in its orientation, through its controller).
-13. **An element works alone.** A container coordinates its children by reacting to their state, not by doing their behavior for them.
-    Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`), Radio (it checks itself),
-    Radio Group (it reacts to `checked`).
+13. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
+    (a property each child reads), not by doing their behavior for them.
+    Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
+    Radio Group (it reacts to `checked`, and gives `groupReadOnly`).
 14. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
     defined yet is waited for with `whenDefined` of the container's registry.
     Used by: Accordion, Radio Group (both with AWC's `onDefined`).
@@ -91,76 +92,79 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
     Used by: Button, Accordion Item, Checkbox, Switch, Radio, Radio Group (a fieldset).
-23. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
+23. **A control can be read only** (`readonly`): it takes focus, the user doesn't change it, it has `aria-readonly` and `:state(readonly)`,
+    and it isn't validated, as a read only native input isn't. A group that is read only makes its controls read only.
+    Used by: Checkbox, Switch, Radio Group (and its radios, through `groupReadOnly`).
+24. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
     rewrite what the author set.
     Used by: Progress, Progress Ring.
 
 ## Keyboard and focus
 
-24. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
+25. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
     on Space when it is released, and not if the focus left in between.
     Used by: Accordion (Up, Down, Home, End), Button, Checkbox (Space when it is released), Switch (the same),
     Radio (Space checks it when it is released), Radio Group (all four arrows, wrapping, Left and Right swapped right to left).
-25. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
+26. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles.
     Used by: Accordion, Button, Checkbox, Switch, Radio, Radio Group (a key of a radio, not of its content).
-26. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
+27. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
     implements `focus()` to focus it, instead of `delegatesFocus`.
     Used by: Button (the host), Accordion Item (its button), Anchor (its link), Checkbox (the host), Switch (the host), Radio (the host).
-27. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
+28. **A composite has one item in the tab order**, the active one, and the arrow keys move the focus between its items. The composite owns
     their `tabindex`.
     Used by: Radio Group (the checked radio, with the `RovingFocusController`).
 
 ## Events
 
-28. **Events are the native ones, or named and shaped like them.** They bubble, are composed only where the native one is (`input`), are for
+29. **Events are the native ones, or named and shaped like them.** They bubble, are composed only where the native one is (`input`), are for
     what the user did, and their target is the element that changed, without an id in the detail.
     Used by: Accordion Item (`change`), Button (`click`), Checkbox (`input`, `change`), Switch (the same), Radio (`input`, `change`,
     only when it becomes checked), Radio Group (none of its own: its radios' bubble through it).
-29. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
+30. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button, Checkbox, Switch, Radio.
 
 ## Properties
 
-30. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
+31. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
     (`formaction`, `heading-level`).
     Used by: Accordion (`expandMode`), Accordion Item (`headingLevel`), Anchor (`referrerPolicy`), Button, Checkbox (`defaultChecked`,
     `indeterminate`).
-31. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
+32. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
     Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
     Progress and Progress Ring (`min` 0, `max` 100), Skeleton (`rect`), Checkbox (`value` is `on`), Switch (`value` is `on`),
     Radio (`value` is `on`), Radio Group (`horizontal`).
-32. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
+33. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`).
-33. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
+34. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`, `SkeletonShape`.
-34. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
+35. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
     Used by: `Orientation` (Divider, Radio Group; next: Slider, Tabs, Toolbar).
 
 ## Parts and styles
 
-35. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
+36. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`.
-36. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
+37. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box).
-37. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
+38. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-38. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+39. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
     Used by: Button, Checkbox, Switch, Radio (all through AWC's `controlInteractivity`).
-39. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
+40. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
     Used by: Progress, Progress Ring (`--percent-complete`).
 
 ## Forms
 
-40. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
+41. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button, Checkbox (its form value, reset, and `required` with the browser's own message), Switch (the same),
     Radio (its form value and reset).
@@ -168,5 +172,4 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 ## To decide for all components
 
 - Disabled but focusable (State).
-- Read only (`readonly`) for the controls, with the text fields, where it is native.
 - Required for a group (a radio group's `required`), whose validity is its radios'.
