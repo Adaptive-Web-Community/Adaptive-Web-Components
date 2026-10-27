@@ -1,10 +1,11 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTProgress } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Progress as ProgressElement } from "./progress.js";
 
-const storyTemplate = html<StoryArgs<FASTProgress>>`
+const storyTemplate = html<StoryArgs<ProgressElement>>`
     <adaptive-progress
+        aria-label="Progress"
         max="${(x) => x.max}"
         min="${(x) => x.min}"
         value="${(x) => x.value}"
@@ -26,6 +27,6 @@ export default {
         min: { control: "number" },
         value: { control: "number", if: { arg: "indeterminate", truthy: false } },
     },
-} as Meta<FASTProgress>;
+} as Meta<ProgressElement>;
 
-export const Progress: Story<FASTProgress> = renderComponent(storyTemplate).bind({});
+export const Progress: Story<ProgressElement> = renderComponent(storyTemplate).bind({});

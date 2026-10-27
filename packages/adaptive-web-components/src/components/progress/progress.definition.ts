@@ -3,7 +3,7 @@ import { composeProgress } from "./progress.compose.js";
 import { styleModules } from "./progress.styles.modules.js";
 
 /**
- * The Progress custom element definition. Implements {@link @microsoft/fast-foundation#FASTProgress}.
+ * The Progress custom element definition. Implements {@link Progress}.
  *
  * @remarks
  * HTML Element: \<adaptive-progress\>

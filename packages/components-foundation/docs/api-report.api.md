@@ -129,6 +129,26 @@ export const Orientation: {
 export type Orientation = ValuesOf<typeof Orientation>;
 
 // @public
+export function progressAria(progress: ProgressElement): DefaultAria;
+
+// @public
+export interface ProgressElement extends HTMLElement {
+    max: number;
+    min: number;
+    value: number | null;
+}
+
+// @public
+export const ProgressParts: {
+    readonly determinate: "determinate";
+    readonly indeterminate: "indeterminate";
+    readonly indicator: "indicator";
+};
+
+// @public
+export function progressPercent(progress: ProgressElement): number | null;
+
+// @public
 export function toggleAccordionItem(item: AccordionItemElement): void;
 
 // @public

@@ -16,7 +16,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    it can be tested without a browser feature it doesn't need.
    Used by: Button.
 4. **Behavior without state or lifecycle is a function**, not a controller.
-   Used by: Accordion Item (`toggleAccordionItem`).
+   Used by: Accordion Item (`toggleAccordionItem`), Progress (`progressPercent`).
 
 ## Elements and roles
 
@@ -32,7 +32,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    `ElementInternals` when one of those properties changes. An attribute the author puts on the host overrides it, as the platform does, so
    the default needs no property to turn it off (`role="presentation"` on a divider). In the value, a property that is absent is left as it
    is, and `null` clears one.
-   Used by: Avatar (`img`, named by `name`), Divider (`separator`, in its orientation).
+   Used by: Avatar (`img`, named by `name`), Divider (`separator`, in its orientation), Progress (`progressbar`, with its
+   values).
 9. **An element works alone.** A container coordinates its children by reacting to their state, not by doing their behavior for them.
    Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`).
 10. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
@@ -62,59 +63,68 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Disabled but focusable (`aria-disabled`, for a button in a toolbar or a menu) is left out of every component, to be decided for all of
     them together.
     Used by: Button, Accordion Item.
+17. **A value outside its range is shown and reported at the nearest end**, and the property keeps the author's value: a component doesn't
+    rewrite what the author set.
+    Used by: Progress.
 
 ## Keyboard and focus
 
-17. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
+18. **The keys of the ARIA pattern, with the timing of the native element** where there is one: a button clicks on Enter when it is pressed and
     on Space when it is released, and not if the focus left in between.
     Used by: Accordion (Up, Down, Home, End), Button.
-18. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
+19. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles.
     Used by: Accordion, Button.
-19. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
+20. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element whose focusable part is in its shadow root
     implements `focus()` to focus it, instead of `delegatesFocus`.
     Used by: Button (the host), Accordion Item (its button).
 
 ## Events
 
-20. **Events are the native ones, or named and shaped like them.** They bubble, aren't composed, are for what the user did, and their target is
+21. **Events are the native ones, or named and shaped like them.** They bubble, aren't composed, are for what the user did, and their target is
     the element that changed, without an id in the detail.
     Used by: Accordion Item (`change`), Button (`click`).
-21. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
+22. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button.
 
 ## Properties
 
-22. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
+23. **Property names are camelCase and the native element's** where there is one (`formAction`, `formNoValidate`); attribute names are HTML's
     (`formaction`, `heading-level`).
     Used by: Accordion (`expandMode`), Accordion Item (`headingLevel`), Button.
-23. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
+24. **Defaults are explicit values**, and the contract says where one differs from the native element's: `type` is `button`, unlike a native
     button's `submit`.
-    Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`).
-24. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
+    Used by: Accordion (`multi`), Accordion Item (heading level 2, `collapsible`), Button (`type`), Divider (`horizontal`),
+    Progress (`min` 0, `max` 100).
+25. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
+    `<progress>`).
+    Used by: Progress (`min`, `max`).
+26. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
     Used by: `AccordionExpandMode`, `ButtonType`.
-25. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
+27. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
     Used by: `Orientation` (Divider; next: Slider, Tabs, Toolbar, Radio Group).
 
 ## Parts and styles
 
-26. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
-    Used by: `AccordionItemParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`.
-27. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
+28. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
+    Used by: `AccordionItemParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`.
+29. **The host is the box, and a `content` part wraps the default slot between `start` and `end`**, where the element has no native element
     inside it to be the box.
     Used by: Badge, Button.
-28. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
+30. **A template's own styles are what makes it work**: the layout of its slots, content that is hidden, a heading that is clickable all over.
     The appearance is Adaptive UI's.
     Used by: all.
-29. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
+31. **Interactive states are selected as the element has them**: `:not(:disabled)` and `:disabled` for a control, and
     `:is(:active, :state(active))` for a press by the keyboard.
     Used by: Button.
+32. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
+    Used by: Progress (`--percent-complete`).
 
 ## Forms
 
-30. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
+33. **What a custom element lacks in a form is done with the platform's own parts**: a hidden native submit button for the time of
     `requestSubmit`, which takes only a native submitter, and `form.reset()`.
     Used by: Button.
 

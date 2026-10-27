@@ -79,3 +79,14 @@ The element is the button now, with the `button` role and form association throu
 | The `role` property, and `DividerRole` | The `separator` role is the default, through `ElementInternals`. For decoration, set the `role="presentation"` attribute |
 | `aria-orientation` written to the element | Through `ElementInternals` |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
+
+## Progress
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTProgress`, `FASTBaseProgress` (FAST Foundation) | `Progress`, which extends `BaseProgress` |
+| `role` and `aria-value*` written to the element | Through `ElementInternals` |
+| A value outside the range was shown out of it | Shown and reported at the nearest end; `value` keeps what was set |
+| `min` and `max` could be `null` | Numbers, 0 and 100 when the attribute is absent |
+| `percentComplete` | Gone: `progressPercent(progress)` of the components foundation, and `--percent-complete` on the `determinate` part |
+| `ProgressParts` from this package | The components foundation's, also exported here |
