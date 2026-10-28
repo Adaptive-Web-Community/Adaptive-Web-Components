@@ -11,8 +11,6 @@
         "src/reference/token-naming.ts",
         "src/reference/util.ts",
         "src/__test__",
-        "src/core/elevation",
-        "src/core/shadow",
         "src/core/token-helpers-color.ts",
         "src/core/token-helpers-color.spec.ts",
         "src/core/modules/element-styles-renderer.ts",

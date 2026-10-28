@@ -4,6 +4,7 @@ export * from "./expression.js";
 export * from "./modules/index.js";
 export * from "./adaptive-design-tokens.js";
 export * from "./recipes.js";
+export * from "./shadow/index.js";
 export * from "./typography/index.js";
 export * from "./token-css.js";
 export * from "./token-helpers.js";
