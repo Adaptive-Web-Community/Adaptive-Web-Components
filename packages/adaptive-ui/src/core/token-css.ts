@@ -59,7 +59,10 @@ function formatMember(value: unknown): string {
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions) {
     const property = propertyResolver(library, options);
     return {
-        // A delta is read by a recipe, which is calculated in JavaScript, so it is not CSS.
+        // A switch, a contrast ratio, a delta, and a WCAG level are read by a recipe, which is calculated in JavaScript, so they are not CSS,
+        // as they weren't in 0.14.
+        boolean: false as const,
+        contrastRatio: false as const,
         delta: false as const,
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
@@ -74,6 +77,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         },
         // A palette is not CSS.
         palette: false as const,
+        wcagContrastLevel: false as const,
         expression: (value: Operand) => formatExpression(value, property),
     };
 }

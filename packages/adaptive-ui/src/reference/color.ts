@@ -1,1316 +1,534 @@
-import type { DesignTokenResolver, ValuesOf } from "@microsoft/fast-foundation";
-import { Palette } from "../core/color/palette.js";
-import { ColorRecipePaletteParams, ColorRecipeParams, InteractiveColorSet, InteractivePaintSet } from "../core/color/recipe.js";
+import { DesignToken, Library, recipes, refs } from "design-token-library";
+import { Color } from "../core/color/color.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
-import { contrastSwatch } from "../core/color/recipes/contrast-swatch.js";
-import { contrastAndDeltaSwatchSet } from "../core/color/recipes/contrast-and-delta-swatch-set.js";
-import { deltaSwatchSet } from "../core/color/recipes/delta-swatch-set.js";
-import { idealColorDeltaSwatchSet } from "../core/color/recipes/ideal-color-delta-swatch-set.js";
-import { Color } from "../core/color/color.js";
-import { _white } from "../core/color/utilities/color-constants.js";
-import { conditionalSwatchSet } from "../core/color/utilities/conditional.js";
-import { interactiveSwatchSetAsOverlay } from "../core/color/utilities/opacity.js";
+import { contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
+import { contrastColor } from "../core/color/recipes/contrast-color.js";
+import { deltaColorSet } from "../core/color/recipes/delta-color-set.js";
+import { idealColorDeltaSet } from "../core/color/recipes/ideal-color-delta-set.js";
+import { InteractivePaintSet } from "../core/color/interactive-set.js";
+import { Palette } from "../core/color/palette.js";
+import { conditionalColorSet } from "../core/color/utilities/conditional.js";
+import { colorSetAsOverlay } from "../core/color/utilities/opacity.js";
+import { InteractiveSet, InteractiveState, mapStates } from "../core/interactive.js";
 import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
-import { Recipe, RecipeOptional } from "../core/recipes.js";
+import { intendedFor } from "../core/token-metadata.js";
 import {
-    createTokenColorRecipe,
-    createTokenColorRecipeBySet,
-    createTokenColorRecipeForPalette,
-    createTokenColorRecipeValue,
-    createTokenColorRecipeWithPalette,
-    createTokenColorSet,
-    createTokenDelta,
-    createTokenMinContrast,
-} from "../core/token-helpers-color.js";
-import { createTokenColor, createTokenNonCss } from "../core/token-helpers.js";
-import { InteractiveState } from "../core/types.js";
-import { DesignTokenType, TypedDesignToken } from "../core/adaptive-design-tokens.js";
-import { accentPalette, criticalPalette, disabledPalette, highlightPalette, infoPalette, neutralPalette, successPalette, warningPalette } from "./palette.js";
+    AdaptiveDesignToken,
+    BooleanToken,
+    ContrastRatioToken,
+    DeltaToken,
+    interactiveDeltas,
+    InteractiveDeltaTokens,
+    InteractiveToken,
+    PaletteToken,
+    WcagContrastLevel,
+    WcagContrastLevelToken,
+} from "../core/token-types.js";
+import { colorContext, ColorContextTokens } from "./color-context.js";
+import { layer, LayerTokens } from "./layer.js";
+import { ColorPaletteTokens, palettes, PaletteTokens } from "./palette.js";
 
 /**
- * Creates a DesignToken that can be used for the _accent_ palette configuration of a shared color recipe.
- *
- * @param recipeToken - The color recipe token.
+ * The minimum contrasts of the recipes, which follow the WCAG level.
  *
  * @public
  */
-export function createTokenColorRecipeAccent<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, accentPalette);
+export interface WcagContrastTokens {
+    /**
+     * The WCAG level that the minimum contrasts follow, `aa` until it is set.
+     */
+    level: WcagContrastLevelToken;
+    minContrast: {
+        safety: ContrastRatioToken;
+        subtle: ContrastRatioToken;
+        ideal: ContrastRatioToken;
+        discernible: ContrastRatioToken;
+        readable: ContrastRatioToken;
+        /**
+         * The contrast of the strong strokes, which doesn't depend on the level.
+         */
+        strong: ContrastRatioToken;
+    };
 }
 
 /**
- * Creates a DesignToken that can be used for the _highlight_ palette configuration of a shared color recipe.
+ * What the disabled state of the color sets is made from.
  *
- * @param recipeToken - The color recipe token.
+ * @remarks
+ * The disabled values are fixed here, in the tokens, and are not a part of each recipe: the deltas of a recipe have the disabled delta of
+ * a fill or of a stroke as the alias of their own, until it is set.
  *
  * @public
  */
-export function createTokenColorRecipeHighlight<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, highlightPalette);
+export interface DisabledTokens {
+    /**
+     * The palette of the disabled colors, which is the palette of the layers until it is set, so a disabled color blends into its background.
+     */
+    palette: PaletteToken;
+    /**
+     * The steps from the color context of the fills, in the disabled palette.
+     */
+    fillDelta: DeltaToken;
+    /**
+     * The steps from the color context of the strokes, in the disabled palette.
+     */
+    strokeDelta: DeltaToken;
 }
 
 /**
- * Creates a DesignToken that can be used for the _critical_ palette configuration of a shared color recipe.
- *
- * @param recipeToken - The color recipe token.
+ * The deltas that the fills read, which are shared by all the palettes. A group is a number of palette steps for each state.
  *
  * @public
  */
-export function createTokenColorRecipeCritical<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, criticalPalette);
+export interface FillDeltaTokens {
+    stealth: InteractiveDeltaTokens;
+    subtle: InteractiveDeltaTokens;
+    ideal: InteractiveDeltaTokens;
+    discernible: InteractiveDeltaTokens;
+    readable: InteractiveDeltaTokens;
 }
 
 /**
- * Creates a DesignToken that can be used for the _warning_ palette configuration of a shared color recipe.
- *
- * @param recipeToken - The color recipe token.
+ * The deltas that the strokes read, which are shared by all the palettes. A group is a number of palette steps for each state.
  *
  * @public
  */
-export function createTokenColorRecipeWarning<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, warningPalette);
+export interface StrokeDeltaTokens {
+    safety: InteractiveDeltaTokens;
+    stealth: InteractiveDeltaTokens;
+    subtle: InteractiveDeltaTokens;
+    discernible: InteractiveDeltaTokens;
+    readable: InteractiveDeltaTokens;
+    strong: InteractiveDeltaTokens;
 }
 
 /**
- * Creates a DesignToken that can be used for the _success_ palette configuration of a shared color recipe.
+ * The deltas of the color sets, under `color`.
  *
- * @param recipeToken - The color recipe token.
+ * @remarks
+ * `subtleInverse` reads the deltas of `subtle` in the other direction and has no deltas of its own.
  *
  * @public
  */
-export function createTokenColorRecipeSuccess<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, successPalette);
+export interface ColorDeltaTokens {
+    fill: FillDeltaTokens;
+    stroke: StrokeDeltaTokens;
 }
 
 /**
- * Creates a DesignToken that can be used for the _info_ palette configuration of a shared color recipe.
- *
- * @param recipeToken - The color recipe token.
+ * The fills of a palette. Each is an interactive token, a color for each state, made once, relative to the color context.
  *
  * @public
  */
-export function createTokenColorRecipeInfo<T>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    return createTokenColorRecipeWithPalette(recipeToken, infoPalette);
+export interface FillSetTokens {
+    /** No color at rest, a subtle color on hover or active. */
+    stealth: InteractiveToken<Color>;
+    /** A subtle color at rest. */
+    subtle: InteractiveToken<Color>;
+    /** The `subtle` set in the other direction. */
+    subtleInverse: InteractiveToken<Color>;
+    /** The ideal color of the palette, if it has the contrast. */
+    ideal: InteractiveToken<Color>;
+    discernible: InteractiveToken<Color>;
+    readable: InteractiveToken<Color>;
 }
 
 /**
- * Creates a DesignToken that can be used for the _neutral_ palette configuration of a shared color recipe.
- *
- * @param recipeToken - The color recipe token.
+ * The strokes of a palette. Each is an interactive token, a color for each state, made once, relative to the color context.
  *
  * @public
  */
-export function createTokenColorRecipeNeutral<T extends InteractiveColorSet>(
-    recipeToken: TypedDesignToken<Recipe<ColorRecipePaletteParams, T>>,
-): TypedDesignToken<RecipeOptional<ColorRecipeParams, T>> {
-    const paletteToken = neutralPalette;
-    const palettePrefix = paletteToken.name.replace(".palette", ""); // TODO: More resilient
-    const recipeSuffix = recipeToken.name.replace("color.shared.", "");
-    const name = `${palettePrefix}.${recipeSuffix}`;
-    return createTokenNonCss<RecipeOptional<ColorRecipeParams, T>>(name, DesignTokenType.recipe, recipeToken.intendedFor).withDefault({
-        evaluate: (resolve: DesignTokenResolver, params?: ColorRecipeParams): T => {
-            const p = Object.assign({ palette: resolve(paletteToken) }, params);
-            return interactiveSwatchSetAsOverlay(
-                resolve(recipeToken).evaluate(resolve, p),
-                p.reference as Color || resolve(colorContext),
-                resolve(neutralAsOverlay)
-            ) as T;
-        }
+export interface StrokeSetTokens {
+    /** Transparent, until the level has a contrast for it. */
+    safety: InteractiveToken<Color>;
+    stealth: InteractiveToken<Color>;
+    subtle: InteractiveToken<Color>;
+    discernible: InteractiveToken<Color>;
+    readable: InteractiveToken<Color>;
+    strong: InteractiveToken<Color>;
+}
+
+/**
+ * The color sets of a palette.
+ *
+ * @public
+ */
+export interface ColorSetTokens {
+    fill: FillSetTokens;
+    stroke: StrokeSetTokens;
+}
+
+/**
+ * A palette of the system, with the base color it is made from and the color sets made from it.
+ *
+ * @public
+ */
+export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {}
+
+/**
+ * The tokens of the focus stroke.
+ *
+ * @public
+ */
+export interface FocusStrokeTokens {
+    /**
+     * The focus stroke, the color of the palette that has the minimum contrast from the color context.
+     */
+    $root: DesignToken.Color;
+    /**
+     * The palette of the focus stroke, which is the accent palette until it is set.
+     */
+    palette: PaletteToken;
+    /**
+     * The minimum contrast of the focus stroke, which is the discernible minimum contrast until it is set.
+     */
+    minContrast: ContrastRatioToken;
+    /**
+     * The outer color of a focus stroke that has two, black or white for the readable contrast with the color context.
+     */
+    outer: DesignToken.Color;
+    /**
+     * The inner color of a focus stroke that has two, black or white for the readable contrast with the `outer` color.
+     */
+    inner: DesignToken.Color;
+}
+
+/**
+ * The tokens of the colors, under `color`: the palettes, the color context, the layers, and the sets made from them.
+ *
+ * @public
+ */
+export interface ColorTokens extends PaletteTokens, ColorContextTokens {
+    layer: LayerTokens;
+    wcagContrast: WcagContrastTokens;
+    disabled: DisabledTokens;
+    deltas: ColorDeltaTokens;
+    neutral: ColorFamilyTokens & {
+        /**
+         * Make the neutral sets semitransparent over the color context, so they look the same and the color context shows through.
+         */
+        asOverlay: BooleanToken;
+    };
+    accent: ColorFamilyTokens;
+    highlight: ColorFamilyTokens;
+    critical: ColorFamilyTokens;
+    warning: ColorFamilyTokens;
+    success: ColorFamilyTokens;
+    info: ColorFamilyTokens;
+    focusStroke: FocusStrokeTokens;
+}
+
+/**
+ * The tokens of a library that has the colors.
+ *
+ * @public
+ */
+export interface ColorLibraryTokens {
+    color: ColorTokens;
+}
+
+/**
+ * What the color sets of a palette read, which a system that adds a palette of its own has as well.
+ *
+ * @public
+ */
+export interface ColorSetLibraryTokens {
+    color: Pick<ColorTokens, "context" | "wcagContrast" | "disabled" | "deltas">;
+}
+
+/**
+ * The recipes of the colors: the functions that make a color or a set of colors, and what they are given from the values of tokens.
+ *
+ * @remarks
+ * Each is a function of values, given refs to the tokens that it reads, and a system changes how every token that uses one is made with
+ * `override()` when it extends a library. `inverseDeltas` are the deltas of a set in the other direction (a disabled color is not an inversion
+ * of anything, so it is the same), `paletteSource` is the color a palette is made from, `isPositive` is a number above zero, and
+ * `minContrastFor` is the minimum contrast of a level, what it is for AA and what for AAA.
+ *
+ * @public
+ */
+export const colorRecipes = recipes({
+    deltaColorSet,
+    contrastAndDeltaColorSet,
+    idealColorDeltaSet,
+    contrastColor,
+    blackOrWhiteByContrast,
+    blackOrWhiteByContrastSet,
+    colorSetAsOverlay,
+    conditionalColorSet,
+    inverseDeltas: (deltas: InteractiveSet<number>): InteractiveSet<number> =>
+        mapStates(deltas, (delta, state) => (state === InteractiveState.disabled ? delta : -delta)),
+    paletteSource: (palette: Palette): Color => palette.source,
+    isPositive: (value: number): boolean => value > 0,
+    minContrastFor: (level: WcagContrastLevel, aa: number, aaa: number): number => (level === WcagContrastLevel.aa ? aa : aaa),
+});
+
+// The refs of what the sets of any palette read, which every library with the sets has.
+const shared = refs<ColorSetLibraryTokens>().color;
+
+/**
+ * The options of the color sets of a palette.
+ *
+ * @public
+ */
+export interface ColorSetsOptions<Root extends ColorSetLibraryTokens> {
+    /**
+     * The palette that the sets are made from, a ref to a palette token.
+     */
+    palette: Library.Ref<Palette, Library.TokenValues<Root>>;
+    /**
+     * If the sets are semitransparent over the color context, a ref to a boolean token. They are not if it is not given.
+     */
+    asOverlay?: Library.Ref<boolean, Library.TokenValues<Root>>;
+}
+
+/**
+ * Creates the color sets of a palette: the fills and the strokes, for each of the recipes, in the color context.
+ *
+ * @remarks
+ * It gives the config of the sets, to spread into the group of the palette in the `color` group of a library, so a system adds the sets of a
+ * palette of its own the way the default palettes have them. The sets don't need to know where they are: what they read is the palette, which
+ * is given, and the shared tokens that are always at the same place, the deltas, the disabled values, and the minimum contrasts.
+ *
+ * ```ts
+ * const tokens = refs<Tokens>();
+ * brand: {
+ *     palette: { $type: AdaptiveDesignToken.palette, $value: paletteRecipes.paletteFrom(tokens.brand.primary, tokens.color.paletteOptions.stepSize) },
+ *     ...createColorSets<Tokens>({ palette: tokens.color.brand.palette }),
+ * },
+ * ```
+ *
+ * @param options - The palette, and if the sets are an overlay
+ * @returns The config of the `fill` and `stroke` sets
+ *
+ * @public
+ */
+export function createColorSets<Root extends ColorSetLibraryTokens>(options: ColorSetsOptions<Root>): Library.Config<ColorSetTokens, Root> {
+    const { palette, asOverlay } = options;
+    const { context, deltas, wcagContrast } = shared;
+    const { minContrast } = wcagContrast;
+    const disabledPalette = shared.disabled.palette;
+    type Deltas = Library.Refs<InteractiveDeltaTokens, ColorSetLibraryTokens>;
+    type Made = ReturnType<typeof colorRecipes.deltaColorSet<Library.TokenValues<Root>>>;
+
+    // A set is made once for the state of all its values, from the inputs that every one of them reads.
+    const set = (properties: StyleProperty[], made: Made): Library.ConfigValue<InteractiveToken<Color>, Root> => ({
+        $type: AdaptiveDesignToken.interactive,
+        $value: asOverlay ? colorRecipes.colorSetAsOverlay(made, context, asOverlay) : made,
+        $extensions: intendedFor(...properties),
     });
+
+    const byDelta = (group: Deltas, zeroAsTransparent = false) =>
+        colorRecipes.deltaColorSet(palette, context, interactiveDeltas(group), { disabledPalette, zeroAsTransparent });
+
+    const byIdeal = (min: Library.Ref<number, Library.TokenValues<ColorSetLibraryTokens>>, group: Deltas) =>
+        colorRecipes.idealColorDeltaSet(palette, context, min, colorRecipes.paletteSource(palette), interactiveDeltas(group), { disabledPalette });
+
+    const byContrast = (min: Library.Ref<number, Library.TokenValues<ColorSetLibraryTokens>>, group: Deltas, zeroAsTransparent = false) =>
+        colorRecipes.contrastAndDeltaColorSet(palette, context, min, interactiveDeltas(group), { disabledPalette, zeroAsTransparent });
+
+    const fill = [StyleProperty.backgroundFill];
+    const stroke = [...StylePropertyShorthand.borderFill];
+    const strokeOrForeground = [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill];
+
+    return {
+        fill: {
+            stealth: set(fill, byDelta(deltas.fill.stealth, true)),
+            subtle: set(fill, byDelta(deltas.fill.subtle)),
+            subtleInverse: set(
+                fill,
+                colorRecipes.deltaColorSet(palette, context, colorRecipes.inverseDeltas(interactiveDeltas(deltas.fill.subtle)), { disabledPalette })
+            ),
+            ideal: set(fill, byIdeal(minContrast.ideal, deltas.fill.ideal)),
+            discernible: set(fill, byIdeal(minContrast.discernible, deltas.fill.discernible)),
+            readable: set(fill, byIdeal(minContrast.readable, deltas.fill.readable)),
+        },
+        stroke: {
+            safety: set(
+                stroke,
+                colorRecipes.conditionalColorSet(byContrast(minContrast.safety, deltas.stroke.safety), colorRecipes.isPositive(minContrast.safety))
+            ),
+            stealth: set(stroke, byContrast(minContrast.safety, deltas.stroke.stealth, true)),
+            subtle: set(stroke, byContrast(minContrast.subtle, deltas.stroke.subtle)),
+            discernible: set(strokeOrForeground, byContrast(minContrast.discernible, deltas.stroke.discernible)),
+            readable: set(strokeOrForeground, byContrast(minContrast.readable, deltas.stroke.readable)),
+            strong: set(strokeOrForeground, byContrast(minContrast.strong, deltas.stroke.strong)),
+        },
+    };
 }
 
 /**
- * WCAG Contrast Level (AA or AAA)
- * 
- * @public
- */
-export const WcagContrastLevel = {
-    aa: "aa",
-    aaa: "aaa"
-} as const;
-
-/** @public */
-export type WcagContrastLevel = ValuesOf<typeof WcagContrastLevel>;
-
-/** @public */
-export const wcagContrastLevel = createTokenNonCss<WcagContrastLevel>("color.wcagContrast.level", DesignTokenType.string).withDefault("aa");
-
-/** @public */
-export const minContrastSafety = createTokenNonCss<number>("color.wcagContrast.minContrast.safety", DesignTokenType.number).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(wcagContrastLevel) === "aa" ? 0 : 3
-);
-
-/** @public */
-export const minContrastSubtle = createTokenNonCss<number>("color.wcagContrast.minContrast.subtle", DesignTokenType.number).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(wcagContrastLevel) === "aa" ? 1.5 : 3
-);
-
-/** @public */
-export const minContrastIdeal = createTokenNonCss<number>("color.wcagContrast.minContrast.ideal", DesignTokenType.number).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(wcagContrastLevel) === "aa" ? 2 : 3
-);
-
-/** @public */
-export const minContrastDiscernible = createTokenNonCss<number>("color.wcagContrast.minContrast.discernible", DesignTokenType.number).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(wcagContrastLevel) === "aa" ? 3 : 4.5
-);
-
-/** @public */
-export const minContrastReadable = createTokenNonCss<number>("color.wcagContrast.minContrast.readable", DesignTokenType.number).withDefault(
-    (resolve: DesignTokenResolver) =>
-        resolve(wcagContrastLevel) === "aa" ? 4.5 : 7
-);
-
-/** @public */
-export const colorContext = createTokenColor("color.context", [StyleProperty.backgroundFill, StyleProperty.foregroundFill, ...StylePropertyShorthand.borderFill]).withDefault(_white);
-
-/** @public */
-export const neutralAsOverlay = createTokenNonCss<boolean>("color.neutral.asOverlay", DesignTokenType.boolean).withDefault(false);
-
-/**
- * This recipe evaluates the {@link blackOrWhiteByContrastSet} for "discernible" accessibility relative to the provided background set.
- *
- * It is not used by itself, but must be composed into a style module with the desired background set.
- * 
- * Useful for non-text controls like checked checkboxes.
- *
- * @public
- */
-export const blackOrWhiteDiscernibleRecipe = createTokenColorRecipeBySet<InteractivePaintSet>(
-    "color.blackOrWhite.discernible",
-    StyleProperty.foregroundFill,
-    (resolve: DesignTokenResolver, reference: InteractivePaintSet) =>
-        blackOrWhiteByContrastSet(
-            reference,
-            resolve(minContrastDiscernible),
-            false,
-        )
-);
-
-/**
- * This recipe evaluates the {@link blackOrWhiteByContrastSet} for "readable" accessibility relative to the provided background set.
- *
- * It is not used by itself, but must be composed into a style module with the desired background set.
- * 
- * Useful for text controls like buttons.
- *
- * @public
- */
-export const blackOrWhiteReadableRecipe = createTokenColorRecipeBySet<InteractivePaintSet>(
-    "color.blackOrWhite.readable",
-    StyleProperty.foregroundFill,
-    (resolve: DesignTokenResolver, reference: InteractivePaintSet) =>
-        blackOrWhiteByContrastSet(
-            reference,
-            resolve(minContrastReadable),
-            false,
-        )
-);
-
-// Common recipe deltas
-
-const fillStealthName = "color.shared.fill.stealth";
-
-/** @public */
-export const fillStealthRestDelta = createTokenDelta(fillStealthName, InteractiveState.rest, 0);
-
-/** @public */
-export const fillStealthHoverDelta = createTokenDelta(fillStealthName, InteractiveState.hover, 3);
-
-/** @public */
-export const fillStealthActiveDelta = createTokenDelta(fillStealthName, InteractiveState.active, 2);
-
-/** @public */
-export const fillStealthFocusDelta = createTokenDelta(fillStealthName, InteractiveState.focus, 0);
-
-/** @public */
-export const fillStealthDisabledDelta = createTokenDelta(fillStealthName, InteractiveState.disabled, 0);
-
-/** @public */
-export const fillStealthRecipe = createTokenColorRecipeForPalette(
-    fillStealthName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        deltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(fillStealthRestDelta),
-            resolve(fillStealthHoverDelta),
-            resolve(fillStealthActiveDelta),
-            resolve(fillStealthFocusDelta),
-            resolve(fillStealthDisabledDelta),
-            resolve(disabledPalette),
-            undefined,
-            true,
-        )
-);
-
-const fillSubtleName = "color.shared.fill.subtle";
-
-/** @public */
-export const fillSubtleRestDelta = createTokenDelta(fillSubtleName, InteractiveState.rest, 3);
-
-/** @public */
-export const fillSubtleHoverDelta = createTokenDelta(fillSubtleName, InteractiveState.hover, 4);
-
-/** @public */
-export const fillSubtleActiveDelta = createTokenDelta(fillSubtleName, InteractiveState.active, 2);
-
-/** @public */
-export const fillSubtleFocusDelta = createTokenDelta(fillSubtleName, InteractiveState.focus, 3);
-
-/** @public */
-export const fillSubtleDisabledDelta = createTokenDelta(fillSubtleName, InteractiveState.disabled, 3);
-
-/** @public */
-export const fillSubtleRecipe = createTokenColorRecipeForPalette(
-    fillSubtleName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        deltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(fillSubtleRestDelta),
-            resolve(fillSubtleHoverDelta),
-            resolve(fillSubtleActiveDelta),
-            resolve(fillSubtleFocusDelta),
-            resolve(fillSubtleDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-/** @public */
-export const fillSubtleInverseRecipe = createTokenColorRecipeForPalette(
-    `${fillSubtleName}Inverse`,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        deltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(fillSubtleRestDelta) * -1,
-            resolve(fillSubtleHoverDelta) * -1,
-            resolve(fillSubtleActiveDelta) * -1,
-            resolve(fillSubtleFocusDelta) * -1,
-            resolve(fillSubtleDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const fillIdealName = "color.shared.fill.ideal";
-
-/** @public */
-export const fillIdealRestDelta = createTokenDelta(fillIdealName, InteractiveState.rest, 0);
-
-/** @public */
-export const fillIdealHoverDelta = createTokenDelta(fillIdealName, InteractiveState.hover, -2);
-
-/** @public */
-export const fillIdealActiveDelta = createTokenDelta(fillIdealName, InteractiveState.active, 2);
-
-/** @public */
-export const fillIdealFocusDelta = createTokenDelta(fillIdealName, InteractiveState.focus, 0);
-
-/** @public */
-export const fillIdealDisabledDelta = createTokenDelta(fillIdealName, InteractiveState.disabled, 3);
-
-/** @public */
-export const fillIdealRecipe = createTokenColorRecipeForPalette(
-    fillIdealName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        idealColorDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastIdeal),
-            params.palette.source,
-            resolve(fillIdealRestDelta),
-            resolve(fillIdealHoverDelta),
-            resolve(fillIdealActiveDelta),
-            resolve(fillIdealFocusDelta),
-            resolve(fillIdealDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const fillDiscernibleName = "color.shared.fill.discernible";
-
-/** @public */
-export const fillDiscernibleRestDelta = createTokenDelta(fillDiscernibleName, InteractiveState.rest, 0);
-
-/** @public */
-export const fillDiscernibleHoverDelta = createTokenDelta(fillDiscernibleName, InteractiveState.hover, 6);
-
-/** @public */
-export const fillDiscernibleActiveDelta = createTokenDelta(fillDiscernibleName, InteractiveState.active, 3);
-
-/** @public */
-export const fillDiscernibleFocusDelta = createTokenDelta(fillDiscernibleName, InteractiveState.focus, 0);
-
-/** @public */
-export const fillDiscernibleDisabledDelta = createTokenDelta(fillDiscernibleName, InteractiveState.disabled, 3);
-
-/** @public */
-export const fillDiscernibleRecipe = createTokenColorRecipeForPalette(
-    fillDiscernibleName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        idealColorDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastDiscernible),
-            params.palette.source,
-            resolve(fillDiscernibleRestDelta),
-            resolve(fillDiscernibleHoverDelta),
-            resolve(fillDiscernibleActiveDelta),
-            resolve(fillDiscernibleFocusDelta),
-            resolve(fillDiscernibleDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const fillReadableName = "color.shared.fill.readable";
-
-/** @public */
-export const fillReadableRestDelta = createTokenDelta(fillReadableName, InteractiveState.rest, 0);
-
-/** @public */
-export const fillReadableHoverDelta = createTokenDelta(fillReadableName, InteractiveState.hover, -2);
-
-/** @public */
-export const fillReadableActiveDelta = createTokenDelta(fillReadableName, InteractiveState.active, 2);
-
-/** @public */
-export const fillReadableFocusDelta = createTokenDelta(fillReadableName, InteractiveState.focus, 0);
-
-/** @public */
-export const fillReadableDisabledDelta = createTokenDelta(fillReadableName, InteractiveState.disabled, 3);
-
-/** @public */
-export const fillReadableRecipe = createTokenColorRecipeForPalette(
-    fillReadableName,
-    StyleProperty.backgroundFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        idealColorDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastReadable),
-            params.palette.source,
-            resolve(fillReadableRestDelta),
-            resolve(fillReadableHoverDelta),
-            resolve(fillReadableActiveDelta),
-            resolve(fillReadableFocusDelta),
-            resolve(fillReadableDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const strokeSafetyName = "color.shared.stroke.safety";
-
-/** @public */
-export const strokeSafetyRestDelta = createTokenDelta(strokeSafetyName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeSafetyHoverDelta = createTokenDelta(strokeSafetyName, InteractiveState.hover, 6);
-
-/** @public */
-export const strokeSafetyActiveDelta = createTokenDelta(strokeSafetyName, InteractiveState.active, -6);
-
-/** @public */
-export const strokeSafetyFocusDelta = createTokenDelta(strokeSafetyName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeSafetyDisabledDelta = createTokenDelta(strokeSafetyName, InteractiveState.disabled, 0);
-
-/** @public */
-export const strokeSafetyRecipe = createTokenColorRecipeForPalette(
-    strokeSafetyName,
-    StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        conditionalSwatchSet(
-            contrastAndDeltaSwatchSet(
-                params.palette,
-                params.reference || resolve(colorContext),
-                resolve(minContrastSafety),
-                resolve(strokeSafetyRestDelta),
-                resolve(strokeSafetyHoverDelta),
-                resolve(strokeSafetyActiveDelta),
-                resolve(strokeSafetyFocusDelta),
-                resolve(strokeSafetyDisabledDelta),
-                resolve(disabledPalette),
-            ),
-            resolve(minContrastSafety) > 0
-        )
-);
-
-const strokeStealthName = "color.shared.stroke.stealth";
-
-/** @public */
-export const strokeStealthRestDelta = createTokenDelta(strokeStealthName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeStealthHoverDelta = createTokenDelta(strokeStealthName, InteractiveState.hover, 6);
-
-/** @public */
-export const strokeStealthActiveDelta = createTokenDelta(strokeStealthName, InteractiveState.active, -6);
-
-/** @public */
-export const strokeStealthFocusDelta = createTokenDelta(strokeStealthName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeStealthDisabledDelta = createTokenDelta(strokeStealthName, InteractiveState.disabled, 0);
-
-/** @public */
-export const strokeStealthRecipe = createTokenColorRecipeForPalette(
-    strokeStealthName,
-    StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastSafety),
-            resolve(strokeStealthRestDelta),
-            resolve(strokeStealthHoverDelta),
-            resolve(strokeStealthActiveDelta),
-            resolve(strokeStealthFocusDelta),
-            resolve(strokeStealthDisabledDelta),
-            resolve(disabledPalette),
-            undefined,
-            true
-        )
-);
-
-const strokeSubtleName = "color.shared.stroke.subtle";
-
-/** @public */
-export const strokeSubtleRestDelta = createTokenDelta(strokeSubtleName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeSubtleHoverDelta = createTokenDelta(strokeSubtleName, InteractiveState.hover, 4);
-
-/** @public */
-export const strokeSubtleActiveDelta = createTokenDelta(strokeSubtleName, InteractiveState.active, -2);
-
-/** @public */
-export const strokeSubtleFocusDelta = createTokenDelta(strokeSubtleName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeSubtleDisabledDelta = createTokenDelta(strokeSubtleName, InteractiveState.disabled, 8);
-
-/** @public */
-export const strokeSubtleRecipe = createTokenColorRecipeForPalette(
-    strokeSubtleName,
-    StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastSubtle),
-            resolve(strokeSubtleRestDelta),
-            resolve(strokeSubtleHoverDelta),
-            resolve(strokeSubtleActiveDelta),
-            resolve(strokeSubtleFocusDelta),
-            resolve(strokeSubtleDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const strokeDiscernibleName = "color.shared.stroke.discernible";
-
-/** @public */
-export const strokeDiscernibleRestDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeDiscernibleHoverDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.hover, 8);
-
-/** @public */
-export const strokeDiscernibleActiveDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.active, -4);
-
-/** @public */
-export const strokeDiscernibleFocusDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeDiscernibleDisabledDelta = createTokenDelta(strokeDiscernibleName, InteractiveState.disabled, 8);
-
-/** @public */
-export const strokeDiscernibleRecipe = createTokenColorRecipeForPalette(
-    strokeDiscernibleName,
-    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastDiscernible),
-            resolve(strokeDiscernibleRestDelta),
-            resolve(strokeDiscernibleHoverDelta),
-            resolve(strokeDiscernibleActiveDelta),
-            resolve(strokeDiscernibleFocusDelta),
-            resolve(strokeDiscernibleDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const strokeReadableName = "color.shared.stroke.readable";
-
-/** @public */
-export const strokeReadableRestDelta = createTokenDelta(strokeReadableName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeReadableHoverDelta = createTokenDelta(strokeReadableName, InteractiveState.hover, 6);
-
-/** @public */
-export const strokeReadableActiveDelta = createTokenDelta(strokeReadableName, InteractiveState.active, -6);
-
-/** @public */
-export const strokeReadableFocusDelta = createTokenDelta(strokeReadableName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeReadableDisabledDelta = createTokenDelta(strokeReadableName, InteractiveState.disabled, 8);
-
-/** @public */
-export const strokeReadableRecipe = createTokenColorRecipeForPalette(
-    strokeReadableName,
-    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(minContrastReadable),
-            resolve(strokeReadableRestDelta),
-            resolve(strokeReadableHoverDelta),
-            resolve(strokeReadableActiveDelta),
-            resolve(strokeReadableFocusDelta),
-            resolve(strokeReadableDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-const strokeStrongName = "color.shared.stroke.strong";
-
-/** @public */
-export const strokeStrongMinContrast = createTokenMinContrast(strokeStrongName, 12);
-
-/** @public */
-export const strokeStrongRestDelta = createTokenDelta(strokeStrongName, InteractiveState.rest, 0);
-
-/** @public */
-export const strokeStrongHoverDelta = createTokenDelta(strokeStrongName, InteractiveState.hover, 10);
-
-/** @public */
-export const strokeStrongActiveDelta = createTokenDelta(strokeStrongName, InteractiveState.active, -10);
-
-/** @public */
-export const strokeStrongFocusDelta = createTokenDelta(strokeStrongName, InteractiveState.focus, 0);
-
-/** @public */
-export const strokeStrongDisabledDelta = createTokenDelta(strokeStrongName, InteractiveState.disabled, 8);
-
-/** @public */
-export const strokeStrongRecipe = createTokenColorRecipeForPalette(
-    strokeStrongName,
-    [...StylePropertyShorthand.borderFill, StyleProperty.foregroundFill],
-    (resolve: DesignTokenResolver, params: ColorRecipePaletteParams) =>
-        contrastAndDeltaSwatchSet(
-            params.palette,
-            params.reference || resolve(colorContext),
-            resolve(strokeStrongMinContrast),
-            resolve(strokeStrongRestDelta),
-            resolve(strokeStrongHoverDelta),
-            resolve(strokeStrongActiveDelta),
-            resolve(strokeStrongFocusDelta),
-            resolve(strokeStrongDisabledDelta),
-            resolve(disabledPalette),
-        )
-);
-
-// Accent Fill Stealth
-
-/** @public */
-export const accentFillStealthRecipe = createTokenColorRecipeAccent(fillStealthRecipe);
-
-/** @public */
-export const accentFillStealth = createTokenColorSet(accentFillStealthRecipe);
-
-// Accent Fill Subtle
-
-/** @public */
-export const accentFillSubtleRecipe = createTokenColorRecipeAccent(fillSubtleRecipe);
-
-/** @public */
-export const accentFillSubtle = createTokenColorSet(accentFillSubtleRecipe);
-
-// Accent Fill Subtle Inverse
-
-/** @public */
-export const accentFillSubtleInverseRecipe = createTokenColorRecipeAccent(fillSubtleInverseRecipe);
-
-/** @public */
-export const accentFillSubtleInverse = createTokenColorSet(accentFillSubtleInverseRecipe);
-
-// Accent Fill Ideal
-
-/** @public */
-export const accentFillIdealRecipe = createTokenColorRecipeAccent(fillIdealRecipe);
-
-/** @public */
-export const accentFillIdeal = createTokenColorSet(accentFillIdealRecipe);
-
-// Accent Fill Discernible
-
-/** @public */
-export const accentFillDiscernibleRecipe = createTokenColorRecipeAccent(fillDiscernibleRecipe);
-
-/** @public */
-export const accentFillDiscernible = createTokenColorSet(accentFillDiscernibleRecipe);
-
-// Accent Fill Readable (previously just "Accent Fill")
-
-/** @public */
-export const accentFillReadableRecipe = createTokenColorRecipeAccent(fillReadableRecipe);
-
-/** @public */
-export const accentFillReadable = createTokenColorSet(accentFillReadableRecipe);
-
-// Accent Stroke Safety
-
-/** @public */
-export const accentStrokeSafetyRecipe = createTokenColorRecipeAccent(strokeSafetyRecipe);
-
-/** @public */
-export const accentStrokeSafety = createTokenColorSet(accentStrokeSafetyRecipe);
-
-// Accent Stroke Stealth
-
-/** @public */
-export const accentStrokeStealthRecipe = createTokenColorRecipeAccent(strokeStealthRecipe);
-
-/** @public */
-export const accentStrokeStealth = createTokenColorSet(accentStrokeStealthRecipe);
-
-// Accent Stroke Subtle
-
-/** @public */
-export const accentStrokeSubtleRecipe = createTokenColorRecipeAccent(strokeSubtleRecipe);
-
-/** @public */
-export const accentStrokeSubtle = createTokenColorSet(accentStrokeSubtleRecipe);
-
-// Accent Stroke Discernible
-
-/** @public */
-export const accentStrokeDiscernibleRecipe = createTokenColorRecipeAccent(strokeDiscernibleRecipe);
-
-/** @public */
-export const accentStrokeDiscernible = createTokenColorSet(accentStrokeDiscernibleRecipe);
-
-// Accent Stroke Readable (previously "Foreground")
-
-/** @public */
-export const accentStrokeReadableRecipe = createTokenColorRecipeAccent(strokeReadableRecipe);
-
-/** @public */
-export const accentStrokeReadable = createTokenColorSet(accentStrokeReadableRecipe);
-
-// Accent Stroke Strong
-
-/** @public */
-export const accentStrokeStrongRecipe = createTokenColorRecipeAccent(strokeStrongRecipe);
-
-/** @public */
-export const accentStrokeStrong = createTokenColorSet(accentStrokeStrongRecipe);
-
-// Highlight Fill Stealth
-
-/** @public */
-export const highlightFillStealthRecipe = createTokenColorRecipeHighlight(fillStealthRecipe);
-
-/** @public */
-export const highlightFillStealth = createTokenColorSet(highlightFillStealthRecipe);
-
-// Highlight Fill Subtle
-
-/** @public */
-export const highlightFillSubtleRecipe = createTokenColorRecipeHighlight(fillSubtleRecipe);
-
-/** @public */
-export const highlightFillSubtle = createTokenColorSet(highlightFillSubtleRecipe);
-
-// Highlight Fill Subtle Inverse
-
-/** @public */
-export const highlightFillSubtleInverseRecipe = createTokenColorRecipeHighlight(fillSubtleInverseRecipe);
-
-/** @public */
-export const highlightFillSubtleInverse = createTokenColorSet(highlightFillSubtleInverseRecipe);
-
-// Highlight Fill Ideal
-
-/** @public */
-export const highlightFillIdealRecipe = createTokenColorRecipeHighlight(fillIdealRecipe);
-
-/** @public */
-export const highlightFillIdeal = createTokenColorSet(highlightFillIdealRecipe);
-
-// Highlight Fill Discernible
-
-/** @public */
-export const highlightFillDiscernibleRecipe = createTokenColorRecipeHighlight(fillDiscernibleRecipe);
-
-/** @public */
-export const highlightFillDiscernible = createTokenColorSet(highlightFillDiscernibleRecipe);
-
-// Highlight Fill Readable
-
-/** @public */
-export const highlightFillReadableRecipe = createTokenColorRecipeHighlight(fillReadableRecipe);
-
-/** @public */
-export const highlightFillReadable = createTokenColorSet(highlightFillReadableRecipe);
-
-// Highlight Stroke Safety
-
-/** @public */
-export const highlightStrokeSafetyRecipe = createTokenColorRecipeHighlight(strokeSafetyRecipe);
-
-/** @public */
-export const highlightStrokeSafety = createTokenColorSet(highlightStrokeSafetyRecipe);
-
-// Highlight Stroke Stealth
-
-/** @public */
-export const highlightStrokeStealthRecipe = createTokenColorRecipeHighlight(strokeStealthRecipe);
-
-/** @public */
-export const highlightStrokeStealth = createTokenColorSet(highlightStrokeStealthRecipe);
-
-// Highlight Stroke Subtle
-
-/** @public */
-export const highlightStrokeSubtleRecipe = createTokenColorRecipeHighlight(strokeSubtleRecipe);
-
-/** @public */
-export const highlightStrokeSubtle = createTokenColorSet(highlightStrokeSubtleRecipe);
-
-// Highlight Stroke Discernible
-
-/** @public */
-export const highlightStrokeDiscernibleRecipe = createTokenColorRecipeHighlight(strokeDiscernibleRecipe);
-
-/** @public */
-export const highlightStrokeDiscernible = createTokenColorSet(highlightStrokeDiscernibleRecipe);
-
-// Highlight Stroke Readable
-
-/** @public */
-export const highlightStrokeReadableRecipe = createTokenColorRecipeHighlight(strokeReadableRecipe);
-
-/** @public */
-export const highlightStrokeReadable = createTokenColorSet(highlightStrokeReadableRecipe);
-
-// Highlight Stroke Strong
-
-/** @public */
-export const highlightStrokeStrongRecipe = createTokenColorRecipeHighlight(strokeStrongRecipe);
-
-/** @public */
-export const highlightStrokeStrong = createTokenColorSet(highlightStrokeStrongRecipe);
-
-// Critical Fill Stealth
-
-/** @public */
-export const criticalFillStealthRecipe = createTokenColorRecipeCritical(fillStealthRecipe);
-
-/** @public */
-export const criticalFillStealth = createTokenColorSet(criticalFillStealthRecipe);
-
-// Critical Fill Subtle
-
-/** @public */
-export const criticalFillSubtleRecipe = createTokenColorRecipeCritical(fillSubtleRecipe);
-
-/** @public */
-export const criticalFillSubtle = createTokenColorSet(criticalFillSubtleRecipe);
-
-// Critical Fill Subtle Inverse
-
-/** @public */
-export const criticalFillSubtleInverseRecipe = createTokenColorRecipeCritical(fillSubtleInverseRecipe);
-
-/** @public */
-export const criticalFillSubtleInverse = createTokenColorSet(criticalFillSubtleInverseRecipe);
-
-// Critical Fill Ideal
-
-/** @public */
-export const criticalFillIdealRecipe = createTokenColorRecipeCritical(fillIdealRecipe);
-
-/** @public */
-export const criticalFillIdeal = createTokenColorSet(criticalFillIdealRecipe);
-
-// Critical Fill Discernible
-
-/** @public */
-export const criticalFillDiscernibleRecipe = createTokenColorRecipeCritical(fillDiscernibleRecipe);
-
-/** @public */
-export const criticalFillDiscernible = createTokenColorSet(criticalFillDiscernibleRecipe);
-
-// Critical Fill Readable
-
-/** @public */
-export const criticalFillReadableRecipe = createTokenColorRecipeCritical(fillReadableRecipe);
-
-/** @public */
-export const criticalFillReadable = createTokenColorSet(criticalFillReadableRecipe);
-
-// Critical Stroke Safety
-
-/** @public */
-export const criticalStrokeSafetyRecipe = createTokenColorRecipeCritical(strokeSafetyRecipe);
-
-/** @public */
-export const criticalStrokeSafety = createTokenColorSet(criticalStrokeSafetyRecipe);
-
-// Critical Stroke Stealth
-
-/** @public */
-export const criticalStrokeStealthRecipe = createTokenColorRecipeCritical(strokeStealthRecipe);
-
-/** @public */
-export const criticalStrokeStealth = createTokenColorSet(criticalStrokeStealthRecipe);
-
-// Critical Stroke Subtle
-
-/** @public */
-export const criticalStrokeSubtleRecipe = createTokenColorRecipeCritical(strokeSubtleRecipe);
-
-/** @public */
-export const criticalStrokeSubtle = createTokenColorSet(criticalStrokeSubtleRecipe);
-
-// Critical Stroke Discernible
-
-/** @public */
-export const criticalStrokeDiscernibleRecipe = createTokenColorRecipeCritical(strokeDiscernibleRecipe);
-
-/** @public */
-export const criticalStrokeDiscernible = createTokenColorSet(criticalStrokeDiscernibleRecipe);
-
-// Critical Stroke Readable
-
-/** @public */
-export const criticalStrokeReadableRecipe = createTokenColorRecipeCritical(strokeReadableRecipe);
-
-/** @public */
-export const criticalStrokeReadable = createTokenColorSet(criticalStrokeReadableRecipe);
-
-// Critical Stroke Strong
-
-/** @public */
-export const criticalStrokeStrongRecipe = createTokenColorRecipeCritical(strokeStrongRecipe);
-
-/** @public */
-export const criticalStrokeStrong = createTokenColorSet(criticalStrokeStrongRecipe);
-
-// Warning color recipes
-
-/** @public */
-export const warningFillStealthRecipe = createTokenColorRecipeWarning(fillStealthRecipe);
-
-/** @public */
-export const warningFillStealth = createTokenColorSet(warningFillStealthRecipe);
-
-/** @public */
-export const warningFillSubtleRecipe = createTokenColorRecipeWarning(fillSubtleRecipe);
-
-/** @public */
-export const warningFillSubtle = createTokenColorSet(warningFillSubtleRecipe);
-
-/** @public */
-export const warningFillSubtleInverseRecipe = createTokenColorRecipeWarning(fillSubtleInverseRecipe);
-
-/** @public */
-export const warningFillSubtleInverse = createTokenColorSet(warningFillSubtleInverseRecipe);
-
-/** @public */
-export const warningFillIdealRecipe = createTokenColorRecipeWarning(fillIdealRecipe);
-
-/** @public */
-export const warningFillIdeal = createTokenColorSet(warningFillIdealRecipe);
-
-/** @public */
-export const warningFillDiscernibleRecipe = createTokenColorRecipeWarning(fillDiscernibleRecipe);
-
-/** @public */
-export const warningFillDiscernible = createTokenColorSet(warningFillDiscernibleRecipe);
-
-/** @public */
-export const warningFillReadableRecipe = createTokenColorRecipeWarning(fillReadableRecipe);
-
-/** @public */
-export const warningFillReadable = createTokenColorSet(warningFillReadableRecipe);
-
-/** @public */
-export const warningStrokeSafetyRecipe = createTokenColorRecipeWarning(strokeSafetyRecipe);
-
-/** @public */
-export const warningStrokeSafety = createTokenColorSet(warningStrokeSafetyRecipe);
-
-/** @public */
-export const warningStrokeStealthRecipe = createTokenColorRecipeWarning(strokeStealthRecipe);
-
-/** @public */
-export const warningStrokeStealth = createTokenColorSet(warningStrokeStealthRecipe);
-
-/** @public */
-export const warningStrokeSubtleRecipe = createTokenColorRecipeWarning(strokeSubtleRecipe);
-
-/** @public */
-export const warningStrokeSubtle = createTokenColorSet(warningStrokeSubtleRecipe);
-
-/** @public */
-export const warningStrokeDiscernibleRecipe = createTokenColorRecipeWarning(strokeDiscernibleRecipe);
-
-/** @public */
-export const warningStrokeDiscernible = createTokenColorSet(warningStrokeDiscernibleRecipe);
-
-/** @public */
-export const warningStrokeReadableRecipe = createTokenColorRecipeWarning(strokeReadableRecipe);
-
-/** @public */
-export const warningStrokeReadable = createTokenColorSet(warningStrokeReadableRecipe);
-
-/** @public */
-export const warningStrokeStrongRecipe = createTokenColorRecipeWarning(strokeStrongRecipe);
-
-/** @public */
-export const warningStrokeStrong = createTokenColorSet(warningStrokeStrongRecipe);
-
-// Success color recipes
-
-/** @public */
-export const successFillStealthRecipe = createTokenColorRecipeSuccess(fillStealthRecipe);
-
-/** @public */
-export const successFillStealth = createTokenColorSet(successFillStealthRecipe);
-
-/** @public */
-export const successFillSubtleRecipe = createTokenColorRecipeSuccess(fillSubtleRecipe);
-
-/** @public */
-export const successFillSubtle = createTokenColorSet(successFillSubtleRecipe);
-
-/** @public */
-export const successFillSubtleInverseRecipe = createTokenColorRecipeSuccess(fillSubtleInverseRecipe);
-
-/** @public */
-export const successFillSubtleInverse = createTokenColorSet(successFillSubtleInverseRecipe);
-
-/** @public */
-export const successFillIdealRecipe = createTokenColorRecipeSuccess(fillIdealRecipe);
-
-/** @public */
-export const successFillIdeal = createTokenColorSet(successFillIdealRecipe);
-
-/** @public */
-export const successFillDiscernibleRecipe = createTokenColorRecipeSuccess(fillDiscernibleRecipe);
-
-/** @public */
-export const successFillDiscernible = createTokenColorSet(successFillDiscernibleRecipe);
-
-/** @public */
-export const successFillReadableRecipe = createTokenColorRecipeSuccess(fillReadableRecipe);
-
-/** @public */
-export const successFillReadable = createTokenColorSet(successFillReadableRecipe);
-
-/** @public */
-export const successStrokeSafetyRecipe = createTokenColorRecipeSuccess(strokeSafetyRecipe);
-
-/** @public */
-export const successStrokeSafety = createTokenColorSet(successStrokeSafetyRecipe);
-
-/** @public */
-export const successStrokeStealthRecipe = createTokenColorRecipeSuccess(strokeStealthRecipe);
-
-/** @public */
-export const successStrokeStealth = createTokenColorSet(successStrokeStealthRecipe);
-
-/** @public */
-export const successStrokeSubtleRecipe = createTokenColorRecipeSuccess(strokeSubtleRecipe);
-
-/** @public */
-export const successStrokeSubtle = createTokenColorSet(successStrokeSubtleRecipe);
-
-/** @public */
-export const successStrokeDiscernibleRecipe = createTokenColorRecipeSuccess(strokeDiscernibleRecipe);
-
-/** @public */
-export const successStrokeDiscernible = createTokenColorSet(successStrokeDiscernibleRecipe);
-
-/** @public */
-export const successStrokeReadableRecipe = createTokenColorRecipeSuccess(strokeReadableRecipe);
-
-/** @public */
-export const successStrokeReadable = createTokenColorSet(successStrokeReadableRecipe);
-
-/** @public */
-export const successStrokeStrongRecipe = createTokenColorRecipeSuccess(strokeStrongRecipe);
-
-/** @public */
-export const successStrokeStrong = createTokenColorSet(successStrokeStrongRecipe);
-
-// Info color recipes
-
-/** @public */
-export const infoFillStealthRecipe = createTokenColorRecipeInfo(fillStealthRecipe);
-
-/** @public */
-export const infoFillStealth = createTokenColorSet(infoFillStealthRecipe);
-
-/** @public */
-export const infoFillSubtleRecipe = createTokenColorRecipeInfo(fillSubtleRecipe);
-
-/** @public */
-export const infoFillSubtle = createTokenColorSet(infoFillSubtleRecipe);
-
-/** @public */
-export const infoFillSubtleInverseRecipe = createTokenColorRecipeInfo(fillSubtleInverseRecipe);
-
-/** @public */
-export const infoFillSubtleInverse = createTokenColorSet(infoFillSubtleInverseRecipe);
-
-/** @public */
-export const infoFillIdealRecipe = createTokenColorRecipeInfo(fillIdealRecipe);
-
-/** @public */
-export const infoFillIdeal = createTokenColorSet(infoFillIdealRecipe);
-
-/** @public */
-export const infoFillDiscernibleRecipe = createTokenColorRecipeInfo(fillDiscernibleRecipe);
-
-/** @public */
-export const infoFillDiscernible = createTokenColorSet(infoFillDiscernibleRecipe);
-
-/** @public */
-export const infoFillReadableRecipe = createTokenColorRecipeInfo(fillReadableRecipe);
-
-/** @public */
-export const infoFillReadable = createTokenColorSet(infoFillReadableRecipe);
-
-/** @public */
-export const infoStrokeSafetyRecipe = createTokenColorRecipeInfo(strokeSafetyRecipe);
-
-/** @public */
-export const infoStrokeSafety = createTokenColorSet(infoStrokeSafetyRecipe);
-
-/** @public */
-export const infoStrokeStealthRecipe = createTokenColorRecipeInfo(strokeStealthRecipe);
-
-/** @public */
-export const infoStrokeStealth = createTokenColorSet(infoStrokeStealthRecipe);
-
-/** @public */
-export const infoStrokeSubtleRecipe = createTokenColorRecipeInfo(strokeSubtleRecipe);
-
-/** @public */
-export const infoStrokeSubtle = createTokenColorSet(infoStrokeSubtleRecipe);
-
-/** @public */
-export const infoStrokeDiscernibleRecipe = createTokenColorRecipeInfo(strokeDiscernibleRecipe);
-
-/** @public */
-export const infoStrokeDiscernible = createTokenColorSet(infoStrokeDiscernibleRecipe);
-
-/** @public */
-export const infoStrokeReadableRecipe = createTokenColorRecipeInfo(strokeReadableRecipe);
-
-/** @public */
-export const infoStrokeReadable = createTokenColorSet(infoStrokeReadableRecipe);
-
-/** @public */
-export const infoStrokeStrongRecipe = createTokenColorRecipeInfo(strokeStrongRecipe);
-
-/** @public */
-export const infoStrokeStrong = createTokenColorSet(infoStrokeStrongRecipe);
-
-// Neutral Fill Stealth
-
-/** @public */
-export const neutralFillStealthRecipe = createTokenColorRecipeNeutral(fillStealthRecipe);
-
-/** @public */
-export const neutralFillStealth = createTokenColorSet(neutralFillStealthRecipe);
-
-// Neutral Fill Subtle (previously just "Neutral Fill")
-
-/** @public */
-export const neutralFillSubtleRecipe = createTokenColorRecipeNeutral(fillSubtleRecipe);
-
-/** @public */
-export const neutralFillSubtle = createTokenColorSet(neutralFillSubtleRecipe);
-
-// Neutral Fill Subtle Inverse
-
-/** @public */
-export const neutralFillSubtleInverseRecipe = createTokenColorRecipeNeutral(fillSubtleInverseRecipe);
-
-/** @public */
-export const neutralFillSubtleInverse = createTokenColorSet(neutralFillSubtleInverseRecipe);
-
-// Neutral Fill Ideal
-
-/** @public */
-export const neutralFillIdealRecipe = createTokenColorRecipeNeutral(fillIdealRecipe);
-
-/** @public */
-export const neutralFillIdeal = createTokenColorSet(neutralFillIdealRecipe);
-
-// Neutral Fill Discernible (previously "Strong")
-
-/** @public */
-export const neutralFillDiscernibleRecipe = createTokenColorRecipeNeutral(fillDiscernibleRecipe);
-
-/** @public */
-export const neutralFillDiscernible = createTokenColorSet(neutralFillDiscernibleRecipe);
-
-// Neutral Fill Readable
-
-/** @public */
-export const neutralFillReadableRecipe = createTokenColorRecipeNeutral(fillReadableRecipe);
-
-/** @public */
-export const neutralFillReadable = createTokenColorSet(neutralFillReadableRecipe);
-
-// Neutral Stroke Safety
-
-/** @public */
-export const neutralStrokeSafetyRecipe = createTokenColorRecipeNeutral(strokeSafetyRecipe);
-
-/** @public */
-export const neutralStrokeSafety = createTokenColorSet(neutralStrokeSafetyRecipe);
-
-// Neutral Stroke Stealth
-
-/** @public */
-export const neutralStrokeStealthRecipe = createTokenColorRecipeNeutral(strokeStealthRecipe);
-
-/** @public */
-export const neutralStrokeStealth = createTokenColorSet(neutralStrokeStealthRecipe);
-
-// Neutral Stroke Subtle (previously just "Neutral Stroke")
-
-/** @public */
-export const neutralStrokeSubtleRecipe = createTokenColorRecipeNeutral(strokeSubtleRecipe);
-
-/** @public */
-export const neutralStrokeSubtle = createTokenColorSet(neutralStrokeSubtleRecipe);
-
-// Neutral Stroke Discernible (previously "Strong")
-
-/** @public */
-export const neutralStrokeDiscernibleRecipe = createTokenColorRecipeNeutral(strokeDiscernibleRecipe);
-
-/** @public */
-export const neutralStrokeDiscernible = createTokenColorSet(neutralStrokeDiscernibleRecipe);
-
-// Neutral Stroke Readable (previously "Foreground Hint")
-
-/** @public */
-export const neutralStrokeReadableRecipe = createTokenColorRecipeNeutral(strokeReadableRecipe);
-
-/** @public */
-export const neutralStrokeReadable = createTokenColorSet(neutralStrokeReadableRecipe);
-
-// Neutral Stroke Strong (previously "Foreground")
-
-/** @public */
-export const neutralStrokeStrongRecipe = createTokenColorRecipeNeutral(strokeStrongRecipe);
-
-/** @public */
-export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe);
-
-/**
- * The {@link Palette} to use for focus stroke recipes.
+ * The config of a foreground that is black or white for each state of a background, for a token.
  *
  * @remarks
- * By default this maps to the {@link accentPalette}.
- * Use a custom palette like `focusStrokePalette.withDefault(PaletteOkhsl.from("#[HEX_COLOR]"))`.
+ * A foreground is made for a background, so there is one for each background a system pairs it with, the way a style module pairs them. It is
+ * an interactive token that follows the background: a change to the background is a change to the foreground.
+ *
+ * @example
+ * ```ts
+ * foreground: blackOrWhiteReadable(tokens.color.accent.fill.readable),
+ * ```
+ *
+ * @param background - The background, usually a ref to an interactive token
+ * @param minContrast - The minimum contrast of the foreground from each state of the background, usually a ref to a contrast ratio token
+ * @param defaultBlack - True to be black when both black and white have the contrast
  *
  * @public
  */
-export const focusStrokePalette = createTokenNonCss<Palette>("color.focusStroke.palette", DesignTokenType.palette).withDefault(accentPalette);
+export function blackOrWhiteFor<Root extends ColorSetLibraryTokens>(
+    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>,
+    minContrast: Library.DeepValue<number, Library.TokenValues<Root>>,
+    defaultBlack = false
+): Library.ConfigValue<InteractiveToken<Color>, Root> {
+    return {
+        $type: AdaptiveDesignToken.interactive,
+        $value: colorRecipes.blackOrWhiteByContrastSet(background, minContrast, defaultBlack),
+        $extensions: intendedFor(StyleProperty.foregroundFill),
+    };
+}
 
 /**
- * The minimum contrast for the focus stroke recipe.
+ * The config of a foreground that is black or white for a background, with the contrast that is discernible. It is for something that isn't
+ * text, like a checked checkbox.
  *
- * @remarks
- * By default this maps to the {@link minContrastDiscernible}, which by default meets 3:1 contrast recommendation.
+ * @param background - The background, usually a ref to an interactive token
  *
  * @public
  */
-export const focusStrokeMinContrast = createTokenNonCss<number>("color.focusStroke.minContrast", DesignTokenType.number).withDefault(minContrastDiscernible);
+export function blackOrWhiteDiscernible<Root extends ColorSetLibraryTokens>(
+    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>
+): Library.ConfigValue<InteractiveToken<Color>, Root> {
+    return blackOrWhiteFor<Root>(background, shared.wcagContrast.minContrast.discernible);
+}
 
-// Focus Stroke
+/**
+ * The config of a foreground that is black or white for a background, with the contrast that is readable. It is for text, like the label of a
+ * button.
+ *
+ * @param background - The background, usually a ref to an interactive token
+ *
+ * @public
+ */
+export function blackOrWhiteReadable<Root extends ColorSetLibraryTokens>(
+    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>
+): Library.ConfigValue<InteractiveToken<Color>, Root> {
+    return blackOrWhiteFor<Root>(background, shared.wcagContrast.minContrast.readable);
+}
 
-const focusStrokeName = "color.focusStroke";
+const tokens = refs<ColorLibraryTokens>().color;
 
-/** @public */
-export const focusStrokeRecipe = createTokenColorRecipe(
-    focusStrokeName,
-    [...StylePropertyShorthand.borderFill, StyleProperty.outlineColor],
-    (resolve: DesignTokenResolver, params?: ColorRecipeParams): Color =>
-        contrastSwatch(
-            resolve(focusStrokePalette),
-            params?.reference || resolve(colorContext),
-            resolve(focusStrokeMinContrast)
-        )
-);
+const minContrastFor = (aa: number, aaa: number): Library.ConfigValue<ContrastRatioToken, ColorLibraryTokens> => ({
+    $type: AdaptiveDesignToken.contrastRatio,
+    $value: colorRecipes.minContrastFor(tokens.wcagContrast.level, aa, aaa),
+});
 
-/** @public */
-export const focusStroke = createTokenColorRecipeValue(focusStrokeRecipe);
+const wcagContrast: Library.Config<WcagContrastTokens, ColorLibraryTokens> = {
+    level: { $type: AdaptiveDesignToken.wcagContrastLevel, $value: WcagContrastLevel.aa },
+    minContrast: {
+        safety: minContrastFor(0, 3),
+        subtle: minContrastFor(1.5, 3),
+        ideal: minContrastFor(2, 3),
+        discernible: minContrastFor(3, 4.5),
+        readable: minContrastFor(4.5, 7),
+        strong: { $type: AdaptiveDesignToken.contrastRatio, $value: 12 },
+    },
+};
 
-// Focus Stroke Outer
+const disabled: Library.Config<DisabledTokens, ColorLibraryTokens> = {
+    palette: { $type: AdaptiveDesignToken.palette, $value: tokens.layer.palette },
+    fillDelta: { $type: AdaptiveDesignToken.delta, $value: 3 },
+    strokeDelta: { $type: AdaptiveDesignToken.delta, $value: 8 },
+};
 
-const focusStrokeOuterName = "color.focusStroke.outer";
+// The deltas of a recipe, a number of steps for the rest, the hover, and the active. The focus is the rest until it is set, and the
+// disabled is the shared one of the fills or of the strokes, or a number of its own: a recipe with no color at rest has none disabled.
+// The group is given, since a token can't refer to the tokens next to it without its path, so its focus can refer to its rest.
+const deltas = (
+    group: Library.Refs<InteractiveDeltaTokens, ColorLibraryTokens>,
+    steps: { rest: number; hover: number; active: number },
+    disabledDelta: "fill" | "stroke" | number
+): Library.Config<InteractiveDeltaTokens, ColorLibraryTokens> => ({
+    $type: AdaptiveDesignToken.delta,
+    rest: { $value: steps.rest },
+    hover: { $value: steps.hover },
+    active: { $value: steps.active },
+    focus: { $value: group.rest },
+    disabled: {
+        $value: disabledDelta === "fill" ? tokens.disabled.fillDelta : disabledDelta === "stroke" ? tokens.disabled.strokeDelta : disabledDelta,
+    },
+});
 
-/** @public */
-export const focusStrokeOuterRecipe = createTokenColorRecipe(
-    focusStrokeOuterName,
-    StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver): Color =>
-        blackOrWhiteByContrast(resolve(colorContext), resolve(minContrastReadable), true)
-);
+const colorDeltas: Library.Config<ColorDeltaTokens, ColorLibraryTokens> = {
+    fill: {
+        stealth: deltas(tokens.deltas.fill.stealth, { rest: 0, hover: 3, active: 2 }, 0),
+        subtle: deltas(tokens.deltas.fill.subtle, { rest: 3, hover: 4, active: 2 }, "fill"),
+        ideal: deltas(tokens.deltas.fill.ideal, { rest: 0, hover: -2, active: 2 }, "fill"),
+        discernible: deltas(tokens.deltas.fill.discernible, { rest: 0, hover: 6, active: 3 }, "fill"),
+        readable: deltas(tokens.deltas.fill.readable, { rest: 0, hover: -2, active: 2 }, "fill"),
+    },
+    stroke: {
+        safety: deltas(tokens.deltas.stroke.safety, { rest: 0, hover: 6, active: -6 }, 0),
+        stealth: deltas(tokens.deltas.stroke.stealth, { rest: 0, hover: 6, active: -6 }, 0),
+        subtle: deltas(tokens.deltas.stroke.subtle, { rest: 0, hover: 4, active: -2 }, "stroke"),
+        discernible: deltas(tokens.deltas.stroke.discernible, { rest: 0, hover: 8, active: -4 }, "stroke"),
+        readable: deltas(tokens.deltas.stroke.readable, { rest: 0, hover: 6, active: -6 }, "stroke"),
+        strong: deltas(tokens.deltas.stroke.strong, { rest: 0, hover: 10, active: -10 }, "stroke"),
+    },
+};
 
-/** @public */
-export const focusStrokeOuter = createTokenColorRecipeValue(focusStrokeOuterRecipe);
+const focusStroke: Library.Config<FocusStrokeTokens, ColorLibraryTokens> = {
+    $root: {
+        $type: DesignToken.Type.Color,
+        $value: colorRecipes.contrastColor(tokens.focusStroke.palette, tokens.context, tokens.focusStroke.minContrast),
+        $extensions: intendedFor(...StylePropertyShorthand.borderFill, StyleProperty.outlineColor),
+    },
+    palette: { $type: AdaptiveDesignToken.palette, $value: tokens.accent.palette },
+    minContrast: { $type: AdaptiveDesignToken.contrastRatio, $value: tokens.wcagContrast.minContrast.discernible },
+    outer: {
+        $type: DesignToken.Type.Color,
+        $value: colorRecipes.blackOrWhiteByContrast(tokens.context, tokens.wcagContrast.minContrast.readable, true),
+        $extensions: intendedFor(...StylePropertyShorthand.borderFill),
+    },
+    inner: {
+        $type: DesignToken.Type.Color,
+        $value: colorRecipes.blackOrWhiteByContrast(tokens.focusStroke.outer, tokens.wcagContrast.minContrast.readable, false),
+        $extensions: intendedFor(...StylePropertyShorthand.borderFill),
+    },
+};
 
-// Focus Stroke Inner
+// The sets of a palette of the system, which is where the palette token of the library is.
+const setsOf = (palette: ColorSetsOptions<ColorLibraryTokens>["palette"]) => createColorSets<ColorLibraryTokens>({ palette });
 
-const focusStrokeInnerName = "color.focusStroke.inner";
+/**
+ * The configuration of the color tokens, for the library: the palettes, the color context, the layers, and the sets made from them.
+ *
+ * @public
+ */
+export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
+    ...palettes,
+    ...colorContext,
+    layer,
+    wcagContrast,
+    disabled,
+    deltas: colorDeltas,
+    neutral: {
+        ...palettes.neutral,
+        ...createColorSets<ColorLibraryTokens>({ palette: tokens.neutral.palette, asOverlay: tokens.neutral.asOverlay }),
+        asOverlay: { $type: AdaptiveDesignToken.boolean, $value: false },
+    },
+    accent: { ...palettes.accent, ...setsOf(tokens.accent.palette) },
+    highlight: { ...palettes.highlight, ...setsOf(tokens.highlight.palette) },
+    critical: { ...palettes.critical, ...setsOf(tokens.critical.palette) },
+    warning: { ...palettes.warning, ...setsOf(tokens.warning.palette) },
+    success: { ...palettes.success, ...setsOf(tokens.success.palette) },
+    info: { ...palettes.info, ...setsOf(tokens.info.palette) },
+    focusStroke,
+};
 
-/** @public */
-export const focusStrokeInnerRecipe = createTokenColorRecipe(
-    focusStrokeInnerName,
-    StylePropertyShorthand.borderFill,
-    (resolve: DesignTokenResolver): Color =>
-        blackOrWhiteByContrast(resolve(focusStrokeOuter), resolve(minContrastReadable), false)
-);
-
-/** @public */
-export const focusStrokeInner = createTokenColorRecipeValue(focusStrokeInnerRecipe);
+/**
+ * Creates a library with the color tokens.
+ *
+ * @public
+ */
+export const createColorLibrary = () => Library.create<ColorLibraryTokens>({ color });

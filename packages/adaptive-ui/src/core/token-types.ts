@@ -13,6 +13,10 @@ import { InteractiveSet, InteractiveState } from "./interactive.js";
  * @public
  */
 export const AdaptiveDesignToken = {
+    /** A `boolean`, a switch that a recipe reads, which is not written to CSS. */
+    boolean: "boolean",
+    /** A WCAG contrast ratio, which a recipe reads and which is not written to CSS, see {@link ContrastRatioToken}. */
+    contrastRatio: "contrastRatio",
     /** The number of steps of a palette from one color to another, which a recipe reads and which is not written to CSS, see {@link DeltaToken}. */
     delta: "delta",
     /** A number or dimension that may be calculated from other tokens, see {@link Expression}. */
@@ -25,7 +29,46 @@ export const AdaptiveDesignToken = {
     interactive: "interactive",
     /** A `Palette`, which is not written to CSS. */
     palette: "palette",
+    /** The WCAG contrast level, which a recipe reads and which is not written to CSS, see {@link WcagContrastLevel}. */
+    wcagContrastLevel: "wcagContrastLevel",
 } as const;
+
+/**
+ * WCAG contrast level (AA or AAA).
+ *
+ * @public
+ */
+export const WcagContrastLevel = {
+    aa: "aa",
+    aaa: "aaa",
+} as const;
+
+/** @public */
+export type WcagContrastLevel = (typeof WcagContrastLevel)[keyof typeof WcagContrastLevel];
+
+/**
+ * A `boolean`.
+ *
+ * @public
+ */
+export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean, boolean>;
+
+/**
+ * The WCAG contrast level that the minimum contrasts follow.
+ *
+ * @public
+ */
+export type WcagContrastLevelToken = DesignToken.Custom<typeof AdaptiveDesignToken.wcagContrastLevel, WcagContrastLevel>;
+
+/**
+ * A WCAG contrast ratio, like `4.5` for 4.5:1, which a recipe reads as the minimum contrast of a color.
+ *
+ * @remarks
+ * It is not written to CSS: the color it changes is calculated in JavaScript, so a custom property of it would change nothing.
+ *
+ * @public
+ */
+export type ContrastRatioToken = DesignToken.Custom<typeof AdaptiveDesignToken.contrastRatio, number>;
 
 /**
  * A number or a dimension, which may be an {@link Expression} that is calculated from other tokens.
