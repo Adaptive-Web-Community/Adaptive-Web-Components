@@ -17,7 +17,7 @@ export const AdaptiveDesignToken = {
     boolean: "boolean",
     /** A WCAG contrast ratio, which a recipe reads and which is not written to CSS, see {@link ContrastRatioToken}. */
     contrastRatio: "contrastRatio",
-    /** The number of steps of a palette from one color to another, which a recipe reads and which is not written to CSS, see {@link DeltaToken}. */
+    /** A number that a recipe reads, like the steps of a palette from one color to another, which is not written to CSS, see {@link DeltaToken}. */
     delta: "delta",
     /** A number or dimension that may be calculated from other tokens, see {@link Expression}. */
     expression: "expression",
@@ -109,7 +109,7 @@ export type PaletteToken = DesignToken.Custom<typeof AdaptiveDesignToken.palette
 export type InteractiveToken<V> = DesignToken.Custom<typeof AdaptiveDesignToken.interactive, InteractiveSet<V>>;
 
 /**
- * The number of steps of a palette from one color to another, which a recipe reads.
+ * A number that a recipe reads, like the number of steps of a palette from one color to another, or the height of a shadow.
  *
  * @remarks
  * It is not written to CSS: the value it changes is calculated in JavaScript, so a custom property of it would change nothing.
