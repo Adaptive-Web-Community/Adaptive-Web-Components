@@ -398,7 +398,8 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                 return [];
             }
 
-            const treatments = (style.treatments ?? []).flatMap(name => {
+            // `styles` is the deprecated name of `treatments`.
+            const treatments = [...(style.styles ?? []), ...(style.treatments ?? [])].flatMap(name => {
                 const treatment = treatmentsByName.get(name);
                 if (treatment === undefined) {
                     console.warn(warnColor, `Unknown treatment "${name}" in style rule, skipping.`);

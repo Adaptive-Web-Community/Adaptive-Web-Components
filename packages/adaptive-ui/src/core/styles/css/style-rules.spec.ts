@@ -162,4 +162,12 @@ describe("renderStyleRules", () => {
             ":host { opacity: 1; }",
         ]);
     });
+
+    it("should apply the deprecated `styles` of a rule before its treatments", () => {
+        const first: Treatment = { properties: { opacity: 0, cursor: "default" } };
+        const second: Treatment = { properties: { opacity: 1 } };
+
+        expect(render([{ styles: first, treatments: [second] }])).to.deep.equal([":host { opacity: 1; cursor: default; }"]);
+        expect(render([{ styles: [first] }])).to.deep.equal([":host { opacity: 0; cursor: default; }"]);
+    });
 });

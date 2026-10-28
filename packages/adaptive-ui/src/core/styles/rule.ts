@@ -68,6 +68,11 @@ export interface StyleRule {
      * The properties of the rule, applied after the treatments.
      */
     readonly properties?: StyleProperties;
+
+    /**
+     * @deprecated Use `treatments`. They are applied before `treatments`.
+     */
+    readonly styles?: Treatment | readonly Treatment[];
 }
 
 /**

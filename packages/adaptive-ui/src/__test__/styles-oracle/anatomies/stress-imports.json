@@ -12,7 +12,7 @@
   "styleRules": [
     {
       "part": "Footer",
-      "treatments": ["styles.text-plain"]
+      "styles": ["styles.text-plain"]
     },
     {
       "contextCondition": { "Open": true },

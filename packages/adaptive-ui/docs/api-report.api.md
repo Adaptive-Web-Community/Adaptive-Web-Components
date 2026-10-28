@@ -760,6 +760,8 @@ export interface SerializableStyleRule {
     properties?: Record<string, string>;
     // (undocumented)
     stateOnContext?: boolean;
+    // @deprecated (undocumented)
+    styles?: string[];
     // (undocumented)
     treatments?: string[];
 }
@@ -784,6 +786,12 @@ export type StringCondition = Record<string, string>;
 
 // @public
 export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
+
+// @public @deprecated (undocumented)
+export type StyleModuleEvaluateParameters = SelectorParameters;
+
+// @public @deprecated (undocumented)
+export type StyleModuleTarget = StyleRuleTarget;
 
 // @public
 export type StyleProperties = Partial<Record<StyleKey, StyleValues>>;
@@ -867,6 +875,8 @@ export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 // @public
 export interface StyleRule {
     readonly properties?: StyleProperties;
+    // @deprecated (undocumented)
+    readonly styles?: Treatment | readonly Treatment[];
     readonly target?: StyleRuleTarget;
     readonly treatments?: readonly Treatment[];
 }
@@ -892,6 +902,15 @@ export interface StyleRuleTarget {
     partCondition?: string;
     stateOnContext?: boolean;
 }
+
+// @public @deprecated (undocumented)
+export type Styles = Treatment;
+
+// @public @deprecated (undocumented)
+export const Styles: {
+    fromProperties: (properties: StyleProperties, name?: string) => Treatment;
+    compose: (treatments: readonly Treatment[], properties?: StyleProperties, name?: string) => Treatment;
+};
 
 // @public
 export type StyleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;

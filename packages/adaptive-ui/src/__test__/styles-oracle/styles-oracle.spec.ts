@@ -337,6 +337,11 @@ const capabilities: Capability[] = [
         ],
     },
     {
+        name: "reads the deprecated `styles` of a rule as its treatments",
+        file: "json/stress-imports.css",
+        includes: [".stress-imports .footer-from-main { font-family: var(--typography-fontFamily-default);"],
+    },
+    {
         name: "supports token, token group, and literal values for properties",
         file: "json/stress-properties.css",
         includes: [

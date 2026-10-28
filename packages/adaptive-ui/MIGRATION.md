@@ -364,6 +364,17 @@ the reference treatments refer to.
   `styles`), and an unknown name is a warning. A property names a token by its path, and `<token>.rest` of an interactive token is its rest.
   Importing the root of the package still loads FAST, through the 0.14 token helpers that aren't migrated yet.
 
+### Deprecated, the old name is the new one
+
+The 99 `...Styles` of `reference/modules.ts` are exported from `reference/deprecated.ts`, each the `...Treatment` of the same name, and
+`StyleNameMapping` is `TreatmentNameMapping`. `StyleModuleTarget` and `StyleModuleEvaluateParameters` are `StyleRuleTarget` and
+`SelectorParameters`, and the type `Styles` is `Treatment`. `Styles.fromProperties(properties, name)` and `Styles.compose(treatments,
+properties, name)` make a treatment. A rule's `styles` (one treatment or a list) is applied before its `treatments`, and an anatomy written as
+JSON may name its treatments in `styles`.
+
+Not exported, with what to use: `Styles.Shared` (`referenceTreatments`), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
+`Fill` (the `onFill` tokens), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
+
 ## Not migrated yet
 
 The rest of the tokens (`experimental`), the token helpers of 0.14 (`createTokenX`, `DesignTokenRegistry`), and `TokenNameMapping` are still

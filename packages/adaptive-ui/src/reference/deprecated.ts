@@ -7,6 +7,108 @@
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
 import { createReferenceLibrary } from "./library.js";
+import {
+    accentFillDiscernibleControlTreatment,
+    accentFillIdealControlTreatment,
+    accentFillReadableControlTreatment,
+    accentFillStealthControlTreatment,
+    accentFillSubtleControlTreatment,
+    accentFillSubtleInverseControlTreatment,
+    accentForegroundReadableControlTreatment,
+    accentOutlineDiscernibleControlTreatment,
+    actionTreatment,
+    autofillInnerDensityTreatment,
+    autofillOuterDensityTreatment,
+    controlDensityTreatment,
+    controlListDensityTreatment,
+    controlShapeTreatment,
+    controlSquareDensityTreatment,
+    criticalFillDiscernibleControlTreatment,
+    criticalFillIdealControlTreatment,
+    criticalFillReadableControlTreatment,
+    criticalFillStealthControlTreatment,
+    criticalFillSubtleControlTreatment,
+    criticalFillSubtleInverseControlTreatment,
+    criticalForegroundReadableControlTreatment,
+    criticalOutlineDiscernibleControlTreatment,
+    disabledTreatment,
+    flyoutTreatment,
+    focusIndicatorTreatment,
+    focusResetTreatment,
+    highlightFillDiscernibleControlTreatment,
+    highlightFillIdealControlTreatment,
+    highlightFillReadableControlTreatment,
+    highlightFillStealthControlTreatment,
+    highlightFillSubtleControlTreatment,
+    highlightFillSubtleInverseControlTreatment,
+    highlightForegroundReadableControlTreatment,
+    highlightOutlineDiscernibleControlTreatment,
+    infoFillDiscernibleControlTreatment,
+    infoFillIdealControlTreatment,
+    infoFillReadableControlTreatment,
+    infoFillStealthControlTreatment,
+    infoFillSubtleControlTreatment,
+    infoFillSubtleInverseControlTreatment,
+    infoForegroundReadableControlTreatment,
+    infoOutlineDiscernibleControlTreatment,
+    inputAutofillTreatment,
+    inputBaseTreatment,
+    inputTreatment,
+    interactiveCursorTreatment,
+    itemTreatment,
+    labelTextTreatment,
+    layerDensityTreatment,
+    layerFillInteractiveControlTreatment,
+    layerShapeTreatment,
+    neutralDividerDiscernibleElementTreatment,
+    neutralDividerSubtleElementTreatment,
+    neutralFillDiscernibleControlTreatment,
+    neutralFillIdealControlTreatment,
+    neutralFillReadableControlTreatment,
+    neutralFillStealthControlTreatment,
+    neutralFillSubtleControlTreatment,
+    neutralFillSubtleInverseControlTreatment,
+    neutralForegroundReadableElementTreatment,
+    neutralForegroundStrongElementTreatment,
+    neutralOutlineDiscernibleControlTreatment,
+    plainTextMultilineTreatment,
+    plainTextTreatment,
+    roundShapeTreatment,
+    selectableSelectedTreatment,
+    selectableUnselectedTreatment,
+    shadowCardInteractiveTreatment,
+    shadowCardTreatment,
+    shadowDialogTreatment,
+    shadowFlyoutTreatment,
+    shadowTooltipTreatment,
+    successFillDiscernibleControlTreatment,
+    successFillIdealControlTreatment,
+    successFillReadableControlTreatment,
+    successFillStealthControlTreatment,
+    successFillSubtleControlTreatment,
+    successFillSubtleInverseControlTreatment,
+    successForegroundReadableControlTreatment,
+    successOutlineDiscernibleControlTreatment,
+    textDensityTreatment,
+    TreatmentNameMapping,
+    typeRampBaseTreatment,
+    typeRampMinus1Treatment,
+    typeRampMinus2Treatment,
+    typeRampPlus1Treatment,
+    typeRampPlus2Treatment,
+    typeRampPlus3Treatment,
+    typeRampPlus4Treatment,
+    typeRampPlus5Treatment,
+    typeRampPlus6Treatment,
+    warningFillDiscernibleControlTreatment,
+    warningFillIdealControlTreatment,
+    warningFillReadableControlTreatment,
+    warningFillStealthControlTreatment,
+    warningFillSubtleControlTreatment,
+    warningFillSubtleInverseControlTreatment,
+    warningForegroundReadableControlTreatment,
+    warningOutlineDiscernibleControlTreatment,
+} from "./treatments.js";
 
 // The library for the tokens that are exported here, the reference system.
 const library = createReferenceLibrary();
@@ -1355,3 +1457,609 @@ export const densityControlList = densityPaddingAndGap(densities.controlList);
  * @public
  */
 export const densityLayer = densityPaddingAndGap(densities.layer);
+
+/**
+ * @deprecated Use {@link controlShapeTreatment}.
+ * @public
+ */
+export const controlShapeStyles = controlShapeTreatment;
+
+/**
+ * @deprecated Use {@link layerShapeTreatment}.
+ * @public
+ */
+export const layerShapeStyles = layerShapeTreatment;
+
+/**
+ * @deprecated Use {@link roundShapeTreatment}.
+ * @public
+ */
+export const roundShapeStyles = roundShapeTreatment;
+
+/**
+ * @deprecated Use {@link textDensityTreatment}.
+ * @public
+ */
+export const textDensityStyles = textDensityTreatment;
+
+/**
+ * @deprecated Use {@link controlDensityTreatment}.
+ * @public
+ */
+export const controlDensityStyles = controlDensityTreatment;
+
+/**
+ * @deprecated Use {@link controlSquareDensityTreatment}.
+ * @public
+ */
+export const controlSquareDensityStyles = controlSquareDensityTreatment;
+
+/**
+ * @deprecated Use {@link autofillOuterDensityTreatment}.
+ * @public
+ */
+export const autofillOuterDensityStyles = autofillOuterDensityTreatment;
+
+/**
+ * @deprecated Use {@link autofillInnerDensityTreatment}.
+ * @public
+ */
+export const autofillInnerDensityStyles = autofillInnerDensityTreatment;
+
+/**
+ * @deprecated Use {@link controlListDensityTreatment}.
+ * @public
+ */
+export const controlListDensityStyles = controlListDensityTreatment;
+
+/**
+ * @deprecated Use {@link layerDensityTreatment}.
+ * @public
+ */
+export const layerDensityStyles = layerDensityTreatment;
+
+/**
+ * @deprecated Use {@link accentFillStealthControlTreatment}.
+ * @public
+ */
+export const accentFillStealthControlStyles = accentFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link accentFillSubtleControlTreatment}.
+ * @public
+ */
+export const accentFillSubtleControlStyles = accentFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link accentFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const accentFillSubtleInverseControlStyles = accentFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link accentFillIdealControlTreatment}.
+ * @public
+ */
+export const accentFillIdealControlStyles = accentFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link accentFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const accentFillDiscernibleControlStyles = accentFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link accentFillReadableControlTreatment}.
+ * @public
+ */
+export const accentFillReadableControlStyles = accentFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link accentOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const accentOutlineDiscernibleControlStyles = accentOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link accentForegroundReadableControlTreatment}.
+ * @public
+ */
+export const accentForegroundReadableControlStyles = accentForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillStealthControlTreatment}.
+ * @public
+ */
+export const highlightFillStealthControlStyles = highlightFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillSubtleControlTreatment}.
+ * @public
+ */
+export const highlightFillSubtleControlStyles = highlightFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const highlightFillSubtleInverseControlStyles = highlightFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillIdealControlTreatment}.
+ * @public
+ */
+export const highlightFillIdealControlStyles = highlightFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const highlightFillDiscernibleControlStyles = highlightFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightFillReadableControlTreatment}.
+ * @public
+ */
+export const highlightFillReadableControlStyles = highlightFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const highlightOutlineDiscernibleControlStyles = highlightOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link highlightForegroundReadableControlTreatment}.
+ * @public
+ */
+export const highlightForegroundReadableControlStyles = highlightForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillStealthControlTreatment}.
+ * @public
+ */
+export const infoFillStealthControlStyles = infoFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillSubtleControlTreatment}.
+ * @public
+ */
+export const infoFillSubtleControlStyles = infoFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const infoFillSubtleInverseControlStyles = infoFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillIdealControlTreatment}.
+ * @public
+ */
+export const infoFillIdealControlStyles = infoFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const infoFillDiscernibleControlStyles = infoFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link infoFillReadableControlTreatment}.
+ * @public
+ */
+export const infoFillReadableControlStyles = infoFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link infoOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const infoOutlineDiscernibleControlStyles = infoOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link infoForegroundReadableControlTreatment}.
+ * @public
+ */
+export const infoForegroundReadableControlStyles = infoForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillStealthControlTreatment}.
+ * @public
+ */
+export const successFillStealthControlStyles = successFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillSubtleControlTreatment}.
+ * @public
+ */
+export const successFillSubtleControlStyles = successFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const successFillSubtleInverseControlStyles = successFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillIdealControlTreatment}.
+ * @public
+ */
+export const successFillIdealControlStyles = successFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const successFillDiscernibleControlStyles = successFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link successFillReadableControlTreatment}.
+ * @public
+ */
+export const successFillReadableControlStyles = successFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link successOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const successOutlineDiscernibleControlStyles = successOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link successForegroundReadableControlTreatment}.
+ * @public
+ */
+export const successForegroundReadableControlStyles = successForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillStealthControlTreatment}.
+ * @public
+ */
+export const warningFillStealthControlStyles = warningFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillSubtleControlTreatment}.
+ * @public
+ */
+export const warningFillSubtleControlStyles = warningFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const warningFillSubtleInverseControlStyles = warningFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillIdealControlTreatment}.
+ * @public
+ */
+export const warningFillIdealControlStyles = warningFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const warningFillDiscernibleControlStyles = warningFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link warningFillReadableControlTreatment}.
+ * @public
+ */
+export const warningFillReadableControlStyles = warningFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link warningOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const warningOutlineDiscernibleControlStyles = warningOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link warningForegroundReadableControlTreatment}.
+ * @public
+ */
+export const warningForegroundReadableControlStyles = warningForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillStealthControlTreatment}.
+ * @public
+ */
+export const criticalFillStealthControlStyles = criticalFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillSubtleControlTreatment}.
+ * @public
+ */
+export const criticalFillSubtleControlStyles = criticalFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const criticalFillSubtleInverseControlStyles = criticalFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillIdealControlTreatment}.
+ * @public
+ */
+export const criticalFillIdealControlStyles = criticalFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const criticalFillDiscernibleControlStyles = criticalFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalFillReadableControlTreatment}.
+ * @public
+ */
+export const criticalFillReadableControlStyles = criticalFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const criticalOutlineDiscernibleControlStyles = criticalOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link criticalForegroundReadableControlTreatment}.
+ * @public
+ */
+export const criticalForegroundReadableControlStyles = criticalForegroundReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link layerFillInteractiveControlTreatment}.
+ * @public
+ */
+export const layerFillInteractiveControlStyles = layerFillInteractiveControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillStealthControlTreatment}.
+ * @public
+ */
+export const neutralFillStealthControlStyles = neutralFillStealthControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillSubtleControlTreatment}.
+ * @public
+ */
+export const neutralFillSubtleControlStyles = neutralFillSubtleControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillSubtleInverseControlTreatment}.
+ * @public
+ */
+export const neutralFillSubtleInverseControlStyles = neutralFillSubtleInverseControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillIdealControlTreatment}.
+ * @public
+ */
+export const neutralFillIdealControlStyles = neutralFillIdealControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillDiscernibleControlTreatment}.
+ * @public
+ */
+export const neutralFillDiscernibleControlStyles = neutralFillDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralFillReadableControlTreatment}.
+ * @public
+ */
+export const neutralFillReadableControlStyles = neutralFillReadableControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralOutlineDiscernibleControlTreatment}.
+ * @public
+ */
+export const neutralOutlineDiscernibleControlStyles = neutralOutlineDiscernibleControlTreatment;
+
+/**
+ * @deprecated Use {@link neutralForegroundReadableElementTreatment}.
+ * @public
+ */
+export const neutralForegroundReadableElementStyles = neutralForegroundReadableElementTreatment;
+
+/**
+ * @deprecated Use {@link neutralForegroundStrongElementTreatment}.
+ * @public
+ */
+export const neutralForegroundStrongElementStyles = neutralForegroundStrongElementTreatment;
+
+/**
+ * @deprecated Use {@link neutralDividerSubtleElementTreatment}.
+ * @public
+ */
+export const neutralDividerSubtleElementStyles = neutralDividerSubtleElementTreatment;
+
+/**
+ * @deprecated Use {@link neutralDividerDiscernibleElementTreatment}.
+ * @public
+ */
+export const neutralDividerDiscernibleElementStyles = neutralDividerDiscernibleElementTreatment;
+
+/**
+ * @deprecated Use {@link typeRampBaseTreatment}.
+ * @public
+ */
+export const typeRampBaseStyles = typeRampBaseTreatment;
+
+/**
+ * @deprecated Use {@link typeRampMinus1Treatment}.
+ * @public
+ */
+export const typeRampMinus1Styles = typeRampMinus1Treatment;
+
+/**
+ * @deprecated Use {@link typeRampMinus2Treatment}.
+ * @public
+ */
+export const typeRampMinus2Styles = typeRampMinus2Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus1Treatment}.
+ * @public
+ */
+export const typeRampPlus1Styles = typeRampPlus1Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus2Treatment}.
+ * @public
+ */
+export const typeRampPlus2Styles = typeRampPlus2Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus3Treatment}.
+ * @public
+ */
+export const typeRampPlus3Styles = typeRampPlus3Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus4Treatment}.
+ * @public
+ */
+export const typeRampPlus4Styles = typeRampPlus4Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus5Treatment}.
+ * @public
+ */
+export const typeRampPlus5Styles = typeRampPlus5Treatment;
+
+/**
+ * @deprecated Use {@link typeRampPlus6Treatment}.
+ * @public
+ */
+export const typeRampPlus6Styles = typeRampPlus6Treatment;
+
+/**
+ * @deprecated Use {@link shadowCardTreatment}.
+ * @public
+ */
+export const shadowCardStyles = shadowCardTreatment;
+
+/**
+ * @deprecated Use {@link shadowCardInteractiveTreatment}.
+ * @public
+ */
+export const shadowCardInteractiveStyles = shadowCardInteractiveTreatment;
+
+/**
+ * @deprecated Use {@link shadowTooltipTreatment}.
+ * @public
+ */
+export const shadowTooltipStyles = shadowTooltipTreatment;
+
+/**
+ * @deprecated Use {@link shadowFlyoutTreatment}.
+ * @public
+ */
+export const shadowFlyoutStyles = shadowFlyoutTreatment;
+
+/**
+ * @deprecated Use {@link shadowDialogTreatment}.
+ * @public
+ */
+export const shadowDialogStyles = shadowDialogTreatment;
+
+/**
+ * @deprecated Use {@link actionTreatment}.
+ * @public
+ */
+export const actionStyles = actionTreatment;
+
+/**
+ * @deprecated Use {@link inputBaseTreatment}.
+ * @public
+ */
+export const inputBaseStyles = inputBaseTreatment;
+
+/**
+ * @deprecated Use {@link inputTreatment}.
+ * @public
+ */
+export const inputStyles = inputTreatment;
+
+/**
+ * @deprecated Use {@link inputAutofillTreatment}.
+ * @public
+ */
+export const inputAutofillStyles = inputAutofillTreatment;
+
+/**
+ * @deprecated Use {@link selectableSelectedTreatment}.
+ * @public
+ */
+export const selectableSelectedStyles = selectableSelectedTreatment;
+
+/**
+ * @deprecated Use {@link selectableUnselectedTreatment}.
+ * @public
+ */
+export const selectableUnselectedStyles = selectableUnselectedTreatment;
+
+/**
+ * @deprecated Use {@link itemTreatment}.
+ * @public
+ */
+export const itemStyles = itemTreatment;
+
+/**
+ * @deprecated Use {@link plainTextTreatment}.
+ * @public
+ */
+export const plainTextStyles = plainTextTreatment;
+
+/**
+ * @deprecated Use {@link plainTextMultilineTreatment}.
+ * @public
+ */
+export const plainTextMultilineStyles = plainTextMultilineTreatment;
+
+/**
+ * @deprecated Use {@link labelTextTreatment}.
+ * @public
+ */
+export const labelTextStyles = labelTextTreatment;
+
+/**
+ * @deprecated Use {@link flyoutTreatment}.
+ * @public
+ */
+export const flyoutStyles = flyoutTreatment;
+
+/**
+ * @deprecated Use {@link disabledTreatment}.
+ * @public
+ */
+export const disabledStyles = disabledTreatment;
+
+/**
+ * @deprecated Use {@link interactiveCursorTreatment}.
+ * @public
+ */
+export const interactiveCursorStyles = interactiveCursorTreatment;
+
+/**
+ * @deprecated Use {@link focusIndicatorTreatment}.
+ * @public
+ */
+export const focusIndicatorStyles = focusIndicatorTreatment;
+
+/**
+ * @deprecated Use {@link focusResetTreatment}.
+ * @public
+ */
+export const focusResetStyles = focusResetTreatment;
+
+/**
+ * @deprecated Use {@link TreatmentNameMapping}, which maps to the names of the treatments.
+ * @public
+ */
+export const StyleNameMapping = TreatmentNameMapping;
+
+/**
+ * @deprecated Use {@link TreatmentNameMapping}.
+ * @public
+ */
+export type StyleNameMapping = TreatmentNameMapping;

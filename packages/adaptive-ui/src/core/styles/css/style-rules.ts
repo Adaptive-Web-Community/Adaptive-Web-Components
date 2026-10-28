@@ -105,6 +105,19 @@ function anatomyRules(anatomy: ComponentAnatomy<any, any>, treatments: AnatomyTr
     return rules;
 }
 
+// The treatments of a rule, with those it gives by the deprecated name `styles` first.
+function withStyles(rule: StyleRule): StyleRule {
+    if (rule.styles === undefined) {
+        return rule;
+    }
+    const styles: readonly Treatment[] = isTreatmentList(rule.styles) ? rule.styles : [rule.styles];
+    return { ...rule, treatments: [...styles, ...(rule.treatments ?? [])] };
+}
+
+function isTreatmentList(styles: Treatment | readonly Treatment[]): styles is readonly Treatment[] {
+    return Array.isArray(styles);
+}
+
 /**
  * Renders the style rules of a component as rules of CSS, after the rules that its anatomy adds.
  *
@@ -132,6 +145,6 @@ export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOpti
             }
         }
         const interactivity = { ...anatomy?.interactivity, ...(target.ignoreInteractivity ? Interactivity.always : {}) };
-        return renderRules(treatmentProperties(rule), { ...interactivity, ...target }, tokens);
+        return renderRules(treatmentProperties(withStyles(rule)), { ...interactivity, ...target }, tokens);
     });
 }

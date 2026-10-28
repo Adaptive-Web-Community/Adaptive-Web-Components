@@ -287,6 +287,10 @@ export interface SerializableStyleRule {
     contextCondition?: Record<string, string | boolean>;
     part?: string,
     treatments?: string[],
+    /**
+     * @deprecated Use `treatments`.
+     */
+    styles?: string[],
     properties?: Record<string, string>,
 }
 
