@@ -378,8 +378,8 @@ export const Focus: {
 
 // @public
 export interface FocusDefinition<TParts> {
-    focusTarget: StyleModuleTarget;
-    resetTarget?: StyleModuleTarget;
+    focusTarget: StyleRuleTarget;
+    resetTarget?: StyleRuleTarget;
 }
 
 // @public
@@ -572,7 +572,7 @@ export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 
 // @public
-export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
+export function makeSelector(params: SelectorParameters, state: InteractiveState): string;
 
 // @public
 export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
@@ -683,7 +683,7 @@ export interface Reference {
 export function relativeLuminance(paint: Paint): number;
 
 // @public
-export function renderRules(properties: Iterable<readonly [string, StyleRuleValues]>, params: StyleModuleEvaluateParameters, tokens: TokenPropertiesResolver): CssRule[];
+export function renderRules(properties: Iterable<readonly [string, StyleValues]>, params: SelectorParameters, tokens: TokenPropertiesResolver): CssRule[];
 
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
@@ -696,6 +696,9 @@ export function rgbColor(r: number, g: number, b: number, alpha?: number): Color
 
 // @public
 export const round: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export type SelectorParameters = StyleRuleTarget & InteractivityDefinition;
 
 // @beta (undocumented)
 export interface SerializableAnatomy {
@@ -765,18 +768,10 @@ export function stepCountFor(stepSize: number): number;
 export type StringCondition = Record<string, string>;
 
 // @public
-export type StyleModuleEvaluateParameters = StyleModuleTarget & InteractivityDefinition;
+export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
 
 // @public
-export interface StyleModuleTarget {
-    context?: string;
-    contextCondition?: string;
-    // @beta
-    ignoreInteractivity?: boolean;
-    part?: string;
-    partCondition?: string;
-    stateOnContext?: boolean;
-}
+export type StyleProperties = Partial<Record<StyleKey, StyleValues>>;
 
 // @public
 export const StyleProperty: {
@@ -855,10 +850,31 @@ export const StylePropertyShorthand: {
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
 // @public
-export type StyleRuleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;
+export interface StyleRule {
+    readonly properties?: StyleProperties;
+    readonly target?: StyleRuleTarget;
+    readonly treatments?: readonly Treatment[];
+}
 
 // @public
-export type StyleRuleValues = StyleRuleValue | InteractiveSet<StyleRuleValue>;
+export type StyleRules = readonly StyleRule[];
+
+// @public
+export interface StyleRuleTarget {
+    context?: string;
+    contextCondition?: string;
+    // @beta
+    ignoreInteractivity?: boolean;
+    part?: string;
+    partCondition?: string;
+    stateOnContext?: boolean;
+}
+
+// @public
+export type StyleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;
+
+// @public
+export type StyleValues = StyleValue | InteractiveSet<StyleValue>;
 
 // @public
 export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
@@ -900,6 +916,16 @@ export type TokenRef = Library.Ref<Operand, any>;
 
 // @public
 export const transparent: Color_2;
+
+// @public
+export interface Treatment {
+    readonly name?: string;
+    readonly properties?: StyleProperties;
+    readonly treatments?: readonly Treatment[];
+}
+
+// @public
+export function treatmentProperties(treatment: Pick<Treatment, "treatments" | "properties">): Map<string, StyleValues>;
 
 // @beta
 export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, options?: TwoPaletteGradientOptions): Gradient;

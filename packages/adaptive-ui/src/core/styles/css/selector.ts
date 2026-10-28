@@ -1,5 +1,13 @@
 import { InteractiveSet, InteractiveState } from "../../interactive.js";
-import type { StyleModuleEvaluateParameters } from "../rule.js";
+import type { InteractivityDefinition } from "../anatomy.js";
+import type { StyleRuleTarget } from "../rule.js";
+
+/**
+ * What the selectors of a rule are made from: the target of the rule, and the interactivity of the component.
+ *
+ * @public
+ */
+export type SelectorParameters = StyleRuleTarget & InteractivityDefinition;
 
 const HOST_CONTEXT = ":host";
 
@@ -23,7 +31,7 @@ const DefaultInteractiveSelectors: InteractiveSet<string> = {
  *
  * @public
  */
-export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string {
+export function makeSelector(params: SelectorParameters, state: InteractiveState): string {
     const selectors: string[] = [];
 
     const rest = state === InteractiveState.rest;

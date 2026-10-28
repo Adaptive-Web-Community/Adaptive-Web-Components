@@ -5,9 +5,10 @@ import { InteractiveState } from "../../interactive.js";
 import { shadow } from "../../shadow/shadow.js";
 import { adaptiveConverters } from "../../token-css.js";
 import { AdaptiveDesignToken, InteractiveToken } from "../../token-types.js";
-import { CssRule, formatRules, libraryTokenProperties, renderRules, StyleRuleValues } from "./rules.js";
+import { StyleValues } from "../properties.js";
+import { CssRule, formatRules, libraryTokenProperties, renderRules } from "./rules.js";
 import { Interactivity } from "../anatomy.js";
-import { StyleModuleEvaluateParameters } from "../rule.js";
+import { SelectorParameters } from "./selector.js";
 
 const { expect } = chai;
 
@@ -34,7 +35,7 @@ const library = Library.create<Tokens>({
 });
 const resolve = libraryTokenProperties(library);
 
-const render = (properties: Record<string, StyleRuleValues>, params: StyleModuleEvaluateParameters = {}): CssRule[] =>
+const render = (properties: Record<string, StyleValues>, params: SelectorParameters = {}): CssRule[] =>
     renderRules(Object.entries(properties), params, resolve);
 
 describe("renderRules", () => {

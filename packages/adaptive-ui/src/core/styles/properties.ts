@@ -1,4 +1,7 @@
 import type { ValuesOf } from "@microsoft/fast-foundation";
+import type { DesignToken, Library } from "design-token-library";
+import type { Paint } from "../color/paint.js";
+import type { InteractiveSet } from "../interactive.js";
 
 /**
  * Supported style properties for design-to-code with Adaptive UI.
@@ -138,3 +141,42 @@ export const StylePropertyShorthand = {
  * @public
  */
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
+
+/**
+ * Key for a style property, a {@link (StyleProperty:type)}, {@link (StylePropertyShorthand:type)}, or a string for any other CSS property.
+ *
+ * @public
+ */
+export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
+
+/**
+ * A value of a style property: a value of CSS, a value of a token type, or a ref to a token of a library, which is written as the `var()` of
+ * its custom property.
+ *
+ * @public
+ */
+export type StyleValue =
+    | string
+    | number
+    | Paint
+    | DesignToken.Values.Readonly.Shadow
+    | DesignToken.Values.Readonly.Dimension
+    | Library.Ref<unknown, never>;
+
+/**
+ * A value of a style property, or a value for each state of an interactive element.
+ *
+ * @remarks
+ * A ref to an interactive token is written as a value for each state that the token has. In a set, the value of a state that is a ref to an
+ * interactive token is the value of the token in that state, so `{ rest: a, disabled: b }` is the rest of `a` and the disabled of `b`.
+ *
+ * @public
+ */
+export type StyleValues = StyleValue | InteractiveSet<StyleValue>;
+
+/**
+ * The style properties of a treatment or a rule, where the key is the {@link (StyleKey:type)} and the value is a value or a ref to a token.
+ *
+ * @public
+ */
+export type StyleProperties = Partial<Record<StyleKey, StyleValues>>;

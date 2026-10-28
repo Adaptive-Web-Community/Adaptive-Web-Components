@@ -1,5 +1,5 @@
 import { InteractiveState } from "../types.js";
-import type { StyleModuleTarget } from "./rule.js";
+import type { StyleRuleTarget } from "./rule.js";
 
 /**
  * The selector for a true/false condition.
@@ -167,12 +167,12 @@ export interface FocusDefinition<TParts> {
     /**
      * The focus indication element.
      */
-    focusTarget: StyleModuleTarget,
+    focusTarget: StyleRuleTarget,
 
     /**
      * The focusable element to reset browser default styles, for instance, a native input element or an element with a `tabindex`.
      */
-    resetTarget?: StyleModuleTarget,
+    resetTarget?: StyleRuleTarget,
 }
 
 /**

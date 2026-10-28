@@ -1,12 +1,10 @@
-import { CSSPropertiesOptions, DesignToken, isRef, Library, pathOf } from "design-token-library";
-import type { Paint } from "../../color/paint.js";
+import { CSSPropertiesOptions, isRef, Library, pathOf } from "design-token-library";
 import { InteractiveSet, InteractiveState } from "../../interactive.js";
 import { atName, formatValue, propertyResolver } from "../../token-css.js";
 import { AdaptiveDesignToken } from "../../token-types.js";
-import { StyleProperty } from "../properties.js";
-import { StyleModuleEvaluateParameters } from "../rule.js";
+import { StyleProperty, StyleValue, StyleValues } from "../properties.js";
 import { stylePropertyToCssProperty } from "./css.js";
-import { makeSelector } from "./selector.js";
+import { makeSelector, SelectorParameters } from "./selector.js";
 
 /**
  * A rule of CSS: a selector, and the value of each of its properties, in order. It is plain data, which {@link formatRules} writes.
@@ -17,31 +15,6 @@ export interface CssRule {
     readonly selector: string;
     readonly declarations: Readonly<Record<string, string>>;
 }
-
-/**
- * A value of a style property: a value of CSS, a value of a token type, or a ref to a token of a library, which is written as the `var()` of
- * its custom property.
- *
- * @public
- */
-export type StyleRuleValue =
-    | string
-    | number
-    | Paint
-    | DesignToken.Values.Readonly.Shadow
-    | DesignToken.Values.Readonly.Dimension
-    | Library.Ref<unknown, never>;
-
-/**
- * A value of a style property, or a value for each state of an interactive element.
- *
- * @remarks
- * A ref to an interactive token is written as a value for each state that the token has. In a set, the value of a state that is a ref to an
- * interactive token is the value of the token in that state, so `{ rest: a, disabled: b }` is the rest of `a` and the disabled of `b`.
- *
- * @public
- */
-export type StyleRuleValues = StyleRuleValue | InteractiveSet<StyleRuleValue>;
 
 /**
  * The custom properties of a token that a style refers to: the property of the token, and the states of an interactive token, each a
@@ -119,7 +92,7 @@ function stateProperty({ property, states }: TokenProperties, state: Interactive
 }
 
 // The CSS of a value in a state, where a ref to an interactive token is the value of the token in that state.
-function formatRuleValue(value: StyleRuleValue, state: InteractiveState, tokens: TokenPropertiesResolver): string | undefined {
+function formatRuleValue(value: StyleValue, state: InteractiveState, tokens: TokenPropertiesResolver): string | undefined {
     if (!isRef(value)) {
         return formatValue(value);
     }
@@ -128,14 +101,14 @@ function formatRuleValue(value: StyleRuleValue, state: InteractiveState, tokens:
 }
 
 // The CSS of a value for each state that it has.
-function valuesByState(value: StyleRuleValues, tokens: TokenPropertiesResolver): Map<InteractiveState, string> {
+function valuesByState(value: StyleValues, tokens: TokenPropertiesResolver): Map<InteractiveState, string> {
     const values = new Map<InteractiveState, string>();
     if (isRef(value)) {
         const properties = tokens(pathOf(value));
         for (const state of properties.states ?? [InteractiveState.rest]) {
             values.set(state, `var(${stateProperty(properties, state)})`);
         }
-    } else if (isInteractiveSet<StyleRuleValue>(value)) {
+    } else if (isInteractiveSet<StyleValue>(value)) {
         for (const state of ruleStates) {
             const member = value[state];
             const css = member === undefined || member === null ? undefined : formatRuleValue(member, state, tokens);
@@ -150,7 +123,7 @@ function valuesByState(value: StyleRuleValues, tokens: TokenPropertiesResolver):
 }
 
 // A state other than the rest has a rule only where the element has that state.
-function hasState(params: StyleModuleEvaluateParameters, state: InteractiveState): boolean {
+function hasState(params: SelectorParameters, state: InteractiveState): boolean {
     switch (state) {
         case InteractiveState.rest:
             return true;
@@ -178,8 +151,8 @@ function hasState(params: StyleModuleEvaluateParameters, state: InteractiveState
  * @public
  */
 export function renderRules(
-    properties: Iterable<readonly [string, StyleRuleValues]>,
-    params: StyleModuleEvaluateParameters,
+    properties: Iterable<readonly [string, StyleValues]>,
+    params: SelectorParameters,
     tokens: TokenPropertiesResolver
 ): CssRule[] {
     const rules = new Map<InteractiveState, Record<string, string>>();
