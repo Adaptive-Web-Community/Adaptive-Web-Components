@@ -50,6 +50,11 @@ export const add: (...args: (Operand | TokenRef)[]) => Expression;
 // @public
 export function asOverlay(intendedColor: Color_2, reference: Color_2): OverlayColor;
 
+// Warning: (ae-internal-missing-underscore) The name "atName" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function atName<T>(tree: any, name: string): T;
+
 // @public
 export const black: Color_2;
 
@@ -220,6 +225,14 @@ export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor
 export const createTyped: typeof TypedCSSDesignToken.createTyped;
 
 // @public
+export interface CssRule {
+    // (undocumented)
+    readonly declarations: Readonly<Record<string, string>>;
+    // (undocumented)
+    readonly selector: string;
+}
+
+// @public
 export interface CursorDefinition {
     cursorType?: string;
     part?: string;
@@ -387,6 +400,12 @@ export function formatGradient(value: Gradient | DtcgGradient): string;
 // @public
 export function formatPaint(paint: Paint): string;
 
+// @public
+export function formatRules(rules: Iterable<CssRule>): string;
+
+// @public
+export function formatValue(value: unknown): string;
+
 // Warning: (ae-internal-missing-underscore) The name "fromCulori" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -527,6 +546,9 @@ export function isShadow(value: unknown): value is DesignToken.Values.Readonly.S
 export function isTransparent(color: Color_2): boolean;
 
 // @public
+export function libraryTokenProperties(library: Library.Library<any>, options?: CSSPropertiesOptions): TokenPropertiesResolver;
+
+// @public
 export type LinearGradient = LinearGradient_2;
 
 // @public @deprecated (undocumented)
@@ -659,6 +681,9 @@ export interface Reference {
 
 // @public
 export function relativeLuminance(paint: Paint): number;
+
+// @public
+export function renderRules(properties: Iterable<readonly [string, StyleRuleValues]>, params: StyleModuleEvaluateParameters, tokens: TokenPropertiesResolver): CssRule[];
 
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
@@ -830,6 +855,12 @@ export const StylePropertyShorthand: {
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
 // @public
+export type StyleRuleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;
+
+// @public
+export type StyleRuleValues = StyleRuleValue | InteractiveSet<StyleRuleValue>;
+
+// @public
 export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @public @deprecated (undocumented)
@@ -852,6 +883,17 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
     name: string;
     type?: DesignTokenType;
 }
+
+// @public
+export interface TokenProperties {
+    // (undocumented)
+    readonly property: string;
+    // (undocumented)
+    readonly states?: readonly InteractiveState[];
+}
+
+// @public
+export type TokenPropertiesResolver = (path: readonly string[]) => TokenProperties;
 
 // @public
 export type TokenRef = Library.Ref<Operand, any>;
@@ -956,7 +998,7 @@ export function withAlpha(color: Color_2, alpha: number): Color_2;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/core/token-css.d.ts:29:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
+// dist/dts/core/token-css.d.ts:47:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
