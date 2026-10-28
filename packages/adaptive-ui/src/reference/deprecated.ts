@@ -6,21 +6,10 @@
  * doesn't have `withDefault`, `getValueFor`, or `setValueFor`, see MIGRATION.md. The name of the token in the library is
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
-import { Library } from "design-token-library";
-import { appearance } from "./appearance.js";
-import { color as colorConfig, ColorLibraryTokens } from "./color.js";
-import { density, DensityLibraryTokens } from "./density.js";
-import { elevation as elevationConfig, ElevationLibraryTokens } from "./elevation.js";
-import { typography, TypographyLibraryTokens } from "./typography.js";
+import { createReferenceLibrary } from "./library.js";
 
-// The library for the tokens that are exported here. Each system that is migrated adds its configuration to this.
-const library = Library.create<TypographyLibraryTokens & ColorLibraryTokens & ElevationLibraryTokens & DensityLibraryTokens>({
-    typography,
-    color: colorConfig,
-    elevation: elevationConfig,
-    ...appearance,
-    density,
-});
+// The library for the tokens that are exported here, the reference system.
+const library = createReferenceLibrary();
 
 const { color, elevation, global, shape, density: densities } = library.tokens;
 
