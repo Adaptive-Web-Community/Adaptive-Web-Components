@@ -106,6 +106,27 @@ describe("renderRules", () => {
         expect(rules[2].declarations).to.deep.equal({ background: "var(--fill)" });
     });
 
+    it("should write a ref to an interactive token in a set as the value of the token in that state", () => {
+        const rules = render(
+            { foregroundFill: { rest: tokens.fill.interactive, hover: tokens.fill.$root, disabled: tokens.fill.interactive } },
+            Interactivity.disabledAttribute
+        );
+
+        expect(rules.map(rule => rule.declarations.color)).to.deep.equal([
+            "var(--fill-interactive)",
+            "var(--fill)",
+            "var(--fill-interactive-disabled)",
+        ]);
+    });
+
+    it("should leave out a state of a set that refers to an interactive token that doesn't have the state", () => {
+        const rules = render({ backgroundFill: { rest: tokens.fill.hoverOnly, hover: tokens.fill.hoverOnly } }, Interactivity.disabledAttribute);
+
+        expect(rules).to.deep.equal([
+            { selector: ":host(:not([disabled]):hover)", declarations: { background: "var(--fill-hoverOnly-hover)" } },
+        ]);
+    });
+
     it("should leave out a state that is null", () => {
         const rules = render({ backgroundFill: { rest: "white", hover: null } }, Interactivity.disabledAttribute);
 

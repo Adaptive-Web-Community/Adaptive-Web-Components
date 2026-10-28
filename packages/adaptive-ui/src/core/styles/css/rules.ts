@@ -36,7 +36,8 @@ export type StyleRuleValue =
  * A value of a style property, or a value for each state of an interactive element.
  *
  * @remarks
- * A ref to an interactive token is written as a value for each state that the token has.
+ * A ref to an interactive token is written as a value for each state that the token has. In a set, the value of a state that is a ref to an
+ * interactive token is the value of the token in that state, so `{ rest: a, disabled: b }` is the rest of `a` and the disabled of `b`.
  *
  * @public
  */
@@ -106,31 +107,44 @@ function isStyleProperty(key: string): key is StyleProperty {
     return key in StyleProperty;
 }
 
-function formatRuleValue(value: StyleRuleValue, tokens: TokenPropertiesResolver): string {
-    return isRef(value) ? `var(${tokens(pathOf(value)).property})` : formatValue(value);
+// The custom property of a state of a token, `--x` for the rest and `--x-<state>` for the others, or none if the token doesn't have the state.
+function stateProperty({ property, states }: TokenProperties, state: InteractiveState): string | undefined {
+    if (states === undefined) {
+        return property;
+    }
+    if (!states.includes(state)) {
+        return undefined;
+    }
+    return state === InteractiveState.rest ? property : `${property}-${state}`;
+}
+
+// The CSS of a value in a state, where a ref to an interactive token is the value of the token in that state.
+function formatRuleValue(value: StyleRuleValue, state: InteractiveState, tokens: TokenPropertiesResolver): string | undefined {
+    if (!isRef(value)) {
+        return formatValue(value);
+    }
+    const property = stateProperty(tokens(pathOf(value)), state);
+    return property === undefined ? undefined : `var(${property})`;
 }
 
 // The CSS of a value for each state that it has.
 function valuesByState(value: StyleRuleValues, tokens: TokenPropertiesResolver): Map<InteractiveState, string> {
     const values = new Map<InteractiveState, string>();
     if (isRef(value)) {
-        const { property, states } = tokens(pathOf(value));
-        if (states === undefined) {
-            values.set(InteractiveState.rest, `var(${property})`);
-        } else {
-            for (const state of states) {
-                values.set(state, state === InteractiveState.rest ? `var(${property})` : `var(${property}-${state})`);
-            }
+        const properties = tokens(pathOf(value));
+        for (const state of properties.states ?? [InteractiveState.rest]) {
+            values.set(state, `var(${stateProperty(properties, state)})`);
         }
     } else if (isInteractiveSet<StyleRuleValue>(value)) {
         for (const state of ruleStates) {
             const member = value[state];
-            if (member !== undefined && member !== null) {
-                values.set(state, formatRuleValue(member, tokens));
+            const css = member === undefined || member === null ? undefined : formatRuleValue(member, state, tokens);
+            if (css !== undefined) {
+                values.set(state, css);
             }
         }
     } else {
-        values.set(InteractiveState.rest, formatRuleValue(value, tokens));
+        values.set(InteractiveState.rest, formatValue(value));
     }
     return values;
 }

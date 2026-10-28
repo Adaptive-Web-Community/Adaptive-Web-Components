@@ -26,6 +26,9 @@ each token's custom property, and FAST is to leave `adaptive-ui` (plan, phase 3 
 - A ref to an interactive token (decision 0006) is a rule for each state that the token's value has, `var(--name)` at rest and
   `var(--name-<state>)` for the others, the properties the interactive converter writes. `libraryTokenProperties(library)` tells the renderer
   the property and the states of a token, from the library.
+- In a set of values, a ref to an interactive token in a state is the value of the token in that state: `{ rest: a, disabled: b }` is the rest
+  of `a` and the disabled of `b`, which is how a style takes some states of one token and some of another. A state the token doesn't have
+  isn't written.
 - A value that isn't a ref is written as the library writes a token of its type (`formatValue`: a color, a gradient, a shadow, a dimension),
   or as it is.
 - The FAST half of the renderer (rules into `ElementStyles`, and keeping the custom properties up to date from the library's `subscribe`)
