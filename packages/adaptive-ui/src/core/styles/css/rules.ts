@@ -130,7 +130,8 @@ function hasState(params: SelectorParameters, state: InteractiveState): boolean 
  * A property of Adaptive UI, like `backgroundFill`, is written as its CSS property, and any other key as it is. The properties are the
  * effective ones, with the shorthands expanded. The declarations of a state are one rule, and the rules are in the order rest, focus, hover,
  * active, disabled, whatever order the properties give their states: the rules of two states can match at once with the same specificity
- * (a pressed element is also hovered), and the later one wins. A foreground fill also sets `fill` to `currentcolor` at rest, for icons.
+ * (a pressed element is also hovered), and the later one wins. States that have the same selector, like those of a pseudo-element, are one
+ * rule, where the later state wins. A foreground fill also sets `fill` to `currentcolor` at rest, for icons.
  *
  * @param properties - The style properties and their values
  * @param params - The target of the style and the interactivity of the element, which make the selectors
@@ -159,10 +160,16 @@ export function renderRules(
             rules.set(state, declarations);
         }
     }
-    return ruleStates.flatMap(state => {
+    // States that have the same selector, like those of a pseudo-element, which can't follow a state, are one rule: the later state wins.
+    const bySelector = new Map<string, Record<string, string>>();
+    for (const state of ruleStates) {
         const declarations = rules.get(state);
-        return declarations ? [{ selector: makeSelector(params, state), declarations }] : [];
-    });
+        if (declarations) {
+            const selector = makeSelector(params, state);
+            bySelector.set(selector, { ...bySelector.get(selector), ...declarations });
+        }
+    }
+    return Array.from(bySelector, ([selector, declarations]) => ({ selector, declarations }));
 }
 
 /**

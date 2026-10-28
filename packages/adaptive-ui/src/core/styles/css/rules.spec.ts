@@ -143,6 +143,18 @@ describe("renderRules", () => {
         expect(rules.map(rule => rule.selector)).to.deep.equal([":host", ":host(:not([disabled]):hover)", ":host(:not([disabled]):active)"]);
     });
 
+    it("should make one rule of the states that have the same selector, where the later state wins", () => {
+        const rules = render(
+            { backgroundFill: { rest: "white", hover: "grey", active: "black" }, opacity: { hover: 0.5 } },
+            { ...Interactivity.disabledAttribute, part: "::before" }
+        );
+
+        expect(rules).to.deep.equal([
+            { selector: "::before", declarations: { background: "white" } },
+            { selector: ":host(:not([disabled]))::before", declarations: { background: "black", opacity: "0.5" } },
+        ]);
+    });
+
     it("should merge the declarations of one state into one rule, in the order of the properties", () => {
         const rules = render({ backgroundFill: tokens.fill.interactive, cursor: "pointer" }, Interactivity.disabledAttribute);
 
