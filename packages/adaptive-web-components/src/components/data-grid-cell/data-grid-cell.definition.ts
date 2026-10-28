@@ -3,7 +3,7 @@ import { composeDataGridCell } from "./data-grid-cell.compose.js";
 import { styleModules } from "./data-grid-cell.styles.modules.js";
 
 /**
- * The Data Grid Cell custom element definition. Implements {@link @microsoft/fast-foundation#FASTDataGridCell}.
+ * The Data Grid Cell custom element definition. Implements {@link DataGridCell}.
  *
  * @remarks
  * HTML Element: \<adaptive-data-grid-cell\>

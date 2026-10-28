@@ -11,6 +11,10 @@ export const templateStyles: ElementStyles = css`
         flex-direction: column;
     }
 
+    .rows {
+        display: contents;
+    }
+
     :host([selection-mode="multi-row"]) {
         user-select: none;
     }

@@ -17,7 +17,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    change (`setItems`, `expandModeChanged`, `itemExpandedChanged`), and `connect` and `disconnect` with the element's lifecycle. What isn't
    in the contract, such as the author's ARIA to forward, the controller observes itself.
    Used by: Accordion, Button; Anchor (its `AriaForwardingController` observes the author's ARIA); Tablist, Toolbar, Listbox, Select, Picker,
-   Menu, Menu Item, Tree View (it observes the items under its own, and their `expanded` and `selected`), Slider.
+   Menu, Menu Item, Tree View (it observes the items under its own, and their `expanded` and `selected`), Slider,
+   Data Grid (it observes the `tabindex` of the controls in its cells).
 4. **A controller gets only what it uses**, as a narrow type (`ButtonInternals` is the role, the form, and the states of `ElementInternals`), so
    it can be tested without a browser feature it doesn't need.
    Used by: Button.
@@ -85,7 +86,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     through its controller), Menu (`menu`, through its controller), Menu Item (`menuitem`, `menuitemcheckbox`,
     or `menuitemradio` by its `type`, checked, disabled, and its submenu, through its controller), Tree View (`tree`,
     through its controller), Tree Item (`treeitem`, selected, disabled, and expanded when it has items), Slider (`slider`, its values,
-    orientation, read only, and value text, through its controller).
+    orientation, read only, and value text, through its controller), Data Grid (`grid`, through its controller), Data Grid Row (`row`,
+    selected), Data Grid Cell (by its `cell-type`).
 18. **An element works alone.** A container coordinates its children by reacting to their state, and by giving them what is the container's
     (a property each child reads), not by doing their behavior for them.
     Used by: Accordion Item (it toggles itself), Accordion (it reacts to `expanded`, and gives `collapsible`), Radio (it checks itself),
@@ -95,12 +97,12 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     and gives `active`), Select (as Listbox), Picker (as Listbox; it hides the options its filter leaves out, and shows them again),
     Menu Item (it checks itself, and opens its submenu), Menu (it reacts to `checked` for its radio groups, and gives `startColumns`),
     Tree Item (it expands and collapses itself, and puts its items in its `item` slot), Tree View (it keeps one item selected,
-    and gives `nested`), Slider (it gives its labels `percent` and `orientation`).
+    and gives `nested`), Slider (it gives its labels `percent` and `orientation`), Data Grid (it gives its rows `selectable`).
 19. **A container knows its children by their class**, not by their tag name, which a design system's prefix changes. A child that isn't
     defined yet is waited for with `whenDefined` of the container's registry.
     Used by: Accordion, Radio Group (both with AWC's `onDefined`), Tablist (its tabs, and the panels of its panels' element),
     Toolbar (its items by whether they take focus, again when one is defined), Breadcrumb, Listbox, Select, Picker, Menu, Tree View,
-    Tree Item, Slider.
+    Tree Item, Slider, Data Grid, Data Grid Row.
 
 ## ARIA references and ids
 
@@ -131,7 +133,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Listbox Option (`:state(selected)`, `:state(active)`), Listbox (`multiple`, `readonly`), Select (`:state(open)`), Picker (`multiple`,
     `freeform`, `loading`, `:state(open)`), Menu Item (`type`, `checked`, `disabled`; `:state(expanded)`, `:state(start-columns-1)`,
     `:state(start-columns-2)`), Tree Item (`expanded`, `selected`, `disabled`; `:state(nested)`), Slider (`orientation`,
-    `readonly`; `:state(dragging)`), Slider Label (`:state(vertical)`), Calendar (`month`, `year`, `multiple`, `readonly`).
+    `readonly`; `:state(dragging)`), Slider Label (`:state(vertical)`), Calendar (`month`, `year`, `multiple`, `readonly`),
+    Data Grid (`selection-mode`), Data Grid Row (`row-type`, `selected`), Data Grid Cell (`cell-type`).
 24. **An attribute is the default of a state that the user changes**, as on a native element: the `checked` attribute is `defaultChecked`,
     `checked` is the state now, and a reset of the form goes back to the default.
     Used by: Checkbox, Switch, Radio, Text Field (the `value` attribute is `defaultValue`), Text Area, Number Field, Search,
@@ -185,14 +188,14 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     and Space), Menu (Up, Down, wrapping, Home, End), Menu Item (Enter, Space when it is released, Right and Left for its submenu),
     Tree View (Up and Down between the items shown, without wrapping, Home, End, Right, Left, Enter), Slider (the arrows by a step,
     swapped right to left, Page Up and Page Down, Home, End), Calendar (the date picker's grid: the arrows, Home, End, Page Up and Page Down,
-    with Shift).
+    with Shift), Data Grid (the arrows, Home and End, with Control, Page Up and Page Down, Control with A, Enter, F2, Escape).
 31. **A handler handles its own element's keys only.** It checks the event's target, so a key in slotted content isn't taken; it ignores an
     event whose default was already prevented; and it prevents the default of the keys it handles. A key of a text that the user edits isn't
     taken: an input in a toolbar keeps its caret. A tooltip's Escape is the exception: it hides it wherever the focus is while it is shown,
     as WCAG 1.4.13 asks.
     Used by: Accordion, Button, Checkbox, Switch, Radio, Radio Group (a key of a radio, not of its content), Tablist (a key of a tab),
     Toolbar (a key of an item, not of a text input), Listbox, Select (its combobox's), Picker (its input's), Menu Item (its own,
-    and Left from its submenu), Tree View (a key of an item), Slider.
+    and Left from its submenu), Tree View (a key of an item), Slider, Data Grid (a key of a cell; Escape of its content).
 32. **A focusable host takes focus itself, and keeps the author's `tabindex`.** An element that wraps a native control (a link, a form
     control) delegates its focus to it (`delegatesFocus`), so a label of it, a click on it, and `focus()` reach the control, and the host's
     `tabindex` is the control's: `-1` takes it out of the tab order, which a composite's roving focus needs. Another element whose focusable
@@ -206,7 +209,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     composite: the content of its items is in the tab order.
     Used by: Radio Group (the checked radio, with the `RovingFocusController`), Tablist (the selected tab), Toolbar (the first,
     or the last focused); List (static: none), Menu (its first item has the focus when it opens, and the focus goes back to what opened it),
-    Tree View (the selected item, the first, or the last focused), Calendar (the selected day, today, or the first of the month).
+    Tree View (the selected item, the first, or the last focused), Calendar (the selected day, today, or the first of the month),
+    Data Grid (a cell, and the controls in its cells out of it).
 
 ## Events
 
@@ -222,7 +226,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     shaped as a native event; the input's `input`; `input` and `change` for the user's values), Menu Item (`click` when it is activated,
     by Enter and Space too; `change` when the user checks it),
     Tree Item (`change` when the user selects it; `toggle` when the user expands or collapses it, as a `<details>`'),
-    Slider (`input` and `change`, as a native range's: `change` when a drag ends), Calendar (`input` and `change`, for the user's selection).
+    Slider (`input` and `change`, as a native range's: `change` when a drag ends), Calendar (`input` and `change`, for the user's selection),
+    Data Grid Row (`change`, when the user selects it).
 35. **A cancelled event cancels the default behavior.** A click whose default was prevented before it reached the button doesn't submit or
     reset.
     Used by: Button, Checkbox, Switch, Radio, Dialog (a cancelled `cancel` keeps it open), Picker (a cancelled `filter` doesn't filter),
@@ -246,13 +251,15 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Radio (`value` is `on`), Radio Group (`horizontal`), Text Field (`type` is `text`), Text Area (`resize` is `none`),
     Dialog (`closedby` is `closerequest`), Tooltip (`above`, a delay of 300), Tablist (`horizontal`), Toolbar (`horizontal`),
     List (`vertical`, as a list is), Select (the first option that isn't disabled is selected, as in a native select), Menu Item (`item`),
-    Slider (`min` 0, `max` 100, `step` 1, and the middle of the range, as a native range's).
+    Slider (`min` 0, `max` 100, `step` 1, and the middle of the range, as a native range's), Data Grid (`none`),
+    Data Grid Row and Data Grid Cell (`default`).
 39. **A number attribute with a default is the default when it is removed**, or isn't a number, as a native element's is (`max` of a
     `<progress>`).
     Used by: Progress, Progress Ring (`min`, `max`), Slider (`min`, `max`, `step`).
 40. **An enumeration is a constant object and a union type of the same name**, `ValuesOf<typeof X>`, and not an `enum`, which isn't erasable
     syntax and whose string values aren't assignable from an attribute's. The components packages use the components foundation's `ValuesOf`.
-    Used by: `AccordionExpandMode`, `ButtonType`, `SkeletonShape`, `MenuItemType`.
+    Used by: `AccordionExpandMode`, `ButtonType`, `SkeletonShape`, `MenuItemType`, `DataGridSelectionMode`, `DataGridRowType`,
+    `DataGridCellType`.
 41. **An enumeration that more than one component has is the components foundation's**, in `utilities`.
     Used by: `Orientation` (Divider, Radio Group, Tablist, Toolbar, List, Slider).
 
@@ -262,7 +269,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
     `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`, `BreadcrumbParts`, `BreadcrumbItemParts`, `ListboxOptionParts`, `SelectParts`,
-    `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`, `CalendarParts`.
+    `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`, `CalendarParts`, `DataGridParts`.
 43. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box), Tab, Breadcrumb Item (as the Anchor), Listbox Option.
@@ -276,7 +283,7 @@ applies them too, or says here why it doesn't. The decisions that cross packages
     Menu Item (`:state(disabled)`, since it stays focusable), Slider.
 46. **A number that the styles show is a custom property of the part**, so the styles decide how it is shown.
     Used by: Progress, Progress Ring (`--percent-complete`), Slider (`--slider-position`, placed with logical properties),
-    Slider Label (`--slider-label-position`).
+    Slider Label (`--slider-label-position`), Data Grid (`--data-grid-template-columns`, which its rows inherit).
 
 ## Forms
 

@@ -1,7 +1,7 @@
-import { FASTDataGrid } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { DataGrid } from "./data-grid.js";
 import { aestheticStyles, templateStyles } from "./data-grid.styles.js";
 import { DataGridAnatomy, template } from "./data-grid.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeDataGrid(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTDataGrid>
-): FASTElementDefinition {
+    options?: ComposeOptions<DataGrid>
+): Promise<FASTElementDefinition<typeof DataGrid>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, DataGridAnatomy, options);
 
-    return FASTDataGrid.compose({
+    return FASTElementDefinition.compose(DataGrid, {
         name: `${ds.prefix}-data-grid`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

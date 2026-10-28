@@ -283,6 +283,84 @@ export const CheckboxParts: {
 export function collapsedText(element: Element): string;
 
 // @public
+export function dataGridCellAria(cell: DataGridCellElement): DefaultAria;
+
+// @public
+export interface DataGridCellElement extends HTMLElement {
+    cellType: DataGridCellType;
+}
+
+// @public
+export const DataGridCellType: {
+    readonly default: "default";
+    readonly columnHeader: "columnheader";
+    readonly rowHeader: "rowheader";
+};
+
+// @public
+export type DataGridCellType = ValuesOf<typeof DataGridCellType>;
+
+// @public
+export class DataGridController {
+    constructor(host: DataGridElement, internals: DataGridInternals, options: DataGridOptions);
+    connect(): void;
+    disconnect(): void;
+    refresh(): void;
+    rowSelectedChanged(row: DataGridRowElement): void;
+}
+
+// @public
+export interface DataGridElement extends HTMLElement {
+    gridTemplateColumns: string | null;
+    readonly rows: readonly DataGridRowElement[];
+    selectionMode: DataGridSelectionMode;
+}
+
+// @public
+export type DataGridInternals = Pick<ElementInternals, "role" | "ariaMultiSelectable">;
+
+// @public
+export type DataGridOptions = {
+    isCell: (element: EventTarget) => element is DataGridCellElement;
+};
+
+// @public
+export const DataGridParts: {
+    readonly rows: "rows";
+};
+
+// @public
+export function dataGridRowAria(row: DataGridRowElement): DefaultAria;
+
+// @public
+export interface DataGridRowElement extends HTMLElement {
+    readonly cells: readonly DataGridCellElement[];
+    rowType: DataGridRowType;
+    selectable: boolean;
+    selected: boolean;
+}
+
+// @public
+export const DataGridRowType: {
+    readonly default: "default";
+    readonly header: "header";
+    readonly stickyHeader: "sticky-header";
+};
+
+// @public
+export type DataGridRowType = ValuesOf<typeof DataGridRowType>;
+
+// @public
+export const DataGridSelectionMode: {
+    readonly none: "none";
+    readonly singleRow: "single-row";
+    readonly multiRow: "multi-row";
+};
+
+// @public
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
 export type DefaultAria = Partial<ARIAMixin>;
 
 // @public

@@ -1,3 +1,4 @@
+export { DataGridCell } from "./data-grid-cell.js";
 export { composeDataGridCell } from "./data-grid-cell.compose.js";
 export {
     templateStyles as dataGridCellTemplateStyles,

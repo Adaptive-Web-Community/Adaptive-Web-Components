@@ -496,3 +496,34 @@ The calendar is an interactive grid of days now, which selects dates, and a form
 | The `month`, `year`, `today` parts, and the `inactive`, `disabled`, `selected`, `today` classes | The `title` part; on the `day` part, `data-outside`, `aria-disabled`, `aria-selected`, `aria-current="date"` |
 | | `previous-month` and `next-month` buttons, with `CalendarStatics` icons; the keys of the date picker; `readonly` |
 | `getMonthInfo()` and the other methods | Gone |
+
+## Data Grid
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTDataGrid` (FAST Foundation) | `DataGrid`; rows in its slot, or generated from `rowsData` and `columnDefinitions` |
+| `role`, `aria-*`, and `tabindex` written to the element | `ElementInternals`; one cell in the tab order |
+| `DataGridSelectionMode` from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+| `selection-behavior`, `initial-row-selection`, `disable-click-select`, `no-tabbing`, `page-size` | Gone: a click and Space select; a page is the rows that fit |
+| `ColumnDefinition`: `gridColumn`, and the focus callbacks and queues | `ColumnDefinition` from this package: `columnDataKey`, `title`, `cellTemplate`, `headerCellTemplate`, `isRowHeader`; Enter or F2 reaches a cell's content |
+| `grid-template-columns` written to each row's style | The `--data-grid-template-columns` custom property, which the rows inherit |
+| `DataGrid.generateColumns()`, `GenerateHeaderOptions` | `generateColumns()` and `GenerateHeaderOptions` from this package |
+
+## Data Grid Row
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTDataGridRow` (FAST Foundation) | `DataGridRow` |
+| `DataGridRowTypes` | `DataGridRowType` from `@adaptive-web/components-foundation` |
+| `[aria-selected='true']` in selectors | `[selected]` |
+| `rowselectionchange` | `change`, which bubbles |
+| `grid-template-columns`, `rowIndex`, `cellElements` | Gone: the grid's custom property, and `cells` |
+
+## Data Grid Cell
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTDataGridCell` (FAST Foundation) | `DataGridCell` |
+| `DataGridCellTypes` | `DataGridCellType` from `@adaptive-web/components-foundation` |
+| `grid-column` | Gone: cells are placed in order |
+| `cell-focused` | `focusin` |
