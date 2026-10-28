@@ -20,8 +20,6 @@
         "src/reference/token-naming.ts",
         "src/__test__",
         "src/core/token-helpers-color.ts",
-        "src/core/token-helpers-color.spec.ts",
-        "src/core/styles/css/element-styles-renderer.ts",
-        "src/core/styles/css/element-styles-renderer.spec.ts"
+        "src/core/token-helpers-color.spec.ts"
     ]
 }

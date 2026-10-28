@@ -1,6 +1,7 @@
 import chai from "chai";
-import { Interactivity } from "../core/styles/anatomy.js";
+import { Focus, Interactivity } from "../core/styles/anatomy.js";
 import { formatRules, libraryTokenProperties, renderRules } from "../core/styles/css/rules.js";
+import { renderStyleRules } from "../core/styles/css/style-rules.js";
 import { Treatment, treatmentProperties } from "../core/styles/treatment.js";
 import { createReferenceLibrary } from "./library.js";
 import * as treatments from "./treatments.js";
@@ -8,6 +9,7 @@ import {
     accentFillReadableControlTreatment,
     actionTreatment,
     neutralDividerSubtleElementTreatment,
+    referenceAnatomyTreatments,
     referenceTreatments,
     shadowCardTreatment,
     TreatmentNameMapping,
@@ -80,5 +82,15 @@ describe("the reference treatments", () => {
 
         expect(properties.get("cornerRadiusTopLeft")).to.equal(treatmentProperties(treatments.controlShapeTreatment).get("cornerRadiusTopLeft"));
         expect(render(actionTreatment)[0].declarations["border-top-color"]).to.equal("var(--color-neutral-stroke-subtle)");
+    });
+
+    it("should have the treatments of the anatomy: the disabled cursor, the focus indicator, and the focus reset", () => {
+        const anatomy = { conditions: {}, parts: {}, interactivity: Interactivity.disabledAttribute, focus: Focus.contextFocused() };
+        const css = formatRules(renderStyleRules([], { tokens, anatomy, treatments: referenceAnatomyTreatments }));
+
+        expect(css).to.include(":host([disabled]) { cursor: not-allowed; }");
+        expect(css).to.include(
+            ":host(:focus-visible) { outline-color: var(--color-focusStroke); outline-offset: 1px; outline-style: solid; outline-width: var(--shape-strokeThickness-focus); }"
+        );
     });
 });

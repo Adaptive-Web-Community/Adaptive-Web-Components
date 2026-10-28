@@ -1,4 +1,5 @@
 import { refs } from "design-token-library";
+import { AnatomyTreatments } from "../core/styles/css/style-rules.js";
 import { Treatment } from "../core/styles/treatment.js";
 import { ReferenceLibraryTokens } from "./library.js";
 import { densityBorder, transparent } from "./util.js";
@@ -1677,6 +1678,21 @@ export const focusResetTreatment: Treatment = {
     properties: {
         outlineStyle: "none",
     },
+};
+
+/**
+ * The treatments that the anatomy of a component applies in the reference system: the `not-allowed` cursor where it is disabled, the focus
+ * indicator, and no outline on the target of a focus reset.
+ *
+ * @remarks
+ * Expected to go with the update of the anatomy, see {@link AnatomyTreatments}.
+ *
+ * @beta
+ */
+export const referenceAnatomyTreatments: AnatomyTreatments = {
+    disabled: disabledTreatment,
+    focusIndicator: focusIndicatorTreatment,
+    focusReset: focusResetTreatment,
 };
 
 /**

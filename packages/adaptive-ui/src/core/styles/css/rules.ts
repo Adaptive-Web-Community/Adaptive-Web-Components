@@ -1,5 +1,5 @@
 import { CSSPropertiesOptions, isRef, Library, pathOf } from "design-token-library";
-import { InteractiveSet, InteractiveState } from "../../interactive.js";
+import { InteractiveState, isInteractiveSet } from "../../interactive.js";
 import { atName, formatValue, propertyResolver } from "../../token-css.js";
 import { AdaptiveDesignToken } from "../../token-types.js";
 import { StyleProperty, StyleValue, StyleValues } from "../properties.js";
@@ -64,17 +64,6 @@ const ruleStates: readonly InteractiveState[] = [
     InteractiveState.active,
     InteractiveState.disabled,
 ];
-
-const interactiveStates: ReadonlySet<string> = new Set(Object.values(InteractiveState));
-
-// A set of values is an object whose keys are states. A ref, a color, a dimension, or a shadow has other keys.
-function isInteractiveSet<T>(value: unknown): value is InteractiveSet<T> {
-    if (typeof value !== "object" || value === null || Array.isArray(value) || isRef(value)) {
-        return false;
-    }
-    const keys = Object.keys(value);
-    return keys.length > 0 && keys.every(key => interactiveStates.has(key));
-}
 
 function isStyleProperty(key: string): key is StyleProperty {
     return key in StyleProperty;

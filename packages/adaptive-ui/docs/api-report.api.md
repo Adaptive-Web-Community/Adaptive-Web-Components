@@ -45,6 +45,13 @@ export const AdaptiveDesignToken: {
 // @public
 export const add: (...args: (Operand | TokenRef)[]) => Expression;
 
+// @beta
+export interface AnatomyTreatments {
+    readonly disabled?: Treatment;
+    readonly focusIndicator?: Treatment;
+    readonly focusReset?: Treatment;
+}
+
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
 //
 // @public
@@ -690,6 +697,9 @@ export function relativeLuminance(paint: Paint): number;
 // @public
 export function renderRules(properties: Iterable<readonly [string, StyleValues]>, params: SelectorParameters, tokens: TokenPropertiesResolver): CssRule[];
 
+// @public
+export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[];
+
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
 
@@ -863,6 +873,14 @@ export interface StyleRule {
 
 // @public
 export type StyleRules = readonly StyleRule[];
+
+// @public
+export interface StyleRulesOptions {
+    readonly anatomy?: ComponentAnatomy<any, any>;
+    readonly tokens: TokenPropertiesResolver;
+    // @beta
+    readonly treatments?: AnatomyTreatments;
+}
 
 // @public
 export interface StyleRuleTarget {

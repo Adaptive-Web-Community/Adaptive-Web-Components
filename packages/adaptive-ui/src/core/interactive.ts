@@ -1,3 +1,5 @@
+import { isRef } from "design-token-library";
+
 /**
  * An interactive element's states.
  *
@@ -78,4 +80,20 @@ export function mapStates<T, U>(set: InteractiveSet<T>, map: (value: T, state: I
         }
     }
     return result;
+}
+
+const interactiveStates: ReadonlySet<string> = new Set(Object.values(InteractiveState));
+
+/**
+ * Checks if a value is a set of values for the states of an interactive element: an object whose keys are states. A ref, a color, a
+ * dimension, or a shadow has other keys.
+ *
+ * @internal
+ */
+export function isInteractiveSet<T>(value: unknown): value is InteractiveSet<T> {
+    if (typeof value !== "object" || value === null || Array.isArray(value) || isRef(value)) {
+        return false;
+    }
+    const keys = Object.keys(value);
+    return keys.length > 0 && keys.every(key => interactiveStates.has(key));
 }
