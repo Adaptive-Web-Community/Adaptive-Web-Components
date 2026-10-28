@@ -2,7 +2,7 @@ import { DesignToken, hex, Library, recipes, refs } from "design-token-library";
 import type { Color } from "../core/color/color.js";
 import type { Palette } from "../core/color/palette.js";
 import { createPaletteOkhsl, stepCountFor } from "../core/color/palette-okhsl.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { intendedFor } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, PaletteToken } from "../core/token-types.js";
 

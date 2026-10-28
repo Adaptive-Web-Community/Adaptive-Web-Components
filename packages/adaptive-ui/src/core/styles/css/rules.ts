@@ -1,11 +1,12 @@
 import { CSSPropertiesOptions, DesignToken, isRef, Library, pathOf } from "design-token-library";
-import type { Paint } from "../color/paint.js";
-import { InteractiveSet, InteractiveState } from "../interactive.js";
-import { atName, formatValue, propertyResolver } from "../token-css.js";
-import { AdaptiveDesignToken } from "../token-types.js";
+import type { Paint } from "../../color/paint.js";
+import { InteractiveSet, InteractiveState } from "../../interactive.js";
+import { atName, formatValue, propertyResolver } from "../../token-css.js";
+import { AdaptiveDesignToken } from "../../token-types.js";
+import { StyleProperty } from "../properties.js";
+import { StyleModuleEvaluateParameters } from "../rule.js";
 import { stylePropertyToCssProperty } from "./css.js";
 import { makeSelector } from "./selector.js";
-import { StyleModuleEvaluateParameters, StyleProperty } from "./types.js";
 
 /**
  * A rule of CSS: a selector, and the value of each of its properties, in order. It is plain data, which {@link formatRules} writes.

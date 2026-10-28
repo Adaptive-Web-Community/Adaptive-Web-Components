@@ -1,5 +1,5 @@
-import { InteractiveSet, InteractiveState } from "../interactive.js";
-import type { StyleModuleEvaluateParameters } from "./types.js";
+import { InteractiveSet, InteractiveState } from "../../interactive.js";
+import type { StyleModuleEvaluateParameters } from "../rule.js";
 
 const HOST_CONTEXT = ":host";
 

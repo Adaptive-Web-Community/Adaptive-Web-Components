@@ -1,12 +1,15 @@
 import { ComposableStyles, css, HostBehavior } from "@microsoft/fast-element";
 import { type CSSDirective, ElementStyles } from "@microsoft/fast-element";
 import { CSSDesignToken } from "@microsoft/fast-foundation";
-import { Interactivity, type InteractivityDefinition, type StyleModuleTarget, StyleProperty } from "../modules/types.js";
-import { InteractiveState, InteractiveValues } from "../types.js";
+import { Interactivity, type InteractivityDefinition } from "../anatomy.js";
+import { StyleProperty } from "../properties.js";
+import { type StyleModuleTarget } from "../rule.js";
+import { InteractiveState, InteractiveValues } from "../../types.js";
 import { makeSelector } from "./selector.js";
-import type { ComponentAnatomy, StyleModuleEvaluateParameters, StyleRules } from "./types.js";
+import type { ComponentAnatomy, StyleRules } from "../anatomy.js";
+import type { StyleModuleEvaluateParameters } from "../rule.js";
 import { stylePropertyToCssProperty } from "./css.js";
-import { convertStylesToFocusState, Styles } from "./styles.js";
+import { convertStylesToFocusState, Styles } from "../styles.js";
 
 const deepFreeze =<T>(obj: T): T => {
     if (obj && typeof obj === "object" && !Object.isFrozen(obj)) {

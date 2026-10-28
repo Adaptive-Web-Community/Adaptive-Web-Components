@@ -7,7 +7,7 @@ import { createTokenNonCss } from "../token-helpers.js";
 import { InteractivePaintSet } from "../color/recipe.js";
 import { DesignTokenType } from "../adaptive-design-tokens.js";
 import { convertStylesToFocusState, Fill, Styles } from "./styles.js";
-import { StylePropertyShorthand } from "./types.js";
+import { StylePropertyShorthand } from "./properties.js";
 
 const { expect } = chai;
 

@@ -7,7 +7,7 @@ import { luminanceColor } from "../core/color/utilities/luminance-color.js";
 import { Palette, PaletteDirection } from "../core/color/palette.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { InteractiveSet } from "../core/interactive.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { intendedFor } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, DeltaToken, interactiveDeltas, InteractiveDeltaTokens, InteractiveToken, PaletteToken } from "../core/token-types.js";
 import { colorContext, ColorContextLibraryTokens } from "./color-context.js";

@@ -5,7 +5,8 @@ import { Paint } from "../color/paint.js";
 import { TypedCSSDesignToken, TypedDesignToken } from "../adaptive-design-tokens.js";
 import { InteractiveTokenGroup, InteractiveValues } from "../types.js";
 import { createForegroundSet, createForegroundSetBySet } from "../token-helpers-color.js";
-import { StyleModuleTarget, StyleProperty, StylePropertyShorthand } from "./types.js";
+import { StyleProperty, StylePropertyShorthand } from "./properties.js";
+import { StyleModuleTarget } from "./rule.js";
 
 /**
  * Key for a style property, a {@link (StyleProperty:type)}, {@link (StylePropertyShorthand:type)}, or a string for any other CSS property.

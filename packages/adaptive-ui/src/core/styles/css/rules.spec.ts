@@ -1,12 +1,13 @@
 import chai from "chai";
 import { DesignToken, hex, Library, px, refs, toCSS } from "design-token-library";
-import { formatColor } from "../color/color.js";
-import { InteractiveState } from "../interactive.js";
-import { shadow } from "../shadow/shadow.js";
-import { adaptiveConverters } from "../token-css.js";
-import { AdaptiveDesignToken, InteractiveToken } from "../token-types.js";
+import { formatColor } from "../../color/color.js";
+import { InteractiveState } from "../../interactive.js";
+import { shadow } from "../../shadow/shadow.js";
+import { adaptiveConverters } from "../../token-css.js";
+import { AdaptiveDesignToken, InteractiveToken } from "../../token-types.js";
 import { CssRule, formatRules, libraryTokenProperties, renderRules, StyleRuleValues } from "./rules.js";
-import { Interactivity, StyleModuleEvaluateParameters } from "./types.js";
+import { Interactivity } from "../anatomy.js";
+import { StyleModuleEvaluateParameters } from "../rule.js";
 
 const { expect } = chai;
 

@@ -1,6 +1,6 @@
 import { DesignToken, Library, refs } from "design-token-library";
 import { add, multiply, subtract } from "../expression.js";
-import { StyleProperty, StylePropertyShorthand } from "../modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../styles/properties.js";
 import { intendedFor } from "../token-metadata.js";
 import { AdaptiveDesignToken, ExpressionToken } from "../token-types.js";
 

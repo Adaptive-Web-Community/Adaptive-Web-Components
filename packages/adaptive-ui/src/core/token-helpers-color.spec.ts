@@ -5,7 +5,7 @@ import { Paint } from "./color/paint.js";
 import { PaletteOkhsl } from "./color/palette-okhsl.js";
 import { Palette } from "./color/palette.js";
 import { ColorRecipeParams, ColorRecipePaletteParams, InteractivePaintSet } from "./color/recipe.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 import {
     createForegroundSet,
     createForegroundSetBySet,

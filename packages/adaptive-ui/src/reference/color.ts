@@ -11,7 +11,7 @@ import { Palette } from "../core/color/palette.js";
 import { conditionalColorSet } from "../core/color/utilities/conditional.js";
 import { colorSetAsOverlay } from "../core/color/utilities/opacity.js";
 import { InteractiveSet, InteractiveState, mapStates } from "../core/interactive.js";
-import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
 import { intendedFor } from "../core/token-metadata.js";
 import {
     AdaptiveDesignToken,

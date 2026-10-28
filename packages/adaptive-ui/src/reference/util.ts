@@ -1,4 +1,4 @@
-import { StyleValue } from "../core/modules/styles.js";
+import { StyleValue } from "../core/styles/styles.js";
 import { strokeThickness } from "./appearance.js";
 
 // Note that this file is not exported from the package.

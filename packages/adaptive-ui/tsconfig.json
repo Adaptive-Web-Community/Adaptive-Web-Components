@@ -23,9 +23,9 @@
         "src/__test__",
         "src/core/token-helpers-color.ts",
         "src/core/token-helpers-color.spec.ts",
-        "src/core/modules/element-styles-renderer.ts",
-        "src/core/modules/element-styles-renderer.spec.ts",
-        "src/core/modules/styles.ts",
-        "src/core/modules/styles.spec.ts"
+        "src/core/styles/css/element-styles-renderer.ts",
+        "src/core/styles/css/element-styles-renderer.spec.ts",
+        "src/core/styles/styles.ts",
+        "src/core/styles/styles.spec.ts"
     ]
 }

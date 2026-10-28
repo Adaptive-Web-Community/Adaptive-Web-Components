@@ -1,6 +1,6 @@
 import type { DesignTokenMetadata, DesignTokenType, TypedCSSDesignToken } from "./adaptive-design-tokens.js";
 import { InteractiveState, type InteractiveValues } from "./interactive.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 
 export { InteractiveState, type InteractiveValues };
 

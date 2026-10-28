@@ -15,7 +15,7 @@ import postcss, { type Processor} from "postcss";
 import postcssMergeLonghand from "postcss-merge-longhand";
 import postcssMergeRules from "postcss-merge-rules"
 import postcssMergeBorderRadius from "postcss-merge-border-radius";
-import { ElementStylesRenderer } from '../core/modules/element-styles-renderer.js';
+import { ElementStylesRenderer } from '../core/styles/css/element-styles-renderer.js';
 import {
     ComponentAnatomy,
     ComponentConditions,
@@ -25,9 +25,9 @@ import {
     SerializableBooleanCondition,
     SerializableStringCondition,
     SerializableStyleRule,
-    StyleModuleTarget,
-    StyleRules
-} from '../core/modules/types.js';
+} from '../core/styles/anatomy.js';
+import { StyleModuleTarget } from '../core/styles/rule.js';
+import { StyleRules } from '../core/styles/styles.js';
 import {
     DesignTokenRegistry,
     StyleProperties,

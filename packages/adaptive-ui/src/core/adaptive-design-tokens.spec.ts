@@ -6,7 +6,7 @@ import {
     TypedCSSDesignToken,
     TypedDesignToken,
 } from "./adaptive-design-tokens.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 
 const { expect } = chai;
 

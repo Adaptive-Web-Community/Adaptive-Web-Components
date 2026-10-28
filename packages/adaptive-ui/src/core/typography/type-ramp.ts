@@ -1,6 +1,6 @@
 import { DesignToken, Library, px } from "design-token-library";
 import { divide, multiply, Operand, pow, round } from "../expression.js";
-import { StyleProperty } from "../modules/types.js";
+import { StyleProperty } from "../styles/properties.js";
 import { intendedFor } from "../token-metadata.js";
 import { AdaptiveDesignToken, ExpressionToken, FontVariationsToken } from "../token-types.js";
 

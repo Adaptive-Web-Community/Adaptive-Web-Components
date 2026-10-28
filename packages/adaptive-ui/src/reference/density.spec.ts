@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { Library, px, refs, toCSS } from "design-token-library";
 import { createDensity, DensitySetTokens } from "../core/density/index.js";
 import { evaluate } from "../core/expression.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { getIntendedFor } from "../core/token-metadata.js";
 import { appearance } from "./appearance.js";

@@ -1,5 +1,5 @@
 import { ValuesOf } from "@microsoft/fast-foundation";
-import { Fill, Styles } from "../core/modules/styles.js";
+import { Fill, Styles } from "../core/styles/styles.js";
 import { cornerRadiusControl, cornerRadiusLayer, focusStrokeThickness } from "./appearance.js";
 import {
     accentFillDiscernible,

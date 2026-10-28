@@ -1,7 +1,7 @@
 import chai from "chai";
 import { DesignToken, override, toCSS } from "design-token-library";
 import { Color, formatColor, rgbColor, withAlpha } from "../core/color/color.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { shadow } from "../core/shadow/index.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { getIntendedFor } from "../core/token-metadata.js";

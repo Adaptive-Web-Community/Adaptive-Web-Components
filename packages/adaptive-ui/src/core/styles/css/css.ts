@@ -1,4 +1,4 @@
-import { StyleProperty } from "./types.js";
+import { StyleProperty } from "../properties.js";
 
 /**
  * Converts a {@link StyleProperty} to a css property name.

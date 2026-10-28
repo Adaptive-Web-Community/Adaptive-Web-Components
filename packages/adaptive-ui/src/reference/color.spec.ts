@@ -8,7 +8,7 @@ import { createPaletteOkhsl } from "../core/color/palette-okhsl.js";
 import { closestSwatchIndex, swatchAt } from "../core/color/palette.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
 import { white } from "../core/color/utilities/color-constants.js";
-import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { getIntendedFor } from "../core/token-metadata.js";

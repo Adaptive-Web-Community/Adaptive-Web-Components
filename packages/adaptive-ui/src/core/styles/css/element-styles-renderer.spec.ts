@@ -1,10 +1,10 @@
 import chai from "chai";
 import { cssDirective, ElementStyles } from "@microsoft/fast-element";
-import { Color } from "../color/color.js";
-import { createTokenDimension, createTokenPaint } from "../token-helpers.js";
+import { Color } from "../../color/color.js";
+import { createTokenDimension, createTokenPaint } from "../../token-helpers.js";
 import { ElementStylesRenderer } from "./element-styles-renderer.js";
-import { Styles } from "./styles.js";
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "./types.js";
+import { Styles } from "../styles.js";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../anatomy.js";
 
 const { expect } = chai;
 
