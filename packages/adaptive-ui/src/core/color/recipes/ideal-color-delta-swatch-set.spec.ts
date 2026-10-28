@@ -1,7 +1,7 @@
 import chai from "chai";
 import { Color } from "../color.js";
 import { PaletteDirectionValue } from "../palette.js";
-import { PaletteRGB } from "../palette-rgb.js";
+import { PaletteOkhsl } from "../palette-okhsl.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { idealColorDeltaSwatchSet } from "./ideal-color-delta-swatch-set.js";
 
@@ -11,8 +11,8 @@ const neutralBase = Color.parse("#808080")!;
 const accentBase = Color.parse("#80DEEA")!;
 
 describe("idealColorDeltaSwatchSet", (): void => {
-    const neutralPalette = PaletteRGB.from(neutralBase);
-    const accentPalette = PaletteRGB.from(accentBase);
+    const neutralPalette = PaletteOkhsl.from(neutralBase);
+    const accentPalette = PaletteOkhsl.from(accentBase);
 
     it("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
         const lightModeColors = idealColorDeltaSwatchSet(accentPalette, _white, 4.5, accentPalette.source, 0, 6, -4, 0, 1);
@@ -32,7 +32,7 @@ describe("idealColorDeltaSwatchSet", (): void => {
         ];
 
         accentColors.forEach((accent): void => {
-            const accentPalette = PaletteRGB.from(accent);
+            const accentPalette = PaletteOkhsl.from(accent);
 
             neutralPalette.swatches.forEach((swatch): void => {
                 const smallColors = idealColorDeltaSwatchSet(

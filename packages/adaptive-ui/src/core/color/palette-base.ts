@@ -5,7 +5,7 @@ import { directionByIsDark } from "./utilities/direction-by-is-dark.js";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
- * A base {@link Palette} with a common implementation of the interface. Use PaletteRGB for an implementation
+ * A base {@link Palette} with a common implementation of the interface. Use PaletteOkhsl for an implementation
  * of a palette generation algorithm that is ready to be used directly, or extend this class to generate custom swatches.
  *
  * @public

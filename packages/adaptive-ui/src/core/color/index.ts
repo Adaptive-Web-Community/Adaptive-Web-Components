@@ -5,6 +5,5 @@ export * from "./gradient.js";
 export * from "./paint.js";
 export * from "./palette-base.js";
 export * from "./palette-okhsl.js";
-export * from "./palette-rgb.js";
 export * from "./palette.js";
 export * from "./recipe.js";

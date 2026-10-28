@@ -19,10 +19,10 @@ const red = Color.fromRgb(1, 0, 0);
 ## Palette
 A palette is a collection `Color` instances, ordered by relative luminance, and provides mechanisms to safely retrieve swatches by index and by target contrast ratios. It also contains a `source` color, which is the color from which the palette is derived.
 
-### PaletteRGB
-An implementation of `Palette` of `Color` instances with RGB colors.
+### PaletteOkhsl
+An implementation of `Palette` that uses the okhsl color model, so the steps between its swatches are perceptually equal.
 
 ```ts
-// Create a PaletteRGB from a Color
-const redPalette = PaletteRGB.from(red):
+// Create a PaletteOkhsl from a Color
+const redPalette = PaletteOkhsl.from(red);
 ```

@@ -512,18 +512,6 @@ export interface PaletteOkhslOptions {
 }
 
 // @public
-export class PaletteRGB extends BasePalette {
-    static from(source: Color | string, options?: Partial<PaletteRGBOptions>): PaletteRGB;
-}
-
-// @public
-export interface PaletteRGBOptions {
-    preserveSource: boolean;
-    stepContrast: number;
-    stepContrastRamp: number;
-}
-
-// @public
 export class RadialGradient extends Gradient {
     constructor(stops: GradientStop[]);
     toString(): string;

@@ -1250,7 +1250,7 @@ export const neutralStrokeStrong = createTokenColorSet(neutralStrokeStrongRecipe
  *
  * @remarks
  * By default this maps to the {@link accentPalette}.
- * Use a custom palette like `focusStrokePalette.withDefault(PaletteRGB.from("#[HEX_COLOR]"))`.
+ * Use a custom palette like `focusStrokePalette.withDefault(PaletteOkhsl.from("#[HEX_COLOR]"))`.
  *
  * @public
  */

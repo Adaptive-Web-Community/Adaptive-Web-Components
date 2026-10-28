@@ -2,7 +2,7 @@ import chai from "chai";
 import { DesignTokenRegistry, DesignTokenType } from "./adaptive-design-tokens.js";
 import { Color } from "./color/color.js";
 import { Paint } from "./color/paint.js";
-import { PaletteRGB } from "./color/palette-rgb.js";
+import { PaletteOkhsl } from "./color/palette-okhsl.js";
 import { Palette } from "./color/palette.js";
 import { ColorRecipeParams, ColorRecipePaletteParams, InteractivePaintSet } from "./color/recipe.js";
 import { StyleProperty } from "./modules/types.js";
@@ -111,7 +111,7 @@ describe("token-helpers-color", () => {
         });
 
         it("should evaluate the recipe with the palette", () => {
-            const palette = PaletteRGB.from("#808080");
+            const palette = PaletteOkhsl.from("#808080");
             const paletteToken = createTokenNonCss<Palette>("color-test.neutral.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(
@@ -132,7 +132,7 @@ describe("token-helpers-color", () => {
         });
 
         it("should resolve the palette when no params are provided", () => {
-            const palette = PaletteRGB.from("#808080");
+            const palette = PaletteOkhsl.from("#808080");
             const paletteToken = createTokenNonCss<Palette>("color-test.neutral2.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(
@@ -152,8 +152,8 @@ describe("token-helpers-color", () => {
         });
 
         it("should allow params to override the palette", () => {
-            const palette = PaletteRGB.from("#808080");
-            const other = PaletteRGB.from("#0078D4");
+            const palette = PaletteOkhsl.from("#808080");
+            const other = PaletteOkhsl.from("#0078D4");
             const paletteToken = createTokenNonCss<Palette>("color-test.neutral3.palette", DesignTokenType.palette).withDefault(palette);
             let received: ColorRecipePaletteParams | undefined;
             const recipeToken = createTokenColorRecipeForPalette<Color>(

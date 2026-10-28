@@ -1,6 +1,6 @@
 import chai from "chai";
 import { Color } from "../color.js";
-import { PaletteRGB } from "../palette-rgb.js";
+import { PaletteOkhsl } from "../palette-okhsl.js";
 import { PaletteDirectionValue } from "../palette.js";
 import { _black, _white } from "../utilities/color-constants.js";
 import { contrastSwatch } from "./contrast-swatch.js";
@@ -11,8 +11,8 @@ const neutralBase = Color.parse("#808080")!;
 const accentBase = Color.parse("#80DEEA")!;
 
 describe("contrastSwatch", (): void => {
-    const neutralPalette = PaletteRGB.from(neutralBase);
-    const accentPalette = PaletteRGB.from(accentBase);
+    const neutralPalette = PaletteOkhsl.from(neutralBase);
+    const accentPalette = PaletteOkhsl.from(accentBase);
 
     neutralPalette.swatches.concat(accentPalette.swatches).forEach((swatch): void => {
         it(`${swatch.toString()} should resolve a color from the neutral palette`, (): void => {
