@@ -30,3 +30,4 @@ reason with the code.
 | [0006](0006-interactive-values-are-one-token.md) | The values of an interactive element are one composite token | Accepted |
 | [0008](0008-disabled-is-fixed-in-tokens.md) | The disabled color is fixed in tokens, shared by the recipes | Accepted |
 | [0011](0011-styles-render-to-css-without-fast.md) | Styles render to rules of CSS, without FAST, and refer to tokens by ref | Accepted |
+| [0012](0012-a-treatment-is-a-named-set-of-style-properties.md) | A treatment is a named set of style properties, as plain data | Accepted |

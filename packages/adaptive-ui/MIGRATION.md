@@ -313,7 +313,58 @@ adjustment, and the design unit, so in CSS they are `calc()` of the custom prope
 groups are exported from `reference/deprecated.ts`, each the token of the table above. A group is an object with the property names of the old
 class (`horizontalPadding`, `verticalGapUnits`, ...), each the token of the library. `padding` and the class are not.
 
+## Treatments and the rendering of styles
+
+A style module is a **treatment** (`Treatment`), a named set of style properties that is plain data: `{ name, treatments, properties }`, where
+`treatments` are the ones it is composed of and `properties` are applied after them, see
+[decision 0012](../../docs/decisions/0012-a-treatment-is-a-named-set-of-style-properties.md). A value refers to a token by a ref of the library
+(`refs<ReferenceLibraryTokens>().color.accent.fill.readable`), and in a set of values a ref to an interactive token is the token in that
+state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, and `formatRules` writes them, without FAST and without a DOM
+([decision 0011](../../docs/decisions/0011-styles-render-to-css-without-fast.md)). The styling is in `core/styles`, and its CSS output in
+`core/styles/css`.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `Styles` | `Treatment`, an object |
+| `Styles.fromProperties(properties, name)` | `{ name, properties }` |
+| `Styles.compose(styles, properties, name)` | `{ name, treatments, properties }` |
+| `Styles.fromDeclaration(declaration)`, `styles.effectiveProperties` | `treatmentProperties(treatmentOrRule)` |
+| `Styles.Shared`, the registry by name | `referenceTreatments`, a list that an anatomy written as data is looked up in |
+| `styles.properties = ...`, `appendComposed`, `clearComposed` | a new treatment: a treatment isn't changed |
+| `effectiveAdaptiveProperties` | `treatmentProperties`, with the keys that are a `StyleProperty` |
+| `StyleDeclaration`, a rule's `styles` and `properties` | a rule's `treatments` and `properties` (`StyleRule`) |
+| `StyleModuleTarget` | `StyleRuleTarget` |
+| `StyleModuleEvaluateParameters` | `SelectorParameters` |
+| `StyleValue` (a FAST token, an `InteractiveValues`, a `CSSDirective`, or a value) | `StyleValue` (a value of CSS or of a token type, or a ref) and `StyleValues` (one or an `InteractiveSet` of them) |
+| `StylePropertiesMap`, `EffectiveStylePropertiesMap` | `Map<string, StyleValues>` |
+| `Fill.backgroundAndForeground(fill, recipe)`, `Fill.backgroundAndForegroundBySet(fill, recipe)` | `{ backgroundFill: color.accent.fill.subtle, foregroundFill: color.accent.onFill.subtle }`: the foreground on a fill is a token |
+| `Fill.backgroundNonInteractive(token, disabled)`, `Fill.foregroundNonInteractive(token, disabled)` | `{ rest: token, disabled }`, a set that has only those states |
+| `convertStylesToFocusState(styles)` | part of `renderStyleRules`, which applies the focus indicator in the focus state |
+| `ElementStylesRenderer`, `new ElementStylesRenderer(styles).render(target, interactivity)` | `renderRules(treatmentProperties(treatment), { ...interactivity, ...target }, libraryTokenProperties(library))` |
+| `ElementStylesRenderer.renderStyleRules(base, rules, anatomy)` | `renderStyleRules(rules, { tokens: libraryTokenProperties(library), anatomy, treatments: referenceAnatomyTreatments })` |
+| `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles` | the `treatments` of `renderStyleRules` (`AnatomyTreatments`: `disabled`, `focusIndicator`, `focusReset`) |
+| the `...Styles` of `reference/modules.ts`, like `actionStyles` | the `...Treatment` of `reference/treatments.ts`, like `actionTreatment`, with the same names |
+| `StyleNameMapping` | `TreatmentNameMapping`, to the names of the treatments |
+
+The foreground on each fill is a token, `color.<palette>.onFill.<fill>` (`stealth`, `subtle`, `subtleInverse`, `ideal`, `discernible`, and
+`readable`) and `color.layer.onFill.interactive`, with the colors of 0.14 (the readable stroke of the palette on the stealth and subtle fills, the
+strong neutral stroke on the neutral fills and the interactive layer, and black or white on the others). `createOnFill` makes the group for a
+palette of a system, and `contrastAndDeltaColorBySet` is its recipe. `createReferenceLibrary()` is a library of the whole reference system, which
+the reference treatments refer to.
+
+### Behavior
+
+- The CSS refers to the custom properties the library writes: `--color-accent-fill-subtle` at rest (was `-rest`), `--color-focusStroke`
+  (was `-value`), and `--color-accent-onFill-subtle` (was `--color-accent-stroke-readable-on-accent-fill-subtle-rest`).
+- A set has only the states that it has a value for (decision 0006), so a foreground of an element that isn't interactive, with a rest and a
+  disabled, has no rules for the hover, the active, and the focus, which repeated the rest.
+- The rules of the states are in the order rest, focus, hover, active, disabled. States that have the same selector, like those of a
+  pseudo-element, are one rule, where the later state wins, as before.
+- The `aui` CLI renders with the reference library and needs no DOM. An anatomy written as JSON names its treatments in `treatments` (was
+  `styles`), and an unknown name is a warning. A property names a token by its path, and `<token>.rest` of an interactive token is its rest.
+  Importing the root of the package still loads FAST, through the 0.14 token helpers that aren't migrated yet.
+
 ## Not migrated yet
 
-The rest of the tokens, the styles, and `ElementStylesRenderer` are still the ones of 0.14,
-and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.
+The rest of the tokens (`experimental`), the token helpers of 0.14 (`createTokenX`, `DesignTokenRegistry`), and `TokenNameMapping` are still
+the ones of 0.14, and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.
