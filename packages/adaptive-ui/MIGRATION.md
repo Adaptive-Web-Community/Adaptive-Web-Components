@@ -279,6 +279,15 @@ reference system's, as it was.
 - A shadow is written with its blur and spread, `0px 4px 8px 0px`, where a zero was left out. CSS reads them the same.
 - The sizes are of the `delta` type, which a recipe reads, and are not in CSS, as in 0.14.
 
+### Deprecated, the old name is the token
+
+`elevationCardInteractive`, `elevationCardRestSize`..`elevationCardDisabledSize`, `elevationTooltip`, `elevationTooltipSize`, `elevationFlyout`,
+`elevationFlyoutSize`, `elevationDialog`, and `elevationDialogSize` are exported from `reference/deprecated.ts`, each the token of the table above in
+the library that Adaptive UI creates. `new Shadow(...)` makes a layer with `shadow()`, and the types `Shadow` and `ShadowValue` are the library's shadow layer and shadow.
+
+Not exported, with what to use: the token of a state of the card (`elevationCardRest`, `Hover`, and so on: use `elevationCardInteractive.$value.rest`, or
+`--elevation-card-<state>` in CSS), `elevationRecipe` (`elevationRecipes.elevationShadow`), `createTokenShadow`, and the recipe types.
+
 ## Not migrated yet
 
 The rest of the tokens, the styles, and `ElementStylesRenderer` are still the ones of 0.14,

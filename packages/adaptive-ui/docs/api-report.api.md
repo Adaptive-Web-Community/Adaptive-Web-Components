@@ -697,8 +697,17 @@ export interface SerializableStyleRule {
     styles?: string[];
 }
 
+// @public @deprecated (undocumented)
+export type Shadow = DesignToken.DeepReadonly<DesignToken.Values.ShadowLayer>;
+
+// @public @deprecated (undocumented)
+export const Shadow: new (color: Color_2, xOffset: number, yOffset: number, blurRadius?: number, spread?: number) => Shadow;
+
 // @public
 export function shadow(color: Color_2, offsetX: number, offsetY: number, blur?: number, spread?: number): DesignToken.DeepReadonly<DesignToken.Values.ShadowLayer>;
+
+// @public @deprecated (undocumented)
+export type ShadowValue = DesignToken.Values.Readonly.Shadow;
 
 // @public
 export function stepCountFor(stepSize: number): number;

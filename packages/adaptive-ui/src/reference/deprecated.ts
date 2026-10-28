@@ -8,15 +8,17 @@
  */
 import { Library } from "design-token-library";
 import { color as colorConfig, ColorLibraryTokens } from "./color.js";
+import { elevation as elevationConfig, ElevationLibraryTokens } from "./elevation.js";
 import { typography, TypographyLibraryTokens } from "./typography.js";
 
 // The library for the tokens that are exported here. Each system that is migrated adds its configuration to this.
-const library = Library.create<TypographyLibraryTokens & ColorLibraryTokens>({
+const library = Library.create<TypographyLibraryTokens & ColorLibraryTokens & ElevationLibraryTokens>({
     typography,
     color: colorConfig,
+    elevation: elevationConfig,
 });
 
-const { color } = library.tokens;
+const { color, elevation } = library.tokens;
 
 const { fontFamily: fontFamilies, fontWeight: fontWeights, fontStyle: fontStyles, ramp } = library.tokens.typography;
 
@@ -1213,3 +1215,76 @@ export const focusStrokeOuter = color.focusStroke.outer;
  * @public
  */
 export const focusStrokeInner = color.focusStroke.inner;
+
+/**
+ * @deprecated Use the token `elevation.card.$root` of a library, whose value is `{ rest, hover, active, focus, disabled }`. There is no token for a
+ * state, like `elevationCardRest`, so use the state of the value, or `--elevation-card-<state>` in CSS.
+ * @public
+ */
+export const elevationCardInteractive = elevation.card.$root;
+
+/**
+ * @deprecated Use the token `elevation.card.deltas.rest` of a library.
+ * @public
+ */
+export const elevationCardRestSize = elevation.card.deltas.rest;
+
+/**
+ * @deprecated Use the token `elevation.card.deltas.hover` of a library.
+ * @public
+ */
+export const elevationCardHoverSize = elevation.card.deltas.hover;
+
+/**
+ * @deprecated Use the token `elevation.card.deltas.active` of a library.
+ * @public
+ */
+export const elevationCardActiveSize = elevation.card.deltas.active;
+
+/**
+ * @deprecated Use the token `elevation.card.deltas.focus` of a library.
+ * @public
+ */
+export const elevationCardFocusSize = elevation.card.deltas.focus;
+
+/**
+ * @deprecated Use the token `elevation.card.deltas.disabled` of a library.
+ * @public
+ */
+export const elevationCardDisabledSize = elevation.card.deltas.disabled;
+
+/**
+ * @deprecated Use the token `elevation.tooltip.$root` of a library.
+ * @public
+ */
+export const elevationTooltip = elevation.tooltip.$root;
+
+/**
+ * @deprecated Use the token `elevation.tooltip.size` of a library.
+ * @public
+ */
+export const elevationTooltipSize = elevation.tooltip.size;
+
+/**
+ * @deprecated Use the token `elevation.flyout.$root` of a library.
+ * @public
+ */
+export const elevationFlyout = elevation.flyout.$root;
+
+/**
+ * @deprecated Use the token `elevation.flyout.size` of a library.
+ * @public
+ */
+export const elevationFlyoutSize = elevation.flyout.size;
+
+/**
+ * @deprecated Use the token `elevation.dialog.$root` of a library.
+ * @public
+ */
+export const elevationDialog = elevation.dialog.$root;
+
+/**
+ * @deprecated Use the token `elevation.dialog.size` of a library.
+ * @public
+ */
+export const elevationDialogSize = elevation.dialog.size;
