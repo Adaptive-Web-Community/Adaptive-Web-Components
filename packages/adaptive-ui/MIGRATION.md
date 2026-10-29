@@ -288,6 +288,31 @@ the library that Adaptive UI creates. `new Shadow(...)` makes a layer with `shad
 Not exported, with what to use: the token of a state of the card (`elevationCardRest`, `Hover`, and so on: use `elevationCardInteractive.$value.rest`, or
 `--elevation-card-<state>` in CSS), `elevationRecipe` (`elevationRecipes.elevationShadow`), `createTokenShadow`, and the recipe types.
 
+## Appearance and density
+
+The design unit, the corner radius, the stroke thickness (`appearance`), and the density (`density`) are tokens of a library, and
+`createDensityLibrary()` is a library with both. The names, values, and the padding and gap that are calculated are the same as before (the parity
+snapshot has the same pixels for every design unit, stroke thickness and adjustment). The padding and the gap are expressions of the units, the
+adjustment, and the design unit, so in CSS they are `calc()` of the custom properties.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `designUnit` | `global.designUnit` |
+| `cornerRadiusControl` | `shape.cornerRadius.default` |
+| `cornerRadiusLayer` | `shape.cornerRadius.layer`. It was `density.layer.cornerRadius`, and is with the other appearance tokens, so its custom property is `--shape-cornerRadius-layer` |
+| `strokeThickness`, `focusStrokeThickness` | `shape.strokeThickness.default`, `shape.strokeThickness.focus` |
+| `densityAdjustmentUnits` | `density.adjustmentUnits` |
+| `densityText`, `densityControl`, `densityControlList`, `densityLayer` | `density.text`, `.control`, `.controlList`, `.layer` |
+| `densityControl.horizontalPadding` (and the other properties of the group) | `density.control.horizontal.padding`, `.horizontal.gap`, `.vertical.padding`, `.vertical.gap`, and `paddingUnits` and `gapUnits` of each |
+| `new DensityPaddingAndGapTokenGroup(name, 3, 2, 2, 1, designUnit, border)` | `createDensity(name, { horizontalPadding: 3, ... }, designUnit, borderThickness)`, which gives the config of a density set at its name, to spread into the `density` tokens of a library, as the default sets are |
+| `group.padding` (the `css` partial of the vertical and horizontal padding) | the vertical and horizontal padding, one each |
+
+### Deprecated, the old name is the token
+
+`designUnit`, `cornerRadiusControl`, `cornerRadiusLayer`, `strokeThickness`, `focusStrokeThickness`, `densityAdjustmentUnits`, and the four density
+groups are exported from `reference/deprecated.ts`, each the token of the table above. A group is an object with the property names of the old
+class (`horizontalPadding`, `verticalGapUnits`, ...), each the token of the library. `padding` and the class are not.
+
 ## Not migrated yet
 
 The rest of the tokens, the styles, and `ElementStylesRenderer` are still the ones of 0.14,

@@ -1,5 +1,13 @@
 import chai from "chai";
 import {
+    cornerRadiusControl,
+    cornerRadiusLayer,
+    densityAdjustmentUnits,
+    densityControl,
+    densityLayer,
+    designUnit,
+    focusStrokeThickness,
+    strokeThickness,
     elevationCardActiveSize,
     elevationCardInteractive,
     elevationDialog,
@@ -151,5 +159,24 @@ describe("deprecated elevation tokens", () => {
         expect(elevationDialog.$value).to.deep.equal(elevation.dialog.$root.$value);
         expect(elevationCardInteractive.$value.hover).to.deep.equal(elevation.card.$root.$value.hover);
         expect(elevationTooltipSize.$value).to.equal(8);
+    });
+});
+
+describe("deprecated appearance and density tokens", () => {
+    it("should be the tokens with the names they had", () => {
+        expect(designUnit.name).to.equal("global.designUnit");
+        expect(cornerRadiusControl.name).to.equal("shape.cornerRadius.default");
+        expect(cornerRadiusLayer.name).to.equal("shape.cornerRadius.layer");
+        expect(strokeThickness.name).to.equal("shape.strokeThickness.default");
+        expect(focusStrokeThickness.name).to.equal("shape.strokeThickness.focus");
+        expect(densityAdjustmentUnits.name).to.equal("density.adjustmentUnits");
+    });
+
+    it("should have the properties that a density group had, as the tokens of the set", () => {
+        expect(densityControl.horizontalPadding.name).to.equal("density.control.horizontal.padding");
+        expect(densityControl.verticalGapUnits.name).to.equal("density.control.vertical.gapUnits");
+        expect(densityControl.designUnit.name).to.equal("density.control.designUnit");
+        expect(densityLayer.horizontalGap.name).to.equal("density.layer.horizontal.gap");
+        expect(densityControl.horizontalPaddingUnits.$value).to.equal(3);
     });
 });
