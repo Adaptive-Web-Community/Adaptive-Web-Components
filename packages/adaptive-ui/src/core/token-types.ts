@@ -32,6 +32,8 @@ export const AdaptiveDesignToken = {
     paint: "paint",
     /** A `Palette`, which is not written to CSS. */
     palette: "palette",
+    /** A treatment, a named set of style properties, which is rendered as rules and not written to CSS, see `TreatmentToken`. */
+    treatment: "treatment",
     /** The WCAG contrast level, which a recipe reads and which is not written to CSS, see {@link WcagContrastLevel}. */
     wcagContrastLevel: "wcagContrastLevel",
 } as const;
