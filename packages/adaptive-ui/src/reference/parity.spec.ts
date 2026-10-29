@@ -148,11 +148,14 @@ function snapshotLayers(resolve: Resolver): Snapshot {
     return result;
 }
 
+// The recipes of a palette of the system (accent, and so on) have the palette they are configured with, which a palette that is given would replace.
+// The others, the shared recipes and those of a set, are for any palette or reference, so they are given one.
+const isPaletteRecipeName = (name: string) => /^color\.(neutral|accent|highlight|critical|warning|success|info)\./.test(name);
+
 function snapshotRecipes(resolve: Resolver): Snapshot {
     const result: Snapshot = {};
     tokensOfType(DesignTokenType.recipe, isColorRecipeName).forEach(([name, token]) => {
-        // Shared recipes require a palette, those with a palette configured ignore the default.
-        const params = { palette: resolve(neutralPalette) };
+        const params = isPaletteRecipeName(name) ? undefined : { palette: resolve(neutralPalette) };
         result[name] = serialize((resolve(token) as any).evaluate(resolve as any, params));
     });
     return result;
