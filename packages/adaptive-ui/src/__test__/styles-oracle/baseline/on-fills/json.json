@@ -1,0 +1,38 @@
+[
+  {
+    "token": "color.accent.stroke.readable",
+    "fill": "color.accent.fill.subtle"
+  },
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.accent.fill.ideal",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.accent.fill.readable",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.critical.fill.readable",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.highlight.fill.readable",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.critical.stroke.readable",
+    "fill": "color.accent.fill.subtle"
+  },
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.subtle"
+  },
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.subtleInverse"
+  }
+]

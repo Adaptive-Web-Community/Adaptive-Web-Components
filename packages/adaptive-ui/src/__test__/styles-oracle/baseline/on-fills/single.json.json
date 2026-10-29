@@ -1,0 +1,16 @@
+[
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.accent.fill.ideal",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.blackOrWhite.readable",
+    "fill": "color.critical.fill.readable",
+    "activeFollowsRest": true
+  },
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.subtle"
+  }
+]

@@ -1,10 +1,19 @@
 import chai from "chai";
-import { DesignToken, hex, Library, recipes, refs } from "design-token-library";
+import { DesignToken, hex, Library, pathOf, recipes, refs } from "design-token-library";
 import { Color, formatColor } from "../color/color.js";
 import { linearGradient } from "../color/gradient.js";
 import { InteractiveSet } from "../interactive.js";
 import { AdaptiveDesignToken, InteractiveToken } from "../token-types.js";
-import { isOnFill, onFill, onFillsOf, resolveOnFills, valueOnFill } from "./on-fill.js";
+import {
+    deserializeOnFill,
+    isOnFill,
+    isSerializableOnFill,
+    onFill,
+    onFillsOf,
+    resolveOnFills,
+    serializeOnFill,
+    valueOnFill,
+} from "./on-fill.js";
 import { StyleValues } from "./properties.js";
 
 const { expect } = chai;
@@ -65,6 +74,41 @@ describe("onFill", () => {
         expect(isOnFill(hex("#000000"))).to.be.false;
         expect(isOnFill({ token: "contrast" })).to.be.false;
         expect(isOnFill("red")).to.be.false;
+    });
+});
+
+describe("a value on a fill written as data", () => {
+    it("should have the names of the token and the fill, and the option", () => {
+        expect(serializeOnFill(onFill(tokens.contrast))).to.deep.equal({ token: "contrast" });
+        expect(serializeOnFill(onFill(tokens.contrast, { fill: tokens.fill.$root, activeFollowsRest: true }))).to.deep.equal({
+            token: "contrast",
+            fill: "fill.$root",
+            activeFollowsRest: true,
+        });
+    });
+
+    it("should be read as refs to the tokens it names", () => {
+        const value = deserializeOnFill({ token: "fill.interactive", fill: "fill.$root", activeFollowsRest: false });
+
+        expect(pathOf(value.token)).to.deep.equal(["fill", "interactive"]);
+        expect(pathOf(value.fill)).to.deep.equal(["fill", "$root"]);
+        expect(value.activeFollowsRest).to.be.false;
+        expect(deserializeOnFill({ token: "contrast" })).to.have.keys("token");
+    });
+
+    it("should make the same value when it is read back", () => {
+        const value = deserializeOnFill(serializeOnFill({ token: tokens.contrast, fill: tokens.fill.interactive }));
+
+        expect(formatSet(valueOnFill(create(), value, tokens.context))).to.deep.equal(
+            formatSet(valueOnFill(create(), { token: tokens.contrast, fill: tokens.fill.interactive }, tokens.context))
+        );
+    });
+
+    it("should be told from a name and the other values written as data", () => {
+        expect(isSerializableOnFill({ token: "contrast" })).to.be.true;
+        expect(isSerializableOnFill("contrast")).to.be.false;
+        expect(isSerializableOnFill({ token: tokens.contrast })).to.be.false;
+        expect(isSerializableOnFill(null)).to.be.false;
     });
 });
 

@@ -4,6 +4,11 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import { refs } from "design-token-library";
+import { onFillCSS } from "../../core/styles/css/rules.js";
+import { deserializeOnFill, SerializableOnFill } from "../../core/styles/on-fill.js";
+import { createReferenceLibrary, ReferenceLibraryTokens } from "../../reference/library.js";
+
 const { expect } = chai;
 
 /**
@@ -396,6 +401,34 @@ const capabilities: Capability[] = [
         includes: [":host(:not([disabled])) control:hover {"],
     },
     {
+        name: "pairs a value with the background fill of its rule, a combination no treatment has",
+        file: "json/stress-on-fill.css",
+        includes: [
+            ".stress-on-fill .label { background: var(--color-accent-fill-subtle); color: var(--color-critical-stroke-readable-on-color-accent-fill-subtle);",
+            ".stress-on-fill:not([disabled]) .label:hover { background: var(--color-accent-fill-subtle-hover); color: var( --color-critical-stroke-readable-on-color-accent-fill-subtle-hover );",
+        ],
+    },
+    {
+        name: "pairs a value with the fill it names, which isn't the background of its rule",
+        file: "json/stress-on-fill.css",
+        includes: [".stress-on-fill .badge { color: var(--color-blackOrWhite-readable-on-color-accent-fill-readable);"],
+    },
+    {
+        name: "makes a value on a fill the token itself in a rule without a background fill",
+        file: "json/stress-on-fill.css",
+        includes: [".stress-on-fill .icon { color: var(--color-neutral-stroke-readable);"],
+        excludes: [".missing"],
+    },
+    {
+        name: "writes the values on a fill of the compiled styles, each once, as data",
+        file: "on-fills/json.json",
+        includes: [
+            '{ "token": "color.critical.stroke.readable", "fill": "color.accent.fill.subtle" }',
+            '{ "token": "color.blackOrWhite.readable", "fill": "color.accent.fill.readable", "activeFollowsRest": true }',
+        ],
+        excludes: ["color.missing", "color.neutral.stroke.readable"],
+    },
+    {
         name: "compiles a JSON anatomy to stdout",
         file: "single/button.json.css",
         includes: [".button.purpose-normal:not(:disabled):hover {"],
@@ -410,6 +443,8 @@ const capabilities: Capability[] = [
             "Unknown part \"Missing reset target\" in focus.resetTarget, skipping.",
             "Unknown part \"Missing cursor part\" in cursor, skipping.",
             "Unknown treatment \"Missing treatment\" in style rule, skipping.",
+            "Unknown token \"color.missing.stroke\" in the value on a fill of foregroundFill, skipping.",
+            "Unknown token \"color.missing.fill\" in the value on a fill of borderFill, skipping.",
         ],
     },
 ];
@@ -453,6 +488,24 @@ describe("aui styles oracle", () => {
         expect(readBody("single/button.css")).to.equal(readBody("code/button.css"));
         expect(readBody("single/button.json.css")).to.equal(readBody("json/button.css"));
         expect(readBody("code/tab.scss")).to.equal(readBody("code/tab.css"));
+    });
+
+    it("should write the values on a fill that the stylesheets refer to, which the CSS of the tokens is written from", () => {
+        const library = createReferenceLibrary();
+        const context = refs<ReferenceLibraryTokens>().color.context;
+        for (const [list, stylesheets] of [["json", "json"], ["code", "code"], ["single", "single/button.css"]] as const) {
+            const values = (JSON.parse(fs.readFileSync(path.join(outputDir, `on-fills/${list}.json`), "utf8")) as SerializableOnFill[])
+                .filter((value): value is SerializableOnFill & { fill: string } => value.fill !== undefined)
+                .map(value => deserializeOnFill(value));
+            const css = onFillCSS(library, values, { context });
+            const stylesheetFiles = stylesheets.endsWith(".css")
+                ? [stylesheets]
+                : fs.readdirSync(path.join(outputDir, stylesheets)).map(file => `${stylesheets}/${file}`);
+            const referred = new Set(stylesheetFiles.flatMap(file => read(file).match(/--[\w-]+-on-color-[\w-]+/g) ?? []));
+
+            expect(referred.size, list).to.be.greaterThan(0);
+            referred.forEach(property => expect(css, `${list}: ${property}`).to.include(`${property}:`));
+        }
     });
 
     it("should generate a stylesheet for every fixture", () => {

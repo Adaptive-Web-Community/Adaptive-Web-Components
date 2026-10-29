@@ -300,6 +300,14 @@ export interface DensityUnits {
     verticalPadding: number;
 }
 
+// @beta
+export function deserializeOnFill(value: SerializableOnFill & {
+    readonly fill: string;
+}): OnFillWithFill;
+
+// @beta (undocumented)
+export function deserializeOnFill(value: SerializableOnFill): OnFill;
+
 // @public
 export type DesignTokenMetadata = {
     readonly type: DesignTokenType;
@@ -549,6 +557,9 @@ export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
 // @public
 export function isOnFill(value: unknown): value is OnFill;
 
+// @beta
+export function isSerializableOnFill(value: unknown): value is SerializableOnFill;
+
 // @public
 export function isShadow(value: unknown): value is DesignToken.Values.Readonly.Shadow;
 
@@ -771,6 +782,13 @@ export type SerializableBooleanCondition = string;
 // @beta (undocumented)
 export type SerializableCondition = SerializableBooleanCondition | SerializableStringCondition;
 
+// @beta
+export interface SerializableOnFill {
+    readonly activeFollowsRest?: boolean;
+    readonly fill?: string;
+    readonly token: string;
+}
+
 // @beta (undocumented)
 export type SerializableStringCondition = Record<string, string>;
 
@@ -780,8 +798,7 @@ export interface SerializableStyleRule {
     contextCondition?: Record<string, string | boolean>;
     // (undocumented)
     part?: string;
-    // (undocumented)
-    properties?: Record<string, string>;
+    properties?: Record<string, string | SerializableOnFill>;
     // (undocumented)
     stateOnContext?: boolean;
     // @deprecated (undocumented)
@@ -789,6 +806,14 @@ export interface SerializableStyleRule {
     // (undocumented)
     treatments?: string[];
 }
+
+// @beta
+export function serializeOnFill(value: OnFillWithFill): SerializableOnFill & {
+    readonly fill: string;
+};
+
+// @beta (undocumented)
+export function serializeOnFill(value: OnFill): SerializableOnFill;
 
 // @public @deprecated (undocumented)
 export type Shadow = DesignToken.DeepReadonly<DesignToken.Values.ShadowLayer>;

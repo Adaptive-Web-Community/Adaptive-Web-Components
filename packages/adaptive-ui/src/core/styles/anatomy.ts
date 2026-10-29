@@ -1,4 +1,5 @@
 import { InteractiveState } from "../types.js";
+import type { SerializableOnFill } from "./on-fill.js";
 import type { StyleRuleTarget } from "./rule.js";
 
 /**
@@ -291,7 +292,10 @@ export interface SerializableStyleRule {
      * @deprecated Use `treatments`.
      */
     styles?: string[],
-    properties?: Record<string, string>,
+    /**
+     * The value of each property: a name of a token, a value of CSS, or a value on a fill.
+     */
+    properties?: Record<string, string | SerializableOnFill>,
 }
 
 /**

@@ -1,6 +1,7 @@
 import { isRef, Library, pathOf } from "design-token-library";
 import { InteractiveSet, InteractiveState, isInteractiveSet } from "../interactive.js";
 import { atName, formatValue } from "../token-css.js";
+import { refAt } from "../token-ref.js";
 import { StyleProperty, type StyleValues } from "./properties.js";
 
 /**
@@ -74,6 +75,83 @@ export function onFill(token: Library.Ref<unknown, never>, options: Omit<OnFill,
  */
 export function isOnFill(value: unknown): value is OnFill {
     return typeof value === "object" && value !== null && !isRef(value) && isRef(Reflect.get(value, "token"));
+}
+
+/**
+ * A value on a fill written as data, like in an anatomy written as JSON: the names of its token and its fill, the paths of their refs.
+ *
+ * @example
+ * ```json
+ * "foregroundFill": { "token": "color.critical.stroke.readable", "fill": "color.accent.fill.subtle" }
+ * ```
+ *
+ * @beta
+ */
+export interface SerializableOnFill {
+    /**
+     * The name of the token, like `color.critical.stroke.readable`.
+     */
+    readonly token: string;
+
+    /**
+     * The name of the fill. The background fill of the rule, if it isn't given.
+     */
+    readonly fill?: string;
+
+    /**
+     * See {@link OnFill.activeFollowsRest}.
+     */
+    readonly activeFollowsRest?: boolean;
+}
+
+/**
+ * Writes a value on a fill as data, with the names of its token and its fill.
+ *
+ * @beta
+ */
+export function serializeOnFill(value: OnFillWithFill): SerializableOnFill & { readonly fill: string };
+/**
+ * @beta
+ */
+export function serializeOnFill(value: OnFill): SerializableOnFill;
+export function serializeOnFill(value: OnFill): SerializableOnFill {
+    const { token, fill, activeFollowsRest } = value;
+    return {
+        token: pathOf(token).join("."),
+        ...(fill !== undefined && { fill: pathOf(fill).join(".") }),
+        ...(activeFollowsRest !== undefined && { activeFollowsRest }),
+    };
+}
+
+/**
+ * Reads a value on a fill written as data, with refs to the tokens it names.
+ *
+ * @remarks
+ * The names aren't checked: a name that isn't a token of the library is an error when the value is made or rendered.
+ *
+ * @beta
+ */
+export function deserializeOnFill(value: SerializableOnFill & { readonly fill: string }): OnFillWithFill;
+/**
+ * @beta
+ */
+export function deserializeOnFill(value: SerializableOnFill): OnFill;
+export function deserializeOnFill(value: SerializableOnFill): OnFill {
+    const { token, fill, activeFollowsRest } = value;
+    return {
+        token: refAt(token.split(".")),
+        ...(fill !== undefined && { fill: refAt(fill.split(".")) }),
+        ...(activeFollowsRest !== undefined && { activeFollowsRest }),
+    };
+}
+
+/**
+ * Tests whether data is a value on a fill written as data.
+ *
+ * @beta
+ */
+export function isSerializableOnFill(value: unknown): value is SerializableOnFill {
+    return typeof value === "object" && value !== null && typeof Reflect.get(value, "token") === "string";
 }
 
 /**
