@@ -2,6 +2,7 @@ import { refs } from "design-token-library";
 import { AnatomyTreatments } from "../core/styles/css/style-rules.js";
 import { OnFill, onFill } from "../core/styles/on-fill.js";
 import { Treatment } from "../core/styles/treatment.js";
+import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
 import { ReferenceLibraryTokens } from "./library.js";
 import { densityBorder, transparent } from "./util.js";
 
@@ -1810,7 +1811,7 @@ export const TreatmentNameMapping = {
 export type TreatmentNameMapping = (typeof TreatmentNameMapping)[keyof typeof TreatmentNameMapping];
 
 /**
- * The treatments of the reference system, which an anatomy written as data refers to by name.
+ * The treatments of the reference system, which an anatomy written as data refers to by name, with the experimental ones.
  *
  * @public
  */
@@ -1914,4 +1915,6 @@ export const referenceTreatments: readonly Treatment[] = [
     interactiveCursorTreatment,
     focusIndicatorTreatment,
     focusResetTreatment,
+    accentHueShiftGradientFillSubtleElementTreatment,
+    accentToHighlightGradientFillSubtleElementTreatment,
 ];

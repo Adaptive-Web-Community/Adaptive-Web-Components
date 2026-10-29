@@ -13,7 +13,6 @@
     // Not yet migrated to the new token library. Remove from here as each is migrated.
     // Why: docs/decisions/0003-migrate-behind-an-exclusion-frontier.md
     "exclude": [
-        "src/reference/experimental.ts",
         "src/reference/index.ts",
         "src/reference/parity.spec.ts",
         "src/reference/token-naming.ts"

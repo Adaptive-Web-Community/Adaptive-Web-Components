@@ -1,76 +1,145 @@
-import { DesignTokenResolver } from "@microsoft/fast-foundation";
-import { createTokenNumber, createTokenPaint } from "../core/token-helpers.js";
+import { DesignToken, Library, recipes, refs } from "design-token-library";
 import { hueShiftGradient } from "../core/color/recipes/hue-shift-gradient.js";
 import { twoPaletteGradient } from "../core/color/recipes/two-palette-gradient.js";
-import { Fill, Styles } from "../core/styles/styles.js";
 import { StyleProperty } from "../core/styles/properties.js";
-import { accentStrokeSafety, colorContext, fillSubtleRestDelta, neutralFillSubtle } from "./color.js";
-import { accentPalette, highlightPalette } from "./palette.js";
-import { densityBorderStyles } from "./util.js";
+import { Treatment } from "../core/styles/treatment.js";
+import { intendedFor } from "../core/token-metadata.js";
+import { AdaptiveDesignToken, PaintToken } from "../core/token-types.js";
+import { ColorLibraryTokens, ColorTokens } from "./color.js";
+import { densityBorder } from "./util.js";
 
 /**
+ * The recipes of the experimental gradients, which a system changes with `override()` when it extends a library.
+ *
  * @beta
  */
-export const gradientAngle = createTokenNumber("color.gradient.angle").withDefault(180);
-// css is strange, if you provide the rotation, 180deg is the same as if it was not provided (not 0).
+export const experimentalRecipes = recipes({
+    hueShiftGradient,
+    twoPaletteGradient,
+});
 
 /**
+ * The tokens that the experimental gradients read, under `color.gradient`.
+ *
  * @beta
  */
-export const gradientStartShift = createTokenNumber("color.gradient.startShift").withDefault(15);
+export interface GradientTokens {
+    /**
+     * The angle of the gradients, in degrees. 180 is from the top to the bottom, which is what CSS draws without an angle.
+     */
+    angle: DesignToken.Number;
+
+    /**
+     * The shift of the hue at the start of a hue shift gradient, in degrees.
+     */
+    startShift: DesignToken.Number;
+
+    /**
+     * The shift of the hue at the end of a hue shift gradient, in degrees.
+     */
+    endShift: DesignToken.Number;
+}
 
 /**
+ * A fill of a palette that is a gradient, made relative to the color context.
+ *
  * @beta
  */
-export const gradientEndShift = createTokenNumber("color.gradient.endShift").withDefault(15);
+export interface GradientFillTokens {
+    fill: {
+        /** At the delta of the subtle fill at rest. */
+        subtle: PaintToken;
+    };
+}
 
 /**
+ * The experimental tokens, under `color`: the gradients and what they read.
+ *
  * @beta
  */
-export const accentHueShiftGradientFillSubtleRest = createTokenPaint("color.accentHueShiftGradient.fill.subtle.rest", StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) => {
-        const palette = resolve(accentPalette);
-        const reference = resolve(colorContext);
-        const delta = resolve(fillSubtleRestDelta);
-        const angle = resolve(gradientAngle);
-        const startShift = resolve(gradientStartShift);
-        const endShift = resolve(gradientEndShift);
-        return hueShiftGradient(palette, reference, delta, angle, startShift, endShift);
-    }
-);
+export interface ExperimentalColorTokens {
+    gradient: GradientTokens;
+    /** The accent palette with its hue shifted toward the start and the end. */
+    accentHueShiftGradient: GradientFillTokens;
+    /** From the accent palette to the highlight palette. */
+    accentToHighlightGradient: GradientFillTokens;
+}
 
 /**
+ * The tokens of a library that has the colors and the experimental tokens.
+ *
  * @beta
  */
-export const accentToHighlightGradientFillSubtleRest = createTokenPaint("color.accentToHighlightGradient.fill.subtle.rest", StyleProperty.backgroundFill).withDefault(
-    (resolve: DesignTokenResolver) => {
-        const startPalette = resolve(accentPalette);
-        const endPalette = resolve(highlightPalette);
-        const reference = resolve(colorContext);
-        const delta = resolve(fillSubtleRestDelta);
-        const angle = resolve(gradientAngle);
-        return twoPaletteGradient(startPalette, endPalette, reference, delta, angle);
-    }
-);
+export interface ExperimentalLibraryTokens extends ColorLibraryTokens {
+    color: ColorTokens & ExperimentalColorTokens;
+}
+
+const tokens = refs<ExperimentalLibraryTokens>().color;
 
 /**
+ * The configuration of the experimental tokens, for the library, to spread into the `color` group with the color tokens.
+ *
  * @beta
  */
-export const accentHueShiftGradientFillSubtleElementStyles: Styles = Styles.fromProperties(
-    {
-        ...Fill.backgroundNonInteractive(accentHueShiftGradientFillSubtleRest, neutralFillSubtle.rest),
-        ...densityBorderStyles(accentStrokeSafety),
+export const experimentalColor: Library.Config<ExperimentalColorTokens, ExperimentalLibraryTokens> = {
+    gradient: {
+        angle: { $type: DesignToken.Type.Number, $value: 180 },
+        // 0.14 had 15, which shifted both ends the same way, a bug: the start shifts the other way, as the recipe does by default.
+        startShift: { $type: DesignToken.Type.Number, $value: -15 },
+        endShift: { $type: DesignToken.Type.Number, $value: 15 },
     },
-    "color.accent-hue-shift-gradient-fill-subtle-element",
-);
+    accentHueShiftGradient: {
+        fill: {
+            subtle: {
+                $type: AdaptiveDesignToken.paint,
+                $value: experimentalRecipes.hueShiftGradient(tokens.accent.palette, tokens.context, tokens.deltas.fill.subtle.rest, {
+                    angle: tokens.gradient.angle,
+                    startShift: tokens.gradient.startShift,
+                    endShift: tokens.gradient.endShift,
+                }),
+                $extensions: intendedFor(StyleProperty.backgroundFill),
+            },
+        },
+    },
+    accentToHighlightGradient: {
+        fill: {
+            subtle: {
+                $type: AdaptiveDesignToken.paint,
+                $value: experimentalRecipes.twoPaletteGradient(
+                    tokens.accent.palette,
+                    tokens.highlight.palette,
+                    tokens.context,
+                    tokens.deltas.fill.subtle.rest,
+                    { angle: tokens.gradient.angle }
+                ),
+                $extensions: intendedFor(StyleProperty.backgroundFill),
+            },
+        },
+    },
+};
 
 /**
+ * Treatment for an element that has the accent hue shift gradient as its fill, and the disabled fill when it is disabled.
+ *
  * @beta
  */
-export const accentToHighlightGradientFillSubtleElementStyles: Styles = Styles.fromProperties(
-    {
-        ...Fill.backgroundNonInteractive(accentToHighlightGradientFillSubtleRest, neutralFillSubtle.rest),
-        ...densityBorderStyles(accentStrokeSafety),
+export const accentHueShiftGradientFillSubtleElementTreatment: Treatment = {
+    name: "color.accent-hue-shift-gradient-fill-subtle-element",
+    properties: {
+        backgroundFill: { rest: tokens.accentHueShiftGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
+        ...densityBorder(tokens.accent.stroke.safety),
     },
-    "color.accent-to-highlight-gradient-fill-subtle-element",
-);
+};
+
+/**
+ * Treatment for an element that has the accent to highlight gradient as its fill, and the disabled fill when it is disabled.
+ *
+ * @beta
+ */
+export const accentToHighlightGradientFillSubtleElementTreatment: Treatment = {
+    name: "color.accent-to-highlight-gradient-fill-subtle-element",
+    properties: {
+        backgroundFill: { rest: tokens.accentToHighlightGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
+        ...densityBorder(tokens.accent.stroke.safety),
+    },
+};
