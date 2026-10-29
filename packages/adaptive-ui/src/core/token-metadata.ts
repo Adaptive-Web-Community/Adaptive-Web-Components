@@ -116,7 +116,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> => typeof va
 export function withFormerNames<C extends object>(config: C, namesOf: (path: readonly string[]) => readonly string[]): C {
     const visit = (node: Record<string, unknown>, path: readonly string[]) => {
         for (const [key, child] of Object.entries(node)) {
-            if (key.startsWith("$") || !isRecord(child)) {
+            // `$root` is a group's own token; the other `$` names are properties of the format.
+            if ((key.startsWith("$") && key !== "$root") || !isRecord(child)) {
                 continue;
             }
             const childPath = [...path, key];

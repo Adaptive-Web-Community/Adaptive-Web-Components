@@ -87,6 +87,18 @@ describe("withFormerNames", () => {
         expect(shared).to.deep.equal(intendedFor(StyleProperty.backgroundFill));
     });
 
+    it("should give names to the root of a group, which is a token", () => {
+        const config = withFormerNames(
+            { group: { $root: { $type: DesignToken.Type.Color, $value: red }, child: { $type: DesignToken.Type.Color, $value: red } } },
+            path => [`old-${path.join("-")}`]
+        );
+
+        const library = Library.create(config);
+
+        expect(getFormerNames(library.tokens.group.$root)).to.deep.equal(["old-group-$root"]);
+        expect(resolveTokenName(tokenNames(library), "old-group-$root")).to.include({ name: "group", renamed: true });
+    });
+
     it("should find the tokens of a library by those names", () => {
         const library = Library.create(
             withFormerNames({ a: { b: { $type: DesignToken.Type.Color, $value: red } } }, ([group, key]) => [`${group}-${key}-color`])
