@@ -1,4 +1,4 @@
-import { InteractiveState } from "../types.js";
+import { InteractiveState } from "../interactive.js";
 import type { SerializableOnFill } from "./on-fill.js";
 import type { StyleRuleTarget } from "./rule.js";
 

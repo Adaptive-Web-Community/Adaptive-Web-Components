@@ -5,14 +5,10 @@
 ```ts
 
 import { Color as Color_3 } from 'culori/fn';
-import { CSSDesignToken } from '@microsoft/fast-foundation';
-import { CSSDirective } from '@microsoft/fast-element';
 import { CSSPropertiesOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
-import { DesignToken as DesignToken_2 } from '@microsoft/fast-foundation';
-import { DesignTokenResolver } from '@microsoft/fast-foundation';
 import { Library } from 'design-token-library';
-import { ValuesOf } from '@microsoft/fast-foundation';
+import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
@@ -190,48 +186,6 @@ export function createPalette(source: Color_2, swatches: ReadonlyArray<Color_2>)
 export function createPaletteOkhsl(source: Color_2 | string, options?: Partial<PaletteOkhslOptions>): Palette;
 
 // @public
-export function createTokenColor(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Color_2>;
-
-// @public
-export function createTokenDimension(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenFontFamily(name: string): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenFontSize(name: string): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenFontStyle(name: string): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenFontVariations(name: string): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenFontWeight(name: string): TypedCSSDesignToken<number>;
-
-// @public
-export function createTokenLineHeight(name: string): TypedCSSDesignToken<string>;
-
-// @public
-export function createTokenNonCss<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
-
-// @public
-export function createTokenNumber(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<number>;
-
-// @public
-export function createTokenNumberNonStyling(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<number>;
-
-// @public
-export function createTokenPaint(name: string, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<Paint>;
-
-// @public
-export function createTokenRecipe<TParam, TResult>(baseName: string, intendedFor: StyleProperty | StyleProperty[], evaluate: RecipeEvaluate<TParam, TResult>): TypedDesignToken<Recipe<TParam, TResult>>;
-
-// @public
-export const createTyped: typeof TypedCSSDesignToken.createTyped;
-
-// @public
 export interface CssRule {
     // (undocumented)
     readonly declarations: Readonly<Record<string, string>>;
@@ -307,50 +261,6 @@ export function deserializeOnFill(value: SerializableOnFill & {
 
 // @beta (undocumented)
 export function deserializeOnFill(value: SerializableOnFill): OnFill;
-
-// @public
-export type DesignTokenMetadata = {
-    readonly type: DesignTokenType;
-    readonly intendedFor?: StyleProperty[];
-};
-
-// @public
-export class DesignTokenMultiValue<T extends CSSDirective | string> extends Array<T> implements CSSDirective {
-    createCSS(): string;
-}
-
-// @public
-export abstract class DesignTokenRegistry {
-    static Groups: Map<string, InteractiveTokenGroup<any>>;
-    static Shared: Map<string, DesignToken_2<any>>;
-}
-
-// @public
-export const DesignTokenType: {
-    readonly color: "color";
-    readonly dimension: "dimension";
-    readonly fontFamily: "fontFamily";
-    readonly fontWeight: "fontWeight";
-    readonly duration: "duration";
-    readonly cubicBezier: "cubicBezier";
-    readonly number: "number";
-    readonly strokeStyle: "strokeStyle";
-    readonly border: "border";
-    readonly transition: "transition";
-    readonly shadow: "shadow";
-    readonly gradient: "gradient";
-    readonly typography: "typography";
-    readonly boolean: "boolean";
-    readonly fontStyle: "fontStyle";
-    readonly fontVariations: "fontVariations";
-    readonly palette: "palette";
-    readonly recipe: "recipe";
-    readonly paint: "paint";
-    readonly string: "string";
-};
-
-// @public
-export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 
 // @public
 export function directionByIsDark(color: Paint): PaletteDirection;
@@ -503,6 +413,11 @@ export type InteractiveDeltaTokens<S extends InteractiveState = InteractiveState
 export type InteractivePaintSet = InteractiveSet<Paint>;
 
 // @public
+export type InteractiveSet<T> = {
+    [key in InteractiveState]?: T | null;
+};
+
+// @public
 export enum InteractiveState {
     active = "active",
     disabled = "disabled",
@@ -516,10 +431,6 @@ export const interactiveSwatchSetAsOverlay: typeof colorSetAsOverlay;
 
 // @public
 export type InteractiveToken<V> = DesignToken.Custom<typeof AdaptiveDesignToken.interactive, InteractiveSet<V>>;
-
-// @public
-export interface InteractiveTokenGroup<T> extends MakePropertyRequired<TokenGroup, "type">, Record<InteractiveState, TypedCSSDesignToken<T>> {
-}
 
 // @public @deprecated
 export type InteractiveValues<T> = {
@@ -584,16 +495,11 @@ export function luminanceColor(luminance: number): Color_2;
 // @public @deprecated (undocumented)
 export const luminanceSwatch: typeof luminanceColor;
 
-// @public (undocumented)
-export type MakePropertyOptional<T, K extends keyof T> = Omit<T, K> & {
-    [P in K]?: T[P];
-};
-
-// @public (undocumented)
-export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
-
 // @public
 export function makeSelector(params: SelectorParameters, state: InteractiveState): string;
+
+// @public
+export function mapStates<T, U>(set: InteractiveSet<T>, map: (value: T, state: InteractiveState) => U): InteractiveSet<U>;
 
 // @public
 export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
@@ -700,22 +606,6 @@ export const RadialGradient: new (stops: GradientStop[]) => RadialGradient_2;
 
 // @public
 export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient_2;
-
-// @public
-export interface Recipe<TParam, TResult> {
-    evaluate: RecipeEvaluate<TParam, TResult>;
-}
-
-// @public (undocumented)
-export type RecipeEvaluate<TParam, TResult> = (resolver: DesignTokenResolver, params: TParam) => TResult;
-
-// @public (undocumented)
-export type RecipeEvaluateOptional<TParam, TResult> = (resolver: DesignTokenResolver, params?: TParam) => TResult;
-
-// @public
-export interface RecipeOptional<TParam, TResult> {
-    evaluate: RecipeEvaluateOptional<TParam, TResult>;
-}
 
 // @public
 export interface Reference {
@@ -988,13 +878,6 @@ export function toCulori(color: Color_2): Color_3;
 export function toGradient(gradient: Gradient | DtcgGradient): Gradient;
 
 // @public
-export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "type"> {
-    intendedFor?: StyleProperty[];
-    name: string;
-    type?: DesignTokenType;
-}
-
-// @public
 export interface TokenProperties {
     // (undocumented)
     readonly property: string;
@@ -1033,32 +916,6 @@ export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, r
 export interface TwoPaletteGradientOptions {
     angle?: number;
     direction?: PaletteDirection;
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedCSSDesignToken" because one of its declarations is marked as @internal
-//
-// @public
-export class TypedCSSDesignToken<T> extends CSSDesignToken<T> implements DesignTokenMetadata {
-    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
-    static createTyped<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedCSSDesignToken<T>;
-}
-
-// @internal (undocumented)
-export interface TypedCSSDesignToken<T> extends DesignTokenMetadata {
-}
-
-// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
-// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TypedDesignToken" because one of its declarations is marked as @internal
-//
-// @public
-export class TypedDesignToken<T> extends DesignToken_2<T> implements DesignTokenMetadata {
-    constructor(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]);
-    static createTyped<T>(name: string, type: DesignTokenType, intendedFor?: StyleProperty | StyleProperty[]): TypedDesignToken<T>;
-}
-
-// @internal (undocumented)
-export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
 
 // @public
@@ -1123,10 +980,6 @@ export const _white: DesignToken;
 
 // @public
 export function withAlpha(color: Color_2, alpha: number): Color_2;
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/core/token-css.d.ts:47:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
