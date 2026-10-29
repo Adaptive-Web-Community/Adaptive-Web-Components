@@ -3,8 +3,6 @@
         "src/reference/experimental.ts",
         "src/reference/index.ts",
         "src/reference/parity.spec.ts",
-        "src/reference/token-naming.ts",
-        "src/core/token-helpers-color.ts",
-        "src/core/token-helpers-color.spec.ts"
+        "src/reference/token-naming.ts"
     ]
 }

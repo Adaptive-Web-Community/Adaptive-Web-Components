@@ -370,7 +370,6 @@ scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole refe
   or with a `fill` and `activeFollowsRest` (`SerializableOnFill`). With `--on-fills <file>`, the CLI writes the values on a fill of the
   styles it compiles as a JSON list, which the CSS of the tokens of each scope is written from: `onFillCSS(library,
   list.map(value => deserializeOnFill(value)), { context: color.context })`.
-  Importing the root of the package still loads FAST, through the 0.14 token helpers that aren't migrated yet.
 
 ### Deprecated, the old name is the new one
 
@@ -383,7 +382,27 @@ JSON may name its treatments in `styles`.
 Not exported, with what to use: `Styles.Shared` (`referenceTreatments`), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
 `Fill` (`onFill`), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
 
+## The token helpers of 0.14
+
+The helpers that made a FAST token are removed, and the package doesn't depend on FAST (`@microsoft/fast-element`,
+`@microsoft/fast-foundation`) any more. A token is a token of the library, made from its config, so they have no replacement of the name.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `createTokenColor`, `createTokenPaint`, `createTokenDimension`, `createTokenNumber`, `createTokenFontFamily`, `createTokenFontSize`, `createTokenFontStyle`, `createTokenFontVariations`, `createTokenFontWeight`, `createTokenLineHeight` | a token in the config of a library, `{ $type: DesignToken.Type.Color, $value: ... }`, with a type of the library or of `AdaptiveDesignToken` |
+| `createTokenNonCss`, `createTokenNumberNonStyling` | a token of a type whose converter is `false`, like `AdaptiveDesignToken.delta`, which isn't written to CSS |
+| `createTokenRecipe`, `Recipe`, `RecipeOptional`, `RecipeEvaluate`, `RecipeEvaluateOptional` | a recipe of the library (`recipes()`), called with refs in the value of a token, and replaced with `override()` |
+| `TypedDesignToken`, `TypedCSSDesignToken`, `createTyped` | a token of the library (`Library.Token`) |
+| `DesignTokenMetadata` (`name`, `type`, `intendedFor`) | the name and the `$type` of a token of the library, and `intendedFor(...)` in its `$extensions` |
+| `DesignTokenType` | `DesignToken.Type` of the library and `AdaptiveDesignToken` |
+| `DesignTokenRegistry` | the library: its tokens by their path, `library.tokens` |
+| `TokenGroup`, `InteractiveTokenGroup` | a group of the config, and an interactive token (`InteractiveToken<V>`) |
+| `DesignTokenMultiValue` | a value of the token's type, like a shadow with more than one layer |
+| `applyMixins`, `MakePropertyOptional`, `MakePropertyRequired` | none |
+
+`InteractiveState` and `InteractiveValues` are still exported from the root, with `InteractiveSet` and `mapStates`.
+
 ## Not migrated yet
 
-The rest of the tokens (`experimental`), the token helpers of 0.14 (`createTokenX`, `DesignTokenRegistry`), and `TokenNameMapping` are still
-the ones of 0.14, and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.
+The rest of the tokens (`experimental`) and `TokenNameMapping` are still the ones of 0.14, and the `./reference` entry isn't built until they
+are replaced, in the step that follows. The deprecated names of the tokens are exported with each one.

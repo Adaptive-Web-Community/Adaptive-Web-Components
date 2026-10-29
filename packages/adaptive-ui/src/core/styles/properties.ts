@@ -1,4 +1,3 @@
-import type { ValuesOf } from "@microsoft/fast-foundation";
 import type { DesignToken, Library } from "design-token-library";
 import type { Paint } from "../color/paint.js";
 import type { InteractiveSet } from "../interactive.js";
@@ -76,7 +75,7 @@ export const StyleProperty = {
  *
  * @public
  */
-export type StyleProperty = ValuesOf<typeof StyleProperty>;
+export type StyleProperty = (typeof StyleProperty)[keyof typeof StyleProperty];
 
 /**
  * @public
