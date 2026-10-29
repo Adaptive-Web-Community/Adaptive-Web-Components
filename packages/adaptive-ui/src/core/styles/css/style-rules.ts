@@ -1,5 +1,6 @@
 import { isInteractiveSet } from "../../interactive.js";
 import { ComponentAnatomy, Interactivity } from "../anatomy.js";
+import { isOnFill } from "../on-fill.js";
 import { StyleProperties } from "../properties.js";
 import { StyleRule, StyleRules, StyleRuleTarget } from "../rule.js";
 import { Treatment, treatmentProperties } from "../treatment.js";
@@ -65,6 +66,9 @@ export interface StyleRulesOptions {
 function inFocus(treatment: Treatment): StyleProperties {
     const properties: StyleProperties = {};
     for (const [key, value] of treatmentProperties(treatment)) {
+        if (isOnFill(value)) {
+            throw new Error(`The ${key} of a treatment of the focus is a value on a fill, which has no focus state of its own`);
+        }
         const focus = isInteractiveSet(value) ? value.focus : value;
         if (focus !== undefined && focus !== null && focus !== "") {
             properties[key] = { focus };

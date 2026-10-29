@@ -552,6 +552,9 @@ export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is D
 export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
 
 // @public
+export function isOnFill(value: unknown): value is OnFill;
+
+// @public
 export function isShadow(value: unknown): value is DesignToken.Values.Readonly.Shadow;
 
 // @public
@@ -597,6 +600,24 @@ export const min: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @public
 export const multiply: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export interface OnFill {
+    readonly activeFollowsRest?: boolean;
+    readonly fill?: Library.Ref<unknown, never>;
+    readonly token: Library.Ref<unknown, never>;
+}
+
+// @public
+export function onFill(token: Library.Ref<unknown, never>, options?: Omit<OnFill, "token">): OnFill;
+
+// @public
+export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[];
+
+// @public
+export type OnFillWithFill = OnFill & {
+    readonly fill: Library.Ref<unknown, never>;
+};
 
 // @public
 export type Operand = number | Dimension | Reference | Expression;
@@ -699,6 +720,9 @@ export function renderRules(properties: Iterable<readonly [string, StyleValues]>
 
 // @public
 export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[];
+
+// @public
+export function resolveOnFills(properties: Iterable<readonly [string, StyleValues]>): Map<string, StyleValues>;
 
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
@@ -916,7 +940,7 @@ export const Styles: {
 export type StyleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;
 
 // @public
-export type StyleValues = StyleValue | InteractiveSet<StyleValue>;
+export type StyleValues = StyleValue | InteractiveSet<StyleValue> | OnFill;
 
 // @public
 export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
@@ -1042,6 +1066,9 @@ export type TypeScaleTokens = TypeRampTokens & {
     lineHeightMultilineRatio: DesignToken.Number;
     lineHeightSnap: DesignToken.Dimension;
 };
+
+// @public
+export function valueOnFill(library: Library.Library<any>, value: OnFillWithFill, context: Library.Ref<unknown, never>): InteractiveSet<unknown>;
 
 // @public
 export const WcagContrastLevel: {
