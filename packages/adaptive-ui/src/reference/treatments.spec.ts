@@ -6,6 +6,7 @@ import { renderStyleRules, styleRulesOnFills } from "../core/styles/css/style-ru
 import { onFill } from "../core/styles/on-fill.js";
 import { Treatment, treatmentProperties } from "../core/styles/treatment.js";
 import { createReferenceLibrary, ReferenceLibraryTokens } from "./library.js";
+import * as experimental from "./experimental.js";
 import * as treatments from "./treatments.js";
 import {
     accentFillReadableControlTreatment,
@@ -38,10 +39,11 @@ describe("the reference treatments", () => {
         expect(new Set(names).size).to.equal(names.length);
     });
 
-    it("should be every treatment that is exported", () => {
-        const exported = Object.values(treatments).filter(value => referenceTreatments.includes(value as Treatment));
+    it("should be every treatment that is exported, with the experimental ones", () => {
+        const modules = { ...treatments, ...experimental };
+        const exported = Object.values(modules).filter(value => referenceTreatments.includes(value as Treatment));
 
-        expect(Object.keys(treatments).filter(key => key.endsWith("Treatment"))).to.have.length(referenceTreatments.length);
+        expect(Object.keys(modules).filter(key => key.endsWith("Treatment"))).to.have.length(referenceTreatments.length);
         expect(exported).to.have.length(referenceTreatments.length);
     });
 

@@ -402,7 +402,32 @@ The helpers that made a FAST token are removed, and the package doesn't depend o
 
 `InteractiveState` and `InteractiveValues` are still exported from the root, with `InteractiveSet` and `mapStates`.
 
+## Experimental gradients
+
+The gradient fills of the reference system are tokens in the library, still `@beta`, with the names they had. `experimentalColor` is
+their config, which the reference library spreads into `color` (`ExperimentalLibraryTokens`).
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `gradientAngle`, `gradientStartShift`, `gradientEndShift` | `color.gradient.angle`, `.startShift`, `.endShift`, numbers, in CSS as before |
+| `accentHueShiftGradientFillSubtleRest`, `accentToHighlightGradientFillSubtleRest` | `color.accentHueShiftGradient.fill.subtle`, `color.accentToHighlightGradient.fill.subtle`, tokens of the `paint` type, written as their `linear-gradient()` (CSS `--color-accentHueShiftGradient-fill-subtle`, was `...-subtle-rest`) |
+| the recipes in the value of the tokens | `experimentalRecipes.hueShiftGradient` and `.twoPaletteGradient`, recipes of the library, which `override()` replaces |
+| `accentHueShiftGradientFillSubtleElementStyles`, `accentToHighlightGradientFillSubtleElementStyles` | `accentHueShiftGradientFillSubtleElementTreatment`, `accentToHighlightGradientFillSubtleElementTreatment`, in `referenceTreatments` |
+| `createTokenPaint(name)` | a token of the `paint` type (`AdaptiveDesignToken.paint`, `PaintToken`), a color or a gradient |
+
+### Behavior
+
+- The gradients are made from the same palettes, delta, and angle. The start of the hue shift gradient shifts the other way (`startShift`
+  is -15): 0.14 had 15, which shifted both ends the same way.
+- The treatments have `color.neutral.fill.subtle` in the disabled state, which is its disabled fill; in 0.14 it was the rest of the subtle fill.
+
+### Deprecated, the old name is the token
+
+`gradientAngle`, `gradientStartShift`, `gradientEndShift`, `accentHueShiftGradientFillSubtleRest`, and `accentToHighlightGradientFillSubtleRest`
+are exported from `reference/deprecated.ts`, each the token of the table above in the library that Adaptive UI creates, and the two
+`...ElementStyles` are the treatments.
+
 ## Not migrated yet
 
-The rest of the tokens (`experimental`) and `TokenNameMapping` are still the ones of 0.14, and the `./reference` entry isn't built until they
-are replaced, in the step that follows. The deprecated names of the tokens are exported with each one.
+`TokenNameMapping` is still the one of 0.14, and the `./reference` entry isn't built until it is replaced. The deprecated names of the tokens
+are exported with each one.

@@ -19,6 +19,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     interactive: (value: InteractiveSet<unknown>, token: {
         name: string;
     }) => string;
+    paint: (value: Paint) => string;
     palette: false;
     wcagContrastLevel: false;
     expression: (value: Operand) => string;
@@ -33,6 +34,7 @@ export const AdaptiveDesignToken: {
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
     readonly interactive: "interactive";
+    readonly paint: "paint";
     readonly palette: "palette";
     readonly wcagContrastLevel: "wcagContrastLevel";
 };
@@ -545,6 +547,9 @@ export interface OverlayColor extends Color_2 {
 
 // @public
 export type Paint = Color_2 | Gradient | DtcgGradient;
+
+// @public
+export type PaintToken = DesignToken.Custom<typeof AdaptiveDesignToken.paint, Paint>;
 
 // @public
 export interface Palette {

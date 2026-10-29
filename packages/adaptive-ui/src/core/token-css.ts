@@ -91,6 +91,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
             const others = given.filter(([state]) => state !== "rest").map(([state, v]) => `${base}-${state}:${formatValue(v)}`);
             return [value.rest === undefined || value.rest === null ? "" : formatValue(value.rest), ...others].join(";");
         },
+        paint: (value: Paint) => formatPaint(value),
         // A palette is not CSS.
         palette: false as const,
         wcagContrastLevel: false as const,
