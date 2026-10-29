@@ -16,6 +16,8 @@ import { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
+    boolean: false;
+    contrastRatio: false;
     delta: false;
     fontStyle: (value: string) => string;
     fontVariations: (value: string) => string;
@@ -23,17 +25,21 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         name: string;
     }) => string;
     palette: false;
+    wcagContrastLevel: false;
     expression: (value: Operand) => string;
 };
 
 // @public
 export const AdaptiveDesignToken: {
+    readonly boolean: "boolean";
+    readonly contrastRatio: "contrastRatio";
     readonly delta: "delta";
     readonly expression: "expression";
     readonly fontStyle: "fontStyle";
     readonly fontVariations: "fontVariations";
     readonly interactive: "interactive";
     readonly palette: "palette";
+    readonly wcagContrastLevel: "wcagContrastLevel";
 };
 
 // @public
@@ -58,6 +64,9 @@ export function blackOrWhiteByContrastSet(set: InteractivePaintSet, minContrast:
 
 // @public
 export type BooleanCondition = string;
+
+// @public
+export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean, boolean>;
 
 // @public
 export function calculateOverlayColor(match: Color_2, background: Color_2): Color_2;
@@ -150,6 +159,9 @@ export function contrastAndDeltaSwatchSet(palette: Palette, reference: Paint, mi
 
 // @public
 export function contrastColor(palette: Palette, reference: Paint, minContrast: number, direction?: PaletteDirection, startIndex?: number): Color_2;
+
+// @public
+export type ContrastRatioToken = DesignToken.Custom<typeof AdaptiveDesignToken.contrastRatio, number>;
 
 // @public @deprecated (undocumented)
 export const contrastSwatch: typeof contrastColor;
@@ -883,6 +895,18 @@ export type TypeScaleTokens = TypeRampTokens & {
 };
 
 // @public
+export const WcagContrastLevel: {
+    readonly aa: "aa";
+    readonly aaa: "aaa";
+};
+
+// @public (undocumented)
+export type WcagContrastLevel = (typeof WcagContrastLevel)[keyof typeof WcagContrastLevel];
+
+// @public
+export type WcagContrastLevelToken = DesignToken.Custom<typeof AdaptiveDesignToken.wcagContrastLevel, WcagContrastLevel>;
+
+// @public
 export const white: Color_2;
 
 // @public @deprecated (undocumented)
@@ -893,7 +917,7 @@ export function withAlpha(color: Color_2, alpha: number): Color_2;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/core/token-css.d.ts:27:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
+// dist/dts/core/token-css.d.ts:29:5 - (ae-forgotten-export) The symbol "InteractiveSet" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

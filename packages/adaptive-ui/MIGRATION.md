@@ -167,7 +167,7 @@ exported, deprecated, as in the typography tokens, see below.
 | `neutralBaseColor`, `neutralPalette` (and `accent`, `highlight`, `critical`, `warning`, `success`, `info`) | `color.neutral.base`, `color.neutral.palette` |
 | `paletteStepCount` | `color.paletteOptions.stepSize`, the step between swatches in points of lightness on a scale of 100, where the count is `floor(100 / stepSize)` (`1.5` is the 66 swatches). `stepCountFor(stepSize)` is the function. No deprecated name: the token is a size and not a count |
 | `paletteLightEndSaturation`, `paletteDarkEndSaturation` | no tokens: they are the `lightEndSaturation` and `darkEndSaturation` options of `createPaletteOkhsl`, which a palette that is set as the value of a palette token can use |
-| `disabledPalette` | `color.disabled.palette`, the neutral palette until it is set |
+| `disabledPalette` | `color.disabled.palette`, the palette of the layers (the neutral palette) until it is set |
 | `colorContext` | `color.context`. A layer is `library.extend({ color: { context: { $value: layerColor } } })` |
 | `layerPalette` | `color.layer.palette` |
 | `layerFillBaseLuminance` | `color.layer.fill.ramp.baseLuminance` |
@@ -203,6 +203,50 @@ state, see [decision 0006](../../docs/decisions/0006-interactive-values-are-one-
 (`InteractiveDeltaTokens`, of the states that it says, all five unless it says `InteractiveDeltaTokens<InteractiveState.hover | InteractiveState.active>`), and the recipes take them as an `InteractiveSet<number>` and give a color for each state that has one. In CSS `--x` is the rest and a state is `--x-<state>`, and only a state that has a value is written. The recipe functions (`deltaColorSet` and the others) are as they were,
 and a set of colors is an `InteractiveToken<Color>`, the `InteractiveColorSet` that they give: the recipe decides which states have a color, and a state that has no value is not there
 (`null` clears one on purpose), so not even the `rest` is needed.
+
+## Color sets
+
+The 84 color sets (a fill or a stroke of each of the seven palettes), the minimum contrasts, the deltas of the recipes, the focus stroke, and the
+foreground of black or white are tokens in the library, in the `color` group (`color` is the config and `createColorLibrary()` is a library of
+the colors, the palettes, the color context, and the layers). The parity snapshot gives the same colors for every set and for the focus stroke
+in all the scenarios. Each set is one interactive token whose value is `{ rest, hover, active, focus, disabled }`,
+and not a token for each state. The recipes are the same functions as before. A minimum contrast is a token of the `contrastRatio` type,
+a delta one of the `delta` type, the WCAG level one of the `wcagContrastLevel` type, and a switch like `asOverlay` one of the `boolean`
+type. None of them is CSS, as in 0.14, since only a recipe reads them.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `accentFillStealth` (and `highlight`, `critical`, `warning`, `success`, `info`, `neutral`; `Stealth`, `Subtle`, `SubtleInverse`, `Ideal`, `Discernible`, `Readable`) | `color.accent.fill.stealth` etc. |
+| `accentStrokeSafety` (and the others; `Safety`, `Stealth`, `Subtle`, `Discernible`, `Readable`, `Strong`) | `color.accent.stroke.safety` etc. |
+| `accentFillStealthRecipe` etc., `createTokenColorRecipeAccent` (and the others), `createTokenColorSet` | not tokens: a set is what the recipe made, and the recipes are `colorRecipes`, recipes of the library that `override()` replaces in an extended library. `createColorSets({ palette })` makes the sets of a palette of a system, from a ref to its palette token |
+| `fillStealthRestDelta`, `fillStealthHoverDelta`, ... (`fill`: `Stealth`, `Subtle`, `Ideal`, `Discernible`, `Readable`; `stroke`: `Safety`, `Stealth`, `Subtle`, `Discernible`, `Readable`, `Strong`) | `color.deltas.fill.stealth.rest`, `.hover`, `.active`, `.focus`, `.disabled` etc. `subtleInverse` reads `subtle` the other way and has none of its own |
+| `fillIdealRecipe` etc. (`color.shared.*.recipe`) | not tokens |
+| `wcagContrastLevel` | `color.wcagContrast.level`, a token of the `wcagContrastLevel` type |
+| `minContrastSafety`, `Subtle`, `Ideal`, `Discernible`, `Readable` | `color.wcagContrast.minContrast.safety` etc. |
+| `strokeStrongMinContrast` | `color.wcagContrast.minContrast.strong` |
+| `neutralAsOverlay` | `color.neutral.asOverlay`, a token of the `boolean` type |
+| `focusStrokePalette`, `focusStrokeMinContrast` | `color.focusStroke.palette`, `color.focusStroke.minContrast` |
+| `focusStroke`, `focusStrokeOuter`, `focusStrokeInner` | `color.focusStroke.$root` (CSS `--color-focusStroke`), `color.focusStroke.outer`, `color.focusStroke.inner` |
+| `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe` (a recipe that a style module composed with a background) | `blackOrWhiteDiscernible(background)` and `blackOrWhiteReadable(background)`, the config of an interactive token that follows the background (a ref to it), for the pairs that a system makes |
+| `WcagContrastLevel` | `WcagContrastLevel`, with `WcagContrastLevelToken` |
+
+### Deprecated, the old name is the token
+
+The sets (`accentFillStealth` and the other 83), the deltas (`fillStealthRestDelta` and the other 54), `wcagContrastLevel`, `minContrastSafety`..`minContrastReadable`,
+`strokeStrongMinContrast`, `neutralAsOverlay`, `focusStrokePalette`, `focusStrokeMinContrast`, `focusStroke`, `focusStrokeOuter`, and `focusStrokeInner` are exported from
+`reference/deprecated.ts`, each the token of the table above in the library that Adaptive UI creates. What a token is has changed, see the typography tokens.
+
+Not exported, with what to use: the token of a state of a set (`accentFillStealthRest`, `Hover`, and so on: use `accentFillStealth.$value.rest`, or the property `--<name>-<state>` in CSS), and the recipes
+(`accentFillStealthRecipe` and the others, `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe`, and `createTokenColorRecipeAccent` and the others).
+
+### Disabled
+
+The disabled color is fixed in tokens (decision [0008](../../docs/decisions/0008-disabled-is-fixed-in-tokens.md)), so the colors are the same:
+
+- Every recipe with a color at rest has the disabled delta of its kind, `color.disabled.fillDelta` (3) or `color.disabled.strokeDelta` (8), as a ref in its own
+  `disabled` delta. The stealth and safety recipes have `0` (transparent). The number is the same as before, so the colors are.
+- The disabled palette is the palette of the layers until it is set, which is the neutral palette until it is set, so the colors are the same by default.
+- The focus delta of each recipe is its rest delta until it is set.
 
 ## Not migrated yet
 
