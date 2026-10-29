@@ -1,6 +1,1 @@
-{
-    "ignorePatterns": [
-        "src/reference/index.ts",
-        "src/reference/parity.spec.ts"
-    ]
-}
+{}
