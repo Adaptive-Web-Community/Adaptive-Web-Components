@@ -7,6 +7,5 @@ export * from "./experimental.js";
 export * from "./layer.js";
 export * from "./library.js";
 export * from "./palette.js";
-export * from "./token-naming.js";
 export * from "./treatments.js";
 export * from "./typography.js";

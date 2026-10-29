@@ -11,7 +11,7 @@ import { conditionalColorSet } from "../core/color/utilities/conditional.js";
 import { colorSetAsOverlay } from "../core/color/utilities/opacity.js";
 import { InteractiveSet, InteractiveState, mapStates } from "../core/interactive.js";
 import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
-import { intendedFor } from "../core/token-metadata.js";
+import { intendedFor, withFormerNames } from "../core/token-metadata.js";
 import {
     AdaptiveDesignToken,
     BooleanToken,
@@ -381,17 +381,22 @@ const minContrastFor = (aa: number, aaa: number): Library.ConfigValue<ContrastRa
     $value: colorRecipes.minContrastFor(tokens.wcagContrast.level, aa, aaa),
 });
 
-const wcagContrast: Library.Config<WcagContrastTokens, ColorLibraryTokens> = {
-    level: { $type: AdaptiveDesignToken.wcagContrastLevel, $value: WcagContrastLevel.aa },
-    minContrast: {
-        safety: minContrastFor(0, 3),
-        subtle: minContrastFor(1.5, 3),
-        ideal: minContrastFor(2, 3),
-        discernible: minContrastFor(3, 4.5),
-        readable: minContrastFor(4.5, 7),
-        strong: { $type: AdaptiveDesignToken.contrastRatio, $value: 12 },
+const wcagContrast: Library.Config<WcagContrastTokens, ColorLibraryTokens> = withFormerNames(
+    {
+        level: { $type: AdaptiveDesignToken.wcagContrastLevel, $value: WcagContrastLevel.aa },
+        minContrast: {
+            safety: minContrastFor(0, 3),
+            subtle: minContrastFor(1.5, 3),
+            ideal: minContrastFor(2, 3),
+            discernible: minContrastFor(3, 4.5),
+            readable: minContrastFor(4.5, 7),
+            strong: { $type: AdaptiveDesignToken.contrastRatio, $value: 12 },
+        },
     },
-};
+    // 0.x named a minimum contrast `min-contrast-<level>`, and the strong one was with the deltas of the strong stroke in 0.14.
+    ([group, level]) =>
+        group !== "minContrast" ? [] : level === "strong" ? ["color.shared.stroke.strong.minContrast", "stroke-strong-min-contrast"] : [`min-contrast-${level}`]
+);
 
 const disabled: Library.Config<DisabledTokens, ColorLibraryTokens> = {
     palette: { $type: AdaptiveDesignToken.palette, $value: tokens.layer.palette },
@@ -417,23 +422,27 @@ const deltas = (
     },
 });
 
-const colorDeltas: Library.Config<ColorDeltaTokens, ColorLibraryTokens> = {
-    fill: {
-        stealth: deltas(tokens.deltas.fill.stealth, { rest: 0, hover: 3, active: 2 }, 0),
-        subtle: deltas(tokens.deltas.fill.subtle, { rest: 3, hover: 4, active: 2 }, "fill"),
-        ideal: deltas(tokens.deltas.fill.ideal, { rest: 0, hover: -2, active: 2 }, "fill"),
-        discernible: deltas(tokens.deltas.fill.discernible, { rest: 0, hover: 6, active: 3 }, "fill"),
-        readable: deltas(tokens.deltas.fill.readable, { rest: 0, hover: -2, active: 2 }, "fill"),
+const colorDeltas: Library.Config<ColorDeltaTokens, ColorLibraryTokens> = withFormerNames(
+    {
+        fill: {
+            stealth: deltas(tokens.deltas.fill.stealth, { rest: 0, hover: 3, active: 2 }, 0),
+            subtle: deltas(tokens.deltas.fill.subtle, { rest: 3, hover: 4, active: 2 }, "fill"),
+            ideal: deltas(tokens.deltas.fill.ideal, { rest: 0, hover: -2, active: 2 }, "fill"),
+            discernible: deltas(tokens.deltas.fill.discernible, { rest: 0, hover: 6, active: 3 }, "fill"),
+            readable: deltas(tokens.deltas.fill.readable, { rest: 0, hover: -2, active: 2 }, "fill"),
+        },
+        stroke: {
+            safety: deltas(tokens.deltas.stroke.safety, { rest: 0, hover: 6, active: -6 }, 0),
+            stealth: deltas(tokens.deltas.stroke.stealth, { rest: 0, hover: 6, active: -6 }, 0),
+            subtle: deltas(tokens.deltas.stroke.subtle, { rest: 0, hover: 4, active: -2 }, "stroke"),
+            discernible: deltas(tokens.deltas.stroke.discernible, { rest: 0, hover: 8, active: -4 }, "stroke"),
+            readable: deltas(tokens.deltas.stroke.readable, { rest: 0, hover: 6, active: -6 }, "stroke"),
+            strong: deltas(tokens.deltas.stroke.strong, { rest: 0, hover: 10, active: -10 }, "stroke"),
+        },
     },
-    stroke: {
-        safety: deltas(tokens.deltas.stroke.safety, { rest: 0, hover: 6, active: -6 }, 0),
-        stealth: deltas(tokens.deltas.stroke.stealth, { rest: 0, hover: 6, active: -6 }, 0),
-        subtle: deltas(tokens.deltas.stroke.subtle, { rest: 0, hover: 4, active: -2 }, "stroke"),
-        discernible: deltas(tokens.deltas.stroke.discernible, { rest: 0, hover: 8, active: -4 }, "stroke"),
-        readable: deltas(tokens.deltas.stroke.readable, { rest: 0, hover: 6, active: -6 }, "stroke"),
-        strong: deltas(tokens.deltas.stroke.strong, { rest: 0, hover: 10, active: -10 }, "stroke"),
-    },
-};
+    // 0.14 had the deltas with the recipes, as `color.shared.<fill or stroke>.<recipe>.<state>Delta`, and 0.x as `<fill or stroke>-<recipe>-<state>-delta`.
+    ([kind, recipe, state]) => [`color.shared.${kind}.${recipe}.${state}Delta`, `${kind}-${recipe}-${state}-delta`]
+);
 
 const focusStroke: Library.Config<FocusStrokeTokens, ColorLibraryTokens> = {
     $root: {

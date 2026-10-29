@@ -1,6 +1,6 @@
 import { DesignToken, Library, px } from "design-token-library";
 import { StylePropertyShorthand } from "../core/styles/properties.js";
-import { intendedFor } from "../core/token-metadata.js";
+import { tokenMetadata } from "../core/token-metadata.js";
 
 /**
  * The tokens of the shapes of the appearance: the design unit, the radius of the corners, and the thickness of the strokes.
@@ -40,12 +40,31 @@ export const appearance: Library.Config<AppearanceTokens, AppearanceTokens> = {
     },
     shape: {
         cornerRadius: {
-            default: { $type: DesignToken.Type.Dimension, $value: px(4), $extensions: intendedFor(...StylePropertyShorthand.cornerRadius) },
-            layer: { $type: DesignToken.Type.Dimension, $value: px(8), $extensions: intendedFor(...StylePropertyShorthand.cornerRadius) },
+            default: {
+                $type: DesignToken.Type.Dimension,
+                $value: px(4),
+                $extensions: tokenMetadata({ intendedFor: StylePropertyShorthand.cornerRadius, formerNames: ["corner-radius-control"] }),
+            },
+            layer: {
+                $type: DesignToken.Type.Dimension,
+                $value: px(8),
+                $extensions: tokenMetadata({
+                    intendedFor: StylePropertyShorthand.cornerRadius,
+                    formerNames: ["density.layer.cornerRadius", "corner-radius-layer"],
+                }),
+            },
         },
         strokeThickness: {
-            default: { $type: DesignToken.Type.Dimension, $value: px(1), $extensions: intendedFor(...StylePropertyShorthand.borderThickness) },
-            focus: { $type: DesignToken.Type.Dimension, $value: px(2), $extensions: intendedFor(...StylePropertyShorthand.borderThickness) },
+            default: {
+                $type: DesignToken.Type.Dimension,
+                $value: px(1),
+                $extensions: tokenMetadata({ intendedFor: StylePropertyShorthand.borderThickness, formerNames: ["stroke-thickness"] }),
+            },
+            focus: {
+                $type: DesignToken.Type.Dimension,
+                $value: px(2),
+                $extensions: tokenMetadata({ intendedFor: StylePropertyShorthand.borderThickness, formerNames: ["focus-stroke-thickness"] }),
+            },
         },
     },
 };
