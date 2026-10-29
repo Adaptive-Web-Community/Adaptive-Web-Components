@@ -8,7 +8,6 @@ import { Color as Color_3 } from 'culori/fn';
 import { CSSPropertiesOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
 import { Library } from 'design-token-library';
-import type { ValuesOf } from '@microsoft/fast-foundation';
 
 // @public
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
@@ -792,7 +791,7 @@ export const StyleProperty: {
 };
 
 // @public
-export type StyleProperty = ValuesOf<typeof StyleProperty>;
+export type StyleProperty = (typeof StyleProperty)[keyof typeof StyleProperty];
 
 // @public (undocumented)
 export const StylePropertyShorthand: {
