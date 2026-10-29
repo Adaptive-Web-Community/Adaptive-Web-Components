@@ -55,7 +55,15 @@ import {
     accentFillReadableControlStyles,
     actionStyles,
     StyleNameMapping,
+    gradientAngle,
+    gradientStartShift,
+    gradientEndShift,
+    accentHueShiftGradientFillSubtleRest,
+    accentToHighlightGradientFillSubtleRest,
+    accentHueShiftGradientFillSubtleElementStyles,
+    accentToHighlightGradientFillSubtleElementStyles,
 } from "./deprecated.js";
+import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
 import { formatColor } from "../core/color/color.js";
 import { createColorLibrary } from "./color.js";
 import { createElevationLibrary } from "./elevation.js";
@@ -190,5 +198,21 @@ describe("deprecated style modules", () => {
         expect(actionStyles).to.equal(actionTreatment);
         expect(accentFillReadableControlStyles).to.equal(accentFillReadableControlTreatment);
         expect(StyleNameMapping).to.equal(TreatmentNameMapping);
+    });
+});
+
+describe("deprecated experimental tokens", () => {
+    it("should be the tokens of the gradients with the names they had, without the state", () => {
+        expect(gradientAngle.name).to.equal("color.gradient.angle");
+        expect(gradientStartShift.name).to.equal("color.gradient.startShift");
+        expect(gradientEndShift.name).to.equal("color.gradient.endShift");
+        expect(accentHueShiftGradientFillSubtleRest.name).to.equal("color.accentHueShiftGradient.fill.subtle");
+        expect(accentToHighlightGradientFillSubtleRest.name).to.equal("color.accentToHighlightGradient.fill.subtle");
+        expect(gradientAngle.$value).to.equal(180);
+    });
+
+    it("should be the treatments of the gradients", () => {
+        expect(accentHueShiftGradientFillSubtleElementStyles).to.equal(accentHueShiftGradientFillSubtleElementTreatment);
+        expect(accentToHighlightGradientFillSubtleElementStyles).to.equal(accentToHighlightGradientFillSubtleElementTreatment);
     });
 });

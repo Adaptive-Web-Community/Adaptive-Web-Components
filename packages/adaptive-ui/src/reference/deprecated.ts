@@ -6,6 +6,7 @@
  * doesn't have `withDefault`, `getValueFor`, or `setValueFor`, see MIGRATION.md. The name of the token in the library is
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
+import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
 import { createReferenceLibrary } from "./library.js";
 import {
     accentFillDiscernibleControlTreatment,
@@ -1457,6 +1458,48 @@ export const densityControlList = densityPaddingAndGap(densities.controlList);
  * @public
  */
 export const densityLayer = densityPaddingAndGap(densities.layer);
+
+/**
+ * @deprecated Use the token `color.gradient.angle` of a library.
+ * @beta
+ */
+export const gradientAngle = color.gradient.angle;
+
+/**
+ * @deprecated Use the token `color.gradient.startShift` of a library.
+ * @beta
+ */
+export const gradientStartShift = color.gradient.startShift;
+
+/**
+ * @deprecated Use the token `color.gradient.endShift` of a library.
+ * @beta
+ */
+export const gradientEndShift = color.gradient.endShift;
+
+/**
+ * @deprecated Use the token `color.accentHueShiftGradient.fill.subtle` of a library, a `paint` token.
+ * @beta
+ */
+export const accentHueShiftGradientFillSubtleRest = color.accentHueShiftGradient.fill.subtle;
+
+/**
+ * @deprecated Use the token `color.accentToHighlightGradient.fill.subtle` of a library, a `paint` token.
+ * @beta
+ */
+export const accentToHighlightGradientFillSubtleRest = color.accentToHighlightGradient.fill.subtle;
+
+/**
+ * @deprecated Use {@link accentHueShiftGradientFillSubtleElementTreatment}.
+ * @beta
+ */
+export const accentHueShiftGradientFillSubtleElementStyles = accentHueShiftGradientFillSubtleElementTreatment;
+
+/**
+ * @deprecated Use {@link accentToHighlightGradientFillSubtleElementTreatment}.
+ * @beta
+ */
+export const accentToHighlightGradientFillSubtleElementStyles = accentToHighlightGradientFillSubtleElementTreatment;
 
 /**
  * @deprecated Use {@link controlShapeTreatment}.
