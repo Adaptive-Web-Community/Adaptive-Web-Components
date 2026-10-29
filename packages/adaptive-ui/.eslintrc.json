@@ -1,7 +1,1 @@
-{
-    "ignorePatterns": [
-        "src/reference/index.ts",
-        "src/reference/parity.spec.ts",
-        "src/reference/token-naming.ts"
-    ]
-}
+{}

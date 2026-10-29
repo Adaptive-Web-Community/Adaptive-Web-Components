@@ -1,4 +1,6 @@
 import { DesignToken, Library, px, refs } from "design-token-library";
+import { withFormerNames } from "../core/token-metadata.js";
+import { kebabName } from "../core/token-names.js";
 import { AdaptiveDesignToken, FontStyleToken } from "../core/token-types.js";
 import { typeRamp, TypeRampTokens, typeScale, TypeScaleTokens } from "../core/typography/type-ramp.js";
 
@@ -56,40 +58,54 @@ const tokens = refs<TypographyLibraryTokens>().typography;
  *
  * @public
  */
-export const typography: Library.Config<TypographyTokens, TypographyLibraryTokens> = {
-    fontFamily: {
-        $type: DesignToken.Type.FontFamily,
-        default: { $value: ["Arial", "Helvetica", "sans-serif"] },
-        body: { $value: tokens.fontFamily.default },
-        label: { $value: tokens.fontFamily.default },
+export const typography: Library.Config<TypographyTokens, TypographyLibraryTokens> = withFormerNames(
+    {
+        fontFamily: {
+            $type: DesignToken.Type.FontFamily,
+            default: { $value: ["Arial", "Helvetica", "sans-serif"] },
+            body: { $value: tokens.fontFamily.default },
+            label: { $value: tokens.fontFamily.default },
+        },
+        fontWeight: {
+            $type: DesignToken.Type.FontWeight,
+            default: { $value: "normal" },
+            body: { $value: tokens.fontWeight.default },
+            label: { $value: tokens.fontWeight.default },
+        },
+        fontStyle: {
+            $type: AdaptiveDesignToken.fontStyle,
+            default: { $value: "normal" },
+            body: { $value: tokens.fontStyle.default },
+            label: { $value: tokens.fontStyle.default },
+        },
+        ramp: {
+            default: typeRamp({
+                minus2: { fontSize: px(10), lineHeight: px(12), lineHeightMultiline: px(14) },
+                minus1: { fontSize: px(12), lineHeight: px(14), lineHeightMultiline: px(16) },
+                base: { fontSize: px(14), lineHeight: px(16), lineHeightMultiline: px(18) },
+                plus1: { fontSize: px(16), lineHeight: px(22), lineHeightMultiline: px(24) },
+                plus2: { fontSize: px(20), lineHeight: px(26), lineHeightMultiline: px(28) },
+                plus3: { fontSize: px(24), lineHeight: px(32), lineHeightMultiline: px(34) },
+                plus4: { fontSize: px(28), lineHeight: px(36), lineHeightMultiline: px(38) },
+                plus5: { fontSize: px(32), lineHeight: px(40), lineHeightMultiline: px(42) },
+                plus6: { fontSize: px(40), lineHeight: px(52), lineHeightMultiline: px(56) },
+            }),
+            body: typeScale(tokens.ramp.body, px(16), 1.21, 1.35),
+        },
     },
-    fontWeight: {
-        $type: DesignToken.Type.FontWeight,
-        default: { $value: "normal" },
-        body: { $value: tokens.fontWeight.default },
-        label: { $value: tokens.fontWeight.default },
-    },
-    fontStyle: {
-        $type: AdaptiveDesignToken.fontStyle,
-        default: { $value: "normal" },
-        body: { $value: tokens.fontStyle.default },
-        label: { $value: tokens.fontStyle.default },
-    },
-    ramp: {
-        default: typeRamp({
-            minus2: { fontSize: px(10), lineHeight: px(12), lineHeightMultiline: px(14) },
-            minus1: { fontSize: px(12), lineHeight: px(14), lineHeightMultiline: px(16) },
-            base: { fontSize: px(14), lineHeight: px(16), lineHeightMultiline: px(18) },
-            plus1: { fontSize: px(16), lineHeight: px(22), lineHeightMultiline: px(24) },
-            plus2: { fontSize: px(20), lineHeight: px(26), lineHeightMultiline: px(28) },
-            plus3: { fontSize: px(24), lineHeight: px(32), lineHeightMultiline: px(34) },
-            plus4: { fontSize: px(28), lineHeight: px(36), lineHeightMultiline: px(38) },
-            plus5: { fontSize: px(32), lineHeight: px(40), lineHeightMultiline: px(42) },
-            plus6: { fontSize: px(40), lineHeight: px(52), lineHeightMultiline: px(56) },
-        }),
-        body: typeScale(tokens.ramp.body, px(16), 1.21, 1.35),
-    },
-};
+    // Before 0.14 the font tokens were grouped by role, `typography.<role>.<property>`, and 0.x named them `<role>-<property>`, without the default
+    // role. The positions of the default ramp were `typography.ramp.<position>.<property>`, and 0.x named them `type-ramp-<position>-<property>`.
+    ([group, ramp, property, position]) => {
+        if (group !== "ramp") {
+            const role = ramp;
+            return [`typography.${role}.${group}`, role === "default" ? kebabName([group]) : `${role}-${kebabName([group])}`];
+        }
+        if (ramp !== "default" || !["fontSize", "lineHeight", "fontVariations"].includes(property)) {
+            return [];
+        }
+        return [`typography.ramp.${position}.${property}`, `type-ramp-${kebabName([position])}-${kebabName([property])}`];
+    }
+);
 
 /**
  * Creates a library with the typography tokens.

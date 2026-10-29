@@ -1,4 +1,13 @@
 Skipping <root>/dist/esm/__test__/styles-oracle/anatomies/stress-no-name.json: JSON anatomy has no name property.
+The token "accent-stroke-safety-rest" was renamed to "color.accent.stroke.safety.rest", update the source.
+The token "corner-radius-control" was renamed to "shape.cornerRadius.default", update the source.
+The token "density_control-horizontal-gap" was renamed to "density.control.horizontal.gap", update the source.
+The token "focus-stroke" was renamed to "color.focusStroke", update the source.
+The token "neutral-fill-subtle" was renamed to "color.neutral.fill.subtle", update the source.
+The token "neutral-stroke-strong" was renamed to "color.neutral.stroke.strong", update the source.
+The token "stroke-thickness" was renamed to "shape.strokeThickness.default", update the source.
+The token "type-ramp-base-font-size" was renamed to "typography.ramp.default.fontSize.base", update the source.
+The token "typography.ramp.base.lineHeight" was renamed to "typography.ramp.default.lineHeight.base", update the source.
 Unknown part "Missing cursor part" in cursor, skipping.
 Unknown part "Missing focus target" in focus.focusTarget, skipping.
 Unknown part "Missing reset target" in focus.resetTarget, skipping.

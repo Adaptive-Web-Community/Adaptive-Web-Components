@@ -1,5 +1,6 @@
 import { DesignToken, Library } from "design-token-library";
 import { white } from "../core/color/utilities/color-constants.js";
+import { formerNames } from "../core/token-metadata.js";
 
 /**
  * The tokens of the color context, under `color`.
@@ -34,5 +35,7 @@ export const colorContext: Library.Config<ColorContextTokens, ColorContextLibrar
     context: {
         $type: DesignToken.Type.Color,
         $value: white,
+        // 0.x named the color context after the fill it was.
+        $extensions: formerNames("fill-color"),
     },
 };

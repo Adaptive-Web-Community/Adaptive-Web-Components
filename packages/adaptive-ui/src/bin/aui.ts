@@ -29,6 +29,7 @@ import { deserializeOnFill, isSerializableOnFill, OnFill, SerializableOnFill, se
 import { StyleProperties, StyleValues } from '../core/styles/properties.js';
 import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
 import { InteractiveState } from '../core/interactive.js';
+import { ResolvedTokenName, resolveTokenName, tokenNames } from '../core/token-names.js';
 import { refAt } from '../core/token-ref.js';
 import { createReferenceLibrary, ReferenceLibraryTokens } from '../reference/library.js';
 import { referenceAnatomyTreatments, referenceTreatments } from '../reference/treatments.js';
@@ -335,54 +336,62 @@ class SheetCompilerImpl implements SheetCompiler {
     }
 }
 
-// The node of the tokens of the library at a name, a token, a group, or nothing.
-function tokenAt(name: string): unknown {
-    return name.split(".").reduce<unknown>((group, key) => (typeof group === "object" && group !== null ? Reflect.get(group, key) : undefined), library.tokens);
-}
-
-// A token has a value, and a group whose own value is its `$root` has a `$root`.
-function has(node: unknown, key: "$value" | "$root"): boolean {
-    return typeof node === "object" && node !== null && key in node;
-}
-
-const states: ReadonlySet<string> = new Set(Object.values(InteractiveState));
+const names = tokenNames(library);
 
 /**
- * The value of a property written as data: a ref to the token of that name (or to the `$root` of a group of that name), or the name as it is.
- * A state after the name of an interactive token, like `color.neutral.fill.subtle.rest`, which was a token of its own, is that state of the
- * token, at rest.
+ * The token of a name written as data, reporting a name that was renamed, so it is updated, and a token that is deprecated.
+ */
+function tokenOf(name: string): ResolvedTokenName | undefined {
+    const found = resolveTokenName(names, name);
+    if (found?.renamed) {
+        console.warn(warnColor, `The token "${name}" was renamed to "${found.name}", update the source.`);
+    }
+    if (found !== undefined && found.deprecated !== false) {
+        const why = typeof found.deprecated === "string" ? ` ${found.deprecated}` : "";
+        console.warn(warnColor, `The token "${found.name}" is deprecated.${why}`);
+    }
+    return found;
+}
+
+/**
+ * The value of a property written as data: a ref to the token of that name, a name it had, or the root of a group of that name, or the
+ * name as it is. A state after the name of an interactive token, like `color.neutral.fill.subtle.rest`, which was a token of its own, is
+ * that state of the token, at rest.
  */
 function propertyValue(value: string): StyleValues | undefined {
-    const node = tokenAt(value);
-    if (has(node, "$value")) {
-        return refAt(value.split("."));
+    const found = tokenOf(value);
+    if (found === undefined) {
+        return value;
     }
-    if (has(node, "$root")) {
-        return refAt([...value.split("."), "$root"]);
+    if (found.state === undefined) {
+        return refAt(found.path);
     }
-    const path = value.split(".");
-    const state = path.pop();
-    if (state !== undefined && states.has(state) && has(tokenAt(path.join(".")), "$value")) {
-        if (state === InteractiveState.rest) {
-            return { rest: refAt(path) };
-        }
-        console.warn(warnColor, `The token "${value}" is a state of an interactive token, which only its rest can be used as, skipping.`);
-        return undefined;
+    if (found.state === InteractiveState.rest) {
+        return { rest: refAt(found.path) };
     }
-    return value;
+    console.warn(warnColor, `The token "${value}" is a state of an interactive token, which only its rest can be used as, skipping.`);
+    return undefined;
 }
 
 /**
  * A value on a fill written as data, with a ref to each token it names, or nothing for a name that isn't a token.
  */
 function onFillValue(value: SerializableOnFill, property: string): OnFill | undefined {
-    for (const name of [value.token, value.fill]) {
-        if (name !== undefined && !has(tokenAt(name), "$value")) {
+    // The path of the token that a name finds, which may be the root of a group, or nothing for a name that isn't a token.
+    const pathOf = (name: string): string | undefined => {
+        const found = tokenOf(name);
+        if (found === undefined || found.state !== undefined) {
             console.warn(warnColor, `Unknown token "${name}" in the value on a fill of ${property}, skipping.`);
             return undefined;
         }
+        return found.path.join(".");
+    };
+    const token = pathOf(value.token);
+    const fill = value.fill === undefined ? undefined : pathOf(value.fill);
+    if (token === undefined || (value.fill !== undefined && fill === undefined)) {
+        return undefined;
     }
-    return deserializeOnFill(value);
+    return deserializeOnFill({ ...value, token, ...(fill !== undefined && { fill }) });
 }
 
 function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule): string | undefined {

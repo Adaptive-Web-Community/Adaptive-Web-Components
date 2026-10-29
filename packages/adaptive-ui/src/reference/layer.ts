@@ -8,7 +8,8 @@ import { Palette, PaletteDirection } from "../core/color/palette.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { InteractiveSet } from "../core/interactive.js";
 import { StyleProperty } from "../core/styles/properties.js";
-import { intendedFor } from "../core/token-metadata.js";
+import { intendedFor, withFormerNames } from "../core/token-metadata.js";
+import { kebabName } from "../core/token-names.js";
 import { AdaptiveDesignToken, DeltaToken, interactiveDeltas, InteractiveDeltaTokens, InteractiveToken, PaletteToken } from "../core/token-types.js";
 import { colorContext, ColorContextLibraryTokens } from "./color-context.js";
 import { PaletteLibraryTokens, palettes } from "./palette.js";
@@ -130,37 +131,52 @@ const rampStep = (index: number): Library.ConfigValue<DesignToken.Color, LayerLi
  *
  * @public
  */
-export const layer: Library.Config<LayerTokens, LayerLibraryTokens> = {
-    palette: { $type: AdaptiveDesignToken.palette, $value: color.neutral.palette },
-    fill: {
-        restDelta: { $type: AdaptiveDesignToken.delta, $value: -2 },
-        ramp: {
-            baseLuminance: { $type: DesignToken.Type.Number, $value: LayerBaseLuminance.LightMode },
-            minus4: rampStep(-4),
-            minus3: rampStep(-3),
-            minus2: rampStep(-2),
-            minus1: rampStep(-1),
-            base: rampStep(0),
-            plus1: rampStep(1),
-            plus2: rampStep(2),
-            plus3: rampStep(3),
-            plus4: rampStep(4),
-        },
-        interactiveDeltas: {
-            $type: AdaptiveDesignToken.delta,
-            rest: { $value: color.layer.fill.restDelta },
-            hover: { $value: -3 },
-            active: { $value: -1 },
-            focus: { $value: -3 },
-            disabled: { $value: -1 },
-        },
-        interactive: {
-            $type: AdaptiveDesignToken.interactive,
-            $value: layerRecipes.interactiveFill(color.layer.palette, color.context, interactiveDeltas(color.layer.fill.interactiveDeltas)),
-            $extensions: fillFor,
+export const layer: Library.Config<LayerTokens, LayerLibraryTokens> = withFormerNames(
+    {
+        palette: { $type: AdaptiveDesignToken.palette, $value: color.neutral.palette },
+        fill: {
+            restDelta: { $type: AdaptiveDesignToken.delta, $value: -2 },
+            ramp: {
+                baseLuminance: { $type: DesignToken.Type.Number, $value: LayerBaseLuminance.LightMode },
+                minus4: rampStep(-4),
+                minus3: rampStep(-3),
+                minus2: rampStep(-2),
+                minus1: rampStep(-1),
+                base: rampStep(0),
+                plus1: rampStep(1),
+                plus2: rampStep(2),
+                plus3: rampStep(3),
+                plus4: rampStep(4),
+            },
+            interactiveDeltas: {
+                $type: AdaptiveDesignToken.delta,
+                rest: { $value: color.layer.fill.restDelta },
+                hover: { $value: -3 },
+                active: { $value: -1 },
+                focus: { $value: -3 },
+                disabled: { $value: -1 },
+            },
+            interactive: {
+                $type: AdaptiveDesignToken.interactive,
+                $value: layerRecipes.interactiveFill(color.layer.palette, color.context, interactiveDeltas(color.layer.fill.interactiveDeltas)),
+                $extensions: fillFor,
+            },
         },
     },
-};
+    // The names of 0.14 and of 0.x that don't follow from the path: the ramp was `fixed` in 0.x, and the deltas had other names.
+    ([, group, key]) => {
+        switch (group) {
+            case "restDelta":
+                return ["color.layer.fill.layerDelta"];
+            case "ramp":
+                return key === "baseLuminance" ? ["layer-fill-base-luminance"] : [`layer-fill-fixed-${kebabName([key])}`];
+            case "interactiveDeltas":
+                return key === "rest" ? [] : [`color.layer.fill.interactive.${key}Delta`, `layer-fill-${key}-delta`];
+            default:
+                return [];
+        }
+    }
+);
 
 /**
  * Creates a library with the layer tokens, and the palette and color context they are made from.

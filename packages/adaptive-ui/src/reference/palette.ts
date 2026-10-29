@@ -3,7 +3,7 @@ import type { Color } from "../core/color/color.js";
 import type { Palette } from "../core/color/palette.js";
 import { createPaletteOkhsl, stepCountFor } from "../core/color/palette-okhsl.js";
 import { StyleProperty } from "../core/styles/properties.js";
-import { intendedFor } from "../core/token-metadata.js";
+import { intendedFor, withFormerNames } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, PaletteToken } from "../core/token-types.js";
 
 /**
@@ -94,18 +94,22 @@ const baseColor = (value: DesignToken.Values.Color): Library.ConfigValue<DesignT
  *
  * @public
  */
-export const palettes: Library.Config<PaletteTokens, PaletteLibraryTokens> = {
-    paletteOptions: {
-        stepSize: { $type: DesignToken.Type.Number, $value: 1.5 },
+export const palettes: Library.Config<PaletteTokens, PaletteLibraryTokens> = withFormerNames(
+    {
+        paletteOptions: {
+            stepSize: { $type: DesignToken.Type.Number, $value: 1.5 },
+        },
+        neutral: { base: baseColor(hex("#808080")), palette: palette(color.neutral.base) },
+        accent: { base: baseColor(hex("#F26C0D")), palette: palette(color.accent.base) },
+        highlight: { base: baseColor(hex("#0DA1F2")), palette: palette(color.highlight.base) },
+        critical: { base: baseColor(hex("#D92635")), palette: palette(color.critical.base) },
+        warning: { base: baseColor(hex("#D526D9")), palette: palette(color.warning.base) },
+        success: { base: baseColor(hex("#6AD926")), palette: palette(color.success.base) },
+        info: { base: baseColor(hex("#0DA1F2")), palette: palette(color.info.base) },
     },
-    neutral: { base: baseColor(hex("#808080")), palette: palette(color.neutral.base) },
-    accent: { base: baseColor(hex("#F26C0D")), palette: palette(color.accent.base) },
-    highlight: { base: baseColor(hex("#0DA1F2")), palette: palette(color.highlight.base) },
-    critical: { base: baseColor(hex("#D92635")), palette: palette(color.critical.base) },
-    warning: { base: baseColor(hex("#D526D9")), palette: palette(color.warning.base) },
-    success: { base: baseColor(hex("#6AD926")), palette: palette(color.success.base) },
-    info: { base: baseColor(hex("#0DA1F2")), palette: palette(color.info.base) },
-};
+    // 0.x named the base color of a palette `<palette>-base-color`.
+    ([family, key]) => (key === "base" ? [`${family}-base-color`] : [])
+);
 
 /**
  * Creates a library with the palette tokens.

@@ -13,7 +13,8 @@ npm run styles:oracle          # Compile and diff against the baseline.
 npm run styles:oracle:update   # Replace the baseline, review the diff.
 ```
 
-The CSS only has references to design tokens, not the evaluated values. See `src/reference/parity.spec.ts` for the values.
+The CSS only has references to design tokens, not the evaluated values. The specs of `src/reference` check the values, against
+`parity.snapshot.json` for the colors.
 The values on a fill of each run, which the CLI writes with `--on-fills`, are in `on-fills`, and the spec writes the CSS of
 the tokens from them.
 

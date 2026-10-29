@@ -3,7 +3,7 @@ import { Color, withAlpha } from "../core/color/color.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { StyleProperty } from "../core/styles/properties.js";
 import { shadow } from "../core/shadow/index.js";
-import { intendedFor } from "../core/token-metadata.js";
+import { intendedFor, withFormerNames } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, DeltaToken, InteractiveDeltaTokens, InteractiveToken } from "../core/token-types.js";
 import { color, ColorLibraryTokens } from "./color.js";
 
@@ -109,37 +109,41 @@ const cardDeltas = tokens.card.deltas;
  *
  * @public
  */
-export const elevation: Library.Config<ElevationTokens, ElevationLibraryTokens> = {
-    color: {
-        $type: DesignToken.Type.Color,
-        $value: elevationRecipes.shadowColor(refs<ElevationLibraryTokens>().color.neutral.stroke.strong),
-    },
-    card: {
-        $root: {
-            $type: AdaptiveDesignToken.interactive,
-            $value: {
-                rest: elevationRecipes.elevationShadow(tokens.color, cardDeltas.rest),
-                hover: elevationRecipes.elevationShadow(tokens.color, cardDeltas.hover),
-                active: elevationRecipes.elevationShadow(tokens.color, cardDeltas.active),
-                focus: elevationRecipes.elevationShadow(tokens.color, cardDeltas.focus),
-                disabled: elevationRecipes.elevationShadow(tokens.color, cardDeltas.disabled),
+export const elevation: Library.Config<ElevationTokens, ElevationLibraryTokens> = withFormerNames(
+    {
+        color: {
+            $type: DesignToken.Type.Color,
+            $value: elevationRecipes.shadowColor(refs<ElevationLibraryTokens>().color.neutral.stroke.strong),
+        },
+        card: {
+            $root: {
+                $type: AdaptiveDesignToken.interactive,
+                $value: {
+                    rest: elevationRecipes.elevationShadow(tokens.color, cardDeltas.rest),
+                    hover: elevationRecipes.elevationShadow(tokens.color, cardDeltas.hover),
+                    active: elevationRecipes.elevationShadow(tokens.color, cardDeltas.active),
+                    focus: elevationRecipes.elevationShadow(tokens.color, cardDeltas.focus),
+                    disabled: elevationRecipes.elevationShadow(tokens.color, cardDeltas.disabled),
+                },
+                // An interactive token can hold any value, so its type doesn't say that it's a shadow.
+                $extensions: intendedFor(StyleProperty.shadow),
             },
-            // An interactive token can hold any value, so its type doesn't say that it's a shadow.
-            $extensions: intendedFor(StyleProperty.shadow),
+            deltas: {
+                $type: AdaptiveDesignToken.delta,
+                rest: { $value: 4 },
+                hover: { $value: 6 },
+                active: { $value: 2 },
+                focus: { $value: 4 },
+                disabled: { $value: 0 },
+            },
         },
-        deltas: {
-            $type: AdaptiveDesignToken.delta,
-            rest: { $value: 4 },
-            hover: { $value: 6 },
-            active: { $value: 2 },
-            focus: { $value: 4 },
-            disabled: { $value: 0 },
-        },
+        tooltip: level(tokens.tooltip, 8),
+        flyout: level(tokens.flyout, 16),
+        dialog: level(tokens.dialog, 32),
     },
-    tooltip: level(tokens.tooltip, 8),
-    flyout: level(tokens.flyout, 16),
-    dialog: level(tokens.dialog, 32),
-};
+    // 0.14 named the sizes after what they size.
+    ([group, key, state]) => (group === "card" ? (key === "deltas" ? [`elevation.card.${state}Size`] : []) : key === "size" ? [`elevation.${group}Size`] : [])
+);
 
 /**
  * Creates a library with the elevation tokens and the color tokens they read.

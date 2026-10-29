@@ -420,6 +420,17 @@ const capabilities: Capability[] = [
         excludes: [".missing"],
     },
     {
+        name: "finds a token by a name it had, of 0.x or of 0.14, and by a state of its name",
+        file: "json/stress-renamed.css",
+        includes: [
+            ".stress-renamed { background: var(--color-neutral-fill-subtle); color: var(--color-neutral-stroke-readable);",
+            "border-color: var(--color-accent-stroke-safety); border-width: var(--shape-strokeThickness-default);",
+            "border-radius: var(--shape-cornerRadius-default); gap: var(--density-control-horizontal-gap);",
+            "font-size: var(--typography-ramp-default-fontSize-base); line-height: var(--typography-ramp-default-lineHeight-base);",
+            "outline-color: var(--color-focusStroke); color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle);",
+        ],
+    },
+    {
         name: "writes the values on a fill of the compiled styles, each once, as data",
         file: "on-fills/json.json",
         includes: [
@@ -445,6 +456,8 @@ const capabilities: Capability[] = [
             "Unknown treatment \"Missing treatment\" in style rule, skipping.",
             "Unknown token \"color.missing.stroke\" in the value on a fill of foregroundFill, skipping.",
             "Unknown token \"color.missing.fill\" in the value on a fill of borderFill, skipping.",
+            "The token \"neutral-fill-subtle\" was renamed to \"color.neutral.fill.subtle\", update the source.",
+            "The token \"typography.ramp.base.lineHeight\" was renamed to \"typography.ramp.default.lineHeight.base\", update the source.",
         ],
     },
 ];
