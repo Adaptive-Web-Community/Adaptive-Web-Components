@@ -162,11 +162,6 @@ export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number
 export function contrast(a: Paint, b: Paint): number;
 
 // @public
-export function contrastAndDeltaColorBySet(palette: Palette, backgrounds: InteractiveSet<Paint>, minContrast: number, deltas: InteractiveSet<number>, options?: ColorSetOptions & {
-    asOverlay?: boolean;
-}): InteractiveColorSet;
-
-// @public
 export function contrastAndDeltaColorSet(palette: Palette, reference: Paint, minContrast: number, deltas: InteractiveSet<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // Warning: (ae-forgotten-export) The symbol "Direction" needs to be exported by the entry point index.d.ts
@@ -552,13 +547,16 @@ export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is D
 export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
 
 // @public
+export function isOnFill(value: unknown): value is OnFill;
+
+// @public
 export function isShadow(value: unknown): value is DesignToken.Values.Readonly.Shadow;
 
 // @public
 export function isTransparent(color: Color_2): boolean;
 
 // @public
-export function libraryTokenProperties(library: Library.Library<any>, options?: CSSPropertiesOptions): TokenPropertiesResolver;
+export function libraryTokenProperties(library: Library.Library<any>, options?: TokenPropertiesOptions): TokenPropertiesResolver;
 
 // @public
 export type LinearGradient = LinearGradient_2;
@@ -597,6 +595,29 @@ export const min: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @public
 export const multiply: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export interface OnFill {
+    readonly activeFollowsRest?: boolean;
+    readonly fill?: Library.Ref<unknown, never>;
+    readonly token: Library.Ref<unknown, never>;
+}
+
+// @public
+export function onFill(token: Library.Ref<unknown, never>, options?: Omit<OnFill, "token">): OnFill;
+
+// @public
+export function onFillCSS(library: Library.Library<any>, values: Iterable<OnFillWithFill>, options: TokenPropertiesOptions & {
+    readonly context: Library.Ref<unknown, never>;
+}): string;
+
+// @public
+export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[];
+
+// @public
+export type OnFillWithFill = OnFill & {
+    readonly fill: Library.Ref<unknown, never>;
+};
 
 // @public
 export type Operand = number | Dimension | Reference | Expression;
@@ -699,6 +720,9 @@ export function renderRules(properties: Iterable<readonly [string, StyleValues]>
 
 // @public
 export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[];
+
+// @public
+export function resolveOnFills(properties: Iterable<readonly [string, StyleValues]>): Map<string, StyleValues>;
 
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
@@ -885,6 +909,9 @@ export interface StyleRule {
 export type StyleRules = readonly StyleRule[];
 
 // @public
+export function styleRulesOnFills(styleRules: StyleRules, options?: Pick<StyleRulesOptions, "anatomy" | "treatments">): OnFillWithFill[];
+
+// @public
 export interface StyleRulesOptions {
     readonly anatomy?: ComponentAnatomy<any, any>;
     readonly tokens: TokenPropertiesResolver;
@@ -916,7 +943,7 @@ export const Styles: {
 export type StyleValue = string | number | Paint | DesignToken.Values.Readonly.Shadow | DesignToken.Values.Readonly.Dimension | Library.Ref<unknown, never>;
 
 // @public
-export type StyleValues = StyleValue | InteractiveSet<StyleValue>;
+export type StyleValues = StyleValue | InteractiveSet<StyleValue> | OnFill;
 
 // @public
 export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
@@ -951,7 +978,12 @@ export interface TokenProperties {
 }
 
 // @public
-export type TokenPropertiesResolver = (path: readonly string[]) => TokenProperties;
+export interface TokenPropertiesOptions extends CSSPropertiesOptions {
+    readonly context?: Library.Ref<unknown, never>;
+}
+
+// @public
+export type TokenPropertiesResolver = (path: readonly string[], fill?: readonly string[]) => TokenProperties;
 
 // @public
 export type TokenRef = Library.Ref<Operand, any>;
@@ -1042,6 +1074,9 @@ export type TypeScaleTokens = TypeRampTokens & {
     lineHeightMultilineRatio: DesignToken.Number;
     lineHeightSnap: DesignToken.Dimension;
 };
+
+// @public
+export function valueOnFill(library: Library.Library<any>, value: OnFillWithFill, context: Library.Ref<unknown, never>): InteractiveSet<unknown>;
 
 // @public
 export const WcagContrastLevel: {

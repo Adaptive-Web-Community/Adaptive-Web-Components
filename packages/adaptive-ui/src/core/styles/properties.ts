@@ -2,6 +2,7 @@ import type { ValuesOf } from "@microsoft/fast-foundation";
 import type { DesignToken, Library } from "design-token-library";
 import type { Paint } from "../color/paint.js";
 import type { InteractiveSet } from "../interactive.js";
+import type { OnFill } from "./on-fill.js";
 
 /**
  * Supported style properties for design-to-code with Adaptive UI.
@@ -164,7 +165,7 @@ export type StyleValue =
     | Library.Ref<unknown, never>;
 
 /**
- * A value of a style property, or a value for each state of an interactive element.
+ * A value of a style property, a value for each state of an interactive element, or a value on a fill.
  *
  * @remarks
  * A ref to an interactive token is written as a value for each state that the token has. In a set, the value of a state that is a ref to an
@@ -172,7 +173,7 @@ export type StyleValue =
  *
  * @public
  */
-export type StyleValues = StyleValue | InteractiveSet<StyleValue>;
+export type StyleValues = StyleValue | InteractiveSet<StyleValue> | OnFill;
 
 /**
  * The style properties of a treatment or a rule, where the key is the {@link (StyleKey:type)} and the value is a value or a ref to a token.

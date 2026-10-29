@@ -9,23 +9,16 @@ import { closestSwatchIndex, swatchAt } from "../core/color/palette.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
+import { asOverlay } from "../core/color/utilities/opacity.js";
 import { contrast } from "../core/color/utilities/relative-luminance.js";
 import { white } from "../core/color/utilities/color-constants.js";
 import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { adaptiveConverters } from "../core/token-css.js";
+import { valueOnFill } from "../core/styles/on-fill.js";
 import { getIntendedFor } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, InteractiveToken, PaletteToken, WcagContrastLevel } from "../core/token-types.js";
-import {
-    blackOrWhiteReadable,
-    color as colorConfig,
-    ColorLibraryTokens,
-    ColorSetTokens,
-    createColorLibrary,
-    createColorSets,
-    createOnFill,
-    OnFillTokens,
-} from "./color.js";
+import { color as colorConfig, ColorLibraryTokens, ColorSetTokens, createColorLibrary, createColorSets } from "./color.js";
 import { paletteRecipes } from "./palette.js";
 
 const { expect } = chai;
@@ -281,6 +274,31 @@ describe("color sets", () => {
         });
     });
 
+    describe("black or white for the context", () => {
+        it("should be the one that has the contrast with the context, and the same at 30% opacity disabled", () => {
+            const library = createColorLibrary();
+            const { blackOrWhite, wcagContrast } = library.tokens.color;
+
+            for (const context of [white, hex("#1a1a1a"), hex("#7a7a7a")]) {
+                library.tokens.color.context.set(context);
+                for (const level of ["discernible", "readable"] as const) {
+                    const color = blackOrWhiteByContrast(context, wcagContrast.minContrast[level].$value, false);
+                    expect(formatColor(blackOrWhite[level].$value.rest!)).to.equal(formatColor(color));
+                    expect(blackOrWhite[level].$value.disabled).to.deep.equal({ ...color, alpha: 0.3 });
+                    expect(Object.keys(blackOrWhite[level].$value)).to.deep.equal(["rest", "disabled"]);
+                }
+            }
+        });
+
+        it("should be intended for the foreground", () => {
+            const { blackOrWhite } = createColorLibrary().tokens.color;
+
+            expect(blackOrWhite.readable.name).to.equal("color.blackOrWhite.readable");
+            expect(getIntendedFor(blackOrWhite.readable)).to.deep.equal([StyleProperty.foregroundFill]);
+            expect(getIntendedFor(blackOrWhite.discernible)).to.deep.equal([StyleProperty.foregroundFill]);
+        });
+    });
+
     describe("the sets", () => {
         it("should have the names the tokens had", () => {
             const { color } = createColorLibrary().tokens;
@@ -332,83 +350,98 @@ describe("color sets", () => {
     });
 
     describe("the foregrounds on the fills", () => {
-        const { color } = createColorLibrary().tokens;
+        const context = refs<ColorLibraryTokens>().color.context;
+        const t = refs<ColorLibraryTokens>().color;
         const interactiveStates = ["rest", "hover", "active", "focus"] as const;
-
-        it("should be a foreground for each fill of each palette", () => {
-            for (const family of families) {
-                expect(Object.keys(color[family].onFill)).to.have.members([...fills]);
-                expect(color[family].onFill.subtle.name).to.equal(`color.${family}.onFill.subtle`);
-                expect(getIntendedFor(color[family].onFill.subtle)).to.deep.equal([StyleProperty.foregroundFill]);
-            }
-        });
+        // The contexts the fills are made in: the default, dark, and the middle, where black or white is close to the line.
+        const contexts = [white, hex("#1a1a1a"), hex("#7a7a7a")];
+        const libraries = () =>
+            contexts.flatMap(color =>
+                [false, true].map(asOverlay => {
+                    const library = createColorLibrary();
+                    library.tokens.color.context.set(color);
+                    library.tokens.color.neutral.asOverlay.set(asOverlay);
+                    return library;
+                })
+            );
 
         it("should be the readable stroke of the palette on the stealth and subtle fills, in each state of the fill", () => {
+            const library = createColorLibrary();
             for (const fill of ["stealth", "subtle", "subtleInverse"] as const) {
-                const background = color.accent.fill[fill].$value;
-                const foreground = color.accent.onFill[fill].$value;
+                const background = library.tokens.color.accent.fill[fill].$value;
+                const foreground = valueOnFill(library, { token: t.accent.stroke.readable, fill: t.accent.fill[fill] }, context);
                 for (const state of interactiveStates) {
-                    expect(contrast(foreground[state]!, background[state]!)).to.be.at.least(4.5);
+                    expect(contrast(foreground[state] as Color, background[state]!)).to.be.at.least(4.5);
                 }
             }
         });
 
-        it("should be black or white on the ideal, discernible, and readable fills", () => {
-            const { minContrast } = color.wcagContrast;
-            const accent = color.accent;
-
-            expect(accent.onFill.ideal.$value).to.deep.equal(blackOrWhiteByContrastSet(accent.fill.ideal.$value, minContrast.readable.$value, false));
-            expect(accent.onFill.discernible.$value).to.deep.equal(
-                blackOrWhiteByContrastSet(accent.fill.discernible.$value, minContrast.discernible.$value, false)
-            );
-            expect(accent.onFill.readable.$value).to.deep.equal(blackOrWhiteByContrastSet(accent.fill.readable.$value, minContrast.readable.$value, false));
-        });
-
-        it("should be the strong neutral stroke on the neutral fills that aren't black or white, the readable fill as well", () => {
-            const { neutral, wcagContrast, deltas, disabled } = color;
-            const strokeDeltas = Object.fromEntries(states.map(state => [state, deltas.stroke.strong[state].$value]));
-            for (const fill of ["stealth", "subtle", "subtleInverse", "readable"] as const) {
-                const background = neutral.fill[fill].$value;
-                const foreground = neutral.onFill[fill].$value;
-                for (const state of states) {
-                    const set = contrastAndDeltaColorSet(neutral.palette.$value, background[state]!, wcagContrast.minContrast.strong.$value, strokeDeltas, {
-                        disabledPalette: disabled.palette.$value,
-                    });
-                    expect(foreground[state]).to.deep.equal(state === "disabled" ? set.disabled : set.rest);
+        it("should be the stroke made over each state of the fill, its rest, or its disabled over the disabled fill, as in 0.14", () => {
+            for (const library of libraries()) {
+                const { color } = library.tokens;
+                for (const [family, stroke, min] of [
+                    ...families.filter(family => family !== "neutral").map(family => [family, "readable", "readable"] as const),
+                    ["neutral", "strong", "strong"] as const,
+                ]) {
+                    const strokeDeltas = Object.fromEntries(states.map(state => [state, color.deltas.stroke[stroke][state].$value]));
+                    for (const fill of ["stealth", "subtle", "subtleInverse", "readable"] as const) {
+                        if (fill === "readable" && family !== "neutral") {
+                            continue;
+                        }
+                        const background = color[family].fill[fill].$value;
+                        const foreground = valueOnFill(library, { token: t[family].stroke[stroke], fill: t[family].fill[fill] }, context);
+                        for (const state of states) {
+                            const set = contrastAndDeltaColorSet(color[family].palette.$value, background[state]!, color.wcagContrast.minContrast[min].$value, strokeDeltas, {
+                                disabledPalette: color.disabled.palette.$value,
+                            });
+                            const made = state === "disabled" ? set.disabled! : set.rest!;
+                            const expected = family === "neutral" && color.neutral.asOverlay.$value ? asOverlay(made, background[state]!) : made;
+                            expect(formatColor(foreground[state] as Color)).to.equal(formatColor(expected), `${family} ${fill} ${state}`);
+                        }
+                    }
                 }
             }
         });
 
-        it("should be the strong neutral stroke on the interactive fill of the layers", () => {
-            expect(color.layer.onFill.interactive.$value.rest).to.deep.equal(
-                contrastAndDeltaColorSet(
-                    color.neutral.palette.$value,
-                    color.layer.fill.interactive.$value.rest!,
-                    color.wcagContrast.minContrast.strong.$value,
-                    Object.fromEntries(states.map(state => [state, color.deltas.stroke.strong[state].$value]))
-                ).rest
-            );
-            expect(color.layer.onFill.interactive.name).to.equal("color.layer.onFill.interactive");
+        it("should be black or white on the ideal, discernible, and readable fills, as the set of 0.14 was", () => {
+            for (const library of libraries()) {
+                const { color } = library.tokens;
+                const { minContrast } = color.wcagContrast;
+                for (const family of families) {
+                    for (const [fill, level] of [["ideal", "readable"], ["discernible", "discernible"], ["readable", "readable"]] as const) {
+                        if (family === "neutral" && fill === "readable") {
+                            continue;
+                        }
+                        const foreground = valueOnFill(
+                            library,
+                            { token: t.blackOrWhite[level], fill: t[family].fill[fill], activeFollowsRest: true },
+                            context
+                        );
+                        const expected = blackOrWhiteByContrastSet(color[family].fill[fill].$value, minContrast[level].$value, false);
+                        expect(format(foreground as InteractiveColorSet)).to.deep.equal(format(expected), `${family} ${fill}`);
+                    }
+                }
+            }
         });
 
         it("should be semitransparent over each state of the neutral fill as an overlay", () => {
             const library = createColorLibrary();
             library.tokens.color.neutral.asOverlay.set(true);
-            const { onFill } = library.tokens.color.neutral;
+            const foreground = valueOnFill(library, { token: t.neutral.stroke.strong, fill: t.neutral.fill.subtle }, context);
 
             for (const state of interactiveStates) {
-                expect(onFill.subtle.$value[state]!.alpha).to.be.lessThan(1);
+                expect((foreground[state] as Color).alpha).to.be.lessThan(1);
             }
         });
 
         it("should follow its fill", () => {
             const library = createColorLibrary();
-            const { accent } = library.tokens.color;
-            accent.fill.ideal.set({ rest: hex("#000000"), hover: hex("#FFFFFF") });
+            library.tokens.color.accent.fill.ideal.set({ rest: hex("#000000"), hover: hex("#FFFFFF") });
+            const foreground = valueOnFill(library, { token: t.blackOrWhite.readable, fill: t.accent.fill.ideal }, context);
 
-            expect(Object.keys(accent.onFill.ideal.$value)).to.deep.equal(["rest", "hover"]);
-            expect(formatColor(accent.onFill.ideal.$value.rest!)).to.equal(formatColor(white));
-            expect(formatColor(accent.onFill.ideal.$value.hover!)).to.equal("#000000");
+            expect(Object.keys(foreground)).to.deep.equal(["rest", "hover"]);
+            expect(formatColor(foreground.rest as Color)).to.equal(formatColor(white));
+            expect(formatColor(foreground.hover as Color)).to.equal("#000000");
         });
     });
 
@@ -416,13 +449,11 @@ describe("color sets", () => {
         type Tokens = ColorLibraryTokens & {
             brand: { primary: DesignToken.Color };
             color: {
-                brand: { palette: PaletteToken; foreground: InteractiveToken<Color>; restOnly: InteractiveToken<Color>; onFill: OnFillTokens } & ColorSetTokens;
+                brand: { palette: PaletteToken } & ColorSetTokens;
             };
         };
 
         const tokens = refs<Tokens>();
-        // A background that has only a rest.
-        const restOf = recipes({ restOf: (set: InteractiveColorSet): InteractiveColorSet => ({ rest: set.rest }) }).restOf;
         const create = () =>
             Library.create<Tokens>({
                 brand: { primary: { $type: DesignToken.Type.Color, $value: hex("#336699") } },
@@ -434,9 +465,6 @@ describe("color sets", () => {
                             $value: paletteRecipes.paletteFrom(tokens.brand.primary, tokens.color.paletteOptions.stepSize),
                         },
                         ...createColorSets<Tokens>({ palette: tokens.color.brand.palette }),
-                        onFill: createOnFill<Tokens>({ palette: tokens.color.brand.palette, fill: tokens.color.brand.fill }),
-                        foreground: blackOrWhiteReadable<Tokens>(tokens.color.brand.fill.readable),
-                        restOnly: blackOrWhiteReadable<Tokens>(restOf(tokens.color.brand.fill.readable)),
                     },
                 },
             });
@@ -462,33 +490,17 @@ describe("color sets", () => {
 
             expect(format(color.brand.stroke.discernible.$value)).to.deep.equal(format(color.accent.stroke.discernible.$value));
             for (const fill of fills) {
-                expect(format(color.brand.onFill[fill].$value)).to.deep.equal(format(color.accent.onFill[fill].$value));
+                expect(format(color.brand.fill[fill].$value)).to.deep.equal(format(color.accent.fill[fill].$value));
             }
         });
 
-        it("should have a foreground that is black or white for each state of its background", () => {
-            const { color } = create().tokens;
-            const { foreground, fill } = color.brand;
+        it("should have a foreground on its fills, as the default palettes have", () => {
+            const library = create();
+            library.tokens.color.accent.base.set(hex("#336699"));
+            const onFillOf = (fill: Library.Ref<unknown, never>) =>
+                valueOnFill(library, { token: tokens.color.blackOrWhite.readable, fill, activeFollowsRest: true }, tokens.color.context);
 
-            expect(foreground.$value.rest!).to.deep.equal(
-                blackOrWhiteByContrast(fill.readable.$value.rest!, color.wcagContrast.minContrast.readable.$value, false)
-            );
-            expect(foreground.name).to.equal("color.brand.foreground");
-            expect(getIntendedFor(foreground)).to.deep.equal([StyleProperty.foregroundFill]);
-        });
-
-        it("should have only the states that its background has, and leave out the others", () => {
-            const { color } = create().tokens;
-
-            expect(color.brand.restOnly.$value).to.deep.equal({ rest: color.brand.foreground.$value.rest });
-            expect(Object.keys(color.brand.restOnly.$value)).to.deep.equal(["rest"]);
-        });
-
-        it("should have the disabled foreground at 30% alpha, as it was", () => {
-            const { color } = create().tokens;
-
-            expect(color.brand.foreground.$value.disabled!.alpha).to.equal(0.3);
-            expect(color.brand.foreground.$value.rest!.alpha ?? 1).to.equal(1);
+            expect(onFillOf(tokens.color.brand.fill.readable)).to.deep.equal(onFillOf(tokens.color.accent.fill.readable));
         });
     });
 });

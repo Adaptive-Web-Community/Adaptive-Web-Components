@@ -1,6 +1,6 @@
 import { InteractiveSet, InteractiveState, mapStates } from "../../interactive.js";
 import { ColorSetOptions, InteractiveColorSet } from "../interactive-set.js";
-import { isGradient, Paint } from "../paint.js";
+import { Paint } from "../paint.js";
 import { closestSwatchIndex, Palette, swatchAt } from "../palette.js";
 import { PaletteDirection } from "../palette.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
@@ -64,47 +64,4 @@ export function contrastAndDeltaColorSet(
         const color = swatchAt(state === InteractiveState.disabled ? disabledPalette : palette, index);
         return zeroAsTransparent === true && index === referenceIndex ? asOverlay(color, color) : color;
     });
-}
-
-/**
- * Gets a Color for each state of a set of backgrounds: the color of the {@link contrastAndDeltaColorSet} over the background in that state,
- * at rest, and over the disabled background, disabled. It is a foreground that keeps its contrast while the background changes with the
- * state.
- *
- * @param palette - The Palette used to find the Colors
- * @param backgrounds - The background of each state
- * @param minContrast - The minimum contrast from the background
- * @param deltas - The offsets of the set made over each background, of which the rest and the disabled are used
- * @param options - The options of the set made over each background, and whether a color is semitransparent over its background, so it
- * looks the same and the background shows through (a gradient background isn't)
- * @returns The interactive set of Colors, for the states that have a background
- *
- * @public
- */
-export function contrastAndDeltaColorBySet(
-    palette: Palette,
-    backgrounds: InteractiveSet<Paint>,
-    minContrast: number,
-    deltas: InteractiveSet<number>,
-    options: ColorSetOptions & { asOverlay?: boolean } = {}
-): InteractiveColorSet {
-    const { asOverlay: overlay = false, ...setOptions } = options;
-    const result: InteractiveColorSet = {};
-    for (const state of Object.values(InteractiveState)) {
-        const background = backgrounds[state];
-        if (background === null) {
-            result[state] = null;
-            continue;
-        }
-        if (background === undefined) {
-            continue;
-        }
-        const set = contrastAndDeltaColorSet(palette, background, minContrast, deltas, setOptions);
-        const color = state === InteractiveState.disabled ? set.disabled : set.rest;
-        if (color === undefined || color === null) {
-            continue;
-        }
-        result[state] = overlay && !isGradient(background) ? asOverlay(color, background) : color;
-    }
-    return result;
 }

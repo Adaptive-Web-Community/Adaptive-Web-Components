@@ -1,0 +1,188 @@
+import { isRef, Library, pathOf } from "design-token-library";
+import { InteractiveSet, InteractiveState, isInteractiveSet } from "../interactive.js";
+import { atName, formatValue } from "../token-css.js";
+import { StyleProperty, type StyleValues } from "./properties.js";
+
+/**
+ * A value on a fill: a token made in the context of each state of the fill, like the foreground of a button on its background.
+ *
+ * @remarks
+ * A token that is relative to the color context, like a stroke or black or white, is made again with each state of the fill as the
+ * context, so it keeps its contrast with the fill as the fill changes with the state. It is how a treatment pairs a foreground with a
+ * background: the pairing isn't a token of the library, it is made for the combinations that the treatments have, whatever they are.
+ *
+ * Without a `fill`, the value is on the background fill of the rule it is in, so a treatment of a foreground follows the fill of the
+ * treatment it is composed with. In a rule that has no background fill, it is the token itself, in the color context.
+ *
+ * Why a pair isn't a token: `docs/decisions/0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md`.
+ *
+ * @public
+ */
+export interface OnFill {
+    /**
+     * The token, a ref to a token that is relative to the color context.
+     */
+    readonly token: Library.Ref<unknown, never>;
+
+    /**
+     * The fill, a ref to a color or an interactive token. The background fill of the rule, if it isn't given.
+     */
+    readonly fill?: Library.Ref<unknown, never>;
+
+    /**
+     * The active state has the value of the rest when the rest and the hover have the same value.
+     *
+     * @remarks
+     * It is for black or white, which would flip from one to the other on press where the active fill is just over the line, as the black
+     * or white on a fill of 0.14 didn't. A value that moves by its deltas, like a stroke, moves from the rest in the active state as well.
+     */
+    readonly activeFollowsRest?: boolean;
+}
+
+/**
+ * A value on a fill that has its fill.
+ *
+ * @public
+ */
+export type OnFillWithFill = OnFill & { readonly fill: Library.Ref<unknown, never> };
+
+/**
+ * Creates a value on a fill, a token made in the context of each state of the fill.
+ *
+ * @example
+ * ```ts
+ * // On the background fill of the rule:
+ * foregroundFill: onFill(color.critical.stroke.readable),
+ * // On another fill:
+ * foregroundFill: onFill(color.critical.stroke.readable, { fill: color.accent.fill.subtle }),
+ * ```
+ *
+ * @param token - The token, a ref to a token that is relative to the color context
+ * @param options - The fill, and if the active state follows the rest, see {@link OnFill}
+ * @returns The value on a fill
+ *
+ * @public
+ */
+export function onFill(token: Library.Ref<unknown, never>, options: Omit<OnFill, "token"> = {}): OnFill {
+    return { token, ...options };
+}
+
+/**
+ * Tests whether a value of a style property is a value on a fill.
+ *
+ * @public
+ */
+export function isOnFill(value: unknown): value is OnFill {
+    return typeof value === "object" && value !== null && !isRef(value) && isRef(Reflect.get(value, "token"));
+}
+
+/**
+ * Gives each value on a fill that has no fill the background fill of the same properties, or makes it the token itself where they have no
+ * background fill.
+ *
+ * @param properties - The properties of a rule, with those of its treatments
+ * @returns The properties, where each value on a fill has its fill
+ * @throws An error for a value on a fill, without a fill, where the background fill is not a ref to a token
+ *
+ * @public
+ */
+export function resolveOnFills(properties: Iterable<readonly [string, StyleValues]>): Map<string, StyleValues> {
+    const resolved = new Map(properties);
+    const background = resolved.get(StyleProperty.backgroundFill);
+    for (const [key, value] of resolved) {
+        if (!isOnFill(value) || value.fill !== undefined) {
+            continue;
+        }
+        if (background === undefined) {
+            resolved.set(key, value.token);
+        } else if (isRef(background)) {
+            resolved.set(key, { ...value, fill: background });
+        } else {
+            throw new Error(`The ${key} is on the background fill, which isn't a token`);
+        }
+    }
+    return resolved;
+}
+
+/**
+ * Gets the values on a fill of some properties, each with its fill.
+ *
+ * @param properties - The properties of a rule, with those of its treatments
+ * @returns The values on a fill
+ *
+ * @public
+ */
+export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[] {
+    return Array.from(resolveOnFills(properties).values()).filter(isOnFillWithFill);
+}
+
+function isOnFillWithFill(value: unknown): value is OnFillWithFill {
+    return isOnFill(value) && value.fill !== undefined;
+}
+
+// The libraries extended with a color as the context, by the library, the context, and the color, since every value on the same fill in a
+// state is made in the same context.
+const contexts = new WeakMap<Library.Library<any>, Map<string, Library.Library<any>>>();
+
+function inContext(library: Library.Library<any>, context: Library.Ref<unknown, never>, color: unknown): Library.Library<any> {
+    const path = pathOf(context);
+    const key = `${path.join(".")}=${JSON.stringify(color)}`;
+    const byKey = contexts.get(library) ?? new Map<string, Library.Library<any>>();
+    contexts.set(library, byKey);
+    let scoped = byKey.get(key);
+    if (scoped === undefined) {
+        scoped = library.extend(path.reduceRight<object>((value, name) => ({ [name]: value }), { $value: color }));
+        byKey.set(key, scoped);
+    }
+    return scoped;
+}
+
+const isGradient = (value: unknown): boolean => typeof value === "object" && value !== null && "stops" in value;
+
+/**
+ * Gets the value on a fill in each state of the fill: the token in the context of the fill in that state, the rest of an interactive token,
+ * or its disabled in the disabled state.
+ *
+ * @remarks
+ * The library is extended with the fill as the value of the context token, so the token is made by its own recipe, as it is in a layer.
+ * A state that the fill doesn't have, the value doesn't have either.
+ *
+ * @param library - The library of the tokens
+ * @param value - The value on a fill, with its fill
+ * @param context - The token of the color context, a ref, like `color.context` of the reference system
+ * @returns The value in each state of the fill
+ * @throws An error for a state of the fill that is a gradient, which the color context can't be
+ *
+ * @public
+ */
+export function valueOnFill(library: Library.Library<any>, value: OnFillWithFill, context: Library.Ref<unknown, never>): InteractiveSet<unknown> {
+    const tokenName = pathOf(value.token).join(".");
+    const fillName = pathOf(value.fill).join(".");
+    const fill: unknown = atName<{ $value: unknown }>(library.tokens, fillName).$value;
+    const fills: InteractiveSet<unknown> = isInteractiveSet(fill) ? fill : { rest: fill };
+
+    const result: InteractiveSet<unknown> = {};
+    for (const state of Object.values(InteractiveState)) {
+        const background = fills[state];
+        if (background === undefined || background === null) {
+            if (background === null) {
+                result[state] = null;
+            }
+            continue;
+        }
+        if (isGradient(background)) {
+            throw new Error(`The ${state} of ${fillName} is a gradient, which can't be the context of ${tokenName}`);
+        }
+        const made: unknown = atName<{ $value: unknown }>(inContext(library, context, background).tokens, tokenName).$value;
+        const inState = isInteractiveSet(made) ? (state === InteractiveState.disabled ? made.disabled : made.rest) : made;
+        if (inState !== undefined) {
+            result[state] = inState;
+        }
+    }
+
+    const { rest, hover, active } = result;
+    if (value.activeFollowsRest && rest != null && hover != null && active != null && formatValue(rest) === formatValue(hover)) {
+        result.active = rest;
+    }
+    return result;
+}

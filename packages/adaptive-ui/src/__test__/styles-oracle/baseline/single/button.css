@@ -21,27 +21,29 @@ control {
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-neutral-fill-subtle);
-  color: var(--color-neutral-onFill-subtle);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle);
 }
 :host(:not([disabled])) control:focus-visible {
   background: var(--color-neutral-fill-subtle-focus);
-  color: var(--color-neutral-onFill-subtle-focus);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-focus);
   border-color: var(--color-neutral-stroke-subtle-focus);
 }
 :host(:not([disabled])) control:hover {
   background: var(--color-neutral-fill-subtle-hover);
-  color: var(--color-neutral-onFill-subtle-hover);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-hover);
   border-color: var(--color-neutral-stroke-subtle-hover);
 }
 :host(:not([disabled])) control:active {
   background: var(--color-neutral-fill-subtle-active);
-  color: var(--color-neutral-onFill-subtle-active);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-active);
   border-color: var(--color-neutral-stroke-subtle-active);
 }
 :host([disabled]) control {
   background: var(--color-neutral-fill-subtle-disabled);
-  color: var(--color-neutral-onFill-subtle-disabled);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtle-disabled
+  );
   border-color: var(--color-neutral-stroke-subtle-disabled);
 }

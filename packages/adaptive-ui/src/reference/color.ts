@@ -2,11 +2,10 @@ import { DesignToken, Library, recipes, refs } from "design-token-library";
 import { Color } from "../core/color/color.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
-import { contrastAndDeltaColorBySet, contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
+import { contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
 import { contrastColor } from "../core/color/recipes/contrast-color.js";
 import { deltaColorSet } from "../core/color/recipes/delta-color-set.js";
 import { idealColorDeltaSet } from "../core/color/recipes/ideal-color-delta-set.js";
-import { InteractivePaintSet } from "../core/color/interactive-set.js";
 import { Palette } from "../core/color/palette.js";
 import { conditionalColorSet } from "../core/color/utilities/conditional.js";
 import { colorSetAsOverlay } from "../core/color/utilities/opacity.js";
@@ -160,27 +159,26 @@ export interface ColorSetTokens {
 }
 
 /**
- * The foreground on each fill of a palette, for the text and icons of an element that has the fill. Each is an interactive token, a color for
- * each state of the fill, which keeps its contrast while the fill changes with the state.
+ * A palette of the system, with the base color it is made from and the color sets made from it.
  *
  * @public
  */
-export interface OnFillTokens {
-    stealth: InteractiveToken<Color>;
-    subtle: InteractiveToken<Color>;
-    subtleInverse: InteractiveToken<Color>;
-    ideal: InteractiveToken<Color>;
-    discernible: InteractiveToken<Color>;
-    readable: InteractiveToken<Color>;
-}
+export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {}
 
 /**
- * A palette of the system, with the base color it is made from, the color sets made from it, and the foreground on each of its fills.
+ * Black or white for the color context, whichever has the contrast, under `color.blackOrWhite`. Each is an interactive token, the color at
+ * rest and the same color at 30% opacity disabled.
+ *
+ * @remarks
+ * The black or white on a fill is one of these, made in the context of each state of the fill.
  *
  * @public
  */
-export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {
-    onFill: OnFillTokens;
+export interface BlackOrWhiteTokens {
+    /** Black or white with the contrast that is discernible, for something that isn't text, like a checked checkbox. */
+    discernible: InteractiveToken<Color>;
+    /** Black or white with the contrast that is readable, for text, like the label of a button. */
+    readable: InteractiveToken<Color>;
 }
 
 /**
@@ -217,12 +215,7 @@ export interface FocusStrokeTokens {
  * @public
  */
 export interface ColorTokens extends PaletteTokens, ColorContextTokens {
-    layer: LayerTokens & {
-        /**
-         * The foreground on the fills of the layers, the strong neutral stroke on the interactive fill.
-         */
-        onFill: { interactive: InteractiveToken<Color> };
-    };
+    layer: LayerTokens;
     wcagContrast: WcagContrastTokens;
     disabled: DisabledTokens;
     deltas: ColorDeltaTokens;
@@ -239,6 +232,7 @@ export interface ColorTokens extends PaletteTokens, ColorContextTokens {
     success: ColorFamilyTokens;
     info: ColorFamilyTokens;
     focusStroke: FocusStrokeTokens;
+    blackOrWhite: BlackOrWhiteTokens;
 }
 
 /**
@@ -273,7 +267,6 @@ export interface ColorSetLibraryTokens {
 export const colorRecipes = recipes({
     deltaColorSet,
     contrastAndDeltaColorSet,
-    contrastAndDeltaColorBySet,
     idealColorDeltaSet,
     contrastColor,
     blackOrWhiteByContrast,
@@ -381,142 +374,6 @@ export function createColorSets<Root extends ColorSetLibraryTokens>(options: Col
     };
 }
 
-/**
- * The config of a foreground that is black or white for each state of a background, for a token.
- *
- * @remarks
- * A foreground is made for a background, so there is one for each background a system pairs it with, the way a style module pairs them. It is
- * an interactive token that follows the background: a change to the background is a change to the foreground.
- *
- * @example
- * ```ts
- * foreground: blackOrWhiteReadable(tokens.color.accent.fill.readable),
- * ```
- *
- * @param background - The background, usually a ref to an interactive token
- * @param minContrast - The minimum contrast of the foreground from each state of the background, usually a ref to a contrast ratio token
- * @param defaultBlack - True to be black when both black and white have the contrast
- *
- * @public
- */
-export function blackOrWhiteFor<Root extends ColorSetLibraryTokens>(
-    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>,
-    minContrast: Library.DeepValue<number, Library.TokenValues<Root>>,
-    defaultBlack = false
-): Library.ConfigValue<InteractiveToken<Color>, Root> {
-    return {
-        $type: AdaptiveDesignToken.interactive,
-        $value: colorRecipes.blackOrWhiteByContrastSet(background, minContrast, defaultBlack),
-        $extensions: intendedFor(StyleProperty.foregroundFill),
-    };
-}
-
-/**
- * The config of a foreground that is black or white for a background, with the contrast that is discernible. It is for something that isn't
- * text, like a checked checkbox.
- *
- * @param background - The background, usually a ref to an interactive token
- *
- * @public
- */
-export function blackOrWhiteDiscernible<Root extends ColorSetLibraryTokens>(
-    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>
-): Library.ConfigValue<InteractiveToken<Color>, Root> {
-    return blackOrWhiteFor<Root>(background, shared.wcagContrast.minContrast.discernible);
-}
-
-/**
- * The config of a foreground that is black or white for a background, with the contrast that is readable. It is for text, like the label of a
- * button.
- *
- * @param background - The background, usually a ref to an interactive token
- *
- * @public
- */
-export function blackOrWhiteReadable<Root extends ColorSetLibraryTokens>(
-    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>
-): Library.ConfigValue<InteractiveToken<Color>, Root> {
-    return blackOrWhiteFor<Root>(background, shared.wcagContrast.minContrast.readable);
-}
-
-/**
- * The options of the foregrounds on the fills of a palette.
- *
- * @public
- */
-export interface OnFillOptions<Root extends ColorSetLibraryTokens> {
-    /**
-     * The palette of the foregrounds that aren't black or white, a ref to a palette token.
-     */
-    palette: Library.Ref<Palette, Library.TokenValues<Root>>;
-    /**
-     * The fills the foregrounds are on, the refs of the group of the fills.
-     */
-    fill: Library.Refs<FillSetTokens, Root>;
-    /**
-     * If the foregrounds are semitransparent over their fill, a ref to a boolean token. They are not if it is not given.
-     */
-    asOverlay?: Library.Ref<boolean, Library.TokenValues<Root>>;
-}
-
-/**
- * The config of a foreground of a palette for each state of a background, with a minimum contrast and the deltas of a stroke.
- *
- * @param options - The palette, and if the foreground is an overlay
- * @param background - The background, usually a ref to an interactive token
- * @param minContrast - The minimum contrast from each state of the background, usually a ref to a contrast ratio token
- * @param deltas - The deltas of the stroke, of which the rest and the disabled are used
- *
- * @public
- */
-export function strokeOn<Root extends ColorSetLibraryTokens>(
-    options: Omit<OnFillOptions<Root>, "fill">,
-    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>,
-    minContrast: Library.DeepValue<number, Library.TokenValues<Root>>,
-    deltas: Library.Refs<InteractiveDeltaTokens, ColorSetLibraryTokens>
-): Library.ConfigValue<InteractiveToken<Color>, Root> {
-    const { palette, asOverlay } = options;
-    return {
-        $type: AdaptiveDesignToken.interactive,
-        $value: colorRecipes.contrastAndDeltaColorBySet(palette, background, minContrast, interactiveDeltas(deltas), {
-            disabledPalette: shared.disabled.palette,
-            asOverlay,
-        }),
-        $extensions: intendedFor(StyleProperty.foregroundFill),
-    };
-}
-
-/**
- * Creates the foreground on each fill of a palette: the readable stroke of the palette on the stealth and subtle fills, and black or white on
- * the others.
- *
- * @remarks
- * It gives the config of the `onFill` group of a palette. The fills are given, since a token can't refer to the tokens next to it without
- * their path, so a system that adds a palette of its own gives the refs of its fills:
- *
- * ```ts
- * onFill: createOnFill<Tokens>({ palette: tokens.color.brand.palette, fill: tokens.color.brand.fill }),
- * ```
- *
- * @param options - The palette, the fills, and if the foregrounds are an overlay
- * @returns The config of the `onFill` group
- *
- * @public
- */
-export function createOnFill<Root extends ColorSetLibraryTokens>(options: OnFillOptions<Root>): Library.Config<OnFillTokens, Root> {
-    const { fill } = options;
-    const readable = (background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>) =>
-        strokeOn<Root>(options, background, shared.wcagContrast.minContrast.readable, shared.deltas.stroke.readable);
-    return {
-        stealth: readable(fill.stealth),
-        subtle: readable(fill.subtle),
-        subtleInverse: readable(fill.subtleInverse),
-        ideal: blackOrWhiteReadable<Root>(fill.ideal),
-        discernible: blackOrWhiteDiscernible<Root>(fill.discernible),
-        readable: blackOrWhiteReadable<Root>(fill.readable),
-    };
-}
-
 const tokens = refs<ColorLibraryTokens>().color;
 
 const minContrastFor = (aa: number, aaa: number): Library.ConfigValue<ContrastRatioToken, ColorLibraryTokens> => ({
@@ -598,20 +455,20 @@ const focusStroke: Library.Config<FocusStrokeTokens, ColorLibraryTokens> = {
     },
 };
 
-// The sets of a palette of the system, and the foregrounds on its fills.
-const familyOf = (family: Library.Refs<ColorFamilyTokens, ColorLibraryTokens>) => ({
-    ...createColorSets<ColorLibraryTokens>({ palette: family.palette }),
-    onFill: createOnFill<ColorLibraryTokens>({ palette: family.palette, fill: family.fill }),
+// Black or white for the context, and disabled at 30% opacity, as the black or white on a fill has been.
+const blackOrWhiteOf = (minContrast: Library.Ref<number, Library.TokenValues<ColorLibraryTokens>>) => ({
+    $type: AdaptiveDesignToken.interactive,
+    $value: colorRecipes.blackOrWhiteByContrastSet({ rest: tokens.context, disabled: tokens.context }, minContrast, false),
+    $extensions: intendedFor(StyleProperty.foregroundFill),
 });
 
-// The neutral foreground is the strong stroke on the fills that aren't black or white, the readable fill as well, an overlay as the sets are.
-const neutralStrong = (background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<ColorLibraryTokens>>) =>
-    strokeOn<ColorLibraryTokens>(
-        { palette: tokens.neutral.palette, asOverlay: tokens.neutral.asOverlay },
-        background,
-        tokens.wcagContrast.minContrast.strong,
-        shared.deltas.stroke.strong
-    );
+const blackOrWhite: Library.Config<BlackOrWhiteTokens, ColorLibraryTokens> = {
+    discernible: blackOrWhiteOf(tokens.wcagContrast.minContrast.discernible),
+    readable: blackOrWhiteOf(tokens.wcagContrast.minContrast.readable),
+};
+
+// The sets of a palette of the system.
+const familyOf = (family: Library.Refs<ColorFamilyTokens, ColorLibraryTokens>) => createColorSets<ColorLibraryTokens>({ palette: family.palette });
 
 /**
  * The configuration of the color tokens, for the library: the palettes, the color context, the layers, and the sets made from them.
@@ -621,20 +478,13 @@ const neutralStrong = (background: Library.DeepValue<InteractivePaintSet, Librar
 export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
     ...palettes,
     ...colorContext,
-    layer: { ...layer, onFill: { interactive: neutralStrong(tokens.layer.fill.interactive) } },
+    layer,
     wcagContrast,
     disabled,
     deltas: colorDeltas,
     neutral: {
         ...palettes.neutral,
         ...createColorSets<ColorLibraryTokens>({ palette: tokens.neutral.palette, asOverlay: tokens.neutral.asOverlay }),
-        onFill: {
-            ...createOnFill<ColorLibraryTokens>({ palette: tokens.neutral.palette, fill: tokens.neutral.fill }),
-            stealth: neutralStrong(tokens.neutral.fill.stealth),
-            subtle: neutralStrong(tokens.neutral.fill.subtle),
-            subtleInverse: neutralStrong(tokens.neutral.fill.subtleInverse),
-            readable: neutralStrong(tokens.neutral.fill.readable),
-        },
         asOverlay: { $type: AdaptiveDesignToken.boolean, $value: false },
     },
     accent: { ...palettes.accent, ...familyOf(tokens.accent) },
@@ -644,6 +494,7 @@ export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
     success: { ...palettes.success, ...familyOf(tokens.success) },
     info: { ...palettes.info, ...familyOf(tokens.info) },
     focusStroke,
+    blackOrWhite,
 };
 
 /**

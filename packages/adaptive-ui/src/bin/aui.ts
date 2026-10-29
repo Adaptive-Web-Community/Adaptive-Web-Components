@@ -5,6 +5,7 @@ import { pathToFileURL } from "url";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
 import { Command } from 'commander';
+import { refs } from "design-token-library";
 import { kebabCase } from "change-case";
 import { deepmerge } from "deepmerge-ts";
 import { glob } from "glob";
@@ -28,7 +29,7 @@ import { StyleProperties, StyleValues } from '../core/styles/properties.js';
 import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
 import { InteractiveState } from '../core/interactive.js';
 import { refAt } from '../core/token-ref.js';
-import { createReferenceLibrary } from '../reference/library.js';
+import { createReferenceLibrary, ReferenceLibraryTokens } from '../reference/library.js';
 import { referenceAnatomyTreatments, referenceTreatments } from '../reference/treatments.js';
 
 const program = new Command();
@@ -282,7 +283,7 @@ interface SheetCompiler {
 
 // TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
 const library = createReferenceLibrary();
-const tokens = libraryTokenProperties(library);
+const tokens = libraryTokenProperties(library, { context: refs<ReferenceLibraryTokens>().color.context });
 const treatmentsByName = new Map(referenceTreatments.map(treatment => [treatment.name, treatment]));
 
 class SheetCompilerImpl implements SheetCompiler {

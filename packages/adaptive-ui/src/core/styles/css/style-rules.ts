@@ -1,9 +1,11 @@
 import { isInteractiveSet } from "../../interactive.js";
 import { ComponentAnatomy, Interactivity } from "../anatomy.js";
-import { StyleProperties } from "../properties.js";
+import { isOnFill, onFillsOf, OnFillWithFill } from "../on-fill.js";
+import { StyleProperties, StyleValues } from "../properties.js";
 import { StyleRule, StyleRules, StyleRuleTarget } from "../rule.js";
 import { Treatment, treatmentProperties } from "../treatment.js";
 import { CssRule, renderRules, TokenPropertiesResolver } from "./rules.js";
+import { SelectorParameters } from "./selector.js";
 
 /**
  * The treatments that the anatomy of a component applies, for the states that every component has the same way.
@@ -65,6 +67,9 @@ export interface StyleRulesOptions {
 function inFocus(treatment: Treatment): StyleProperties {
     const properties: StyleProperties = {};
     for (const [key, value] of treatmentProperties(treatment)) {
+        if (isOnFill(value)) {
+            throw new Error(`The ${key} of a treatment of the focus is a value on a fill, which has no focus state of its own`);
+        }
         const focus = isInteractiveSet(value) ? value.focus : value;
         if (focus !== undefined && focus !== null && focus !== "") {
             properties[key] = { focus };
@@ -118,6 +123,28 @@ function isTreatmentList(styles: Treatment | readonly Treatment[]): styles is re
     return Array.isArray(styles);
 }
 
+// The properties of each rule of a component, after the rules that its anatomy adds, and its target with the context and the interactivity of
+// the anatomy.
+function effectiveRules(
+    styleRules: StyleRules,
+    options: Pick<StyleRulesOptions, "anatomy" | "treatments">
+): { properties: Map<string, StyleValues>; params: SelectorParameters }[] {
+    const { anatomy, treatments = {} } = options;
+    const rules = anatomy ? [...anatomyRules(anatomy, treatments), ...styleRules] : styleRules;
+
+    return rules.map(rule => {
+        const target: StyleRuleTarget = { ...rule.target };
+        if (anatomy?.context && target.context === undefined) {
+            target.context = anatomy.context;
+            if (anatomy.context === target.part) {
+                target.part = undefined;
+            }
+        }
+        const interactivity = { ...anatomy?.interactivity, ...(target.ignoreInteractivity ? Interactivity.always : {}) };
+        return { properties: treatmentProperties(withStyles(rule)), params: { ...interactivity, ...target } };
+    });
+}
+
 /**
  * Renders the style rules of a component as rules of CSS, after the rules that its anatomy adds.
  *
@@ -133,18 +160,18 @@ function isTreatmentList(styles: Treatment | readonly Treatment[]): styles is re
  * @public
  */
 export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[] {
-    const { tokens, anatomy, treatments = {} } = options;
-    const rules = anatomy ? [...anatomyRules(anatomy, treatments), ...styleRules] : styleRules;
+    return effectiveRules(styleRules, options).flatMap(({ properties, params }) => renderRules(properties, params, options.tokens));
+}
 
-    return rules.flatMap(rule => {
-        const target: StyleRuleTarget = { ...rule.target };
-        if (anatomy?.context && target.context === undefined) {
-            target.context = anatomy.context;
-            if (anatomy.context === target.part) {
-                target.part = undefined;
-            }
-        }
-        const interactivity = { ...anatomy?.interactivity, ...(target.ignoreInteractivity ? Interactivity.always : {}) };
-        return renderRules(treatmentProperties(withStyles(rule)), { ...interactivity, ...target }, tokens);
-    });
+/**
+ * Gets the values on a fill of the style rules of a component, each with its fill, for the CSS of the tokens, see {@link onFillCSS}.
+ *
+ * @param styleRules - The style rules of the component
+ * @param options - The anatomy, and the treatments the anatomy applies
+ * @returns The values on a fill
+ *
+ * @public
+ */
+export function styleRulesOnFills(styleRules: StyleRules, options: Pick<StyleRulesOptions, "anatomy" | "treatments"> = {}): OnFillWithFill[] {
+    return effectiveRules(styleRules, options).flatMap(({ properties }) => onFillsOf(properties));
 }

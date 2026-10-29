@@ -63,7 +63,7 @@
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-neutral-fill-subtleInverse);
-  color: var(--color-neutral-onFill-subtleInverse);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
   padding-right: var(--density-control-horizontal-padding);
@@ -74,22 +74,30 @@
 }
 .text-field:not(.disabled):not(.read-only) .control.focus {
   background: var(--color-neutral-fill-subtleInverse-focus);
-  color: var(--color-neutral-onFill-subtleInverse-focus);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-focus
+  );
   border-color: var(--color-neutral-stroke-discernible-focus);
 }
 .text-field:not(.disabled):not(.read-only) .control.hover {
   background: var(--color-neutral-fill-subtleInverse-hover);
-  color: var(--color-neutral-onFill-subtleInverse-hover);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-hover
+  );
   border-color: var(--color-neutral-stroke-discernible-hover);
 }
 .text-field:not(.disabled):not(.read-only) .control.active {
   background: var(--color-neutral-fill-subtleInverse-active);
-  color: var(--color-neutral-onFill-subtleInverse-active);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-active
+  );
   border-color: var(--color-neutral-stroke-discernible-active);
 }
 .text-field.disabled .control {
   background: var(--color-neutral-fill-subtleInverse-disabled);
-  color: var(--color-neutral-onFill-subtleInverse-disabled);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-disabled
+  );
   border-color: var(--color-neutral-stroke-discernible-disabled);
 }
 .text-field .field {

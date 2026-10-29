@@ -227,7 +227,7 @@ type. None of them is CSS, as in 0.14, since only a recipe reads them.
 | `neutralAsOverlay` | `color.neutral.asOverlay`, a token of the `boolean` type |
 | `focusStrokePalette`, `focusStrokeMinContrast` | `color.focusStroke.palette`, `color.focusStroke.minContrast` |
 | `focusStroke`, `focusStrokeOuter`, `focusStrokeInner` | `color.focusStroke.$root` (CSS `--color-focusStroke`), `color.focusStroke.outer`, `color.focusStroke.inner` |
-| `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe` (a recipe that a style module composed with a background) | `blackOrWhiteDiscernible(background)` and `blackOrWhiteReadable(background)`, the config of an interactive token that follows the background (a ref to it), for the pairs that a system makes |
+| `blackOrWhiteDiscernibleRecipe`, `blackOrWhiteReadableRecipe` (a recipe that a style module composed with a background) | `color.blackOrWhite.discernible` and `color.blackOrWhite.readable`, black or white for the color context (the rest, and 30% opacity disabled), which a treatment puts on a fill: `onFill(color.blackOrWhite.readable, { activeFollowsRest: true })`, see the treatments |
 | `WcagContrastLevel` | `WcagContrastLevel`, with `WcagContrastLevelToken` |
 
 ### Deprecated, the old name is the token
@@ -337,25 +337,29 @@ state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, 
 | `StyleModuleEvaluateParameters` | `SelectorParameters` |
 | `StyleValue` (a FAST token, an `InteractiveValues`, a `CSSDirective`, or a value) | `StyleValue` (a value of CSS or of a token type, or a ref) and `StyleValues` (one or an `InteractiveSet` of them) |
 | `StylePropertiesMap`, `EffectiveStylePropertiesMap` | `Map<string, StyleValues>` |
-| `Fill.backgroundAndForeground(fill, recipe)`, `Fill.backgroundAndForegroundBySet(fill, recipe)` | `{ backgroundFill: color.accent.fill.subtle, foregroundFill: color.accent.onFill.subtle }`: the foreground on a fill is a token |
+| `Fill.backgroundAndForeground(fill, recipe)`, `Fill.backgroundAndForegroundBySet(fill, recipe)` | `{ backgroundFill: color.accent.fill.subtle, foregroundFill: onFill(color.accent.stroke.readable) }`: the foreground is made on the fill, see below |
 | `Fill.backgroundNonInteractive(token, disabled)`, `Fill.foregroundNonInteractive(token, disabled)` | `{ rest: token, disabled }`, a set that has only those states |
 | `convertStylesToFocusState(styles)` | part of `renderStyleRules`, which applies the focus indicator in the focus state |
-| `ElementStylesRenderer`, `new ElementStylesRenderer(styles).render(target, interactivity)` | `renderRules(treatmentProperties(treatment), { ...interactivity, ...target }, libraryTokenProperties(library))` |
-| `ElementStylesRenderer.renderStyleRules(base, rules, anatomy)` | `renderStyleRules(rules, { tokens: libraryTokenProperties(library), anatomy, treatments: referenceAnatomyTreatments })` |
+| `ElementStylesRenderer`, `new ElementStylesRenderer(styles).render(target, interactivity)` | `renderRules(treatmentProperties(treatment), { ...interactivity, ...target }, libraryTokenProperties(library, { context: color.context }))` |
+| `ElementStylesRenderer.renderStyleRules(base, rules, anatomy)` | `renderStyleRules(rules, { tokens: libraryTokenProperties(library, { context: color.context }), anatomy, treatments: referenceAnatomyTreatments })` |
 | `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles` | the `treatments` of `renderStyleRules` (`AnatomyTreatments`: `disabled`, `focusIndicator`, `focusReset`) |
 | the `...Styles` of `reference/modules.ts`, like `actionStyles` | the `...Treatment` of `reference/treatments.ts`, like `actionTreatment`, with the same names |
 | `StyleNameMapping` | `TreatmentNameMapping`, to the names of the treatments |
 
-The foreground on each fill is a token, `color.<palette>.onFill.<fill>` (`stealth`, `subtle`, `subtleInverse`, `ideal`, `discernible`, and
-`readable`) and `color.layer.onFill.interactive`, with the colors of 0.14 (the readable stroke of the palette on the stealth and subtle fills, the
-strong neutral stroke on the neutral fills and the interactive layer, and black or white on the others). `createOnFill` makes the group for a
-palette of a system, and `contrastAndDeltaColorBySet` is its recipe. `createReferenceLibrary()` is a library of the whole reference system, which
-the reference treatments refer to.
+A foreground on a fill is a value on a fill (decision [0013](../../docs/decisions/0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md)):
+`onFill(token, { fill })`, the token made in the context of each state of the fill, as 0.14 made a foreground recipe over a background. It is
+plain data in the properties of a treatment, and without a `fill` it is on the background fill of the rule, so a foreground treatment follows
+the fill it is composed with: a critical foreground on the accent fill is `{ backgroundFill: color.accent.fill.subtle, foregroundFill:
+onFill(color.critical.stroke.readable) }`. The reference treatments have the pairs of 0.14, with its colors: the readable stroke of the palette
+on the stealth and subtle fills, the strong neutral stroke on the neutral fills and the interactive layer, and black or white on the others
+(`activeFollowsRest`, so it doesn't flip on press). A pair isn't a token: a rule refers to `--<token>-on-<fill>`, `styleRulesOnFills(rules,
+{ anatomy })` gives the pairs of a component, and `onFillCSS(library, pairs, { context: color.context })` writes their custom properties for a
+scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole reference system, which the reference treatments refer to.
 
 ### Behavior
 
 - The CSS refers to the custom properties the library writes: `--color-accent-fill-subtle` at rest (was `-rest`), `--color-focusStroke`
-  (was `-value`), and `--color-accent-onFill-subtle` (was `--color-accent-stroke-readable-on-accent-fill-subtle-rest`).
+  (was `-value`), and `--color-accent-stroke-readable-on-color-accent-fill-subtle` (was `--color-accent-stroke-readable-on-accent-fill-subtle-rest`).
 - A set has only the states that it has a value for (decision 0006), so a foreground of an element that isn't interactive, with a rest and a
   disabled, has no rules for the hover, the active, and the focus, which repeated the rest.
 - The rules of the states are in the order rest, focus, hover, active, disabled. States that have the same selector, like those of a
@@ -373,7 +377,7 @@ properties, name)` make a treatment. A rule's `styles` (one treatment or a list)
 JSON may name its treatments in `styles`.
 
 Not exported, with what to use: `Styles.Shared` (`referenceTreatments`), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
-`Fill` (the `onFill` tokens), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
+`Fill` (`onFill`), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
 
 ## Not migrated yet
 

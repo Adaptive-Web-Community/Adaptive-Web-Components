@@ -1,9 +1,11 @@
 import chai from "chai";
+import { pathOf, refs } from "design-token-library";
 import { Focus, Interactivity } from "../core/styles/anatomy.js";
-import { formatRules, libraryTokenProperties, renderRules } from "../core/styles/css/rules.js";
-import { renderStyleRules } from "../core/styles/css/style-rules.js";
+import { formatRules, libraryTokenProperties, onFillCSS, renderRules } from "../core/styles/css/rules.js";
+import { renderStyleRules, styleRulesOnFills } from "../core/styles/css/style-rules.js";
+import { onFill } from "../core/styles/on-fill.js";
 import { Treatment, treatmentProperties } from "../core/styles/treatment.js";
-import { createReferenceLibrary } from "./library.js";
+import { createReferenceLibrary, ReferenceLibraryTokens } from "./library.js";
 import * as treatments from "./treatments.js";
 import {
     accentFillReadableControlTreatment,
@@ -17,7 +19,9 @@ import {
 
 const { expect } = chai;
 
-const tokens = libraryTokenProperties(createReferenceLibrary());
+const library = createReferenceLibrary();
+const { color } = refs<ReferenceLibraryTokens>();
+const tokens = libraryTokenProperties(library, { context: color.context });
 const render = (treatment: Treatment) => renderRules(treatmentProperties(treatment), Interactivity.disabledAttribute, tokens);
 
 describe("the reference treatments", () => {
@@ -49,18 +53,41 @@ describe("the reference treatments", () => {
     });
 
     it("should pair a fill with the foreground on it", () => {
+        const foreground = "--color-blackOrWhite-readable-on-color-accent-fill-readable";
         expect(formatRules(render(accentFillReadableControlTreatment))).to.equal(
             [
-                ":host { background: var(--color-accent-fill-readable); color: var(--color-accent-onFill-readable); fill: currentcolor; " +
+                `:host { background: var(--color-accent-fill-readable); color: var(${foreground}); fill: currentcolor; ` +
                     "border-top-width: var(--shape-strokeThickness-default); border-right-width: var(--shape-strokeThickness-default); " +
                     "border-bottom-width: var(--shape-strokeThickness-default); border-left-width: var(--shape-strokeThickness-default); " +
                     "border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; " +
                     "border-top-color: transparent; border-right-color: transparent; border-bottom-color: transparent; border-left-color: transparent; }",
-                ":host(:not([disabled]):focus-visible) { background: var(--color-accent-fill-readable-focus); color: var(--color-accent-onFill-readable-focus); }",
-                ":host(:not([disabled]):hover) { background: var(--color-accent-fill-readable-hover); color: var(--color-accent-onFill-readable-hover); }",
-                ":host(:not([disabled]):active) { background: var(--color-accent-fill-readable-active); color: var(--color-accent-onFill-readable-active); }",
-                ":host([disabled]) { background: var(--color-accent-fill-readable-disabled); color: var(--color-accent-onFill-readable-disabled); }",
+                `:host(:not([disabled]):focus-visible) { background: var(--color-accent-fill-readable-focus); color: var(${foreground}-focus); }`,
+                `:host(:not([disabled]):hover) { background: var(--color-accent-fill-readable-hover); color: var(${foreground}-hover); }`,
+                `:host(:not([disabled]):active) { background: var(--color-accent-fill-readable-active); color: var(${foreground}-active); }`,
+                `:host([disabled]) { background: var(--color-accent-fill-readable-disabled); color: var(${foreground}-disabled); }`,
             ].join("\n")
+        );
+    });
+
+    it("should have the custom properties of the pairs that the treatments have, once each", () => {
+        const pairs = styleRulesOnFills(referenceTreatments.map(treatment => ({ treatments: [treatment] })));
+        const css = onFillCSS(library, pairs, { context: color.context });
+
+        // A treatment that is composed of another has its pairs as well.
+        expect(new Set(pairs.map(pair => `${pathOf(pair.token).join(".")} on ${pathOf(pair.fill).join(".")}`)).size).to.equal(43);
+        expect(css).to.include("--color-accent-stroke-readable-on-color-accent-fill-subtle:");
+        expect(css).to.include("--color-neutral-stroke-strong-on-color-layer-fill-interactive-hover:");
+        expect(css).not.to.include("--color-critical-stroke-readable-on-color-accent-fill-subtle");
+    });
+
+    it("should make a foreground of one palette on the fill of another, a pair that no treatment has", () => {
+        const criticalForeground: Treatment = { properties: { foregroundFill: onFill(color.critical.stroke.readable) } };
+        const accentFill: Treatment = { properties: { backgroundFill: color.accent.fill.subtle } };
+        const rules = renderRules(treatmentProperties({ treatments: [accentFill, criticalForeground] }), {}, tokens);
+
+        expect(rules[0].declarations.color).to.equal("var(--color-critical-stroke-readable-on-color-accent-fill-subtle)");
+        expect(onFillCSS(library, styleRulesOnFills([{ treatments: [accentFill, criticalForeground] }]), { context: color.context })).to.match(
+            /^--color-critical-stroke-readable-on-color-accent-fill-subtle:#[0-9a-f]{6};/
         );
     });
 
