@@ -1,0 +1,46 @@
+{
+  "name": "Stress On Fill",
+  "context": ".stress-on-fill",
+  "conditions": {},
+  "parts": {
+    "Label": ".label",
+    "Badge": ".badge",
+    "Icon": ".icon",
+    "Missing": ".missing"
+  },
+  "interactivity": {
+    "interactive": ":not([disabled])",
+    "disabled": "[disabled]"
+  },
+  "styleRules": [
+    {
+      "treatments": ["color.accent-fill-subtle-control"]
+    },
+    {
+      "part": "Label",
+      "properties": {
+        "backgroundFill": "color.accent.fill.subtle",
+        "foregroundFill": { "token": "color.critical.stroke.readable" }
+      }
+    },
+    {
+      "part": "Badge",
+      "properties": {
+        "foregroundFill": { "token": "color.blackOrWhite.readable", "fill": "color.accent.fill.readable", "activeFollowsRest": true }
+      }
+    },
+    {
+      "part": "Icon",
+      "properties": {
+        "foregroundFill": { "token": "color.neutral.stroke.readable" }
+      }
+    },
+    {
+      "part": "Missing",
+      "properties": {
+        "foregroundFill": { "token": "color.missing.stroke" },
+        "borderFill": { "token": "color.neutral.stroke.readable", "fill": "color.missing.fill" }
+      }
+    }
+  ]
+}

@@ -798,8 +798,7 @@ export interface SerializableStyleRule {
     contextCondition?: Record<string, string | boolean>;
     // (undocumented)
     part?: string;
-    // (undocumented)
-    properties?: Record<string, string>;
+    properties?: Record<string, string | SerializableOnFill>;
     // (undocumented)
     stateOnContext?: boolean;
     // @deprecated (undocumented)

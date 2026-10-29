@@ -396,6 +396,25 @@ const capabilities: Capability[] = [
         includes: [":host(:not([disabled])) control:hover {"],
     },
     {
+        name: "pairs a value with the background fill of its rule, a combination no treatment has",
+        file: "json/stress-on-fill.css",
+        includes: [
+            ".stress-on-fill .label { background: var(--color-accent-fill-subtle); color: var(--color-critical-stroke-readable-on-color-accent-fill-subtle);",
+            ".stress-on-fill:not([disabled]) .label:hover { background: var(--color-accent-fill-subtle-hover); color: var( --color-critical-stroke-readable-on-color-accent-fill-subtle-hover );",
+        ],
+    },
+    {
+        name: "pairs a value with the fill it names, which isn't the background of its rule",
+        file: "json/stress-on-fill.css",
+        includes: [".stress-on-fill .badge { color: var(--color-blackOrWhite-readable-on-color-accent-fill-readable);"],
+    },
+    {
+        name: "makes a value on a fill the token itself in a rule without a background fill",
+        file: "json/stress-on-fill.css",
+        includes: [".stress-on-fill .icon { color: var(--color-neutral-stroke-readable);"],
+        excludes: [".missing"],
+    },
+    {
         name: "compiles a JSON anatomy to stdout",
         file: "single/button.json.css",
         includes: [".button.purpose-normal:not(:disabled):hover {"],
@@ -410,6 +429,8 @@ const capabilities: Capability[] = [
             "Unknown part \"Missing reset target\" in focus.resetTarget, skipping.",
             "Unknown part \"Missing cursor part\" in cursor, skipping.",
             "Unknown treatment \"Missing treatment\" in style rule, skipping.",
+            "Unknown token \"color.missing.stroke\" in the value on a fill of foregroundFill, skipping.",
+            "Unknown token \"color.missing.fill\" in the value on a fill of borderFill, skipping.",
         ],
     },
 ];

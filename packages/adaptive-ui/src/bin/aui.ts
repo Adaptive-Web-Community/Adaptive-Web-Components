@@ -25,6 +25,7 @@ import {
 } from '../core/styles/anatomy.js';
 import { formatRules, libraryTokenProperties } from '../core/styles/css/rules.js';
 import { renderStyleRules } from '../core/styles/css/style-rules.js';
+import { deserializeOnFill, isSerializableOnFill, OnFill, SerializableOnFill } from '../core/styles/on-fill.js';
 import { StyleProperties, StyleValues } from '../core/styles/properties.js';
 import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
 import { InteractiveState } from '../core/interactive.js';
@@ -334,6 +335,19 @@ function propertyValue(value: string): StyleValues | undefined {
     return value;
 }
 
+/**
+ * A value on a fill written as data, with a ref to each token it names, or nothing for a name that isn't a token.
+ */
+function onFillValue(value: SerializableOnFill, property: string): OnFill | undefined {
+    for (const name of [value.token, value.fill]) {
+        if (name !== undefined && !has(tokenAt(name), "$value")) {
+            console.warn(warnColor, `Unknown token "${name}" in the value on a fill of ${property}, skipping.`);
+            return undefined;
+        }
+    }
+    return deserializeOnFill(value);
+}
+
 function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule): string | undefined {
     if (style.contextCondition) {
         const conditionSelectors = Object.entries(style.contextCondition).map(entry => {
@@ -412,7 +426,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
             const properties: StyleProperties = {};
             if (style.properties) {
                 for (const [target, value] of Object.entries(style.properties)) {
-                    properties[target] = propertyValue(value);
+                    properties[target] = isSerializableOnFill(value) ? onFillValue(value, target) : propertyValue(value);
                 }
             }
 
