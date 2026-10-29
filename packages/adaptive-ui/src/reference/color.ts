@@ -184,6 +184,22 @@ export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {
 }
 
 /**
+ * Black or white for the color context, whichever has the contrast, under `color.blackOrWhite`. Each is an interactive token, the color at
+ * rest and the same color at 30% opacity disabled.
+ *
+ * @remarks
+ * The black or white on a fill is one of these, made in the context of each state of the fill.
+ *
+ * @public
+ */
+export interface BlackOrWhiteTokens {
+    /** Black or white with the contrast that is discernible, for something that isn't text, like a checked checkbox. */
+    discernible: InteractiveToken<Color>;
+    /** Black or white with the contrast that is readable, for text, like the label of a button. */
+    readable: InteractiveToken<Color>;
+}
+
+/**
  * The tokens of the focus stroke.
  *
  * @public
@@ -239,6 +255,7 @@ export interface ColorTokens extends PaletteTokens, ColorContextTokens {
     success: ColorFamilyTokens;
     info: ColorFamilyTokens;
     focusStroke: FocusStrokeTokens;
+    blackOrWhite: BlackOrWhiteTokens;
 }
 
 /**
@@ -598,6 +615,18 @@ const focusStroke: Library.Config<FocusStrokeTokens, ColorLibraryTokens> = {
     },
 };
 
+// Black or white for the context, and disabled at 30% opacity, as the black or white on a fill has been.
+const blackOrWhiteOf = (minContrast: Library.Ref<number, Library.TokenValues<ColorLibraryTokens>>) => ({
+    $type: AdaptiveDesignToken.interactive,
+    $value: colorRecipes.blackOrWhiteByContrastSet({ rest: tokens.context, disabled: tokens.context }, minContrast, false),
+    $extensions: intendedFor(StyleProperty.foregroundFill),
+});
+
+const blackOrWhite: Library.Config<BlackOrWhiteTokens, ColorLibraryTokens> = {
+    discernible: blackOrWhiteOf(tokens.wcagContrast.minContrast.discernible),
+    readable: blackOrWhiteOf(tokens.wcagContrast.minContrast.readable),
+};
+
 // The sets of a palette of the system, and the foregrounds on its fills.
 const familyOf = (family: Library.Refs<ColorFamilyTokens, ColorLibraryTokens>) => ({
     ...createColorSets<ColorLibraryTokens>({ palette: family.palette }),
@@ -644,6 +673,7 @@ export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
     success: { ...palettes.success, ...familyOf(tokens.success) },
     info: { ...palettes.info, ...familyOf(tokens.info) },
     focusStroke,
+    blackOrWhite,
 };
 
 /**

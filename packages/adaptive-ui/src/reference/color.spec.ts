@@ -281,6 +281,31 @@ describe("color sets", () => {
         });
     });
 
+    describe("black or white for the context", () => {
+        it("should be the one that has the contrast with the context, and the same at 30% opacity disabled", () => {
+            const library = createColorLibrary();
+            const { blackOrWhite, wcagContrast } = library.tokens.color;
+
+            for (const context of [white, hex("#1a1a1a"), hex("#7a7a7a")]) {
+                library.tokens.color.context.set(context);
+                for (const level of ["discernible", "readable"] as const) {
+                    const color = blackOrWhiteByContrast(context, wcagContrast.minContrast[level].$value, false);
+                    expect(formatColor(blackOrWhite[level].$value.rest!)).to.equal(formatColor(color));
+                    expect(blackOrWhite[level].$value.disabled).to.deep.equal({ ...color, alpha: 0.3 });
+                    expect(Object.keys(blackOrWhite[level].$value)).to.deep.equal(["rest", "disabled"]);
+                }
+            }
+        });
+
+        it("should be intended for the foreground", () => {
+            const { blackOrWhite } = createColorLibrary().tokens.color;
+
+            expect(blackOrWhite.readable.name).to.equal("color.blackOrWhite.readable");
+            expect(getIntendedFor(blackOrWhite.readable)).to.deep.equal([StyleProperty.foregroundFill]);
+            expect(getIntendedFor(blackOrWhite.discernible)).to.deep.equal([StyleProperty.foregroundFill]);
+        });
+    });
+
     describe("the sets", () => {
         it("should have the names the tokens had", () => {
             const { color } = createColorLibrary().tokens;
