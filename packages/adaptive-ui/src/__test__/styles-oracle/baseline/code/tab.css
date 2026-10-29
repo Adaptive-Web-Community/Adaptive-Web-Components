@@ -21,27 +21,31 @@
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-neutral-fill-stealth);
-  color: var(--color-neutral-onFill-stealth);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-stealth);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-safety);
 }
 :host(:not([disabled]):focus-visible) {
   background: var(--color-neutral-fill-stealth-focus);
-  color: var(--color-neutral-onFill-stealth-focus);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-stealth-focus);
   border-color: var(--color-neutral-stroke-safety-focus);
 }
 :host(:not([disabled]):hover) {
   background: var(--color-neutral-fill-stealth-hover);
-  color: var(--color-neutral-onFill-stealth-hover);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-stealth-hover);
   border-color: var(--color-neutral-stroke-safety-hover);
 }
 :host(:not([disabled]):active) {
   background: var(--color-neutral-fill-stealth-active);
-  color: var(--color-neutral-onFill-stealth-active);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-stealth-active
+  );
   border-color: var(--color-neutral-stroke-safety-active);
 }
 :host([disabled]) {
   background: var(--color-neutral-fill-stealth-disabled);
-  color: var(--color-neutral-onFill-stealth-disabled);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-stealth-disabled
+  );
   border-color: var(--color-neutral-stroke-safety-disabled);
 }

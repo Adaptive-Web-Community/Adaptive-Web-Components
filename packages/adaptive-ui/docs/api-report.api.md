@@ -162,11 +162,6 @@ export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number
 export function contrast(a: Paint, b: Paint): number;
 
 // @public
-export function contrastAndDeltaColorBySet(palette: Palette, backgrounds: InteractiveSet<Paint>, minContrast: number, deltas: InteractiveSet<number>, options?: ColorSetOptions & {
-    asOverlay?: boolean;
-}): InteractiveColorSet;
-
-// @public
 export function contrastAndDeltaColorSet(palette: Palette, reference: Paint, minContrast: number, deltas: InteractiveSet<number>, options?: ColorSetOptions): InteractiveColorSet;
 
 // Warning: (ae-forgotten-export) The symbol "Direction" needs to be exported by the entry point index.d.ts

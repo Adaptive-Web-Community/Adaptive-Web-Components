@@ -1,10 +1,14 @@
 import { refs } from "design-token-library";
 import { AnatomyTreatments } from "../core/styles/css/style-rules.js";
+import { OnFill, onFill } from "../core/styles/on-fill.js";
 import { Treatment } from "../core/styles/treatment.js";
 import { ReferenceLibraryTokens } from "./library.js";
 import { densityBorder, transparent } from "./util.js";
 
 const { color, density, elevation, shape, typography } = refs<ReferenceLibraryTokens>();
+
+// Black or white on the fill of the treatment, which doesn't flip in the active state when the rest and the hover are the same, as in 0.14.
+const blackOrWhiteOnFill = (token: OnFill["token"]): OnFill => onFill(token, { activeFollowsRest: true });
 
 /**
  * Treatment for the shape of a control.
@@ -184,7 +188,7 @@ export const accentFillStealthControlTreatment: Treatment = {
     name: "color.accent-fill-stealth-control",
     properties: {
         backgroundFill: color.accent.fill.stealth,
-        foregroundFill: color.accent.onFill.stealth,
+        foregroundFill: onFill(color.accent.stroke.readable),
         ...densityBorder(color.accent.stroke.safety),
     },
 };
@@ -203,7 +207,7 @@ export const accentFillSubtleControlTreatment: Treatment = {
     name: "color.accent-fill-subtle-control",
     properties: {
         backgroundFill: color.accent.fill.subtle,
-        foregroundFill: color.accent.onFill.subtle,
+        foregroundFill: onFill(color.accent.stroke.readable),
         ...densityBorder(color.accent.stroke.safety),
     },
 };
@@ -222,7 +226,7 @@ export const accentFillSubtleInverseControlTreatment: Treatment = {
     name: "color.accent-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.accent.fill.subtleInverse,
-        foregroundFill: color.accent.onFill.subtleInverse,
+        foregroundFill: onFill(color.accent.stroke.readable),
         ...densityBorder(color.accent.stroke.safety),
     },
 };
@@ -241,7 +245,7 @@ export const accentFillIdealControlTreatment: Treatment = {
     name: "color.accent-fill-ideal-control",
     properties: {
         backgroundFill: color.accent.fill.ideal,
-        foregroundFill: color.accent.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -260,7 +264,7 @@ export const accentFillDiscernibleControlTreatment: Treatment = {
     name: "color.accent-fill-discernible-control",
     properties: {
         backgroundFill: color.accent.fill.discernible,
-        foregroundFill: color.accent.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -279,7 +283,7 @@ export const accentFillReadableControlTreatment: Treatment = {
     name: "color.accent-fill-readable-control",
     properties: {
         backgroundFill: color.accent.fill.readable,
-        foregroundFill: color.accent.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -334,7 +338,7 @@ export const highlightFillStealthControlTreatment: Treatment = {
     name: "color.highlight-fill-stealth-control",
     properties: {
         backgroundFill: color.highlight.fill.stealth,
-        foregroundFill: color.highlight.onFill.stealth,
+        foregroundFill: onFill(color.highlight.stroke.readable),
         ...densityBorder(color.highlight.stroke.safety),
     },
 };
@@ -353,7 +357,7 @@ export const highlightFillSubtleControlTreatment: Treatment = {
     name: "color.highlight-fill-subtle-control",
     properties: {
         backgroundFill: color.highlight.fill.subtle,
-        foregroundFill: color.highlight.onFill.subtle,
+        foregroundFill: onFill(color.highlight.stroke.readable),
         ...densityBorder(color.highlight.stroke.safety),
     },
 };
@@ -372,7 +376,7 @@ export const highlightFillSubtleInverseControlTreatment: Treatment = {
     name: "color.highlight-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.highlight.fill.subtleInverse,
-        foregroundFill: color.highlight.onFill.subtleInverse,
+        foregroundFill: onFill(color.highlight.stroke.readable),
         ...densityBorder(color.highlight.stroke.safety),
     },
 };
@@ -391,7 +395,7 @@ export const highlightFillIdealControlTreatment: Treatment = {
     name: "color.highlight-fill-ideal-control",
     properties: {
         backgroundFill: color.highlight.fill.ideal,
-        foregroundFill: color.highlight.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -410,7 +414,7 @@ export const highlightFillDiscernibleControlTreatment: Treatment = {
     name: "color.highlight-fill-discernible-control",
     properties: {
         backgroundFill: color.highlight.fill.discernible,
-        foregroundFill: color.highlight.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -429,7 +433,7 @@ export const highlightFillReadableControlTreatment: Treatment = {
     name: "color.highlight-fill-readable-control",
     properties: {
         backgroundFill: color.highlight.fill.readable,
-        foregroundFill: color.highlight.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -484,7 +488,7 @@ export const infoFillStealthControlTreatment: Treatment = {
     name: "color.info-fill-stealth-control",
     properties: {
         backgroundFill: color.info.fill.stealth,
-        foregroundFill: color.info.onFill.stealth,
+        foregroundFill: onFill(color.info.stroke.readable),
         ...densityBorder(color.info.stroke.safety),
     },
 };
@@ -503,7 +507,7 @@ export const infoFillSubtleControlTreatment: Treatment = {
     name: "color.info-fill-subtle-control",
     properties: {
         backgroundFill: color.info.fill.subtle,
-        foregroundFill: color.info.onFill.subtle,
+        foregroundFill: onFill(color.info.stroke.readable),
         ...densityBorder(color.info.stroke.safety),
     },
 };
@@ -522,7 +526,7 @@ export const infoFillSubtleInverseControlTreatment: Treatment = {
     name: "color.info-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.info.fill.subtleInverse,
-        foregroundFill: color.info.onFill.subtleInverse,
+        foregroundFill: onFill(color.info.stroke.readable),
         ...densityBorder(color.info.stroke.safety),
     },
 };
@@ -541,7 +545,7 @@ export const infoFillIdealControlTreatment: Treatment = {
     name: "color.info-fill-ideal-control",
     properties: {
         backgroundFill: color.info.fill.ideal,
-        foregroundFill: color.info.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -560,7 +564,7 @@ export const infoFillDiscernibleControlTreatment: Treatment = {
     name: "color.info-fill-discernible-control",
     properties: {
         backgroundFill: color.info.fill.discernible,
-        foregroundFill: color.info.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -579,7 +583,7 @@ export const infoFillReadableControlTreatment: Treatment = {
     name: "color.info-fill-readable-control",
     properties: {
         backgroundFill: color.info.fill.readable,
-        foregroundFill: color.info.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -634,7 +638,7 @@ export const successFillStealthControlTreatment: Treatment = {
     name: "color.success-fill-stealth-control",
     properties: {
         backgroundFill: color.success.fill.stealth,
-        foregroundFill: color.success.onFill.stealth,
+        foregroundFill: onFill(color.success.stroke.readable),
         ...densityBorder(color.success.stroke.safety),
     },
 };
@@ -653,7 +657,7 @@ export const successFillSubtleControlTreatment: Treatment = {
     name: "color.success-fill-subtle-control",
     properties: {
         backgroundFill: color.success.fill.subtle,
-        foregroundFill: color.success.onFill.subtle,
+        foregroundFill: onFill(color.success.stroke.readable),
         ...densityBorder(color.success.stroke.safety),
     },
 };
@@ -672,7 +676,7 @@ export const successFillSubtleInverseControlTreatment: Treatment = {
     name: "color.success-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.success.fill.subtleInverse,
-        foregroundFill: color.success.onFill.subtleInverse,
+        foregroundFill: onFill(color.success.stroke.readable),
         ...densityBorder(color.success.stroke.safety),
     },
 };
@@ -691,7 +695,7 @@ export const successFillIdealControlTreatment: Treatment = {
     name: "color.success-fill-ideal-control",
     properties: {
         backgroundFill: color.success.fill.ideal,
-        foregroundFill: color.success.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -710,7 +714,7 @@ export const successFillDiscernibleControlTreatment: Treatment = {
     name: "color.success-fill-discernible-control",
     properties: {
         backgroundFill: color.success.fill.discernible,
-        foregroundFill: color.success.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -729,7 +733,7 @@ export const successFillReadableControlTreatment: Treatment = {
     name: "color.success-fill-readable-control",
     properties: {
         backgroundFill: color.success.fill.readable,
-        foregroundFill: color.success.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -784,7 +788,7 @@ export const warningFillStealthControlTreatment: Treatment = {
     name: "color.warning-fill-stealth-control",
     properties: {
         backgroundFill: color.warning.fill.stealth,
-        foregroundFill: color.warning.onFill.stealth,
+        foregroundFill: onFill(color.warning.stroke.readable),
         ...densityBorder(color.warning.stroke.safety),
     },
 };
@@ -803,7 +807,7 @@ export const warningFillSubtleControlTreatment: Treatment = {
     name: "color.warning-fill-subtle-control",
     properties: {
         backgroundFill: color.warning.fill.subtle,
-        foregroundFill: color.warning.onFill.subtle,
+        foregroundFill: onFill(color.warning.stroke.readable),
         ...densityBorder(color.warning.stroke.safety),
     },
 };
@@ -822,7 +826,7 @@ export const warningFillSubtleInverseControlTreatment: Treatment = {
     name: "color.warning-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.warning.fill.subtleInverse,
-        foregroundFill: color.warning.onFill.subtleInverse,
+        foregroundFill: onFill(color.warning.stroke.readable),
         ...densityBorder(color.warning.stroke.safety),
     },
 };
@@ -841,7 +845,7 @@ export const warningFillIdealControlTreatment: Treatment = {
     name: "color.warning-fill-ideal-control",
     properties: {
         backgroundFill: color.warning.fill.ideal,
-        foregroundFill: color.warning.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -860,7 +864,7 @@ export const warningFillDiscernibleControlTreatment: Treatment = {
     name: "color.warning-fill-discernible-control",
     properties: {
         backgroundFill: color.warning.fill.discernible,
-        foregroundFill: color.warning.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -879,7 +883,7 @@ export const warningFillReadableControlTreatment: Treatment = {
     name: "color.warning-fill-readable-control",
     properties: {
         backgroundFill: color.warning.fill.readable,
-        foregroundFill: color.warning.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -934,7 +938,7 @@ export const criticalFillStealthControlTreatment: Treatment = {
     name: "color.critical-fill-stealth-control",
     properties: {
         backgroundFill: color.critical.fill.stealth,
-        foregroundFill: color.critical.onFill.stealth,
+        foregroundFill: onFill(color.critical.stroke.readable),
         ...densityBorder(color.critical.stroke.safety),
     },
 };
@@ -953,7 +957,7 @@ export const criticalFillSubtleControlTreatment: Treatment = {
     name: "color.critical-fill-subtle-control",
     properties: {
         backgroundFill: color.critical.fill.subtle,
-        foregroundFill: color.critical.onFill.subtle,
+        foregroundFill: onFill(color.critical.stroke.readable),
         ...densityBorder(color.critical.stroke.safety),
     },
 };
@@ -972,7 +976,7 @@ export const criticalFillSubtleInverseControlTreatment: Treatment = {
     name: "color.critical-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.critical.fill.subtleInverse,
-        foregroundFill: color.critical.onFill.subtleInverse,
+        foregroundFill: onFill(color.critical.stroke.readable),
         ...densityBorder(color.critical.stroke.safety),
     },
 };
@@ -991,7 +995,7 @@ export const criticalFillIdealControlTreatment: Treatment = {
     name: "color.critical-fill-ideal-control",
     properties: {
         backgroundFill: color.critical.fill.ideal,
-        foregroundFill: color.critical.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -1010,7 +1014,7 @@ export const criticalFillDiscernibleControlTreatment: Treatment = {
     name: "color.critical-fill-discernible-control",
     properties: {
         backgroundFill: color.critical.fill.discernible,
-        foregroundFill: color.critical.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -1029,7 +1033,7 @@ export const criticalFillReadableControlTreatment: Treatment = {
     name: "color.critical-fill-readable-control",
     properties: {
         backgroundFill: color.critical.fill.readable,
-        foregroundFill: color.critical.onFill.readable,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -1084,7 +1088,7 @@ export const layerFillInteractiveControlTreatment: Treatment = {
     name: "color.layer-fill-interactive-control",
     properties: {
         backgroundFill: color.layer.fill.interactive,
-        foregroundFill: color.layer.onFill.interactive,
+        foregroundFill: onFill(color.neutral.stroke.strong),
         ...densityBorder(transparent),
     },
 };
@@ -1103,7 +1107,7 @@ export const neutralFillStealthControlTreatment: Treatment = {
     name: "color.neutral-fill-stealth-control",
     properties: {
         backgroundFill: color.neutral.fill.stealth,
-        foregroundFill: color.neutral.onFill.stealth,
+        foregroundFill: onFill(color.neutral.stroke.strong),
         ...densityBorder(color.neutral.stroke.safety),
     },
 };
@@ -1122,7 +1126,7 @@ export const neutralFillSubtleControlTreatment: Treatment = {
     name: "color.neutral-fill-subtle-control",
     properties: {
         backgroundFill: color.neutral.fill.subtle,
-        foregroundFill: color.neutral.onFill.subtle,
+        foregroundFill: onFill(color.neutral.stroke.strong),
         ...densityBorder(color.neutral.stroke.safety),
     },
 };
@@ -1141,7 +1145,7 @@ export const neutralFillSubtleInverseControlTreatment: Treatment = {
     name: "color.neutral-fill-subtle-inverse-control",
     properties: {
         backgroundFill: color.neutral.fill.subtleInverse,
-        foregroundFill: color.neutral.onFill.subtleInverse,
+        foregroundFill: onFill(color.neutral.stroke.strong),
         ...densityBorder(color.neutral.stroke.safety),
     },
 };
@@ -1160,7 +1164,7 @@ export const neutralFillIdealControlTreatment: Treatment = {
     name: "color.neutral-fill-ideal-control",
     properties: {
         backgroundFill: color.neutral.fill.ideal,
-        foregroundFill: color.neutral.onFill.ideal,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.readable),
         ...densityBorder(transparent),
     },
 };
@@ -1179,7 +1183,7 @@ export const neutralFillDiscernibleControlTreatment: Treatment = {
     name: "color.neutral-fill-discernible-control",
     properties: {
         backgroundFill: color.neutral.fill.discernible,
-        foregroundFill: color.neutral.onFill.discernible,
+        foregroundFill: blackOrWhiteOnFill(color.blackOrWhite.discernible),
         ...densityBorder(transparent),
     },
 };
@@ -1198,7 +1202,7 @@ export const neutralFillReadableControlTreatment: Treatment = {
     name: "color.neutral-fill-readable-control",
     properties: {
         backgroundFill: color.neutral.fill.readable,
-        foregroundFill: color.neutral.onFill.readable,
+        foregroundFill: onFill(color.neutral.stroke.strong),
         ...densityBorder(transparent),
     },
 };

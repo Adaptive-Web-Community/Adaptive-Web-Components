@@ -84,25 +84,33 @@
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-highlight-fill-readable);
-  color: var(--color-highlight-onFill-readable);
+  color: var(--color-blackOrWhite-readable-on-color-highlight-fill-readable);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.focused {
   background: var(--color-highlight-fill-readable-focus);
-  color: var(--color-highlight-onFill-readable-focus);
+  color: var(
+    --color-blackOrWhite-readable-on-color-highlight-fill-readable-focus
+  );
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.hovered {
   background: var(--color-highlight-fill-readable-hover);
-  color: var(--color-highlight-onFill-readable-hover);
+  color: var(
+    --color-blackOrWhite-readable-on-color-highlight-fill-readable-hover
+  );
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.active {
   background: var(--color-highlight-fill-readable-active);
-  color: var(--color-highlight-onFill-readable-active);
+  color: var(
+    --color-blackOrWhite-readable-on-color-highlight-fill-readable-active
+  );
 }
 .checkbox.checked.disabled .control {
   background: var(--color-highlight-fill-readable-disabled);
-  color: var(--color-highlight-onFill-readable-disabled);
+  color: var(
+    --color-blackOrWhite-readable-on-color-highlight-fill-readable-disabled
+  );
 }
 .checkbox.indeterminate .control {
   border-radius: var(--shape-cornerRadius-default);

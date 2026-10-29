@@ -43,7 +43,7 @@ root {
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-neutral-fill-subtleInverse);
-  color: var(--color-neutral-onFill-subtleInverse);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
   padding-top: 0;
@@ -54,22 +54,30 @@ root {
 }
 :host(:not([disabled])) root:focus-visible {
   background: var(--color-neutral-fill-subtleInverse-focus);
-  color: var(--color-neutral-onFill-subtleInverse-focus);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-focus
+  );
   border-color: var(--color-neutral-stroke-discernible-focus);
 }
 :host(:not([disabled])) root:hover {
   background: var(--color-neutral-fill-subtleInverse-hover);
-  color: var(--color-neutral-onFill-subtleInverse-hover);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-hover
+  );
   border-color: var(--color-neutral-stroke-discernible-hover);
 }
 :host(:not([disabled])) root:active {
   background: var(--color-neutral-fill-subtleInverse-active);
-  color: var(--color-neutral-onFill-subtleInverse-active);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-active
+  );
   border-color: var(--color-neutral-stroke-discernible-active);
 }
 :host([disabled]) root {
   background: var(--color-neutral-fill-subtleInverse-disabled);
-  color: var(--color-neutral-onFill-subtleInverse-disabled);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtleInverse-disabled
+  );
   border-color: var(--color-neutral-stroke-discernible-disabled);
 }
 control {

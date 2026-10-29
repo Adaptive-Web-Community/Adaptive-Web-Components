@@ -21,29 +21,31 @@
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-neutral-fill-subtle);
-  color: var(--color-neutral-onFill-subtle);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-safety);
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-normal:not(:disabled):focus-visible {
   background: var(--color-neutral-fill-subtle-focus);
-  color: var(--color-neutral-onFill-subtle-focus);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-focus);
   border-color: var(--color-neutral-stroke-safety-focus);
 }
 .button.purpose-normal:not(:disabled):hover {
   background: var(--color-neutral-fill-subtle-hover);
-  color: var(--color-neutral-onFill-subtle-hover);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-hover);
   border-color: var(--color-neutral-stroke-safety-hover);
 }
 .button.purpose-normal:not(:disabled):active {
   background: var(--color-neutral-fill-subtle-active);
-  color: var(--color-neutral-onFill-subtle-active);
+  color: var(--color-neutral-stroke-strong-on-color-neutral-fill-subtle-active);
   border-color: var(--color-neutral-stroke-safety-active);
 }
 .button.purpose-normal:disabled {
   background: var(--color-neutral-fill-subtle-disabled);
-  color: var(--color-neutral-onFill-subtle-disabled);
+  color: var(
+    --color-neutral-stroke-strong-on-color-neutral-fill-subtle-disabled
+  );
   border-color: var(--color-neutral-stroke-safety-disabled);
 }
 .button.purpose-normal.icon-only {
@@ -65,26 +67,26 @@
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-accent-fill-ideal);
-  color: var(--color-accent-onFill-ideal);
+  color: var(--color-blackOrWhite-readable-on-color-accent-fill-ideal);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-primary:not(:disabled):focus-visible {
   background: var(--color-accent-fill-ideal-focus);
-  color: var(--color-accent-onFill-ideal-focus);
+  color: var(--color-blackOrWhite-readable-on-color-accent-fill-ideal-focus);
 }
 .button.purpose-primary:not(:disabled):hover {
   background: var(--color-accent-fill-ideal-hover);
-  color: var(--color-accent-onFill-ideal-hover);
+  color: var(--color-blackOrWhite-readable-on-color-accent-fill-ideal-hover);
 }
 .button.purpose-primary:not(:disabled):active {
   background: var(--color-accent-fill-ideal-active);
-  color: var(--color-accent-onFill-ideal-active);
+  color: var(--color-blackOrWhite-readable-on-color-accent-fill-ideal-active);
 }
 .button.purpose-primary:disabled {
   background: var(--color-accent-fill-ideal-disabled);
-  color: var(--color-accent-onFill-ideal-disabled);
+  color: var(--color-blackOrWhite-readable-on-color-accent-fill-ideal-disabled);
 }
 .button.purpose-primary.icon-only {
   padding-right: var(--density-control-vertical-padding);
@@ -105,26 +107,34 @@
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
   background: var(--color-critical-fill-readable);
-  color: var(--color-critical-onFill-readable);
+  color: var(--color-blackOrWhite-readable-on-color-critical-fill-readable);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-critical:not(:disabled):focus-visible {
   background: var(--color-critical-fill-readable-focus);
-  color: var(--color-critical-onFill-readable-focus);
+  color: var(
+    --color-blackOrWhite-readable-on-color-critical-fill-readable-focus
+  );
 }
 .button.purpose-critical:not(:disabled):hover {
   background: var(--color-critical-fill-readable-hover);
-  color: var(--color-critical-onFill-readable-hover);
+  color: var(
+    --color-blackOrWhite-readable-on-color-critical-fill-readable-hover
+  );
 }
 .button.purpose-critical:not(:disabled):active {
   background: var(--color-critical-fill-readable-active);
-  color: var(--color-critical-onFill-readable-active);
+  color: var(
+    --color-blackOrWhite-readable-on-color-critical-fill-readable-active
+  );
 }
 .button.purpose-critical:disabled {
   background: var(--color-critical-fill-readable-disabled);
-  color: var(--color-critical-onFill-readable-disabled);
+  color: var(
+    --color-blackOrWhite-readable-on-color-critical-fill-readable-disabled
+  );
 }
 .button.purpose-critical.icon-only {
   padding-right: var(--density-control-vertical-padding);
