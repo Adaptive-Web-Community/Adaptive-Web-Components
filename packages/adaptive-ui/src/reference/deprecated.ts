@@ -6,110 +6,8 @@
  * doesn't have `withDefault`, `getValueFor`, or `setValueFor`, see MIGRATION.md. The name of the token in the library is
  * the same as the name it had. Why: `docs/decisions/0002-deprecated-names-for-the-beta.md`.
  */
-import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
+import { treatmentAt } from "../core/styles/treatment-token.js";
 import { createReferenceLibrary } from "./library.js";
-import {
-    accentFillDiscernibleControlTreatment,
-    accentFillIdealControlTreatment,
-    accentFillReadableControlTreatment,
-    accentFillStealthControlTreatment,
-    accentFillSubtleControlTreatment,
-    accentFillSubtleInverseControlTreatment,
-    accentForegroundReadableControlTreatment,
-    accentOutlineDiscernibleControlTreatment,
-    actionTreatment,
-    autofillInnerDensityTreatment,
-    autofillOuterDensityTreatment,
-    controlDensityTreatment,
-    controlListDensityTreatment,
-    controlShapeTreatment,
-    controlSquareDensityTreatment,
-    criticalFillDiscernibleControlTreatment,
-    criticalFillIdealControlTreatment,
-    criticalFillReadableControlTreatment,
-    criticalFillStealthControlTreatment,
-    criticalFillSubtleControlTreatment,
-    criticalFillSubtleInverseControlTreatment,
-    criticalForegroundReadableControlTreatment,
-    criticalOutlineDiscernibleControlTreatment,
-    disabledTreatment,
-    flyoutTreatment,
-    focusIndicatorTreatment,
-    focusResetTreatment,
-    highlightFillDiscernibleControlTreatment,
-    highlightFillIdealControlTreatment,
-    highlightFillReadableControlTreatment,
-    highlightFillStealthControlTreatment,
-    highlightFillSubtleControlTreatment,
-    highlightFillSubtleInverseControlTreatment,
-    highlightForegroundReadableControlTreatment,
-    highlightOutlineDiscernibleControlTreatment,
-    infoFillDiscernibleControlTreatment,
-    infoFillIdealControlTreatment,
-    infoFillReadableControlTreatment,
-    infoFillStealthControlTreatment,
-    infoFillSubtleControlTreatment,
-    infoFillSubtleInverseControlTreatment,
-    infoForegroundReadableControlTreatment,
-    infoOutlineDiscernibleControlTreatment,
-    inputAutofillTreatment,
-    inputBaseTreatment,
-    inputTreatment,
-    interactiveCursorTreatment,
-    itemTreatment,
-    labelTextTreatment,
-    layerDensityTreatment,
-    layerFillInteractiveControlTreatment,
-    layerShapeTreatment,
-    neutralDividerDiscernibleElementTreatment,
-    neutralDividerSubtleElementTreatment,
-    neutralFillDiscernibleControlTreatment,
-    neutralFillIdealControlTreatment,
-    neutralFillReadableControlTreatment,
-    neutralFillStealthControlTreatment,
-    neutralFillSubtleControlTreatment,
-    neutralFillSubtleInverseControlTreatment,
-    neutralForegroundReadableElementTreatment,
-    neutralForegroundStrongElementTreatment,
-    neutralOutlineDiscernibleControlTreatment,
-    plainTextMultilineTreatment,
-    plainTextTreatment,
-    roundShapeTreatment,
-    selectableSelectedTreatment,
-    selectableUnselectedTreatment,
-    shadowCardInteractiveTreatment,
-    shadowCardTreatment,
-    shadowDialogTreatment,
-    shadowFlyoutTreatment,
-    shadowTooltipTreatment,
-    successFillDiscernibleControlTreatment,
-    successFillIdealControlTreatment,
-    successFillReadableControlTreatment,
-    successFillStealthControlTreatment,
-    successFillSubtleControlTreatment,
-    successFillSubtleInverseControlTreatment,
-    successForegroundReadableControlTreatment,
-    successOutlineDiscernibleControlTreatment,
-    textDensityTreatment,
-    TreatmentNameMapping,
-    typeRampBaseTreatment,
-    typeRampMinus1Treatment,
-    typeRampMinus2Treatment,
-    typeRampPlus1Treatment,
-    typeRampPlus2Treatment,
-    typeRampPlus3Treatment,
-    typeRampPlus4Treatment,
-    typeRampPlus5Treatment,
-    typeRampPlus6Treatment,
-    warningFillDiscernibleControlTreatment,
-    warningFillIdealControlTreatment,
-    warningFillReadableControlTreatment,
-    warningFillStealthControlTreatment,
-    warningFillSubtleControlTreatment,
-    warningFillSubtleInverseControlTreatment,
-    warningForegroundReadableControlTreatment,
-    warningOutlineDiscernibleControlTreatment,
-} from "./treatments.js";
 
 // The library for the tokens that are exported here, the reference system.
 const library = createReferenceLibrary();
@@ -1422,7 +1320,7 @@ export const focusStrokeThickness = shape.strokeThickness.focus;
 export const densityAdjustmentUnits = densities.adjustmentUnits;
 
 // The tokens of a density set, with the names of the properties of DensityPaddingAndGapTokenGroup.
-const densityPaddingAndGap = (set: typeof densities.control) => ({
+const densityPaddingAndGap = (set: Pick<typeof densities.control, "designUnit" | "borderThickness" | "horizontal" | "vertical">) => ({
     designUnit: set.designUnit,
     borderThickness: set.borderThickness,
     horizontalPaddingUnits: set.horizontal.paddingUnits,
@@ -1490,619 +1388,718 @@ export const accentHueShiftGradientFillSubtleRest = color.accentHueShiftGradient
 export const accentToHighlightGradientFillSubtleRest = color.accentToHighlightGradient.fill.subtle;
 
 /**
- * @deprecated Use {@link accentHueShiftGradientFillSubtleElementTreatment}.
- * @beta
+ * @deprecated Use the treatment `color.accent.treatments.hueShiftGradientFillSubtleElement` of a library.
+ * @public
  */
-export const accentHueShiftGradientFillSubtleElementStyles = accentHueShiftGradientFillSubtleElementTreatment;
+export const accentHueShiftGradientFillSubtleElementStyles = treatmentAt(library, "color.accent.treatments.hueShiftGradientFillSubtleElement");
 
 /**
- * @deprecated Use {@link accentToHighlightGradientFillSubtleElementTreatment}.
- * @beta
+ * @deprecated Use the treatment `color.accent.treatments.toHighlightGradientFillSubtleElement` of a library.
+ * @public
  */
-export const accentToHighlightGradientFillSubtleElementStyles = accentToHighlightGradientFillSubtleElementTreatment;
+export const accentToHighlightGradientFillSubtleElementStyles = treatmentAt(library, "color.accent.treatments.toHighlightGradientFillSubtleElement");
 
 /**
- * @deprecated Use {@link controlShapeTreatment}.
+ * @deprecated Use the treatment `shape.treatments.control` of a library.
  * @public
  */
-export const controlShapeStyles = controlShapeTreatment;
+export const controlShapeStyles = treatmentAt(library, "shape.treatments.control");
 
 /**
- * @deprecated Use {@link layerShapeTreatment}.
+ * @deprecated Use the treatment `shape.treatments.layer` of a library.
  * @public
  */
-export const layerShapeStyles = layerShapeTreatment;
+export const layerShapeStyles = treatmentAt(library, "shape.treatments.layer");
 
 /**
- * @deprecated Use {@link roundShapeTreatment}.
+ * @deprecated Use the treatment `shape.treatments.round` of a library.
  * @public
  */
-export const roundShapeStyles = roundShapeTreatment;
+export const roundShapeStyles = treatmentAt(library, "shape.treatments.round");
 
 /**
- * @deprecated Use {@link textDensityTreatment}.
+ * @deprecated Use the treatment `density.text.treatment` of a library.
  * @public
  */
-export const textDensityStyles = textDensityTreatment;
+export const textDensityStyles = treatmentAt(library, "density.text.treatment");
 
 /**
- * @deprecated Use {@link controlDensityTreatment}.
+ * @deprecated Use the treatment `density.control.treatment` of a library.
  * @public
  */
-export const controlDensityStyles = controlDensityTreatment;
+export const controlDensityStyles = treatmentAt(library, "density.control.treatment");
 
 /**
- * @deprecated Use {@link controlSquareDensityTreatment}.
+ * @deprecated Use the treatment `density.control.treatment.square` of a library.
  * @public
  */
-export const controlSquareDensityStyles = controlSquareDensityTreatment;
+export const controlSquareDensityStyles = treatmentAt(library, "density.control.treatment.square");
 
 /**
- * @deprecated Use {@link autofillOuterDensityTreatment}.
+ * @deprecated Use the treatment `density.control.treatment.autofillOuter` of a library.
  * @public
  */
-export const autofillOuterDensityStyles = autofillOuterDensityTreatment;
+export const autofillOuterDensityStyles = treatmentAt(library, "density.control.treatment.autofillOuter");
 
 /**
- * @deprecated Use {@link autofillInnerDensityTreatment}.
+ * @deprecated Use the treatment `density.control.treatment.autofillInner` of a library.
  * @public
  */
-export const autofillInnerDensityStyles = autofillInnerDensityTreatment;
+export const autofillInnerDensityStyles = treatmentAt(library, "density.control.treatment.autofillInner");
 
 /**
- * @deprecated Use {@link controlListDensityTreatment}.
+ * @deprecated Use the treatment `density.controlList.treatment` of a library.
  * @public
  */
-export const controlListDensityStyles = controlListDensityTreatment;
+export const controlListDensityStyles = treatmentAt(library, "density.controlList.treatment");
 
 /**
- * @deprecated Use {@link layerDensityTreatment}.
+ * @deprecated Use the treatment `density.layer.treatment` of a library.
  * @public
  */
-export const layerDensityStyles = layerDensityTreatment;
+export const layerDensityStyles = treatmentAt(library, "density.layer.treatment");
 
 /**
- * @deprecated Use {@link accentFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillStealthControl` of a library.
  * @public
  */
-export const accentFillStealthControlStyles = accentFillStealthControlTreatment;
+export const accentFillStealthControlStyles = treatmentAt(library, "color.accent.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link accentFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const accentFillSubtleControlStyles = accentFillSubtleControlTreatment;
+export const accentFillSubtleControlStyles = treatmentAt(library, "color.accent.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link accentFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const accentFillSubtleInverseControlStyles = accentFillSubtleInverseControlTreatment;
+export const accentFillSubtleInverseControlStyles = treatmentAt(library, "color.accent.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link accentFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillIdealControl` of a library.
  * @public
  */
-export const accentFillIdealControlStyles = accentFillIdealControlTreatment;
+export const accentFillIdealControlStyles = treatmentAt(library, "color.accent.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link accentFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const accentFillDiscernibleControlStyles = accentFillDiscernibleControlTreatment;
+export const accentFillDiscernibleControlStyles = treatmentAt(library, "color.accent.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link accentFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.fillReadableControl` of a library.
  * @public
  */
-export const accentFillReadableControlStyles = accentFillReadableControlTreatment;
+export const accentFillReadableControlStyles = treatmentAt(library, "color.accent.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link accentOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const accentOutlineDiscernibleControlStyles = accentOutlineDiscernibleControlTreatment;
+export const accentOutlineDiscernibleControlStyles = treatmentAt(library, "color.accent.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link accentForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.accent.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const accentForegroundReadableControlStyles = accentForegroundReadableControlTreatment;
+export const accentForegroundReadableControlStyles = treatmentAt(library, "color.accent.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link highlightFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillStealthControl` of a library.
  * @public
  */
-export const highlightFillStealthControlStyles = highlightFillStealthControlTreatment;
+export const highlightFillStealthControlStyles = treatmentAt(library, "color.highlight.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link highlightFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const highlightFillSubtleControlStyles = highlightFillSubtleControlTreatment;
+export const highlightFillSubtleControlStyles = treatmentAt(library, "color.highlight.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link highlightFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const highlightFillSubtleInverseControlStyles = highlightFillSubtleInverseControlTreatment;
+export const highlightFillSubtleInverseControlStyles = treatmentAt(library, "color.highlight.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link highlightFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillIdealControl` of a library.
  * @public
  */
-export const highlightFillIdealControlStyles = highlightFillIdealControlTreatment;
+export const highlightFillIdealControlStyles = treatmentAt(library, "color.highlight.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link highlightFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const highlightFillDiscernibleControlStyles = highlightFillDiscernibleControlTreatment;
+export const highlightFillDiscernibleControlStyles = treatmentAt(library, "color.highlight.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link highlightFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.fillReadableControl` of a library.
  * @public
  */
-export const highlightFillReadableControlStyles = highlightFillReadableControlTreatment;
+export const highlightFillReadableControlStyles = treatmentAt(library, "color.highlight.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link highlightOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const highlightOutlineDiscernibleControlStyles = highlightOutlineDiscernibleControlTreatment;
+export const highlightOutlineDiscernibleControlStyles = treatmentAt(library, "color.highlight.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link highlightForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.highlight.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const highlightForegroundReadableControlStyles = highlightForegroundReadableControlTreatment;
+export const highlightForegroundReadableControlStyles = treatmentAt(library, "color.highlight.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link infoFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillStealthControl` of a library.
  * @public
  */
-export const infoFillStealthControlStyles = infoFillStealthControlTreatment;
+export const infoFillStealthControlStyles = treatmentAt(library, "color.info.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link infoFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const infoFillSubtleControlStyles = infoFillSubtleControlTreatment;
+export const infoFillSubtleControlStyles = treatmentAt(library, "color.info.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link infoFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const infoFillSubtleInverseControlStyles = infoFillSubtleInverseControlTreatment;
+export const infoFillSubtleInverseControlStyles = treatmentAt(library, "color.info.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link infoFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillIdealControl` of a library.
  * @public
  */
-export const infoFillIdealControlStyles = infoFillIdealControlTreatment;
+export const infoFillIdealControlStyles = treatmentAt(library, "color.info.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link infoFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const infoFillDiscernibleControlStyles = infoFillDiscernibleControlTreatment;
+export const infoFillDiscernibleControlStyles = treatmentAt(library, "color.info.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link infoFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.fillReadableControl` of a library.
  * @public
  */
-export const infoFillReadableControlStyles = infoFillReadableControlTreatment;
+export const infoFillReadableControlStyles = treatmentAt(library, "color.info.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link infoOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const infoOutlineDiscernibleControlStyles = infoOutlineDiscernibleControlTreatment;
+export const infoOutlineDiscernibleControlStyles = treatmentAt(library, "color.info.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link infoForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.info.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const infoForegroundReadableControlStyles = infoForegroundReadableControlTreatment;
+export const infoForegroundReadableControlStyles = treatmentAt(library, "color.info.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link successFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillStealthControl` of a library.
  * @public
  */
-export const successFillStealthControlStyles = successFillStealthControlTreatment;
+export const successFillStealthControlStyles = treatmentAt(library, "color.success.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link successFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const successFillSubtleControlStyles = successFillSubtleControlTreatment;
+export const successFillSubtleControlStyles = treatmentAt(library, "color.success.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link successFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const successFillSubtleInverseControlStyles = successFillSubtleInverseControlTreatment;
+export const successFillSubtleInverseControlStyles = treatmentAt(library, "color.success.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link successFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillIdealControl` of a library.
  * @public
  */
-export const successFillIdealControlStyles = successFillIdealControlTreatment;
+export const successFillIdealControlStyles = treatmentAt(library, "color.success.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link successFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const successFillDiscernibleControlStyles = successFillDiscernibleControlTreatment;
+export const successFillDiscernibleControlStyles = treatmentAt(library, "color.success.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link successFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.fillReadableControl` of a library.
  * @public
  */
-export const successFillReadableControlStyles = successFillReadableControlTreatment;
+export const successFillReadableControlStyles = treatmentAt(library, "color.success.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link successOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const successOutlineDiscernibleControlStyles = successOutlineDiscernibleControlTreatment;
+export const successOutlineDiscernibleControlStyles = treatmentAt(library, "color.success.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link successForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.success.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const successForegroundReadableControlStyles = successForegroundReadableControlTreatment;
+export const successForegroundReadableControlStyles = treatmentAt(library, "color.success.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link warningFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillStealthControl` of a library.
  * @public
  */
-export const warningFillStealthControlStyles = warningFillStealthControlTreatment;
+export const warningFillStealthControlStyles = treatmentAt(library, "color.warning.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link warningFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const warningFillSubtleControlStyles = warningFillSubtleControlTreatment;
+export const warningFillSubtleControlStyles = treatmentAt(library, "color.warning.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link warningFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const warningFillSubtleInverseControlStyles = warningFillSubtleInverseControlTreatment;
+export const warningFillSubtleInverseControlStyles = treatmentAt(library, "color.warning.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link warningFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillIdealControl` of a library.
  * @public
  */
-export const warningFillIdealControlStyles = warningFillIdealControlTreatment;
+export const warningFillIdealControlStyles = treatmentAt(library, "color.warning.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link warningFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const warningFillDiscernibleControlStyles = warningFillDiscernibleControlTreatment;
+export const warningFillDiscernibleControlStyles = treatmentAt(library, "color.warning.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link warningFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.fillReadableControl` of a library.
  * @public
  */
-export const warningFillReadableControlStyles = warningFillReadableControlTreatment;
+export const warningFillReadableControlStyles = treatmentAt(library, "color.warning.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link warningOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const warningOutlineDiscernibleControlStyles = warningOutlineDiscernibleControlTreatment;
+export const warningOutlineDiscernibleControlStyles = treatmentAt(library, "color.warning.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link warningForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.warning.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const warningForegroundReadableControlStyles = warningForegroundReadableControlTreatment;
+export const warningForegroundReadableControlStyles = treatmentAt(library, "color.warning.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link criticalFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillStealthControl` of a library.
  * @public
  */
-export const criticalFillStealthControlStyles = criticalFillStealthControlTreatment;
+export const criticalFillStealthControlStyles = treatmentAt(library, "color.critical.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link criticalFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const criticalFillSubtleControlStyles = criticalFillSubtleControlTreatment;
+export const criticalFillSubtleControlStyles = treatmentAt(library, "color.critical.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link criticalFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const criticalFillSubtleInverseControlStyles = criticalFillSubtleInverseControlTreatment;
+export const criticalFillSubtleInverseControlStyles = treatmentAt(library, "color.critical.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link criticalFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillIdealControl` of a library.
  * @public
  */
-export const criticalFillIdealControlStyles = criticalFillIdealControlTreatment;
+export const criticalFillIdealControlStyles = treatmentAt(library, "color.critical.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link criticalFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const criticalFillDiscernibleControlStyles = criticalFillDiscernibleControlTreatment;
+export const criticalFillDiscernibleControlStyles = treatmentAt(library, "color.critical.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link criticalFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.fillReadableControl` of a library.
  * @public
  */
-export const criticalFillReadableControlStyles = criticalFillReadableControlTreatment;
+export const criticalFillReadableControlStyles = treatmentAt(library, "color.critical.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link criticalOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const criticalOutlineDiscernibleControlStyles = criticalOutlineDiscernibleControlTreatment;
+export const criticalOutlineDiscernibleControlStyles = treatmentAt(library, "color.critical.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link criticalForegroundReadableControlTreatment}.
+ * @deprecated Use the treatment `color.critical.treatments.foregroundReadableControl` of a library.
  * @public
  */
-export const criticalForegroundReadableControlStyles = criticalForegroundReadableControlTreatment;
+export const criticalForegroundReadableControlStyles = treatmentAt(library, "color.critical.treatments.foregroundReadableControl");
 
 /**
- * @deprecated Use {@link layerFillInteractiveControlTreatment}.
+ * @deprecated Use the treatment `color.layer.treatments.fillInteractiveControl` of a library.
  * @public
  */
-export const layerFillInteractiveControlStyles = layerFillInteractiveControlTreatment;
+export const layerFillInteractiveControlStyles = treatmentAt(library, "color.layer.treatments.fillInteractiveControl");
 
 /**
- * @deprecated Use {@link neutralFillStealthControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillStealthControl` of a library.
  * @public
  */
-export const neutralFillStealthControlStyles = neutralFillStealthControlTreatment;
+export const neutralFillStealthControlStyles = treatmentAt(library, "color.neutral.treatments.fillStealthControl");
 
 /**
- * @deprecated Use {@link neutralFillSubtleControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillSubtleControl` of a library.
  * @public
  */
-export const neutralFillSubtleControlStyles = neutralFillSubtleControlTreatment;
+export const neutralFillSubtleControlStyles = treatmentAt(library, "color.neutral.treatments.fillSubtleControl");
 
 /**
- * @deprecated Use {@link neutralFillSubtleInverseControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillSubtleInverseControl` of a library.
  * @public
  */
-export const neutralFillSubtleInverseControlStyles = neutralFillSubtleInverseControlTreatment;
+export const neutralFillSubtleInverseControlStyles = treatmentAt(library, "color.neutral.treatments.fillSubtleInverseControl");
 
 /**
- * @deprecated Use {@link neutralFillIdealControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillIdealControl` of a library.
  * @public
  */
-export const neutralFillIdealControlStyles = neutralFillIdealControlTreatment;
+export const neutralFillIdealControlStyles = treatmentAt(library, "color.neutral.treatments.fillIdealControl");
 
 /**
- * @deprecated Use {@link neutralFillDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillDiscernibleControl` of a library.
  * @public
  */
-export const neutralFillDiscernibleControlStyles = neutralFillDiscernibleControlTreatment;
+export const neutralFillDiscernibleControlStyles = treatmentAt(library, "color.neutral.treatments.fillDiscernibleControl");
 
 /**
- * @deprecated Use {@link neutralFillReadableControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.fillReadableControl` of a library.
  * @public
  */
-export const neutralFillReadableControlStyles = neutralFillReadableControlTreatment;
+export const neutralFillReadableControlStyles = treatmentAt(library, "color.neutral.treatments.fillReadableControl");
 
 /**
- * @deprecated Use {@link neutralOutlineDiscernibleControlTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.outlineDiscernibleControl` of a library.
  * @public
  */
-export const neutralOutlineDiscernibleControlStyles = neutralOutlineDiscernibleControlTreatment;
+export const neutralOutlineDiscernibleControlStyles = treatmentAt(library, "color.neutral.treatments.outlineDiscernibleControl");
 
 /**
- * @deprecated Use {@link neutralForegroundReadableElementTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.foregroundReadableElement` of a library.
  * @public
  */
-export const neutralForegroundReadableElementStyles = neutralForegroundReadableElementTreatment;
+export const neutralForegroundReadableElementStyles = treatmentAt(library, "color.neutral.treatments.foregroundReadableElement");
 
 /**
- * @deprecated Use {@link neutralForegroundStrongElementTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.foregroundStrongElement` of a library.
  * @public
  */
-export const neutralForegroundStrongElementStyles = neutralForegroundStrongElementTreatment;
+export const neutralForegroundStrongElementStyles = treatmentAt(library, "color.neutral.treatments.foregroundStrongElement");
 
 /**
- * @deprecated Use {@link neutralDividerSubtleElementTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.dividerSubtleElement` of a library.
  * @public
  */
-export const neutralDividerSubtleElementStyles = neutralDividerSubtleElementTreatment;
+export const neutralDividerSubtleElementStyles = treatmentAt(library, "color.neutral.treatments.dividerSubtleElement");
 
 /**
- * @deprecated Use {@link neutralDividerDiscernibleElementTreatment}.
+ * @deprecated Use the treatment `color.neutral.treatments.dividerDiscernibleElement` of a library.
  * @public
  */
-export const neutralDividerDiscernibleElementStyles = neutralDividerDiscernibleElementTreatment;
+export const neutralDividerDiscernibleElementStyles = treatmentAt(library, "color.neutral.treatments.dividerDiscernibleElement");
 
 /**
- * @deprecated Use {@link typeRampBaseTreatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.base` of a library.
  * @public
  */
-export const typeRampBaseStyles = typeRampBaseTreatment;
+export const typeRampBaseStyles = treatmentAt(library, "typography.ramp.default.treatments.base");
 
 /**
- * @deprecated Use {@link typeRampMinus1Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.minus1` of a library.
  * @public
  */
-export const typeRampMinus1Styles = typeRampMinus1Treatment;
+export const typeRampMinus1Styles = treatmentAt(library, "typography.ramp.default.treatments.minus1");
 
 /**
- * @deprecated Use {@link typeRampMinus2Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.minus2` of a library.
  * @public
  */
-export const typeRampMinus2Styles = typeRampMinus2Treatment;
+export const typeRampMinus2Styles = treatmentAt(library, "typography.ramp.default.treatments.minus2");
 
 /**
- * @deprecated Use {@link typeRampPlus1Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus1` of a library.
  * @public
  */
-export const typeRampPlus1Styles = typeRampPlus1Treatment;
+export const typeRampPlus1Styles = treatmentAt(library, "typography.ramp.default.treatments.plus1");
 
 /**
- * @deprecated Use {@link typeRampPlus2Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus2` of a library.
  * @public
  */
-export const typeRampPlus2Styles = typeRampPlus2Treatment;
+export const typeRampPlus2Styles = treatmentAt(library, "typography.ramp.default.treatments.plus2");
 
 /**
- * @deprecated Use {@link typeRampPlus3Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus3` of a library.
  * @public
  */
-export const typeRampPlus3Styles = typeRampPlus3Treatment;
+export const typeRampPlus3Styles = treatmentAt(library, "typography.ramp.default.treatments.plus3");
 
 /**
- * @deprecated Use {@link typeRampPlus4Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus4` of a library.
  * @public
  */
-export const typeRampPlus4Styles = typeRampPlus4Treatment;
+export const typeRampPlus4Styles = treatmentAt(library, "typography.ramp.default.treatments.plus4");
 
 /**
- * @deprecated Use {@link typeRampPlus5Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus5` of a library.
  * @public
  */
-export const typeRampPlus5Styles = typeRampPlus5Treatment;
+export const typeRampPlus5Styles = treatmentAt(library, "typography.ramp.default.treatments.plus5");
 
 /**
- * @deprecated Use {@link typeRampPlus6Treatment}.
+ * @deprecated Use the treatment `typography.ramp.default.treatments.plus6` of a library.
  * @public
  */
-export const typeRampPlus6Styles = typeRampPlus6Treatment;
+export const typeRampPlus6Styles = treatmentAt(library, "typography.ramp.default.treatments.plus6");
 
 /**
- * @deprecated Use {@link shadowCardTreatment}.
+ * @deprecated Use the treatment `elevation.card.treatment` of a library.
  * @public
  */
-export const shadowCardStyles = shadowCardTreatment;
+export const shadowCardStyles = treatmentAt(library, "elevation.card.treatment");
 
 /**
- * @deprecated Use {@link shadowCardInteractiveTreatment}.
+ * @deprecated Use the treatment `elevation.card.treatment.interactive` of a library.
  * @public
  */
-export const shadowCardInteractiveStyles = shadowCardInteractiveTreatment;
+export const shadowCardInteractiveStyles = treatmentAt(library, "elevation.card.treatment.interactive");
 
 /**
- * @deprecated Use {@link shadowTooltipTreatment}.
+ * @deprecated Use the treatment `elevation.tooltip.treatment` of a library.
  * @public
  */
-export const shadowTooltipStyles = shadowTooltipTreatment;
+export const shadowTooltipStyles = treatmentAt(library, "elevation.tooltip.treatment");
 
 /**
- * @deprecated Use {@link shadowFlyoutTreatment}.
+ * @deprecated Use the treatment `elevation.flyout.treatment` of a library.
  * @public
  */
-export const shadowFlyoutStyles = shadowFlyoutTreatment;
+export const shadowFlyoutStyles = treatmentAt(library, "elevation.flyout.treatment");
 
 /**
- * @deprecated Use {@link shadowDialogTreatment}.
+ * @deprecated Use the treatment `elevation.dialog.treatment` of a library.
  * @public
  */
-export const shadowDialogStyles = shadowDialogTreatment;
+export const shadowDialogStyles = treatmentAt(library, "elevation.dialog.treatment");
 
 /**
- * @deprecated Use {@link actionTreatment}.
+ * @deprecated Use the treatment `treatments.actionControl` of a library.
  * @public
  */
-export const actionStyles = actionTreatment;
+export const actionStyles = treatmentAt(library, "treatments.actionControl");
 
 /**
- * @deprecated Use {@link inputBaseTreatment}.
+ * @deprecated Use the treatment `treatments.inputBase` of a library.
  * @public
  */
-export const inputBaseStyles = inputBaseTreatment;
+export const inputBaseStyles = treatmentAt(library, "treatments.inputBase");
 
 /**
- * @deprecated Use {@link inputTreatment}.
+ * @deprecated Use the treatment `treatments.inputControl` of a library.
  * @public
  */
-export const inputStyles = inputTreatment;
+export const inputStyles = treatmentAt(library, "treatments.inputControl");
 
 /**
- * @deprecated Use {@link inputAutofillTreatment}.
+ * @deprecated Use the treatment `treatments.inputAutofillControl` of a library.
  * @public
  */
-export const inputAutofillStyles = inputAutofillTreatment;
+export const inputAutofillStyles = treatmentAt(library, "treatments.inputAutofillControl");
 
 /**
- * @deprecated Use {@link selectableSelectedTreatment}.
+ * @deprecated Use the treatment `treatments.selectableControlSelected` of a library.
  * @public
  */
-export const selectableSelectedStyles = selectableSelectedTreatment;
+export const selectableSelectedStyles = treatmentAt(library, "treatments.selectableControlSelected");
 
 /**
- * @deprecated Use {@link selectableUnselectedTreatment}.
+ * @deprecated Use the treatment `treatments.selectableControlUnselected` of a library.
  * @public
  */
-export const selectableUnselectedStyles = selectableUnselectedTreatment;
+export const selectableUnselectedStyles = treatmentAt(library, "treatments.selectableControlUnselected");
 
 /**
- * @deprecated Use {@link itemTreatment}.
+ * @deprecated Use the treatment `treatments.itemControl` of a library.
  * @public
  */
-export const itemStyles = itemTreatment;
+export const itemStyles = treatmentAt(library, "treatments.itemControl");
 
 /**
- * @deprecated Use {@link plainTextTreatment}.
+ * @deprecated Use the treatment `treatments.textPlain` of a library.
  * @public
  */
-export const plainTextStyles = plainTextTreatment;
+export const plainTextStyles = treatmentAt(library, "treatments.textPlain");
 
 /**
- * @deprecated Use {@link plainTextMultilineTreatment}.
+ * @deprecated Use the treatment `treatments.textPlainMultiline` of a library.
  * @public
  */
-export const plainTextMultilineStyles = plainTextMultilineTreatment;
+export const plainTextMultilineStyles = treatmentAt(library, "treatments.textPlainMultiline");
 
 /**
- * @deprecated Use {@link labelTextTreatment}.
+ * @deprecated Use the treatment `treatments.textLabel` of a library.
  * @public
  */
-export const labelTextStyles = labelTextTreatment;
+export const labelTextStyles = treatmentAt(library, "treatments.textLabel");
 
 /**
- * @deprecated Use {@link flyoutTreatment}.
+ * @deprecated Use the treatment `treatments.flyout` of a library.
  * @public
  */
-export const flyoutStyles = flyoutTreatment;
+export const flyoutStyles = treatmentAt(library, "treatments.flyout");
 
 /**
- * @deprecated Use {@link disabledTreatment}.
+ * @deprecated Use the treatment `treatments.disabled` of a library.
  * @public
  */
-export const disabledStyles = disabledTreatment;
+export const disabledStyles = treatmentAt(library, "treatments.disabled");
 
 /**
- * @deprecated Use {@link interactiveCursorTreatment}.
+ * @deprecated Use the treatment `treatments.interactiveCursor` of a library.
  * @public
  */
-export const interactiveCursorStyles = interactiveCursorTreatment;
+export const interactiveCursorStyles = treatmentAt(library, "treatments.interactiveCursor");
 
 /**
- * @deprecated Use {@link focusIndicatorTreatment}.
+ * @deprecated Use the treatment `treatments.focusIndicator` of a library.
  * @public
  */
-export const focusIndicatorStyles = focusIndicatorTreatment;
+export const focusIndicatorStyles = treatmentAt(library, "treatments.focusIndicator");
 
 /**
- * @deprecated Use {@link focusResetTreatment}.
+ * @deprecated Use the treatment `treatments.focusReset` of a library.
  * @public
  */
-export const focusResetStyles = focusResetTreatment;
+export const focusResetStyles = treatmentAt(library, "treatments.focusReset");
 
 /**
- * @deprecated Use {@link TreatmentNameMapping}, which maps to the names of the treatments.
+ * The names of the treatments of 0.14, each to the name of its export, which is a deprecated name here.
+ *
+ * @deprecated A treatment is a token of the library, named by its path, and a name of 0.14 finds it, see `resolveTokenName`.
  * @public
  */
-export const StyleNameMapping = TreatmentNameMapping;
+export const StyleNameMapping = {
+    "shape.control": "controlShapeStyles",
+    "shape.layer": "layerShapeStyles",
+    "shape.round": "roundShapeStyles",
+    "density.control": "controlDensityStyles",
+    "density.control-square": "controlSquareDensityStyles",
+    "density.autofill-outer": "autofillOuterDensityStyles",
+    "density.autofill-inner": "autofillInnerDensityStyles",
+    "density.control-list": "controlListDensityStyles",
+    "density.item-container": "controlListDensityStyles",
+    "density.layer": "layerDensityStyles",
+    "color.accent-fill-stealth-control": "accentFillStealthControlStyles",
+    "color.accent-fill-subtle-control": "accentFillSubtleControlStyles",
+    "color.accent-fill-subtle-inverse-control": "accentFillSubtleInverseControlStyles",
+    "color.accent-fill-ideal-control": "accentFillIdealControlStyles",
+    "color.accent-fill-discernible-control": "accentFillDiscernibleControlStyles",
+    "color.accent-fill-readable-control": "accentFillReadableControlStyles",
+    "color.accent-outline-discernible-control": "accentOutlineDiscernibleControlStyles",
+    "color.accent-foreground-readable-control": "accentForegroundReadableControlStyles",
+    "color.highlight-fill-stealth-control": "highlightFillStealthControlStyles",
+    "color.highlight-fill-subtle-control": "highlightFillSubtleControlStyles",
+    "color.highlight-fill-subtle-inverse-control": "highlightFillSubtleInverseControlStyles",
+    "color.highlight-fill-ideal-control": "highlightFillIdealControlStyles",
+    "color.highlight-fill-discernible-control": "highlightFillDiscernibleControlStyles",
+    "color.highlight-fill-readable-control": "highlightFillReadableControlStyles",
+    "color.highlight-outline-discernible-control": "highlightOutlineDiscernibleControlStyles",
+    "color.highlight-foreground-readable-control": "highlightForegroundReadableControlStyles",
+    "color.info-fill-stealth-control": "infoFillStealthControlStyles",
+    "color.info-fill-subtle-control": "infoFillSubtleControlStyles",
+    "color.info-fill-subtle-inverse-control": "infoFillSubtleInverseControlStyles",
+    "color.info-fill-ideal-control": "infoFillIdealControlStyles",
+    "color.info-fill-discernible-control": "infoFillDiscernibleControlStyles",
+    "color.info-fill-readable-control": "infoFillReadableControlStyles",
+    "color.info-outline-discernible-control": "infoOutlineDiscernibleControlStyles",
+    "color.info-foreground-readable-control": "infoForegroundReadableControlStyles",
+    "color.success-fill-stealth-control": "successFillStealthControlStyles",
+    "color.success-fill-subtle-control": "successFillSubtleControlStyles",
+    "color.success-fill-subtle-inverse-control": "successFillSubtleInverseControlStyles",
+    "color.success-fill-ideal-control": "successFillIdealControlStyles",
+    "color.success-fill-discernible-control": "successFillDiscernibleControlStyles",
+    "color.success-fill-readable-control": "successFillReadableControlStyles",
+    "color.success-outline-discernible-control": "successOutlineDiscernibleControlStyles",
+    "color.success-foreground-readable-control": "successForegroundReadableControlStyles",
+    "color.warning-fill-stealth-control": "warningFillStealthControlStyles",
+    "color.warning-fill-subtle-control": "warningFillSubtleControlStyles",
+    "color.warning-fill-subtle-inverse-control": "warningFillSubtleInverseControlStyles",
+    "color.warning-fill-ideal-control": "warningFillIdealControlStyles",
+    "color.warning-fill-discernible-control": "warningFillDiscernibleControlStyles",
+    "color.warning-fill-readable-control": "warningFillReadableControlStyles",
+    "color.warning-outline-discernible-control": "warningOutlineDiscernibleControlStyles",
+    "color.warning-foreground-readable-control": "warningForegroundReadableControlStyles",
+    "color.critical-fill-stealth-control": "criticalFillStealthControlStyles",
+    "color.critical-fill-subtle-control": "criticalFillSubtleControlStyles",
+    "color.critical-fill-subtle-inverse-control": "criticalFillSubtleInverseControlStyles",
+    "color.critical-fill-ideal-control": "criticalFillIdealControlStyles",
+    "color.critical-fill-discernible-control": "criticalFillDiscernibleControlStyles",
+    "color.critical-fill-readable-control": "criticalFillReadableControlStyles",
+    "color.critical-outline-discernible-control": "criticalOutlineDiscernibleControlStyles",
+    "color.critical-foreground-readable-control": "criticalForegroundReadableControlStyles",
+    "color.neutral-fill-stealth-control": "neutralFillStealthControlStyles",
+    "color.neutral-fill-subtle-control": "neutralFillSubtleControlStyles",
+    "color.neutral-fill-subtle-inverse-control": "neutralFillSubtleInverseControlStyles",
+    "color.neutral-fill-ideal-control": "neutralFillIdealControlStyles",
+    "color.neutral-fill-discernible-control": "neutralFillDiscernibleControlStyles",
+    "color.neutral-fill-readable-control": "neutralFillReadableControlStyles",
+    "color.neutral-outline-discernible-control": "neutralOutlineDiscernibleControlStyles",
+    "color.neutral-foreground-readable-element": "neutralForegroundReadableElementStyles",
+    "color.neutral-foreground-strong-element": "neutralForegroundStrongElementStyles",
+    "color.neutral-divider-subtle-element": "neutralDividerSubtleElementStyles",
+    "color.neutral-divider-discernible-element": "neutralDividerDiscernibleElementStyles",
+    "text.type-ramp-base": "typeRampBaseStyles",
+    "text.type-ramp-minus-1": "typeRampMinus1Styles",
+    "text.type-ramp-minus-2": "typeRampMinus2Styles",
+    "text.type-ramp-plus-1": "typeRampPlus1Styles",
+    "text.type-ramp-plus-2": "typeRampPlus2Styles",
+    "text.type-ramp-plus-3": "typeRampPlus3Styles",
+    "text.type-ramp-plus-4": "typeRampPlus4Styles",
+    "text.type-ramp-plus-5": "typeRampPlus5Styles",
+    "text.type-ramp-plus-6": "typeRampPlus6Styles",
+    "shadow.card": "shadowCardStyles",
+    "shadow.card-interactive": "shadowCardInteractiveStyles",
+    "shadow.tooltip": "shadowTooltipStyles",
+    "shadow.flyout": "shadowFlyoutStyles",
+    "shadow.dialog": "shadowDialogStyles",
+    "styles.action-control": "actionStyles",
+    "styles.input-base": "inputBaseStyles",
+    "styles.input-control": "inputStyles",
+    "styles.input-autofill-control": "inputAutofillStyles",
+    "styles.selectable-control-selected": "selectableSelectedStyles",
+    "styles.selectable-control-unselected": "selectableUnselectedStyles",
+    "styles.item-control": "itemStyles",
+    "styles.text-plain": "plainTextStyles",
+    "styles.text-label": "labelTextStyles",
+    "styles.flyout": "flyoutStyles",
+    "styles.disabled": "disabledStyles",
+    "styles.focus-indicator": "focusIndicatorStyles",
+    "styles.focus-reset": "focusResetStyles",
+};
 
 /**
- * @deprecated Use {@link TreatmentNameMapping}.
+ * @deprecated A treatment is a token of the library, named by its path.
  * @public
  */
-export type StyleNameMapping = TreatmentNameMapping;
+export type StyleNameMapping = (typeof StyleNameMapping)[keyof typeof StyleNameMapping];

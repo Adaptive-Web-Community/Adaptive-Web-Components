@@ -46,9 +46,9 @@ export const add: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @beta
 export interface AnatomyTreatments {
-    readonly disabled?: Treatment;
-    readonly focusIndicator?: Treatment;
-    readonly focusReset?: Treatment;
+    readonly disabled?: TreatmentRef;
+    readonly focusIndicator?: TreatmentRef;
+    readonly focusReset?: TreatmentRef;
 }
 
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
@@ -865,21 +865,22 @@ export interface StyleRule {
     // @deprecated (undocumented)
     readonly styles?: Treatment | readonly Treatment[];
     readonly target?: StyleRuleTarget;
-    readonly treatments?: readonly Treatment[];
+    readonly treatments?: readonly (TreatmentRef | Treatment)[];
 }
 
 // @public
 export type StyleRules = readonly StyleRule[];
 
 // @public
-export function styleRulesOnFills(styleRules: StyleRules, options?: Pick<StyleRulesOptions, "anatomy" | "treatments">): OnFillWithFill[];
+export function styleRulesOnFills(styleRules: StyleRules, options: Pick<StyleRulesOptions, "treatments" | "anatomy" | "anatomyTreatments">): OnFillWithFill[];
 
 // @public
 export interface StyleRulesOptions {
     readonly anatomy?: ComponentAnatomy<any, any>;
-    readonly tokens: TokenPropertiesResolver;
     // @beta
-    readonly treatments?: AnatomyTreatments;
+    readonly anatomyTreatments?: AnatomyTreatments;
+    readonly tokens: TokenPropertiesResolver;
+    readonly treatments: TreatmentResolver;
 }
 
 // @public

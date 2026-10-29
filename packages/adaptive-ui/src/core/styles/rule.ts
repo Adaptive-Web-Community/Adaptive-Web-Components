@@ -1,5 +1,6 @@
 import type { StyleProperties } from "./properties.js";
 import type { Treatment } from "./treatment.js";
+import type { TreatmentRef } from "./treatment-token.js";
 
 /**
  * Where a rule applies in a component: the context element, a part, and the conditions of each.
@@ -60,9 +61,10 @@ export interface StyleRule {
     readonly target?: StyleRuleTarget;
 
     /**
-     * The treatments of the rule, applied in order.
+     * The treatments of the rule, applied in order: refs to treatment tokens of the library, which the renderer reads, or treatments
+     * written in place.
      */
-    readonly treatments?: readonly Treatment[];
+    readonly treatments?: readonly (TreatmentRef | Treatment)[];
 
     /**
      * The properties of the rule, applied after the treatments.
