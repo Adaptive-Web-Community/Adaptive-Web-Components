@@ -1,0 +1,29 @@
+{
+  "name": "Stress Renamed",
+  "context": ".stress-renamed",
+  "conditions": {},
+  "parts": {
+    "Inner": ".inner"
+  },
+  "styleRules": [
+    {
+      "properties": {
+        "backgroundFill": "neutral-fill-subtle",
+        "foregroundFill": "color.neutral.stroke.readable.rest",
+        "borderFill": "accent-stroke-safety-rest",
+        "borderThickness": "stroke-thickness",
+        "cornerRadius": "corner-radius-control",
+        "gap": "density_control-horizontal-gap"
+      }
+    },
+    {
+      "part": "Inner",
+      "properties": {
+        "fontSize": "type-ramp-base-font-size",
+        "lineHeight": "typography.ramp.base.lineHeight",
+        "outlineColor": "focus-stroke",
+        "foregroundFill": { "token": "neutral-stroke-strong", "fill": "neutral-fill-subtle" }
+      }
+    }
+  ]
+}
