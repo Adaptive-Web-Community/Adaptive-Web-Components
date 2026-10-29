@@ -366,6 +366,10 @@ scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole refe
   pseudo-element, are one rule, where the later state wins, as before.
 - The `aui` CLI renders with the reference library and needs no DOM. An anatomy written as JSON names its treatments in `treatments` (was
   `styles`), and an unknown name is a warning. A property names a token by its path, and `<token>.rest` of an interactive token is its rest.
+  A property can be a value on a fill, written as data: `{ "token": "color.critical.stroke.readable" }` on the background fill of the rule,
+  or with a `fill` and `activeFollowsRest` (`SerializableOnFill`). With `--on-fills <file>`, the CLI writes the values on a fill of the
+  styles it compiles as a JSON list, which the CSS of the tokens of each scope is written from: `onFillCSS(library,
+  list.map(value => deserializeOnFill(value)), { context: color.context })`.
   Importing the root of the package still loads FAST, through the 0.14 token helpers that aren't migrated yet.
 
 ### Deprecated, the old name is the new one
