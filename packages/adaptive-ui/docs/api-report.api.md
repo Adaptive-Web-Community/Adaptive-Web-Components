@@ -7,11 +7,29 @@
 import { Color as Color_3 } from 'culori/fn';
 import { CSSDesignToken } from '@microsoft/fast-foundation';
 import { CSSDirective } from '@microsoft/fast-element';
+import { CSSPropertiesOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
 import { DesignToken as DesignToken_2 } from '@microsoft/fast-foundation';
 import { DesignTokenResolver } from '@microsoft/fast-foundation';
-import { DesignTokenValue } from '@microsoft/fast-foundation/design-token-core.js';
+import { Library } from 'design-token-library';
 import { ValuesOf } from '@microsoft/fast-foundation';
+
+// @public
+export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
+    fontStyle: (value: string) => string;
+    fontVariations: (value: string) => string;
+    expression: (value: Operand) => string;
+};
+
+// @public
+export const AdaptiveDesignToken: {
+    readonly expression: "expression";
+    readonly fontStyle: "fontStyle";
+    readonly fontVariations: "fontVariations";
+};
+
+// @public
+export const add: (...args: (Operand | TokenRef)[]) => Expression;
 
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
 //
@@ -263,7 +281,32 @@ export type DesignTokenType = ValuesOf<typeof DesignTokenType> | string;
 export function directionByIsDark(color: Paint): PaletteDirection;
 
 // @public
+export const divide: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
 export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
+
+// @public
+export function evaluate(value: Operand, library: Library.Library<any>): Evaluated;
+
+// Warning: (ae-forgotten-export) The symbol "Dimension" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type Evaluated = number | Dimension;
+
+// @public
+export interface Expression {
+    // (undocumented)
+    readonly args: readonly Operand[];
+    // (undocumented)
+    readonly fn: MathFunction;
+}
+
+// @public
+export type ExpressionToken = DesignToken.Custom<typeof AdaptiveDesignToken.expression, Operand>;
+
+// @public
+export const extensionKey = "adaptive-ui";
 
 // @public
 export const Focus: {
@@ -280,7 +323,16 @@ export interface FocusDefinition<TParts> {
 }
 
 // @public
+export type FontStyleToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontStyle, string>;
+
+// @public
+export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontVariations, string>;
+
+// @public
 export function formatColor(color: Color_2): string;
+
+// @public
+export function formatExpression(value: Operand, property: (token: string) => string): string;
 
 // @public
 export function formatGradient(value: Gradient | DtcgGradient): string;
@@ -297,6 +349,11 @@ export function fromCulori(color: Color_3): Color_2;
 //
 // @public
 export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient_2;
+
+// @public
+export function getIntendedFor(token: {
+    $extensions: Record<string, any>;
+}): StyleProperty[];
 
 // Warning: (ae-forgotten-export) The symbol "RadialGradient_2" needs to be exported by the entry point index.d.ts
 //
@@ -341,6 +398,9 @@ export function idealColorDeltaSet(palette: Palette, reference: Paint, minContra
 
 // @public @deprecated (undocumented)
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: Direction): InteractiveColorSet;
+
+// @public
+export function intendedFor(...properties: StyleProperty[]): Record<string, unknown>;
 
 // @public
 export type InteractiveColorSet = InteractiveValues<Color_2 | null>;
@@ -427,6 +487,21 @@ export type MakePropertyRequired<T, K extends keyof T> = Omit<T, K> & Required<P
 export function makeSelector(params: StyleModuleEvaluateParameters, state: InteractiveState): string;
 
 // @public
+export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
+
+// @public
+export const max: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export const min: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export const multiply: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export type Operand = number | Dimension | Reference | Expression;
+
+// @public
 export interface OverlayColor extends Color_2 {
     intendedColor: Color_2;
 }
@@ -477,6 +552,12 @@ export interface PaletteOkhslOptions {
 export function parseColor(color: string): Color_2 | undefined;
 
 // @public
+export const pow: (...args: (Operand | TokenRef)[]) => Expression;
+
+// @public
+export function propertyResolver(library: Library.Library<any>, options?: CSSPropertiesOptions): (name: string) => string;
+
+// @public
 export type RadialGradient = RadialGradient_2;
 
 // @public @deprecated (undocumented)
@@ -502,6 +583,12 @@ export interface RecipeOptional<TParam, TResult> {
 }
 
 // @public
+export interface Reference {
+    // (undocumented)
+    readonly ref: string;
+}
+
+// @public
 export function relativeLuminance(paint: Paint): number;
 
 // @public @deprecated
@@ -512,6 +599,9 @@ export function reversedSwatches(palette: Palette): ReadonlyArray<Color_2>;
 
 // @public
 export function rgbColor(r: number, g: number, b: number, alpha?: number): Color_2;
+
+// @public
+export const round: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @beta (undocumented)
 export interface SerializableAnatomy {
@@ -655,6 +745,9 @@ export const StylePropertyShorthand: {
 // @public
 export type StylePropertyShorthand = keyof typeof StylePropertyShorthand;
 
+// @public
+export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
+
 // @public @deprecated (undocumented)
 export const swatchAsOverlay: typeof colorAsOverlay;
 
@@ -675,6 +768,9 @@ export interface TokenGroup extends MakePropertyOptional<DesignTokenMetadata, "t
     name: string;
     type?: DesignTokenType;
 }
+
+// @public
+export type TokenRef = Library.Ref<Operand, any>;
 
 // @public
 export const transparent: Color_2;
@@ -715,45 +811,43 @@ export interface TypedDesignToken<T> extends DesignTokenMetadata {
 }
 
 // @public
-export class TypeRampPosition {
-    constructor(baseName: string, position: string, config: TypeRampPositionConfig);
-    readonly fontSize: TypedCSSDesignToken<string>;
-    readonly fontVariations: TypedCSSDesignToken<string>;
-    readonly lineHeight: TypedCSSDesignToken<string>;
-    readonly lineHeightMultiline: TypedCSSDesignToken<string>;
-}
+export function typeRamp(config: Record<TypeRampPosition, TypeRampPositionConfig>): Library.Config<TypeRampTokens, any>;
+
+// @public
+export type TypeRampPosition = (typeof typeRampPositions)[number];
 
 // @public
 export interface TypeRampPositionConfig {
-    fontSize: DesignTokenValue<string>;
-    lineHeight: DesignTokenValue<string>;
-    lineHeightMultiline: DesignTokenValue<string>;
+    fontSize: Operand;
+    lineHeight: Operand;
+    lineHeightMultiline: Operand;
 }
 
 // @public
-export class TypeRampTokenGroup implements TokenGroup {
-    constructor(name: string, minus2: TypeRampPositionConfig, minus1: TypeRampPositionConfig, base: TypeRampPositionConfig, plus1: TypeRampPositionConfig, plus2: TypeRampPositionConfig, plus3: TypeRampPositionConfig, plus4: TypeRampPositionConfig, plus5: TypeRampPositionConfig, plus6: TypeRampPositionConfig);
-    readonly base: TypeRampPosition;
-    readonly minus1: TypeRampPosition;
-    readonly minus2: TypeRampPosition;
-    // (undocumented)
-    readonly name: string;
-    readonly plus1: TypeRampPosition;
-    readonly plus2: TypeRampPosition;
-    readonly plus3: TypeRampPosition;
-    readonly plus4: TypeRampPosition;
-    readonly plus5: TypeRampPosition;
-    readonly plus6: TypeRampPosition;
-}
+export const typeRampPositions: readonly ["minus2", "minus1", "base", "plus1", "plus2", "plus3", "plus4", "plus5", "plus6"];
+
+// Warning: (ae-forgotten-export) The symbol "RampProperty" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "RampToken" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type TypeRampTokens = {
+    [P in RampProperty]: {
+        $type: RampToken[P]["$type"];
+    } & {
+        [Position in TypeRampPosition]: RampToken[P];
+    };
+};
 
 // @public
-export class TypeScaleTokenGroup extends TypeRampTokenGroup {
-    constructor(name: string, baseSize: string, multiplier: number, lineHeightRatio?: number, lineHeightMultilineRatio?: number, lineHeightSnap?: string);
-    readonly lineHeightMultilineRatio: TypedDesignToken<number>;
-    readonly lineHeightRatio: TypedDesignToken<number>;
-    readonly lineHeightSnap: TypedCSSDesignToken<string>;
-    readonly multiplier: TypedDesignToken<number>;
-}
+export function typeScale<Root extends object>(scale: Library.Refs<TypeScaleTokens, Root>, baseSize: DesignToken.Values.Dimension, multiplier: number, lineHeightRatio?: number, lineHeightMultilineRatio?: number, lineHeightSnap?: DesignToken.Values.Dimension): Library.Config<TypeScaleTokens, Root>;
+
+// @public
+export type TypeScaleTokens = TypeRampTokens & {
+    multiplier: DesignToken.Number;
+    lineHeightRatio: DesignToken.Number;
+    lineHeightMultilineRatio: DesignToken.Number;
+    lineHeightSnap: DesignToken.Dimension;
+};
 
 // @public
 export const white: Color_2;
