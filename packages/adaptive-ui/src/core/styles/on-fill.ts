@@ -14,6 +14,8 @@ import { StyleProperty, type StyleValues } from "./properties.js";
  * Without a `fill`, the value is on the background fill of the rule it is in, so a treatment of a foreground follows the fill of the
  * treatment it is composed with. In a rule that has no background fill, it is the token itself, in the color context.
  *
+ * Why a pair isn't a token: `docs/decisions/0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md`.
+ *
  * @public
  */
 export interface OnFill {
