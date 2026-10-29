@@ -6,7 +6,7 @@ import { onFill } from "../on-fill.js";
 import { StyleRules } from "../rule.js";
 import { Treatment } from "../treatment.js";
 import { formatRules, libraryTokenProperties } from "./rules.js";
-import { AnatomyTreatments, renderStyleRules } from "./style-rules.js";
+import { AnatomyTreatments, renderStyleRules, styleRulesOnFills } from "./style-rules.js";
 
 const { expect } = chai;
 
@@ -178,5 +178,28 @@ describe("renderStyleRules", () => {
 
         expect(render([{ styles: first, treatments: [second] }])).to.deep.equal([":host { opacity: 1; cursor: default; }"]);
         expect(render([{ styles: [first] }])).to.deep.equal([":host { opacity: 0; cursor: default; }"]);
+    });
+});
+
+describe("styleRulesOnFills", () => {
+    const fillTreatment: Treatment = { properties: { backgroundFill: tokens.fill } };
+    const foreground: Treatment = { properties: { foregroundFill: onFill(tokens.focus) } };
+
+    it("should be the values on a fill of the rules, on the background fill of the treatments they are composed with", () => {
+        expect(styleRulesOnFills([{ treatments: [fillTreatment, foreground] }, { properties: { opacity: 0.5 } }])).to.deep.equal([
+            { token: tokens.focus, fill: tokens.fill },
+        ]);
+    });
+
+    it("should leave out a value without a background fill, which is the token itself", () => {
+        expect(styleRulesOnFills([{ treatments: [foreground] }])).to.deep.equal([]);
+    });
+
+    it("should have those of the treatments of the anatomy", () => {
+        const disabledOnFill: Treatment = { properties: { backgroundFill: tokens.fill, foregroundFill: onFill(tokens.focus) } };
+
+        expect(styleRulesOnFills([], { anatomy: anatomy(), treatments: { disabled: disabledOnFill } })).to.deep.equal([
+            { token: tokens.focus, fill: tokens.fill },
+        ]);
     });
 });

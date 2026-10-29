@@ -561,7 +561,7 @@ export function isShadow(value: unknown): value is DesignToken.Values.Readonly.S
 export function isTransparent(color: Color_2): boolean;
 
 // @public
-export function libraryTokenProperties(library: Library.Library<any>, options?: CSSPropertiesOptions): TokenPropertiesResolver;
+export function libraryTokenProperties(library: Library.Library<any>, options?: TokenPropertiesOptions): TokenPropertiesResolver;
 
 // @public
 export type LinearGradient = LinearGradient_2;
@@ -610,6 +610,11 @@ export interface OnFill {
 
 // @public
 export function onFill(token: Library.Ref<unknown, never>, options?: Omit<OnFill, "token">): OnFill;
+
+// @public
+export function onFillCSS(library: Library.Library<any>, values: Iterable<OnFillWithFill>, options: TokenPropertiesOptions & {
+    readonly context: Library.Ref<unknown, never>;
+}): string;
 
 // @public
 export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[];
@@ -909,6 +914,9 @@ export interface StyleRule {
 export type StyleRules = readonly StyleRule[];
 
 // @public
+export function styleRulesOnFills(styleRules: StyleRules, options?: Pick<StyleRulesOptions, "anatomy" | "treatments">): OnFillWithFill[];
+
+// @public
 export interface StyleRulesOptions {
     readonly anatomy?: ComponentAnatomy<any, any>;
     readonly tokens: TokenPropertiesResolver;
@@ -975,7 +983,12 @@ export interface TokenProperties {
 }
 
 // @public
-export type TokenPropertiesResolver = (path: readonly string[]) => TokenProperties;
+export interface TokenPropertiesOptions extends CSSPropertiesOptions {
+    readonly context?: Library.Ref<unknown, never>;
+}
+
+// @public
+export type TokenPropertiesResolver = (path: readonly string[], fill?: readonly string[]) => TokenProperties;
 
 // @public
 export type TokenRef = Library.Ref<Operand, any>;
