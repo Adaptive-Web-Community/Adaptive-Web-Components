@@ -12,6 +12,19 @@
     "@adaptive-web/adaptive-web-components": "0.10.0"
   },
   "changesets": [
-    "start-one-point-oh-beta"
+    "cli-on-fills",
+    "migrate-color-sets",
+    "migrate-color",
+    "migrate-density",
+    "migrate-elevation",
+    "migrate-experimental",
+    "migrate-palette-layer",
+    "migrate-styles",
+    "migrate-typography",
+    "pair-values-on-a-fill",
+    "remove-fast-token-helpers",
+    "render-style-rules",
+    "start-one-point-oh-beta",
+    "token-names"
   ]
 }
