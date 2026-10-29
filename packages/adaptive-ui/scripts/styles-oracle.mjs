@@ -53,26 +53,29 @@ if (!fs.existsSync(path.join(root, "dist/esm/bin/aui.js"))) {
 }
 
 // Generate into a clean directory. The JSON anatomies are copied because the compiler writes the stylesheets next to them.
-for (const dir of ["anatomies", "stylesheets", "single", "output", "components/stylesheets"]) {
+for (const dir of ["anatomies", "stylesheets", "single", "on-fills", "output", "components/stylesheets"]) {
     fs.rmSync(path.join(outDir, dir), { recursive: true, force: true });
 }
 fs.mkdirSync(path.join(outDir, "anatomies"), { recursive: true });
 fs.cpSync(path.join(sourceDir, "anatomies"), path.join(outDir, "anatomies"), { recursive: true });
 
 // Anatomies defined in code, with the anatomy and style module export name matchers.
-runAui(["compile-styles", path.join(outDir, "components/*/index.js"), "-a", "*Anatomy", "-s", "*StyleModules"]);
+// The values on a fill of each run are written to `on-fills`, for the CSS of the tokens.
+const onFills = name => ["--on-fills", path.join(outDir, "on-fills", `${name}.json`)];
+
+runAui(["compile-styles", path.join(outDir, "components/*/index.js"), "-a", "*Anatomy", "-s", "*StyleModules", ...onFills("code")]);
 
 // Anatomies defined in JSON, excluding the partial files which are only used for `imports`.
-runAui(["compile-styles", path.join(outDir, "anatomies/[!_]*.json")]);
+runAui(["compile-styles", path.join(outDir, "anatomies/[!_]*.json"), ...onFills("json")]);
 
 // A different extension for the output.
 runAui(["compile-styles", path.join(outDir, "components/tab/index.js"), "-a", "*Anatomy", "-s", "*StyleModules", "-e", ".scss"]);
 
 // A single file to a specific location.
-runAui(["compile-style", path.join(outDir, "components/button/index.js"), path.join(outDir, "single/button.css"), "-a", "*Anatomy", "-s", "*StyleModules"]);
+runAui(["compile-style", path.join(outDir, "components/button/index.js"), path.join(outDir, "single/button.css"), "-a", "*Anatomy", "-s", "*StyleModules", ...onFills("single")]);
 
 // A JSON anatomy to stdout.
-const stdout = runAui(["compile-json-anatomy", path.join(outDir, "anatomies/button.json")]);
+const stdout = runAui(["compile-json-anatomy", path.join(outDir, "anatomies/button.json"), ...onFills("single.json")]);
 fs.mkdirSync(path.join(outDir, "single"), { recursive: true });
 fs.writeFileSync(path.join(outDir, "single/button.json.css"), stdout.stdout);
 
@@ -86,6 +89,7 @@ const resultDir = path.join(outDir, "output");
 fs.cpSync(path.join(outDir, "components/stylesheets"), path.join(resultDir, "code"), { recursive: true });
 fs.cpSync(path.join(outDir, "stylesheets"), path.join(resultDir, "json"), { recursive: true });
 fs.cpSync(path.join(outDir, "single"), path.join(resultDir, "single"), { recursive: true });
+fs.cpSync(path.join(outDir, "on-fills"), path.join(resultDir, "on-fills"), { recursive: true });
 
 // Anything reported as a warning or an error is part of the output, concurrent compiles aren't ordered.
 fs.writeFileSync(path.join(resultDir, "warnings.txt"), [...new Set(warnings)].sort().join("\n") + "\n");

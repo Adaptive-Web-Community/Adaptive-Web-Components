@@ -1,0 +1,14 @@
+[
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.stealth"
+  },
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.subtle"
+  },
+  {
+    "token": "color.neutral.stroke.strong",
+    "fill": "color.neutral.fill.subtleInverse"
+  }
+]

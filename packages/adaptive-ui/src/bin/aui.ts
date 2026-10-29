@@ -24,8 +24,8 @@ import {
     SerializableStyleRule,
 } from '../core/styles/anatomy.js';
 import { formatRules, libraryTokenProperties } from '../core/styles/css/rules.js';
-import { renderStyleRules } from '../core/styles/css/style-rules.js';
-import { deserializeOnFill, isSerializableOnFill, OnFill, SerializableOnFill } from '../core/styles/on-fill.js';
+import { renderStyleRules, styleRulesOnFills } from '../core/styles/css/style-rules.js';
+import { deserializeOnFill, isSerializableOnFill, OnFill, SerializableOnFill, serializeOnFill } from '../core/styles/on-fill.js';
 import { StyleProperties, StyleValues } from '../core/styles/properties.js';
 import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
 import { InteractiveState } from '../core/interactive.js';
@@ -51,16 +51,18 @@ program.command('compile-style <inFile> <outFile>')
     .description("Compile a single AUI stylesheet")
     .option("-a <name>, --anatomy <name>", "The name of the anatomy export. This option supports wildcards.", "anatomy")
     .option("-s <name>, --styles <name>", "The name of the styles export. This option supports wildcards.", "styles")
-    .action(async (inFile, outFile, exportNames: { a: string, s: string }) => {
+    .option("--on-fills <file>", "Write the values on a fill of the compiled styles to a JSON file, for the CSS of the tokens of each scope.")
+    .action(async (inFile, outFile, exportNames: { a: string, s: string, onFills?: string }) => {
         const cwd = process.cwd();
         const inFilePath = path.resolve(cwd, inFile);
         const outFilePath = path.resolve(cwd, outFile);
 
         ensureFileExists(inFilePath);
 
-        const { css } = await compileFile(inFilePath, exportNames.s, exportNames.a, outFilePath);
+        const { css, onFills } = await compileFile(inFilePath, exportNames.s, exportNames.a, outFilePath);
 
         writeStyleFile(css, outFilePath)
+        writeOnFillsFile(onFills, exportNames.onFills);
         process.exit(0);
     })
 
@@ -69,8 +71,10 @@ program.command("compile-styles <glob>")
     .option("-a <name>, --anatomy <name>", "The name of the anatomy exports. This option supports wildcards.", "anatomy")
     .option("-s <name>, --styles <name>", "The name of the styles exports. This option supports wildcards.", "styles")
     .option("-e <extension>, --extension <extension>", "The file extension of the file to write.", ".css")
-    .action(async (globPath, args: { a: string, s: string, e: string }) => {
+    .option("--on-fills <file>", "Write the values on a fill of the compiled styles to a JSON file, for the CSS of the tokens of each scope.")
+    .action(async (globPath, args: { a: string, s: string, e: string, onFills?: string }) => {
         const paths = await glob(globPath, { absolute: true });
+        const onFills: SerializableOnFill[] = [];
 
         await Promise.all(paths.map(async (inFilePath) => {
             ensureFileExists(inFilePath);
@@ -87,26 +91,31 @@ program.command("compile-styles <glob>")
                 outFilePath = resolveStylesheetOutputPath(inFilePath, jsonData.name, args.e);
             }
 
-            const { css, anatomyName } = await compileFile(inFilePath, args.s, args.a, outFilePath);
+            const compiled = await compileFile(inFilePath, args.s, args.a, outFilePath);
 
             if (!outFilePath) {
-                outFilePath = resolveStylesheetOutputPath(inFilePath, anatomyName, args.e);
+                outFilePath = resolveStylesheetOutputPath(inFilePath, compiled.anatomyName, args.e);
             }
 
-            writeStyleFile(css, outFilePath);
+            writeStyleFile(compiled.css, outFilePath);
+            onFills.push(...compiled.onFills);
         }));
 
+        writeOnFillsFile(onFills, args.onFills);
         process.exit(0);
     });
 
 program.command("compile-json-anatomy <anatomyPath>")
     .description("Compile a stylesheet from a JSON anatomy")
-    .action(async (jsonPath: string) => {
+    .option("--on-fills <file>", "Write the values on a fill of the compiled styles to a JSON file, for the CSS of the tokens of each scope.")
+    .action(async (jsonPath: string, args: { onFills?: string }) => {
         const jsonData = await readJsonAnatomyWithImports(jsonPath);
         const styles = jsonToAUIStyleSheet(jsonData);
         const outFilePath = resolveStylesheetOutputPath(jsonPath, jsonData.name, ".css");
         const css = await compileStylesheet(styles, jsonPath, outFilePath);
 
+        // The CSS is written to stdout, so the file is written without a message.
+        writeOnFillsFile(new SheetCompilerImpl().onFills(styles), args.onFills, false);
         process.stdout.write(css);
         process.stdout.end();
     });
@@ -200,7 +209,7 @@ async function compileFile(
     stylesName: string,
     anatomyName: string,
     outFilePath?: string
-): Promise<{ css: string, anatomyName: string }> {
+): Promise<{ css: string, anatomyName: string, onFills: SerializableOnFill[] }> {
     ensureFileExists(inFilePath);
 
     // Only used to select the prettier parser. `base` must be excluded, otherwise `path.format` ignores `ext`.
@@ -250,7 +259,26 @@ async function compileFile(
 
     const css = await compileStylesheet(styles, inFilePath, formatPath);
 
-    return { css, anatomyName: resolvedAnatomyName };
+    return { css, anatomyName: resolvedAnatomyName, onFills: new SheetCompilerImpl().onFills(styles) };
+}
+
+/**
+ * Writes the values on a fill of the compiled styles, each once, in order, if a file is given. The CSS of the tokens of each scope writes
+ * their custom properties with `onFillCSS`, after `deserializeOnFill`.
+ */
+function writeOnFillsFile(onFills: SerializableOnFill[], outFilePath: string | undefined, report = true) {
+    if (outFilePath === undefined) {
+        return;
+    }
+    const byKey = new Map(onFills.map(value => [JSON.stringify(value), value]));
+    const sorted = [...byKey.values()].sort((a, b) => `${a.token} ${a.fill}`.localeCompare(`${b.token} ${b.fill}`));
+    const filePath = path.resolve(process.cwd(), outFilePath);
+
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify(sorted, null, 2) + "\n", { encoding: "utf8" });
+    if (report) {
+        console.log(successColor, `${filePath} written with ${sorted.length} values on a fill.`);
+    }
 }
 
 /**
@@ -280,6 +308,11 @@ interface AUIStyleSheet<T extends ComponentConditions = any, K extends Component
  */
 interface SheetCompiler {
     compile(sheet: AUIStyleSheet): string;
+
+    /**
+     * The values on a fill of a sheet, written as data, for the CSS of the tokens.
+     */
+    onFills(sheet: AUIStyleSheet): SerializableOnFill[];
 }
 
 // TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
@@ -295,6 +328,10 @@ class SheetCompilerImpl implements SheetCompiler {
      */
     compile(sheet: AUIStyleSheet): string {
         return formatRules(renderStyleRules(sheet.rules, { tokens, anatomy: sheet.anatomy, treatments: referenceAnatomyTreatments }));
+    }
+
+    onFills(sheet: AUIStyleSheet): SerializableOnFill[] {
+        return styleRulesOnFills(sheet.rules, { anatomy: sheet.anatomy, treatments: referenceAnatomyTreatments }).map(value => serializeOnFill(value));
     }
 }
 
