@@ -107,3 +107,33 @@ describe("contrastAndDeltaColorSet", (): void => {
         });
     });
 });
+
+describe("contrastAndDeltaColorSet with only some of the states", (): void => {
+    const options = { direction: darker };
+
+    it("should have a color only for the states that have a delta", (): void => {
+        const set = contrastAndDeltaColorSet(palette, swatches[0], 3, { focus: 0 }, options);
+
+        expect(Object.keys(set)).to.deep.equal(["focus"]);
+    });
+
+    it("should place the states from the accessible color as if the rest and the hover had no delta", (): void => {
+        const full = contrastAndDeltaColorSet(palette, swatches[0], 3, deltas(0, 0, 2, 3, 1), options);
+        const sparse = contrastAndDeltaColorSet(palette, swatches[0], 3, { active: 2, focus: 3, disabled: 1 }, options);
+
+        expect(sparse.active).to.equal(full.active);
+        expect(sparse.focus).to.equal(full.focus);
+        expect(sparse.disabled).to.equal(full.disabled);
+    });
+
+    it("should have the hover where the rest is when it has no delta", (): void => {
+        const set = contrastAndDeltaColorSet(palette, swatches[0], 3, { rest: 0, hover: 0 }, options);
+
+        expect(set.hover).to.equal(set.rest);
+        expect(set.rest).to.equal(swatches[accessibleFromWhite]);
+    });
+
+    it("should clear a state that has a null delta", (): void => {
+        expect(contrastAndDeltaColorSet(palette, swatches[0], 3, { rest: 0, active: null }, options).active).to.be.null;
+    });
+});

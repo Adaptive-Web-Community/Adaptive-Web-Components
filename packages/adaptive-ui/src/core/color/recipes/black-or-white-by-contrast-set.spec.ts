@@ -100,6 +100,15 @@ describe("blackOrWhiteByContrastSet", (): void => {
         expect(result.active).to.equal(white);
     });
 
+    it("should not have a state that the set doesn't have, and have null for one that was cleared", (): void => {
+        const set: InteractivePaintSet = { rest: lightBackground, active: darkBackground, focus: null };
+        const result = blackOrWhiteByContrastSet(set, 4.5, false);
+
+        expect(result).to.deep.equal({ rest: black, active: white, focus: null });
+        expect("hover" in result).to.be.false;
+        expect("disabled" in result).to.be.false;
+    });
+
     it("should use the default color when both pass", (): void => {
         const set: InteractivePaintSet = {
             rest: middleGrey,

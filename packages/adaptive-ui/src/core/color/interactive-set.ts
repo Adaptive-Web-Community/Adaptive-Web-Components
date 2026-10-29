@@ -1,4 +1,4 @@
-import { InteractiveValues } from "../interactive.js";
+import { InteractiveSet } from "../interactive.js";
 import { Color } from "./color.js";
 import { Paint } from "./paint.js";
 import { Palette, PaletteDirection } from "./palette.js";
@@ -8,14 +8,14 @@ import { Palette, PaletteDirection } from "./palette.js";
  *
  * @public
  */
-export type InteractivePaintSet = InteractiveValues<Paint | null>;
+export type InteractivePaintSet = InteractiveSet<Paint>;
 
 /**
  * A set of {@link Color}s to use for an interactive control's states.
  *
  * @public
  */
-export type InteractiveColorSet = InteractiveValues<Color | null>;
+export type InteractiveColorSet = InteractiveSet<Color>;
 
 /**
  * Options for the recipes that get a set of colors from a {@link Palette}.

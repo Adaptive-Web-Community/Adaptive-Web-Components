@@ -1,4 +1,4 @@
-import { InteractiveState, InteractiveValues } from "../types.js";
+import { InteractiveSet, InteractiveState } from "../interactive.js";
 import type { StyleModuleEvaluateParameters } from "./types.js";
 
 const HOST_CONTEXT = ":host";
@@ -6,14 +6,12 @@ const HOST_CONTEXT = ":host";
 const defaultContext = HOST_CONTEXT;
 
 /**
- * Default css selectors for an interactive element's states.
+ * Default css selectors for an interactive element's states, for the states that have one. The rest and the disabled state don't.
  */
-const DefaultInteractiveSelectors: InteractiveValues<string> = {
-    rest: "",
+const DefaultInteractiveSelectors: InteractiveSet<string> = {
     hover: ":hover",
     active: ":active",
     focus: ":focus-visible",
-    disabled: "",
 };
 
 /**
@@ -31,7 +29,7 @@ export function makeSelector(params: StyleModuleEvaluateParameters, state: Inter
     const rest = state === InteractiveState.rest;
     const disabled = state === InteractiveState.disabled;
 
-    const stateSelector = disabled ? "" : params[state] || DefaultInteractiveSelectors[state];
+    const stateSelector = disabled ? "" : params[state] || DefaultInteractiveSelectors[state] || "";
     const context = params.context && params.context !== defaultContext ? params.context : defaultContext;
 
     // Check for anything that will generate a condition on the context

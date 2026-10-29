@@ -148,6 +148,12 @@ describe("colorSetAsOverlay", () => {
         expect(result.disabled!.alpha).to.equal(1);
     });
 
+    it("should not have a state that the set doesn't have", () => {
+        const result = colorSetAsOverlay({ rest: lightGrey, focus: null }, grey, true);
+
+        expect(Object.keys(result)).to.deep.equal(["rest", "focus"]);
+    });
+
     it("should preserve null states", () => {
         expect(colorSetAsOverlay(set, grey, true).focus).to.be.null;
     });

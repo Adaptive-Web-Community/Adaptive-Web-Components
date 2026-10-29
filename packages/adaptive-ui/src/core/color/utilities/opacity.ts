@@ -1,5 +1,6 @@
 import { modeRgb, type Rgb, useMode } from "culori/fn";
 import { Color, fromCulori, isTransparent, OverlayColor, toCulori } from "../color.js";
+import { mapStates } from "../../interactive.js";
 import { InteractiveColorSet } from "../interactive-set.js";
 
 const rgb = useMode(modeRgb);
@@ -98,13 +99,7 @@ export function colorAsOverlay(color: Color | null, reference: Color, overlay: b
  */
 export function colorSetAsOverlay(set: InteractiveColorSet, reference: Color, overlay: boolean): InteractiveColorSet {
     if (overlay) {
-        return {
-            rest: colorAsOverlay(set.rest, reference, overlay),
-            hover: colorAsOverlay(set.hover, reference, overlay),
-            active: colorAsOverlay(set.active, reference, overlay),
-            focus: colorAsOverlay(set.focus, reference, overlay),
-            disabled: colorAsOverlay(set.disabled, reference, overlay),
-        };
+        return mapStates(set, color => asOverlay(color, reference));
     }
     return set;
 }
