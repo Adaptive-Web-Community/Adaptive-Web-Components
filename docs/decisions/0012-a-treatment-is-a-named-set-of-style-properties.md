@@ -1,6 +1,6 @@
 # 0012. A treatment is a named set of style properties, as plain data
 
-- Status: Accepted. The pairs of a fill and its foreground are superseded by [0013](0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md)
+- Status: Accepted. The pairs of a fill and its foreground are superseded by [0013](0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md), and the registry and the names of the treatments by [0015](0015-a-treatment-is-a-token.md)
 - Date: 2026-10-28
 - Package: adaptive-ui
 
