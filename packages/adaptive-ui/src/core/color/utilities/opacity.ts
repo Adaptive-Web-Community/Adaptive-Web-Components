@@ -1,6 +1,6 @@
-import { type Color as CuloriColor, modeRgb, type Rgb, useMode } from "culori/fn";
-import { Color } from "../color.js";
-import { InteractiveColorSet } from "../recipe.js";
+import { modeRgb, type Rgb, useMode } from "culori/fn";
+import { Color, fromCulori, isTransparent, OverlayColor, toCulori } from "../color.js";
+import { InteractiveColorSet } from "../interactive-set.js";
 
 const rgb = useMode(modeRgb);
 
@@ -26,20 +26,20 @@ function calcRgbOverlay(rgbMatch: Rgb, rgbBackground: Rgb, rgbOverlay: Rgb): num
  * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appearance of a given solid color
  * when placed on the same background.
  *
- * @param match - The solid color the overlay should match in appearance when placed over the rgbBackground
+ * @param match - The solid color the overlay should match in appearance when placed over the background
  * @param background - The background on which the overlay rests
  * @returns The rgba (rgb + alpha) color of the overlay
  *
  * @public
  */
-export function calculateOverlayColor(match: CuloriColor, background: CuloriColor): Rgb {
-    const rgbMatch = rgb(match);
+export function calculateOverlayColor(match: Color, background: Color): Color {
+    const rgbMatch = rgb(toCulori(match));
 
-    if (Color.isTransparent(rgbMatch) || Color.isTransparent(background)) {
-        return rgbMatch;
+    if (isTransparent(match) || isTransparent(background)) {
+        return fromCulori(rgbMatch);
     }
 
-    const rgbBackground = rgb(background);
+    const rgbBackground = rgb(toCulori(background));
     let overlay = rgbBlack;
     let alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
     if (alpha <= 0) {
@@ -48,47 +48,62 @@ export function calculateOverlayColor(match: CuloriColor, background: CuloriColo
     }
     alpha = Math.round(alpha * 1000) / 1000;
 
-    return Object.assign({}, overlay, { alpha });
+    return fromCulori(Object.assign({}, overlay, { alpha }));
+}
+
+/**
+ * Creates a semitransparent color that looks like the `intendedColor` over `reference`.
+ *
+ * @remarks
+ * Currently the overlay will only be black or white, so this works best with a plain grey neutral palette.
+ * Otherwise it will attempt to match the luminance value of the color, so it will likely be close, but not an
+ * exact match to the color from another palette.
+ *
+ * The relative luminance of the result is that of the `intendedColor`.
+ *
+ * @param intendedColor - The color the overlay should look like over the `reference` color.
+ * @param reference - The color under the overlay color.
+ * @returns A semitransparent color that represents the `intendedColor` over the `reference` color.
+ *
+ * @public
+ */
+export function asOverlay(intendedColor: Color, reference: Color): OverlayColor {
+    const referenceColor = "intendedColor" in reference ? (reference as OverlayColor).intendedColor : reference;
+    return Object.freeze({ ...calculateOverlayColor(intendedColor, referenceColor), intendedColor });
 }
 
 /**
  * Returns an opaque {@link Color} or a {@link Color} with opacity relative to the reference color.
  *
- * @param color - The opaque intended swatch color.
- * @param reference - The reference color for a semitransparent swatch.
- * @param asOverlay - True to return a semitransparent representation of `swatch` relative to `reference`.
- * @returns The requested representation of `swatch`.
+ * @param color - The opaque intended color.
+ * @param reference - The reference color for a semitransparent color.
+ * @param overlay - True to return a semitransparent representation of `color` relative to `reference`.
+ * @returns The requested representation of `color`.
  *
  * @public
  */
-export function swatchAsOverlay(color: Color | null, reference: Color, asOverlay: boolean): Color | null {
-    return color && asOverlay
-        ? Color.asOverlay(color, reference)
-        : color;
+export function colorAsOverlay(color: Color | null, reference: Color, overlay: boolean): Color | null {
+    return color && overlay ? asOverlay(color, reference) : color;
 }
 
 /**
  * Returns an interactive set of opaque {@link Color}s or {@link Color}s with opacity relative to the reference color.
  *
- * @param set - The swatch set for which to make overlay.
- * @param reference - The reference color for a semitransparent swatch.
- * @param asOverlay - True to return a semitransparent representation of `swatch` relative to `reference`.
- * @returns The requested representation of a `swatch` set.
+ * @param set - The color set for which to make overlay.
+ * @param reference - The reference color for a semitransparent color.
+ * @param overlay - True to return a semitransparent representation of the colors relative to `reference`.
+ * @returns The requested representation of a color set.
  *
  * @public
  */
-export function interactiveSwatchSetAsOverlay(
-    set: InteractiveColorSet,
-    reference: Color,
-    asOverlay: boolean
-): InteractiveColorSet {
-    if (asOverlay) {
+export function colorSetAsOverlay(set: InteractiveColorSet, reference: Color, overlay: boolean): InteractiveColorSet {
+    if (overlay) {
         return {
-            rest: swatchAsOverlay(set.rest, reference, asOverlay),
-            hover: swatchAsOverlay(set.hover, reference, asOverlay),
-            active: swatchAsOverlay(set.active, reference, asOverlay),
-            focus: swatchAsOverlay(set.focus, reference, asOverlay),
-            disabled: swatchAsOverlay(set.disabled, reference, asOverlay),
+            rest: colorAsOverlay(set.rest, reference, overlay),
+            hover: colorAsOverlay(set.hover, reference, overlay),
+            active: colorAsOverlay(set.active, reference, overlay),
+            focus: colorAsOverlay(set.focus, reference, overlay),
+            disabled: colorAsOverlay(set.disabled, reference, overlay),
         };
     }
     return set;

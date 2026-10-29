@@ -75,6 +75,17 @@ If you are addressing multiple issues which are unrelated, consider either doing
 If you are finding that your changes are either breaking changes or require multiple pull requests, open a [discussion](https://github.com/adaptive-web/adaptive-web-components/discussions) to discuss this.
 :::
 
+### Working on a stack of branches
+
+Some work is a stack of branches, each built on the one before it. Two settings help with restacking, and the script brings the generated API
+report of each commit up to date after you change an earlier one:
+
+```shell
+git config --global rebase.updateRefs true     # `git rebase` moves the branches that are on the commits it rewrites
+git config --global merge.ours.driver true     # for .gitattributes, which settles a conflict in a generated API report
+scripts/check-each-commit.sh <base>            # builds, tests, and lints each commit above <base>, and amends a stale API report
+```
+
 ### Merging a pull request
 
 If you are merging a pull request, be sure to use the pull request title as the commit title. The title should follow the [conventional commit guidelines](https://www.conventionalcommits.org/). It is recommended that if you are merging in pull requests regularly that you add a browser extension that will auto-correct the title for you. A few that should do this are [Refined GitHub](https://github.com/sindresorhus/refined-github) and [Squashed Merge Message](https://github.com/zachwhaley/squashed-merge-message).

@@ -1,14 +1,14 @@
 import chai from "chai";
-import { Color } from "../color.js";
-import { InteractivePaintSet } from "../recipe.js";
-import { _black, _white } from "../utilities/color-constants.js";
+import { parseColor, withAlpha } from "../color.js";
+import { InteractivePaintSet } from "../interactive-set.js";
+import { black, white } from "../utilities/color-constants.js";
 import { blackOrWhiteByContrastSet } from "./black-or-white-by-contrast-set.js";
 
 const { expect } = chai;
 
-const lightBackground = Color.parse("#f0f0f0")!;
-const darkBackground = Color.parse("#202020")!;
-const middleGrey = Color.parse("#808080")!;
+const lightBackground = parseColor("#f0f0f0")!;
+const darkBackground = parseColor("#202020")!;
+const middleGrey = parseColor("#808080")!;
 
 describe("blackOrWhiteByContrastSet", (): void => {
     it("should choose black or white for each state", (): void => {
@@ -21,9 +21,9 @@ describe("blackOrWhiteByContrastSet", (): void => {
         };
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
-        expect(result.rest).to.equal(_black);
-        expect(result.hover).to.equal(_white);
-        expect(result.focus).to.equal(_white);
+        expect(result.rest).to.equal(black);
+        expect(result.hover).to.equal(white);
+        expect(result.focus).to.equal(white);
     });
 
     it("should apply 30% opacity to the disabled state", (): void => {
@@ -36,8 +36,8 @@ describe("blackOrWhiteByContrastSet", (): void => {
         };
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
-        expect(result.disabled!.color).to.deep.equal({ ..._black.color, alpha: 0.3 });
-        expect(result.disabled).not.to.equal(_black);
+        expect(result.disabled).to.deep.equal(withAlpha(black, 0.3));
+        expect(result.disabled).not.to.equal(black);
     });
 
     it("should return null for any state without a reference", (): void => {
@@ -50,7 +50,7 @@ describe("blackOrWhiteByContrastSet", (): void => {
         };
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
-        expect(result.rest).to.equal(_black);
+        expect(result.rest).to.equal(black);
         expect(result.hover).to.be.null;
         expect(result.active).to.be.null;
         expect(result.focus).to.be.null;
@@ -68,9 +68,9 @@ describe("blackOrWhiteByContrastSet", (): void => {
         };
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
-        expect(result.rest).to.equal(_black);
-        expect(result.hover).to.equal(_black);
-        expect(result.active).to.equal(_black);
+        expect(result.rest).to.equal(black);
+        expect(result.hover).to.equal(black);
+        expect(result.active).to.equal(black);
     });
 
     it("should calculate active independently when rest and hover differ", (): void => {
@@ -83,7 +83,7 @@ describe("blackOrWhiteByContrastSet", (): void => {
         };
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
-        expect(result.active).to.equal(_white);
+        expect(result.active).to.equal(white);
     });
 
     it("should calculate active when rest or hover is missing", (): void => {
@@ -97,7 +97,7 @@ describe("blackOrWhiteByContrastSet", (): void => {
         const result = blackOrWhiteByContrastSet(set, 4.5, false);
 
         expect(result.rest).to.be.null;
-        expect(result.active).to.equal(_white);
+        expect(result.active).to.equal(white);
     });
 
     it("should use the default color when both pass", (): void => {
@@ -109,7 +109,7 @@ describe("blackOrWhiteByContrastSet", (): void => {
             disabled: middleGrey,
         };
 
-        expect(blackOrWhiteByContrastSet(set, 3, false).rest).to.equal(_white);
-        expect(blackOrWhiteByContrastSet(set, 3, true).rest).to.equal(_black);
+        expect(blackOrWhiteByContrastSet(set, 3, false).rest).to.equal(white);
+        expect(blackOrWhiteByContrastSet(set, 3, true).rest).to.equal(black);
     });
 });

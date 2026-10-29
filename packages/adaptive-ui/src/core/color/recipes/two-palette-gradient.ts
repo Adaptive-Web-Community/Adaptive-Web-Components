@@ -1,19 +1,36 @@
-import { Gradient, GradientStop, LinearGradient } from "../gradient.js";
+import { Gradient, GradientStop, linearGradient } from "../gradient.js";
 import { Paint } from "../paint.js";
 import { Palette, PaletteDirection } from "../palette.js";
 import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
+import { deltaColor } from "./delta-color.js";
 
 /**
- * Color algorithm for a gradient between two colors.
+ * Options for {@link twoPaletteGradient}.
+ *
+ * @beta
+ */
+export interface TwoPaletteGradientOptions {
+    /**
+     * The angle of the gradient.
+     */
+    angle?: number;
+
+    /**
+     * The direction the delta moves on the palettes, defaults to {@link directionByIsDark} based on `reference`.
+     */
+    direction?: PaletteDirection;
+}
+
+/**
+ * Color algorithm for a gradient between two palettes.
  *
  * @param startPalette - The Palette used for the start of the gradient
  * @param endPalette - The Palette used for the end of the gradient
  * @param reference - The reference color
  * @param delta - The offset from the `reference`
- * @param angle - The angle of the gradient
- * @param direction - The direction the delta moves on the palettes, defaults to {@link directionByIsDark} based on `reference`
+ * @param options - The angle and the direction
  * @returns The Gradient
- * 
+ *
  * @beta
  */
 export function twoPaletteGradient(
@@ -21,11 +38,12 @@ export function twoPaletteGradient(
     endPalette: Palette,
     reference: Paint,
     delta: number,
-    angle?: number,
-    direction: PaletteDirection = directionByIsDark(reference)
+    options: TwoPaletteGradientOptions = {}
 ): Gradient {
-    const startColor = startPalette.delta(reference, delta, direction);
-    const endColor = endPalette.delta(reference, delta, direction);
+    const { angle, direction = directionByIsDark(reference) } = options;
+
+    const startColor = deltaColor(startPalette, reference, delta, direction);
+    const endColor = deltaColor(endPalette, reference, delta, direction);
 
     const stops: GradientStop[] = [
         {
@@ -37,5 +55,5 @@ export function twoPaletteGradient(
             position: { value: 1, unit: "%" },
         },
     ];
-    return new LinearGradient(stops, angle);
+    return linearGradient(stops, angle);
 }

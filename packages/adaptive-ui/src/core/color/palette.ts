@@ -1,12 +1,13 @@
 import { Color } from "./color.js";
-import { RelativeLuminance } from "./utilities/relative-luminance.js";
+import { Paint } from "./paint.js";
+import { relativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
- * Directional values for navigating swatches in {@link Palette}.
+ * Directional values for navigating the swatches in a {@link Palette}.
  *
  * @public
  */
-export const PaletteDirectionValue = Object.freeze({
+export const PaletteDirection = Object.freeze({
     /**
      * Move darker, or up the Palette.
      */
@@ -19,92 +20,127 @@ export const PaletteDirectionValue = Object.freeze({
 } as const);
 
 /**
- * Directional values for navigating swatches in {@link Palette}.
+ * Directional values for navigating the swatches in a {@link Palette}.
  *
  * @public
  */
-export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
-
-/**
- * Convenience type to allow a fixed {@link (PaletteDirectionValue:variable)} or a function that resolves to one.
- *
- * @public
- */
-export type PaletteDirection = PaletteDirectionValue | (() => PaletteDirectionValue);
-
-/**
- * Gets a fixed {@link (PaletteDirectionValue:variable)} from {@link PaletteDirection} which may be a function that needs to be resolved.
- *
- * @param direction - A fixed palette direction value or a function that resolves to one
- * @returns A fixed palette direction value
- *
- * @public
- */
-export function resolvePaletteDirection(direction: PaletteDirection): PaletteDirectionValue {
-    if (typeof direction === "function") {
-        return direction();
-    } else {
-        return direction;
-    }
-}
+export type PaletteDirection = typeof PaletteDirection[keyof typeof PaletteDirection];
 
 /**
  * A collection of {@link Color}s that form a luminance gradient from light (index 0) to dark.
  *
+ * @remarks
+ * A palette is plain data. Use the functions in this module and the recipes to get swatches from it.
+ *
  * @public
  */
-export interface Palette<T extends Color = Color> {
+export interface Palette {
     /**
-     * The Color used to create the full palette.
+     * The color used to create the full palette.
      */
     readonly source: Color;
 
     /**
-     * The array of all Colors from light to dark.
+     * The array of all colors from light to dark.
      */
-    readonly swatches: ReadonlyArray<T>;
+    readonly swatches: ReadonlyArray<Color>;
+}
 
-    /**
-     * Returns a Color from the Palette that most closely meets
-     * the `minContrast` ratio for to the `reference`.
-     *
-     * @param reference - The relative luminance of the reference
-     * @param minContrast - The minimum amount of contrast from the `reference`
-     * @param initialIndex - Optional starting point for the search
-     * @param direction - Optional control for the direction of the search
-     * @returns The Color that meets the provided contrast
-     */
-    colorContrast(
-        reference: RelativeLuminance,
-        minContrast: number,
-        initialIndex?: number,
-        direction?: PaletteDirection
-    ): T;
+/**
+ * Creates a palette.
+ *
+ * @param source - The source color for the palette
+ * @param swatches - All swatches in the palette, from light to dark
+ * @returns A new palette
+ *
+ * @public
+ */
+export function createPalette(source: Color, swatches: ReadonlyArray<Color>): Palette {
+    return Object.freeze({ source, swatches: Object.freeze([...swatches]) });
+}
 
-    /**
-     * Returns a Color from the Palette that's the specified position and direction away from the `reference`.
-     *
-     * @param reference - The relative luminance of the reference
-     * @param delta - The number of swatches away from `reference`
-     * @param direction - The direction to go from `reference`, 1 goes darker, -1 goes lighter
-     */
-    delta(reference: RelativeLuminance, delta: number, direction: PaletteDirection): T;
+// What is derived from a palette is cached by the (immutable) palette, since a palette is plain data.
+const luminances = new WeakMap<Palette, ReadonlyArray<number>>();
+const reversed = new WeakMap<Palette, ReadonlyArray<Color>>();
+const closestIndexCache = new WeakMap<Palette, Map<number, number>>();
 
-    /**
-     * Returns the index of the Palette that most closely matches
-     * the provided relative luminance.
-     *
-     * @param reference - The relative luminance of the reference
-     * @returns The index
-     */
-    closestIndexOf(reference: RelativeLuminance): number;
+/**
+ * Gets the swatches of a palette in reverse order, from dark to light.
+ *
+ * @param palette - The palette
+ * @returns The swatches, from dark to light
+ *
+ * @public
+ */
+export function reversedSwatches(palette: Palette): ReadonlyArray<Color> {
+    let result = reversed.get(palette);
+    if (!result) {
+        result = Object.freeze([...palette.swatches].reverse());
+        reversed.set(palette, result);
+    }
+    return result;
+}
 
-    /**
-     * Gets a Color by index. Index is clamped to the limits
-     * of the Palette so a Color will always be returned.
-     *
-     * @param index - The index
-     * @returns The Color
-     */
-    get(index: number): T;
+function swatchLuminances(palette: Palette): ReadonlyArray<number> {
+    let result = luminances.get(palette);
+    if (!result) {
+        result = palette.swatches.map(relativeLuminance);
+        luminances.set(palette, result);
+    }
+    return result;
+}
+
+/**
+ * Gets a swatch by index. The index is rounded and clamped to the limits of the palette, so a color will always be
+ * returned.
+ *
+ * @param palette - The palette
+ * @param index - The index
+ * @returns The color
+ *
+ * @public
+ */
+export function swatchAt(palette: Palette, index: number): Color {
+    const rounded = Math.round(index);
+    const last = palette.swatches.length - 1;
+    return palette.swatches[isNaN(rounded) || rounded <= 0 ? 0 : rounded >= last ? last : rounded];
+}
+
+/**
+ * Gets the index of the swatch that most closely matches the relative luminance of the `reference`.
+ *
+ * @param palette - The palette
+ * @param reference - The color or gradient to match
+ * @returns The index
+ *
+ * @public
+ */
+export function closestSwatchIndex(palette: Palette, reference: Paint): number {
+    const target = relativeLuminance(reference);
+
+    let cache = closestIndexCache.get(palette);
+    if (!cache) {
+        cache = new Map();
+        closestIndexCache.set(palette, cache);
+    }
+
+    const cached = cache.get(target);
+    if (cached !== undefined) {
+        return cached;
+    }
+
+    let index = palette.swatches.indexOf(reference as Color);
+
+    if (index === -1) {
+        const all = swatchLuminances(palette);
+        index = 0;
+        for (let i = 1; i < all.length; i++) {
+            if (Math.abs(all[i] - target) < Math.abs(all[index] - target)) {
+                index = i;
+            }
+        }
+    }
+
+    cache.set(target, index);
+    return index;
 }

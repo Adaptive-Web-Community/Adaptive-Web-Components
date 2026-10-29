@@ -30,7 +30,7 @@ export const LayerBaseLuminance = Object.freeze({
  *
  * @remarks
  * By default this maps to the {@link neutralPalette}.
- * Use a custom palette like `layerPalette.withDefault(PaletteRGB.from("#[HEX_COLOR]"))`.
+ * Use a custom palette like `layerPalette.withDefault(PaletteOkhsl.from("#[HEX_COLOR]"))`.
  *
  * @public
  */
