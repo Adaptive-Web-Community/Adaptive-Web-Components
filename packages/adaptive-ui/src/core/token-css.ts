@@ -4,8 +4,12 @@ import { formatExpression, Operand } from "./expression.js";
 import { InteractiveSet } from "./interactive.js";
 import { isShadow } from "./shadow/index.js";
 
-// Gets what is at the name of a token in a tree of the tokens of a library.
-function atName<T>(tree: any, name: string): T {
+/**
+ * Gets what is at the name of a token in a tree of the tokens of a library.
+ *
+ * @internal
+ */
+export function atName<T>(tree: any, name: string): T {
     let value = tree;
     for (const key of name.split(".")) {
         value = value?.[key];
@@ -33,9 +37,17 @@ export function propertyResolver(library: Library.Library<any>, options?: CSSPro
 type Dimensional = { value: number; unit: string };
 
 /**
- * Writes a value of an interactive token. They are plain data, so the shape tells what one is.
+ * Writes a value as CSS: a color, a gradient, a shadow, or a dimension, as the library writes a token of its type, and anything else as a string.
+ *
+ * @remarks
+ * The values are plain data, so the shape tells what one is. It writes the states of an interactive token, and the values of a style.
+ *
+ * @param value - The value
+ * @returns The CSS
+ *
+ * @public
  */
-function formatMember(value: unknown): string {
+export function formatValue(value: unknown): string {
     if (isShadow(value)) {
         return convert(DesignToken.Type.Shadow, value);
     }
@@ -76,8 +88,8 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         interactive: (value: InteractiveSet<unknown>, token: { name: string }) => {
             const base = property(token.name);
             const given = Object.entries(value).filter(([, v]) => v !== undefined && v !== null);
-            const others = given.filter(([state]) => state !== "rest").map(([state, v]) => `${base}-${state}:${formatMember(v)}`);
-            return [value.rest === undefined || value.rest === null ? "" : formatMember(value.rest), ...others].join(";");
+            const others = given.filter(([state]) => state !== "rest").map(([state, v]) => `${base}-${state}:${formatValue(v)}`);
+            return [value.rest === undefined || value.rest === null ? "" : formatValue(value.rest), ...others].join(";");
         },
         // A palette is not CSS.
         palette: false as const,
