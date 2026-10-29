@@ -332,6 +332,9 @@ export function formatRules(rules: Iterable<CssRule>): string;
 // @public
 export function formatValue(value: unknown): string;
 
+// @public
+export function formerNames(...names: string[]): Record<string, unknown>;
+
 // Warning: (ae-internal-missing-underscore) The name "fromCulori" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -341,6 +344,11 @@ export function fromCulori(color: Color_3): Color_2;
 //
 // @public
 export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient_2;
+
+// @public
+export function getFormerNames(node: {
+    $extensions?: Record<string, any>;
+}): string[];
 
 // @public
 export function getIntendedFor(token: {
@@ -390,6 +398,14 @@ export function idealColorDeltaSet(palette: Palette, reference: Paint, minContra
 
 // @public @deprecated (undocumented)
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: Direction): InteractiveColorSet;
+
+// @public
+export interface IndexedToken {
+    readonly deprecated: boolean | string;
+    readonly interactive: boolean;
+    readonly name: string;
+    readonly path: readonly string[];
+}
 
 // @public
 export function intendedFor(...properties: StyleProperty[]): Record<string, unknown>;
@@ -477,6 +493,11 @@ export function isShadow(value: unknown): value is DesignToken.Values.Readonly.S
 
 // @public
 export function isTransparent(color: Color_2): boolean;
+
+// Warning: (ae-internal-missing-underscore) The name "kebabName" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function kebabName(path: readonly string[]): string;
 
 // @public
 export function libraryTokenProperties(library: Library.Library<any>, options?: TokenPropertiesOptions): TokenPropertiesResolver;
@@ -627,10 +648,22 @@ export function renderRules(properties: Iterable<readonly [string, StyleValues]>
 export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[];
 
 // @public
+export interface ResolvedTokenName {
+    readonly deprecated: boolean | string;
+    readonly name: string;
+    readonly path: readonly string[];
+    readonly renamed: boolean;
+    readonly state?: InteractiveState;
+}
+
+// @public
 export function resolveOnFills(properties: Iterable<readonly [string, StyleValues]>): Map<string, StyleValues>;
 
 // @public @deprecated
 export function resolvePaletteDirection(direction: Direction): PaletteDirection;
+
+// @public
+export function resolveTokenName(index: TokenNameIndex, name: string): ResolvedTokenName | undefined;
 
 // @public
 export function reversedSwatches(palette: Palette): ReadonlyArray<Color_2>;
@@ -882,6 +915,28 @@ export function toCulori(color: Color_2): Color_3;
 export function toGradient(gradient: Gradient | DtcgGradient): Gradient;
 
 // @public
+export interface TokenMetadata {
+    readonly formerNames?: readonly string[];
+    readonly intendedFor?: readonly StyleProperty[];
+}
+
+// @public
+export function tokenMetadata(metadata: TokenMetadata): Record<string, unknown>;
+
+// @public
+export interface TokenNameIndex {
+    readonly groups: ReadonlyMap<string, string>;
+    readonly names: ReadonlyMap<string, {
+        readonly token: string;
+        readonly current: boolean;
+    }>;
+    readonly tokens: ReadonlyMap<string, IndexedToken>;
+}
+
+// @public
+export function tokenNames(library: Library.Library<any>): TokenNameIndex;
+
+// @public
 export interface TokenProperties {
     // (undocumented)
     readonly property: string;
@@ -984,6 +1039,9 @@ export const _white: DesignToken;
 
 // @public
 export function withAlpha(color: Color_2, alpha: number): Color_2;
+
+// @public
+export function withFormerNames<C extends object>(config: C, namesOf: (path: readonly string[]) => readonly string[]): C;
 
 // (No @packageDocumentation comment for this package)
 
