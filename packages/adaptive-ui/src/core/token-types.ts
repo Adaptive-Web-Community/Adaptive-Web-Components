@@ -1,4 +1,5 @@
 import { DesignToken, Library } from "design-token-library";
+import type { Paint } from "./color/paint.js";
 import type { Palette } from "./color/palette.js";
 import { Operand } from "./expression.js";
 import { InteractiveSet, InteractiveState } from "./interactive.js";
@@ -27,6 +28,8 @@ export const AdaptiveDesignToken = {
     fontVariations: "fontVariations",
     /** A value for each state of an interactive element, which a recipe makes once, see `InteractiveToken`. */
     interactive: "interactive",
+    /** A `Paint`, a color or a gradient, written to CSS as the `background` of a fill would be, see {@link PaintToken}. */
+    paint: "paint",
     /** A `Palette`, which is not written to CSS. */
     palette: "palette",
     /** The WCAG contrast level, which a recipe reads and which is not written to CSS, see {@link WcagContrastLevel}. */
@@ -90,6 +93,17 @@ export type FontStyleToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontS
  * @public
  */
 export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.fontVariations, string>;
+
+/**
+ * A {@link Paint}: a color, or a gradient with its kind and angle, like a fill that is a gradient.
+ *
+ * @remarks
+ * A DTCG `gradient` is only its stops, which the library writes as the stops and not as a `linear-gradient()`, and it has no kind or angle,
+ * so a gradient of Adaptive UI is a token of this type. It is written to CSS with `formatPaint`.
+ *
+ * @public
+ */
+export type PaintToken = DesignToken.Custom<typeof AdaptiveDesignToken.paint, Paint>;
 
 /**
  * A {@link Palette}.

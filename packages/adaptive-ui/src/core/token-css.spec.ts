@@ -1,8 +1,9 @@
 import chai from "chai";
-import { DesignToken, Library, px, refs, toCSS } from "design-token-library";
+import { DesignToken, hex, Library, px, refs, toCSS } from "design-token-library";
+import { linearGradient } from "./color/gradient.js";
 import { multiply } from "./expression.js";
 import { adaptiveConverters, propertyResolver } from "./token-css.js";
-import { AdaptiveDesignToken, ExpressionToken } from "./token-types.js";
+import { AdaptiveDesignToken, ExpressionToken, PaintToken } from "./token-types.js";
 
 const { expect } = chai;
 
@@ -72,5 +73,31 @@ describe("adaptiveConverters", () => {
         library.tokens.derived.set(px(5));
 
         expect(toCSS(library, { converters: adaptiveConverters(library) })).to.include("--derived:5px;");
+    });
+
+    it("should write a paint as a color, or a gradient with its kind and angle", () => {
+        interface PaintTokens {
+            solid: PaintToken;
+            gradient: PaintToken;
+        }
+        const red = hex("#ff0000");
+        const blue = hex("#0000ff");
+        const library = Library.create<PaintTokens>({
+            solid: { $type: AdaptiveDesignToken.paint, $value: red },
+            gradient: {
+                $type: AdaptiveDesignToken.paint,
+                $value: linearGradient(
+                    [
+                        { color: red, position: { value: 0, unit: "%" } },
+                        { color: blue, position: { value: 1, unit: "%" } },
+                    ],
+                    90
+                ),
+            },
+        });
+        const css = toCSS(library, { converters: adaptiveConverters(library) });
+
+        expect(css).to.include("--solid:#ff0000;");
+        expect(css).to.include("--gradient:linear-gradient(90deg, #ff0000 0%, #0000ff 100%);");
     });
 });
