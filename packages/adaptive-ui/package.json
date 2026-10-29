@@ -40,7 +40,6 @@
     "postbuild": "npm run doc"
   },
   "dependencies": {
-    "@happy-dom/global-registrator": "^14.7.1",
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-foundation": "3.0.0-alpha.31",
     "change-case": "^5.4.4",

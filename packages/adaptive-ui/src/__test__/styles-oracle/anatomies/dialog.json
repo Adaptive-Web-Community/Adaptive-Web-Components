@@ -15,7 +15,7 @@
   "styleRules": [
     {
       "part": "Control",
-      "styles": [
+      "treatments": [
         "shape.layer"
       ],
       "properties": {

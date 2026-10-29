@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 .stress-unknown-reset-target .known:focus-visible {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);

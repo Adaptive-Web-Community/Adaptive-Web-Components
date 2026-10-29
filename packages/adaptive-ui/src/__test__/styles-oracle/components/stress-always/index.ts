@@ -1,5 +1,8 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
-import { neutralFillSubtle } from "../../../../reference/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
+
+const { color } = refs<ReferenceLibraryTokens>();
 
 // Stress test for a component that is always interactive and can never be disabled, with the focus within.
 
@@ -26,6 +29,6 @@ export const stressAlwaysStyleModules: StyleRules = [
         target: {
             part: StressAlwaysAnatomy.parts.root,
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
 ];

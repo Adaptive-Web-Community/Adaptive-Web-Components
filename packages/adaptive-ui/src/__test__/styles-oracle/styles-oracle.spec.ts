@@ -72,12 +72,12 @@ const capabilities: Capability[] = [
     {
         name: "applies the focus indicator to the focus target",
         file: "code/button.css",
-        includes: ["control:focus-visible { outline-color: var(--color-focusStroke-value);"],
+        includes: ["control:focus-visible { outline-color: var(--color-focusStroke);"],
     },
     {
         name: "applies the focus indicator to the context",
         file: "code/tab.css",
-        includes: [":host(:focus-visible) { outline-color: var(--color-focusStroke-value);"],
+        includes: [":host(:focus-visible) { outline-color: var(--color-focusStroke);"],
     },
     {
         name: "applies the focus indicator on `:focus-within` with a reset on the focusable part",
@@ -111,13 +111,13 @@ const capabilities: Capability[] = [
     {
         name: "merges longhand properties into shorthand",
         file: "code/divider.css",
-        includes: ["border-top: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle-rest);"],
+        includes: ["border-top: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle);"],
         excludes: ["border-top-style", "border-top-width", "border-top-color"],
     },
     {
         name: "combines shared styles with properties using the rest state of a token set",
         file: "code/tooltip.css",
-        includes: ["box-shadow: var(--elevation-tooltip);", "background: var(--color-neutral-fill-subtle-rest);"],
+        includes: ["box-shadow: var(--elevation-tooltip);", "background: var(--color-neutral-fill-subtle);"],
         excludes: [":hover"],
     },
     {
@@ -151,7 +151,7 @@ const capabilities: Capability[] = [
     {
         name: "adds `fill: currentcolor` for the foreground at rest",
         file: "code/stress-selectors.css",
-        includes: [".stress-selectors { background: var(--color-neutral-fill-subtle-rest); color: var(--color-neutral-stroke-readable-rest); fill: currentcolor; }"],
+        includes: [".stress-selectors { background: var(--color-neutral-fill-subtle); color: var(--color-neutral-stroke-readable); fill: currentcolor; }"],
     },
     {
         name: "combines a condition on the context with a part",
@@ -175,8 +175,8 @@ const capabilities: Capability[] = [
         name: "supports pseudo element and exported parts, which don't have a state selector",
         file: "code/stress-selectors.css",
         includes: [
-            ".stress-selectors::before { background: var(--color-neutral-fill-subtle-rest); }",
-            ".stress-selectors::part(icon) { color: var(--color-neutral-stroke-readable-rest);",
+            ".stress-selectors::before { background: var(--color-neutral-fill-subtle); }",
+            ".stress-selectors::part(icon) { color: var(--color-neutral-stroke-readable);",
             ".stress-selectors.locked::part(icon) { color: var(--color-neutral-stroke-readable-disabled); }",
         ],
     },
@@ -193,7 +193,7 @@ const capabilities: Capability[] = [
     {
         name: "supports a different context for a single rule",
         file: "code/stress-selectors.css",
-        includes: [".other-context.other-condition { background: var(--color-neutral-fill-subtle-rest); }"],
+        includes: [".other-context.other-condition { background: var(--color-neutral-fill-subtle); }"],
     },
     {
         name: "ignores the interactive condition when requested for the target",
@@ -312,8 +312,8 @@ const capabilities: Capability[] = [
         name: "supports multiple conditions, with boolean values of true and false",
         file: "json/stress-conditions.css",
         includes: [
-            ".stress-conditions.selected { background: var(--color-accent-fill-ideal-rest);",
-            ".stress-conditions:not(.selected) { background: var(--color-neutral-fill-subtle-rest);",
+            ".stress-conditions.selected { background: var(--color-accent-fill-ideal);",
+            ".stress-conditions:not(.selected) { background: var(--color-neutral-fill-subtle);",
             ".stress-conditions.size-small[emphasis=\"high\"].selected:not([aria-busy=\"true\"]) .content",
         ],
     },
@@ -340,8 +340,8 @@ const capabilities: Capability[] = [
         name: "supports token, token group, and literal values for properties",
         file: "json/stress-properties.css",
         includes: [
-            "background: var(--color-neutral-fill-subtle-rest);",
-            "border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle-rest);",
+            "background: var(--color-neutral-fill-subtle);",
+            "border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle);",
             "border-radius: var(--shape-cornerRadius-default);",
             "padding: var(--density-control-vertical-padding) var(--density-control-horizontal-padding);",
             "display: flex;",
@@ -404,6 +404,7 @@ const capabilities: Capability[] = [
             "Unknown part \"Missing focus target\" in focus.focusTarget, skipping.",
             "Unknown part \"Missing reset target\" in focus.resetTarget, skipping.",
             "Unknown part \"Missing cursor part\" in cursor, skipping.",
+            "Unknown treatment \"Missing treatment\" in style rule, skipping.",
         ],
     },
 ];

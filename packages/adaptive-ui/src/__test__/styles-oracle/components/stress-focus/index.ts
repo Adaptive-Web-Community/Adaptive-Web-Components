@@ -1,5 +1,8 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
-import { neutralFillSubtle } from "../../../../reference/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
+
+const { color } = refs<ReferenceLibraryTokens>();
 
 // Stress test for a focus indicator on a child, a focus reset target, and an explicit cursor.
 
@@ -28,6 +31,6 @@ export const stressFocusStyleModules: StyleRules = [
             part: StressFocusAnatomy.parts.indicator,
             stateOnContext: true,
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
 ];

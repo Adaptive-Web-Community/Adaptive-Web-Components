@@ -1,11 +1,14 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
 import {
-    accentForegroundReadableControlStyles,
-    controlShapeStyles,
-    densityControl,
-    neutralForegroundStrongElementStyles,
-    typeRampBaseStyles,
-} from "../../../../reference/index.js";
+    accentForegroundReadableControlTreatment,
+    controlShapeTreatment,
+    neutralForegroundStrongElementTreatment,
+    typeRampBaseTreatment,
+} from "../../../../reference/treatments.js";
+
+const { density } = refs<ReferenceLibraryTokens>();
 
 // Adapted from the Adaptive Web Components `anchor`.
 
@@ -31,13 +34,13 @@ export const anchorStyleModules: StyleRules = [
         target: {
             part: AnchorAnatomy.parts.control,
         },
-        styles: [
-            controlShapeStyles,
-            typeRampBaseStyles,
-            accentForegroundReadableControlStyles,
+        treatments: [
+            controlShapeTreatment,
+            typeRampBaseTreatment,
+            accentForegroundReadableControlTreatment,
         ],
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: density.control.horizontal.gap,
         },
     },
     {
@@ -45,6 +48,6 @@ export const anchorStyleModules: StyleRules = [
             contextCondition: AnchorAnatomy.conditions.noHref,
             part: AnchorAnatomy.parts.control,
         },
-        styles: neutralForegroundStrongElementStyles,
+        treatments: [neutralForegroundStrongElementTreatment],
     },
 ];

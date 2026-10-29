@@ -3,7 +3,7 @@
   cursor: not-allowed;
 }
 :host {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 :host(:not([disabled]):focus-visible) {
   background: var(--color-neutral-fill-subtle-focus);

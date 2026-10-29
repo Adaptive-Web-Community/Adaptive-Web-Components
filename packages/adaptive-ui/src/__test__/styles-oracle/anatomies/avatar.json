@@ -60,7 +60,7 @@
     },
     {
       "part": "Content",
-      "styles": [
+      "treatments": [
         "shape.round"
       ],
       "properties": {
@@ -76,7 +76,7 @@
         "Purpose": "Title"
       },
       "part": "Content",
-      "styles": [
+      "treatments": [
         "text.type-ramp-plus-5"
       ]
     },
@@ -97,7 +97,7 @@
         "Purpose": "Control"
       },
       "part": "Content",
-      "styles": [
+      "treatments": [
         "text.type-ramp-plus-2"
       ]
     },
@@ -106,7 +106,7 @@
         "Purpose": "In control"
       },
       "part": "Content",
-      "styles": [
+      "treatments": [
         "text.type-ramp-base"
       ]
     }

@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 .button:focus-visible {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -20,30 +20,30 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-neutral-fill-subtle-rest);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
+  color: var(--color-neutral-onFill-subtle);
   fill: currentcolor;
-  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-safety-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-safety);
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-normal:not(:disabled):focus-visible {
   background: var(--color-neutral-fill-subtle-focus);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtle-focus);
+  color: var(--color-neutral-onFill-subtle-focus);
   border-color: var(--color-neutral-stroke-safety-focus);
 }
 .button.purpose-normal:not(:disabled):hover {
   background: var(--color-neutral-fill-subtle-hover);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtle-hover);
+  color: var(--color-neutral-onFill-subtle-hover);
   border-color: var(--color-neutral-stroke-safety-hover);
 }
 .button.purpose-normal:not(:disabled):active {
   background: var(--color-neutral-fill-subtle-active);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtle-active);
+  color: var(--color-neutral-onFill-subtle-active);
   border-color: var(--color-neutral-stroke-safety-active);
 }
 .button.purpose-normal:disabled {
   background: var(--color-neutral-fill-subtle-disabled);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtle-disabled);
+  color: var(--color-neutral-onFill-subtle-disabled);
   border-color: var(--color-neutral-stroke-safety-disabled);
 }
 .button.purpose-normal.icon-only {
@@ -64,27 +64,27 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-accent-fill-ideal-rest);
-  color: var(--color-blackOrWhite-readable-on-accent-fill-ideal-rest);
+  background: var(--color-accent-fill-ideal);
+  color: var(--color-accent-onFill-ideal);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-primary:not(:disabled):focus-visible {
   background: var(--color-accent-fill-ideal-focus);
-  color: var(--color-blackOrWhite-readable-on-accent-fill-ideal-focus);
+  color: var(--color-accent-onFill-ideal-focus);
 }
 .button.purpose-primary:not(:disabled):hover {
   background: var(--color-accent-fill-ideal-hover);
-  color: var(--color-blackOrWhite-readable-on-accent-fill-ideal-hover);
+  color: var(--color-accent-onFill-ideal-hover);
 }
 .button.purpose-primary:not(:disabled):active {
   background: var(--color-accent-fill-ideal-active);
-  color: var(--color-blackOrWhite-readable-on-accent-fill-ideal-active);
+  color: var(--color-accent-onFill-ideal-active);
 }
 .button.purpose-primary:disabled {
   background: var(--color-accent-fill-ideal-disabled);
-  color: var(--color-blackOrWhite-readable-on-accent-fill-ideal-disabled);
+  color: var(--color-accent-onFill-ideal-disabled);
 }
 .button.purpose-primary.icon-only {
   padding-right: var(--density-control-vertical-padding);
@@ -104,27 +104,27 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-critical-fill-readable-rest);
-  color: var(--color-blackOrWhite-readable-on-critical-fill-readable-rest);
+  background: var(--color-critical-fill-readable);
+  color: var(--color-critical-onFill-readable);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-critical:not(:disabled):focus-visible {
   background: var(--color-critical-fill-readable-focus);
-  color: var(--color-blackOrWhite-readable-on-critical-fill-readable-focus);
+  color: var(--color-critical-onFill-readable-focus);
 }
 .button.purpose-critical:not(:disabled):hover {
   background: var(--color-critical-fill-readable-hover);
-  color: var(--color-blackOrWhite-readable-on-critical-fill-readable-hover);
+  color: var(--color-critical-onFill-readable-hover);
 }
 .button.purpose-critical:not(:disabled):active {
   background: var(--color-critical-fill-readable-active);
-  color: var(--color-blackOrWhite-readable-on-critical-fill-readable-active);
+  color: var(--color-critical-onFill-readable-active);
 }
 .button.purpose-critical:disabled {
   background: var(--color-critical-fill-readable-disabled);
-  color: var(--color-blackOrWhite-readable-on-critical-fill-readable-disabled);
+  color: var(--color-critical-onFill-readable-disabled);
 }
 .button.purpose-critical.icon-only {
   padding-right: var(--density-control-vertical-padding);
@@ -144,25 +144,22 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-accent-fill-stealth-rest);
-  color: var(--color-neutral-stroke-strong-rest);
+  background: var(--color-accent-fill-stealth);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
-  border: var(--shape-strokeThickness-default) solid var(--color-accent-stroke-safety-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-accent-stroke-safety);
   font-style: var(--typography-fontStyle-label);
 }
 .button.purpose-generative-ai:not(:disabled):focus-visible {
   background: var(--color-accent-fill-stealth-focus);
-  color: var(--color-neutral-stroke-strong-rest);
   border-color: var(--color-accent-stroke-safety-focus);
 }
 .button.purpose-generative-ai:not(:disabled):hover {
   background: var(--color-accent-fill-stealth-hover);
-  color: var(--color-neutral-stroke-strong-rest);
   border-color: var(--color-accent-stroke-safety-hover);
 }
 .button.purpose-generative-ai:not(:disabled):active {
   background: var(--color-accent-fill-stealth-active);
-  color: var(--color-neutral-stroke-strong-rest);
   border-color: var(--color-accent-stroke-safety-active);
 }
 .button.purpose-generative-ai:disabled {
@@ -181,7 +178,7 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-accent-stroke-readable-rest);
+  color: var(--color-accent-stroke-readable);
   fill: currentcolor;
   font-style: var(--typography-fontStyle-label);
   gap: var(--density-control-horizontal-gap);

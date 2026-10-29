@@ -9,7 +9,7 @@ control:focus-visible {
   outline-style: none;
 }
 root:focus-within {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -28,18 +28,9 @@ label {
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-neutral-stroke-strong-rest);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
   font-style: var(--typography-fontStyle-label);
-}
-:host(:not([disabled])) label:focus-visible {
-  color: var(--color-neutral-stroke-strong-rest);
-}
-:host(:not([disabled])) label:hover {
-  color: var(--color-neutral-stroke-strong-rest);
-}
-:host(:not([disabled])) label:active {
-  color: var(--color-neutral-stroke-strong-rest);
 }
 :host([disabled]) label {
   color: var(--color-neutral-stroke-strong-disabled);
@@ -51,10 +42,10 @@ root {
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-neutral-fill-subtleInverse-rest);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-rest);
+  background: var(--color-neutral-fill-subtleInverse);
+  color: var(--color-neutral-onFill-subtleInverse);
   fill: currentcolor;
-  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
   padding-top: 0;
   padding-right: var(--density-control-horizontal-padding);
   padding-bottom: 0;
@@ -63,26 +54,22 @@ root {
 }
 :host(:not([disabled])) root:focus-visible {
   background: var(--color-neutral-fill-subtleInverse-focus);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-focus);
+  color: var(--color-neutral-onFill-subtleInverse-focus);
   border-color: var(--color-neutral-stroke-discernible-focus);
 }
 :host(:not([disabled])) root:hover {
   background: var(--color-neutral-fill-subtleInverse-hover);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-hover);
+  color: var(--color-neutral-onFill-subtleInverse-hover);
   border-color: var(--color-neutral-stroke-discernible-hover);
 }
 :host(:not([disabled])) root:active {
   background: var(--color-neutral-fill-subtleInverse-active);
-  color: var(
-    --color-neutral-stroke-strong-on-neutral-fill-subtleInverse-active
-  );
+  color: var(--color-neutral-onFill-subtleInverse-active);
   border-color: var(--color-neutral-stroke-discernible-active);
 }
 :host([disabled]) root {
   background: var(--color-neutral-fill-subtleInverse-disabled);
-  color: var(
-    --color-neutral-stroke-strong-on-neutral-fill-subtleInverse-disabled
-  );
+  color: var(--color-neutral-onFill-subtleInverse-disabled);
   border-color: var(--color-neutral-stroke-discernible-disabled);
 }
 control {

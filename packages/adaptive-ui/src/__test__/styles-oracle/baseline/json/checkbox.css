@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 .checkbox.focused .control-container {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -24,22 +24,19 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible-rest);
-  color: var(--color-neutral-stroke-strong-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
   background: var(--color-context);
 }
 .checkbox:not(.disabled):not(.read-only) .control.focused {
   border-color: var(--color-neutral-stroke-discernible-focus);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox:not(.disabled):not(.read-only) .control.hovered {
   border-color: var(--color-neutral-stroke-discernible-hover);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox:not(.disabled):not(.read-only) .control.active {
   border-color: var(--color-neutral-stroke-discernible-active);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.disabled .control {
   border-color: var(--color-neutral-stroke-discernible-disabled);
@@ -51,11 +48,9 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
   gap: var(--density-controlList-horizontal-gap);
-}
-.checkbox .label,.checkbox:not(.disabled):not(.read-only) .label.focused,.checkbox:not(.disabled):not(.read-only) .label.hovered,.checkbox:not(.disabled):not(.read-only) .label.active {
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.disabled .label {
   color: var(--color-neutral-stroke-strong-disabled);
@@ -66,7 +61,7 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-critical-stroke-readable-rest);
+  color: var(--color-critical-stroke-readable);
   fill: currentcolor;
 }
 .checkbox:not(.disabled):not(.read-only) .required.focused {
@@ -88,26 +83,26 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-highlight-fill-readable-rest);
-  color: var(--color-blackOrWhite-readable-on-highlight-fill-readable-rest);
+  background: var(--color-highlight-fill-readable);
+  color: var(--color-highlight-onFill-readable);
   fill: currentcolor;
   border: var(--shape-strokeThickness-default) solid transparent;
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.focused {
   background: var(--color-highlight-fill-readable-focus);
-  color: var(--color-blackOrWhite-readable-on-highlight-fill-readable-focus);
+  color: var(--color-highlight-onFill-readable-focus);
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.hovered {
   background: var(--color-highlight-fill-readable-hover);
-  color: var(--color-blackOrWhite-readable-on-highlight-fill-readable-hover);
+  color: var(--color-highlight-onFill-readable-hover);
 }
 .checkbox.checked:not(.disabled):not(.read-only) .control.active {
   background: var(--color-highlight-fill-readable-active);
-  color: var(--color-blackOrWhite-readable-on-highlight-fill-readable-active);
+  color: var(--color-highlight-onFill-readable-active);
 }
 .checkbox.checked.disabled .control {
   background: var(--color-highlight-fill-readable-disabled);
-  color: var(--color-blackOrWhite-readable-on-highlight-fill-readable-disabled);
+  color: var(--color-highlight-onFill-readable-disabled);
 }
 .checkbox.indeterminate .control {
   border-radius: var(--shape-cornerRadius-default);
@@ -116,22 +111,19 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible-rest);
-  color: var(--color-neutral-stroke-strong-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
   background: var(--color-context);
 }
 .checkbox.indeterminate:not(.disabled):not(.read-only) .control.focused {
   border-color: var(--color-neutral-stroke-discernible-focus);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.indeterminate:not(.disabled):not(.read-only) .control.hovered {
   border-color: var(--color-neutral-stroke-discernible-hover);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.indeterminate:not(.disabled):not(.read-only) .control.active {
   border-color: var(--color-neutral-stroke-discernible-active);
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.indeterminate.disabled .control {
   border-color: var(--color-neutral-stroke-discernible-disabled);
@@ -143,19 +135,17 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
-}
-.checkbox .description,.checkbox:not(.disabled):not(.read-only) .description.focused,.checkbox:not(.disabled):not(.read-only) .description.hovered,.checkbox:not(.disabled):not(.read-only) .description.active {
-  color: var(--color-neutral-stroke-readable-rest);
 }
 .checkbox.disabled .description {
   color: var(--color-neutral-stroke-readable-disabled);
 }
 .checkbox:not(.checked).read-only .control {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .checkbox.checked.read-only .control {
-  background: var(--color-neutral-fill-readable-rest);
+  background: var(--color-neutral-fill-readable);
 }
 .checkbox .validation {
   font-family: var(--typography-fontFamily-default);
@@ -163,10 +153,8 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
-}
-.checkbox .validation,.checkbox:not(.disabled):not(.read-only) .validation.focused,.checkbox:not(.disabled):not(.read-only) .validation.hovered,.checkbox:not(.disabled):not(.read-only) .validation.active {
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .checkbox.disabled .validation {
   color: var(--color-neutral-stroke-strong-disabled);
@@ -175,7 +163,7 @@
   gap: var(--density-controlList-horizontal-gap);
 }
 .checkbox.invalid .control {
-  border-color: var(--color-critical-stroke-discernible-rest);
+  border-color: var(--color-critical-stroke-discernible);
 }
 .checkbox.invalid:not(.disabled):not(.read-only) .control.focused {
   border-color: var(--color-critical-stroke-discernible-focus);
@@ -190,11 +178,11 @@
   border-color: var(--color-critical-stroke-discernible-disabled);
 }
 .checkbox.invalid .validation {
-  color: var(--color-critical-stroke-readable-rest);
+  color: var(--color-critical-stroke-readable);
   fill: currentcolor;
 }
 .checkbox.success .control {
-  border-color: var(--color-success-stroke-discernible-rest);
+  border-color: var(--color-success-stroke-discernible);
 }
 .checkbox.success:not(.disabled):not(.read-only) .control.focused {
   border-color: var(--color-success-stroke-discernible-focus);
@@ -209,6 +197,6 @@
   border-color: var(--color-success-stroke-discernible-disabled);
 }
 .checkbox.success .validation {
-  color: var(--color-success-stroke-readable-rest);
+  color: var(--color-success-stroke-readable);
   fill: currentcolor;
 }

@@ -9,13 +9,13 @@
   outline-style: none;
 }
 .stress-focus:focus-visible indicator {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
 }
 .stress-focus indicator {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .stress-focus:not(.disabled):focus-visible indicator {
   background: var(--color-neutral-fill-subtle-focus);

@@ -286,7 +286,7 @@ export interface SerializableStyleRule {
     stateOnContext?: boolean;
     contextCondition?: Record<string, string | boolean>;
     part?: string,
-    styles?: string[],
+    treatments?: string[],
     properties?: Record<string, string>,
 }
 

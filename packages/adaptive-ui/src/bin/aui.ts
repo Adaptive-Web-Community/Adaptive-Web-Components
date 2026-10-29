@@ -1,12 +1,9 @@
-import "./install-dom-shim.js";
 import path from "path";
 import fs from "fs";
 import fsp from "fs/promises";
 import { pathToFileURL } from "url";
 import { matcher } from "matcher"
 import * as prettier from "prettier";
-import { ComposableStyles, ElementStyles } from '@microsoft/fast-element';
-import { CSSDesignToken } from "@microsoft/fast-foundation";
 import { Command } from 'commander';
 import { kebabCase } from "change-case";
 import { deepmerge } from "deepmerge-ts";
@@ -15,7 +12,6 @@ import postcss, { type Processor} from "postcss";
 import postcssMergeLonghand from "postcss-merge-longhand";
 import postcssMergeRules from "postcss-merge-rules"
 import postcssMergeBorderRadius from "postcss-merge-border-radius";
-import { ElementStylesRenderer } from '../core/styles/css/element-styles-renderer.js';
 import {
     ComponentAnatomy,
     ComponentConditions,
@@ -26,15 +22,14 @@ import {
     SerializableStringCondition,
     SerializableStyleRule,
 } from '../core/styles/anatomy.js';
-import { StyleModuleTarget } from '../core/styles/rule.js';
-import { StyleRules } from '../core/styles/styles.js';
-import {
-    DesignTokenRegistry,
-    StyleProperties,
-    StyleRule,
-    Styles,
-} from "../core/index.js";
-import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "../reference/index.js";
+import { formatRules, libraryTokenProperties } from '../core/styles/css/rules.js';
+import { renderStyleRules } from '../core/styles/css/style-rules.js';
+import { StyleProperties, StyleValues } from '../core/styles/properties.js';
+import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
+import { InteractiveState } from '../core/interactive.js';
+import { refAt } from '../core/token-ref.js';
+import { createReferenceLibrary } from '../reference/library.js';
+import { referenceAnatomyTreatments, referenceTreatments } from '../reference/treatments.js';
 
 const program = new Command();
 
@@ -122,7 +117,7 @@ program.parse()
 function ensureFileExists(inFilePath: string) {
     try {
         fs.statSync(inFilePath)
-    } catch (e) {
+    } catch {
         console.warn(failColor, `File not found: ${inFilePath}`)
         process.exit(1)
     }
@@ -148,8 +143,6 @@ function isJsonAnatomyFile(inFilePath: string): boolean {
 }
 
 async function readJsonAnatomyWithImports(jsonPath: string): Promise<SerializableAnatomyWithImports> {
-    await import("../reference/index.js");
-
     const data = (await fsp.readFile(jsonPath)).toString();
     let jsonData = JSON.parse(data) as SerializableAnatomyWithImports;
 
@@ -288,9 +281,9 @@ interface SheetCompiler {
 }
 
 // TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
-ElementStylesRenderer.disabledStyles = disabledStyles;
-ElementStylesRenderer.focusStateStyles = focusIndicatorStyles;
-ElementStylesRenderer.focusResetStyles = focusResetStyles;
+const library = createReferenceLibrary();
+const tokens = libraryTokenProperties(library);
+const treatmentsByName = new Map(referenceTreatments.map(treatment => [treatment.name, treatment]));
 
 class SheetCompilerImpl implements SheetCompiler {
     /**
@@ -299,20 +292,45 @@ class SheetCompilerImpl implements SheetCompiler {
      * @returns 
      */
     compile(sheet: AUIStyleSheet): string {
-        const elementStyles = ElementStylesRenderer.renderStyleRules([], sheet.rules, sheet.anatomy);
-        return this.#reduceStyles(elementStyles.styles)
+        return formatRules(renderStyleRules(sheet.rules, { tokens, anatomy: sheet.anatomy, treatments: referenceAnatomyTreatments }));
     }
+}
 
+// The node of the tokens of the library at a name, a token, a group, or nothing.
+function tokenAt(name: string): unknown {
+    return name.split(".").reduce<unknown>((group, key) => (typeof group === "object" && group !== null ? Reflect.get(group, key) : undefined), library.tokens);
+}
 
-    #reduceStyles(
-        styles: ReadonlyArray<ComposableStyles>
-    ): string {
-        return styles
-            .map((x: ComposableStyles) =>
-                x instanceof ElementStyles ? this.#reduceStyles(x.styles) : x instanceof CSSStyleSheet ? "" /* ignore */ : x
-            )
-            .reduce((prev: string, curr: string) => prev.concat(curr), "");
+// A token has a value, and a group whose own value is its `$root` has a `$root`.
+function has(node: unknown, key: "$value" | "$root"): boolean {
+    return typeof node === "object" && node !== null && key in node;
+}
+
+const states: ReadonlySet<string> = new Set(Object.values(InteractiveState));
+
+/**
+ * The value of a property written as data: a ref to the token of that name (or to the `$root` of a group of that name), or the name as it is.
+ * A state after the name of an interactive token, like `color.neutral.fill.subtle.rest`, which was a token of its own, is that state of the
+ * token, at rest.
+ */
+function propertyValue(value: string): StyleValues | undefined {
+    const node = tokenAt(value);
+    if (has(node, "$value")) {
+        return refAt(value.split("."));
     }
+    if (has(node, "$root")) {
+        return refAt([...value.split("."), "$root"]);
+    }
+    const path = value.split(".");
+    const state = path.pop();
+    if (state !== undefined && states.has(state) && has(tokenAt(path.join(".")), "$value")) {
+        if (state === InteractiveState.rest) {
+            return { rest: refAt(path) };
+        }
+        console.warn(warnColor, `The token "${value}" is a state of an interactive token, which only its rest can be used as, skipping.`);
+        return undefined;
+    }
+    return value;
 }
 
 function createCondition(obj: SerializableAnatomy, style: SerializableStyleRule): string | undefined {
@@ -380,30 +398,23 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
                 return [];
             }
 
-            const styles = style.styles?.map(name => {
-                return Styles.Shared.get(name)!;
+            const treatments = (style.treatments ?? []).flatMap(name => {
+                const treatment = treatmentsByName.get(name);
+                if (treatment === undefined) {
+                    console.warn(warnColor, `Unknown treatment "${name}" in style rule, skipping.`);
+                    return [];
+                }
+                return [treatment];
             });
 
             const properties: StyleProperties = {};
             if (style.properties) {
-                Object.entries(style.properties).map(entry => {
-                    const target = entry[0];
-                    const value = entry[1];
-                    const token = DesignTokenRegistry.Shared.get(value);
-                    if (token) {
-                        properties[target] = token as CSSDesignToken<any>;
-                    } else {
-                        const group = DesignTokenRegistry.Groups.get(value);
-                        if (group) {
-                            properties[target] = group;
-                        } else {
-                            properties[target] = value;
-                        }
-                    }
-                });
+                for (const [target, value] of Object.entries(style.properties)) {
+                    properties[target] = propertyValue(value);
+                }
             }
 
-            const target: StyleModuleTarget = {
+            const target: StyleRuleTarget = {
                 context: obj.context,
                 contextCondition: createCondition(obj, style),
                 stateOnContext: style.stateOnContext,
@@ -412,7 +423,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
 
             const rule: StyleRule = {
                 target,
-                styles,
+                treatments,
                 properties,
             };
 

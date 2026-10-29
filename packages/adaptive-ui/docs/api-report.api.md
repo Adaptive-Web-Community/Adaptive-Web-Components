@@ -761,7 +761,7 @@ export interface SerializableStyleRule {
     // (undocumented)
     stateOnContext?: boolean;
     // (undocumented)
-    styles?: string[];
+    treatments?: string[];
 }
 
 // @public @deprecated (undocumented)

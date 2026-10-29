@@ -3,7 +3,7 @@
   cursor: pointer;
 }
 control:focus-visible {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -15,7 +15,7 @@ control {
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-accent-stroke-readable-rest);
+  color: var(--color-accent-stroke-readable);
   fill: currentcolor;
   gap: var(--density-control-horizontal-gap);
 }
@@ -29,15 +29,6 @@ control {
   color: var(--color-accent-stroke-readable-active);
 }
 :host(:not([href])) control {
-  color: var(--color-neutral-stroke-strong-rest);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
-}
-:host(:not([href])[href]) control:focus-visible {
-  color: var(--color-neutral-stroke-strong-rest);
-}
-:host(:not([href])[href]) control:hover {
-  color: var(--color-neutral-stroke-strong-rest);
-}
-:host(:not([href])[href]) control:active {
-  color: var(--color-neutral-stroke-strong-rest);
 }

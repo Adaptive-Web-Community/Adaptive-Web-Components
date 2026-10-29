@@ -27,11 +27,11 @@
   },
   "styleRules": [
     {
-      "styles": ["shape.control"]
+      "treatments": ["shape.control"]
     },
     {
       "contextCondition": { "Size": "Small" },
-      "styles": ["density.control"]
+      "treatments": ["density.control"]
     },
     {
       "contextCondition": { "Size": "Large" },

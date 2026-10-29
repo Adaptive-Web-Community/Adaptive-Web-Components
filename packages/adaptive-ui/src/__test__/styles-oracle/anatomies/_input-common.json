@@ -5,7 +5,7 @@
   "styleRules": [
     {
       "part": "Description",
-      "styles": [
+      "treatments": [
         "styles.text-plain",
         "color.neutral-foreground-readable-element"
       ]

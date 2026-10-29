@@ -1,5 +1,8 @@
-import { ComponentAnatomy, StyleRules } from "../../../../core/index.js";
-import { neutralFillSubtle, neutralStrokeReadable } from "../../../../reference/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
+
+const { color } = refs<ReferenceLibraryTokens>();
 
 // Stress test for the selectors generated for contexts, parts, conditions, and custom interactive states.
 
@@ -46,8 +49,8 @@ export const stressSelectorsStyleModules: StyleRules = [
     // Interactive token set on the context
     {
         properties: {
-            backgroundFill: neutralFillSubtle,
-            foregroundFill: neutralStrokeReadable,
+            backgroundFill: color.neutral.fill.subtle,
+            foregroundFill: color.neutral.stroke.readable,
         },
     },
     // String condition values
@@ -69,7 +72,7 @@ export const stressSelectorsStyleModules: StyleRules = [
             contextCondition: StressSelectorsAnatomy.conditions.selected,
             part: StressSelectorsAnatomy.parts.content,
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
     // The state applies to the context, not the part
     {
@@ -77,7 +80,7 @@ export const stressSelectorsStyleModules: StyleRules = [
             part: StressSelectorsAnatomy.parts.label,
             stateOnContext: true,
         },
-        properties: { foregroundFill: neutralStrokeReadable },
+        properties: { foregroundFill: color.neutral.stroke.readable },
     },
     // A condition on the part
     {
@@ -92,13 +95,13 @@ export const stressSelectorsStyleModules: StyleRules = [
         target: {
             part: StressSelectorsAnatomy.parts.decoration,
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
     {
         target: {
             part: StressSelectorsAnatomy.parts.exported,
         },
-        properties: { foregroundFill: neutralStrokeReadable },
+        properties: { foregroundFill: color.neutral.stroke.readable },
     },
     // All descendants
     {
@@ -120,7 +123,7 @@ export const stressSelectorsStyleModules: StyleRules = [
             context: ".other-context",
             contextCondition: ".other-condition",
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
     // Ignores the interactivity of the component, so there's no interactive condition on the states
     {
@@ -128,6 +131,6 @@ export const stressSelectorsStyleModules: StyleRules = [
             part: StressSelectorsAnatomy.parts.content,
             ignoreInteractivity: true,
         },
-        properties: { backgroundFill: neutralFillSubtle },
+        properties: { backgroundFill: color.neutral.fill.subtle },
     },
 ];
