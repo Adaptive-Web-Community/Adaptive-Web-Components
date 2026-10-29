@@ -1,5 +1,12 @@
 import chai from "chai";
 import {
+    elevationCardActiveSize,
+    elevationCardInteractive,
+    elevationDialog,
+    elevationDialogSize,
+    elevationFlyout,
+    elevationTooltip,
+    elevationTooltipSize,
     bodyFontFamily,
     bodyFontStyle,
     bodyFontWeight,
@@ -39,6 +46,7 @@ import {
 } from "./deprecated.js";
 import { formatColor } from "../core/color/color.js";
 import { createColorLibrary } from "./color.js";
+import { createElevationLibrary } from "./elevation.js";
 import { createLayerLibrary } from "./layer.js";
 import { createTypographyLibrary } from "./typography.js";
 
@@ -124,5 +132,24 @@ describe("deprecated color set tokens", () => {
         expect(fillSubtleDisabledDelta.$value).to.equal(color.deltas.fill.subtle.disabled.$value);
         expect(minContrastReadable.$value).to.equal(4.5);
         expect(neutralAsOverlay.$value).to.equal(false);
+    });
+});
+
+describe("deprecated elevation tokens", () => {
+    const { elevation } = createElevationLibrary().tokens;
+
+    it("should be the tokens of the elevation group with the names they had", () => {
+        expect(elevationCardInteractive.name).to.equal("elevation.card.$root");
+        expect(elevationCardActiveSize.name).to.equal("elevation.card.deltas.active");
+        expect(elevationTooltip.name).to.equal("elevation.tooltip.$root");
+        expect(elevationTooltipSize.name).to.equal("elevation.tooltip.size");
+        expect(elevationFlyout.name).to.equal("elevation.flyout.$root");
+        expect(elevationDialogSize.name).to.equal("elevation.dialog.size");
+    });
+
+    it("should have the values of the tokens of a library", () => {
+        expect(elevationDialog.$value).to.deep.equal(elevation.dialog.$root.$value);
+        expect(elevationCardInteractive.$value.hover).to.deep.equal(elevation.card.$root.$value.hover);
+        expect(elevationTooltipSize.$value).to.equal(8);
     });
 });

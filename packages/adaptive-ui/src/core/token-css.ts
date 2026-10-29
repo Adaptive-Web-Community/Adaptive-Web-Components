@@ -1,7 +1,8 @@
-import { CSSPropertiesOptions, Library, toProperties } from "design-token-library";
+import { convert, CSSPropertiesOptions, DesignToken, Library, toProperties } from "design-token-library";
 import { formatPaint, Paint } from "./color/paint.js";
 import { formatExpression, Operand } from "./expression.js";
 import { InteractiveSet } from "./interactive.js";
+import { isShadow } from "./shadow/index.js";
 
 // Gets what is at the name of a token in a tree of the tokens of a library.
 function atName<T>(tree: any, name: string): T {
@@ -35,6 +36,9 @@ type Dimensional = { value: number; unit: string };
  * Writes a value of an interactive token. They are plain data, so the shape tells what one is.
  */
 function formatMember(value: unknown): string {
+    if (isShadow(value)) {
+        return convert(DesignToken.Type.Shadow, value);
+    }
     if (typeof value === "object" && value !== null) {
         if ("colorSpace" in value || "stops" in value) {
             return formatPaint(value as Paint);

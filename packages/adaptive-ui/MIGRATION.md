@@ -248,7 +248,47 @@ The disabled color is fixed in tokens (decision [0008](../../docs/decisions/0008
 - The disabled palette is the palette of the layers until it is set, which is the neutral palette until it is set, so the colors are the same by default.
 - The focus delta of each recipe is its rest delta until it is set.
 
+## Shadows and elevation
+
+A shadow is the DTCG shadow value of the token library (`DesignToken.Values.Readonly.Shadow`), one layer or several, and not a class:
+`shadow(color, offsetX, offsetY, blur, spread)` makes a layer in `px`, and the library's `convert(DesignToken.Type.Shadow, shadow)` writes it as
+it writes a shadow token. The shadows of the elevation are tokens in the library, in the `elevation` group (`elevation` is the config and
+`createElevationLibrary()` is a library of the shadows and the colors they read). The core has no elevation: the shadow of a height is the
+reference system's, as it was.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `new Shadow(color, xOffset, yOffset, blurRadius, spread)` | `shadow(color, offsetX, offsetY, blur, spread)` |
+| `shadow.createCSS()` | `convert(DesignToken.Type.Shadow, shadow)`, from the library |
+| `shadow.xOffset`, `yOffset`, `blurRadius`, `spread` (numbers) | `shadow.offsetX`, `offsetY`, `blur`, `spread` (dimensions, `{ value, unit: "px" }`) |
+| a `DesignTokenMultiValue` of shadows | a list of layers, which a DTCG shadow can be |
+| `ShadowValue`, which could be a string | `DesignToken.Values.Readonly.Shadow`, from the library |
+| `createTokenShadow(name)` | a token of the `shadow` type in the config |
+| `elevationRecipe`, a token whose value was the recipe | `elevationRecipes.elevationShadow(color, size)`, a recipe of the library, which a system replaces with `override()` |
+| `ElevationRecipe`, `ElevationRecipeEvaluate` | none: an override of `elevationShadow` takes its types, a function of the color and the size that returns any shadow |
+| `elevationTooltip`, `elevationFlyout`, `elevationDialog` | `elevation.tooltip`, `elevation.flyout`, `elevation.dialog` (the `$root` of each; CSS `--elevation-tooltip`) |
+| `elevationTooltipSize`, `elevationFlyoutSize`, `elevationDialogSize` | `elevation.tooltip.size`, `elevation.flyout.size`, `elevation.dialog.size`, of the `delta` type |
+| `elevationCardInteractive`, `elevationCardRest`, `Hover`, `Active`, `Focus`, `Disabled` | `elevation.card`, one interactive token whose value is `{ rest, hover, active, focus, disabled }`. In CSS the rest is `--elevation-card` and a state is `--elevation-card-<state>` |
+| `elevationCardRestSize`, `HoverSize`, `ActiveSize`, `FocusSize`, `DisabledSize` | `elevation.card.deltas.rest` etc., the card's deltas (`InteractiveDeltaTokens`) |
+
+### Behavior
+
+- The shadows have the same layers, offsets, blurs, and opacities as before, from the same sizes.
+- The color the shadows are cast in is a token, `elevation.color`, the rest of `color.neutral.stroke.strong` until it is set. The recipe read that
+  stroke itself, so a system changed the shadow color only by changing the recipe.
+- A shadow is written with its blur and spread, `0px 4px 8px 0px`, where a zero was left out. CSS reads them the same.
+- The sizes are of the `delta` type, which a recipe reads, and are not in CSS, as in 0.14.
+
+### Deprecated, the old name is the token
+
+`elevationCardInteractive`, `elevationCardRestSize`..`elevationCardDisabledSize`, `elevationTooltip`, `elevationTooltipSize`, `elevationFlyout`,
+`elevationFlyoutSize`, `elevationDialog`, and `elevationDialogSize` are exported from `reference/deprecated.ts`, each the token of the table above in
+the library that Adaptive UI creates. `new Shadow(...)` makes a layer with `shadow()`, and the types `Shadow` and `ShadowValue` are the library's shadow layer and shadow.
+
+Not exported, with what to use: the token of a state of the card (`elevationCardRest`, `Hover`, and so on: use `elevationCardInteractive.$value.rest`, or
+`--elevation-card-<state>` in CSS), `elevationRecipe` (`elevationRecipes.elevationShadow`), `createTokenShadow`, and the recipe types.
+
 ## Not migrated yet
 
-The rest of the tokens, the styles, the shadows and elevation, and `ElementStylesRenderer` are still the ones of 0.14,
+The rest of the tokens, the styles, and `ElementStylesRenderer` are still the ones of 0.14,
 and are replaced in the steps that follow. The deprecated names of the tokens are exported with each one.

@@ -497,6 +497,9 @@ export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is D
 export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
 
 // @public
+export function isShadow(value: unknown): value is DesignToken.Values.Readonly.Shadow;
+
+// @public
 export function isTransparent(color: Color_2): boolean;
 
 // @public
@@ -693,6 +696,18 @@ export interface SerializableStyleRule {
     // (undocumented)
     styles?: string[];
 }
+
+// @public @deprecated (undocumented)
+export type Shadow = DesignToken.DeepReadonly<DesignToken.Values.ShadowLayer>;
+
+// @public @deprecated (undocumented)
+export const Shadow: new (color: Color_2, xOffset: number, yOffset: number, blurRadius?: number, spread?: number) => Shadow;
+
+// @public
+export function shadow(color: Color_2, offsetX: number, offsetY: number, blur?: number, spread?: number): DesignToken.DeepReadonly<DesignToken.Values.ShadowLayer>;
+
+// @public @deprecated (undocumented)
+export type ShadowValue = DesignToken.Values.Readonly.Shadow;
 
 // @public
 export function stepCountFor(stepSize: number): number;

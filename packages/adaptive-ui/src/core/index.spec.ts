@@ -10,6 +10,7 @@ describe("core index", () => {
             "parseColor",
             "createPaletteOkhsl",
             "linearGradient",
+            "shadow",
             "Interactivity",
             "StyleProperty",
             "DesignTokenType",
