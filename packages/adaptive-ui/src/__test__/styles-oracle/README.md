@@ -17,7 +17,7 @@ The CSS only has references to design tokens, not the evaluated values. See `src
 
 ## Fixtures
 
-- `components`: Anatomy and style modules defined in code, compiled from the build output.
+- `components`: Anatomy and style rules defined in code, compiled from the build output.
     - `button`, `anchor`, `text-field`, `tab`, `divider`, `tooltip` are copies from Adaptive Web Components, with the templates removed.
     - `stress-*` are made up to cover capabilities not covered by the samples.
 - `anatomies`: Anatomy and style rules defined in JSON.

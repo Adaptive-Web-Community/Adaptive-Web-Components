@@ -1,11 +1,10 @@
-import { CSSPropertiesOptions, DesignToken, isRef, Library, pathOf } from "design-token-library";
-import type { Paint } from "../color/paint.js";
-import { InteractiveSet, InteractiveState } from "../interactive.js";
-import { atName, formatValue, propertyResolver } from "../token-css.js";
-import { AdaptiveDesignToken } from "../token-types.js";
+import { CSSPropertiesOptions, isRef, Library, pathOf } from "design-token-library";
+import { InteractiveState, isInteractiveSet } from "../../interactive.js";
+import { atName, formatValue, propertyResolver } from "../../token-css.js";
+import { AdaptiveDesignToken } from "../../token-types.js";
+import { StyleProperty, StyleValue, StyleValues } from "../properties.js";
 import { stylePropertyToCssProperty } from "./css.js";
-import { makeSelector } from "./selector.js";
-import { StyleModuleEvaluateParameters, StyleProperty } from "./types.js";
+import { makeSelector, SelectorParameters } from "./selector.js";
 
 /**
  * A rule of CSS: a selector, and the value of each of its properties, in order. It is plain data, which {@link formatRules} writes.
@@ -16,30 +15,6 @@ export interface CssRule {
     readonly selector: string;
     readonly declarations: Readonly<Record<string, string>>;
 }
-
-/**
- * A value of a style property: a value of CSS, a value of a token type, or a ref to a token of a library, which is written as the `var()` of
- * its custom property.
- *
- * @public
- */
-export type StyleRuleValue =
-    | string
-    | number
-    | Paint
-    | DesignToken.Values.Readonly.Shadow
-    | DesignToken.Values.Readonly.Dimension
-    | Library.Ref<unknown, never>;
-
-/**
- * A value of a style property, or a value for each state of an interactive element.
- *
- * @remarks
- * A ref to an interactive token is written as a value for each state that the token has.
- *
- * @public
- */
-export type StyleRuleValues = StyleRuleValue | InteractiveSet<StyleRuleValue>;
 
 /**
  * The custom properties of a token that a style refers to: the property of the token, and the states of an interactive token, each a
@@ -90,52 +65,54 @@ const ruleStates: readonly InteractiveState[] = [
     InteractiveState.disabled,
 ];
 
-const interactiveStates: ReadonlySet<string> = new Set(Object.values(InteractiveState));
-
-// A set of values is an object whose keys are states. A ref, a color, a dimension, or a shadow has other keys.
-function isInteractiveSet<T>(value: unknown): value is InteractiveSet<T> {
-    if (typeof value !== "object" || value === null || Array.isArray(value) || isRef(value)) {
-        return false;
-    }
-    const keys = Object.keys(value);
-    return keys.length > 0 && keys.every(key => interactiveStates.has(key));
-}
-
 function isStyleProperty(key: string): key is StyleProperty {
     return key in StyleProperty;
 }
 
-function formatRuleValue(value: StyleRuleValue, tokens: TokenPropertiesResolver): string {
-    return isRef(value) ? `var(${tokens(pathOf(value)).property})` : formatValue(value);
+// The custom property of a state of a token, `--x` for the rest and `--x-<state>` for the others, or none if the token doesn't have the state.
+function stateProperty({ property, states }: TokenProperties, state: InteractiveState): string | undefined {
+    if (states === undefined) {
+        return property;
+    }
+    if (!states.includes(state)) {
+        return undefined;
+    }
+    return state === InteractiveState.rest ? property : `${property}-${state}`;
+}
+
+// The CSS of a value in a state, where a ref to an interactive token is the value of the token in that state.
+function formatRuleValue(value: StyleValue, state: InteractiveState, tokens: TokenPropertiesResolver): string | undefined {
+    if (!isRef(value)) {
+        return formatValue(value);
+    }
+    const property = stateProperty(tokens(pathOf(value)), state);
+    return property === undefined ? undefined : `var(${property})`;
 }
 
 // The CSS of a value for each state that it has.
-function valuesByState(value: StyleRuleValues, tokens: TokenPropertiesResolver): Map<InteractiveState, string> {
+function valuesByState(value: StyleValues, tokens: TokenPropertiesResolver): Map<InteractiveState, string> {
     const values = new Map<InteractiveState, string>();
     if (isRef(value)) {
-        const { property, states } = tokens(pathOf(value));
-        if (states === undefined) {
-            values.set(InteractiveState.rest, `var(${property})`);
-        } else {
-            for (const state of states) {
-                values.set(state, state === InteractiveState.rest ? `var(${property})` : `var(${property}-${state})`);
-            }
+        const properties = tokens(pathOf(value));
+        for (const state of properties.states ?? [InteractiveState.rest]) {
+            values.set(state, `var(${stateProperty(properties, state)})`);
         }
-    } else if (isInteractiveSet<StyleRuleValue>(value)) {
+    } else if (isInteractiveSet<StyleValue>(value)) {
         for (const state of ruleStates) {
             const member = value[state];
-            if (member !== undefined && member !== null) {
-                values.set(state, formatRuleValue(member, tokens));
+            const css = member === undefined || member === null ? undefined : formatRuleValue(member, state, tokens);
+            if (css !== undefined) {
+                values.set(state, css);
             }
         }
     } else {
-        values.set(InteractiveState.rest, formatRuleValue(value, tokens));
+        values.set(InteractiveState.rest, formatValue(value));
     }
     return values;
 }
 
 // A state other than the rest has a rule only where the element has that state.
-function hasState(params: StyleModuleEvaluateParameters, state: InteractiveState): boolean {
+function hasState(params: SelectorParameters, state: InteractiveState): boolean {
     switch (state) {
         case InteractiveState.rest:
             return true;
@@ -153,7 +130,8 @@ function hasState(params: StyleModuleEvaluateParameters, state: InteractiveState
  * A property of Adaptive UI, like `backgroundFill`, is written as its CSS property, and any other key as it is. The properties are the
  * effective ones, with the shorthands expanded. The declarations of a state are one rule, and the rules are in the order rest, focus, hover,
  * active, disabled, whatever order the properties give their states: the rules of two states can match at once with the same specificity
- * (a pressed element is also hovered), and the later one wins. A foreground fill also sets `fill` to `currentcolor` at rest, for icons.
+ * (a pressed element is also hovered), and the later one wins. States that have the same selector, like those of a pseudo-element, are one
+ * rule, where the later state wins. A foreground fill also sets `fill` to `currentcolor` at rest, for icons.
  *
  * @param properties - The style properties and their values
  * @param params - The target of the style and the interactivity of the element, which make the selectors
@@ -163,8 +141,8 @@ function hasState(params: StyleModuleEvaluateParameters, state: InteractiveState
  * @public
  */
 export function renderRules(
-    properties: Iterable<readonly [string, StyleRuleValues]>,
-    params: StyleModuleEvaluateParameters,
+    properties: Iterable<readonly [string, StyleValues]>,
+    params: SelectorParameters,
     tokens: TokenPropertiesResolver
 ): CssRule[] {
     const rules = new Map<InteractiveState, Record<string, string>>();
@@ -182,10 +160,16 @@ export function renderRules(
             rules.set(state, declarations);
         }
     }
-    return ruleStates.flatMap(state => {
+    // States that have the same selector, like those of a pseudo-element, which can't follow a state, are one rule: the later state wins.
+    const bySelector = new Map<string, Record<string, string>>();
+    for (const state of ruleStates) {
         const declarations = rules.get(state);
-        return declarations ? [{ selector: makeSelector(params, state), declarations }] : [];
-    });
+        if (declarations) {
+            const selector = makeSelector(params, state);
+            bySelector.set(selector, { ...bySelector.get(selector), ...declarations });
+        }
+    }
+    return Array.from(bySelector, ([selector, declarations]) => ({ selector, declarations }));
 }
 
 /**

@@ -1,5 +1,5 @@
 import { DesignToken, Library, px } from "design-token-library";
-import { StylePropertyShorthand } from "../core/modules/types.js";
+import { StylePropertyShorthand } from "../core/styles/properties.js";
 import { intendedFor } from "../core/token-metadata.js";
 
 /**

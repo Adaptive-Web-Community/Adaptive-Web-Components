@@ -1,5 +1,8 @@
-import { ComponentAnatomy, Interactivity, StyleRules } from "../../../../core/index.js";
-import { neutralStrokeSubtle, strokeThickness } from "../../../../reference/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
+
+const { color, shape } = refs<ReferenceLibraryTokens>();
 
 // Adapted from the Adaptive Web Components `divider`.
 
@@ -25,9 +28,9 @@ export const dividerStyleModules: StyleRules = [
             contextCondition: DividerAnatomy.conditions.orientation.horizontal,
         },
         properties: {
-            borderFillTop: neutralStrokeSubtle.rest,
+            borderFillTop: { rest: color.neutral.stroke.subtle },
             borderStyleTop: "solid",
-            borderThicknessTop: strokeThickness,
+            borderThicknessTop: shape.strokeThickness.default,
         },
     },
     {
@@ -35,9 +38,9 @@ export const dividerStyleModules: StyleRules = [
             contextCondition: DividerAnatomy.conditions.orientation.vertical,
         },
         properties: {
-            borderFillLeft: neutralStrokeSubtle.rest,
+            borderFillLeft: { rest: color.neutral.stroke.subtle },
             borderStyleLeft: "solid",
-            borderThicknessLeft: strokeThickness,
+            borderThicknessLeft: shape.strokeThickness.default,
         },
     },
 ];

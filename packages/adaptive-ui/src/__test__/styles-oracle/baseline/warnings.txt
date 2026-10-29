@@ -3,3 +3,4 @@ Unknown part "Missing cursor part" in cursor, skipping.
 Unknown part "Missing focus target" in focus.focusTarget, skipping.
 Unknown part "Missing reset target" in focus.resetTarget, skipping.
 Unknown part "Missing rule part" in style rule, skipping.
+Unknown treatment "Missing treatment" in style rule, skipping.

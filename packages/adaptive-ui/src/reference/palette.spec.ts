@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { DesignToken, hex, Library, refs, toCSS } from "design-token-library";
 import { formatColor } from "../core/color/color.js";
 import { createPaletteOkhsl } from "../core/color/palette-okhsl.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { AdaptiveDesignToken, PaletteToken } from "../core/token-types.js";
 import { getIntendedFor } from "../core/token-metadata.js";
 import { adaptiveConverters } from "../core/token-css.js";

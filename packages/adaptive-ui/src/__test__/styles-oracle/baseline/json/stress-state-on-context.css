@@ -9,13 +9,13 @@
   outline-style: none;
 }
 .stress-state-on-context.is-focus .header {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
 }
 .stress-state-on-context .header {
-  background: var(--color-neutral-fill-stealth-rest);
+  background: var(--color-neutral-fill-stealth);
 }
 .stress-state-on-context:not(.disabled).is-focus .header {
   background: var(--color-neutral-fill-stealth-focus);
@@ -30,7 +30,7 @@
   background: var(--color-neutral-fill-stealth-disabled);
 }
 .stress-state-on-context .header {
-  color: var(--color-neutral-stroke-readable-rest);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
 }
 .stress-state-on-context:not(.disabled) .header.is-focus {
@@ -46,7 +46,7 @@
   color: var(--color-neutral-stroke-readable-disabled);
 }
 .stress-state-on-context[aria-expanded="true"] .icon {
-  background: var(--color-accent-fill-subtle-rest);
+  background: var(--color-accent-fill-subtle);
 }
 .stress-state-on-context[aria-expanded="true"]:not(.disabled).is-focus .icon {
   background: var(--color-accent-fill-subtle-focus);

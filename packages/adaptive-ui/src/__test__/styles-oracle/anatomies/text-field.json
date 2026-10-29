@@ -49,7 +49,7 @@
     },
     {
       "part": "Label",
-      "styles": [
+      "treatments": [
         "styles.text-label"
       ],
       "properties": {
@@ -58,7 +58,7 @@
     },
     {
       "part": "Required",
-      "styles": [
+      "treatments": [
         "styles.text-plain",
         "color.critical-foreground-readable-control"
       ]
@@ -71,20 +71,20 @@
     },
     {
       "part": "Control",
-      "styles": [
+      "treatments": [
         "styles.input-control",
         "density.autofill-outer"
       ]
     },
     {
       "part": "Field",
-      "styles": [
+      "treatments": [
         "density.autofill-inner"
       ]
     },
     {
       "part": "Placeholder",
-      "styles": [
+      "treatments": [
         "color.neutral-foreground-readable-element"
       ]
     }

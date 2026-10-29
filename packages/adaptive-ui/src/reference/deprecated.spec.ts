@@ -1,4 +1,5 @@
 import chai from "chai";
+import { accentFillReadableControlTreatment, actionTreatment, TreatmentNameMapping } from "./treatments.js";
 import {
     cornerRadiusControl,
     cornerRadiusLayer,
@@ -51,6 +52,9 @@ import {
     strokeStealthHoverDelta,
     strokeStrongMinContrast,
     wcagContrastLevel,
+    accentFillReadableControlStyles,
+    actionStyles,
+    StyleNameMapping,
 } from "./deprecated.js";
 import { formatColor } from "../core/color/color.js";
 import { createColorLibrary } from "./color.js";
@@ -178,5 +182,13 @@ describe("deprecated appearance and density tokens", () => {
         expect(densityControl.designUnit.name).to.equal("density.control.designUnit");
         expect(densityLayer.horizontalGap.name).to.equal("density.layer.horizontal.gap");
         expect(densityControl.horizontalPaddingUnits.$value).to.equal(3);
+    });
+});
+
+describe("deprecated style modules", () => {
+    it("should be the treatments with the names they had", () => {
+        expect(actionStyles).to.equal(actionTreatment);
+        expect(accentFillReadableControlStyles).to.equal(accentFillReadableControlTreatment);
+        expect(StyleNameMapping).to.equal(TreatmentNameMapping);
     });
 });

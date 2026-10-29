@@ -28,46 +28,46 @@
       "contextCondition": {
         "Purpose": "Normal"
       },
-      "styles": ["styles.action-control", "styles.text-label", "color.neutral-fill-subtle-control"]
+      "treatments": ["styles.action-control", "styles.text-label", "color.neutral-fill-subtle-control"]
     },
     {
       "contextCondition": {
         "Purpose": "Normal",
         "Icon-only": true
       },
-      "styles": ["density.control-square"]
+      "treatments": ["density.control-square"]
     },
     {
       "contextCondition": {
         "Purpose": "Primary"
       },
-      "styles": ["styles.action-control", "styles.text-label", "color.accent-fill-ideal-control"]
+      "treatments": ["styles.action-control", "styles.text-label", "color.accent-fill-ideal-control"]
     },
     {
       "contextCondition": {
         "Purpose": "Primary",
         "Icon-only": true
       },
-      "styles": ["density.control-square"]
+      "treatments": ["density.control-square"]
     },
     {
       "contextCondition": {
         "Purpose": "Critical"
       },
-      "styles": ["styles.action-control", "styles.text-label", "color.critical-fill-readable-control"]
+      "treatments": ["styles.action-control", "styles.text-label", "color.critical-fill-readable-control"]
     },
     {
       "contextCondition": {
         "Purpose": "Critical",
         "Icon-only": true
       },
-      "styles": ["density.control-square"]
+      "treatments": ["density.control-square"]
     },
     {
       "contextCondition": {
         "Purpose": "Generative AI"
       },
-      "styles": [
+      "treatments": [
         "styles.action-control",
         "text.type-ramp-base",
         "color.accent-fill-stealth-control",
@@ -85,13 +85,13 @@
         "Purpose": "Generative AI",
         "Icon-only": true
       },
-      "styles": ["density.control-square"]
+      "treatments": ["density.control-square"]
     },
     {
       "contextCondition": {
         "Purpose": "Anchor - Standalone"
       },
-      "styles": ["shape.control", "styles.text-label", "color.accent-foreground-readable-control"],
+      "treatments": ["shape.control", "styles.text-label", "color.accent-foreground-readable-control"],
       "properties": {
         "gap": "density.control.horizontal.gap"
       }

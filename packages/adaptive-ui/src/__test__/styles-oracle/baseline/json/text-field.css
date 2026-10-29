@@ -9,7 +9,7 @@
   outline-style: none;
 }
 .text-field .control:focus-within {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -23,12 +23,10 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-label);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
   font-style: var(--typography-fontStyle-label);
   gap: var(--density-controlList-horizontal-gap);
-}
-.text-field .label,.text-field:not(.disabled):not(.read-only) .label.focus,.text-field:not(.disabled):not(.read-only) .label.hover,.text-field:not(.disabled):not(.read-only) .label.active {
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .text-field.disabled .label {
   color: var(--color-neutral-stroke-strong-disabled);
@@ -39,7 +37,7 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-critical-stroke-readable-rest);
+  color: var(--color-critical-stroke-readable);
   fill: currentcolor;
 }
 .text-field:not(.disabled):not(.read-only) .required.focus {
@@ -64,10 +62,10 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  background: var(--color-neutral-fill-subtleInverse-rest);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-rest);
+  background: var(--color-neutral-fill-subtleInverse);
+  color: var(--color-neutral-onFill-subtleInverse);
   fill: currentcolor;
-  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible-rest);
+  border: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-discernible);
   padding-right: var(--density-control-horizontal-padding);
   padding-left: var(--density-control-horizontal-padding);
   padding-top: 0;
@@ -76,26 +74,22 @@
 }
 .text-field:not(.disabled):not(.read-only) .control.focus {
   background: var(--color-neutral-fill-subtleInverse-focus);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-focus);
+  color: var(--color-neutral-onFill-subtleInverse-focus);
   border-color: var(--color-neutral-stroke-discernible-focus);
 }
 .text-field:not(.disabled):not(.read-only) .control.hover {
   background: var(--color-neutral-fill-subtleInverse-hover);
-  color: var(--color-neutral-stroke-strong-on-neutral-fill-subtleInverse-hover);
+  color: var(--color-neutral-onFill-subtleInverse-hover);
   border-color: var(--color-neutral-stroke-discernible-hover);
 }
 .text-field:not(.disabled):not(.read-only) .control.active {
   background: var(--color-neutral-fill-subtleInverse-active);
-  color: var(
-    --color-neutral-stroke-strong-on-neutral-fill-subtleInverse-active
-  );
+  color: var(--color-neutral-onFill-subtleInverse-active);
   border-color: var(--color-neutral-stroke-discernible-active);
 }
 .text-field.disabled .control {
   background: var(--color-neutral-fill-subtleInverse-disabled);
-  color: var(
-    --color-neutral-stroke-strong-on-neutral-fill-subtleInverse-disabled
-  );
+  color: var(--color-neutral-onFill-subtleInverse-disabled);
   border-color: var(--color-neutral-stroke-discernible-disabled);
 }
 .text-field .field {
@@ -105,17 +99,8 @@
   padding-left: 0;
 }
 .text-field .field::placeholder {
-  color: var(--color-neutral-stroke-readable-rest);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
-}
-.text-field:not(.disabled):not(.read-only) .field::placeholder.focus {
-  color: var(--color-neutral-stroke-readable-rest);
-}
-.text-field:not(.disabled):not(.read-only) .field::placeholder.hover {
-  color: var(--color-neutral-stroke-readable-rest);
-}
-.text-field:not(.disabled):not(.read-only) .field::placeholder.active {
-  color: var(--color-neutral-stroke-readable-rest);
 }
 .text-field.disabled .field::placeholder {
   color: var(--color-neutral-stroke-readable-disabled);
@@ -126,17 +111,15 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
-}
-.text-field .description,.text-field:not(.disabled):not(.read-only) .description.focus,.text-field:not(.disabled):not(.read-only) .description.hover,.text-field:not(.disabled):not(.read-only) .description.active {
-  color: var(--color-neutral-stroke-readable-rest);
 }
 .text-field.disabled .description {
   color: var(--color-neutral-stroke-readable-disabled);
 }
 .text-field.read-only .control {
-  background: var(--color-neutral-fill-subtle-rest);
-  border-color: var(--color-neutral-stroke-safety-rest);
+  background: var(--color-neutral-fill-subtle);
+  border-color: var(--color-neutral-stroke-safety);
 }
 .text-field.read-only .field {
   cursor: default;
@@ -147,10 +130,8 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
-}
-.text-field .validation,.text-field:not(.disabled):not(.read-only) .validation.focus,.text-field:not(.disabled):not(.read-only) .validation.hover,.text-field:not(.disabled):not(.read-only) .validation.active {
-  color: var(--color-neutral-stroke-strong-rest);
 }
 .text-field.disabled .validation {
   color: var(--color-neutral-stroke-strong-disabled);
@@ -159,7 +140,7 @@
   gap: var(--density-controlList-horizontal-gap);
 }
 .text-field.invalid .control {
-  border-color: var(--color-critical-stroke-discernible-rest);
+  border-color: var(--color-critical-stroke-discernible);
 }
 .text-field.invalid:not(.disabled):not(.read-only) .control.focus {
   border-color: var(--color-critical-stroke-discernible-focus);
@@ -174,11 +155,11 @@
   border-color: var(--color-critical-stroke-discernible-disabled);
 }
 .text-field.invalid .validation {
-  color: var(--color-critical-stroke-readable-rest);
+  color: var(--color-critical-stroke-readable);
   fill: currentcolor;
 }
 .text-field.success .control {
-  border-color: var(--color-success-stroke-discernible-rest);
+  border-color: var(--color-success-stroke-discernible);
 }
 .text-field.success:not(.disabled):not(.read-only) .control.focus {
   border-color: var(--color-success-stroke-discernible-focus);
@@ -193,6 +174,6 @@
   border-color: var(--color-success-stroke-discernible-disabled);
 }
 .text-field.success .validation {
-  color: var(--color-success-stroke-readable-rest);
+  color: var(--color-success-stroke-readable);
   fill: currentcolor;
 }

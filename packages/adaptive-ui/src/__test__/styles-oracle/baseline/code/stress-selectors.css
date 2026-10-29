@@ -6,14 +6,14 @@
   cursor: pointer;
 }
 .stress-selectors .content.is-focused {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
 }
 .stress-selectors {
-  background: var(--color-neutral-fill-subtle-rest);
-  color: var(--color-neutral-stroke-readable-rest);
+  background: var(--color-neutral-fill-subtle);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
 }
 .stress-selectors:not(.locked).is-focused {
@@ -39,7 +39,7 @@
   gap: 16px;
 }
 .stress-selectors[aria-selected="true"] .content {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .stress-selectors[aria-selected="true"]:not(.locked) .content.is-focused {
   background: var(--color-neutral-fill-subtle-focus);
@@ -54,7 +54,7 @@
   background: var(--color-neutral-fill-subtle-disabled);
 }
 .stress-selectors .label {
-  color: var(--color-neutral-stroke-readable-rest);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
 }
 .stress-selectors:not(.locked).is-focused .label {
@@ -73,7 +73,7 @@
   opacity: 0.6;
 }
 .stress-selectors::before {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .stress-selectors:not(.locked)::before {
   background: var(--color-neutral-fill-subtle-active);
@@ -82,7 +82,7 @@
   background: var(--color-neutral-fill-subtle-disabled);
 }
 .stress-selectors::part(icon) {
-  color: var(--color-neutral-stroke-readable-rest);
+  color: var(--color-neutral-stroke-readable);
   fill: currentcolor;
 }
 .stress-selectors:not(.locked)::part(icon) {
@@ -98,7 +98,7 @@
   opacity: 1;
 }
 .other-context.other-condition {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .other-context.other-condition:not(.locked).is-focused {
   background: var(--color-neutral-fill-subtle-focus);
@@ -113,7 +113,7 @@
   background: var(--color-neutral-fill-subtle-disabled);
 }
 .stress-selectors .content {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .stress-selectors .content.is-focused {
   background: var(--color-neutral-fill-subtle-focus);

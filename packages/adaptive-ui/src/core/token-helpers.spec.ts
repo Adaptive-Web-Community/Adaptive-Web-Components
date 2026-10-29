@@ -2,7 +2,7 @@ import chai from "chai";
 import { CSSDesignToken, DesignToken } from "@microsoft/fast-foundation";
 import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { rgbColor } from "./color/color.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 import {
     createTokenColor,
     createTokenDimension,

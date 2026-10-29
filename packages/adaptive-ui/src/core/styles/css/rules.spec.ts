@@ -1,12 +1,14 @@
 import chai from "chai";
 import { DesignToken, hex, Library, px, refs, toCSS } from "design-token-library";
-import { formatColor } from "../color/color.js";
-import { InteractiveState } from "../interactive.js";
-import { shadow } from "../shadow/shadow.js";
-import { adaptiveConverters } from "../token-css.js";
-import { AdaptiveDesignToken, InteractiveToken } from "../token-types.js";
-import { CssRule, formatRules, libraryTokenProperties, renderRules, StyleRuleValues } from "./rules.js";
-import { Interactivity, StyleModuleEvaluateParameters } from "./types.js";
+import { formatColor } from "../../color/color.js";
+import { InteractiveState } from "../../interactive.js";
+import { shadow } from "../../shadow/shadow.js";
+import { adaptiveConverters } from "../../token-css.js";
+import { AdaptiveDesignToken, InteractiveToken } from "../../token-types.js";
+import { StyleValues } from "../properties.js";
+import { CssRule, formatRules, libraryTokenProperties, renderRules } from "./rules.js";
+import { Interactivity } from "../anatomy.js";
+import { SelectorParameters } from "./selector.js";
 
 const { expect } = chai;
 
@@ -33,7 +35,7 @@ const library = Library.create<Tokens>({
 });
 const resolve = libraryTokenProperties(library);
 
-const render = (properties: Record<string, StyleRuleValues>, params: StyleModuleEvaluateParameters = {}): CssRule[] =>
+const render = (properties: Record<string, StyleValues>, params: SelectorParameters = {}): CssRule[] =>
     renderRules(Object.entries(properties), params, resolve);
 
 describe("renderRules", () => {
@@ -105,6 +107,27 @@ describe("renderRules", () => {
         expect(rules[2].declarations).to.deep.equal({ background: "var(--fill)" });
     });
 
+    it("should write a ref to an interactive token in a set as the value of the token in that state", () => {
+        const rules = render(
+            { foregroundFill: { rest: tokens.fill.interactive, hover: tokens.fill.$root, disabled: tokens.fill.interactive } },
+            Interactivity.disabledAttribute
+        );
+
+        expect(rules.map(rule => rule.declarations.color)).to.deep.equal([
+            "var(--fill-interactive)",
+            "var(--fill)",
+            "var(--fill-interactive-disabled)",
+        ]);
+    });
+
+    it("should leave out a state of a set that refers to an interactive token that doesn't have the state", () => {
+        const rules = render({ backgroundFill: { rest: tokens.fill.hoverOnly, hover: tokens.fill.hoverOnly } }, Interactivity.disabledAttribute);
+
+        expect(rules).to.deep.equal([
+            { selector: ":host(:not([disabled]):hover)", declarations: { background: "var(--fill-hoverOnly-hover)" } },
+        ]);
+    });
+
     it("should leave out a state that is null", () => {
         const rules = render({ backgroundFill: { rest: "white", hover: null } }, Interactivity.disabledAttribute);
 
@@ -118,6 +141,18 @@ describe("renderRules", () => {
         );
 
         expect(rules.map(rule => rule.selector)).to.deep.equal([":host", ":host(:not([disabled]):hover)", ":host(:not([disabled]):active)"]);
+    });
+
+    it("should make one rule of the states that have the same selector, where the later state wins", () => {
+        const rules = render(
+            { backgroundFill: { rest: "white", hover: "grey", active: "black" }, opacity: { hover: 0.5 } },
+            { ...Interactivity.disabledAttribute, part: "::before" }
+        );
+
+        expect(rules).to.deep.equal([
+            { selector: "::before", declarations: { background: "white" } },
+            { selector: ":host(:not([disabled]))::before", declarations: { background: "black", opacity: "0.5" } },
+        ]);
     });
 
     it("should merge the declarations of one state into one rule, in the order of the properties", () => {

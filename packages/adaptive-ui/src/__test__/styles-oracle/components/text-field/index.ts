@@ -1,11 +1,14 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
+import { refs } from "design-token-library";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
 import {
-    autofillInnerDensityStyles,
-    densityControl,
-    inputAutofillStyles,
-    labelTextStyles,
-    typeRampBaseStyles,
-} from "../../../../reference/index.js";
+    autofillInnerDensityTreatment,
+    inputAutofillTreatment,
+    labelTextTreatment,
+    typeRampBaseTreatment,
+} from "../../../../reference/treatments.js";
+
+const { density } = refs<ReferenceLibraryTokens>();
 
 // Adapted from the Adaptive Web Components `text-field`.
 
@@ -27,27 +30,27 @@ export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, type
 
 export const textFieldStyleModules: StyleRules = [
     {
-        styles: typeRampBaseStyles,
+        treatments: [typeRampBaseTreatment],
         properties: {
-            gap: densityControl.verticalGap,
+            gap: density.control.vertical.gap,
         },
     },
     {
         target: {
             part: TextFieldAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [labelTextTreatment],
     },
     {
         target: {
             part: TextFieldAnatomy.parts.root,
         },
-        styles: inputAutofillStyles,
+        treatments: [inputAutofillTreatment],
     },
     {
         target: {
             part: TextFieldAnatomy.parts.control,
         },
-        styles: autofillInnerDensityStyles,
+        treatments: [autofillInnerDensityTreatment],
     },
 ];

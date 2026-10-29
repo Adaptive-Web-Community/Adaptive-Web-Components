@@ -1,4 +1,4 @@
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 
 /**
  * The key of Adaptive UI in the `$extensions` of a token.

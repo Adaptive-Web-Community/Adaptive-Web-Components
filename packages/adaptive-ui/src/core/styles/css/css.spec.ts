@@ -1,6 +1,6 @@
 import chai from "chai";
 import { stylePropertyToCssProperty } from "./css.js";
-import { StyleProperty } from "./types.js";
+import { StyleProperty } from "../properties.js";
 
 const { expect } = chai;
 

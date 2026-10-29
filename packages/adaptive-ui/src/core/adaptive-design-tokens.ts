@@ -1,7 +1,7 @@
 import { CSSDirective, cssDirective, htmlDirective } from "@microsoft/fast-element";
 import { CSSDesignToken, DesignToken, ValuesOf } from "@microsoft/fast-foundation";
 import { applyMixins } from './apply-mixins.js';
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 import { InteractiveTokenGroup } from "./types.js";
 
 /**

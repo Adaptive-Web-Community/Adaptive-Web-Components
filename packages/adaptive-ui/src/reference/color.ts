@@ -2,7 +2,7 @@ import { DesignToken, Library, recipes, refs } from "design-token-library";
 import { Color } from "../core/color/color.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
-import { contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
+import { contrastAndDeltaColorBySet, contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
 import { contrastColor } from "../core/color/recipes/contrast-color.js";
 import { deltaColorSet } from "../core/color/recipes/delta-color-set.js";
 import { idealColorDeltaSet } from "../core/color/recipes/ideal-color-delta-set.js";
@@ -11,7 +11,7 @@ import { Palette } from "../core/color/palette.js";
 import { conditionalColorSet } from "../core/color/utilities/conditional.js";
 import { colorSetAsOverlay } from "../core/color/utilities/opacity.js";
 import { InteractiveSet, InteractiveState, mapStates } from "../core/interactive.js";
-import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
 import { intendedFor } from "../core/token-metadata.js";
 import {
     AdaptiveDesignToken,
@@ -160,11 +160,28 @@ export interface ColorSetTokens {
 }
 
 /**
- * A palette of the system, with the base color it is made from and the color sets made from it.
+ * The foreground on each fill of a palette, for the text and icons of an element that has the fill. Each is an interactive token, a color for
+ * each state of the fill, which keeps its contrast while the fill changes with the state.
  *
  * @public
  */
-export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {}
+export interface OnFillTokens {
+    stealth: InteractiveToken<Color>;
+    subtle: InteractiveToken<Color>;
+    subtleInverse: InteractiveToken<Color>;
+    ideal: InteractiveToken<Color>;
+    discernible: InteractiveToken<Color>;
+    readable: InteractiveToken<Color>;
+}
+
+/**
+ * A palette of the system, with the base color it is made from, the color sets made from it, and the foreground on each of its fills.
+ *
+ * @public
+ */
+export interface ColorFamilyTokens extends ColorPaletteTokens, ColorSetTokens {
+    onFill: OnFillTokens;
+}
 
 /**
  * The tokens of the focus stroke.
@@ -200,7 +217,12 @@ export interface FocusStrokeTokens {
  * @public
  */
 export interface ColorTokens extends PaletteTokens, ColorContextTokens {
-    layer: LayerTokens;
+    layer: LayerTokens & {
+        /**
+         * The foreground on the fills of the layers, the strong neutral stroke on the interactive fill.
+         */
+        onFill: { interactive: InteractiveToken<Color> };
+    };
     wcagContrast: WcagContrastTokens;
     disabled: DisabledTokens;
     deltas: ColorDeltaTokens;
@@ -251,6 +273,7 @@ export interface ColorSetLibraryTokens {
 export const colorRecipes = recipes({
     deltaColorSet,
     contrastAndDeltaColorSet,
+    contrastAndDeltaColorBySet,
     idealColorDeltaSet,
     contrastColor,
     blackOrWhiteByContrast,
@@ -416,6 +439,84 @@ export function blackOrWhiteReadable<Root extends ColorSetLibraryTokens>(
     return blackOrWhiteFor<Root>(background, shared.wcagContrast.minContrast.readable);
 }
 
+/**
+ * The options of the foregrounds on the fills of a palette.
+ *
+ * @public
+ */
+export interface OnFillOptions<Root extends ColorSetLibraryTokens> {
+    /**
+     * The palette of the foregrounds that aren't black or white, a ref to a palette token.
+     */
+    palette: Library.Ref<Palette, Library.TokenValues<Root>>;
+    /**
+     * The fills the foregrounds are on, the refs of the group of the fills.
+     */
+    fill: Library.Refs<FillSetTokens, Root>;
+    /**
+     * If the foregrounds are semitransparent over their fill, a ref to a boolean token. They are not if it is not given.
+     */
+    asOverlay?: Library.Ref<boolean, Library.TokenValues<Root>>;
+}
+
+/**
+ * The config of a foreground of a palette for each state of a background, with a minimum contrast and the deltas of a stroke.
+ *
+ * @param options - The palette, and if the foreground is an overlay
+ * @param background - The background, usually a ref to an interactive token
+ * @param minContrast - The minimum contrast from each state of the background, usually a ref to a contrast ratio token
+ * @param deltas - The deltas of the stroke, of which the rest and the disabled are used
+ *
+ * @public
+ */
+export function strokeOn<Root extends ColorSetLibraryTokens>(
+    options: Omit<OnFillOptions<Root>, "fill">,
+    background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>,
+    minContrast: Library.DeepValue<number, Library.TokenValues<Root>>,
+    deltas: Library.Refs<InteractiveDeltaTokens, ColorSetLibraryTokens>
+): Library.ConfigValue<InteractiveToken<Color>, Root> {
+    const { palette, asOverlay } = options;
+    return {
+        $type: AdaptiveDesignToken.interactive,
+        $value: colorRecipes.contrastAndDeltaColorBySet(palette, background, minContrast, interactiveDeltas(deltas), {
+            disabledPalette: shared.disabled.palette,
+            asOverlay,
+        }),
+        $extensions: intendedFor(StyleProperty.foregroundFill),
+    };
+}
+
+/**
+ * Creates the foreground on each fill of a palette: the readable stroke of the palette on the stealth and subtle fills, and black or white on
+ * the others.
+ *
+ * @remarks
+ * It gives the config of the `onFill` group of a palette. The fills are given, since a token can't refer to the tokens next to it without
+ * their path, so a system that adds a palette of its own gives the refs of its fills:
+ *
+ * ```ts
+ * onFill: createOnFill<Tokens>({ palette: tokens.color.brand.palette, fill: tokens.color.brand.fill }),
+ * ```
+ *
+ * @param options - The palette, the fills, and if the foregrounds are an overlay
+ * @returns The config of the `onFill` group
+ *
+ * @public
+ */
+export function createOnFill<Root extends ColorSetLibraryTokens>(options: OnFillOptions<Root>): Library.Config<OnFillTokens, Root> {
+    const { fill } = options;
+    const readable = (background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<Root>>) =>
+        strokeOn<Root>(options, background, shared.wcagContrast.minContrast.readable, shared.deltas.stroke.readable);
+    return {
+        stealth: readable(fill.stealth),
+        subtle: readable(fill.subtle),
+        subtleInverse: readable(fill.subtleInverse),
+        ideal: blackOrWhiteReadable<Root>(fill.ideal),
+        discernible: blackOrWhiteDiscernible<Root>(fill.discernible),
+        readable: blackOrWhiteReadable<Root>(fill.readable),
+    };
+}
+
 const tokens = refs<ColorLibraryTokens>().color;
 
 const minContrastFor = (aa: number, aaa: number): Library.ConfigValue<ContrastRatioToken, ColorLibraryTokens> => ({
@@ -497,8 +598,20 @@ const focusStroke: Library.Config<FocusStrokeTokens, ColorLibraryTokens> = {
     },
 };
 
-// The sets of a palette of the system, which is where the palette token of the library is.
-const setsOf = (palette: ColorSetsOptions<ColorLibraryTokens>["palette"]) => createColorSets<ColorLibraryTokens>({ palette });
+// The sets of a palette of the system, and the foregrounds on its fills.
+const familyOf = (family: Library.Refs<ColorFamilyTokens, ColorLibraryTokens>) => ({
+    ...createColorSets<ColorLibraryTokens>({ palette: family.palette }),
+    onFill: createOnFill<ColorLibraryTokens>({ palette: family.palette, fill: family.fill }),
+});
+
+// The neutral foreground is the strong stroke on the fills that aren't black or white, the readable fill as well, an overlay as the sets are.
+const neutralStrong = (background: Library.DeepValue<InteractivePaintSet, Library.TokenValues<ColorLibraryTokens>>) =>
+    strokeOn<ColorLibraryTokens>(
+        { palette: tokens.neutral.palette, asOverlay: tokens.neutral.asOverlay },
+        background,
+        tokens.wcagContrast.minContrast.strong,
+        shared.deltas.stroke.strong
+    );
 
 /**
  * The configuration of the color tokens, for the library: the palettes, the color context, the layers, and the sets made from them.
@@ -508,21 +621,28 @@ const setsOf = (palette: ColorSetsOptions<ColorLibraryTokens>["palette"]) => cre
 export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
     ...palettes,
     ...colorContext,
-    layer,
+    layer: { ...layer, onFill: { interactive: neutralStrong(tokens.layer.fill.interactive) } },
     wcagContrast,
     disabled,
     deltas: colorDeltas,
     neutral: {
         ...palettes.neutral,
         ...createColorSets<ColorLibraryTokens>({ palette: tokens.neutral.palette, asOverlay: tokens.neutral.asOverlay }),
+        onFill: {
+            ...createOnFill<ColorLibraryTokens>({ palette: tokens.neutral.palette, fill: tokens.neutral.fill }),
+            stealth: neutralStrong(tokens.neutral.fill.stealth),
+            subtle: neutralStrong(tokens.neutral.fill.subtle),
+            subtleInverse: neutralStrong(tokens.neutral.fill.subtleInverse),
+            readable: neutralStrong(tokens.neutral.fill.readable),
+        },
         asOverlay: { $type: AdaptiveDesignToken.boolean, $value: false },
     },
-    accent: { ...palettes.accent, ...setsOf(tokens.accent.palette) },
-    highlight: { ...palettes.highlight, ...setsOf(tokens.highlight.palette) },
-    critical: { ...palettes.critical, ...setsOf(tokens.critical.palette) },
-    warning: { ...palettes.warning, ...setsOf(tokens.warning.palette) },
-    success: { ...palettes.success, ...setsOf(tokens.success.palette) },
-    info: { ...palettes.info, ...setsOf(tokens.info.palette) },
+    accent: { ...palettes.accent, ...familyOf(tokens.accent) },
+    highlight: { ...palettes.highlight, ...familyOf(tokens.highlight) },
+    critical: { ...palettes.critical, ...familyOf(tokens.critical) },
+    warning: { ...palettes.warning, ...familyOf(tokens.warning) },
+    success: { ...palettes.success, ...familyOf(tokens.success) },
+    info: { ...palettes.info, ...familyOf(tokens.info) },
     focusStroke,
 };
 

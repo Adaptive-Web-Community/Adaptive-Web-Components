@@ -5,7 +5,7 @@
   line-height: var(--typography-ramp-default-lineHeight-base);
   font-weight: var(--typography-fontWeight-default);
   font-variation-settings: var(--typography-ramp-default-fontVariations-base);
-  color: var(--color-neutral-stroke-strong-rest);
+  color: var(--color-neutral-stroke-strong);
   fill: currentcolor;
 }
 .stress-imports.open .body-from-import {

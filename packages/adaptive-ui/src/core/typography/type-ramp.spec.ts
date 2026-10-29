@@ -1,7 +1,7 @@
 import chai from "chai";
 import { DesignToken, Library, px, refs } from "design-token-library";
 import { evaluate, formatExpression, multiply } from "../expression.js";
-import { StyleProperty } from "../modules/types.js";
+import { StyleProperty } from "../styles/properties.js";
 import { propertyResolver } from "../token-css.js";
 import { getIntendedFor } from "../token-metadata.js";
 import { FontVariationsToken } from "../token-types.js";

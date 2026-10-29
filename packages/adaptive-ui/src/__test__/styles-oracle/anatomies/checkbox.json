@@ -32,7 +32,7 @@
   },
   "styleRules": [
     {
-      "styles": [
+      "treatments": [
         "shape.control"
       ],
       "properties": {
@@ -41,7 +41,7 @@
     },
     {
       "part": "Control Container",
-      "styles": [
+      "treatments": [
         "shape.control"
       ],
       "properties": {
@@ -50,7 +50,7 @@
     },
     {
       "part": "Control",
-      "styles": [
+      "treatments": [
         "density.control-list",
         "styles.selectable-control-unselected",
         "shape.control"
@@ -58,7 +58,7 @@
     },
     {
       "part": "Label",
-      "styles": [
+      "treatments": [
         "styles.text-plain"
       ],
       "properties": {
@@ -67,7 +67,7 @@
     },
     {
       "part": "Required",
-      "styles": [
+      "treatments": [
         "styles.text-plain",
         "color.critical-foreground-readable-control"
       ]
@@ -77,7 +77,7 @@
         "Checked": true
       },
       "part": "Control",
-      "styles": [
+      "treatments": [
         "styles.selectable-control-selected"
       ]
     },
@@ -86,7 +86,7 @@
         "Indeterminate": true
       },
       "part": "Control",
-      "styles": [
+      "treatments": [
         "styles.selectable-control-unselected"
       ]
     }

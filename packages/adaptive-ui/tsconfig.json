@@ -13,19 +13,11 @@
     // Not yet migrated to the new token library. Remove from here as each is migrated.
     // Why: docs/decisions/0003-migrate-behind-an-exclusion-frontier.md
     "exclude": [
-        "src/bin",
         "src/reference/experimental.ts",
         "src/reference/index.ts",
-        "src/reference/modules.ts",
         "src/reference/parity.spec.ts",
         "src/reference/token-naming.ts",
-        "src/reference/util.ts",
-        "src/__test__",
         "src/core/token-helpers-color.ts",
-        "src/core/token-helpers-color.spec.ts",
-        "src/core/modules/element-styles-renderer.ts",
-        "src/core/modules/element-styles-renderer.spec.ts",
-        "src/core/modules/styles.ts",
-        "src/core/modules/styles.spec.ts"
+        "src/core/token-helpers-color.spec.ts"
     ]
 }

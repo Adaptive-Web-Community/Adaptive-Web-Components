@@ -14,7 +14,7 @@ import {
     InteractivePaintSet,
 } from "./color/recipe.js";
 import { Palette } from "./color/palette.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 import { DesignTokenRegistry, DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Recipe, RecipeOptional } from "./recipes.js";
 import { createTokenNonCss, createTokenPaint } from "./token-helpers.js";

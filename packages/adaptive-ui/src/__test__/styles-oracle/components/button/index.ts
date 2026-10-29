@@ -1,5 +1,5 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
-import { actionStyles } from "../../../../reference/index.js";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { actionTreatment } from "../../../../reference/treatments.js";
 
 // Adapted from the Adaptive Web Components `button`.
 
@@ -24,6 +24,6 @@ export const buttonStyleModules: StyleRules = [
         target: {
             part: ButtonAnatomy.parts.control,
         },
-        styles: actionStyles,
+        treatments: [actionTreatment],
     },
 ];

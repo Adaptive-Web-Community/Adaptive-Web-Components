@@ -28,6 +28,10 @@
       "properties": { "opacity": "1" }
     },
     {
+      "part": "Known",
+      "treatments": ["Missing treatment"]
+    },
+    {
       "part": "Missing rule part",
       "properties": { "opacity": "0" }
     }

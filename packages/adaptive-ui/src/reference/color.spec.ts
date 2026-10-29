@@ -7,8 +7,11 @@ import { Color, formatColor } from "../core/color/color.js";
 import { createPaletteOkhsl } from "../core/color/palette-okhsl.js";
 import { closestSwatchIndex, swatchAt } from "../core/color/palette.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
+import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
+import { contrastAndDeltaColorSet } from "../core/color/recipes/contrast-and-delta-color-set.js";
+import { contrast } from "../core/color/utilities/relative-luminance.js";
 import { white } from "../core/color/utilities/color-constants.js";
-import { StyleProperty, StylePropertyShorthand } from "../core/modules/types.js";
+import { StyleProperty, StylePropertyShorthand } from "../core/styles/properties.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { getIntendedFor } from "../core/token-metadata.js";
@@ -20,6 +23,8 @@ import {
     ColorSetTokens,
     createColorLibrary,
     createColorSets,
+    createOnFill,
+    OnFillTokens,
 } from "./color.js";
 import { paletteRecipes } from "./palette.js";
 
@@ -326,10 +331,93 @@ describe("color sets", () => {
         });
     });
 
+    describe("the foregrounds on the fills", () => {
+        const { color } = createColorLibrary().tokens;
+        const interactiveStates = ["rest", "hover", "active", "focus"] as const;
+
+        it("should be a foreground for each fill of each palette", () => {
+            for (const family of families) {
+                expect(Object.keys(color[family].onFill)).to.have.members([...fills]);
+                expect(color[family].onFill.subtle.name).to.equal(`color.${family}.onFill.subtle`);
+                expect(getIntendedFor(color[family].onFill.subtle)).to.deep.equal([StyleProperty.foregroundFill]);
+            }
+        });
+
+        it("should be the readable stroke of the palette on the stealth and subtle fills, in each state of the fill", () => {
+            for (const fill of ["stealth", "subtle", "subtleInverse"] as const) {
+                const background = color.accent.fill[fill].$value;
+                const foreground = color.accent.onFill[fill].$value;
+                for (const state of interactiveStates) {
+                    expect(contrast(foreground[state]!, background[state]!)).to.be.at.least(4.5);
+                }
+            }
+        });
+
+        it("should be black or white on the ideal, discernible, and readable fills", () => {
+            const { minContrast } = color.wcagContrast;
+            const accent = color.accent;
+
+            expect(accent.onFill.ideal.$value).to.deep.equal(blackOrWhiteByContrastSet(accent.fill.ideal.$value, minContrast.readable.$value, false));
+            expect(accent.onFill.discernible.$value).to.deep.equal(
+                blackOrWhiteByContrastSet(accent.fill.discernible.$value, minContrast.discernible.$value, false)
+            );
+            expect(accent.onFill.readable.$value).to.deep.equal(blackOrWhiteByContrastSet(accent.fill.readable.$value, minContrast.readable.$value, false));
+        });
+
+        it("should be the strong neutral stroke on the neutral fills that aren't black or white, the readable fill as well", () => {
+            const { neutral, wcagContrast, deltas, disabled } = color;
+            const strokeDeltas = Object.fromEntries(states.map(state => [state, deltas.stroke.strong[state].$value]));
+            for (const fill of ["stealth", "subtle", "subtleInverse", "readable"] as const) {
+                const background = neutral.fill[fill].$value;
+                const foreground = neutral.onFill[fill].$value;
+                for (const state of states) {
+                    const set = contrastAndDeltaColorSet(neutral.palette.$value, background[state]!, wcagContrast.minContrast.strong.$value, strokeDeltas, {
+                        disabledPalette: disabled.palette.$value,
+                    });
+                    expect(foreground[state]).to.deep.equal(state === "disabled" ? set.disabled : set.rest);
+                }
+            }
+        });
+
+        it("should be the strong neutral stroke on the interactive fill of the layers", () => {
+            expect(color.layer.onFill.interactive.$value.rest).to.deep.equal(
+                contrastAndDeltaColorSet(
+                    color.neutral.palette.$value,
+                    color.layer.fill.interactive.$value.rest!,
+                    color.wcagContrast.minContrast.strong.$value,
+                    Object.fromEntries(states.map(state => [state, color.deltas.stroke.strong[state].$value]))
+                ).rest
+            );
+            expect(color.layer.onFill.interactive.name).to.equal("color.layer.onFill.interactive");
+        });
+
+        it("should be semitransparent over each state of the neutral fill as an overlay", () => {
+            const library = createColorLibrary();
+            library.tokens.color.neutral.asOverlay.set(true);
+            const { onFill } = library.tokens.color.neutral;
+
+            for (const state of interactiveStates) {
+                expect(onFill.subtle.$value[state]!.alpha).to.be.lessThan(1);
+            }
+        });
+
+        it("should follow its fill", () => {
+            const library = createColorLibrary();
+            const { accent } = library.tokens.color;
+            accent.fill.ideal.set({ rest: hex("#000000"), hover: hex("#FFFFFF") });
+
+            expect(Object.keys(accent.onFill.ideal.$value)).to.deep.equal(["rest", "hover"]);
+            expect(formatColor(accent.onFill.ideal.$value.rest!)).to.equal(formatColor(white));
+            expect(formatColor(accent.onFill.ideal.$value.hover!)).to.equal("#000000");
+        });
+    });
+
     describe("a palette of a system", () => {
         type Tokens = ColorLibraryTokens & {
             brand: { primary: DesignToken.Color };
-            color: { brand: { palette: PaletteToken; foreground: InteractiveToken<Color>; restOnly: InteractiveToken<Color> } & ColorSetTokens };
+            color: {
+                brand: { palette: PaletteToken; foreground: InteractiveToken<Color>; restOnly: InteractiveToken<Color>; onFill: OnFillTokens } & ColorSetTokens;
+            };
         };
 
         const tokens = refs<Tokens>();
@@ -346,6 +434,7 @@ describe("color sets", () => {
                             $value: paletteRecipes.paletteFrom(tokens.brand.primary, tokens.color.paletteOptions.stepSize),
                         },
                         ...createColorSets<Tokens>({ palette: tokens.color.brand.palette }),
+                        onFill: createOnFill<Tokens>({ palette: tokens.color.brand.palette, fill: tokens.color.brand.fill }),
                         foreground: blackOrWhiteReadable<Tokens>(tokens.color.brand.fill.readable),
                         restOnly: blackOrWhiteReadable<Tokens>(restOf(tokens.color.brand.fill.readable)),
                     },
@@ -372,6 +461,9 @@ describe("color sets", () => {
             color.accent.base.set(hex("#336699"));
 
             expect(format(color.brand.stroke.discernible.$value)).to.deep.equal(format(color.accent.stroke.discernible.$value));
+            for (const fill of fills) {
+                expect(format(color.brand.onFill[fill].$value)).to.deep.equal(format(color.accent.onFill[fill].$value));
+            }
         });
 
         it("should have a foreground that is black or white for each state of its background", () => {

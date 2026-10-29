@@ -1,7 +1,7 @@
 import chai from "chai";
-import { InteractiveState } from "../types.js";
+import { InteractiveState } from "../../types.js";
 import { makeSelector } from "./selector.js";
-import { Interactivity } from "./types.js";
+import { Interactivity } from "../anatomy.js";
 
 const { expect } = chai;
 

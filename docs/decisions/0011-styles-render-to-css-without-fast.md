@@ -26,6 +26,9 @@ each token's custom property, and FAST is to leave `adaptive-ui` (plan, phase 3 
 - A ref to an interactive token (decision 0006) is a rule for each state that the token's value has, `var(--name)` at rest and
   `var(--name-<state>)` for the others, the properties the interactive converter writes. `libraryTokenProperties(library)` tells the renderer
   the property and the states of a token, from the library.
+- In a set of values, a ref to an interactive token in a state is the value of the token in that state: `{ rest: a, disabled: b }` is the rest
+  of `a` and the disabled of `b`, which is how a style takes some states of one token and some of another. A state the token doesn't have
+  isn't written.
 - A value that isn't a ref is written as the library writes a token of its type (`formatValue`: a color, a gradient, a shadow, a dimension),
   or as it is.
 - The FAST half of the renderer (rules into `ElementStyles`, and keeping the custom properties up to date from the library's `subscribe`)
@@ -37,7 +40,7 @@ each token's custom property, and FAST is to leave `adaptive-ui` (plan, phase 3 
 - The states of an interactive token come from its value in a library, so the rules of a style depend on the library the CSS is for (a
   system whose token has fewer states has fewer rules). The CLI renders with the library of the system it writes.
 - `Styles`, the style modules (`reference/modules.ts`), the anatomy handling of `renderStyleRules` (disabled, focus, and cursor rules), and
-  the CLI move onto these in the next step; `Styles` then holds refs instead of FAST tokens.
+  the CLI moved onto these in the next step, where `Styles` became the treatments of decision 0012, which hold refs.
 - A ref is told from a value, and its token found, with the library's `isRef` and `pathOf`.
 
 ## Alternatives

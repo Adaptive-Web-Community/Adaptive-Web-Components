@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 .stress-conditions:focus-visible {
-  outline-color: var(--color-focusStroke-value);
+  outline-color: var(--color-focusStroke);
   outline-offset: 1px;
   outline-style: solid;
   outline-width: var(--shape-strokeThickness-focus);
@@ -23,7 +23,7 @@
   padding-left: var(--density-layer-horizontal-padding);
 }
 .stress-conditions.selected {
-  background: var(--color-accent-fill-ideal-rest);
+  background: var(--color-accent-fill-ideal);
 }
 .stress-conditions.selected:not([aria-busy="true"]):focus-visible {
   background: var(--color-accent-fill-ideal-focus);
@@ -38,7 +38,7 @@
   background: var(--color-accent-fill-ideal-disabled);
 }
 .stress-conditions:not(.selected) {
-  background: var(--color-neutral-fill-subtle-rest);
+  background: var(--color-neutral-fill-subtle);
 }
 .stress-conditions:not(.selected):not([aria-busy="true"]):focus-visible {
   background: var(--color-neutral-fill-subtle-focus);
@@ -54,7 +54,7 @@
 }
 .stress-conditions.size-small[emphasis="high"].selected:not([aria-busy="true"])
   .content {
-  color: var(--color-accent-stroke-readable-rest);
+  color: var(--color-accent-stroke-readable);
   fill: currentcolor;
 }
 .stress-conditions.size-small[emphasis="high"].selected:not(

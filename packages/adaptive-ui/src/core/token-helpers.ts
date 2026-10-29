@@ -1,7 +1,7 @@
 import { DesignTokenType, TypedCSSDesignToken, TypedDesignToken } from "./adaptive-design-tokens.js";
 import { Color } from "./color/color.js";
 import { Paint } from "./color/paint.js";
-import { StyleProperty } from "./modules/types.js";
+import { StyleProperty } from "./styles/properties.js";
 import { Recipe, RecipeEvaluate } from "./recipes.js";
 
 /**

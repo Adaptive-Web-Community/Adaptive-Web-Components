@@ -1,7 +1,7 @@
 import { DesignToken, Library, recipes, refs } from "design-token-library";
 import { Color, withAlpha } from "../core/color/color.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { shadow } from "../core/shadow/index.js";
 import { intendedFor } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, DeltaToken, InteractiveDeltaTokens, InteractiveToken } from "../core/token-types.js";

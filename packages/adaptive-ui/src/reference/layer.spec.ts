@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { hex, toCSS } from "design-token-library";
 import { formatColor } from "../core/color/color.js";
-import { StyleProperty } from "../core/modules/types.js";
+import { StyleProperty } from "../core/styles/properties.js";
 import { getIntendedFor } from "../core/token-metadata.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { createLayerLibrary, LayerBaseLuminance } from "./layer.js";

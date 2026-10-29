@@ -1,5 +1,5 @@
-import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/index.js";
-import { itemStyles } from "../../../../reference/index.js";
+import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
+import { itemTreatment } from "../../../../reference/treatments.js";
 
 // Adapted from the Adaptive Web Components `tab`.
 
@@ -18,6 +18,6 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
 
 export const tabStyleModules: StyleRules = [
     {
-        styles: itemStyles,
+        treatments: [itemTreatment],
     },
 ];

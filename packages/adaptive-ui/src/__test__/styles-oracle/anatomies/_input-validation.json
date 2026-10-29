@@ -14,7 +14,7 @@
   "styleRules": [
     {
       "part": "Validation",
-      "styles": [
+      "treatments": [
         "styles.text-plain"
       ]
     },
