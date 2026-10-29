@@ -102,6 +102,8 @@ const isNode = (value: unknown): value is Record<string, unknown> => typeof valu
  * (`neutral-fill-subtle`, `layer-fill-fixed-minus-1`), and the former name of a group is found in kebab case as well. A name or a former name that is
  * given for two tokens is an error. A kebab case that two tokens have doesn't find either.
  *
+ * Why the names are kept with what they name: `docs/decisions/0014-a-names-history-is-kept-with-what-it-names.md`.
+ *
  * @param library - The library of the tokens
  * @returns The index, for {@link resolveTokenName}
  * @throws An error for a name that is given for two tokens or two groups

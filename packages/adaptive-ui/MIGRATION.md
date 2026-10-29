@@ -427,7 +427,21 @@ their config, which the reference library spreads into `color` (`ExperimentalLib
 are exported from `reference/deprecated.ts`, each the token of the table above in the library that Adaptive UI creates, and the two
 `...ElementStyles` are the treatments.
 
-## Not migrated yet
+## The names of the tokens
 
-`TokenNameMapping` is still the one of 0.14, and the `./reference` entry isn't built until it is replaced. The deprecated names of the tokens
-are exported with each one.
+The names a token had are kept on the token, and a name of 0.x or of 0.14 still finds its token, see
+[decision 0014](../../docs/decisions/0014-a-names-history-is-kept-with-what-it-names.md).
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `TokenNameMapping[name]`, a table of the old names | `resolveTokenName(tokenNames(library), name)`, which gives the token's path and current `name`, the `state` of a name of a state, whether it was `renamed`, and its `$deprecated` |
+| a new entry in the table for a rename | `formerNames("old.name")` in the `$extensions` of the renamed token or group, or `tokenMetadata({ intendedFor, formerNames })`; for a rename that follows a rule, `withFormerNames(config, path => names)` |
+
+### Behavior
+
+- A tool that stores names, like the designer, stores the `name` of the result when `renamed` is true, so the source gets updated.
+- The `aui` CLI finds a token of an anatomy written as JSON by a name it had, and warns with the name to write instead. It warns for a
+  deprecated token as well.
+- A name of 0.x is the kebab case of the path, with or without the first group, and a name of 0.14 may end in a state or in `.value`.
+  The names of the foregrounds on a fill (`...-on-...`) and of the recipes find no token: they aren't tokens any more.
+- The reference tokens have the names they had, and the `./reference` entry is built.
