@@ -8,7 +8,8 @@ and `nicholasrice/design-token-library` on GitHub, which we contribute to).
 
 - `docs/decisions/` has the decisions and why, as numbered records. Read the ones that touch what you are changing, and add one for a decision that
   a reader of the code would ask about. `docs/decisions/README.md` says when.
-- `packages/adaptive-ui/MIGRATION.md` is the ledger of what changed since 0.14 and what to use instead. Extend it with each step.
+- `packages/adaptive-ui/MIGRATION.md` is the ledger of what changed since 0.14 and what to use instead. Extend it with each step, and add a
+  changeset (`major`) of one line that names the system the step migrates and links to the guide, which has the details.
 - The plan is `~/.claude/plans/scalable-stirring-stardust.md` (not in the repo).
 
 ## Working on the migration
