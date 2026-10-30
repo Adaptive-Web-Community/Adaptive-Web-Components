@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 
 export const paletteGradientStyles = css`
     ${componentBaseStyles}

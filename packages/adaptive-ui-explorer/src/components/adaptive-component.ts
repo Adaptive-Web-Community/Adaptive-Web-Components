@@ -1,7 +1,7 @@
 import { ElementStylesRenderer, Interactivity } from "@adaptive-web/adaptive-ui";
 import type { Styles } from "@adaptive-web/adaptive-ui";
 import { cornerRadiusControl, densityControl, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 import {
     attr,
     css,

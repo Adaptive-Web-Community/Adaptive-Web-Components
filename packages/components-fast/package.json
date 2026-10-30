@@ -1,5 +1,5 @@
 {
-  "name": "@adaptive-web/adaptive-web-components",
+  "name": "@adaptive-web/components-fast",
   "version": "0.10.0",
   "description": "Standards based, framework agnostic web components built using FAST.",
   "type": "module",
@@ -16,7 +16,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
-    "directory": "packages/adaptive-web-components"
+    "directory": "packages/components-fast"
   },
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",

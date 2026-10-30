@@ -33,7 +33,7 @@ import {
     neutralOutlineDiscernibleControlStyles,
     neutralStrokeReadable,
 } from '@adaptive-web/adaptive-ui/reference';
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 import {
     attr,
     css,

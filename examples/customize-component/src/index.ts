@@ -14,11 +14,11 @@ import {
     CheckboxStatics,
     composeCheckbox,
     DesignSystem,
-} from '@adaptive-web/adaptive-web-components';
-import { checkboxDefinition } from "@adaptive-web/adaptive-web-components/checkbox";
-import { radioDefinition } from "@adaptive-web/adaptive-web-components/radio";
-import { radioGroupDefinition } from "@adaptive-web/adaptive-web-components/radio-group";
-import { switchDefinition } from "@adaptive-web/adaptive-web-components/switch";
+} from '@adaptive-web/components-fast';
+import { checkboxDefinition } from "@adaptive-web/components-fast/checkbox";
+import { radioDefinition } from "@adaptive-web/components-fast/radio";
+import { radioGroupDefinition } from "@adaptive-web/components-fast/radio-group";
+import { switchDefinition } from "@adaptive-web/components-fast/switch";
 import { DesignToken } from "@microsoft/fast-foundation";
 import checkIcon from "./assets/check.svg";
 import indeterminateIcon from "./assets/indeterminate.svg";

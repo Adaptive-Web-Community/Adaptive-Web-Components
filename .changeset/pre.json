@@ -9,7 +9,7 @@
     "@adaptive-web/adaptive-ui-designer-figma": "0.6.1",
     "@adaptive-web/adaptive-ui-designer-figma-plugin": "0.0.1",
     "@adaptive-web/adaptive-ui-explorer": "0.0.1",
-    "@adaptive-web/adaptive-web-components": "0.10.0"
+    "@adaptive-web/components-fast": "0.10.0"
   },
   "changesets": [
     "cli-on-fills",

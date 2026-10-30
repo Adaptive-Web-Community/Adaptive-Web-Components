@@ -29,4 +29,4 @@ Stop reinventing the wheel, and cut your engineering costs by up to 75%! Simply 
 
 ## How
 
-Get Started today with [@adaptive-web/adaptive-web-components](packages/adaptive-web-components/).
+Get Started today with [@adaptive-web/components-fast](packages/components-fast/).

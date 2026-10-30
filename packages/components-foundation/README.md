@@ -12,11 +12,11 @@ Each component has three layers. This package has the first two:
 | --- | --- | --- |
 | Contract | What the element exposes: an interface of its properties (`AccordionItemElement`), the values of its enumerations (`AccordionExpandMode`), its parts, slots, and events | This package |
 | Behavior | A controller that implements what isn't a template: keyboard interaction, form submission, coordination between elements. It works on the host element and the DOM only | This package |
-| Binding | The element class of a framework, with that framework's reactive properties (`@attr`), its template, and its lifecycle wired to the controller | A components package: `@adaptive-web/adaptive-web-components` for FAST |
+| Binding | The element class of a framework, with that framework's reactive properties (`@attr`), its template, and its lifecycle wired to the controller | A components package: `@adaptive-web/components-fast` for FAST |
 
 A binding observes its own properties with its framework (an `@attr` change handler in FAST) and tells the controller, so nothing here
 depends on how a framework observes. The styles are not here either: a binding styles the parts that the contract names. Adaptive UI styles
-them in `@adaptive-web/adaptive-web-components`.
+them in `@adaptive-web/components-fast`.
 
 A control is the host element, made a form control through `ElementInternals`, and not a wrapper of a native element
 ([decision 0010](../../docs/decisions/0010-a-control-is-its-host-element.md)).

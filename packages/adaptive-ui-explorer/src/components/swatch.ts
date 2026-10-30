@@ -1,6 +1,6 @@
 import { Color } from "@adaptive-web/adaptive-ui";
 import { colorContext, densityControl, neutralStrokeReadable, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 import {
     attr,
     css,

@@ -29,13 +29,13 @@ Stop reinventing the wheel, and cut your engineering costs by up to 75%! Simply 
 Add the components:
 
 ```shell
-npm install "@adaptive-web/adaptive-web-components"
+npm install "@adaptive-web/components-fast"
 ```
 
 Import and use everything:
 ```ts
-import { AdaptiveDesignSystem } from "@adaptive-web/adaptive-web-components";
-import { AllComponents } from "@adaptive-web/adaptive-web-components/all-components";
+import { AdaptiveDesignSystem } from "@adaptive-web/components-fast";
+import { AllComponents } from "@adaptive-web/components-fast/all-components";
 AdaptiveDesignSystem.adoptTokenStyles();
 await AdaptiveDesignSystem.defineComponents(AllComponents);
 ```
@@ -45,7 +45,7 @@ Import via CDN link on a script tag:
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script type="module" src="https://cdn.jsdelivr.net/npm/@adaptive-web/adaptive-web-components/dist/adaptive-web-components.min.js"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@adaptive-web/components-fast/dist/adaptive-web-components.min.js"></script>
     </head>
     <!-- ... -->
 </html>

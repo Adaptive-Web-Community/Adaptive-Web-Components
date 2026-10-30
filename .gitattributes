@@ -2,4 +2,4 @@
 # there, and run scripts/check-each-commit.sh to bring each commit's report up to date. This needs the driver:
 #   git config --global merge.ours.driver true
 packages/adaptive-ui/docs/api-report.api.md merge=ours
-packages/adaptive-web-components/docs/api-report.api.md merge=ours
+packages/components-fast/docs/api-report.api.md merge=ours

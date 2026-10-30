@@ -31,4 +31,4 @@ build/ @awentzel @nicholasrice @KingOfTac
 # Web components
 /packages/adaptive-ui/ @nicholasrice @bheston
 /packages/adaptive-ui-explorer/ @nicholasrice @bheston
-/packages/adaptive-web-components/ @nicholasrice @bheston @KingOfTac
+/packages/components-fast/ @nicholasrice @bheston @KingOfTac

@@ -38,7 +38,7 @@
     "@adaptive-web/adaptive-ui": "0.14.0",
     "@adaptive-web/adaptive-ui-designer-core": "^0.6.2",
     "@adaptive-web/adaptive-ui-designer-figma": "^0.6.1",
-    "@adaptive-web/adaptive-web-components": "0.10.0",
+    "@adaptive-web/components-fast": "0.10.0",
     "@csstools/css-calc": "^1.1.1",
     "@csstools/css-parser-algorithms": "^2.2.0",
     "@csstools/css-tokenizer": "^2.1.1",

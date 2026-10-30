@@ -14,7 +14,7 @@ import {
     layerPalette,
     neutralStrokeStrong,
 } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from '@adaptive-web/adaptive-web-components';
+import { componentBaseStyles } from '@adaptive-web/components-fast';
 import { attr, css, customElement, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
 import { DesignToken, DesignTokenChangeRecord } from "@microsoft/fast-foundation";
 
