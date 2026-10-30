@@ -1,5 +1,6 @@
-import { neutralFillSubtle } from "@adaptive-web/adaptive-ui/reference";
+import { InteractiveState } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -42,7 +43,7 @@ export const aestheticStyles: ElementStyles = css`
         background-image: linear-gradient(
             90deg,
             transparent 0%,
-            ${neutralFillSubtle.hover} 50%,
+            ${tokenVar(tokens.color.neutral.fill.subtle, InteractiveState.hover)} 50%,
             transparent 100%
         );
         background-size: 0px 0px / 90% 100%;

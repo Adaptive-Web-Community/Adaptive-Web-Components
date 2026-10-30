@@ -1,11 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    accentForegroundReadableControlStyles,
-    controlShapeStyles,
-    densityControl,
-    neutralForegroundStrongElementStyles,
-    typeRampBaseStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { AnchorAnatomy } from "./anchor.template.js";
 
 /**
@@ -18,13 +12,13 @@ export const styleModules: StyleRules = [
         target : {
             part: AnchorAnatomy.parts.control,
         },
-        styles: [
-            controlShapeStyles,
-            typeRampBaseStyles,
-            accentForegroundReadableControlStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.typography.ramp.default.treatments.base,
+            tokens.color.accent.treatments.foregroundReadableControl,
         ],
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
     {
@@ -32,6 +26,6 @@ export const styleModules: StyleRules = [
             contextCondition: AnchorAnatomy.conditions.noHref,
             part: AnchorAnatomy.parts.control,
         },
-        styles: neutralForegroundStrongElementStyles,
+        treatments: [tokens.color.neutral.treatments.foregroundStrongElement],
     },
 ];

@@ -23,7 +23,7 @@ export function composeSelect(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, SelectAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, SelectAnatomy, options);
 
     return FASTElementDefinition.compose(Select, {
         name: `${ds.prefix}-select`,

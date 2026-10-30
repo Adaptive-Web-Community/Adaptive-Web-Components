@@ -37,7 +37,7 @@ export function composeMenuItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, MenuItemAnatomy, options);
 
     return FASTElementDefinition.compose(MenuItem, {
         name: `${ds.prefix}-menu-item`,

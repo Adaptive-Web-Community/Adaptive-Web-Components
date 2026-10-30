@@ -1,8 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    accentFillReadableControlStyles,
-    typeRampBaseStyles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { AvatarAnatomy } from "./avatar.template.js";
 
 /**
@@ -12,12 +9,12 @@ import { AvatarAnatomy } from "./avatar.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: typeRampBaseStyles,
+        treatments: [tokens.typography.ramp.default.treatments.base],
     },
     {
         target : {
             part: AvatarAnatomy.parts.backplate,
         },
-        styles: accentFillReadableControlStyles,
+        treatments: [tokens.color.accent.treatments.fillReadableControl],
     },
 ];

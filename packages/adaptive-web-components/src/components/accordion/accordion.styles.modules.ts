@@ -1,11 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    neutralStrokeSubtle,
-    plainTextStyles,
-    strokeThickness
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 
 /**
  * Visual styles composed by style rules.
@@ -14,11 +10,11 @@ import {
  */
 export const styleModules: StyleRules = [
     {
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
         properties : {
-            borderFillTop: neutralStrokeSubtle.rest,
+            borderFillTop: { rest: tokens.color.neutral.stroke.subtle },
             borderStyleTop: "solid",
-            borderThicknessTop: strokeThickness,
+            borderThicknessTop: tokens.shape.strokeThickness.default,
         }
     },
 ];

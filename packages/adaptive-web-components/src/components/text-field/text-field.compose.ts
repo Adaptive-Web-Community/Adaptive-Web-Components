@@ -14,7 +14,7 @@ export function composeTextField(
     ds: DesignSystem,
     options?: ComposeOptions<TextField>
 ): Promise<FASTElementDefinition<typeof TextField>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TextFieldAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, TextFieldAnatomy, options);
 
     return FASTElementDefinition.compose(TextField, {
         name: `${ds.prefix}-text-field`,

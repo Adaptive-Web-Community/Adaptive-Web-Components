@@ -7,13 +7,22 @@ import {
     type ShadowRootOptions,
 } from '@microsoft/fast-element';
 import {
+    adaptiveConverters,
+    type AnatomyTreatments,
     type ComponentAnatomy,
-    ElementStylesRenderer,
-    StyleModuleTarget,
-    StyleRule,
-    StyleRules,
+    formatRules,
+    libraryTokenProperties,
+    libraryTreatments,
+    onFillCSS,
+    type OnFillWithFill,
+    renderStyleRules,
+    type StyleRule,
+    type StyleRules,
+    styleRulesOnFills,
+    type StyleRuleTarget,
 } from "@adaptive-web/adaptive-ui";
-import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "@adaptive-web/adaptive-ui/reference";
+import { createReferenceLibrary, referenceAnatomyTreatments, type ReferenceLibraryTokens } from "@adaptive-web/adaptive-ui/reference";
+import { type Library, pathOf, refs, toCSS } from "design-token-library";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
@@ -52,22 +61,33 @@ export type PartialDesignSystem = Partial<DesignSystem>;
  */
 export type ElementStaticMap = Map<ComponentStatics, StaticallyComposableHTML>;
 
+// The token of the color context, which a value on a fill is made in the context of. A library of a design system has the shape of the
+// reference library.
+const colorContext = refs<ReferenceLibraryTokens>().color.context;
+
 /**
  * Represents metadata configuration for a custom element.
- * 
+ *
+ * @remarks
+ * The styles of the components are rendered with the token library of the design system: the rules refer to the custom properties of its
+ * tokens, which {@link DesignSystem.adoptTokenStyles} writes. See `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.
+ *
  * @beta
  */
 export class DesignSystem {
+    // The values on a fill of the components composed with this design system, for the token styles.
+    private readonly _onFills = new Map<string, OnFillWithFill>();
+    // The sheets of the token styles, with the selector of each.
+    private readonly _tokenSheets = new Map<CSSStyleSheet, string>();
+    private readonly _libraryChanged = { onChange: () => this.updateTokenStyles() };
+
     constructor(
         private _prefix: string,
         private _registry: CustomElementRegistry = customElements,
         private _statics: ElementStaticMap = new Map(),
-    ) {
-        // Register the global styles with the renderer.
-        ElementStylesRenderer.disabledStyles = disabledStyles;
-        ElementStylesRenderer.focusStateStyles = focusIndicatorStyles;
-        ElementStylesRenderer.focusResetStyles = focusResetStyles;
-    }
+        private _library: Library.Library<any> = createReferenceLibrary(),
+        private _anatomyTreatments: AnatomyTreatments = referenceAnatomyTreatments,
+    ) {}
 
     public get prefix() {
         return this._prefix;
@@ -82,6 +102,21 @@ export class DesignSystem {
     }
 
     /**
+     * The token library that the styles of the components are rendered with, and whose tokens {@link DesignSystem.adoptTokenStyles} writes.
+     * A library of the shape of the reference library, by default `createReferenceLibrary()`.
+     */
+    public get library() {
+        return this._library;
+    }
+
+    /**
+     * The treatments that the anatomy of each component applies, by default `referenceAnatomyTreatments`.
+     */
+    public get anatomyTreatments() {
+        return this._anatomyTreatments;
+    }
+
+    /**
      * Overrides DesignSystem properties.
      * 
      * @beta
@@ -90,6 +125,15 @@ export class DesignSystem {
         this._prefix = options.prefix ?? this._prefix;
         this._registry = options.registry ?? this._registry;
         this._statics = options.statics ?? this._statics;
+        this._anatomyTreatments = options.anatomyTreatments ?? this._anatomyTreatments;
+        if (options.library && options.library !== this._library) {
+            if (this._tokenSheets.size > 0) {
+                this._library.unsubscribe(this._libraryChanged);
+                options.library.subscribe(this._libraryChanged);
+            }
+            this._library = options.library;
+            this.updateTokenStyles();
+        }
 
         return this;
     }
@@ -137,69 +181,118 @@ export class DesignSystem {
     }
 
     /**
-     * Checks a StyleRule for a target `part` and turns it into a class name.
+     * Assembles the styles of a component: its own styles, then its style rules and the rules of its anatomy, rendered with the token library
+     * of the design system.
      *
      * @remarks
-     * This Design System is local to AWC and all templates and anatomy are structured this way.
-     * The opinion of using class names used to exist in AUI, but AUI is now non-opinionated in this regard.
-     *
-     * @param styleRule - The StyleRule to check and update
-     * @returns The updated StyleRule.
-     */
-    private static updateStyleRulesParts(styleRule: StyleRule): StyleRule {
-        if (styleRule.target) {
-            DesignSystem.updateTargetParts(styleRule.target);
-        }
-        return styleRule;
-    }
-
-    /**
-     * Checks a `StyleModuleTarget` for `part` and turns it into a class name.
-     *
-     * @remarks
-     * This Design System is local to AWC and all templates and anatomy are structured this way.
-     * The opinion of using class names used to exist in AUI, but AUI is now non-opinionated in this regard.
-     *
-     * @param styleRule - The StyleModuleTarget to check and update
-     * @returns The updated StyleModuleTarget.
-     */
-    private static updateTargetParts(target: StyleModuleTarget): StyleModuleTarget {
-        if (target.part && !target.part.startsWith(".")) {
-            target.part = "." + target.part;
-        }
-        return target;
-    }
-
-    /**
-     * Assembles the collection of intended styles, evaluating and injecting modular styling if provided.
+     * The parts of the templates are class names, so a part of a rule or of the focus of the anatomy is written as a class (`control` is
+     * `.control`). The values on a fill of the rules are added to the token styles.
      *
      * @param defaultStyles - The default collection of styles to use if not overridden by `options.styles`.
-     * @param interactivity - The interactivity selectors for the component.
+     * @param anatomy - The anatomy of the component.
      * @param options - The component options, using `styles` and `styleModules`.
      * @returns The collection of desired styles.
-     * 
+     *
      * @beta
      */
-    public static assembleStyles(
+    public assembleStyles(
         defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>
     ): ElementStyles {
-        const componentStyles: ComposableStyles[] = options?.styles ? 
-            (Array.isArray(options.styles) ? options.styles : new Array(options.styles)) :
+        const componentStyles: ComposableStyles[] = options?.styles ?
+            (Array.isArray(options.styles) ? options.styles : [options.styles]) :
             defaultStyles;
 
-        const allStyleModules = options && options.styleModules ? options.styleModules.map(DesignSystem.updateStyleRulesParts) : [];
+        const rules = (options?.styleModules ?? []).map(classPartsOfRule);
+        const classAnatomy = anatomy ? classPartsOfAnatomy(anatomy) : undefined;
 
-        if (anatomy?.focus) {
-            if (anatomy.focus.focusTarget) {
-                DesignSystem.updateTargetParts(anatomy.focus.focusTarget);
-            }
-            if (anatomy.focus.resetTarget) {
-                DesignSystem.updateTargetParts(anatomy.focus.resetTarget);
-            }
+        const treatments = libraryTreatments(this._library);
+        const css = formatRules(renderStyleRules(rules, {
+            tokens: libraryTokenProperties(this._library, { context: colorContext }),
+            treatments,
+            anatomy: classAnatomy,
+            anatomyTreatments: this._anatomyTreatments,
+        }));
+
+        const onFills = styleRulesOnFills(rules, { treatments, anatomy: classAnatomy, anatomyTreatments: this._anatomyTreatments });
+        if (this.addOnFills(onFills)) {
+            this.updateTokenStyles();
         }
 
-        return ElementStylesRenderer.renderStyleRules(componentStyles, allStyleModules, anatomy);
+        return new ElementStyles([...componentStyles, css]);
     }
+
+    /**
+     * Writes the tokens of the library as custom properties of a document or a shadow root, with the values on a fill of the components
+     * composed with this design system, and keeps them up to date as the library changes and components are composed.
+     *
+     * @param target - The document, whose `:root` has the properties, or a shadow root, whose `:host` has them.
+     *
+     * @beta
+     */
+    public adoptTokenStyles(target: Document | ShadowRoot = document): void {
+        const selector = target instanceof Document ? ":root" : ":host";
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(this.tokenStyles(selector));
+        target.adoptedStyleSheets = [...target.adoptedStyleSheets, sheet];
+        if (this._tokenSheets.size === 0) {
+            this._library.subscribe(this._libraryChanged);
+        }
+        this._tokenSheets.set(sheet, selector);
+    }
+
+    /**
+     * The custom properties of the tokens of the library, and of the values on a fill of the components composed with this design system,
+     * as a rule of CSS.
+     *
+     * @param selector - The selector of the rule, like `:root`.
+     * @returns The rule.
+     *
+     * @beta
+     */
+    public tokenStyles(selector: string): string {
+        const tokens = toCSS(this._library, { converters: adaptiveConverters(this._library) });
+        const onFills = onFillCSS(this._library, this._onFills.values(), { context: colorContext });
+        return `${selector}{${tokens}${onFills}}`;
+    }
+
+    private addOnFills(onFills: readonly OnFillWithFill[]): boolean {
+        let added = false;
+        for (const onFill of onFills) {
+            const key = `${pathOf(onFill.token).join(".")} on ${pathOf(onFill.fill).join(".")} ${onFill.activeFollowsRest === true}`;
+            if (!this._onFills.has(key)) {
+                this._onFills.set(key, onFill);
+                added = true;
+            }
+        }
+        return added;
+    }
+
+    private updateTokenStyles(): void {
+        for (const [sheet, selector] of this._tokenSheets) {
+            sheet.replaceSync(this.tokenStyles(selector));
+        }
+    }
+}
+
+// A part of a rule is a class name in the templates of this package. The opinion of class names used to be in Adaptive UI, which has none
+// now.
+function classPart(target: StyleRuleTarget): StyleRuleTarget {
+    return target.part && !target.part.startsWith(".") ? { ...target, part: `.${target.part}` } : target;
+}
+
+function classPartsOfRule(rule: StyleRule): StyleRule {
+    return rule.target ? { ...rule, target: classPart(rule.target) } : rule;
+}
+
+function classPartsOfAnatomy(anatomy: ComponentAnatomy<any, any>): ComponentAnatomy<any, any> {
+    if (!anatomy.focus) {
+        return anatomy;
+    }
+    const { focusTarget, resetTarget } = anatomy.focus;
+    return {
+        ...anatomy,
+        focus: { ...anatomy.focus, focusTarget: classPart(focusTarget), resetTarget: resetTarget && classPart(resetTarget) },
+    };
 }
 
 /**

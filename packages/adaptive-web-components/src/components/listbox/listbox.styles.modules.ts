@@ -1,13 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlListDensityStyles,
-    controlShapeStyles,
-    densityControl,
-    labelTextStyles,
-    neutralOutlineDiscernibleControlStyles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ListboxAnatomy } from "./listbox.template.js";
 
 /**
@@ -18,23 +12,23 @@ import { ListboxAnatomy } from "./listbox.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: ListboxAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: ListboxAnatomy.parts.options,
         },
-        styles: [
-            controlShapeStyles,
-            controlListDensityStyles,
-            neutralOutlineDiscernibleControlStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.density.controlList.treatment,
+            tokens.color.neutral.treatments.outlineDiscernibleControl,
         ],
     },
 ];

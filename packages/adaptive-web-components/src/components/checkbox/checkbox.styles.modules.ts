@@ -1,10 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    densityControl,
-    plainTextStyles,
-    selectableSelectedStyles,
-    selectableUnselectedStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { CheckboxAnatomy } from "./checkbox.template.js";
 
 /**
@@ -15,26 +10,26 @@ import { CheckboxAnatomy } from "./checkbox.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
     {
         target : {
             part: CheckboxAnatomy.parts.label,
         },
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
     },
     {
         target : {
             part: CheckboxAnatomy.parts.control,
         },
-        styles: selectableUnselectedStyles,
+        treatments: [tokens.treatments.selectableControlUnselected],
     },
     {
         target : {
             contextCondition: CheckboxAnatomy.conditions.checked,
             part: CheckboxAnatomy.parts.control,
         },
-        styles: selectableSelectedStyles,
+        treatments: [tokens.treatments.selectableControlSelected],
     },
 ];

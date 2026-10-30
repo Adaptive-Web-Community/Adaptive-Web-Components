@@ -22,7 +22,7 @@ export function composeCalendar(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, CalendarAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, CalendarAnatomy, options);
 
     return FASTElementDefinition.compose(Calendar, {
         name: `${ds.prefix}-calendar`,

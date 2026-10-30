@@ -14,7 +14,7 @@ export function composeListbox(
     ds: DesignSystem,
     options?: ComposeOptions<Listbox>
 ): Promise<FASTElementDefinition<typeof Listbox>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ListboxAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, ListboxAnatomy, options);
 
     return FASTElementDefinition.compose(Listbox, {
         name: `${ds.prefix}-listbox`,

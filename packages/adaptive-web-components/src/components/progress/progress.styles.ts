@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { designUnit } from "@adaptive-web/adaptive-ui/reference";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -45,7 +45,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        height: ${designUnit};
+        height: ${tokenVar(tokens.global.designUnit)};
     }
 
     .determinate {

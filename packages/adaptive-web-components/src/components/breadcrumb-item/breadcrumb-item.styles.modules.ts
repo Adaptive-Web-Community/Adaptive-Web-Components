@@ -1,13 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    accentForegroundReadableControlStyles,
-    controlDensityStyles,
-    controlShapeStyles,
-    neutralForegroundStrongElementStyles,
-    plainTextStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { BreadcrumbItemAnatomy } from "./breadcrumb-item.template.js";
 
 /**
@@ -17,15 +11,15 @@ import { BreadcrumbItemAnatomy } from "./breadcrumb-item.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
     },
     {
         target : {
             part: BreadcrumbItemAnatomy.parts.control,
         },
-        styles: [
-            controlShapeStyles,
-            controlDensityStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.density.control.treatment,
         ],
     },
     {
@@ -33,7 +27,7 @@ export const styleModules: StyleRules = [
             contextCondition: BreadcrumbItemAnatomy.conditions.noHref,
             part: BreadcrumbItemAnatomy.parts.control,
         },
-        styles: neutralForegroundStrongElementStyles,
+        treatments: [tokens.color.neutral.treatments.foregroundStrongElement],
     },
     {
         target : {
@@ -41,13 +35,13 @@ export const styleModules: StyleRules = [
             part: BreadcrumbItemAnatomy.parts.control,
             partCondition: BreadcrumbItemAnatomy.conditions.current,
         },
-        styles: neutralForegroundStrongElementStyles,
+        treatments: [tokens.color.neutral.treatments.foregroundStrongElement],
     },
     {
         target : {
             contextCondition: BreadcrumbItemAnatomy.interactivity?.interactive,
             part: BreadcrumbItemAnatomy.parts.control,
         },
-        styles: accentForegroundReadableControlStyles,
+        treatments: [tokens.color.accent.treatments.foregroundReadableControl],
     },
 ];

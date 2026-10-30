@@ -14,7 +14,7 @@ export function composeSlider(
     ds: DesignSystem,
     options?: ComposeOptions<Slider>
 ): Promise<FASTElementDefinition<typeof Slider>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, SliderAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, SliderAnatomy, options);
 
     return FASTElementDefinition.compose(Slider, {
         name: `${ds.prefix}-slider`,

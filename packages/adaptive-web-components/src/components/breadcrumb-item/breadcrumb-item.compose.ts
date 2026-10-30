@@ -23,7 +23,7 @@ export function composeBreadcrumbItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbItemAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, BreadcrumbItemAnatomy, options);
 
     return FASTElementDefinition.compose(BreadcrumbItem, {
         name: `${ds.prefix}-breadcrumb-item`,

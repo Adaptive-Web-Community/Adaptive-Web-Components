@@ -1,30 +1,6 @@
-import { Color } from"@adaptive-web/adaptive-ui";
-import {
-    cornerRadiusControl,
-    focusStrokeThickness,
-    highlightStrokeReadable,
-    neutralFillStealthRecipe,
-    neutralFillSubtle,
-    neutralFillSubtleRecipe,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { DesignToken, DesignTokenResolver } from "@microsoft/fast-foundation";
 import { heightNumber } from "../../styles/index.js";
-
-const expandCollapseHover = DesignToken.create<Color>("tree-item-expand-collapse-hover").withDefault(
-    (resolve: DesignTokenResolver) => {
-        const recipe = resolve(neutralFillStealthRecipe);
-        return recipe.evaluate(resolve, { reference: recipe.evaluate(resolve).hover }).hover as any;
-    }
-);
-
-const selectedExpandCollapseHover = DesignToken.create<Color>("tree-item-expand-collapse-selected-hover").withDefault(
-    (resolve: DesignTokenResolver) => {
-        const baseRecipe = resolve(neutralFillSubtleRecipe);
-        const buttonRecipe = resolve(neutralFillStealthRecipe);
-        return buttonRecipe.evaluate(resolve, { reference: baseRecipe.evaluate(resolve).rest }).hover as any;
-    }
-);
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -107,16 +83,8 @@ export const aestheticStyles: ElementStyles = css`
         padding: 4px;
     }
 
-    .expand-collapse-button:hover {
-        background: ${expandCollapseHover};
-    }
-
     :host([selected]) .control {
-        background: ${neutralFillSubtle.rest};
-    }
-
-    :host([selected]) .expand-collapse-button:hover {
-        background: ${selectedExpandCollapseHover};
+        background: ${tokenVar(tokens.color.neutral.fill.subtle)};
     }
 
     :host([selected])::after {
@@ -124,10 +92,10 @@ export const aestheticStyles: ElementStyles = css`
         display: block;
         position: absolute;
         top: calc((${heightNumber} / 4) * 1px);
-        left: ${focusStrokeThickness};
+        left: ${tokenVar(tokens.shape.strokeThickness.focus)};
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
-        border-radius: ${cornerRadiusControl};
-        background: ${highlightStrokeReadable.rest};
+        border-radius: ${tokenVar(tokens.shape.cornerRadius.default)};
+        background: ${tokenVar(tokens.color.highlight.stroke.readable)};
     }
 `;

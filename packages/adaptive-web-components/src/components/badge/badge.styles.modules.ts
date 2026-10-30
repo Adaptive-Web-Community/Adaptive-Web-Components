@@ -1,11 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlShapeStyles,
-    neutralFillReadableControlStyles,
-    typeRampMinus1Styles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 
 /**
  * Visual styles composed by style rules.
@@ -14,10 +10,10 @@ import {
  */
 export const styleModules: StyleRules = [
     {
-        styles: [
-            typeRampMinus1Styles,
-            controlShapeStyles,
-            neutralFillReadableControlStyles,
+        treatments: [
+            tokens.typography.ramp.default.treatments.minus1,
+            tokens.shape.treatments.control,
+            tokens.color.neutral.treatments.fillReadableControl,
         ],
     },
 ];

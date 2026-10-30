@@ -30,7 +30,7 @@ export function composeNumberField(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, NumberFieldAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, NumberFieldAnatomy, options);
 
     return FASTElementDefinition.compose(NumberField, {
         name: `${ds.prefix}-number-field`,

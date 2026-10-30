@@ -14,7 +14,7 @@ export function composeToolbar(
     ds: DesignSystem,
     options?: ComposeOptions<Toolbar>
 ): Promise<FASTElementDefinition<typeof Toolbar>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ToolbarAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, ToolbarAnatomy, options);
 
     return FASTElementDefinition.compose(Toolbar, {
         name: `${ds.prefix}-toolbar`,

@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { densityControl, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ToolbarAnatomy } from "./toolbar.template.js";
 
 /**
@@ -10,8 +10,8 @@ import { ToolbarAnatomy } from "./toolbar.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            foregroundFill: neutralStrokeStrong,
-            gap: densityControl.horizontalGap,
+            foregroundFill: tokens.color.neutral.stroke.strong,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
     {
@@ -19,7 +19,7 @@ export const styleModules: StyleRules = [
             part: ToolbarAnatomy.parts.positioningRegion,
         },
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
 ];

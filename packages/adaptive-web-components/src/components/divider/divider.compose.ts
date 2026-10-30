@@ -14,7 +14,7 @@ export function composeDivider(
     ds: DesignSystem,
     options?: ComposeOptions<Divider>
 ): Promise<FASTElementDefinition<typeof Divider>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, DividerAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, DividerAnatomy, options);
 
     return FASTElementDefinition.compose(Divider, {
         name: `${ds.prefix}-divider`,

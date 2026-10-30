@@ -1,14 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlShapeStyles,
-    densityControl,
-    inputStyles,
-    labelTextStyles,
-    neutralFillStealthControlStyles,
-    typeRampBaseStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { SearchAnatomy } from "./search.template.js";
 
 /**
@@ -18,30 +11,30 @@ import { SearchAnatomy } from "./search.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: typeRampBaseStyles,
+        treatments: [tokens.typography.ramp.default.treatments.base],
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: SearchAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: SearchAnatomy.parts.root,
         },
-        styles: inputStyles,
+        treatments: [tokens.treatments.inputControl],
     },
     {
         target : {
             part: SearchAnatomy.parts.clearButton,
         },
-        styles: [
-            controlShapeStyles,
-            neutralFillStealthControlStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.color.neutral.treatments.fillStealthControl,
         ],
     },
 ];

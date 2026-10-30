@@ -1,9 +1,7 @@
-import {
-    designUnit,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 import { visuallyHidden } from "../../styles/styles.js";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -45,16 +43,16 @@ export const templateStyles: ElementStyles = css`
 export const aestheticStyles: ElementStyles = css`
     .switch {
         position: relative;
-        width: calc(((${heightNumber} / 2)) * 2px + (${designUnit} * 2));
-        height: calc(((${heightNumber} / 2)) * 1px + ${designUnit});
+        width: calc(((${heightNumber} / 2)) * 2px + (${tokenVar(tokens.global.designUnit)} * 2));
+        height: calc(((${heightNumber} / 2)) * 1px + ${tokenVar(tokens.global.designUnit)});
         padding: 4px;
     }
 
     .thumb {
         position: absolute;
-        height: calc((${heightNumber}) * 1px - (${designUnit} * 5.5));
-        width: calc((${heightNumber}) * 1px - (${designUnit} * 5.5));
-        top: ${designUnit};
+        height: calc((${heightNumber}) * 1px - (${tokenVar(tokens.global.designUnit)} * 5.5));
+        width: calc((${heightNumber}) * 1px - (${tokenVar(tokens.global.designUnit)} * 5.5));
+        top: ${tokenVar(tokens.global.designUnit)};
         background: currentcolor;
         fill: currentcolor;
         transition: all 0.2s ease-in-out;

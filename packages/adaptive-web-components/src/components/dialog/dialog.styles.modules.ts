@@ -1,5 +1,5 @@
-import { Color, StyleRules } from "@adaptive-web/adaptive-ui";
-import { layerFillFixedPlus1, layerShapeStyles, shadowDialogStyles } from "@adaptive-web/adaptive-ui/reference";
+import { rgbColor, StyleRules } from "@adaptive-web/adaptive-ui";
+import { tokens } from "../../styles/tokens.js";
 import { DialogAnatomy } from "./dialog.template.js";
 
 /**
@@ -12,12 +12,12 @@ export const styleModules: StyleRules = [
         target : {
             part: DialogAnatomy.parts.control,
         },
-        styles: [
-            layerShapeStyles,
-            shadowDialogStyles,
+        treatments: [
+            tokens.shape.treatments.layer,
+            tokens.elevation.dialog.treatment,
         ],
         properties: {
-            backgroundFill: layerFillFixedPlus1
+            backgroundFill: tokens.color.layer.fill.ramp.plus1
         },
     },
     {
@@ -25,7 +25,7 @@ export const styleModules: StyleRules = [
             part: `${DialogAnatomy.parts.control}::backdrop`,
         },
         properties: {
-            backgroundFill: Color.fromRgb(0, 0, 0, 0.3),
+            backgroundFill: rgbColor(0, 0, 0, 0.3),
         },
     },
 ];

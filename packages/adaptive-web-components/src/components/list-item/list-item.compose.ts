@@ -14,7 +14,7 @@ export function composeListItem(
     ds: DesignSystem,
     options?: ComposeOptions<ListItem>
 ): Promise<FASTElementDefinition<typeof ListItem>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ListItemAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, ListItemAnatomy, options);
 
     return FASTElementDefinition.compose(ListItem, {
         name: `${ds.prefix}-list-item`,

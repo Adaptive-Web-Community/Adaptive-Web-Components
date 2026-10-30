@@ -1,12 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    controlShapeStyles,
-    densityControl,
-    highlightFillReadableControlStyles,
-    labelTextStyles,
-    neutralStrokeDiscernible,
-    roundShapeStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { SliderAnatomy } from "./slider.template.js";
 
 /**
@@ -17,43 +10,43 @@ import { SliderAnatomy } from "./slider.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: SliderAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
-        styles: controlShapeStyles,
+        treatments: [tokens.shape.treatments.control],
     },
     {
         target : {
             part: SliderAnatomy.parts.track,
         },
-        styles: controlShapeStyles,
+        treatments: [tokens.shape.treatments.control],
         properties: {
-            backgroundFill: neutralStrokeDiscernible.rest,
+            backgroundFill: { rest: tokens.color.neutral.stroke.discernible },
         },
     },
     {
         target : {
             part: SliderAnatomy.parts.trackStart,
         },
-        styles: [
-            controlShapeStyles,
-            highlightFillReadableControlStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.color.highlight.treatments.fillReadableControl,
         ],
     },
     {
         target : {
             part: SliderAnatomy.parts.thumb,
         },
-        styles: [
-            roundShapeStyles,
-            highlightFillReadableControlStyles,
+        treatments: [
+            tokens.shape.treatments.round,
+            tokens.color.highlight.treatments.fillReadableControl,
         ],
     },
 ];

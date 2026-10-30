@@ -1,10 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    itemStyles,
-    selectableSelectedStyles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ListboxOptionAnatomy } from "./listbox-option.template.js";
 
 /**
@@ -14,12 +11,12 @@ import { ListboxOptionAnatomy } from "./listbox-option.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: itemStyles,
+        treatments: [tokens.treatments.itemControl],
     },
     {
         target : {
             contextCondition: ListboxOptionAnatomy.conditions.selected,
         },
-        styles: selectableSelectedStyles,
+        treatments: [tokens.treatments.selectableControlSelected],
     },
 ];

@@ -30,7 +30,7 @@ export function composeAccordionItem(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, AccordionItemAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, AccordionItemAnatomy, options);
 
     return FASTElementDefinition.compose(AccordionItem, {
         name: `${ds.prefix}-accordion-item`,

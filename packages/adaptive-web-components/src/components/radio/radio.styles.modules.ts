@@ -1,11 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    densityControl,
-    plainTextStyles,
-    roundShapeStyles,
-    selectableSelectedStyles,
-    selectableUnselectedStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { RadioAnatomy } from "./radio.template.js";
 
 /**
@@ -16,22 +10,22 @@ import { RadioAnatomy } from "./radio.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
     {
         target : {
             part: RadioAnatomy.parts.label,
         },
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
     },
     {
         target : {
             part: RadioAnatomy.parts.control,
         },
-        styles: [
-            selectableUnselectedStyles,
-            roundShapeStyles,
+        treatments: [
+            tokens.treatments.selectableControlUnselected,
+            tokens.shape.treatments.round,
         ],
     },
     {
@@ -39,9 +33,9 @@ export const styleModules: StyleRules = [
             contextCondition: RadioAnatomy.conditions.checked,
             part: RadioAnatomy.parts.control,
         },
-        styles: [
-            selectableSelectedStyles,
-            roundShapeStyles,
+        treatments: [
+            tokens.treatments.selectableControlSelected,
+            tokens.shape.treatments.round,
         ],
     },
 ];

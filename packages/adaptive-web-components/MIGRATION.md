@@ -15,6 +15,20 @@ instead. A component that isn't listed hasn't changed yet.
   default slot is never the label. One named by its content (a button, a link) is labelled by its default slot. `hide-label` hides either,
   and the label still names the control.
 - `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
+- The components depend on `@adaptive-web/adaptive-ui` 1.0 (see its `MIGRATION.md`), whose tokens are those of a token library and not
+  FAST design tokens. The styles are rendered with the library of the design system, see
+  `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.
+
+| 0.10 | Now |
+| --- | --- |
+| `DesignToken.registerDefaultStyleTarget()` (FAST Foundation), which wrote the values of the tokens | `ds.adoptTokenStyles()`, which writes the tokens of the design system's library, and the values on a fill of its components, on the document's `:root` (or a shadow root's `:host`) |
+| `DesignSystem.assembleStyles(styles, anatomy, options)`, static | `ds.assembleStyles(styles, anatomy, options)`, rendered with the design system's library |
+| `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles`, set by the design system | `anatomyTreatments` of the design system, `referenceAnatomyTreatments` by default |
+| | `library` of the design system, `createReferenceLibrary()` by default, set with `configure({ library })` |
+| A rule's `styles`, the `...Styles` of Adaptive UI 0.14 (`actionStyles`) | `treatments`, refs to the treatment tokens of the library (`tokens.treatments.actionControl`) |
+| A FAST token as a value of a rule (`strokeThickness`), or one of its states (`neutralStrokeSubtle.rest`) | A ref to the token (`tokens.shape.strokeThickness.default`), or a set with that state (`{ rest: tokens.color.neutral.stroke.subtle }`) |
+| A FAST token in the CSS of a template (`${designUnit}`, `${neutralFillSubtle.hover}`) | Its custom property, `${tokenVar(tokens.global.designUnit)}`, `${tokenVar(tokens.color.neutral.fill.subtle, InteractiveState.hover)}` |
+| The tree item's `tree-item-expand-collapse-hover` and `-selected-hover` tokens, made by a recipe on another | A rule of the button, the subtle fill on the fill of the item (`onFill`), which is the same color in the reference system |
 
 ## Accordion
 

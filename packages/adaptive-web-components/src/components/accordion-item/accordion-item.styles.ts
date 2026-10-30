@@ -1,8 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    focusStrokeOuter,
-    focusStrokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -84,6 +81,6 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host(:not([disabled])) .button:focus-visible::before {
-        outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
+        outline: ${tokenVar(tokens.shape.strokeThickness.focus)} solid ${tokenVar(tokens.color.focusStroke.outer)};
     }
 `;

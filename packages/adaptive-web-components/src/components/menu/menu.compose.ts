@@ -14,7 +14,7 @@ export function composeMenu(
     ds: DesignSystem,
     options?: ComposeOptions<Menu>
 ): Promise<FASTElementDefinition<typeof Menu>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, MenuAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, MenuAnatomy, options);
 
     return FASTElementDefinition.compose(Menu, {
         name: `${ds.prefix}-menu`,

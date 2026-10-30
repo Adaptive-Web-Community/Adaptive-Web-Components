@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { neutralStrokeSubtle, strokeThickness } from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { DividerAnatomy } from "./divider.template.js";
 
 /**
@@ -13,9 +13,9 @@ export const styleModules: StyleRules = [
             contextCondition: DividerAnatomy.conditions.orientation.horizontal,
         },
         properties: {
-            borderFillTop: neutralStrokeSubtle.rest,
+            borderFillTop: { rest: tokens.color.neutral.stroke.subtle },
             borderStyleTop: "solid",
-            borderThicknessTop: strokeThickness,
+            borderThicknessTop: tokens.shape.strokeThickness.default,
         },
     },
     {
@@ -23,9 +23,9 @@ export const styleModules: StyleRules = [
             contextCondition: DividerAnatomy.conditions.orientation.vertical,
         },
         properties: {
-            borderFillLeft: neutralStrokeSubtle.rest,
+            borderFillLeft: { rest: tokens.color.neutral.stroke.subtle },
             borderStyleLeft: "solid",
-            borderThicknessLeft: strokeThickness,
+            borderThicknessLeft: tokens.shape.strokeThickness.default,
         },
     },
 ];
