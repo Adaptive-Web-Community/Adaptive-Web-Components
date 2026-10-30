@@ -14,10 +14,15 @@ import {
 } from "@adaptive-web/adaptive-ui-designer-core";
 import { FIGMA_SHARED_DATA_NAMESPACE } from "./constants.js";
 
+/**
+ * The fields of a node of the Figma REST API that {@link parseNode} reads.
+ */
+export type RestNode = Pick<FigmaRestAPI.Node, "id" | "name" | "type" | "sharedPluginData"> & { children?: readonly RestNode[] };
+
 const isObject = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null;
 
 // The REST API gives the shared plugin data of a node as `{ [namespace]: { [key]: string } }`, which its types leave `unknown`.
-function getPluginData(node: FigmaRestAPI.Node, key: PluginDataKey): string | null {
+function getPluginData(node: RestNode, key: PluginDataKey): string | null {
     const data = node.sharedPluginData;
     const namespace = isObject(data) ? data[FIGMA_SHARED_DATA_NAMESPACE] : undefined;
     const value = isObject(namespace) ? namespace[key] : undefined;
@@ -30,17 +35,13 @@ function currentName(names: TokenNameIndex, name: string): string {
     return resolveTokenName(names, name)?.name ?? name;
 }
 
-function hasChildren<T extends FigmaRestAPI.Node>(node: T): node is FigmaRestAPI.HasChildrenTrait & T {
-    return "children" in node;
-}
-
-function getAppliedDesignTokens(node: FigmaRestAPI.Node, names: TokenNameIndex): AppliedDesignTokens {
+function getAppliedDesignTokens(node: RestNode, names: TokenNameIndex): AppliedDesignTokens {
     const stored = deserializeRecord(getPluginData(node, "appliedDesignTokens"), isAppliedDesignToken);
     return Object.fromEntries(Object.entries(stored).map(([property, { tokenID }]) => [property, { tokenID: currentName(names, tokenID) }]));
 }
 
 // The treatments of a node, from the key that earlier versions stored them under when the node doesn't have the current one.
-function getAppliedTreatments(node: FigmaRestAPI.Node, names: TokenNameIndex): AppliedTreatments {
+function getAppliedTreatments(node: RestNode, names: TokenNameIndex): AppliedTreatments {
     const json = getPluginData(node, "appliedTreatments") ?? getPluginData(node, formerPluginDataKeys.appliedTreatments);
     if (!json) {
         return [];
@@ -65,8 +66,8 @@ function getAppliedTreatments(node: FigmaRestAPI.Node, names: TokenNameIndex): A
  * by a name they had are read by their current name.
  * @returns The corresponding PluginUINodeData.
  */
-export function parseNode(node: FigmaRestAPI.Node, names: TokenNameIndex): PluginUINodeData {
-    const children = hasChildren(node) ? node.children : [];
+export function parseNode(node: RestNode, names: TokenNameIndex): PluginUINodeData {
+    const children = node.children ?? [];
     const additionalData: AdditionalData = {}; // Where do I get data for this?
 
     if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") {
