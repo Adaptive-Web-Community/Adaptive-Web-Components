@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAvatar } from "./avatar.compose.js";
-import { styleModules } from "./avatar.styles.modules.js";
+import { styleRules } from "./avatar.styles.rules.js";
 
 /**
  * The Avatar custom element definition. Implements {@link Avatar}.
@@ -13,6 +13,6 @@ import { styleModules } from "./avatar.styles.modules.js";
 export const avatarDefinition = composeAvatar(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

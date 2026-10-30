@@ -5,6 +5,6 @@ export {
     aestheticStyles as selectAestheticStyles,
 } from "./select.styles.js";
 export {
-    styleModules as selectStyleModules,
-} from "./select.styles.modules.js";
+    styleRules as selectStyleRules,
+} from "./select.styles.rules.js";
 export { template as selectTemplate, SelectAnatomy, SelectConditions, SelectParts, SelectStatics } from "./select.template.js";

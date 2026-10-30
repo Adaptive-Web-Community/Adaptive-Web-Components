@@ -5,6 +5,6 @@ export {
     aestheticStyles as dialogAestheticStyles,
 } from "./dialog.styles.js";
 export {
-    styleModules as dialogStyleModules,
-} from "./dialog.styles.modules.js";
+    styleRules as dialogStyleRules,
+} from "./dialog.styles.rules.js";
 export { template as dialogTemplate, DialogAnatomy, DialogConditions, DialogParts } from "./dialog.template.js";

@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTextField } from "./text-field.compose.js";
-import { styleModules } from "./text-field.styles.modules.js";
+import { styleRules } from "./text-field.styles.rules.js";
 
 /**
  * The Text Field custom element definition. Implements {@link TextField}.
@@ -13,7 +13,7 @@ import { styleModules } from "./text-field.styles.modules.js";
 export const textFieldDefinition = composeTextField(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses the native control.
             delegatesFocus: true,

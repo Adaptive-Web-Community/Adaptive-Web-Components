@@ -5,6 +5,6 @@ export {
     aestheticStyles as dataGridRowAestheticStyles,
 } from "./data-grid-row.styles.js";
 export {
-    styleModules as dataGridRowStyleModules,
-} from "./data-grid-row.styles.modules.js";
+    styleRules as dataGridRowStyleRules,
+} from "./data-grid-row.styles.rules.js";
 export { template as dataGridRowTemplate, DataGridRowAnatomy, DataGridRowConditions, DataGridRowParts } from "./data-grid-row.template.js";

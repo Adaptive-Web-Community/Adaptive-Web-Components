@@ -5,8 +5,8 @@ export {
     aestheticStyles as numberFieldAestheticStyles,
 } from "./number-field.styles.js";
 export {
-    styleModules as numberFieldStyleModules,
-} from "./number-field.styles.modules.js";
+    styleRules as numberFieldStyleRules,
+} from "./number-field.styles.rules.js";
 export {
     template as numberFieldTemplate,
     NumberFieldAnatomy,

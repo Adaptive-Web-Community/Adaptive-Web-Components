@@ -2,7 +2,7 @@ import { radioIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeRadio } from "./radio.compose.js";
 import { RadioStatics } from "./radio.template.js";
-import { styleModules } from "./radio.styles.modules.js";
+import { styleRules } from "./radio.styles.rules.js";
 
 /**
  * The Radio custom element definition. Implements {@link Radio}.
@@ -18,6 +18,6 @@ export const radioDefinition = composeRadio(
         statics: {
             [RadioStatics.checked]: radioIcon,
         },
-        styleModules,
+        styleRules,
     }
 );

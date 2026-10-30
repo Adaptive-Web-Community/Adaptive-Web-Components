@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDialog } from "./dialog.compose.js";
-import { styleModules } from "./dialog.styles.modules.js";
+import { styleRules } from "./dialog.styles.rules.js";
 
 /**
  * The Dialog custom element definition. Implements {@link Dialog}.
@@ -13,6 +13,6 @@ import { styleModules } from "./dialog.styles.modules.js";
 export const dialogDefinition = composeDialog(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

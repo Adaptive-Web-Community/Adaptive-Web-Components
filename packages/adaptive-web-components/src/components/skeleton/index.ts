@@ -5,6 +5,6 @@ export {
     aestheticStyles as skeletonAestheticStyles,
 } from "./skeleton.styles.js";
 export {
-    styleModules as skeletonStyleModules,
-} from "./skeleton.styles.modules.js";
+    styleRules as skeletonStyleRules,
+} from "./skeleton.styles.rules.js";
 export { template as skeletonTemplate, SkeletonAnatomy, SkeletonConditions, SkeletonParts } from "./skeleton.template.js";

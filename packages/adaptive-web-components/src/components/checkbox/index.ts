@@ -6,6 +6,6 @@ export {
     aestheticStyles as checkboxAestheticStyles,
 } from "./checkbox.styles.js";
 export {
-    styleModules as checkboxStyleModules,
-} from "./checkbox.styles.modules.js";
+    styleRules as checkboxStyleRules,
+} from "./checkbox.styles.rules.js";
 export { template as checkboxTemplate, CheckboxAnatomy, CheckboxConditions, CheckboxParts, CheckboxStatics } from "./checkbox.template.js";

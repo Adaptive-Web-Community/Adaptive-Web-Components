@@ -42,7 +42,7 @@ export const visuallyHidden = /* css */`
  * 
  * @public
  * @remarks
- * Temporary rule to be migrated to style modules structure.
+ * Temporary rule to be migrated to style rules.
  */
 export const svgIconStyles = /* css */`
     .stroked {

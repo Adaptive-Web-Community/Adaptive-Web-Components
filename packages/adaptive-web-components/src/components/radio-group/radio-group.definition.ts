@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeRadioGroup } from "./radio-group.compose.js";
-import { styleModules } from "./radio-group.styles.modules.js";
+import { styleRules } from "./radio-group.styles.rules.js";
 
 /**
  * The Radio Group custom element definition. Implements {@link RadioGroup}.
@@ -13,6 +13,6 @@ import { styleModules } from "./radio-group.styles.modules.js";
 export const radioGroupDefinition = composeRadioGroup(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

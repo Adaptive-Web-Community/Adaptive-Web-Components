@@ -5,6 +5,6 @@ export {
     aestheticStyles as pickerAestheticStyles,
 } from "./picker.styles.js";
 export {
-    styleModules as pickerStyleModules,
-} from "./picker.styles.modules.js";
+    styleRules as pickerStyleRules,
+} from "./picker.styles.rules.js";
 export { template as pickerTemplate, PickerAnatomy, PickerConditions, PickerParts, PickerStatics } from "./picker.template.js";

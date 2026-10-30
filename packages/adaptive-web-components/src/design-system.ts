@@ -190,7 +190,7 @@ export class DesignSystem {
      *
      * @param defaultStyles - The default collection of styles to use if not overridden by `options.styles`.
      * @param anatomy - The anatomy of the component.
-     * @param options - The component options, using `styles` and `styleModules`.
+     * @param options - The component options, using `styles` and `styleRules`.
      * @returns The collection of desired styles.
      *
      * @beta
@@ -202,7 +202,7 @@ export class DesignSystem {
             (Array.isArray(options.styles) ? options.styles : [options.styles]) :
             defaultStyles;
 
-        const rules = (options?.styleModules ?? []).map(classPartsOfRule);
+        const rules = (options?.styleRules ?? []).map(classPartsOfRule);
         const classAnatomy = anatomy ? classPartsOfAnatomy(anatomy) : undefined;
 
         const treatments = libraryTreatments(this._library);
@@ -310,7 +310,7 @@ export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 export type ComposeOptions<TSource, TStatics extends string = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
     styles?: ElementStyles | ElementStyles[];
-    styleModules?: StyleRules;
+    styleRules?: StyleRules;
     shadowOptions?: Partial<ShadowRootOptions>;
     elementOptions?: ElementDefinitionOptions;
     statics?: Record<TStatics, StaticallyComposableHTML>;

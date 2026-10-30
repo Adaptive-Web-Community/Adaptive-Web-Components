@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBreadcrumb } from "./breadcrumb.compose.js";
-import { styleModules } from "./breadcrumb.styles.modules.js";
+import { styleRules } from "./breadcrumb.styles.rules.js";
 
 /**
  * The Breadcrumb custom element definition. Implements {@link Breadcrumb}.
@@ -13,6 +13,6 @@ import { styleModules } from "./breadcrumb.styles.modules.js";
 export const breadcrumbDefinition = composeBreadcrumb(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

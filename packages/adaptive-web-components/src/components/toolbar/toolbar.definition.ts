@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeToolbar } from "./toolbar.compose.js";
-import { styleModules } from "./toolbar.styles.modules.js";
+import { styleRules } from "./toolbar.styles.rules.js";
 
 /**
  * The Toolbar custom element definition. Implements {@link Toolbar}.
@@ -13,7 +13,7 @@ import { styleModules } from "./toolbar.styles.modules.js";
 export const toolbarDefinition = composeToolbar(
 	DefaultDesignSystem,
 	{
-		styleModules,
+		styleRules,
 		shadowOptions: {
 			delegatesFocus: true
 		}

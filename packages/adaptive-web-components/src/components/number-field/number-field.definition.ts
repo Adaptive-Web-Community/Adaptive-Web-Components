@@ -2,7 +2,7 @@ import { chevronDownIcon, chevronUpIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeNumberField } from "./number-field.compose.js";
 import { NumberFieldStatics } from "./number-field.template.js";
-import { styleModules } from "./number-field.styles.modules.js";
+import { styleRules } from "./number-field.styles.rules.js";
 
 /**
  * The Number Field custom element definition. Implements {@link NumberField}.
@@ -19,7 +19,7 @@ export const numberFieldDefinition = composeNumberField(
             [NumberFieldStatics.stepDown]: chevronDownIcon,
             [NumberFieldStatics.stepUp]: chevronUpIcon,
         },
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses the native control.
             delegatesFocus: true,

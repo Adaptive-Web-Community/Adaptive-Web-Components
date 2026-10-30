@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeListboxOption } from "./listbox-option.compose.js";
-import { styleModules } from "./listbox-option.styles.modules.js";
+import { styleRules } from "./listbox-option.styles.rules.js";
 
 /**
  * The option custom element definition. Implements {@link ListboxOption}.
@@ -13,6 +13,6 @@ import { styleModules } from "./listbox-option.styles.modules.js";
 export const listboxOptionDefinition = composeListboxOption(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

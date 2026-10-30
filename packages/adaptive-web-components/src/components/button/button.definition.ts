@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeButton } from "./button.compose.js";
-import { styleModules } from "./button.styles.modules.js";
+import { styleRules } from "./button.styles.rules.js";
 
 /**
  * The Button custom element definition. Implements {@link Button}.
@@ -13,6 +13,6 @@ import { styleModules } from "./button.styles.modules.js";
 export const buttonDefinition = composeButton(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

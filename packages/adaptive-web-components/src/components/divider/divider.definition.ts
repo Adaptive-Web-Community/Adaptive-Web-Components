@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDivider } from "./divider.compose.js";
-import { styleModules } from "./divider.styles.modules.js";
+import { styleRules } from "./divider.styles.rules.js";
 
 /**
  * The Divider custom element definition. Implements {@link Divider}.
@@ -13,6 +13,6 @@ import { styleModules } from "./divider.styles.modules.js";
 export const dividerDefinition = composeDivider(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

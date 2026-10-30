@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTabPanel } from "./tab-panel.compose.js";
-import { styleModules } from "./tab-panel.styles.modules.js";
+import { styleRules } from "./tab-panel.styles.rules.js";
 
 /**
  * The Tab Panel custom element definition. Implements {@link TabPanel}.
@@ -13,6 +13,6 @@ import { styleModules } from "./tab-panel.styles.modules.js";
 export const tabPanelDefinition = composeTabPanel(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

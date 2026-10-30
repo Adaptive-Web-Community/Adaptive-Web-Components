@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTreeView } from "./tree-view.compose.js";
-import { styleModules } from "./tree-view.styles.modules.js";
+import { styleRules } from "./tree-view.styles.rules.js";
 
 /**
  * The tree view custom element definition. Implements {@link TreeView}.
@@ -13,6 +13,6 @@ import { styleModules } from "./tree-view.styles.modules.js";
 export const treeViewDefinition = composeTreeView(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

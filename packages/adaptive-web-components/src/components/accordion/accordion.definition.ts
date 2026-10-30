@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordion } from "./accordion.compose.js";
-import { styleModules } from "./accordion.styles.modules.js";
+import { styleRules } from "./accordion.styles.rules.js";
 
 /**
  * The Accordion custom element definition. Implements {@link Accordion}.
@@ -13,6 +13,6 @@ import { styleModules } from "./accordion.styles.modules.js";
 export const accordionDefinition = composeAccordion(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

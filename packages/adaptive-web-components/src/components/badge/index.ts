@@ -5,6 +5,6 @@ export {
     aestheticStyles as badgeAestheticStyles,
 } from "./badge.styles.js";
 export {
-    styleModules as badgeStyleModules,
-} from "./badge.styles.modules.js";
+    styleRules as badgeStyleRules,
+} from "./badge.styles.rules.js";
 export { template as badgeTemplate, BadgeAnatomy, BadgeConditions, BadgeParts } from "./badge.template.js";

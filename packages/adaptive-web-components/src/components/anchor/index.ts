@@ -5,6 +5,6 @@ export {
     aestheticStyles as anchorAestheticStyles,
 } from "./anchor.styles.js";
 export {
-    styleModules as anchorStyleModules,
-} from "./anchor.styles.modules.js";
+    styleRules as anchorStyleRules,
+} from "./anchor.styles.rules.js";
 export { template as anchorTemplate, AnchorAnatomy, AnchorConditions, AnchorParts } from "./anchor.template.js";

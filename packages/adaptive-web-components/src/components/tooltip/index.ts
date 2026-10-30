@@ -5,6 +5,6 @@ export {
     aestheticStyles as tooltipAestheticStyles,
 } from "./tooltip.styles.js";
 export {
-    styleModules as tooltipStyleModules,
-} from "./tooltip.styles.modules.js";
+    styleRules as tooltipStyleRules,
+} from "./tooltip.styles.rules.js";
 export { template as tooltipTemplate, TooltipAnatomy, TooltipConditions, TooltipParts } from "./tooltip.template.js";

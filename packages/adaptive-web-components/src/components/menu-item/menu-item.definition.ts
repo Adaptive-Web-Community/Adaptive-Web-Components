@@ -2,7 +2,7 @@ import { checkboxIcon, chevronRightIcon, radioIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenuItem } from "./menu-item.compose.js";
 import { MenuItemStatics } from "./menu-item.template.js";
-import { styleModules } from "./menu-item.styles.modules.js";
+import { styleRules } from "./menu-item.styles.rules.js";
 
 /**
  * The Menu Item custom element definition. Implements {@link MenuItem}.
@@ -20,6 +20,6 @@ export const menuItemDefinition = composeMenuItem(
             [MenuItemStatics.radio]: radioIcon,
             [MenuItemStatics.submenu]: chevronRightIcon,
         },
-        styleModules,
+        styleRules,
     }
 );

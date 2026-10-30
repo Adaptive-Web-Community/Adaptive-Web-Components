@@ -5,6 +5,6 @@ export {
     aestheticStyles as sliderLabelAestheticStyles,
 } from "./slider-label.styles.js";
 export {
-    styleModules as sliderLabelStyleModules,
-} from "./slider-label.styles.modules.js";
+    styleRules as sliderLabelStyleRules,
+} from "./slider-label.styles.rules.js";
 export { template as sliderLabelTemplate, SliderLabelAnatomy, SliderLabelConditions, SliderLabelParts } from "./slider-label.template.js";

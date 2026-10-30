@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeProgressRing } from "./progress-ring.compose.js";
-import { styleModules } from "./progress-ring.styles.modules.js";
+import { styleRules } from "./progress-ring.styles.rules.js";
 
 /**
  * The Progress Ring custom element definition. Implements {@link ProgressRing}.
@@ -13,6 +13,6 @@ import { styleModules } from "./progress-ring.styles.modules.js";
 export const progressRingDefinition = composeProgressRing(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

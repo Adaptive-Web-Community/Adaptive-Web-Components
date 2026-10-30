@@ -5,6 +5,6 @@ export {
     aestheticStyles as avatarAestheticStyles,
 } from "./avatar.styles.js";
 export {
-    styleModules as avatarStyleModules,
-} from "./avatar.styles.modules.js";
+    styleRules as avatarStyleRules,
+} from "./avatar.styles.rules.js";
 export { template as avatarTemplate, AvatarAnatomy, AvatarConditions, AvatarParts } from "./avatar.template.js";

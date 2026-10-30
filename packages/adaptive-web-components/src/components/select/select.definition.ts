@@ -2,7 +2,7 @@ import { chevronDownIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSelect } from "./select.compose.js";
 import { SelectStatics } from "./select.template.js";
-import { styleModules } from "./select.styles.modules.js";
+import { styleRules } from "./select.styles.rules.js";
 
 /**
  * The Select custom element definition. Implements {@link Select}.
@@ -18,7 +18,7 @@ export const selectDefinition = composeSelect(
         statics: {
             [SelectStatics.indicator]: chevronDownIcon,
         },
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses the combobox.
             delegatesFocus: true,

@@ -2,7 +2,7 @@ import { checkboxIcon, checkboxIndeterminateIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCheckbox } from './checkbox.compose.js';
 import { CheckboxStatics } from "./checkbox.template.js";
-import { styleModules } from "./checkbox.styles.modules.js";
+import { styleRules } from "./checkbox.styles.rules.js";
 
 /**
  * The Checkbox custom element definition. Implements {@link Checkbox}.
@@ -19,6 +19,6 @@ export const checkboxDefinition = composeCheckbox(
             [CheckboxStatics.checked]: checkboxIcon,
             [CheckboxStatics.indeterminate]: checkboxIndeterminateIcon,
         },
-        styleModules,
+        styleRules,
     }
 );

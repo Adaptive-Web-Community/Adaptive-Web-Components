@@ -5,6 +5,6 @@ export {
     aestheticStyles as listboxAestheticStyles,
 } from "./listbox.styles.js";
 export {
-    styleModules as listboxStyleModules,
-} from "./listbox.styles.modules.js";
+    styleRules as listboxStyleRules,
+} from "./listbox.styles.rules.js";
 export { template as listboxTemplate, ListboxAnatomy, ListboxConditions, ListboxParts } from "./listbox.template.js";

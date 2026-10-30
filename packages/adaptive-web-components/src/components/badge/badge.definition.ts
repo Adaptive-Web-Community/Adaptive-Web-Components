@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBadge } from "./badge.compose.js";
-import { styleModules } from "./badge.styles.modules.js";
+import { styleRules } from "./badge.styles.rules.js";
 
 /**
  * The Badge custom element definition. Implements {@link Badge}.
@@ -13,6 +13,6 @@ import { styleModules } from "./badge.styles.modules.js";
 export const badgeDefinition = composeBadge(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

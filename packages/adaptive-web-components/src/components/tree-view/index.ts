@@ -5,6 +5,6 @@ export {
     aestheticStyles as treeViewAestheticStyles,
 } from "./tree-view.styles.js";
 export {
-    styleModules as treeViewStyleModules,
-} from "./tree-view.styles.modules.js";
+    styleRules as treeViewStyleRules,
+} from "./tree-view.styles.rules.js";
 export { template as treeViewTemplate, TreeViewAnatomy, TreeViewConditions, TreeViewParts } from "./tree-view.template.js";

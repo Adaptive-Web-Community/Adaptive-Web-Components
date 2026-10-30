@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenu } from "./menu.compose.js";
-import { styleModules } from "./menu.styles.modules.js";
+import { styleRules } from "./menu.styles.rules.js";
 
 /**
  * The Menu custom element definition. Implements {@link Menu}.
@@ -13,6 +13,6 @@ import { styleModules } from "./menu.styles.modules.js";
 export const menuDefinition = composeMenu(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

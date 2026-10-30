@@ -2,7 +2,7 @@ import { chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTreeItem } from "./tree-item.compose.js";
 import { TreeItemStatics } from "./tree-item.template.js";
-import { styleModules } from "./tree-item.styles.modules.js";
+import { styleRules } from "./tree-item.styles.rules.js";
 
 /**
  * The tree item custom element definition. Implements {@link TreeItem}.
@@ -18,6 +18,6 @@ export const treeItemDefinition = composeTreeItem(
         statics: {
             [TreeItemStatics.expandCollapse]: chevronRightIcon,
         },
-        styleModules,
+        styleRules,
     }
 );

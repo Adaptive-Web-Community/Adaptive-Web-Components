@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTextArea } from "./text-area.compose.js";
-import { styleModules } from "./text-area.styles.modules.js";
+import { styleRules } from "./text-area.styles.rules.js";
 
 /**
  * The Text Area custom element definition. Implements {@link TextArea}.
@@ -13,7 +13,7 @@ import { styleModules } from "./text-area.styles.modules.js";
 export const textAreaDefinition = composeTextArea(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses the native control.
             delegatesFocus: true,

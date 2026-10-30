@@ -5,6 +5,6 @@ export {
     aestheticStyles as treeItemAestheticStyles,
 } from "./tree-item.styles.js";
 export {
-    styleModules as treeItemStyleModules,
-} from "./tree-item.styles.modules.js";
+    styleRules as treeItemStyleRules,
+} from "./tree-item.styles.rules.js";
 export { template as treeItemTemplate, TreeItemAnatomy, TreeItemConditions, TreeItemParts, TreeItemStatics } from "./tree-item.template.js";
