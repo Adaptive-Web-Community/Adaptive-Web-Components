@@ -1,39 +1,12 @@
 import resolve from "@rollup/plugin-node-resolve";
-import filesize from "rollup-plugin-filesize";
-import svgo from 'rollup-plugin-svgo'
-import { terser } from "rollup-plugin-terser";
-import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import {
-    transformCSSFragment,
-    transformHTMLFragment,
-} from "../../build/transform-fragments.js";
-import manifest from './package.json';
-
-const parserOptions = {
-	sourceType: "module"
-};
+import terser from "@rollup/plugin-terser";
+import fastTaggedTemplates from "rollup-plugin-fast-tagged-templates";
+import { transformHTMLFragment } from "../../build/transform-fragments.js";
+import manifest from "./package.json" with { type: "json" };
 
 const plugins = [
 	resolve(),
-	svgo({
-		raw: true
-	}),
-	transformTaggedTemplate({
-		tagsToProcess: ["css","css.partial"],
-		transformer: transformCSSFragment,
-		parserOptions
-	}),
-	transformTaggedTemplate({
-		tagsToProcess: ["html"],
-		transformer: transformHTMLFragment,
-		parserOptions
-	}),
-	filesize({
-		showMinifiedSize: true,
-		showBrotliSize: true,
-		showGzippedSize: true,
-		showBeforeSizes: true
-	}),
+	fastTaggedTemplates({ html: transformHTMLFragment, css: true }),
 ]
 
 export default [
