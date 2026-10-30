@@ -8,7 +8,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 1. **Contract, behavior, binding.** The contract (an interface of the element's properties, its enumerations, its parts) and the behavior (a
    controller) are in this package, with no framework and no design system. A framework's binding implements the contract, has the template,
    and wires the lifecycle. ([0009](../../docs/decisions/0009-component-behavior-is-framework-neutral.md))
-   Used by: all.
+   Used by: all but Card, which has no behavior and no parts, so it has nothing to share and no contract here: its binding is an element with
+   a default slot.
 2. **A controller doesn't observe.** The binding observes with its framework's own reactivity and calls the controller's method for each
    change (`setItems`, `expandModeChanged`, `itemExpandedChanged`), and `connect` and `disconnect` with the element's lifecycle. What isn't
    in the contract, such as the author's ARIA to forward, the controller observes itself.

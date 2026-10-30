@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTCard } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Card as CardElement } from "./card.js";
 
-export const storyTemplate = html<StoryArgs<FASTCard>>`
+export const storyTemplate = html<StoryArgs<CardElement>>`
     <adaptive-card>
         ${(x) => x.storyContent}
     </adaptive-card>
@@ -18,14 +18,14 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTCard>;
+} as Meta<CardElement>;
 
-export const Card: Story<FASTCard> = renderComponent(storyTemplate).bind({});
+export const Card: Story<CardElement> = renderComponent(storyTemplate).bind({});
 
 export const CardWithCustomDimensions = renderComponent(storyTemplate).bind({});
 CardWithCustomDimensions.decorators = [
-    (Story: () => FASTCard) => {
-        const renderedStory = Story() as FASTCard;
+    (Story: () => CardElement) => {
+        const renderedStory = Story() as CardElement;
         renderedStory.style.setProperty("height", "400px");
         renderedStory.style.setProperty("width", "500px");
         renderedStory.style.setProperty("padding", "20px");
@@ -33,15 +33,15 @@ CardWithCustomDimensions.decorators = [
     },
 ];
 
-export const CardWithControls: Story<FASTCard> = renderComponent(storyTemplate).bind({});
+export const CardWithControls: Story<CardElement> = renderComponent(storyTemplate).bind({});
 CardWithControls.args = {
     storyContent: html`
         <adaptive-button>Test Button</adaptive-button>
     `,
 };
 CardWithControls.decorators = [
-    (Story: () => FASTCard) => {
-        const renderedStory = Story() as FASTCard;
+    (Story: () => CardElement) => {
+        const renderedStory = Story() as CardElement;
         renderedStory.style.setProperty("height", "400px");
         renderedStory.style.setProperty("width", "500px");
         renderedStory.style.setProperty("display", "flex");

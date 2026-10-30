@@ -122,3 +122,9 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | `AnchorTarget` from `@microsoft/fast-foundation` | Gone: `target` is a string |
 | The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
 | `AnchorParts` from this package | The components foundation's (`control`, `content`), also exported here |
+
+## Card
+
+| 0.10 | Now |
+| --- | --- |
+| `FASTCard` (FAST Foundation) | `Card`, an element with a default slot. It has no contract in the components foundation, since it has nothing to share |
