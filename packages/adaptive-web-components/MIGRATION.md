@@ -15,6 +15,16 @@ instead. A component that isn't listed hasn't changed yet.
   default slot is never the label. One named by its content (a button, a link) is labelled by its default slot. `hide-label` hides either,
   and the label still names the control.
 - `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
+- The components depend on `@adaptive-web/adaptive-ui` 1.0 (see its `MIGRATION.md`), whose tokens are those of a token library and not
+  FAST design tokens. The styles are rendered with the library of the design system, see
+  `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.
+
+| 0.10 | Now |
+| --- | --- |
+| `DesignToken.registerDefaultStyleTarget()` (FAST Foundation), which wrote the values of the tokens | `ds.adoptTokenStyles()`, which writes the tokens of the design system's library, and the values on a fill of its components, on the document's `:root` (or a shadow root's `:host`) |
+| `DesignSystem.assembleStyles(styles, anatomy, options)`, static | `ds.assembleStyles(styles, anatomy, options)`, rendered with the design system's library |
+| `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles`, set by the design system | `anatomyTreatments` of the design system, `referenceAnatomyTreatments` by default |
+| | `library` of the design system, `createReferenceLibrary()` by default, set with `configure({ library })` |
 
 ## Accordion
 

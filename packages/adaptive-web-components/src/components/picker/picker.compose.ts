@@ -29,7 +29,7 @@ export function composePicker(
         }
     }
 
-    const styles = DesignSystem.assembleStyles(defaultStyles, PickerAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, PickerAnatomy, options);
 
     return FASTElementDefinition.compose(Picker, {
         name: `${ds.prefix}-picker`,

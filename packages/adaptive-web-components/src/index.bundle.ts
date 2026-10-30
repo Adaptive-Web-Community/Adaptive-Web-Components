@@ -1,5 +1,4 @@
 import type { FASTElementDefinition } from '@microsoft/fast-element';
-import { DesignToken } from '@microsoft/fast-foundation';
 import type { DesignSystem } from './design-system.js';
 import { AllComponents } from './custom-elements.js';
 import { DefaultDesignSystem } from './design-system.js';
@@ -29,6 +28,6 @@ if (globalThis.AWC === void 0) {
 }
 
 (() => {
-	DesignToken.registerDefaultStyleTarget();
+	AWC.designSystem.adoptTokenStyles();
 	AWC.designSystem.defineComponents(AWC.allComponents);
 })();

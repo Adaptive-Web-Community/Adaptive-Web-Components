@@ -14,7 +14,7 @@ export function composeSwitch(
     ds: DesignSystem,
     options?: ComposeOptions<Switch>
 ): Promise<FASTElementDefinition<typeof Switch>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, SwitchAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, SwitchAnatomy, options);
 
     return FASTElementDefinition.compose(Switch, {
         name: `${ds.prefix}-switch`,

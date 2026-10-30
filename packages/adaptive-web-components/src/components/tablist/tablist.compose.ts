@@ -14,7 +14,7 @@ export function composeTablist(
     ds: DesignSystem,
     options?: ComposeOptions<Tablist>
 ): Promise<FASTElementDefinition<typeof Tablist>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TablistAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, TablistAnatomy, options);
 
     return FASTElementDefinition.compose(Tablist, {
         name: `${ds.prefix}-tablist`,

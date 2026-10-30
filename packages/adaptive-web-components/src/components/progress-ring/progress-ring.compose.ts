@@ -14,7 +14,7 @@ export function composeProgressRing(
     ds: DesignSystem,
     options?: ComposeOptions<ProgressRing>
 ): Promise<FASTElementDefinition<typeof ProgressRing>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ProgressRingAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, ProgressRingAnatomy, options);
 
     return FASTElementDefinition.compose(ProgressRing, {
         name: `${ds.prefix}-progress-ring`,

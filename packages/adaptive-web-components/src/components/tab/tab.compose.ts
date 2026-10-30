@@ -14,7 +14,7 @@ export function composeTab(
     ds: DesignSystem,
     options?: ComposeOptions<Tab>
 ): Promise<FASTElementDefinition<typeof Tab>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TabAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, TabAnatomy, options);
 
     return FASTElementDefinition.compose(Tab, {
         name: `${ds.prefix}-tab`,

@@ -14,7 +14,7 @@ export function composeAnchor(
     ds: DesignSystem,
     options?: ComposeOptions<Anchor>
 ): Promise<FASTElementDefinition<typeof Anchor>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, AnchorAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, AnchorAnatomy, options);
 
     return FASTElementDefinition.compose(Anchor, {
         name: `${ds.prefix}-anchor`,

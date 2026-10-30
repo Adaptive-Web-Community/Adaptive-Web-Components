@@ -14,7 +14,7 @@ export function composeDataGrid(
     ds: DesignSystem,
     options?: ComposeOptions<DataGrid>
 ): Promise<FASTElementDefinition<typeof DataGrid>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, DataGridAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, DataGridAnatomy, options);
 
     return FASTElementDefinition.compose(DataGrid, {
         name: `${ds.prefix}-data-grid`,

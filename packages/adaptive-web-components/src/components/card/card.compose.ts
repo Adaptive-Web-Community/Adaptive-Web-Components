@@ -14,7 +14,7 @@ export function composeCard(
     ds: DesignSystem,
     options?: ComposeOptions<Card>
 ): Promise<FASTElementDefinition<typeof Card>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, CardAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, CardAnatomy, options);
 
     return FASTElementDefinition.compose(Card, {
         name: `${ds.prefix}-card`,

@@ -14,7 +14,7 @@ export function composeButton(
     ds: DesignSystem,
     options?: ComposeOptions<Button>
 ): Promise<FASTElementDefinition<typeof Button>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, ButtonAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, ButtonAnatomy, options);
 
     return FASTElementDefinition.compose(Button, {
         name: `${ds.prefix}-button`,

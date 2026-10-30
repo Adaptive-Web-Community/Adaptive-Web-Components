@@ -14,7 +14,7 @@ export function composeTooltip(
     ds: DesignSystem,
     options?: ComposeOptions<Tooltip>
 ): Promise<FASTElementDefinition<typeof Tooltip>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, TooltipAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, TooltipAnatomy, options);
 
     return FASTElementDefinition.compose(Tooltip, {
         name: `${ds.prefix}-tooltip`,

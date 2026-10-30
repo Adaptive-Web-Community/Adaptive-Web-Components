@@ -14,7 +14,7 @@ export function composeRadioGroup(
     ds: DesignSystem,
     options?: ComposeOptions<RadioGroup>
 ): Promise<FASTElementDefinition<typeof RadioGroup>> {
-    const styles = DesignSystem.assembleStyles(defaultStyles, RadioGroupAnatomy, options);
+    const styles = ds.assembleStyles(defaultStyles, RadioGroupAnatomy, options);
 
     return FASTElementDefinition.compose(RadioGroup, {
         name: `${ds.prefix}-radio-group`,
