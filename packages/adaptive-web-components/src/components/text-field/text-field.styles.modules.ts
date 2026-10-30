@@ -1,11 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    autofillInnerDensityStyles,
-    densityControl,
-    inputAutofillStyles,
-    labelTextStyles,
-    typeRampBaseStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { TextFieldAnatomy } from "./text-field.template.js";
 
 /**
@@ -15,27 +9,27 @@ import { TextFieldAnatomy } from "./text-field.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: typeRampBaseStyles,
+        treatments: [tokens.typography.ramp.default.treatments.base],
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         }
     },
     {
         target : {
             part: TextFieldAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: TextFieldAnatomy.parts.root,
         },
-        styles: inputAutofillStyles,
+        treatments: [tokens.treatments.inputAutofillControl],
     },
     {
         target : {
             part: TextFieldAnatomy.parts.control,
         },
-        styles: autofillInnerDensityStyles,
+        treatments: [tokens.density.control.treatment.autofillInner],
     },
 ];

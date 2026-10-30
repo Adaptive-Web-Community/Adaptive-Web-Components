@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { actionStyles } from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 
 /**
  * Visual styles composed by style rules.
@@ -8,6 +8,6 @@ import { actionStyles } from "@adaptive-web/adaptive-ui/reference";
  */
 export const styleModules: StyleRules = [
     {
-        styles: actionStyles,
+        treatments: [tokens.treatments.actionControl],
     },
 ];

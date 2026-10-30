@@ -1,16 +1,7 @@
-import {
-    accentFillReadable,
-    colorContext,
-    cornerRadiusControl,
-    designUnit,
-    neutralFillSubtle,
-    neutralStrokeReadable,
-    neutralStrokeStrong,
-    strokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
 import { visuallyHidden } from "../../styles/styles.js";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -84,12 +75,12 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host {
-        --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${designUnit});
+        --calendar-cell-size: calc((${baseHeightMultiplier} + 2 + ${density}) * ${tokenVar(tokens.global.designUnit)});
         --calendar-gap: 2px;
     }
 
     .title {
-        padding: ${designUnit};
+        padding: ${tokenVar(tokens.global.designUnit)};
         font-weight: 600;
     }
 
@@ -117,14 +108,14 @@ export const aestheticStyles: ElementStyles = css`
 
     .day[data-outside] .date,
     .day[data-outside][aria-disabled="true"]::before {
-        color: ${neutralStrokeReadable.rest};
+        color: ${tokenVar(tokens.color.neutral.stroke.readable)};
     }
 
     .day[aria-disabled="true"]::before {
         content: "";
         display: inline-block;
         width: calc(var(--calendar-cell-size) * 0.8);
-        height: ${strokeThickness};
+        height: ${tokenVar(tokens.shape.strokeThickness.default)};
         background: currentcolor;
         position: absolute;
         margin-top: calc(var(--calendar-cell-size) / 2);
@@ -133,26 +124,26 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     .day[aria-selected="true"] {
-        color: ${accentFillReadable.rest};
-        border: 1px solid ${accentFillReadable.rest};
-        background: ${colorContext};
+        color: ${tokenVar(tokens.color.accent.fill.readable)};
+        border: 1px solid ${tokenVar(tokens.color.accent.fill.readable)};
+        background: ${tokenVar(tokens.color.context)};
     }
 
     .day[aria-selected="true"] + .day[aria-selected="true"] {
         border-start-start-radius: 0;
         border-end-start-radius: 0;
         border-inline-start-width: 0;
-        padding-inline-start: calc(var(--calendar-gap) + ${strokeThickness} + ${cornerRadiusControl});
-        margin-inline-start: calc((${cornerRadiusControl} * -1) - var(--calendar-gap));
+        padding-inline-start: calc(var(--calendar-gap) + ${tokenVar(tokens.shape.strokeThickness.default)} + ${tokenVar(tokens.shape.cornerRadius.default)});
+        margin-inline-start: calc((${tokenVar(tokens.shape.cornerRadius.default)} * -1) - var(--calendar-gap));
     }
 
     .day[aria-current="date"][aria-disabled="true"]::before {
-        color: ${neutralStrokeStrong.rest};
+        color: ${tokenVar(tokens.color.neutral.stroke.strong)};
     }
 
     .day[aria-current="date"] .date {
-        color: ${neutralStrokeStrong.rest};
-        background: ${neutralFillSubtle.rest};
+        color: ${tokenVar(tokens.color.neutral.stroke.strong)};
+        background: ${tokenVar(tokens.color.neutral.fill.subtle)};
         border-radius: 50%;
         position: relative;
     }

@@ -1,15 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    accentForegroundReadableControlStyles,
-    controlDensityStyles,
-    controlShapeStyles,
-    neutralForegroundStrongElementStyles,
-    neutralStrokeSubtle,
-    plainTextStyles,
-    strokeThickness
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { AccordionItemAnatomy } from "./accordion-item.template.js";
 
 /**
@@ -19,38 +11,38 @@ import { AccordionItemAnatomy } from "./accordion-item.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
         properties: {
-            borderFillBottom: neutralStrokeSubtle.rest,
+            borderFillBottom: { rest: tokens.color.neutral.stroke.subtle },
             borderStyleBottom: "solid",
-            borderThicknessBottom: strokeThickness,
+            borderThicknessBottom: tokens.shape.strokeThickness.default,
         },
     },
     {
         target : {
             part: AccordionItemAnatomy.parts.heading,
         },
-        styles: [
-            controlShapeStyles,
-            controlDensityStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.density.control.treatment,
         ],
     },
     {
         target : {
             part: AccordionItemAnatomy.parts.button,
         },
-        styles: neutralForegroundStrongElementStyles,
+        treatments: [tokens.color.neutral.treatments.foregroundStrongElement],
     },
     {
         target : {
             part: AccordionItemAnatomy.parts.icon,
         },
-        styles: accentForegroundReadableControlStyles,
+        treatments: [tokens.color.accent.treatments.foregroundReadableControl],
     },
     {
         target : {
             part: AccordionItemAnatomy.parts.panel,
         },
-        styles: controlDensityStyles,
+        treatments: [tokens.density.control.treatment],
     },
 ];

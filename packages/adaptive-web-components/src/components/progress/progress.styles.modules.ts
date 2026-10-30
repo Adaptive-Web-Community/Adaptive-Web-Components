@@ -1,11 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    accentFillReadable,
-    designUnit,
-    neutralFillSubtle,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ProgressAnatomy } from "./progress.template.js";
 
 /**
@@ -16,8 +12,8 @@ import { ProgressAnatomy } from "./progress.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            backgroundFill: neutralFillSubtle.rest,
-            cornerRadius: designUnit,
+            backgroundFill: { rest: tokens.color.neutral.fill.subtle },
+            cornerRadius: tokens.global.designUnit,
         },
     },
     {
@@ -25,8 +21,8 @@ export const styleModules: StyleRules = [
             part: ProgressAnatomy.parts.indicator,
         },
         properties: {
-            backgroundFill: accentFillReadable.rest,
-            cornerRadius: designUnit,
+            backgroundFill: { rest: tokens.color.accent.fill.readable },
+            cornerRadius: tokens.global.designUnit,
         },
     },
 ];

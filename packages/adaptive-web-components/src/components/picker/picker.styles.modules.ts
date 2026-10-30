@@ -1,13 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlListDensityStyles,
-    densityControl,
-    flyoutStyles,
-    inputStyles,
-    labelTextStyles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { PickerAnatomy } from "./picker.template.js";
 
 /**
@@ -18,37 +12,37 @@ import { PickerAnatomy } from "./picker.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: PickerAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: PickerAnatomy.parts.root,
         },
-        styles: inputStyles,
+        treatments: [tokens.treatments.inputControl],
     },
     {
         target : {
             part: PickerAnatomy.parts.popup,
         },
-        styles: flyoutStyles,
+        treatments: [tokens.treatments.flyout],
     },
     {
         target : {
             part: PickerAnatomy.parts.listbox,
         },
-        styles: controlListDensityStyles,
+        treatments: [tokens.density.controlList.treatment],
     },
     {
         target : {
             part: PickerAnatomy.parts.status,
         },
-        styles: controlListDensityStyles,
+        treatments: [tokens.density.controlList.treatment],
     },
 ];

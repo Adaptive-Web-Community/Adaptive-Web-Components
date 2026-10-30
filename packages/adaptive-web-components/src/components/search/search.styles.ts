@@ -1,9 +1,7 @@
-import {
-    designUnit,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
 import { visuallyHidden } from "../../styles/styles.js";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -83,6 +81,6 @@ export const aestheticStyles: ElementStyles = css`
         margin: 1px;
         height: calc(100% - 2px);
         min-width: calc(${heightNumber} * 1px);
-        padding: 0 calc(10px + (${designUnit} * (2 * ${density})));
+        padding: 0 calc(10px + (${tokenVar(tokens.global.designUnit)} * (2 * ${density})));
     }
 `;

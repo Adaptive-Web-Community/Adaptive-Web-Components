@@ -1,13 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlListDensityStyles,
-    densityControl,
-    flyoutStyles,
-    inputStyles,
-    labelTextStyles,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { SelectAnatomy } from "./select.template.js";
 
 /**
@@ -18,31 +12,31 @@ import { SelectAnatomy } from "./select.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: SelectAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: SelectAnatomy.parts.control,
         },
-        styles: inputStyles,
+        treatments: [tokens.treatments.inputControl],
     },
     {
         target : {
             part: SelectAnatomy.parts.listbox,
         },
-        styles: controlListDensityStyles,
+        treatments: [tokens.density.controlList.treatment],
     },
     {
         target : {
             part: SelectAnatomy.parts.listbox,
         },
-        styles: flyoutStyles,
+        treatments: [tokens.treatments.flyout],
     },
 ];

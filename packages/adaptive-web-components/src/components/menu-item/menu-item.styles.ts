@@ -1,8 +1,6 @@
-import {
-    neutralFillStealth,
-    neutralStrokeReadable,
-} from "@adaptive-web/adaptive-ui/reference";
+import { InteractiveState } from "@adaptive-web/adaptive-ui";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -123,10 +121,10 @@ export const aestheticStyles: ElementStyles = css`
     }
 
     :host(:state(expanded)) {
-        background: ${neutralFillStealth.active};
+        background: ${tokenVar(tokens.color.neutral.fill.stealth, InteractiveState.active)};
     }
 
     ::slotted([slot="end"]:not(svg)) {
-        color: ${neutralStrokeReadable.rest};
+        color: ${tokenVar(tokens.color.neutral.stroke.readable)};
     }
 `;

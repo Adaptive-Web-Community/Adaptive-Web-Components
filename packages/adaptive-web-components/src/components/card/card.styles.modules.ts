@@ -1,12 +1,8 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    layerFillInteractiveRest,
-    layerShapeStyles,
-    plainTextStyles,
-    shadowCardStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
+
 /**
  * Visual styles composed by style rules.
  * 
@@ -14,13 +10,13 @@ import {
  */
 export const styleModules: StyleRules = [
     {
-        styles: [
-            layerShapeStyles,
-            plainTextStyles,
-            shadowCardStyles,
+        treatments: [
+            tokens.shape.treatments.layer,
+            tokens.treatments.textPlain,
+            tokens.elevation.card.treatment,
         ],
         properties: {
-            backgroundFill: layerFillInteractiveRest,
+            backgroundFill: { rest: tokens.color.layer.fill.interactive },
         },
     },
 ];

@@ -1,12 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlDensityStyles,
-    controlShapeStyles,
-    labelTextStyles,
-    plainTextStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { DataGridCellAnatomy } from "./data-grid-cell.template.js";
 
 /**
@@ -16,22 +11,22 @@ import { DataGridCellAnatomy } from "./data-grid-cell.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: [
-            controlShapeStyles,
-            controlDensityStyles,
-            plainTextStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.density.control.treatment,
+            tokens.treatments.textPlain,
         ],
     },
     {
         target : {
             contextCondition: DataGridCellAnatomy.conditions.cellType.columnHeader,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             contextCondition: DataGridCellAnatomy.conditions.cellType.rowHeader,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
 ];

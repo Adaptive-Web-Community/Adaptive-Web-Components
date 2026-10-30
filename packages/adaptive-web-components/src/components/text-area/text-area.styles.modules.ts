@@ -1,10 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    densityControl,
-    inputStyles,
-    labelTextStyles,
-    typeRampBaseStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { TextAreaAnatomy } from "./text-area.template.js";
 
 /**
@@ -14,21 +9,21 @@ import { TextAreaAnatomy } from "./text-area.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: typeRampBaseStyles,
+        treatments: [tokens.typography.ramp.default.treatments.base],
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
     {
         target : {
             part: TextAreaAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: TextAreaAnatomy.parts.control,
         },
-        styles: inputStyles,
+        treatments: [tokens.treatments.inputControl],
     },
 ];

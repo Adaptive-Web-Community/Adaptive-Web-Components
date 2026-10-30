@@ -1,10 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    accentFillReadable,
-    neutralFillSubtle,
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ProgressRingAnatomy } from "./progress-ring.template.js";
 
 /**
@@ -15,7 +12,7 @@ import { ProgressRingAnatomy } from "./progress-ring.template.js";
 export const styleModules: StyleRules = [
     {
         properties: {
-            foregroundFill: neutralFillSubtle.rest
+            foregroundFill: { rest: tokens.color.neutral.fill.subtle }
         },
     },
     {
@@ -23,7 +20,7 @@ export const styleModules: StyleRules = [
             part: ProgressRingAnatomy.parts.indicator,
         },
         properties: {
-            foregroundFill: accentFillReadable.rest
+            foregroundFill: { rest: tokens.color.accent.fill.readable }
         },
     },
 ];

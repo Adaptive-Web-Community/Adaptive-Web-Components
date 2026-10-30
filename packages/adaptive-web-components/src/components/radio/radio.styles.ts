@@ -1,9 +1,7 @@
-import {
-    designUnit,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
 import { visuallyHidden } from "../../styles/styles.js";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -47,7 +45,7 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     .control {
-        width: calc((${heightNumber} / 2) * 1px + ${designUnit});
-        height: calc((${heightNumber} / 2) * 1px + ${designUnit});
+        width: calc((${heightNumber} / 2) * 1px + ${tokenVar(tokens.global.designUnit)});
+        height: calc((${heightNumber} / 2) * 1px + ${tokenVar(tokens.global.designUnit)});
     }
 `;

@@ -1,13 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import {
-    controlDensityStyles,
-    controlShapeStyles,
-    neutralFillSubtle,
-    plainTextStyles,
-    shadowTooltipStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 
 /**
  * Visual styles composed by style rules.
@@ -16,14 +10,14 @@ import {
  */
 export const styleModules: StyleRules = [
     {
-        styles: [
-            controlShapeStyles,
-            controlDensityStyles,
-            plainTextStyles,
-            shadowTooltipStyles,
+        treatments: [
+            tokens.shape.treatments.control,
+            tokens.density.control.treatment,
+            tokens.treatments.textPlain,
+            tokens.elevation.tooltip.treatment,
         ],
         properties: {
-            backgroundFill: neutralFillSubtle.rest,
+            backgroundFill: { rest: tokens.color.neutral.fill.subtle },
         },
     },
 ];

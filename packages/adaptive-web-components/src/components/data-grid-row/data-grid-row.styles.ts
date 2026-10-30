@@ -1,11 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    cornerRadiusControl,
-    focusStrokeThickness,
-    highlightStrokeReadable,
-    neutralFillSubtle,
-} from "@adaptive-web/adaptive-ui/reference";
 import { heightNumber } from "../../styles/index.js";
+import { tokens, tokenVar } from "../../styles/tokens.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -37,17 +32,17 @@ export const templateStyles: ElementStyles = css`
  */
 export const aestheticStyles: ElementStyles = css`
     :host([row-type="sticky-header"]) {
-        background-color: ${neutralFillSubtle.rest};
+        background-color: ${tokenVar(tokens.color.neutral.fill.subtle)};
     }
 
     :host([selected])::after {
         content: "";
         display: block;
         position: absolute;
-        border-radius: ${cornerRadiusControl};
-        background-color: ${highlightStrokeReadable.rest};
+        border-radius: ${tokenVar(tokens.shape.cornerRadius.default)};
+        background-color: ${tokenVar(tokens.color.highlight.stroke.readable)};
         align-self: center;
-        left: ${focusStrokeThickness};
+        left: ${tokenVar(tokens.shape.strokeThickness.focus)};
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
     }

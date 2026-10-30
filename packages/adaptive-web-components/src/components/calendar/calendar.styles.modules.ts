@@ -1,9 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import {
-    controlShapeStyles,
-    labelTextStyles,
-    plainTextStyles
-} from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { CalendarAnatomy } from "./calendar.template.js";
 
 /**
@@ -13,18 +9,18 @@ import { CalendarAnatomy } from "./calendar.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: plainTextStyles,
+        treatments: [tokens.treatments.textPlain],
     },
     {
         target : {
             part: CalendarAnatomy.parts.label,
         },
-        styles: labelTextStyles,
+        treatments: [tokens.treatments.textLabel],
     },
     {
         target : {
             part: CalendarAnatomy.parts.day,
         },
-        styles: controlShapeStyles,
+        treatments: [tokens.shape.treatments.control],
     },
 ];

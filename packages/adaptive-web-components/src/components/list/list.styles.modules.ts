@@ -1,5 +1,5 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
-import { densityControl } from "@adaptive-web/adaptive-ui/reference";
+import { tokens } from "../../styles/tokens.js";
 import { ListAnatomy } from "./list.template.js";
 
 /**
@@ -13,7 +13,7 @@ export const styleModules: StyleRules = [
             contextCondition: ListAnatomy.conditions.orientation.horizontal,
         },
         properties: {
-            gap: densityControl.horizontalGap,
+            gap: tokens.density.control.horizontal.gap,
         },
     },
     {
@@ -21,7 +21,7 @@ export const styleModules: StyleRules = [
             contextCondition: ListAnatomy.conditions.orientation.vertical,
         },
         properties: {
-            gap: densityControl.verticalGap,
+            gap: tokens.density.control.vertical.gap,
         },
     },
 ];

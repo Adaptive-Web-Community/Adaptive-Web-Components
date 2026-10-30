@@ -25,6 +25,10 @@ instead. A component that isn't listed hasn't changed yet.
 | `DesignSystem.assembleStyles(styles, anatomy, options)`, static | `ds.assembleStyles(styles, anatomy, options)`, rendered with the design system's library |
 | `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles`, set by the design system | `anatomyTreatments` of the design system, `referenceAnatomyTreatments` by default |
 | | `library` of the design system, `createReferenceLibrary()` by default, set with `configure({ library })` |
+| A rule's `styles`, the `...Styles` of Adaptive UI 0.14 (`actionStyles`) | `treatments`, refs to the treatment tokens of the library (`tokens.treatments.actionControl`) |
+| A FAST token as a value of a rule (`strokeThickness`), or one of its states (`neutralStrokeSubtle.rest`) | A ref to the token (`tokens.shape.strokeThickness.default`), or a set with that state (`{ rest: tokens.color.neutral.stroke.subtle }`) |
+| A FAST token in the CSS of a template (`${designUnit}`, `${neutralFillSubtle.hover}`) | Its custom property, `${tokenVar(tokens.global.designUnit)}`, `${tokenVar(tokens.color.neutral.fill.subtle, InteractiveState.hover)}` |
+| The tree item's `tree-item-expand-collapse-hover` and `-selected-hover` tokens, made by a recipe on another | A rule of the button, the subtle fill on the fill of the item (`onFill`), which is the same color in the reference system |
 
 ## Accordion
 
