@@ -5,6 +5,8 @@ import type { Switch as SwitchElement } from "./switch.js";
 
 const storyTemplate = html<StoryArgs<SwitchElement>>`
     <adaptive-switch
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         ?readonly="${(x) => x.readOnly}"
@@ -18,13 +20,15 @@ const storyTemplate = html<StoryArgs<SwitchElement>>`
 export default {
     title: "Components/Switch",
     args: {
-        storyContent: "Switch",
+        label: "Switch",
         checked: false,
         disabled: false,
         required: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         readOnly: { control: "boolean" },

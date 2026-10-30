@@ -6,6 +6,8 @@ import type { TextField as TextFieldElement } from "./text-field.js";
 
 const storyTemplate = html<StoryArgs<TextFieldElement>>`
     <adaptive-text-field
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
         maxlength="${(x) => x.maxLength}"
@@ -48,13 +50,15 @@ export default {
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
-        storyContent: "Text Field",
+        label: "Text Field",
         autofocus: false,
         disabled: false,
         readOnly: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         maxLength: { control: "number" },

@@ -3,8 +3,10 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlListDensityStyles,
+    densityControl,
     flyoutStyles,
     inputStyles,
+    labelTextStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
 
@@ -14,6 +16,17 @@ import { PickerAnatomy } from "./picker.template.js";
  * @public
  */
 export const styleModules: StyleRules = [
+    {
+        properties: {
+            gap: densityControl.verticalGap,
+        },
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.label,
+        },
+        styles: labelTextStyles,
+    },
     {
         target : {
             part: PickerAnatomy.parts.root,

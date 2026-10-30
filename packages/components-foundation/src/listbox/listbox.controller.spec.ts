@@ -10,6 +10,8 @@ import { ListboxController } from "./listbox.controller.js";
 const { expect } = chai;
 
 class TestListbox extends TestFormControl implements ListboxElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public multiple = false;
     public disabled = false;
@@ -27,6 +29,13 @@ class TestListbox extends TestFormControl implements ListboxElement {
     }
 }
 customElements.define("test-listbox", TestListbox);
+
+function setupLabelled() {
+    const host = document.body.appendChild(new TestListbox());
+    const internals = new TestInternals();
+    const controller = new ListboxController(host, internals);
+    return { internals, controller };
+}
 
 function setup(texts: string[], configure: (host: TestListbox, options: TestOption[]) => void = () => {}) {
     const host = document.body.appendChild(new TestListbox());
@@ -54,6 +63,18 @@ const selected = (options: TestOption[]) => options.map(option => (option.select
 const activeIndex = (options: TestOption[]) => options.findIndex(option => option.active);
 
 describe("ListboxController", () => {
+    it("should be named by its label: the elements in the slot, or the text of the attribute", () => {
+        const { internals, controller } = setupLabelled();
+        const label = document.createElement("span");
+
+        controller.labelChanged("Fruit", [label]);
+        expect(internals.ariaLabelledByElements).to.deep.equal([label]);
+
+        controller.labelChanged("Fruit", []);
+        expect(internals.ariaLabelledByElements).to.be.null;
+        expect(internals.ariaLabel).to.equal("Fruit");
+    });
+
     beforeEach(() => {
         document.body.innerHTML = "";
         TestOption.onSelected = null;

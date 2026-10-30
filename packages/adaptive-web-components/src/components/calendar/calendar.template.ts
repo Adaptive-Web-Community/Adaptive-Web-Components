@@ -1,4 +1,4 @@
-import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
 import { CalendarParts, type ValuesOf } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
@@ -39,11 +39,15 @@ export const CalendarAnatomy: ComponentAnatomy<typeof CalendarConditions, typeof
 };
 
 /**
- * Default Calendar template: the buttons and the title, and the grid of the days, which the element's controller renders.
+ * Default Calendar template: the label; the buttons and the title; and the grid of the days, which the element's controller renders, named
+ * by the label and the title.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Calendar> =
     (ds: DesignSystem) => html<Calendar>`
+        <span class="label" part="label" id="label" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        </span>
         <div class="header" part="header">
             <button class="previous-month" part="previous-month" type="button" ${ref("previousButton")}>
                 <slot name="previous-month">${staticallyCompose(ds.statics.get(CalendarStatics.previous))}</slot>
@@ -53,5 +57,5 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Calendar> =
                 <slot name="next-month">${staticallyCompose(ds.statics.get(CalendarStatics.next))}</slot>
             </button>
         </div>
-        <table class="days" part="days" role="grid" aria-labelledby="title" ${ref("days")}></table>
+        <table class="days" part="days" role="grid" aria-labelledby="label title" ${ref("days")}></table>
     `;

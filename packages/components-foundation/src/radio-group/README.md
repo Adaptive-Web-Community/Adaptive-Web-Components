@@ -2,7 +2,7 @@
 
 Radios of which one is checked (`role="radiogroup"`). The arrow keys move the focus between the radios and check the one they move to, and
 only that radio is in the tab order. Each radio is the form control; the group keeps one checked, gives its name to them, and is named by
-its `label` slot.
+its label.
 
 - Contract: `RadioGroupElement` and `RadioGroupParts` (`radio-group.ts`).
 - Behavior: `RadioGroupController` (`radio-group.controller.ts`), with the `RovingFocusController` (`../utilities/roving-focus.controller.ts`),
@@ -13,7 +13,7 @@ its `label` slot.
 | Aspect | FAST Foundation | Here |
 | --- | --- | --- |
 | Role | `role="radiogroup"` written to the host | `ElementInternals` |
-| Name | A `label` slot, not connected to the role | FAST Foundation's `label` slot, connected: its elements are the group's `ariaLabelledByElements` |
+| Name | A `label` slot, not connected to the role | The `label` attribute, the group's `ariaLabel`, or the `label` slot, whose elements are its `ariaLabelledByElements` ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)), in the `label` part, which is hidden from assistive technology so it isn't read twice |
 | Keyboard | Arrows, by its own code, swapped right to left, and out of a toolbar at the ends | Our own `RovingFocusController` (no dependency): all four arrows, wrapping, skipping disabled radios, Left and Right swapped right to left. The focus moving checks the radio, as the ARIA pattern has it |
 | Tab order | The checked radio, or the first | The checked radio, or the first that isn't disabled |
 | Form | Each radio, through its proxy | Each radio gives its value, as native radios. The group is a form control too, without a value, for its validity |

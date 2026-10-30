@@ -1,4 +1,5 @@
 import type { ListboxOptionElement } from "../listbox-option/listbox-option.js";
+import { labelHost } from "../utilities/label.js";
 import type { ListboxElement } from "./listbox.js";
 import { OptionListController } from "./option-list.controller.js";
 
@@ -9,17 +10,17 @@ import { OptionListController } from "./option-list.controller.js";
  */
 export type ListboxInternals = Pick<
     ElementInternals,
-    "role" | "ariaActiveDescendantElement" | "ariaMultiSelectable" | "ariaReadOnly" | "ariaRequired" | "ariaDisabled" | "setFormValue" | "setValidity"
+    "role" | "ariaLabel" | "ariaLabelledByElements" | "ariaActiveDescendantElement" | "ariaMultiSelectable" | "ariaReadOnly" | "ariaRequired" | "ariaDisabled" | "setFormValue" | "setValidity"
 >;
 
 /**
  * The behavior of a {@link ListboxElement}: the `listbox` role; its options, with an {@link OptionListController}; the keys, a click on an
  * option, and the focus, which makes the selected option active; `input` and `change` for the user's changes; and its form value, validity,
- * and reset.
+ * and reset; and its name, from its label.
  *
  * @remarks
  * The element's binding creates it, calls {@link ListboxController.connect} and {@link ListboxController.disconnect} with the element's
- * lifecycle, and calls {@link ListboxController.setOptions}, {@link ListboxController.optionSelectedChanged},
+ * lifecycle, and calls {@link ListboxController.setOptions}, {@link ListboxController.optionSelectedChanged}, {@link ListboxController.labelChanged},
  * {@link ListboxController.stateChanged} when `name`, `multiple`, `readOnly`, or `required` change, {@link ListboxController.disabledChanged}
  * from `formDisabledCallback`, and {@link ListboxController.formReset} from `formResetCallback`, when its framework observes those changes.
  *
@@ -67,6 +68,13 @@ export class ListboxController {
         this.host.removeEventListener("keydown", this.handleKeydown);
         this.host.removeEventListener("click", this.handleClick);
         this.host.removeEventListener("focus", this.handleFocus);
+    }
+
+    /**
+     * The `label` attribute or the elements in the `label` slot changed. They name the listbox.
+     */
+    public labelChanged(label: string | null, labelElements: readonly Element[]): void {
+        labelHost(this.internals, label, labelElements);
     }
 
     /**

@@ -1,5 +1,19 @@
 import type { ListboxOptionElement } from "../listbox-option/listbox-option.js";
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
+
+/**
+ * The parts of a {@link ListboxElement}.
+ *
+ * @public
+ */
+export const ListboxParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
+    /** The box of the options, which scrolls. */
+    options: "options",
+} as const;
 
 /**
  * A listbox (`role="listbox"`): options of which one or any number are selected, as a native `<select>` that shows its options. Implements
@@ -9,13 +23,13 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * The host is the listbox and the form control, and takes focus; the options don't, and the host points at the active one
  * (`aria-activedescendant`). In single selection, the selection follows the keys.
  *
- * Slots: the default slot for the options.
+ * Slots: `label`, its label (see {@link LabelledElement}), and the default slot for the options.
  *
  * Events: `input` and `change` when the user changes the selection.
  *
  * @public
  */
-export interface ListboxElement extends FormControlElement {
+export interface ListboxElement extends FormControlElement, LabelledElement {
     /**
      * The name of its values in the form data.
      *

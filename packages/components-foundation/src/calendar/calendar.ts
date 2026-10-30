@@ -1,4 +1,5 @@
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * The parts of a {@link CalendarElement}.
@@ -6,13 +7,16 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * @public
  */
 export const CalendarParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
     /** The row of the buttons and the title. */
     header: "header",
 
     /** The button that shows the month before, named by that month. */
     previousMonth: "previous-month",
 
-    /** The month and year shown, which name the grid. */
+    /** The month and year shown, which name the grid, after the label. */
     title: "title",
 
     /** The button that shows the month after, named by that month. */
@@ -46,11 +50,14 @@ export const CalendarParts = {
  * Dates are ISO dates (`2026-10-27`), as a native date input's. The names of the month, the days of the week, and the numbers are the
  * locale's, from `Intl`. The host is the form control, and delegates its focus; the controller renders the grid, in the `days` part.
  *
+ * Slots: `label`, its label (see {@link LabelledElement}), which names the grid with the month shown, and `previous-month` and `next-month`
+ * for the content of the buttons.
+ *
  * Events: `input` and `change` when the user selects a date.
  *
  * @public
  */
-export interface CalendarElement extends FormControlElement {
+export interface CalendarElement extends FormControlElement, LabelledElement {
     /**
      * The name of its value in the form data.
      *

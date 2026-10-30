@@ -7,6 +7,8 @@ import { NumberFieldController } from "./number-field.controller.js";
 const { expect } = chai;
 
 class TestNumberField extends TestFormControl implements NumberFieldElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public value = "";
     public defaultValue = "";
     public disabled = false;

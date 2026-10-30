@@ -10,6 +10,7 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -62,6 +63,18 @@ export const templateStyles: ElementStyles = css`
     :host([readonly]) .day,
     .day[aria-disabled="true"] {
         cursor: default;
+    }
+
+    .label {
+        display: block;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

@@ -1,3 +1,5 @@
+import type { ContentLabelledElement } from "../utilities/label.js";
+
 /**
  * The parts of an {@link AnchorElement}.
  *
@@ -7,7 +9,7 @@ export const AnchorParts = {
     /** The native link. */
     control: "control",
 
-    /** The content of the default slot. */
+    /** The content of the default slot, its label. */
     content: "content",
 } as const;
 
@@ -19,11 +21,11 @@ export const AnchorParts = {
  * @remarks
  * The properties are the native link's, given to the `<a>`. Focusing the element focuses the `<a>`.
  *
- * Slots: the default slot for the content, and `start` and `end` around it.
+ * Slots: the default slot for the content, its label (see {@link ContentLabelledElement}), and `start` and `end` around it.
  *
  * @public
  */
-export interface AnchorElement extends HTMLElement {
+export interface AnchorElement extends HTMLElement, ContentLabelledElement {
     /**
      * Whether, and with what name, to download the URL instead of going to it.
      *

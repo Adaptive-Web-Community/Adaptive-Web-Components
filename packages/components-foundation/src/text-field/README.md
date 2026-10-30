@@ -19,7 +19,7 @@ A field of one line that the user types text in. It wraps a native `<input>` (th
 | `change` | Dispatched again from the host | Dispatched again from the host, bubbling, as a native `change` |
 | Enter | | Implicit submission, with the HTML standard's types that block it |
 | Focus | `focus()` focuses the input (AWC) | `delegatesFocus`, so a label of the element, a click on it, and `focus()` reach the input |
-| Label | The default slot, in a `<label for="control">` | FAST Foundation's default slot, in a `<label for="control">`, hidden when empty. An outside `<label for>` of the element names the input, as its `ariaLabelledByElements` |
+| Label | The default slot, in a `<label for="control">` | The `label` attribute, or the `label` slot for more than text, in a `<label for="control">`, hidden when empty; `hide-label` hides it, and it still names the input ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)). An outside `<label for>` of the element names the input too, as its `ariaLabelledByElements` |
 | The author's ARIA | About twenty properties written to the input | Forwarded to the input by the `AriaForwardingController`, as for the anchor |
 | Disabled | The proxy's, and the input's `disabled` | The platform's: `formDisabledCallback` (its attribute or a fieldset) disables the input |
 | Read only and required | Bound to the input | Written to the input; a read only field takes focus and isn't validated, natively |

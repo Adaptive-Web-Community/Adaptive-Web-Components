@@ -178,6 +178,26 @@ export class Picker extends BaseFormControl implements PickerElement {
     public removeContent?: HTMLElement;
 
     /**
+     * The elements in the `label` slot.
+     *
+     * @internal
+     */
+    @observable
+    public labelElements: Element[] = [];
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
+    /**
      * The elements in the default slot.
      *
      * @internal

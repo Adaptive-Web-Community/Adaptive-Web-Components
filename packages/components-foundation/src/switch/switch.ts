@@ -9,7 +9,7 @@ export const SwitchParts = {
     /** The track, with the thumb. */
     switch: "switch",
 
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 
     /** What moves along the track. */
@@ -20,7 +20,7 @@ export const SwitchParts = {
  * A switch (`role="switch"`): a {@link CheckableElement} that turns something on and off.
  *
  * @remarks
- * Slots: the default slot for the label, and `switch` for a track of the author's.
+ * Slots: `label`, and `switch` for a track of the author's.
  *
  * Custom states: `checked`, `readonly`, and `active` while Space is held.
  *

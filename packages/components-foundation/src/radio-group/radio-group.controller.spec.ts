@@ -13,6 +13,8 @@ const { expect } = chai;
 let group: RadioGroupController | null = null;
 
 class TestRadio extends TestFormControl implements RadioElement {
+    public label: string | null = null;
+    public hideLabel = false;
     private _checked = false;
     public defaultChecked = false;
     public disabled = false;
@@ -40,6 +42,8 @@ class TestRadio extends TestFormControl implements RadioElement {
 customElements.define("test-radio", TestRadio);
 
 class TestRadioGroup extends TestFormControl implements RadioGroupElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public orientation: Orientation = Orientation.horizontal;
     public readOnly = false;
@@ -92,15 +96,20 @@ describe("RadioGroupController", () => {
         expect(internals.ariaOrientation).to.equal("horizontal");
     });
 
-    it("should name the group by its label", () => {
+    it("should name the group by its label: the elements in the slot, or the text of the attribute", () => {
         const { internals, controller } = setup(["a"]);
         const label = document.createElement("span");
 
-        controller.labelsChanged([label]);
+        controller.labelChanged("Fruit", [label]);
         expect(internals.ariaLabelledByElements).to.deep.equal([label]);
+        expect(internals.ariaLabel).to.equal("Fruit");
 
-        controller.labelsChanged([]);
+        controller.labelChanged("Fruit", []);
         expect(internals.ariaLabelledByElements).to.be.null;
+        expect(internals.ariaLabel).to.equal("Fruit");
+
+        controller.labelChanged(null, []);
+        expect(internals.ariaLabel).to.be.null;
     });
 
     describe("checked", () => {

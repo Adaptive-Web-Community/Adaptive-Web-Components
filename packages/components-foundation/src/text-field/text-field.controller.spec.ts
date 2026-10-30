@@ -7,6 +7,8 @@ import { TextFieldController } from "./text-field.controller.js";
 const { expect } = chai;
 
 class TestTextField extends TestFormControl implements TextFieldElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public value = "";
     public defaultValue = "";
     public disabled = false;

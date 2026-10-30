@@ -1,5 +1,6 @@
 import type { FormControlElement } from "../utilities/form-control.js";
 import type { Orientation } from "../utilities/orientation.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * The parts of a {@link SliderElement}.
@@ -7,6 +8,9 @@ import type { Orientation } from "../utilities/orientation.js";
  * @public
  */
 export const SliderParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
     /** The region of the track, the thumb, and the labels, with the `--slider-position` custom property: the value, from 0 to 100. */
     positioningRegion: "positioning-region",
 
@@ -32,13 +36,14 @@ export const SliderParts = {
  * The host is the slider and the form control, and takes focus. Its value is a string, as a native range's, kept in the range and on a
  * step. The `value` attribute is its default value.
  *
- * Slots: the default slot for slider labels, `track`, `track-start`, and `thumb`.
+ * Slots: `label`, its label (see {@link LabelledElement}), the default slot for slider labels (the marks along the track), `track`,
+ * `track-start`, and `thumb`.
  *
  * Events: `input` while the user changes the value, and `change` when the user is done, as a native range's.
  *
  * @public
  */
-export interface SliderElement extends FormControlElement {
+export interface SliderElement extends FormControlElement, LabelledElement {
     /**
      * The name of its value in the form data.
      *

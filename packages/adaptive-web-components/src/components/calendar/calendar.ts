@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { CalendarController, type CalendarElement } from "@adaptive-web/components-foundation";
 import { BaseFormControl } from "../../utilities/base-form-control.js";
 
@@ -135,6 +135,26 @@ export class Calendar extends BaseFormControl implements CalendarElement {
     public get values(): readonly string[] {
         return this.controller.values;
     }
+
+    /**
+     * The elements in the `label` slot.
+     *
+     * @internal
+     */
+    @observable
+    public labelElements: Element[] = [];
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
 
     /** @internal */
     public titleElement?: HTMLElement;

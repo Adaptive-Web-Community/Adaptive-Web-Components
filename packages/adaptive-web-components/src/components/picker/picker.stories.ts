@@ -6,6 +6,8 @@ import type { Picker as PickerElement } from "./picker.js";
 
 const storyTemplate = html<StoryArgs<PickerElement>>`
     <adaptive-picker
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         ?freeform="${(x) => x.freeform}"
         ?loading="${(x) => x.loading}"
@@ -23,6 +25,7 @@ const storyTemplate = html<StoryArgs<PickerElement>>`
 export default {
     title: "Components/Picker",
     args: {
+        label: "Fruit",
         storyContent: html<StoryArgs<PickerElement>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
         storyItems: [
             { storyContent: "Apple" },
@@ -42,6 +45,8 @@ export default {
         placeholder: "Choose fruit",
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },

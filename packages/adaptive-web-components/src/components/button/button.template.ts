@@ -1,4 +1,4 @@
-import { type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
 import { ButtonParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
@@ -9,7 +9,7 @@ import type { Button } from "./button.js";
  * @public
  */
 export const ButtonConditions = {
-    iconOnly: ":state(icon-only)",
+    hideLabel: "[hide-label]",
 };
 
 export { ButtonParts };
@@ -32,7 +32,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Button> =
     (ds: DesignSystem) => html<Button>`
         <slot name="start"></slot>
         <span class="content" part="content">
-            <slot ${slotted("defaultSlottedContent")}></slot>
+            <slot></slot>
         </span>
         <slot name="end"></slot>
     `;

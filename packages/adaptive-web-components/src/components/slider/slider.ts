@@ -140,6 +140,39 @@ export class Slider extends BaseFormControl implements SliderElement {
     }
 
     /**
+     * The elements in the `label` slot.
+     *
+     * @internal
+     */
+    @observable
+    public labelElements: Element[] = [];
+    protected labelElementsChanged(): void {
+        this.controller.labelChanged(this.label, this.labelElements);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+    protected labelChanged(): void {
+        this.controller.labelChanged(this.label, this.labelElements);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
+    /**
+     * The label.
+     *
+     * @internal
+     */
+    public labelPart?: HTMLElement;
+
+    /**
      * {@inheritDoc @adaptive-web/components-foundation#SliderElement.stepUp}
      */
     public stepUp(count: number = 1): void {
@@ -155,8 +188,8 @@ export class Slider extends BaseFormControl implements SliderElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        if (this.track) {
-            this.controller.connect(this.track);
+        if (this.track && this.labelPart) {
+            this.controller.connect(this.track, this.labelPart);
         }
     }
 

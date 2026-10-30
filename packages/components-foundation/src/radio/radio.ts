@@ -9,7 +9,7 @@ export const RadioParts = {
     /** The circle, with the checked indicator. */
     control: "control",
 
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 } as const;
 
@@ -18,7 +18,7 @@ export const RadioParts = {
  * by checking another; the radio group does that, and the keyboard between its radios.
  *
  * @remarks
- * Slots: the default slot for the label, and `checked-indicator`.
+ * Slots: `label`, and `checked-indicator`.
  *
  * Custom states: `checked`, `readonly` when its group is read only, `disabled` when its group is disabled, and `active` while Space is
  * held.

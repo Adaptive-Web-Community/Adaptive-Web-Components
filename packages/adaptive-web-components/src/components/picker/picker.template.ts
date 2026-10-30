@@ -44,17 +44,21 @@ export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof Pic
 };
 
 /**
- * Default Picker template: the field, with the values, which the element's controller renders, and the native input, whose state the
+ * Default Picker template: the label, a native label of the input; the field, with the values, which the element's controller renders, and the native input, whose state the
  * controller writes, and the popup next to it, with the options and the status. The content of the values' remove buttons is copied from
  * a hidden element.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Picker> =
     (ds: DesignSystem) => html<Picker>`
+        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        </label>
         <div class="root" part="root" ${ref("root")}>
             <slot name="start"></slot>
             <div class="values" part="values" role="list" hidden ${ref("valueList")}></div>
             <input
+                id="control"
                 class="control"
                 part="control"
                 role="combobox"

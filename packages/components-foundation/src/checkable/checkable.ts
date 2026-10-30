@@ -1,4 +1,5 @@
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. It is the host element, with its role
@@ -7,7 +8,7 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * @remarks
  * When it is checked, its form data is its {@link CheckableElement.name} with its {@link CheckableElement.value}.
  *
- * Slots: the default slot for the label, whose text names the control.
+ * Slots: `label`, its label (see {@link LabelledElement}), which names it as its content.
  *
  * Custom states: `checked`, `readonly` when it is read only, `disabled` when its group disables it, and `active` while Space is held.
  *
@@ -15,7 +16,7 @@ import type { FormControlElement } from "../utilities/form-control.js";
  *
  * @public
  */
-export interface CheckableElement extends FormControlElement {
+export interface CheckableElement extends FormControlElement, LabelledElement {
     /**
      * Whether it is checked now.
      *

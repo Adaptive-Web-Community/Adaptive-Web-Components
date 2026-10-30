@@ -7,6 +7,8 @@ import type { RadioGroup as RadioGroupElement } from "./radio-group.js";
 
 const storyTemplate = html<StoryArgs<RadioGroupElement>>`
     <adaptive-radio-group
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         name="${(x) => x.name}"
         orientation="${(x) => x.orientation}"
@@ -22,25 +24,27 @@ export default {
     title: "Components/Radio/Radio Group",
     args: {
         storyContent: html<StoryArgs<RadioGroupElement>>`
-            <label slot="label">Fruits</label>
             ${repeat((x) => x.storyItems, radioStoryTemplate)}
         `,
         storyItems: [
-            { storyContent: "Apples", value: "apples" },
-            { storyContent: "Bananas", value: "bananas" },
-            { storyContent: "Blueberries", value: "blueberries" },
-            { storyContent: "Grapefruit", value: "grapefruit" },
-            { storyContent: "Kiwi", value: "kiwi" },
-            { storyContent: "Mango", value: "mango" },
-            { storyContent: "Oranges", value: "oranges" },
-            { storyContent: "Pineapple", value: "pineapple" },
-            { storyContent: "Strawberries", value: "strawberries" },
+            { label: "Apples", value: "apples" },
+            { label: "Bananas", value: "bananas" },
+            { label: "Blueberries", value: "blueberries" },
+            { label: "Grapefruit", value: "grapefruit" },
+            { label: "Kiwi", value: "kiwi" },
+            { label: "Mango", value: "mango" },
+            { label: "Oranges", value: "oranges" },
+            { label: "Pineapple", value: "pineapple" },
+            { label: "Strawberries", value: "strawberries" },
         ],
+        label: "Fruits",
         name: "fruits",
     },
     argTypes: {
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         name: { control: "text" },
         orientation: { control: "radio", options: Object.values(Orientation) },
         disabled: { control: "boolean" },

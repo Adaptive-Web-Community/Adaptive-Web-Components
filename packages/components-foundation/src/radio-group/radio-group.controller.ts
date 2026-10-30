@@ -1,4 +1,5 @@
 import type { RadioElement } from "../radio/radio.js";
+import { labelHost } from "../utilities/label.js";
 import { RovingFocusController } from "../utilities/roving-focus.controller.js";
 import type { RadioGroupElement } from "./radio-group.js";
 
@@ -9,7 +10,7 @@ import type { RadioGroupElement } from "./radio-group.js";
  */
 export type RadioGroupInternals = Pick<
     ElementInternals,
-    "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity"
+    "role" | "ariaOrientation" | "ariaLabel" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity"
 >;
 
 /**
@@ -21,7 +22,7 @@ export type RadioGroupInternals = Pick<
  * The element's binding creates it, calls {@link RadioGroupController.connect} and {@link RadioGroupController.disconnect} with the
  * element's lifecycle, and calls {@link RadioGroupController.setRadios}, {@link RadioGroupController.radioCheckedChanged},
  * {@link RadioGroupController.nameChanged}, {@link RadioGroupController.orientationChanged}, {@link RadioGroupController.readOnlyChanged},
- * {@link RadioGroupController.requiredChanged}, {@link RadioGroupController.labelsChanged}, and {@link RadioGroupController.disabledChanged}
+ * {@link RadioGroupController.requiredChanged}, {@link RadioGroupController.labelChanged}, and {@link RadioGroupController.disabledChanged}
  * from `formDisabledCallback`, which the platform calls for the group's `disabled` attribute and for a fieldset around it
  * when its framework observes those changes.
  *
@@ -143,10 +144,10 @@ export class RadioGroupController {
     }
 
     /**
-     * The elements in the `label` slot changed. They name the group.
+     * The `label` attribute or the elements in the `label` slot changed. They name the group.
      */
-    public labelsChanged(labels: readonly Element[]): void {
-        this.internals.ariaLabelledByElements = labels.length > 0 ? labels : null;
+    public labelChanged(label: string | null, labelElements: readonly Element[]): void {
+        labelHost(this.internals, label, labelElements);
     }
 
     /**

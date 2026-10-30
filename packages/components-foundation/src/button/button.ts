@@ -1,6 +1,7 @@
 import type { ValuesOf } from "../utilities/typings.js";
 
 import type { InvokerElement } from "../utilities/invoker.js";
+import type { ContentLabelledElement } from "../utilities/label.js";
 
 /**
  * What a {@link ButtonElement} does in its form.
@@ -31,7 +32,7 @@ export type ButtonType = ValuesOf<typeof ButtonType>;
  * @public
  */
 export const ButtonParts = {
-    /** The content of the default slot. */
+    /** The content of the default slot, its label. */
     content: "content",
 } as const;
 
@@ -44,13 +45,13 @@ export const ButtonParts = {
  *
  * As a `button` (its `type`), it invokes its `command` on its `commandfor`, as a native button does: it opens a popover or a dialog.
  *
- * Slots: the default slot for the content, and `start` and `end` around it.
+ * Slots: the default slot for the content, its label (see {@link ContentLabelledElement}), and `start` and `end` around it.
  *
  * Custom states: `active` while the Space key is held, as `:active` is for a native button.
  *
  * @public
  */
-export interface ButtonElement extends InvokerElement {
+export interface ButtonElement extends InvokerElement, ContentLabelledElement {
     /**
      * Whether the button is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.
      *

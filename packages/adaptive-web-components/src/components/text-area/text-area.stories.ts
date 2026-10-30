@@ -6,6 +6,8 @@ import type { TextArea as TextAreaElement } from "./text-area.js";
 
 const storyTemplate = html<StoryArgs<TextAreaElement>>`
     <adaptive-text-area
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
         ?readonly="${(x) => x.readOnly}"
@@ -26,13 +28,15 @@ const storyTemplate = html<StoryArgs<TextAreaElement>>`
 export default {
     title: "Components/Text Area",
     args: {
-        storyContent: "Text Area",
+        label: "Text Area",
         autofocus: false,
         disabled: false,
         readOnly: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         maxLength: { control: "number" },

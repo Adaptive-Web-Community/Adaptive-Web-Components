@@ -6,7 +6,7 @@ import type { TextInputElement } from "../text-input/text-input.js";
  * @public
  */
 export const NumberFieldParts = {
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 
     /** The box around the control, the step buttons, and the `start` and `end` slots. */
@@ -30,7 +30,7 @@ export const NumberFieldParts = {
  * keys, and validates its range and step. Its step buttons are for the pointer, not the tab order, since the arrow keys step.
  *
  * @remarks
- * Slots: the default slot for the label, `start` and `end` around the control, and `step-up-glyph` and `step-down-glyph`.
+ * Slots: `label`, `start` and `end` around the control, and `step-up-glyph` and `step-down-glyph`.
  *
  * @public
  */

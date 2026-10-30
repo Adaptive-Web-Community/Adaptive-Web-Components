@@ -5,6 +5,8 @@ import type { Calendar as CalendarElement } from "./calendar.js";
 
 const storyTemplate = html<StoryArgs<CalendarElement>>`
     <adaptive-calendar
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         disabled-dates="${(x) => x.disabledDates}"
         first-day="${(x) => x.firstDay}"
         locale="${(x) => x.locale}"
@@ -22,11 +24,14 @@ const storyTemplate = html<StoryArgs<CalendarElement>>`
 export default {
     title: "Components/Calendar",
     args: {
+        label: "Date",
         disabled: false,
         multiple: false,
         readOnly: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         disabled: { control: "boolean" },
         disabledDates: { control: "text" },
         firstDay: { control: "number", min: 0, max: 6 },

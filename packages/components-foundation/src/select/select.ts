@@ -1,4 +1,5 @@
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * The parts of a {@link SelectElement}.
@@ -6,6 +7,9 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * @public
  */
 export const SelectParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
     /** The combobox (`role="combobox"`), which has the focus and shows the selected option. */
     control: "control",
 
@@ -30,13 +34,14 @@ export const SelectParts = {
  * the light DOM. As a native select, the first option that isn't disabled is selected when none is, as the options change, an option is
  * unselected, or the form is reset; setting `value` to one that no option has selects none.
  *
- * Slots: the default slot for the options, `start` and `end` in the control, and `indicator`.
+ * Slots: `label`, its label (see {@link LabelledElement}), the default slot for the options, `start` and `end` in the control, and
+ * `indicator`.
  *
  * Events: `input` and `change` when the user selects an option.
  *
  * @public
  */
-export interface SelectElement extends FormControlElement {
+export interface SelectElement extends FormControlElement, LabelledElement {
     /**
      * The name of its value in the form data.
      *

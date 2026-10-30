@@ -5,6 +5,7 @@ import { breadcrumbAria, setBreadcrumbItems } from "./breadcrumb.js";
 const { expect } = chai;
 
 class TestBreadcrumbItem extends HTMLElement implements BreadcrumbItemElement {
+    public hideLabel = false;
     public download: string | null = null;
     public href: string | null = null;
     public hreflang: string | null = null;

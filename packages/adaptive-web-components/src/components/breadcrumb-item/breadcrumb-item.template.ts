@@ -1,4 +1,4 @@
-import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
 import { BreadcrumbItemParts, type ValuesOf } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
@@ -62,7 +62,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<BreadcrumbItem>
         >
             <slot name="start"></slot>
             <span class="content" part="content">
-                <slot ${slotted("defaultSlottedContent")}></slot>
+                <slot></slot>
             </span>
             <slot name="end"></slot>
         </a>

@@ -1,5 +1,6 @@
 import { designUnit } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -105,6 +106,18 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
         height: 100%;
         width: var(--track-width);
+    }
+
+    .label {
+        justify-self: start;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

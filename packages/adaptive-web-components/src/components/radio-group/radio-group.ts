@@ -88,8 +88,23 @@ export class RadioGroup extends BaseFormControl implements RadioGroupElement {
     @observable
     public labelElements: Element[] = [];
     protected labelElementsChanged(): void {
-        this.controller.labelsChanged(this.labelElements);
+        this.controller.labelChanged(this.label, this.labelElements);
     }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+    protected labelChanged(): void {
+        this.controller.labelChanged(this.label, this.labelElements);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();

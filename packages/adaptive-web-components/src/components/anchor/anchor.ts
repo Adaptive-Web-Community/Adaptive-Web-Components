@@ -1,12 +1,12 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { type AnchorElement, AriaForwardingController, isIconOnly } from "@adaptive-web/components-foundation";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { type AnchorElement, AriaForwardingController } from "@adaptive-web/components-foundation";
 
 /**
  * A link. Implements {@link @adaptive-web/components-foundation#AnchorElement}.
  *
  * @remarks
- * Has the `icon-only` custom state when its content is one SVG element and no text. Defined with `delegatesFocus`, so focusing the element
- * focuses its link, and its `tabindex` is the link's: `-1` takes it out of the tab order, as in a toolbar.
+ * Defined with `delegatesFocus`, so focusing the element focuses its link, and its `tabindex` is the link's: `-1` takes it out of the tab
+ * order, as in a toolbar.
  *
  * @public
  */
@@ -70,19 +70,10 @@ export class Anchor extends FASTElement implements AnchorElement {
     public control?: HTMLAnchorElement;
 
     /**
-     * The content of the default slot.
-     *
-     * @internal
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.hideLabel}
      */
-    @observable
-    public defaultSlottedContent: Node[] = [];
-    protected defaultSlottedContentChanged(): void {
-        if (isIconOnly(this.defaultSlottedContent)) {
-            this.internals.states.add("icon-only");
-        } else {
-            this.internals.states.delete("icon-only");
-        }
-    }
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();

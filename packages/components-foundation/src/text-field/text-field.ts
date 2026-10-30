@@ -27,7 +27,7 @@ export type TextFieldType = ValuesOf<typeof TextFieldType>;
  * @public
  */
 export const TextFieldParts = {
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 
     /** The box around the control and the `start` and `end` slots. */
@@ -41,7 +41,7 @@ export const TextFieldParts = {
  * A text field: a {@link TextInputElement} of one line, around a native `<input>`.
  *
  * @remarks
- * Slots: the default slot for the label, and `start` and `end` around the control.
+ * Slots: `label`, and `start` and `end` around the control.
  *
  * @public
  */

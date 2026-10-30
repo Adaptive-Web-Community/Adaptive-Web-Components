@@ -14,12 +14,12 @@ export type SelectInternals = Pick<ElementInternals, "labels" | "states" | "setF
 /**
  * The behavior of a {@link SelectElement}: its options, with an {@link OptionListController}, one always selected; the popup, opened and
  * closed by a click and by the keys of the ARIA select-only combobox; the combobox's state (`aria-expanded`, the active option, disabled,
- * read only, required) and its name, from the outside labels and the author's ARIA; `input` and `change`; and the form value, validity, and
+ * read only, required) and its name, from its label, the outside labels, and the author's ARIA; `input` and `change`; and the form value, validity, and
  * reset.
  *
  * @remarks
- * The binding creates it with the element's `ElementInternals`, calls {@link SelectController.connect} with the control and the listbox once
- * the template rendered and {@link SelectController.disconnect} with the element's lifecycle, and calls {@link SelectController.setOptions},
+ * The binding creates it with the element's `ElementInternals`, calls {@link SelectController.connect} with the control, the listbox, and
+ * the label once the template rendered and {@link SelectController.disconnect} with the element's lifecycle, and calls {@link SelectController.setOptions},
  * {@link SelectController.optionSelectedChanged}, {@link SelectController.stateChanged} when `readOnly` or `required` change,
  * {@link SelectController.disabledChanged} from `formDisabledCallback`, and {@link SelectController.formReset} from `formResetCallback`.
  *
@@ -32,6 +32,7 @@ export class SelectController {
     public readonly list: OptionListController;
     private control: HTMLElement | null = null;
     private listbox: HTMLElement | null = null;
+    private label: HTMLElement | null = null;
     private readonly ariaForwarding: AriaForwardingController;
     private disabled = false;
     // Whether `value` is being set, which selects no option when none has the value, as in a native select.
@@ -79,11 +80,14 @@ export class SelectController {
     }
 
     /**
-     * Starts keeping the control in step, and handling its events and the popup's. For when the element is connected and has rendered them.
+     * Starts keeping the control in step, and handling its events, the popup's, and the label's: a click on the label focuses the control, as
+     * a native label's does. For when the element is connected and has rendered them.
      */
-    public connect(control: HTMLElement, listbox: HTMLElement): void {
+    public connect(control: HTMLElement, listbox: HTMLElement, label: HTMLElement): void {
         this.control = control;
         this.listbox = listbox;
+        this.label = label;
+        label.addEventListener("click", this.handleLabelClick);
         control.addEventListener("keydown", this.handleKeydown);
         control.addEventListener("click", this.handleControlClick);
         control.addEventListener("focus", this.handleFocus);
@@ -102,6 +106,7 @@ export class SelectController {
      */
     public disconnect(): void {
         const { control, listbox } = this;
+        this.label?.removeEventListener("click", this.handleLabelClick);
         control?.removeEventListener("keydown", this.handleKeydown);
         control?.removeEventListener("click", this.handleControlClick);
         control?.removeEventListener("focus", this.handleFocus);
@@ -161,15 +166,21 @@ export class SelectController {
     }
 
     /**
-     * The outside labels of the element name the control. Called when it connects and gets the focus, since the labels can't be observed.
+     * The label of the element and its outside labels name the control. Called when it connects and gets the focus, since the outside labels
+     * can't be observed. A label that is empty gives no name, so the author's `aria-label` names the control then.
      */
     public labelsChanged(): void {
-        const { control } = this;
+        const { control, label } = this;
         if (control) {
-            const labels = Array.from(this.internals.labels).filter((node): node is Element => node instanceof Element);
+            const outside = Array.from(this.internals.labels).filter((node): node is Element => node instanceof Element);
+            const labels = label ? [label, ...outside] : outside;
             control.ariaLabelledByElements = labels.length > 0 ? labels : null;
         }
     }
+
+    private readonly handleLabelClick = (): void => {
+        this.control?.focus();
+    };
 
     /**
      * The form was reset: the options are selected as by default.

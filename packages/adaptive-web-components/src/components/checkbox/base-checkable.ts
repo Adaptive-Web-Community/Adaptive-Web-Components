@@ -58,12 +58,24 @@ export abstract class BaseCheckable<C extends CheckableController = CheckableCon
     }
 
     /**
-     * The content of the default slot, the label.
+     * The elements in the `label` slot.
      *
      * @internal
      */
     @observable
-    public defaultSlottedNodes: Node[] = [];
+    public labelElements: Element[] = [];
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();

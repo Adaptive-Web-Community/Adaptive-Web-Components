@@ -7,6 +7,8 @@ import { SwitchController } from "./switch.controller.js";
 const { expect } = chai;
 
 class TestSwitch extends TestFormControl implements SwitchElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public checked = false;
     public defaultChecked = false;
     public disabled = false;

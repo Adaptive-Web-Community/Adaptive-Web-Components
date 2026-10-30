@@ -6,6 +6,8 @@ import type { Select as SelectElement } from "./select.js";
 
 const storyTemplate = html<StoryArgs<SelectElement>>`
     <adaptive-select
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
@@ -21,6 +23,7 @@ const storyTemplate = html<StoryArgs<SelectElement>>`
 export default {
     title: "Components/Select",
     args: {
+        label: "Doctor",
         startSlotIcon: false,
         endSlotIcon: false,
         storyContent: html<StoryArgs<SelectElement>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
@@ -45,6 +48,8 @@ export default {
         required: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },

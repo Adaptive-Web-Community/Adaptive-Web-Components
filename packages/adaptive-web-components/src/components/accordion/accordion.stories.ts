@@ -32,7 +32,7 @@ Accordion.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item disabled>
             <span slot="heading">Accordion Item 3 Heading</span>
@@ -50,7 +50,7 @@ AccordionWithExpandedChild.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item expanded>
             <span slot="heading">Accordion Item 3 Heading</span>
@@ -69,7 +69,7 @@ AccordionWithSingleExpandMode.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item expanded>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 3 Heading</span>

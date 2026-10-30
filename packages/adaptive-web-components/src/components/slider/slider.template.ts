@@ -29,11 +29,15 @@ export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof Sli
 };
 
 /**
- * Default Slider template: the track, the labels, and the thumb, placed by the `--slider-position` custom property.
+ * Default Slider template: the label, which names the slider through its `ElementInternals`, and the track, the slider labels, and the
+ * thumb, placed by the `--slider-position` custom property.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Slider> =
     (ds: DesignSystem) => html<Slider>`
+        <span class="label" part="label" aria-hidden="true" ?hidden="${x => !x.label && !x.labelElements.length}" ${ref("labelPart")}>
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        </span>
         <div class="positioning-region" part="positioning-region" style="--slider-position: ${x => x.percent}">
             <div class="track" part="track" ${ref("track")}>
                 <slot name="track"></slot>

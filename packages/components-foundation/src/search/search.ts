@@ -6,7 +6,7 @@ import type { TextInputElement } from "../text-input/text-input.js";
  * @public
  */
 export const SearchParts = {
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 
     /** The box around the control, the clear button, and the `start` and `end` slots. */
@@ -27,7 +27,7 @@ export const SearchParts = {
  * clear button is for the pointer, not the tab order: Escape clears a search field.
  *
  * @remarks
- * Slots: the default slot for the label, `start` and `end` around the control, and `clear-glyph`.
+ * Slots: `label`, `start` and `end` around the control, and `clear-glyph`.
  *
  * @public
  */

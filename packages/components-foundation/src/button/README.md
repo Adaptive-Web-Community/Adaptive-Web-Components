@@ -29,6 +29,7 @@ The source: FAST Foundation 3.0.0-alpha.33.
 | `autofocus` | Mirrored onto the inner button | The global attribute on the host |
 | Commands | | The Invoker Commands API of a native button (`commandfor`, `command`), with the shared `InvokerController`: a cancelable `command` event at the target, then what a native button does for a popover (`togglePopover` with the button as its source and anchor) or a `<dialog>`; `aria-expanded` as its popover is open. Only as a `button`, as a native one |
 | Slots and parts | `start`, the default slot in the `content` part, `end`, and the `control` part | The same, without `control` |
+| Hidden label | | `hide-label` hides the content visually, and it still names the button, which shows only its `start` and `end`, such as an icon ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)) |
 
 Considered and not taken yet:
 
@@ -37,5 +38,5 @@ Considered and not taken yet:
 - Implicit submission: Enter in a text field doesn't submit through a custom submit button. It needs a hidden native button in the form.
 - `autofocus` for an element defined after the page loaded.
 - A minimum target of 44px, and `appearance`, `shape`, `size`, and `icon-only` attributes: they are appearance, for Adaptive
-  UI. The components package sets an `icon-only` state from the content instead.
+  UI. `hide-label` hides the label of a button that shows only an icon, and the label still names it.
 - The toggle button (`aria-pressed`), the menu button, and the split button are components of their own.

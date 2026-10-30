@@ -5,6 +5,8 @@ import type { Search as SearchElement } from "./search.js";
 
 const storyTemplate = html<StoryArgs<SearchElement>>`
     <adaptive-search
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
         maxlength="${(x) => x.maxLength}"
@@ -46,13 +48,15 @@ export default {
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
-        storyContent: "Search",
+        label: "Search",
         autofocus: false,
         disabled: false,
         readOnly: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         maxLength: { control: "number" },

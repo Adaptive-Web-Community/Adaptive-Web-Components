@@ -9,7 +9,7 @@ export const CheckboxParts = {
     /** The box, with the checked and indeterminate indicators. */
     control: "control",
 
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 } as const;
 
@@ -17,7 +17,7 @@ export const CheckboxParts = {
  * A checkbox (`role="checkbox"`): a {@link CheckableElement} that the user checks and unchecks, and that can be indeterminate.
  *
  * @remarks
- * Slots: the default slot for the label, and `checked-indicator` and `indeterminate-indicator`.
+ * Slots: `label`, and `checked-indicator` and `indeterminate-indicator`.
  *
  * Custom states: `checked`, `indeterminate`, `readonly`, and `active` while Space is held.
  *

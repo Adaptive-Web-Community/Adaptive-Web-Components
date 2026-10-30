@@ -7,6 +7,8 @@ import { CheckboxController } from "./checkbox.controller.js";
 const { expect } = chai;
 
 class TestCheckbox extends TestFormControl implements CheckboxElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public checked = false;
     public defaultChecked = false;
     public disabled = false;

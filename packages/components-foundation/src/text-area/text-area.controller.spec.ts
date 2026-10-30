@@ -7,6 +7,8 @@ import { TextAreaController } from "./text-area.controller.js";
 const { expect } = chai;
 
 class TestTextArea extends TestFormControl implements TextAreaElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public value = "";
     public defaultValue = "";
     public disabled = false;

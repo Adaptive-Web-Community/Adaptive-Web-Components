@@ -1,5 +1,6 @@
 import { focusStrokeOuter, focusStrokeThickness } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -8,6 +9,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
+        flex-direction: column;
         vertical-align: top;
     }
 
@@ -85,6 +87,19 @@ export const templateStyles: ElementStyles = css`
 
     ::slotted(*) {
         flex: 0 0 auto;
+    }
+
+    .label {
+        align-self: start;
+        cursor: pointer;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

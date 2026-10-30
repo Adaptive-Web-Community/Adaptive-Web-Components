@@ -1,5 +1,5 @@
-import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { hasContent, TextAreaParts } from "@adaptive-web/components-foundation";
+import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { TextAreaParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { controlInteractivity } from "../../utilities/interactivity.js";
@@ -29,8 +29,8 @@ export const TextAreaAnatomy: ComponentAnatomy<typeof TextAreaConditions, typeof
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<TextArea> =
     (ds: DesignSystem) => html<TextArea>`
-        <label class="label" part="label" for="control" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </label>
         <textarea class="control" part="control" id="control" ${ref("control")}></textarea>
     `;

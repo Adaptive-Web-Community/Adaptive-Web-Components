@@ -1,4 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -65,6 +66,10 @@ export const templateStyles: ElementStyles = css`
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

@@ -9,6 +9,8 @@ import { SelectController } from "./select.controller.js";
 const { expect } = chai;
 
 class TestSelect extends TestFormControl implements SelectElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public disabled = false;
     public readOnly = false;
@@ -26,7 +28,9 @@ customElements.define("test-select", TestSelect);
 function setup(texts: string[], configure: (options: TestOption[]) => void = () => {}) {
     const host = document.body.appendChild(new TestSelect());
     const root = host.attachShadow({ mode: "open" });
+    const label = root.appendChild(document.createElement("span"));
     const control = root.appendChild(document.createElement("div"));
+    control.tabIndex = 0;
     const listbox = root.appendChild(new TestPopover());
     listbox.appendChild(document.createElement("slot"));
     const options = createOptions(host, texts);
@@ -36,11 +40,11 @@ function setup(texts: string[], configure: (options: TestOption[]) => void = () 
     host.controller = controller;
     TestOption.onSelected = option => controller.optionSelectedChanged(option);
     controller.setOptions(options);
-    controller.connect(control, listbox);
+    controller.connect(control, listbox, label);
     const events: string[] = [];
     host.addEventListener("input", () => events.push("input"));
     host.addEventListener("change", () => events.push("change"));
-    return { host, control, listbox, options, internals, controller, events };
+    return { host, label, control, listbox, options, internals, controller, events };
 }
 
 function press(target: Element, key: string, init: KeyboardEventInit = {}): KeyboardEvent {
@@ -251,14 +255,28 @@ describe("SelectController", () => {
             expect(selected(options)).to.equal("01");
         });
 
-        it("should be named by its outside labels", () => {
-            const { control, internals, controller } = setup(["a"]);
-            const label = document.body.appendChild(document.createElement("label"));
-            internals.labels = [label] as unknown as NodeList;
+        it("should be named by its label", () => {
+            const { label, control } = setup(["a"]);
+
+            expect(control.ariaLabelledByElements).to.deep.equal([label]);
+        });
+
+        it("should be named by its label and its outside labels", () => {
+            const { label, control, internals, controller } = setup(["a"]);
+            const outside = document.body.appendChild(document.createElement("label"));
+            internals.labels = [outside] as unknown as NodeList;
 
             controller.labelsChanged();
 
-            expect(control.ariaLabelledByElements).to.deep.equal([label]);
+            expect(control.ariaLabelledByElements).to.deep.equal([label, outside]);
+        });
+
+        it("should focus the control on a click on its label, as a native label", () => {
+            const { label, control } = setup(["a"]);
+
+            label.click();
+
+            expect(control.getRootNode()).to.have.property("activeElement", control);
         });
     });
 });

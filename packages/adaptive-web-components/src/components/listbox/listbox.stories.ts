@@ -6,6 +6,8 @@ import type { Listbox as ListboxElement } from "./listbox.js";
 
 const storyTemplate = html<StoryArgs<ListboxElement>>`
     <adaptive-listbox
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         ?multiple="${(x) => x.multiple}"
         ?readonly="${(x) => x.readOnly}"
@@ -19,6 +21,7 @@ const storyTemplate = html<StoryArgs<ListboxElement>>`
 export default {
     title: "Components/Listbox",
     args: {
+        label: "Fruit",
         storyContent: html<StoryArgs<ListboxElement>>`
             ${repeat((x) => x.storyItems, listboxOptionStoryTemplate)}
         `,
@@ -44,6 +47,8 @@ export default {
         required: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },

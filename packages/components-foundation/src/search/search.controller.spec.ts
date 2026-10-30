@@ -7,6 +7,8 @@ import { SearchController } from "./search.controller.js";
 const { expect } = chai;
 
 class TestSearch extends TestFormControl implements SearchElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public value = "";
     public defaultValue = "";
     public disabled = false;

@@ -35,8 +35,8 @@ export const Dialog: Story<DialogElement> = renderComponent(storyTemplate).bind(
 Dialog.args = {
     storyContent: html`
         <p>Press Escape, or the button, to close.</p>
-        <adaptive-checkbox>A checkbox</adaptive-checkbox>
-        <adaptive-text-field autofocus>A text field, which takes the focus</adaptive-text-field>
+        <adaptive-checkbox label="A checkbox"></adaptive-checkbox>
+        <adaptive-text-field autofocus label="A text field, which takes the focus"></adaptive-text-field>
     `,
 };
 

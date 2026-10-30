@@ -5,6 +5,7 @@ import { ButtonController } from "./button.controller.js";
 const { expect } = chai;
 
 class TestButton extends HTMLElement implements ButtonElement {
+    public hideLabel = false;
     public disabled = false;
     public type: ButtonType = ButtonType.button;
     public name: string | null = null;

@@ -1,5 +1,6 @@
 import type { ListboxOptionElement } from "../listbox-option/listbox-option.js";
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * The parts of a {@link PickerElement}.
@@ -7,6 +8,9 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * @public
  */
 export const PickerParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
     /** The box of the field, around the values and the input. */
     root: "root",
 
@@ -52,13 +56,14 @@ export const PickerParts = {
  * An author who finds the options otherwise (from a server) cancels it, sets `loading` while finding them, and changes the options. The
  * popup's status says that the options are loading, or that none is found.
  *
- * Slots: the default slot for the options, `start` and `end` in the root, `indicator`, and `no-results` and `loading` for the status.
+ * Slots: `label`, its label (see {@link LabelledElement}), the default slot for the options, `start` and `end` in the root, `indicator`,
+ * and `no-results` and `loading` for the status.
  *
  * Events: `filter`, cancelable, when the user types; the input's `input`; `input` and `change` when the user changes the values.
  *
  * @public
  */
-export interface PickerElement extends FormControlElement {
+export interface PickerElement extends FormControlElement, LabelledElement {
     /**
      * The name of its values in the form data.
      *

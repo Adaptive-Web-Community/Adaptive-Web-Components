@@ -7,6 +7,8 @@ import { RadioController } from "./radio.controller.js";
 const { expect } = chai;
 
 class TestRadio extends TestFormControl implements RadioElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public checked = false;
     public defaultChecked = false;
     public disabled = false;

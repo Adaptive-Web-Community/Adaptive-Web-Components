@@ -7,6 +7,8 @@ import type { Slider as SliderElement } from "./slider.js";
 
 const storyTemplate = html<StoryArgs<SliderElement>>`
     <adaptive-slider
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         min="${(x) => x.min}"
         max="${(x) => x.max}"
         orientation="${(x) => x.orientation}"
@@ -22,10 +24,13 @@ const storyTemplate = html<StoryArgs<SliderElement>>`
 export default {
     title: "Components/Slider",
     args: {
+        label: "Volume",
         disabled: false,
         readOnly: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },

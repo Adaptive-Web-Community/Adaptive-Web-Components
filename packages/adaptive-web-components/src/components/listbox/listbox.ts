@@ -87,6 +87,32 @@ export class Listbox extends BaseFormControl implements ListboxElement {
         this.updateOptions();
     }
 
+    /**
+     * The elements in the `label` slot.
+     *
+     * @internal
+     */
+    @observable
+    public labelElements: Element[] = [];
+    protected labelElementsChanged(): void {
+        this.controller.labelChanged(this.label, this.labelElements);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+    protected labelChanged(): void {
+        this.controller.labelChanged(this.label, this.labelElements);
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.controller.connect();

@@ -1,4 +1,5 @@
 import type { SliderLabelElement } from "../slider-label/slider-label.js";
+import { labelHost } from "../utilities/label.js";
 import { Orientation } from "../utilities/orientation.js";
 import { type SliderElement, sliderPercent } from "./slider.js";
 
@@ -9,7 +10,7 @@ import { type SliderElement, sliderPercent } from "./slider.js";
  */
 export type SliderInternals = Pick<
     ElementInternals,
-    "role" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue"
+    "role" | "ariaLabel" | "ariaLabelledByElements" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue"
 >;
 
 /**
@@ -27,13 +28,13 @@ export type SliderOptions = {
 /**
  * The behavior of a {@link SliderElement}: the `slider` role and its values; the value, kept in the range and on a step, with the `value`
  * attribute as the default; the keys of the ARIA slider pattern; dragging on the track; `input` and `change`; the form value and reset; and
- * where its labels are.
+ * where its labels are; and its name, from its label.
  *
  * @remarks
- * The binding creates it with the element's `ElementInternals`, calls {@link SliderController.connect} with the track once the template
- * rendered and {@link SliderController.disconnect} with the element's lifecycle, and calls {@link SliderController.defaultValueChanged},
+ * The binding creates it with the element's `ElementInternals`, calls {@link SliderController.connect} with the track and the label once
+ * the template rendered and {@link SliderController.disconnect} with the element's lifecycle, and calls {@link SliderController.defaultValueChanged},
  * {@link SliderController.stateChanged} when `min`, `max`, `step`, `orientation`, `readOnly`, or `valueTextFormatter` change,
- * {@link SliderController.setLabels}, {@link SliderController.disabledChanged} from `formDisabledCallback`, and
+ * {@link SliderController.setLabels}, {@link SliderController.labelChanged}, {@link SliderController.disabledChanged} from `formDisabledCallback`, and
  * {@link SliderController.formReset} from `formResetCallback`. The binding's `value` is the controller's.
  *
  * @public
@@ -43,6 +44,7 @@ export class SliderController {
     // Whether the user or code changed the value, after which the `value` attribute no longer sets it, as for a native range.
     private dirty = false;
     private track: HTMLElement | null = null;
+    private label: HTMLElement | null = null;
     private labels: readonly SliderLabelElement[] = [];
     private disabled = false;
     private dragStart: string | null = null;
@@ -64,10 +66,11 @@ export class SliderController {
 
     /**
      * Makes the element focusable, unless the author set its `tabindex`, and starts handling the keys and the pointer. For when the element
-     * is connected and has rendered its track.
+     * is connected and has rendered its track and its label, a press on which focuses it without changing the value, as a native label's.
      */
-    public connect(track: HTMLElement): void {
+    public connect(track: HTMLElement, label: HTMLElement): void {
         this.track = track;
+        this.label = label;
         const { host } = this;
         if (!host.hasAttribute("tabindex")) {
             host.tabIndex = 0;
@@ -121,6 +124,13 @@ export class SliderController {
     public setLabels(labels: readonly SliderLabelElement[]): void {
         this.labels = labels;
         this.updateLabels();
+    }
+
+    /**
+     * The `label` attribute or the elements in the `label` slot changed. They name the slider.
+     */
+    public labelChanged(label: string | null, labelElements: readonly Element[]): void {
+        labelHost(this.internals, label, labelElements);
     }
 
     /**
@@ -276,7 +286,7 @@ export class SliderController {
     }
 
     private readonly handlePointerdown = (event: PointerEvent): void => {
-        if (this.disabled || this.host.readOnly || event.button !== 0) {
+        if (this.disabled || this.host.readOnly || event.button !== 0 || (this.label && event.composedPath().includes(this.label))) {
             return;
         }
         this.host.setPointerCapture?.(event.pointerId);

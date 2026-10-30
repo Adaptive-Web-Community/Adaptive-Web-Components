@@ -23,9 +23,9 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    it can be tested without a browser feature it doesn't need.
    Used by: Button.
 5. **Behavior without state or lifecycle is a function**, not a controller.
-   Used by: Accordion Item (`toggleAccordionItem`), Button and Anchor (`isIconOnly`), Progress and Progress Ring (`progressPercent`),
-   Checkbox (`hasContent`, for its label), Tab (`selectTab`), Breadcrumb (`setBreadcrumbItems`), Tree Item (`toggleTreeItem`,
-   `selectTreeItem`, `placeTreeItems`), Slider (`sliderPercent`).
+   Used by: Accordion Item (`toggleAccordionItem`), Progress and Progress Ring (`progressPercent`), Tab (`selectTab`),
+   Breadcrumb (`setBreadcrumbItems`), Tree Item (`toggleTreeItem`, `selectTreeItem`, `placeTreeItems`), Slider (`sliderPercent`),
+   Radio Group, Slider, and Listbox (`labelHost`).
 6. **Components with the same behavior have one contract**, and a template each.
    Used by: Progress and Progress Ring (`ProgressElement`).
 7. **Behavior that several components share is a controller of its own**, which their controllers use or extend.
@@ -43,9 +43,14 @@ applies them too, or says here why it doesn't. The decisions that cross packages
    inside, and no proxy element in the light DOM. ([0010](../../docs/decisions/0010-a-control-is-its-host-element.md))
    Used by: Button, Checkbox, Switch, Radio, Listbox, Slider (its thumb and track are its parts), and Tab, Menu Item, and Tree Item,
    which are their hosts though they aren't form controls.
-10. **A control's label is its content**, in a `label` part that is hidden when it is empty. The role takes its name from it, clicking it
-    activates the control, and a `<label for>` outside works too, through `ElementInternals`.
-    Used by: Checkbox, Switch, Radio, Text Field (in a `<label for>` of its input), Text Area, Number Field, Search.
+10. **A control is labelled as its native element is.** One whose native element is labelled from outside, by a `<label>` (an `<input>`,
+    a `<select>`, a `<textarea>`), has a label of its own: the `label` attribute, or the `label` slot for more than text, in a `label` part
+    that is hidden when it is empty. Its default slot is never the label, only its items. One whose native element is named by its content (a
+    `<button>`, an `<a>`, an `<option>`) is labelled by its default slot. `hide-label` hides either label, which still names the element.
+    An outside `<label for>` works too. ([0016](../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md))
+    Used by: Checkbox, Switch, Radio (named by their content, the label), Text Field (its label is a `<label for>` of its input), Text Area,
+    Number Field, Search, Picker (as the text field), Select and Calendar (by a fixed id in the shadow root), Radio Group, Slider, Listbox
+    (their host has the role, so the label names it through `ElementInternals`, with `labelHost`); Button and Anchor (by their content).
 11. **A link, a text field, or a dialog wraps the native element.** What the browser does for a link (its context menu, opening it in a new
     tab, its URL, `:visited`), a text field (selection, input methods, spelling, autofill), or a dialog (the top layer, the inert page, focus
     moved in and back) can't be done for a custom element, so the native element is inside and has the role. A text field's host is still the
@@ -124,10 +129,10 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 ## State
 
 23. **What the author sets is a reflected attribute; what the component works out is a custom state.** `expanded`, `disabled`, `expand-mode`,
-    and `type` are attributes. `:state(active)` and `:state(icon-only)` are states of `ElementInternals`. A component doesn't add classes or
+    and `type` are attributes. `:state(active)` is a state of `ElementInternals`. A component doesn't add classes or
     attributes to its host for its own state, except `tabindex`, which focus needs, and `popover` (when the author gave none), which the top
     layer needs.
-    Used by: Accordion, Accordion Item, Anchor (`:state(icon-only)`), Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
+    Used by: Accordion, Accordion Item, Button, Divider (`orientation`), Skeleton (`shape`, `shimmer`),
     Checkbox (`:state(checked)`, `:state(indeterminate)`), Switch (`:state(checked)`), Radio (`:state(checked)`), Dialog (`:state(open)`,
     `:state(modal)`), Tab (`selected`, `disabled`), Tablist (`orientation`, `panels`), Toolbar (`orientation`), List (`orientation`),
     Listbox Option (`:state(selected)`, `:state(active)`), Listbox (`multiple`, `readonly`), Select (`:state(open)`), Picker (`multiple`,
@@ -268,8 +273,8 @@ applies them too, or says here why it doesn't. The decisions that cross packages
 42. **The parts are in the contract**, so every framework's template has the same ones and the styles target the same names.
     Used by: `AccordionItemParts`, `AnchorParts`, `AvatarParts`, `BadgeParts`, `ButtonParts`, `ProgressParts`, `ProgressRingParts`,
     `SkeletonParts`, `CheckboxParts`, `SwitchParts`, `RadioParts`, `RadioGroupParts`, `TextFieldParts`, `TextAreaParts`, `NumberFieldParts`,
-    `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`, `BreadcrumbParts`, `BreadcrumbItemParts`, `ListboxOptionParts`, `SelectParts`,
-    `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`, `CalendarParts`, `DataGridParts`.
+    `SearchParts`, `DialogParts`, `TabParts`, `ToolbarParts`, `BreadcrumbParts`, `BreadcrumbItemParts`, `ListboxParts`, `ListboxOptionParts`,
+    `SelectParts`, `PickerParts`, `MenuItemParts`, `TreeItemParts`, `SliderParts`, `SliderLabelParts`, `CalendarParts`, `DataGridParts`.
 43. **The host is the box, and a `content` part wraps the default slot between `start` and `end`.** Where a native element is the box, the
     `content` part is in it.
     Used by: Badge, Button; Anchor (its link is the box), Tab, Breadcrumb Item (as the Anchor), Listbox Option.

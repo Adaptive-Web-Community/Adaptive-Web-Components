@@ -5,6 +5,8 @@ import type { Checkbox as CheckboxElement } from "./checkbox.js";
 
 const storyTemplate = html<StoryArgs<CheckboxElement>>`
     <adaptive-checkbox
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         :indeterminate="${(x) => x.indeterminate}"
@@ -19,7 +21,7 @@ const storyTemplate = html<StoryArgs<CheckboxElement>>`
 export default {
     title: "Components/Checkbox",
     args: {
-        storyContent: "Checkbox",
+        label: "Checkbox",
         checked: false,
         disabled: false,
         indeterminate: false,
@@ -27,6 +29,8 @@ export default {
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyItems: { table: { disable: true } },
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
@@ -48,19 +52,19 @@ export const CheckboxDisabled: Story<CheckboxElement> = renderComponent(
 ).bind({});
 CheckboxDisabled.args = {
     storyItems: [
-        { storyContent: "Disabled (unchecked)", disabled: true },
+        { label: "Disabled (unchecked)", disabled: true },
         {
-            storyContent: "Disabled (indeterminate, unchecked)",
+            label: "Disabled (indeterminate, unchecked)",
             disabled: true,
             indeterminate: true,
         },
         {
-            storyContent: "Disabled (indeterminate, checked)",
+            label: "Disabled (indeterminate, checked)",
             checked: true,
             disabled: true,
             indeterminate: true,
         },
-        { storyContent: "Disabled (checked)", checked: true, disabled: true },
+        { label: "Disabled (checked)", checked: true, disabled: true },
     ],
 };
 
@@ -68,7 +72,7 @@ export const CheckboxIndeterminate: Story<CheckboxElement> = Checkbox.bind({});
 CheckboxIndeterminate.args = {
     checked: true,
     indeterminate: true,
-    storyContent: "Indeterminate",
+    label: "Indeterminate",
 };
 
 export const CheckboxInForm: Story<CheckboxElement> = renderComponent(
@@ -91,16 +95,16 @@ export const CheckboxInFieldset: Story<CheckboxElement> = renderComponent(
 CheckboxInFieldset.args = {
     legendLabel: "Fruit",
     storyItems: [
-        { storyContent: "Apples", checked: true },
-        { storyContent: "Bananas", checked: true },
-        { storyContent: "Honeydew" },
-        { storyContent: "Oranges", checked: true },
+        { label: "Apples", checked: true },
+        { label: "Bananas", checked: true },
+        { label: "Honeydew" },
+        { label: "Oranges", checked: true },
     ],
 };
 
 export const CheckboxVisualVsAudioLabel = Checkbox.bind({});
 CheckboxVisualVsAudioLabel.args = {
     storyContent: html`
-        <span aria-label="Audio label">Visible label</span>
+        <span slot="label" aria-label="Audio label">Visible label</span>
     `,
 };

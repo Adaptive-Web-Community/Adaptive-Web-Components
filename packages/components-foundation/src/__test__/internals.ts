@@ -6,6 +6,7 @@ export class TestInternals {
     public ariaReadOnly: string | null = null;
     public ariaDisabled: string | null = null;
     public ariaOrientation: string | null = null;
+    public ariaLabel: string | null = null;
     public ariaLabelledByElements: ReadonlyArray<Element> | null = null;
     public ariaActiveDescendantElement: Element | null = null;
     public ariaMultiSelectable: string | null = null;

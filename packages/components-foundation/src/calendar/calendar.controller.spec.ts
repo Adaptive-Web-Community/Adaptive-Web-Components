@@ -8,6 +8,8 @@ import { addDays, addMonths, isIsoDate } from "./dates.js";
 const { expect } = chai;
 
 class TestCalendar extends TestFormControl implements CalendarElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public defaultValue: string | null = null;
     public multiple = false;

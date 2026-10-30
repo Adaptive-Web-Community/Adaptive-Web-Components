@@ -87,6 +87,33 @@ export class Select extends BaseFormControl implements SelectElement {
     public listbox?: HTMLElement;
 
     /**
+     * The label.
+     *
+     * @internal
+     */
+    public labelPart?: HTMLElement;
+
+    /**
+     * The elements in the `label` slot.
+     *
+     * @internal
+     */
+    @observable
+    public labelElements: Element[] = [];
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     */
+    @attr
+    public label: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
+    /**
      * The elements in the default slot.
      *
      * @internal
@@ -99,8 +126,8 @@ export class Select extends BaseFormControl implements SelectElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        if (this.control && this.listbox) {
-            this.controller.connect(this.control, this.listbox);
+        if (this.control && this.listbox && this.labelPart) {
+            this.controller.connect(this.control, this.listbox, this.labelPart);
         }
     }
 

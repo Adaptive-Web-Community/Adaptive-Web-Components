@@ -24,7 +24,7 @@ A checkbox, which the user checks and unchecks, and which can be indeterminate. 
 | Required | Through the proxy | `valueMissing`, with the browser's message from a native checkbox |
 | Disabled | `aria-disabled` written, and `tabindex` removed | The platform's (decision 0010): the `disabled` attribute or a fieldset, selected as `:disabled` |
 | Read only | `readonly` (alpha.31) | `readonly`: it takes focus, a click and Space change nothing, `aria-readonly`, `:state(readonly)`, and it isn't validated, as a read only native input isn't |
-| Label | The default slot, in a `label` part, with a class when empty | FAST Foundation's default slot in the `label` part, hidden when empty, and a `<label for>` works too |
+| Label | The default slot, in a `label` part, with a class when empty | The `label` attribute, or the `label` slot for more than text, in the `label` part, hidden when empty; `hide-label` hides it, and it still names the element ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)). A `<label for>` works too |
 | Indicators | `checked-indicator` and `indeterminate-indicator` slots in the `control` part, shown by the styles | The same slots, shown with `hidden` |
 
 Considered and not taken yet:

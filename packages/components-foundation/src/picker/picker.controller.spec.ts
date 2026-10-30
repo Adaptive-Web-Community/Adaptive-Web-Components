@@ -10,6 +10,8 @@ import { PickerController } from "./picker.controller.js";
 const { expect } = chai;
 
 class TestPicker extends TestFormControl implements PickerElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public multiple = false;
     public freeform = false;
@@ -43,6 +45,9 @@ function setup(texts: string[], configure: (host: TestPicker, options: TestOptio
     const box = root.appendChild(document.createElement("div"));
     const values = box.appendChild(document.createElement("div"));
     const control = box.appendChild(document.createElement("input"));
+    control.id = "control";
+    const label = root.insertBefore(document.createElement("label"), box);
+    label.htmlFor = "control";
     const popup = root.appendChild(new TestPopover());
     const listbox = popup.appendChild(document.createElement("div"));
     listbox.appendChild(document.createElement("slot"));
@@ -61,7 +66,7 @@ function setup(texts: string[], configure: (host: TestPicker, options: TestOptio
     const events: string[] = [];
     host.addEventListener("change", () => events.push("change"));
     host.addEventListener("filter", () => events.push("filter"));
-    return { host, control, popup, listbox, noResults, loading, values, options, internals, controller, events };
+    return { host, label, control, popup, listbox, noResults, loading, values, options, internals, controller, events };
 }
 
 function type(control: HTMLInputElement, text: string): void {
@@ -80,6 +85,18 @@ const shown = (options: TestOption[]) => options.map(option => (option.hidden ? 
 const valueLabels = (values: HTMLElement) => Array.from(values.querySelectorAll("[part=value-label]")).map(label => label.textContent);
 
 describe("PickerController", () => {
+    it("should be named by its label, a native label of the input, and by its label and its outside labels together", () => {
+        const { label, control, internals, controller } = setup(["a"]);
+        expect(Array.from(control.labels ?? [])).to.deep.equal([label]);
+        expect(control.ariaLabelledByElements).to.be.null;
+
+        const outside = document.body.appendChild(document.createElement("label"));
+        internals.labels = [outside] as unknown as NodeList;
+        controller.labelsChanged();
+
+        expect(control.ariaLabelledByElements).to.deep.equal([label, outside]);
+    });
+
     beforeEach(() => {
         document.body.innerHTML = "";
         TestOption.onSelected = null;

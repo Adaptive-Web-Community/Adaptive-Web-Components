@@ -27,7 +27,7 @@ The source: FAST Foundation 3.0.0-alpha.33 (the archive).
 | Visual focus | The selected option | `:state(active)`, from the shared options controller |
 | Required | `required` through the proxy | `required`: missing its value when the selected option's value is empty (a placeholder option), with the browser's message |
 | Read only | | `readonly`, with `aria-readonly`: it opens, nothing is selected |
-| Name | `aria-label` on the host | An outside `<label for>`, as the combobox's `ariaLabelledByElements`; the author's ARIA on the host forwarded to the combobox |
+| Name | `aria-label` on the host | Its label, the `label` attribute or slot in the `label` part ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)), and an outside `<label for>`, as the combobox's `ariaLabelledByElements`; a click on the label focuses the combobox; the author's ARIA on the host forwarded to the combobox |
 | Events | `input` and `change` | `input` and `change` from the host, for the user's selection |
 
 Considered and not taken:

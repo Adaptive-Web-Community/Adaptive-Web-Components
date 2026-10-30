@@ -47,6 +47,9 @@ export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof Sel
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Select> =
     (ds: DesignSystem) => html<Select>`
+        <span class="label" part="label" ?hidden="${x => !x.label && !x.labelElements.length}" ${ref("labelPart")}>
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        </span>
         <div
             class="control"
             part="control"

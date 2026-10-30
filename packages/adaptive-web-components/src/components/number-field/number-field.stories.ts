@@ -5,6 +5,8 @@ import type { NumberField as NumberFieldElement } from "./number-field.js";
 
 const storyTemplate = html<StoryArgs<NumberFieldElement>>`
     <adaptive-number-field
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
         ?hide-step="${(x) => x.hideStep}"
@@ -46,7 +48,7 @@ export default {
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
-        storyContent: "Number Field",
+        label: "Number Field",
         autofocus: false,
         disabled: false,
         hideStep: false,
@@ -55,6 +57,8 @@ export default {
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         hideStep: { control: "boolean" },

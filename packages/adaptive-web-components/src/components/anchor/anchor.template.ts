@@ -1,4 +1,4 @@
-import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
 import { AnchorParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
@@ -8,7 +8,7 @@ import type { Anchor } from "./anchor.js";
  * @public
  */
 export const AnchorConditions = {
-    iconOnly: ":state(icon-only)",
+    hideLabel: "[hide-label]",
     noHref: ":not([href])",
 };
 
@@ -46,7 +46,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Anchor> =
         >
             <slot name="start"></slot>
             <span class="content" part="content">
-                <slot ${slotted("defaultSlottedContent")}></slot>
+                <slot></slot>
             </span>
             <slot name="end"></slot>
         </a>

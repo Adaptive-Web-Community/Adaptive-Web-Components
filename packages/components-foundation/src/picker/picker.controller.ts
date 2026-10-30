@@ -53,7 +53,7 @@ function fold(text: string): string {
  * The behavior of a {@link PickerElement}: its options, with an {@link OptionListController}; the popup, which opens as the user types and
  * with the arrows; `filter`, and the options filtered by what is typed; the popup's status; the selection, in the input or as the values listed
  * before it, and the text the user gives
- * with `freeform`; the input's state and its name, from the outside labels and the author's ARIA; `input` and `change`; and the form value,
+ * with `freeform`; the input's state and its name, from its label, the outside labels, and the author's ARIA; `input` and `change`; and the form value,
  * validity, and reset.
  *
  * @remarks
@@ -239,13 +239,16 @@ export class PickerController {
     }
 
     /**
-     * The outside labels of the element name the input. Called when it connects and gets the focus, since the labels can't be observed.
+     * The labels of the element may have changed. Its own label is a native label of the input; an outside `<label for>` names the element,
+     * which isn't the input, so the input is labelled by its own label and those. Called when it connects and gets the focus, since the outside
+     * labels can't be observed.
      */
     public labelsChanged(): void {
         const { control } = this;
         if (control) {
-            const labels = Array.from(this.internals.labels).filter((node): node is Element => node instanceof Element);
-            control.ariaLabelledByElements = labels.length > 0 ? labels : null;
+            const outside = Array.from(this.internals.labels).filter((node): node is Element => node instanceof Element);
+            const own = control.labels ? Array.from(control.labels) : [];
+            control.ariaLabelledByElements = outside.length > 0 ? [...own, ...outside] : null;
         }
     }
 

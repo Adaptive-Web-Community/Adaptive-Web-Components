@@ -36,3 +36,4 @@ reason with the code.
 | [0013](0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md) | A value on a fill is made in the context of the fill, for the pairs the treatments have | Accepted |
 | [0014](0014-a-names-history-is-kept-with-what-it-names.md) | A name's history is kept with what it names | Accepted |
 | [0015](0015-a-treatment-is-a-token.md) | A treatment is a token, named in the group it styles | Accepted |
+| [0016](0016-a-control-is-labelled-as-its-native-element-is.md) | A control is labelled as its native element is | Accepted |

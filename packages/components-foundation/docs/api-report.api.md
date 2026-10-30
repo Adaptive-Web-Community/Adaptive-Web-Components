@@ -46,7 +46,7 @@ export const AccordionItemParts: {
 };
 
 // @public
-export interface AnchorElement extends HTMLElement {
+export interface AnchorElement extends HTMLElement, ContentLabelledElement {
     download: string | null;
     href: string | null;
     hreflang: string | null;
@@ -122,7 +122,7 @@ export class ButtonController {
 }
 
 // @public
-export interface ButtonElement extends InvokerElement {
+export interface ButtonElement extends InvokerElement, ContentLabelledElement {
     disabled: boolean;
     readonly form: HTMLFormElement | null;
     formAction: string | null;
@@ -171,7 +171,7 @@ export class CalendarController {
 }
 
 // @public
-export interface CalendarElement extends FormControlElement {
+export interface CalendarElement extends FormControlElement, LabelledElement {
     defaultValue: string | null;
     disabled: boolean;
     disabledDates: string | null;
@@ -193,6 +193,7 @@ export type CalendarInternals = Pick<ElementInternals, "setFormValue">;
 
 // @public
 export const CalendarParts: {
+    readonly label: "label";
     readonly header: "header";
     readonly previousMonth: "previous-month";
     readonly title: "title";
@@ -235,7 +236,7 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
 }
 
 // @public
-export interface CheckableElement extends FormControlElement {
+export interface CheckableElement extends FormControlElement, LabelledElement {
     checked: boolean;
     defaultChecked: boolean;
     disabled: boolean;
@@ -281,6 +282,11 @@ export const CheckboxParts: {
 
 // @public
 export function collapsedText(element: Element): string;
+
+// @public
+export interface ContentLabelledElement {
+    hideLabel: boolean;
+}
 
 // @public
 export function dataGridCellAria(cell: DataGridCellElement): DefaultAria;
@@ -436,9 +442,6 @@ export interface FormControlElement extends HTMLElement {
 }
 
 // @public
-export function hasContent(nodes: readonly Node[]): boolean;
-
-// @public
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 // @public
@@ -458,7 +461,16 @@ export interface InvokerElement extends HTMLElement {
 export type InvokerInternals = Pick<ElementInternals, "ariaExpanded">;
 
 // @public
-export function isIconOnly(nodes: readonly Node[]): boolean;
+export function labelHost(internals: LabelInternals, label: string | null, labelElements: readonly Element[]): void;
+
+// @public
+export type LabelInternals = Pick<ElementInternals, "ariaLabel" | "ariaLabelledByElements">;
+
+// @public
+export interface LabelledElement {
+    hideLabel: boolean;
+    label: string | null;
+}
 
 // @public
 export function listAria(): DefaultAria;
@@ -470,6 +482,7 @@ export class ListboxController {
     disabledChanged(disabled: boolean): void;
     disconnect(): void;
     formReset(): void;
+    labelChanged(label: string | null, labelElements: readonly Element[]): void;
     readonly list: OptionListController;
     optionSelectedChanged(option: ListboxOptionElement): void;
     setOptions(options: readonly ListboxOptionElement[]): void;
@@ -477,7 +490,7 @@ export class ListboxController {
 }
 
 // @public
-export interface ListboxElement extends FormControlElement {
+export interface ListboxElement extends FormControlElement, LabelledElement {
     disabled: boolean;
     multiple: boolean;
     name: string | null;
@@ -488,7 +501,7 @@ export interface ListboxElement extends FormControlElement {
 }
 
 // @public
-export type ListboxInternals = Pick<ElementInternals, "role" | "ariaActiveDescendantElement" | "ariaMultiSelectable" | "ariaReadOnly" | "ariaRequired" | "ariaDisabled" | "setFormValue" | "setValidity">;
+export type ListboxInternals = Pick<ElementInternals, "role" | "ariaLabel" | "ariaLabelledByElements" | "ariaActiveDescendantElement" | "ariaMultiSelectable" | "ariaReadOnly" | "ariaRequired" | "ariaDisabled" | "setFormValue" | "setValidity">;
 
 // @public
 export function listboxOptionAria(option: ListboxOptionElement): DefaultAria;
@@ -506,6 +519,12 @@ export interface ListboxOptionElement extends HTMLElement {
 // @public
 export const ListboxOptionParts: {
     readonly content: "content";
+};
+
+// @public
+export const ListboxParts: {
+    readonly label: "label";
+    readonly options: "options";
 };
 
 // @public
@@ -669,7 +688,7 @@ export class PickerController {
 }
 
 // @public
-export interface PickerElement extends FormControlElement {
+export interface PickerElement extends FormControlElement, LabelledElement {
     disabled: boolean;
     freeform: boolean;
     loading: boolean;
@@ -689,6 +708,7 @@ export type PickerInternals = Pick<ElementInternals, "labels" | "states" | "setF
 
 // @public
 export const PickerParts: {
+    readonly label: "label";
     readonly root: "root";
     readonly values: "values";
     readonly value: "value";
@@ -767,7 +787,7 @@ export class RadioGroupController {
     connect(): void;
     disabledChanged(disabled: boolean): void;
     disconnect(): void;
-    labelsChanged(labels: readonly Element[]): void;
+    labelChanged(label: string | null, labelElements: readonly Element[]): void;
     nameChanged(): void;
     orientationChanged(): void;
     radioCheckedChanged(radio: RadioElement): void;
@@ -779,7 +799,7 @@ export class RadioGroupController {
 }
 
 // @public
-export interface RadioGroupElement extends FormControlElement {
+export interface RadioGroupElement extends FormControlElement, LabelledElement {
     disabled: boolean;
     name: string | null;
     orientation: Orientation;
@@ -789,10 +809,11 @@ export interface RadioGroupElement extends FormControlElement {
 }
 
 // @public
-export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity">;
+export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabel" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity">;
 
 // @public
 export const RadioGroupParts: {
+    readonly label: "label";
     readonly positioningRegion: "positioning-region";
 };
 
@@ -851,7 +872,7 @@ export const SearchParts: {
 export class SelectController {
     constructor(host: SelectElement, internals: SelectInternals);
     close(): void;
-    connect(control: HTMLElement, listbox: HTMLElement): void;
+    connect(control: HTMLElement, listbox: HTMLElement, label: HTMLElement): void;
     disabledChanged(disabled: boolean): void;
     disconnect(): void;
     formReset(): void;
@@ -866,7 +887,7 @@ export class SelectController {
 }
 
 // @public
-export interface SelectElement extends FormControlElement {
+export interface SelectElement extends FormControlElement, LabelledElement {
     disabled: boolean;
     name: string | null;
     readOnly: boolean;
@@ -879,6 +900,7 @@ export type SelectInternals = Pick<ElementInternals, "labels" | "states" | "setF
 
 // @public
 export const SelectParts: {
+    readonly label: "label";
     readonly control: "control";
     readonly selectedValue: "selected-value";
     readonly indicator: "indicator";
@@ -922,11 +944,12 @@ export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
 // @public
 export class SliderController {
     constructor(host: SliderElement, internals: SliderInternals, options: SliderOptions);
-    connect(track: HTMLElement): void;
+    connect(track: HTMLElement, label: HTMLElement): void;
     defaultValueChanged(): void;
     disabledChanged(disabled: boolean): void;
     disconnect(): void;
     formReset(): void;
+    labelChanged(label: string | null, labelElements: readonly Element[]): void;
     setLabels(labels: readonly SliderLabelElement[]): void;
     stateChanged(): void;
     stepBy(count: number): void;
@@ -935,7 +958,7 @@ export class SliderController {
 }
 
 // @public
-export interface SliderElement extends FormControlElement {
+export interface SliderElement extends FormControlElement, LabelledElement {
     defaultValue: string | null;
     disabled: boolean;
     max: number;
@@ -952,7 +975,7 @@ export interface SliderElement extends FormControlElement {
 }
 
 // @public
-export type SliderInternals = Pick<ElementInternals, "role" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue">;
+export type SliderInternals = Pick<ElementInternals, "role" | "ariaLabel" | "ariaLabelledByElements" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue">;
 
 // @public
 export interface SliderLabelElement extends HTMLElement {
@@ -976,6 +999,7 @@ export type SliderOptions = {
 
 // @public
 export const SliderParts: {
+    readonly label: "label";
     readonly positioningRegion: "positioning-region";
     readonly track: "track";
     readonly trackStart: "track-start";
@@ -1153,7 +1177,7 @@ export class TextInputController<T extends TextInputElement = TextInputElement> 
 }
 
 // @public
-export interface TextInputElement extends FormControlElement {
+export interface TextInputElement extends FormControlElement, LabelledElement {
     autocomplete: string | null;
     defaultValue: string;
     disabled: boolean;

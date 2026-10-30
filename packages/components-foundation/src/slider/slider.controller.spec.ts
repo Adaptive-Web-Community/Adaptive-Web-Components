@@ -9,6 +9,8 @@ import { SliderController } from "./slider.controller.js";
 const { expect } = chai;
 
 class TestSlider extends TestFormControl implements SliderElement {
+    public label: string | null = null;
+    public hideLabel = false;
     public name: string | null = null;
     public defaultValue: string | null = null;
     public min = 0;
@@ -47,6 +49,7 @@ customElements.define("test-slider-label", TestSliderLabel);
 
 function setup(configure: (host: TestSlider) => void = () => {}) {
     const host = document.body.appendChild(new TestSlider());
+    const label = host.appendChild(document.createElement("span"));
     const track = host.appendChild(document.createElement("div"));
     configure(host);
     const internals = new TestInternals();
@@ -54,11 +57,11 @@ function setup(configure: (host: TestSlider) => void = () => {}) {
     const controller = new SliderController(host, internals, { onValueChange: () => notified++ });
     host.controller = controller;
     controller.defaultValueChanged();
-    controller.connect(track);
+    controller.connect(track, label);
     const events: string[] = [];
     host.addEventListener("input", () => events.push("input"));
     host.addEventListener("change", () => events.push("change"));
-    return { host, track, internals, controller, events, notified: () => notified };
+    return { host, label, track, internals, controller, events, notified: () => notified };
 }
 
 function press(target: Element, key: string): KeyboardEvent {
@@ -181,6 +184,29 @@ describe("SliderController", () => {
         host.value = "10";
 
         expect(notified()).to.equal(before + 1);
+    });
+
+    it("should be named by its label: the elements in the slot, or the text of the attribute", () => {
+        const { internals, controller } = setup();
+        const label = document.createElement("span");
+
+        controller.labelChanged("Volume", [label]);
+        expect(internals.ariaLabelledByElements).to.deep.equal([label]);
+
+        controller.labelChanged("Volume", []);
+        expect(internals.ariaLabelledByElements).to.be.null;
+        expect(internals.ariaLabel).to.equal("Volume");
+    });
+
+    it("should start dragging on a press on the track, and not on its label", () => {
+        const { label, track, internals } = setup();
+        const press = (target: Element) => target.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, composed: true, button: 0 }));
+
+        press(label);
+        expect(internals.states.has("dragging")).to.be.false;
+
+        press(track);
+        expect(internals.states.has("dragging")).to.be.true;
     });
 
     it("should give its labels where they are, and its orientation", () => {

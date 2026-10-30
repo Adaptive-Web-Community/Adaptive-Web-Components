@@ -1,5 +1,5 @@
-import { type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { hasContent, NumberFieldParts, type ValuesOf } from "@adaptive-web/components-foundation";
+import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import { NumberFieldParts, type ValuesOf } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { controlInteractivity } from "../../utilities/interactivity.js";
@@ -46,8 +46,8 @@ export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, 
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<NumberField> =
     (ds: DesignSystem) => html<NumberField>`
-        <label class="label" part="label" for="control" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </label>
         <div class="root" part="root">
             <slot name="start"></slot>

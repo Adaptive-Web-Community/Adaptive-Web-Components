@@ -1,5 +1,6 @@
 import type { FormControlElement } from "../utilities/form-control.js";
 import type { Orientation } from "../utilities/orientation.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * The parts of a {@link RadioGroupElement}.
@@ -7,6 +8,9 @@ import type { Orientation } from "../utilities/orientation.js";
  * @public
  */
 export const RadioGroupParts = {
+    /** The label: the `label` slot, or the text of the `label` attribute. */
+    label: "label",
+
     /** The container of the radios, laid out in the orientation. */
     positioningRegion: "positioning-region",
 } as const;
@@ -20,13 +24,13 @@ export const RadioGroupParts = {
  * validity when it is required, and for its disabled state: its `disabled` attribute or a disabled `<fieldset>` around it make it
  * `:disabled`, and it disables its radios.
  *
- * Slots: `label` for the group's label, which names it, and the default slot for the radios.
+ * Slots: `label`, its label (see {@link LabelledElement}), and the default slot for the radios.
  *
  * Events: the `input` and `change` of a radio bubble through it.
  *
  * @public
  */
-export interface RadioGroupElement extends FormControlElement {
+export interface RadioGroupElement extends FormControlElement, LabelledElement {
     /**
      * The name of the radios in the form data, given to each of them when it is set.
      *

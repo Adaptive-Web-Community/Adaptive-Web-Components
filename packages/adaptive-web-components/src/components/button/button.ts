@@ -1,11 +1,8 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { ButtonController, type ButtonElement, ButtonType, findById, isIconOnly } from "@adaptive-web/components-foundation";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { ButtonController, type ButtonElement, ButtonType, findById } from "@adaptive-web/components-foundation";
 
 /**
  * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
- *
- * @remarks
- * Has the `icon-only` custom state when its content is one SVG element and no text.
  *
  * @public
  */
@@ -105,19 +102,10 @@ export class Button extends FASTElement implements ButtonElement {
     }
 
     /**
-     * The content of the default slot.
-     *
-     * @internal
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.hideLabel}
      */
-    @observable
-    public defaultSlottedContent: Node[] = [];
-    protected defaultSlottedContentChanged(): void {
-        if (isIconOnly(this.defaultSlottedContent)) {
-            this.internals.states.add("icon-only");
-        } else {
-            this.internals.states.delete("icon-only");
-        }
-    }
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();

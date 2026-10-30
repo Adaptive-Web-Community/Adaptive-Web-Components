@@ -10,6 +10,10 @@ instead. A component that isn't listed hasn't changed yet.
 - `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.
 - A form control has the validity API of a native one (`validity`, `validationMessage`, `willValidate`, `checkValidity()`,
   `reportValidity()`), from `BaseFormControl`.
+- A control is labelled as its native element is ([decision 0016](../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)).
+  One whose native element is labelled by a `<label>` (an input, a select) has a `label` attribute, or a `label` slot for markup, and its
+  default slot is never the label. One named by its content (a button, a link) is labelled by its default slot. `hide-label` hides either,
+  and the label still names the control.
 - `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
 
 ## Accordion
@@ -50,7 +54,7 @@ The element is the button now, with the `button` role and form association throu
 | `formId` (the `form` attribute) | The `form` attribute, which the platform reads. `form` is the form element |
 | `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
 | `:active` | `:is(:active, :state(active))`, since Space doesn't make a custom element `:active` |
-| The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
+| The `icon-only` class on the control, from content that was one icon | `hide-label`: the content, its label, is hidden visually and still names it, and an icon goes in `start`. Styles select `[hide-label]` (the `hideLabel` condition); the `iconOnly` condition is gone |
 | `shadowOptions: { delegatesFocus: true }` in its definition | No `delegatesFocus`: the host takes focus |
 | `type` absent: does nothing | `type` is `button` by default, which does nothing |
 | | `commandfor` and `command`, as a native button: it opens and closes a popover or a dialog (ours too) |
@@ -143,7 +147,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The `aria-*` properties (`ariaLabel`, `ariaDescribedby`, and the others) written to the `<a>` | The `aria-*` attributes of the element, forwarded to the `<a>` as they change. Ids (`aria-describedby`) are forwarded as the elements, so they resolve |
 | `referrerpolicy` | `referrerPolicy` (the attribute is the same) |
 | `AnchorTarget` from `@microsoft/fast-foundation` | Gone: `target` is a string |
-| The `icon-only` class on the control | The `icon-only` custom state, `:state(icon-only)`. Text other than white space isn't icon only |
+| The `icon-only` class on the control, from content that was one icon | `hide-label`: the content, its label, is hidden visually and still names it, and an icon goes in `start`. Styles select `[hide-label]` (the `hideLabel` condition); the `iconOnly` condition is gone |
 | `AnchorParts` from this package | The components foundation's (`control`, `content`), also exported here |
 | `focus()` of the element, which focused the `<a>` | `delegatesFocus`: the same, and the element's `tabindex` is the `<a>`'s |
 
@@ -165,6 +169,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | The `label__hidden` class on an empty label | The `hidden` attribute |
 | | The `input` event before `change`, as a native checkbox's |
 | `CheckboxParts` from this package | The components foundation's (`control`, `label`), also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Switch
 
@@ -176,6 +181,7 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | Enter turned it on and off | Space only, as a native checkbox switch |
 | `readonly` | `readonly`, as the checkbox's, with `:state(readonly)` |
 | `SwitchParts` from this package | The components foundation's (`switch`, `label`, `thumb`), also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Radio
 
@@ -188,19 +194,21 @@ The element wraps a native `<a>`, as it did, so the browser treats it as a link.
 | `required` | The radio group's `required` |
 | `readonly` | The group's `readonly` makes its radios read only, with `:state(readonly)` |
 | `RadioParts` from this package | The components foundation's (`control`, `label`), also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Radio Group
 
 | 0.10 | Now |
 | --- | --- |
 | `FASTRadioGroup` (FAST Foundation) | `RadioGroup` |
-| `role` and `aria-*` written to the element | `ElementInternals`. The `label` slot now names the group |
+| `role` and `aria-*` written to the element | `ElementInternals`. The label names the group |
 | `disabled` | `disabled`, or a `<fieldset disabled>` around it: the group is `:disabled`, and its radios are `:state(disabled)` |
 | `readonly` | `readonly`, with `aria-readonly`, given to its radios |
 | | `required`: a radio must be checked; the group is a form control without a value of its own, for its validity |
 | The `value` attribute | `value` is a property: the checked radio's value, which sets the checked radio. The radios' `checked` attributes are the default |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
 | `RadioGroupParts` from this package | The components foundation's (`positioning-region`), also exported here |
+| The `label` slot | The `label` attribute, or the `label` slot, in the `label` part; `hide-label` |
 
 ## Text Field
 
@@ -217,6 +225,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `focus()` focused the input | `delegatesFocus`: a label of the element, a click on it, and `focus()` reach the input |
 | `[disabled]` in selectors | `:disabled`, which a disabled fieldset also matches |
 | `TextFieldType` from `@microsoft/fast-foundation`, `TextFieldParts` from this package | From the components foundation, also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Text Area
 
@@ -225,6 +234,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `AdaptiveTextArea` (extends FAST Foundation's `FASTTextArea`) | `TextArea`, which extends `BaseTextInput`; the rest is as for the text field |
 | `TextAreaResize` from `@microsoft/fast-foundation`, `TextAreaParts` from this package | From the components foundation, also exported here |
 | `list`, `form` (a property), `spellcheck` | Gone for now; the `form` attribute works, as for any form control |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Number Field
 
@@ -234,6 +244,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | An `<input type="text" inputmode="numeric">` with its own parsing and stepping | A native `<input type="number">`, which parses, steps, and validates its range and step |
 | `maxlength`, `minlength`, `size`, `list` | Gone: they don't apply to a number input |
 | `NumberFieldParts` from this package | The components foundation's, also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Search
 
@@ -243,6 +254,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | The `clear-button__hidden` class | The `hidden` attribute, keeping the button's place |
 | | `clear()`, which the clear button calls: it emits `input` and `change`, and focuses the field |
 | `SearchParts` from this package | The components foundation's, which adds `input-wrapper`, also exported here |
+| The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Dialog
 
@@ -354,6 +366,8 @@ The listbox is a form control now, as a native `<select multiple>` or `<select s
 | `selectedIndex`, `selectFirstOption()`, and the other methods | Gone: `value`, or the options' `selected` |
 | The `change` event | `input` and `change`, for the user's changes |
 | The selected option outlined when the listbox has the focus | The active option, `:state(active)` |
+| No label of its own: an outside `<label for>` or `aria-label` | The `label` attribute, or the `label` slot, in the `label` part; `hide-label`. An outside `<label for>` works too |
+| The host was the box of the options, and scrolled | The `options` part is the box, below the label, and scrolls. Styles of the box target it |
 
 ## Listbox Option
 
@@ -380,6 +394,7 @@ The select's host is the form control, and its combobox is in its shadow root, b
 | `selectedIndex`, `displayValue`, and the other members of FAST's listbox | `value`, and the options' `selected` |
 | | `readonly`, and `required` with an empty value as a placeholder |
 | `ValuesOf` (of `SelectStatics`) from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
+| No label of its own: an outside `<label for>` or `aria-label` | The `label` attribute, or the `label` slot, in the `label` part; `hide-label`. An outside `<label for>` works too |
 
 ## Picker
 
@@ -393,7 +408,7 @@ The picker is a form control of options now, with one value or several, and take
 | Several values, always; `max-selected` | `multiple`; one value without it. No maximum |
 | `filter-query` and `filter-selected` | Filtering by what the options contain, after a cancelable `filter` event |
 | `menu-placement` | Gone: the popup is placed by CSS anchor positioning |
-| `label`, `labelled-by` | An outside `<label for>`, or `aria-label` on the element |
+| `label`, `labelled-by` | The `label` attribute, or the `label` slot, in the `label` part; `hide-label`. An outside `<label for>` works too |
 | `loading-text`, `no-suggestions-text`, `suggestions-available-text` | The `loading` and `no-results` slots of the popup's status ("Loading" and "No results" by default); `loading` while the author finds the options |
 | The `region`, `loading-display`, `no-options-display`, and `loading-progress` parts | `root`, `values`, `value`, `value-label`, `value-remove`, `control`, `indicator`, `popup`, `listbox`, `status` |
 | | `PickerStatics.removeValue`, the content of a value's remove button |
@@ -472,6 +487,7 @@ A menu that opens is a popover now: give it `popover`, and open it with a button
 | `increment()`, `decrement()` | `stepUp()`, `stepDown()`, as a native range |
 | `position`, `isDragging`, and the track's measures | `--slider-position` on the `positioning-region` part, and the `:state(dragging)` custom state |
 | `Orientation` from `@microsoft/fast-web-utilities` | From `@adaptive-web/components-foundation` |
+| No label of its own: an outside `<label for>` or `aria-label` | The `label` attribute, or the `label` slot, in the `label` part; `hide-label`. An outside `<label for>` works too |
 
 ## Slider Label
 
@@ -496,6 +512,7 @@ The calendar is an interactive grid of days now, which selects dates, and a form
 | The `month`, `year`, `today` parts, and the `inactive`, `disabled`, `selected`, `today` classes | The `title` part; on the `day` part, `data-outside`, `aria-disabled`, `aria-selected`, `aria-current="date"` |
 | | `previous-month` and `next-month` buttons, with `CalendarStatics` icons; the keys of the date picker; `readonly` |
 | `getMonthInfo()` and the other methods | Gone |
+| No label of its own: an outside `<label for>` or `aria-label` | The `label` attribute, or the `label` slot, in the `label` part; `hide-label`. An outside `<label for>` works too |
 
 ## Data Grid
 

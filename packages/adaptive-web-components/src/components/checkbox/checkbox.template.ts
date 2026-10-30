@@ -1,5 +1,5 @@
-import { type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { CheckboxParts, hasContent, type ValuesOf } from "@adaptive-web/components-foundation";
+import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { CheckboxParts, type ValuesOf } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { controlInteractivity } from "../../utilities/interactivity.js";
@@ -42,7 +42,7 @@ export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof
 };
 
 /**
- * Default Checkbox template. The element is the checkbox, and its content is the label.
+ * Default Checkbox template. The element is the checkbox, and its label names it.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Checkbox> =
@@ -55,7 +55,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Checkbox> =
                 ${staticallyCompose(ds.statics.get(CheckboxStatics.indeterminate))}
             </slot>
         </div>
-        <span class="label" part="label" ?hidden="${x => !hasContent(x.defaultSlottedNodes)}">
-            <slot ${slotted("defaultSlottedNodes")}></slot>
+        <span class="label" part="label" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </span>
     `;

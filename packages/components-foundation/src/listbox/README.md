@@ -17,6 +17,7 @@ The source: FAST Foundation 3.0.0-alpha.33 (the archive).
 | Aspect | FAST Foundation | Here |
 | --- | --- | --- |
 | Focus | The host, with `aria-activedescendant`, by the option's id (generated) | The host, with `ariaActiveDescendantElement` through `ElementInternals`: no ids |
+| Name | The author's `aria-label` | The `label` attribute, its `ariaLabel`, or the `label` slot, whose elements are its `ariaLabelledByElements` ([0016](../../../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)), shown in the `label` part, which is hidden from assistive technology so it isn't read twice; `hide-label` hides it. The options are in the `options` part, below it, which scrolls |
 | Form control | Not the listbox (the select is) | The Listbox, as a native `<select multiple>` or `<select size>`: `name`, the selected options' values under it, `required` with the browser's message, reset to the `selected` attributes |
 | Options | `role="option"` elements, or native `<option>`s | `ListboxOption`s, by their class |
 | Option's `selected` | An attribute for `defaultSelected` and a property, with dirtiness | The native option's: the `selected` attribute is `defaultSelected`, which sets `selected` until the user or code changes it |

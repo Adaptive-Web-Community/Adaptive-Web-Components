@@ -5,6 +5,8 @@ import type { Radio as RadioElement } from "./radio.js";
 
 export const storyTemplate = html<StoryArgs<RadioElement>>`
     <adaptive-radio
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?checked="${(x) => x.checked}"
         ?disabled="${(x) => x.disabled}"
         ?required="${(x) => x.required}"
@@ -19,13 +21,15 @@ export default {
     title: "Components/Radio",
     excludeStories: ["storyTemplate"],
     args: {
-        storyContent: "Label",
+        label: "Label",
         checked: false,
         disabled: false,
         required: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         name: { control: "text" },

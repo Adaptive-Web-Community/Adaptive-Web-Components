@@ -29,12 +29,15 @@ export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, ty
 };
 
 /**
- * Default Radio Group template: the `label` slot, which names the group, and the radios.
+ * Default Radio Group template: the label, which names the group through its `ElementInternals` (so it is hidden from assistive technology
+ * here, not to be read twice), and the radios.
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<RadioGroup> =
     (ds: DesignSystem) => html<RadioGroup>`
-        <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}></slot>
+        <span class="label" part="label" aria-hidden="true" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        </span>
         <div class="positioning-region" part="positioning-region">
             <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
         </div>

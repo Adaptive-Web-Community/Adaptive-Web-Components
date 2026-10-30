@@ -26,7 +26,7 @@ export type TextAreaResize = ValuesOf<typeof TextAreaResize>;
  * @public
  */
 export const TextAreaParts = {
-    /** The label, the content of the default slot. */
+    /** The label: the `label` slot, or the text of the `label` attribute. */
     label: "label",
 
     /** The native `<textarea>`. */
@@ -37,7 +37,7 @@ export const TextAreaParts = {
  * A text area: a {@link TextInputElement} of several lines, around a native `<textarea>`. Enter starts a line; it doesn't submit the form.
  *
  * @remarks
- * Slots: the default slot for the label.
+ * Slots: `label`.
  *
  * @public
  */

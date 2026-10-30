@@ -1,4 +1,5 @@
 import type { FormControlElement } from "../utilities/form-control.js";
+import type { LabelledElement } from "../utilities/label.js";
 
 /**
  * A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>`
@@ -6,13 +7,13 @@ import type { FormControlElement } from "../utilities/form-control.js";
  * host is the form control, through `ElementInternals`, with the control's value and validity.
  *
  * @remarks
- * Its default slot is its label, which names the control, as an outside `<label for>` does too.
+ * Its label (see {@link LabelledElement}) names the control, as an outside `<label for>` does too.
  *
  * Events: `input` (the control's, which leaves the shadow root) and `change` (dispatched from the host, since the control's doesn't).
  *
  * @public
  */
-export interface TextInputElement extends FormControlElement {
+export interface TextInputElement extends FormControlElement, LabelledElement {
     /**
      * The value now.
      *
