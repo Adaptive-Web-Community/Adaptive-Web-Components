@@ -41,8 +41,6 @@
     "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "@adaptive-web/components-foundation": "^0.1.0",
     "@microsoft/fast-element": "^3.1.2",
-    "@microsoft/fast-foundation": "3.0.0-alpha.31",
-    "@microsoft/fast-web-utilities": "6.0.0",
     "design-token-library": "^0.2.0",
     "tslib": "^2.5.0"
   },
