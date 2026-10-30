@@ -16,9 +16,13 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --build",
+    "build": "rimraf dist && tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
+    "test": "npm run lint && npm run build && npm run unit-tests",
+    "unit-tests": "mocha",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc",
     "watch": "tsc --build --watch"
   },
   "repository": {
@@ -36,16 +40,21 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "devDependencies": {
-    "@figma/rest-api-spec": "^0.36.0",
-    "@types/inquirer": "^9.0.7"
+    "@figma/rest-api-spec": "^0.47.0",
+    "@microsoft/api-extractor": "^7.59.4",
+    "@types/chai": "^4.3.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^0.14.0",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "@adaptive-web/adaptive-ui-designer-core": "^0.6.2",
-    "@types/ajv": "^1.0.0",
-    "ajv": "^8.18.0",
+    "ajv": "^8.20.0",
     "change-case": "^5.4.4",
-    "inquirer": "^9.2.22",
-    "rimraf": "^3.0.2"
+    "commander": "^12.0.0",
+    "inquirer": "^9.3.8"
   }
 }

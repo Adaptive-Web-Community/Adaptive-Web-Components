@@ -1,4 +1,3 @@
-import "./dom-shim.js";
 import path from 'path';
 import { Command } from 'commander';
 import inquirer from 'inquirer';

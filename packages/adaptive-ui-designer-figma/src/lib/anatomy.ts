@@ -1,15 +1,16 @@
 /* eslint-disable max-len */
 import { kebabCase } from "change-case";
 import {
-    FocusDefinition,
     Interactivity,
     InteractivityDefinition,
     SerializableAnatomy,
-    SerializableBooleanCondition,
     SerializableStringCondition,
     SerializableStyleRule,
 } from "@adaptive-web/adaptive-ui";
-import { AdditionalDataKeys, AppliedDesignTokens, AppliedStyleModules, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdditionalDataKeys, type AppliedDesignTokens, type AppliedTreatments, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+
+// What walking the nodes of a component collects.
+type Collected = Pick<SerializableAnatomy, "parts" | "styleRules">;
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
@@ -18,126 +19,40 @@ function makeClassName(value: string) {
     return `.${kebabCase(value)}`;
 }
 
-// TODO: All of these type definitions will be merged into the core AUI package, including simple interface and serialization support.
-
-export abstract class Condition {
-    constructor(
-        public readonly name: string,
-    ) { }
-
-    toJSON(): any {
-        return makeClassName(this.name);
-    }
+function stringCondition(name: string, values: Array<string>): SerializableStringCondition {
+    return Object.fromEntries(values.map(value => [value, makeClassName(name + " " + value)])); // Add space so that there is a kebab between name and value
 }
 
-export class BooleanCondition extends Condition {
-    toJSON(): SerializableBooleanCondition {
-        return makeClassName(this.name);
-    }
+function addPart(collected: Collected, name: string): void {
+    collected.parts[name] = makeClassName(name);
 }
 
-export class StringCondition extends Condition {
-    constructor(
-        name: string,
-        public values: Array<string>,
-    ) {
-        super(name);
-    }
-
-    toJSON(): SerializableStringCondition {
-        const values = this.values.reduce((prev, current) => {
-            prev[current] = makeClassName(this.name + " " + current); // Add space so that there is a kebab between name and value
-            return prev;
-        }, {} as SerializableStringCondition);
-
-        return values;
-    }
-}
-
-export class StyleRule {
-    contextCondition?: Record<string, string | boolean>;
-    part?: string;
-    styles: Set<string> = new Set();
-    properties: Map<string, string> = new Map();
-
-    toJSON(): SerializableStyleRule {
-        const properties = this.properties.size === 0 ? undefined : Array.from(this.properties.entries()).reduce((prev, next) => {
-            prev[next[0]] = next[1];
-            return prev;
-        }, {} as Record<string, string>);
-
-        return {
-            contextCondition: this.contextCondition,
-            part: this.part,
-            styles: this.styles.size === 0 ? undefined : Array.from(this.styles),
-            properties,
-        };
-    }
-}
-
-export class Anatomy {
-    name: string = "";
-    context: string = "";
-    conditions: Map<string, Condition> = new Map();
-    parts: Set<string> = new Set();
-    interactivity?: InteractivityDefinition;
-    focus?: FocusDefinition<any>;
-    styleRules: Set<StyleRule> = new Set();
-
-    toJSON(): SerializableAnatomy {
-        const conditions = Array.from(this.conditions.entries()).reduce((prev, next) => {
-            prev[next[0]] = next[1].toJSON();
-            return prev;
-        }, {} as SerializableAnatomy["conditions"]);
-
-        const parts = Array.from(this.parts.entries()).reduce((prev, current) => {
-            prev[current[0]] = makeClassName(current[1]);
-            return prev;
-        }, {} as SerializableAnatomy["parts"]);
-
-        return {
-            name: this.name,
-            context: makeClassName(this.name),
-            conditions,
-            parts,
-            interactivity: this.interactivity,
-            focus: this.focus,
-            styleRules: Array.from(this.styleRules).map(rule => rule.toJSON()),
-        }
-    }
-
-    private constructor() {
-        /* Privatize constructor */
-    }
-
-    public static create(): Anatomy {
-        return new Anatomy();
-    }
-
-    public static fromPluginUINodeData(node: PluginUINodeData): Anatomy {
-        return parseComponent(node);
-    }
-}
-
-function parseComponent(node: PluginUINodeData): Anatomy {
+/**
+ * The anatomy of a component, from the data of its node and the nodes in it, as the Adaptive UI CLI reads it.
+ *
+ * @param node - A component set, a component, or an instance of one.
+ * @returns The anatomy of the component.
+ */
+export function anatomyOf(node: PluginUINodeData): SerializableAnatomy {
     if (!node) {
         throw new Error("Parameter `node` must be provided");
     }
     if (!(node.type === "COMPONENT_SET" || node.type === "COMPONENT" || node.type === "INSTANCE")) {
         throw new Error("Parameter `node` must have `type` = 'COMPONENT_SET', 'COMPONENT', or 'INSTANCE'");
     }
-    const componentName = node.additionalData.get(AdditionalDataKeys.codeGenName);
+    const componentName = node.additionalData[AdditionalDataKeys.codeGenName];
     if (!componentName) {
         throw new Error("Parameter `node` must provide `additionalData` value for `codeGenName`");
     }
 
-    const anatomy: Anatomy = Anatomy.create();
-    anatomy.name = componentName;
+    const conditions: SerializableAnatomy["conditions"] = {};
+    let interactivity: InteractivityDefinition | undefined;
+    const collected: Collected = { parts: {}, styleRules: [] };
 
     if (node.type === "COMPONENT_SET") {
         if (node.children.length === 1) {
             // Unlikely case
-            walkNode(node.children[0], componentName, undefined, anatomy);
+            walkNode(node.children[0], componentName, undefined, collected);
         } else {
             // Parse the component names into property and value sets
             const properties = new Map<string, Array<string>>();
@@ -156,20 +71,24 @@ function parseComponent(node: PluginUINodeData): Anatomy {
 
             // TODO look for other interactivity models
             if (properties.has("Disabled")) {
-                anatomy.interactivity = Interactivity.disabledClass;
+                interactivity = Interactivity.disabledClass;
             }
 
             // Convert properties into anatomy conditions
             // TODO: Validate known properties like "State" and "Disabled". Ignore for now.
+            const stringConditions = new Map<string, Array<string>>();
+            const booleanConditions: Array<string> = [];
             properties.forEach((values, property) => {
                 if (property !== "State" && property !== "Disabled") {
                     if (values.length === 2 &&
                         values.filter((value) => value.toLowerCase() === "true" || value.toLowerCase() === "false").length === 2) {
                         // boolean property, add once
-                        anatomy.conditions.set(property, new BooleanCondition(property));
+                        conditions[property] = makeClassName(property);
+                        booleanConditions.push(property);
                     } else {
                         // string property, add all
-                        anatomy.conditions.set(property, new StringCondition(property, values));
+                        conditions[property] = stringCondition(property, values);
+                        stringConditions.set(property, values);
                     }
                 }
             });
@@ -181,11 +100,11 @@ function parseComponent(node: PluginUINodeData): Anatomy {
                     console.warn(`Expected component ${name}, property ${property}, not found`);
                 } else {
                     // console.log("Handling node", {nodeName: name, condition: [property, value]});
-                    walkNode(found, componentName, { [property]: value }, anatomy);
+                    walkNode(found, componentName, { [property]: value }, collected);
                 }
             };
 
-            // The first child is the default (no conditions)            
+            // The first child is the default (no conditions)
             const defaultName = node.children[0].name;
 
             // Process the component node for each condition
@@ -193,38 +112,39 @@ function parseComponent(node: PluginUINodeData): Anatomy {
             // separate selectors which might both apply (in sequence)
 
             // Handle string conditions first so each value is accounted for and forms the base for further variants
-            let foundString = false;
-            anatomy.conditions.forEach((condition, property) => {
-                if (condition instanceof StringCondition) {
-                    foundString = true;
-                    // The first value is in the defaultName:
-                    const replaceProperty = `${property}=${condition.values[0]}`;
-                    condition.values.forEach(value => {
-                        const name = defaultName.replace(replaceProperty, `${property}=${value}`);
-                        nodeHandler(name, property, value);
-                    });
-                }
+            stringConditions.forEach((values, property) => {
+                // The first value is in the defaultName:
+                const replaceProperty = `${property}=${values[0]}`;
+                values.forEach(value => {
+                    const name = defaultName.replace(replaceProperty, `${property}=${value}`);
+                    nodeHandler(name, property, value);
+                });
             });
 
             // If there were no string conditions, process the first component as the default "baseline"
-            if (!foundString) {
-                walkNode(node.children[0], componentName, undefined, anatomy);
+            if (stringConditions.size === 0) {
+                walkNode(node.children[0], componentName, undefined, collected);
             }
 
             // Handle boolean condition "true" values
-            anatomy.conditions.forEach((condition, property) => {
-                if (condition instanceof BooleanCondition) {
-                    // Assume false is the default condition, find the `true` component
-                    const name = defaultName.replace(`${property}=false`, `${property}=true`);
-                    nodeHandler(name, property, true);
-                }
+            booleanConditions.forEach(property => {
+                // Assume false is the default condition, find the `true` component
+                const name = defaultName.replace(`${property}=false`, `${property}=true`);
+                nodeHandler(name, property, true);
             });
         }
     } else {
-        walkNode(node, componentName, undefined, anatomy);
+        walkNode(node, componentName, undefined, collected);
     }
 
-    return anatomy;
+    return {
+        name: componentName,
+        context: makeClassName(componentName),
+        conditions,
+        parts: collected.parts,
+        interactivity,
+        styleRules: collected.styleRules,
+    };
 }
 
 function isContextNode(node: PluginUINodeData, componentName: string): boolean {
@@ -233,7 +153,7 @@ function isContextNode(node: PluginUINodeData, componentName: string): boolean {
     return node.type === "COMPONENT" || componentName.toLowerCase().indexOf(nodeName.toLowerCase()) !== -1;
 }
 
-function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, anatomy: Anatomy): void {
+function walkNode(node: PluginUINodeData, componentName: string, condition: Record<string, string | boolean> | undefined, collected: Collected): void {
     if (node.name.toLowerCase() === "focus indicator") {
         // Ignore for now
         return;
@@ -249,57 +169,42 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
     if (!node.name.endsWith(ignoreLayerName)) {
         // TODO, not only frames, but what?
         if (node.type === "FRAME" && !isContext) {
-            anatomy.parts.add(node.name);
+            addPart(collected, node.name);
         }
 
-        const appliedStyleModules = new AppliedStyleModules();
-        if (node.refAppliedStyleModules) {
-            appliedStyleModules.push(...node.refAppliedStyleModules);
-        }
-        if (node.appliedStyleModules) {
-            appliedStyleModules.push(...node.appliedStyleModules);
-        }
+        const appliedTreatments: AppliedTreatments = [
+            ...(node.refAppliedTreatments ?? []),
+            ...node.appliedTreatments,
+        ];
 
-        const appliedDesignTokens = new AppliedDesignTokens([
-            ...(node.refAppliedDesignTokens
-                ? Array.from(node.refAppliedDesignTokens.entries())
-                : []),
-            ...(node.appliedDesignTokens
-                ? Array.from(node.appliedDesignTokens.entries())
-                : []),
-        ]);
+        const appliedDesignTokens: AppliedDesignTokens = {
+            ...node.refAppliedDesignTokens,
+            ...node.appliedDesignTokens,
+        };
+        const properties = Object.entries(appliedDesignTokens).map(([target, token]) => [target, token.tokenID]);
 
-        if (appliedStyleModules.length > 0 || appliedDesignTokens.size > 0) {
-            const styleRule = new StyleRule();
-
-            if (condition) {
-                styleRule.contextCondition = condition;
-            }
-
-            appliedStyleModules.forEach(style => {
-                styleRule.styles.add(style);
-            });
-
-            appliedDesignTokens.forEach((token, target) => {
-                const tokenRef = token.tokenID;
-                styleRule.properties.set(target, tokenRef);
-            });
+        if (appliedTreatments.length > 0 || properties.length > 0) {
+            const styleRule: SerializableStyleRule = {
+                contextCondition: condition,
+                part: isContext ? undefined : node.name,
+                treatments: appliedTreatments.length > 0 ? Array.from(new Set(appliedTreatments)) : undefined,
+                properties: properties.length > 0 ? Object.fromEntries(properties) : undefined,
+            };
 
             if (!isContext) {
-                anatomy.parts.add(node.name)
-                styleRule.part = node.name;
+                addPart(collected, node.name);
             }
 
-            anatomy.styleRules.add(styleRule);
+            collected.styleRules.push(styleRule);
         }
     }
 
     if (node.type === "SLOT") {
-        // We'll take styles and properties from the slot node, but not the children.
+        // We'll take treatments and properties from the slot node, but not the children.
         return;
     }
 
     node.children.forEach((child) => {
-        walkNode(child, componentName, condition, anatomy);
+        walkNode(child, componentName, condition, collected);
     });
 }

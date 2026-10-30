@@ -7,6 +7,7 @@
     "target": "ESNext",
     "resolveJsonModule": true,
     "composite": true,
+    "types": ["mocha", "node"],
     "outDir": "../../dist/lib",
     "declaration": true
   }
