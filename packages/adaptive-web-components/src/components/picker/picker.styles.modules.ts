@@ -3,16 +3,12 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlListDensityStyles,
+    densityControl,
     flyoutStyles,
-    plainTextStyles,
+    inputStyles,
+    labelTextStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { PickerAnatomy } from "./picker.template.js";
-
-const menuStyles = [
-    plainTextStyles,
-    controlListDensityStyles,
-    flyoutStyles,
-];
 
 /**
  * Visual styles composed by style rules.
@@ -21,15 +17,38 @@ const menuStyles = [
  */
 export const styleModules: StyleRules = [
     {
-        target : {
-            part: PickerAnatomy.parts.loadingDisplay,
+        properties: {
+            gap: densityControl.verticalGap,
         },
-        styles: menuStyles,
     },
     {
         target : {
-            part: PickerAnatomy.parts.noOptionsDisplay,
+            part: PickerAnatomy.parts.label,
         },
-        styles: menuStyles,
+        styles: labelTextStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.root,
+        },
+        styles: inputStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.popup,
+        },
+        styles: flyoutStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.listbox,
+        },
+        styles: controlListDensityStyles,
+    },
+    {
+        target : {
+            part: PickerAnatomy.parts.status,
+        },
+        styles: controlListDensityStyles,
     },
 ];

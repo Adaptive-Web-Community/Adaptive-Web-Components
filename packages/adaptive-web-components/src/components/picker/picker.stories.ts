@@ -1,57 +1,74 @@
-import { html } from "@microsoft/fast-element";
-import { FASTPicker, MenuPlacement } from "@microsoft/fast-foundation";
+import { html, repeat } from "@microsoft/fast-element";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import { storyTemplate as listboxOptionTemplate } from "../listbox-option/listbox-option.stories.js";
+import type { Picker as PickerElement } from "./picker.js";
 
-const storyTemplate = html<StoryArgs<FASTPicker>>`
+const storyTemplate = html<StoryArgs<PickerElement>>`
     <adaptive-picker
-        ?filter-query="${(x) => x.filterQuery}"
-        ?filter-selected="${(x) => x.filterSelected}"
         label="${(x) => x.label}"
-        labelled-by="${(x) => x.labelledBy}"
-        loading-text="${(x) => x.loadingText}"
-        max-selected="${(x) => x.maxSelected}"
-        menu-placement="${(x) => x.menuPlacement}"
-        no-suggestions-text="${(x) => x.noSuggestionsText}"
-        options="${(x) => x.options}"
+        ?hide-label="${(x) => x.hideLabel}"
+        ?disabled="${(x) => x.disabled}"
+        ?freeform="${(x) => x.freeform}"
+        ?loading="${(x) => x.loading}"
+        ?multiple="${(x) => x.multiple}"
+        ?readonly="${(x) => x.readOnly}"
+        ?required="${(x) => x.required}"
+        aria-label="Fruit"
+        name="${(x) => x.name}"
         placeholder="${(x) => x.placeholder}"
-        selection="${(x) => x.selection}"
-        suggestions-available-text="${(x) => x.suggestionsAvailableText}"
-    ></adaptive-picker>
+    >
+        ${(x) => x.storyContent}
+    </adaptive-picker>
 `;
 
 export default {
     title: "Components/Picker",
     args: {
-        // TODO: These are always true https://github.com/microsoft/fast/issues/6311
-        filterQuery: true,
-        filterSelected: true,
+        label: "Fruit",
+        storyContent: html<StoryArgs<PickerElement>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
+        storyItems: [
+            { storyContent: "Apple" },
+            { storyContent: "Banana" },
+            { storyContent: "Blueberry" },
+            { storyContent: "Mango" },
+            { storyContent: "Orange" },
+            { storyContent: "Raspberry" },
+            { storyContent: "Strawberry" },
+        ],
+        disabled: false,
+        freeform: false,
+        loading: false,
+        multiple: false,
+        readOnly: false,
+        required: false,
+        placeholder: "Choose fruit",
     },
     argTypes: {
-        filterQuery: { control: "boolean" },
-        filterSelected: { control: "boolean" },
         label: { control: "text" },
-        labelledBy: { control: "text" },
-        loadingText: { control: "text" },
-        maxSelected: { control: "number" },
-        menuPlacement: { control: "select", options: Object.values(MenuPlacement) },
-        noSuggestionsText: { control: "text" },
+        hideLabel: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        storyItems: { table: { disable: true } },
+        disabled: { control: "boolean" },
+        freeform: { control: "boolean" },
+        loading: { control: "boolean" },
+        multiple: { control: "boolean" },
+        name: { control: "text" },
         placeholder: { control: "text" },
-        suggestionsAvailableText: { control: "text" },
+        readOnly: { control: "boolean" },
+        required: { control: "boolean" },
     },
-} as Meta<FASTPicker>;
+} as Meta<PickerElement>;
 
-export const Picker: Story<FASTPicker> = renderComponent(html<StoryArgs<FASTPicker>>`
-    <div style="height: 300px;">
-        ${storyTemplate}
-    </div>
-`).bind({});
-Picker.args = {
-    label: "Fruit picker",
-    loadingText: "Loading",
-    noSuggestionsText: "No such fruit",
-    options: "apple, orange, banana, mango, strawberry, raspberry, blueberry",
-    placeholder: "Choose fruit",
-    selection: "apple",
-    suggestionsAvailableText: "Found some fruit",
+export const Picker: Story<PickerElement> = renderComponent(storyTemplate).bind({});
+
+export const PickerMultiple: Story<PickerElement> = renderComponent(storyTemplate).bind({});
+PickerMultiple.args = {
+    multiple: true,
+};
+
+export const PickerFreeform: Story<PickerElement> = renderComponent(storyTemplate).bind({});
+PickerFreeform.storyName = "Picker (freeform, as a combobox)";
+PickerFreeform.args = {
+    freeform: true,
 };

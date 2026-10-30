@@ -3,7 +3,7 @@ import { composeAccordion } from "./accordion.compose.js";
 import { styleModules } from "./accordion.styles.modules.js";
 
 /**
- * The Accordion custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordion}.
+ * The Accordion custom element definition. Implements {@link Accordion}.
  *
  * @remarks
  * HTML Element: \<adaptive-accordion\>

@@ -5,7 +5,7 @@ import { AccordionItemStatics } from './accordion-item.template.js';
 import { styleModules } from "./accordion-item.styles.modules.js";
 
 /**
- * The Accordion Item custom element definition. Implements {@link @microsoft/fast-foundation#FASTAccordionItem}.
+ * The Accordion Item custom element definition. Implements {@link AccordionItem}.
  *
  * @remarks
  * HTML Element: \<adaptive-accordion-item\>

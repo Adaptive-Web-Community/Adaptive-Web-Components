@@ -3,10 +3,10 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import {
     controlListDensityStyles,
-    controlShapeStyles,
+    densityControl,
     flyoutStyles,
     inputStyles,
-    neutralOutlineDiscernibleControlStyles,
+    labelTextStyles,
 } from "@adaptive-web/adaptive-ui/reference";
 import { SelectAnatomy } from "./select.template.js";
 
@@ -16,6 +16,17 @@ import { SelectAnatomy } from "./select.template.js";
  * @public
  */
 export const styleModules: StyleRules = [
+    {
+        properties: {
+            gap: densityControl.verticalGap,
+        },
+    },
+    {
+        target : {
+            part: SelectAnatomy.parts.label,
+        },
+        styles: labelTextStyles,
+    },
     {
         target : {
             part: SelectAnatomy.parts.control,
@@ -30,17 +41,6 @@ export const styleModules: StyleRules = [
     },
     {
         target : {
-            contextCondition: SelectAnatomy.conditions.isListbox,
-            part: SelectAnatomy.parts.listbox,
-        },
-        styles: [
-            controlShapeStyles,
-            neutralOutlineDiscernibleControlStyles,
-        ],
-    },
-    {
-        target : {
-            contextCondition: SelectAnatomy.conditions.isDropdown,
             part: SelectAnatomy.parts.listbox,
         },
         styles: flyoutStyles,

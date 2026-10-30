@@ -1,7 +1,8 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-import { FASTProgress, StaticallyComposableHTML, staticallyCompose } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import { ProgressParts, progressPercent } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Progress } from "./progress.js";
 
 /**
  * @public
@@ -9,14 +10,7 @@ import { DesignSystem } from "../../design-system.js";
 export const ProgressConditions = {
 };
 
-/**
- * @public
- */
-export const ProgressParts = {
-    indicator: "indicator",
-    determinate: "determinate",
-    indeterminate: "indeterminate",
-};
+export { ProgressParts };
 
 /**
  * @public
@@ -27,59 +21,27 @@ export const ProgressAnatomy: ComponentAnatomy<typeof ProgressConditions, typeof
     parts: ProgressParts,
 };
 
-// TODO: Temporary copy of template until https://github.com/microsoft/fast/pull/6286/
-
-type ProgressOptions = {
-    determinateIndicator?: StaticallyComposableHTML<FASTProgress>;
-    indeterminateIndicator?: StaticallyComposableHTML<FASTProgress>;
-};
-
-const progressIndicatorTemplate = html`
-    <div class="indicator" part="indicator"></div>
-`;
-
 /**
- * Default Progress template, {@link @microsoft/fast-foundation#progressTemplate}.
+ * Default Progress template. The percent complete is the `--percent-complete` custom property of the `determinate` part, for the styles.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTProgress> =
-    (ds: DesignSystem) => {
-        const options: ProgressOptions = {
-            determinateIndicator: progressIndicatorTemplate,
-            indeterminateIndicator: progressIndicatorTemplate,
-        };
-
-        return html<FASTProgress>`
-            <template
-                role="progressbar"
-                aria-valuenow="${x => x.value}"
-                aria-valuemin="${x => x.min}"
-                aria-valuemax="${x => x.max}"
-            >
-                ${when(
-                    x => typeof x.value === "number",
-                    html<FASTProgress>`
-                        <span
-                            class="determinate"
-                            part="determinate"
-                            style="--percent-complete: ${x => x.percentComplete}"
-                        >
-                            <slot name="determinate">
-                                ${staticallyCompose(options.determinateIndicator)}
-                            </slot>
-                        </span>
-                    `
-                )}
-                ${when(
-                    x => typeof x.value !== "number",
-                    html<FASTProgress>`
-                        <span class="indeterminate" part="indeterminate">
-                            <slot name="indeterminate">
-                                ${staticallyCompose(options.indeterminateIndicator)}
-                            </slot>
-                        </span>
-                    `
-                )}
-            </template>
-        `;
-    };
+export const template: (ds: DesignSystem) => ElementViewTemplate<Progress> =
+    (ds: DesignSystem) => html<Progress>`
+        ${when(
+            x => progressPercent(x) !== null,
+            html<Progress>`
+                <span class="determinate" part="determinate" style="--percent-complete: ${x => progressPercent(x)}">
+                    <slot name="determinate">
+                        <div class="indicator" part="indicator"></div>
+                    </slot>
+                </span>
+            `,
+            html<Progress>`
+                <span class="indeterminate" part="indeterminate">
+                    <slot name="indeterminate">
+                        <div class="indicator" part="indicator"></div>
+                    </slot>
+                </span>
+            `
+        )}
+    `;

@@ -1,37 +1,38 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { buttonTemplate, FASTButton } from "@microsoft/fast-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { ButtonParts } from "@adaptive-web/components-foundation";
+import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import { controlInteractivity } from "../../utilities/interactivity.js";
+import type { Button } from "./button.js";
 
 /**
  * @public
  */
 export const ButtonConditions = {
-    iconOnly: ".icon-only",
+    hideLabel: "[hide-label]",
 };
 
-/**
- * @public
- */
-export const ButtonParts = {
-    control: "control",
-    content: "content",
-};
+export { ButtonParts };
 
 /**
  * @public
  */
 export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof ButtonParts> = {
-    interactivity: Interactivity.disabledAttribute,
+    interactivity: controlInteractivity,
     conditions: ButtonConditions,
     parts: ButtonParts,
-    focus: Focus.partFocused("control"),
+    focus: Focus.contextFocused(),
 };
 
 /**
- * Default Button template, {@link @microsoft/fast-foundation#buttonTemplate}.
+ * Default Button template. The element is the button, so the template is its content.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTButton> =
-    (ds: DesignSystem) =>
-        buttonTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Button> =
+    (ds: DesignSystem) => html<Button>`
+        <slot name="start"></slot>
+        <span class="content" part="content">
+            <slot></slot>
+        </span>
+        <slot name="end"></slot>
+    `;

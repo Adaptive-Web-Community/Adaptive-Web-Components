@@ -1,6 +1,7 @@
 import { StyleRules } from "@adaptive-web/adaptive-ui";
 import {
     controlShapeStyles,
+    labelTextStyles,
     plainTextStyles
 } from "@adaptive-web/adaptive-ui/reference";
 import { CalendarAnatomy } from "./calendar.template.js";
@@ -13,6 +14,12 @@ import { CalendarAnatomy } from "./calendar.template.js";
 export const styleModules: StyleRules = [
     {
         styles: plainTextStyles,
+    },
+    {
+        target : {
+            part: CalendarAnatomy.parts.label,
+        },
+        styles: labelTextStyles,
     },
     {
         target : {

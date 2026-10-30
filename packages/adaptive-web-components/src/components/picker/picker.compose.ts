@@ -1,22 +1,37 @@
-import { FASTPicker } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { componentBaseStyles } from "../../styles/styles.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
+import { Picker } from "./picker.js";
 import { aestheticStyles, templateStyles } from "./picker.styles.js";
-import { PickerAnatomy, template } from "./picker.template.js";
+import { PickerAnatomy, PickerStatics, template } from "./picker.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public
  */
 export function composePicker(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTPicker>
-): FASTElementDefinition {
+    options?: ComposeOptions<Picker, PickerStatics>
+): Promise<FASTElementDefinition<typeof Picker>> {
+    if (options?.statics) {
+        if (!ds.statics.has(PickerStatics.indicator)) {
+            ds.statics.set(
+                PickerStatics.indicator,
+                options.statics[PickerStatics.indicator]
+            );
+        }
+        if (!ds.statics.has(PickerStatics.removeValue)) {
+            ds.statics.set(
+                PickerStatics.removeValue,
+                options.statics[PickerStatics.removeValue]
+            );
+        }
+    }
+
     const styles = DesignSystem.assembleStyles(defaultStyles, PickerAnatomy, options);
 
-    return FASTPicker.compose({
+    return FASTElementDefinition.compose(Picker, {
         name: `${ds.prefix}-picker`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

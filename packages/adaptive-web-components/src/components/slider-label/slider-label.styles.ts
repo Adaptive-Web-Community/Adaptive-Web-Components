@@ -5,13 +5,13 @@ import { css, ElementStyles } from "@microsoft/fast-element";
  * @public
  */
 export const templateStyles: ElementStyles = css`
-    :host([orientation="horizontal"]) {
+    :host(:not(:state(vertical))) {
         align-self: start;
         grid-row: 2;
         margin-top: -2px;
     }
 
-    :host([orientation="vertical"]) {
+    :host(:state(vertical)) {
         justify-self: start;
         grid-column: 2;
         margin-left: 2px;
@@ -23,12 +23,25 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
     }
 
-    :host([orientation="horizontal"]) .container {
+    /* Its value's place along the track, in the writing direction. */
+    :host(:not(:state(vertical))) .container {
+        inset-inline-start: calc(var(--slider-label-position) * 1%);
+    }
+
+    :host(:state(vertical)) .container {
+        bottom: calc(var(--slider-label-position) * 1%);
+    }
+
+    .mark[hidden] {
+        display: none;
+    }
+
+    :host(:not(:state(vertical))) .container {
         grid-template-rows: auto auto;
         grid-template-columns: 0;
     }
 
-    :host([orientation="vertical"]) .container {
+    :host(:state(vertical)) .container {
         grid-template-columns: auto auto;
         grid-template-rows: 0;
         min-width: calc(var(--thumb-size) * 1px);
@@ -43,7 +56,7 @@ export const templateStyles: ElementStyles = css`
         margin-top: 4px;
     }
 
-    :host([orientation="vertical"]) .content {
+    :host(:state(vertical)) .content {
         margin-left: 4px;
     }
 
@@ -51,7 +64,7 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
     }
 
-    :host([orientation="vertical"]) .mark {
+    :host(:state(vertical)) .mark {
         transform: rotate(90deg);
         align-self: center;
     }

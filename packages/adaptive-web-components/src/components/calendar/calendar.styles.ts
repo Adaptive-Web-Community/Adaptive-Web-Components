@@ -10,6 +10,7 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density } from "../../styles/index.js";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -20,18 +21,60 @@ export const templateStyles: ElementStyles = css`
         display: inline-block;
     }
 
-    .days {
+    .header {
+        display: flex;
+        align-items: center;
+    }
+
+    .title {
+        flex: 1;
         text-align: center;
     }
 
-    .week-days,
-    .week {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
+    .previous-month,
+    .next-month {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        /* reset */
+        background: transparent;
+        border: none;
+        color: inherit;
+        font: inherit;
+        padding: unset;
     }
 
-    .interact .day {
+    .previous-month:disabled,
+    .next-month:disabled {
+        cursor: default;
+    }
+
+    .days {
+        border-collapse: separate;
+        text-align: center;
+    }
+
+    .day {
+        position: relative;
         cursor: pointer;
+    }
+
+    :host([readonly]) .day,
+    .day[aria-disabled="true"] {
+        cursor: default;
+    }
+
+    .label {
+        display: block;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 
@@ -50,11 +93,8 @@ export const aestheticStyles: ElementStyles = css`
         font-weight: 600;
     }
 
-    .week-days,
-    .week {
-        grid-gap: var(--calendar-gap);
-        border: 0;
-        padding: 0;
+    .days {
+        border-spacing: var(--calendar-gap);
     }
 
     .day,
@@ -75,12 +115,12 @@ export const aestheticStyles: ElementStyles = css`
         height: 100%;
     }
 
-    .inactive .date,
-    .inactive.disabled::before {
+    .day[data-outside] .date,
+    .day[data-outside][aria-disabled="true"]::before {
         color: ${neutralStrokeReadable.rest};
     }
 
-    .disabled::before {
+    .day[aria-disabled="true"]::before {
         content: "";
         display: inline-block;
         width: calc(var(--calendar-cell-size) * 0.8);
@@ -92,13 +132,13 @@ export const aestheticStyles: ElementStyles = css`
         z-index: 1;
     }
 
-    .selected {
+    .day[aria-selected="true"] {
         color: ${accentFillReadable.rest};
         border: 1px solid ${accentFillReadable.rest};
         background: ${colorContext};
     }
 
-    .selected + .selected {
+    .day[aria-selected="true"] + .day[aria-selected="true"] {
         border-start-start-radius: 0;
         border-end-start-radius: 0;
         border-inline-start-width: 0;
@@ -106,11 +146,11 @@ export const aestheticStyles: ElementStyles = css`
         margin-inline-start: calc((${cornerRadiusControl} * -1) - var(--calendar-gap));
     }
 
-    .today.disabled::before {
+    .day[aria-current="date"][aria-disabled="true"]::before {
         color: ${neutralStrokeStrong.rest};
     }
 
-    .today .date {
+    .day[aria-current="date"] .date {
         color: ${neutralStrokeStrong.rest};
         background: ${neutralFillSubtle.rest};
         border-radius: 50%;

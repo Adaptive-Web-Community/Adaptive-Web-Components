@@ -1,5 +1,6 @@
 import { designUnit } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -25,9 +26,9 @@ export const templateStyles: ElementStyles = css`
         touch-action: pan-x;
     }
 
-    /* Keep for now, show on full component not just children */
-    :host([disabled]) {
-        cursor: not-allowed;
+    :host(:disabled),
+    :host([readonly]) {
+        cursor: default;
     }
 
     .positioning-region {
@@ -51,12 +52,20 @@ export const templateStyles: ElementStyles = css`
         transition: all 0.2s ease;
     }
 
+    :host(:state(dragging)) .thumb-container,
+    :host(:state(dragging)) .track-start {
+        transition: none;
+    }
+
+    /* The value's place, in the writing direction, centered on the thumb. */
     :host([orientation="horizontal"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-size) * 0.5));
+        inset-inline-start: calc(var(--slider-position) * 1%);
+        margin-inline-start: calc(var(--thumb-size) * -0.5);
     }
 
     :host([orientation="vertical"]) .thumb-container {
-        transform: translateY(calc(var(--thumb-size) * -0.5));
+        bottom: calc(var(--slider-position) * 1%);
+        margin-bottom: calc(var(--thumb-size) * -0.5);
     }
 
     .thumb {
@@ -70,12 +79,14 @@ export const templateStyles: ElementStyles = css`
 
     :host([orientation="horizontal"]) .track-start {
         height: 100%;
-        left: 0;
+        inset-inline-start: 0;
+        width: calc(var(--slider-position) * 1%);
     }
 
     :host([orientation="vertical"]) .track-start {
         width: 100%;
         bottom: 0;
+        height: calc(var(--slider-position) * 1%);
     }
 
     .track {
@@ -95,6 +106,18 @@ export const templateStyles: ElementStyles = css`
         justify-self: center;
         height: 100%;
         width: var(--track-width);
+    }
+
+    .label {
+        justify-self: start;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

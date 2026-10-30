@@ -3,7 +3,7 @@ import { composeTextArea } from "./text-area.compose.js";
 import { styleModules } from "./text-area.styles.modules.js";
 
 /**
- * The Text Area custom element definition. Implements {@link @microsoft/fast-foundation#FASTTextArea}.
+ * The Text Area custom element definition. Implements {@link TextArea}.
  *
  * @remarks
  * HTML Element: \<adaptive-text-area\>
@@ -14,5 +14,9 @@ export const textAreaDefinition = composeTextArea(
     DefaultDesignSystem,
     {
         styleModules,
+        shadowOptions: {
+            // Focusing the element, or a label of it, focuses the native control.
+            delegatesFocus: true,
+        },
     }
 );

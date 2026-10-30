@@ -1,11 +1,12 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { FASTMenu, FASTMenuItem } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as dividerStoryTemplate } from "../divider/divider.stories.js";
+import type { MenuItem as MenuItemElement } from "../menu-item/menu-item.js";
 import { storyTemplate as menuItemStoryTemplate } from "../menu-item/menu-item.stories.js";
+import type { Menu as MenuElement } from "./menu.js";
 
-const storyTemplate = html<StoryArgs<FASTMenu>>`
+const storyTemplate = html<StoryArgs<MenuElement>>`
     <adaptive-menu
         slot="${x => x.slot}"
     >
@@ -16,7 +17,7 @@ const storyTemplate = html<StoryArgs<FASTMenu>>`
 const storyContentTemplate = html`
     ${repeat(
         x => x.storyItems,
-        html<StoryArgs<FASTMenuItem>>`
+        html<StoryArgs<MenuItemElement>>`
             ${x => x.template ?? menuItemStoryTemplate}
         `
     )}
@@ -37,11 +38,11 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTMenu>;
+} as Meta<MenuElement>;
 
-export const Menu: Story<FASTMenu> = renderComponent(storyTemplate).bind({});
+export const Menu: Story<MenuElement> = renderComponent(storyTemplate).bind({});
 
-export const MenuWithDivider: Story<FASTMenu> = Menu.bind({});
+export const MenuWithDivider: Story<MenuElement> = Menu.bind({});
 MenuWithDivider.args = {
     storyItems: [
         { storyContent: "Menu Item 1" },
@@ -52,25 +53,25 @@ MenuWithDivider.args = {
     ],
 };
 
-export const MenuWithCheckboxItems: Story<FASTMenu> = Menu.bind({});
+export const MenuWithCheckboxItems: Story<MenuElement> = Menu.bind({});
 MenuWithCheckboxItems.args = {
     storyItems: [
-        { storyContent: "Menu Item 1", role: "menuitemcheckbox" },
-        { storyContent: "Menu Item 2", role: "menuitemcheckbox" },
-        { storyContent: "Menu Item 3", role: "menuitemcheckbox" },
+        { storyContent: "Menu Item 1", type: "checkbox" },
+        { storyContent: "Menu Item 2", type: "checkbox" },
+        { storyContent: "Menu Item 3", type: "checkbox" },
     ],
 };
 
-export const MenuWithRadioItems: Story<FASTMenu> = Menu.bind({});
+export const MenuWithRadioItems: Story<MenuElement> = Menu.bind({});
 MenuWithRadioItems.args = {
     storyItems: [
-        { storyContent: "Menu Item 1", role: "menuitemradio" },
-        { storyContent: "Menu Item 2", role: "menuitemradio" },
-        { storyContent: "Menu Item 3", role: "menuitemradio" },
+        { storyContent: "Menu Item 1", type: "radio" },
+        { storyContent: "Menu Item 2", type: "radio" },
+        { storyContent: "Menu Item 3", type: "radio" },
     ],
 };
 
-export const MenuWithNestedItems: Story<FASTMenu> = Menu.bind({});
+export const MenuWithNestedItems: Story<MenuElement> = Menu.bind({});
 MenuWithNestedItems.args = {
     storyItems: [
         {
@@ -179,14 +180,23 @@ MenuWithEverything.args = {
             storyContent: html`
                 Checkbox 1
             `,
-            role: "menuitemcheckbox",
+            type: "checkbox",
         },
-        { storyContent: "Checkbox 2", role: "menuitemcheckbox" },
+        { storyContent: "Checkbox 2", type: "checkbox" },
         { template: dividerStoryTemplate },
-        { storyContent: "Radio 1.1", role: "menuitemradio" },
-        { storyContent: "Radio 1.2", role: "menuitemradio" },
+        { storyContent: "Radio 1.1", type: "radio" },
+        { storyContent: "Radio 1.2", type: "radio" },
         { template: dividerStoryTemplate },
-        { storyContent: "Radio 2.1", role: "menuitemradio" },
-        { storyContent: "Radio 2.2", role: "menuitemradio" },
+        { storyContent: "Radio 2.1", type: "radio" },
+        { storyContent: "Radio 2.2", type: "radio" },
     ],
 };
+
+// A menu that opens is a popover, opened by a button's `commandfor`, which anchors it.
+export const MenuButton: Story<MenuElement> = renderComponent(html<StoryArgs<MenuElement>>`
+    <adaptive-button commandfor="story-menu" command="toggle-popover" aria-haspopup="menu">Open the menu</adaptive-button>
+    <adaptive-menu id="story-menu" popover>
+        ${(x) => x.storyContent}
+    </adaptive-menu>
+`).bind({});
+MenuButton.args = MenuWithEverything.args;

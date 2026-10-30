@@ -1,25 +1,89 @@
-import { FASTAnchor } from "@microsoft/fast-foundation";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { type AnchorElement, AriaForwardingController } from "@adaptive-web/components-foundation";
 
 /**
- * The Adaptive version of Anchor. Extends {@link @microsoft/fast-foundation#FASTAnchor}.
+ * A link. Implements {@link @adaptive-web/components-foundation#AnchorElement}.
+ *
+ * @remarks
+ * Defined with `delegatesFocus`, so focusing the element focuses its link, and its `tabindex` is the link's: `-1` takes it out of the tab
+ * order, as in a toolbar.
  *
  * @public
  */
-export class AdaptiveAnchor extends FASTAnchor {
-    /**
-     * Applies 'icon-only' class when there is only an SVG in the default slot.
-     */
-    protected defaultSlottedContentChanged(): void {
-        const slottedElements = this.defaultSlottedContent.filter((x) => x.nodeType === Node.ELEMENT_NODE);
+export class Anchor extends FASTElement implements AnchorElement {
+    protected readonly internals = this.attachInternals();
+    private readonly ariaForwarding = new AriaForwardingController(this);
 
-        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
-            this.control.classList.add("icon-only");
-        } else {
-            this.control.classList.remove("icon-only");
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.download}
+     */
+    @attr
+    public download: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.href}
+     */
+    @attr
+    public href: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.hreflang}
+     */
+    @attr
+    public hreflang: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.ping}
+     */
+    @attr
+    public ping: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.referrerPolicy}
+     */
+    @attr({ attribute: "referrerpolicy" })
+    public referrerPolicy: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.rel}
+     */
+    @attr
+    public rel: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.target}
+     */
+    @attr
+    public target: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement."type"}
+     */
+    @attr
+    public type: string | null = null;
+
+    /**
+     * The native link.
+     *
+     * @internal
+     */
+    public control?: HTMLAnchorElement;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#AnchorElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        if (this.control) {
+            this.ariaForwarding.connect(this.control);
         }
     }
 
-    public focus(options?: FocusOptions): void {
-        this.control.focus(options);
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.ariaForwarding.disconnect();
     }
 }

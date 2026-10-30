@@ -1,12 +1,12 @@
-import { css, html, repeat, Updates } from "@microsoft/fast-element";
-import { FASTCard, FASTSkeleton, SkeletonShape } from "@microsoft/fast-foundation";
+import { css, type FASTElement, html, repeat, Updates } from "@microsoft/fast-element";
+import { SkeletonShape } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as cardStoryTemplate } from "../card/card.stories.js";
+import type { Skeleton as SkeletonElement } from "./skeleton.js";
 
-const storyTemplate = html<StoryArgs<FASTSkeleton>>`
+const storyTemplate = html<StoryArgs<SkeletonElement>>`
     <adaptive-skeleton
-        fill="${(x) => x.fill}"
         pattern="${(x) => x.pattern}"
         shape="${(x) => x.shape}"
         ?shimmer="${(x) => x.shimmer}"
@@ -23,17 +23,16 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
-        fill: { control: "text" },
         pattern: { control: "text" },
         shape: { control: "radio", options: Object.values(SkeletonShape) },
         shimmer: { control: "boolean" },
     },
-} as Meta<FASTSkeleton>;
+} as Meta<SkeletonElement>;
 
-export const Skeleton: Story<FASTSkeleton> = renderComponent(storyTemplate).bind({});
+export const Skeleton: Story<SkeletonElement> = renderComponent(storyTemplate).bind({});
 Skeleton.decorators = [
     (Story) => {
-        const renderedStory = Story() as FASTSkeleton;
+        const renderedStory = Story() as SkeletonElement;
 
         Updates.enqueue(() => {
             renderedStory.$fastController.addStyles(css`
@@ -48,7 +47,7 @@ Skeleton.decorators = [
     },
 ];
 
-export const SkeletonCardExample: Story<FASTSkeleton> = renderComponent(cardStoryTemplate).bind({});
+export const SkeletonCardExample: Story<SkeletonElement> = renderComponent(cardStoryTemplate).bind({});
 SkeletonCardExample.args = {
     storyContent: html`
         ${repeat((x) => x.storyItems, storyTemplate)}
@@ -64,7 +63,7 @@ SkeletonCardExample.args = {
 SkeletonCardExample.parameters = { controls: { include: [] } };
 SkeletonCardExample.decorators = [
     (Story) => {
-        const renderedStory = Story() as FASTCard;
+        const renderedStory = Story() as FASTElement;
 
         Updates.enqueue(() => {
             renderedStory.$fastController.addStyles(css`

@@ -1,17 +1,20 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { FASTRadioGroup } from "@microsoft/fast-foundation";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@adaptive-web/components-foundation";
 import { storyTemplate as radioStoryTemplate } from "../radio/radio.stories.js";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { RadioGroup as RadioGroupElement } from "./radio-group.js";
 
-const storyTemplate = html<StoryArgs<FASTRadioGroup>>`
+const storyTemplate = html<StoryArgs<RadioGroupElement>>`
     <adaptive-radio-group
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         name="${(x) => x.name}"
         orientation="${(x) => x.orientation}"
         ?readonly="${(x) => x.readOnly}"
-        value="${(x) => x.value}"
+        ?required="${(x) => x.required}"
+        :value="${(x) => x.value}"
     >
         ${(x) => x.storyContent}
     </adaptive-radio-group>
@@ -20,45 +23,46 @@ const storyTemplate = html<StoryArgs<FASTRadioGroup>>`
 export default {
     title: "Components/Radio/Radio Group",
     args: {
-        storyContent: html<StoryArgs<FASTRadioGroup>>`
-            <label slot="label">Fruits</label>
+        storyContent: html<StoryArgs<RadioGroupElement>>`
             ${repeat((x) => x.storyItems, radioStoryTemplate)}
         `,
         storyItems: [
-            { storyContent: "Apples", value: "apples" },
-            { storyContent: "Bananas", value: "bananas" },
-            { storyContent: "Blueberries", value: "blueberries" },
-            { storyContent: "Grapefruit", value: "grapefruit" },
-            { storyContent: "Kiwi", value: "kiwi" },
-            { storyContent: "Mango", value: "mango" },
-            { storyContent: "Oranges", value: "oranges" },
-            { storyContent: "Pineapple", value: "pineapple" },
-            { storyContent: "Strawberries", value: "strawberries" },
+            { label: "Apples", value: "apples" },
+            { label: "Bananas", value: "bananas" },
+            { label: "Blueberries", value: "blueberries" },
+            { label: "Grapefruit", value: "grapefruit" },
+            { label: "Kiwi", value: "kiwi" },
+            { label: "Mango", value: "mango" },
+            { label: "Oranges", value: "oranges" },
+            { label: "Pineapple", value: "pineapple" },
+            { label: "Strawberries", value: "strawberries" },
         ],
-        disabled: false,
+        label: "Fruits",
         name: "fruits",
-        readOnly: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
-        disabled: { control: "boolean" },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         name: { control: "text" },
         orientation: { control: "radio", options: Object.values(Orientation) },
+        disabled: { control: "boolean" },
         readOnly: { control: "boolean" },
+        required: { control: "boolean" },
         value: { control: "text" },
     },
-} as Meta<FASTRadioGroup>;
+} as Meta<RadioGroupElement>;
 
-export const RadioGroup: Story<FASTRadioGroup> = renderComponent(storyTemplate).bind({});
+export const RadioGroup: Story<RadioGroupElement> = renderComponent(storyTemplate).bind({});
 
-export const RadioGroupVertical: Story<FASTRadioGroup> = RadioGroup.bind({});
+export const RadioGroupVertical: Story<RadioGroupElement> = RadioGroup.bind({});
 RadioGroupVertical.args = {
     orientation: Orientation.vertical,
 };
 
-export const RadioGroupInForm: Story<FASTRadioGroup> = renderComponent(
-    html<StoryArgs<FASTRadioGroup>>`
+export const RadioGroupInForm: Story<RadioGroupElement> = renderComponent(
+    html<StoryArgs<RadioGroupElement>>`
         <form @submit="${() => false}">
             ${storyTemplate}
             <adaptive-button type="submit">Submit</adaptive-button>

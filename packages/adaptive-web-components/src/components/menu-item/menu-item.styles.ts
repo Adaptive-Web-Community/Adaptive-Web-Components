@@ -22,55 +22,55 @@ export const templateStyles: ElementStyles = css`
 
     /* managed columns: content, end?, submenu? */
 
-    :host([start-column-count="0"]) {
+    :host(:not(:state(start-columns-1), :state(start-columns-2))) {
         grid-template-columns: 1fr auto var(--col-width);
     }
 
-    :host([start-column-count="0"]) ::slotted([slot="end"]) {
+    :host(:not(:state(start-columns-1), :state(start-columns-2))) ::slotted([slot="end"]) {
         grid-column: 2;
     }
 
-    :host([start-column-count="0"]) .submenu-icon {
+    :host(:not(:state(start-columns-1), :state(start-columns-2))) .submenu-icon {
         grid-column: 3;
     }
 
     /* managed columns: indicator OR start, content, end?, submenu? */
 
-    :host([start-column-count="1"]) {
+    :host(:state(start-columns-1)) {
         grid-template-columns: var(--col-width) 1fr auto var(--col-width);
     }
 
-    :host([start-column-count="1"]) .content {
+    :host(:state(start-columns-1)) .content {
         grid-column: 2;
     }
 
-    :host([start-column-count="1"]) ::slotted([slot="end"]) {
+    :host(:state(start-columns-1)) ::slotted([slot="end"]) {
         grid-column: 3;
     }
 
-    :host([start-column-count="1"]) .submenu-icon {
+    :host(:state(start-columns-1)) .submenu-icon {
         grid-column: 4;
     }
 
     /* managed columns: indicator, start, content, end?, submenu? */
 
-    :host([start-column-count="2"]) {
+    :host(:state(start-columns-2)) {
         grid-template-columns: var(--col-width) var(--col-width) 1fr auto var(--col-width);
     }
 
-    :host([start-column-count="2"]) ::slotted([slot="start"]) {
+    :host(:state(start-columns-2)) ::slotted([slot="start"]) {
         grid-column: 2;
     }
 
-    :host([start-column-count="2"]) .content {
+    :host(:state(start-columns-2)) .content {
         grid-column: 3;
     }
 
-    :host([start-column-count="2"]) ::slotted([slot="end"]) {
+    :host(:state(start-columns-2)) ::slotted([slot="end"]) {
         grid-column: 4;
     }
 
-    :host([start-column-count="2"]) .submenu-icon {
+    :host(:state(start-columns-2)) .submenu-icon {
         grid-column: 5;
     }
 
@@ -89,8 +89,7 @@ export const templateStyles: ElementStyles = css`
         pointer-events: none;
     }
 
-    .checkbox-indicator,
-    .radio-indicator,
+    .indicator,
     .submenu-icon {
         display: flex;
         flex-basis: content;
@@ -99,21 +98,17 @@ export const templateStyles: ElementStyles = css`
         pointer-events: none;
     }
 
-    :host(:not([aria-checked="true"])) .checkbox-indicator,
-    :host(:not([aria-checked="true"])) .radio-indicator {
+    .indicator[hidden],
+    .submenu-icon[hidden] {
+        display: none;
+    }
+
+    :host(:not(:state(checked))) .indicator {
         visibility: hidden;
     }
 
-    .submenu-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-
-    /* Keep for now, show on full component not just children */
-    :host([disabled]) {
-        cursor: not-allowed;
+    :host(:state(disabled)) {
+        cursor: default;
     }
 `;
 
@@ -127,7 +122,7 @@ export const aestheticStyles: ElementStyles = css`
         overflow: visible;
     }
 
-    :host([aria-expanded="true"]) {
+    :host(:state(expanded)) {
         background: ${neutralFillStealth.active};
     }
 

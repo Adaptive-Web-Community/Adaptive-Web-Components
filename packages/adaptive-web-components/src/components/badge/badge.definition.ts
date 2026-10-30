@@ -3,7 +3,7 @@ import { composeBadge } from "./badge.compose.js";
 import { styleModules } from "./badge.styles.modules.js";
 
 /**
- * The Badge custom element definition. Implements {@link @microsoft/fast-foundation#FASTBadge}.
+ * The Badge custom element definition. Implements {@link Badge}.
  *
  * @remarks
  * HTML Element: \<adaptive-badge\>

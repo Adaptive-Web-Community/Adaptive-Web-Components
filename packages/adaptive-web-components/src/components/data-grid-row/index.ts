@@ -1,3 +1,4 @@
+export { DataGridRow } from "./data-grid-row.js";
 export { composeDataGridRow } from "./data-grid-row.compose.js";
 export {
     templateStyles as dataGridRowTemplateStyles,

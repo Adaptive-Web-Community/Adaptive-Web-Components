@@ -1,10 +1,11 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { FASTTreeItem, FASTTreeView } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { TreeItem as TreeItemElement } from "../tree-item/tree-item.js";
 import { storyTemplate as treeItemStoryTemplate } from "../tree-item/tree-item.stories.js";
+import type { TreeView as TreeViewElement } from "./tree-view.js";
 
-const storyTemplate = html<StoryArgs<FASTTreeView>>`
+const storyTemplate = html<StoryArgs<TreeViewElement>>`
     <adaptive-tree-view>
         ${(x) => x.storyContent}
     </adaptive-tree-view>
@@ -13,7 +14,7 @@ const storyTemplate = html<StoryArgs<FASTTreeView>>`
 const storyContentTemplate = html`
     ${repeat(
         x => x.storyItems,
-        html<StoryArgs<FASTTreeItem>>`
+        html<StoryArgs<TreeItemElement>>`
             ${x => treeItemStoryTemplate}
         `
     )}
@@ -29,9 +30,9 @@ export default {
     argTypes: {
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTTreeView>;
+} as Meta<TreeViewElement>;
 
-export const TreeView: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
+export const TreeView: Story<TreeViewElement> = renderComponent(storyTemplate).bind({});
 TreeView.args = {
     storyItems: [
         {
@@ -92,7 +93,7 @@ TreeView.args = {
     ],
 };
 
-export const TreeViewFlat: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
+export const TreeViewFlat: Story<TreeViewElement> = renderComponent(storyTemplate).bind({});
 TreeViewFlat.args = {
     storyItems: [
         { storyContent: "Tree item 1" },

@@ -6,6 +6,7 @@ export {
 export {
     styleModules as accordionItemStyleModules,
 } from "./accordion-item.styles.modules.js";
+export { AccordionItem } from "./accordion-item.js";
 export {
     template as accordionItemTemplate,
     AccordionItemAnatomy,

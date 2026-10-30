@@ -1,7 +1,7 @@
-import { FASTAccordionItem } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
+import { AccordionItem } from "./accordion-item.js";
 import { aestheticStyles, templateStyles } from "./accordion-item.styles.js";
 import { AccordionItemAnatomy, AccordionItemStatics, template } from "./accordion-item.template.js";
 
@@ -12,8 +12,8 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeAccordionItem(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTAccordionItem, AccordionItemStatics>
-): FASTElementDefinition {
+    options?: ComposeOptions<AccordionItem, AccordionItemStatics>
+): Promise<FASTElementDefinition<typeof AccordionItem>> {
     if (options?.statics) {
         if (!ds.statics.has(AccordionItemStatics.collapsed)) {
             ds.statics.set(
@@ -32,7 +32,7 @@ export function composeAccordionItem(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, AccordionItemAnatomy, options);
 
-    return FASTAccordionItem.compose({
+    return FASTElementDefinition.compose(AccordionItem, {
         name: `${ds.prefix}-accordion-item`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -1,3 +1,4 @@
+export { Skeleton } from "./skeleton.js";
 export { composeSkeleton } from "./skeleton.compose.js";
 export {
     templateStyles as skeletonTemplateStyles,

@@ -1,7 +1,7 @@
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from '../../styles/styles.js';
-import { AdaptiveMenuItem } from "./menu-item.js";
+import { MenuItem } from "./menu-item.js";
 import { aestheticStyles, templateStyles } from "./menu-item.styles.js";
 import { MenuItemAnatomy, MenuItemStatics, template } from "./menu-item.template.js";
 
@@ -12,8 +12,8 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeMenuItem(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveMenuItem, MenuItemStatics>
-): FASTElementDefinition {
+    options?: ComposeOptions<MenuItem, MenuItemStatics>
+): Promise<FASTElementDefinition<typeof MenuItem>> {
     if (options?.statics) {
         if (!ds.statics.has(MenuItemStatics.checkbox)) {
             ds.statics.set(
@@ -39,7 +39,7 @@ export function composeMenuItem(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, MenuItemAnatomy, options);
 
-    return AdaptiveMenuItem.compose({
+    return FASTElementDefinition.compose(MenuItem, {
         name: `${ds.prefix}-menu-item`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

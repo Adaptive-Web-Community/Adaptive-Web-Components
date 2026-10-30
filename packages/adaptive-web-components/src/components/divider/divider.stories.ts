@@ -1,10 +1,13 @@
 import { html } from "@microsoft/fast-element";
-import { DividerRole, FASTDivider } from "@microsoft/fast-foundation";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Divider as DividerElement } from "./divider.js";
 
-export const storyTemplate = html<StoryArgs<FASTDivider>>`
+// The default role is the separator; the author gives `presentation` for a divider that is only decoration.
+const roles = ["separator", "presentation"];
+
+export const storyTemplate = html<StoryArgs<DividerElement>>`
     <adaptive-divider
         orientation="${(x) => x.orientation}"
         role="${(x) => x.role}"
@@ -17,23 +20,23 @@ export default {
     excludeStories: ["storyTemplate"],
     args: {
         orientation: Orientation.horizontal,
-        role: DividerRole.separator,
+        role: "separator",
     },
     argTypes: {
         orientation: { control: "radio", options: Object.values(Orientation) },
-        role: { control: "radio", options: Object.values(DividerRole) },
+        role: { control: "radio", options: roles },
     },
-} as Meta<FASTDivider>;
+} as Meta<DividerElement>;
 
-export const Divider: Story<FASTDivider> = renderComponent(storyTemplate).bind({});
+export const Divider: Story<DividerElement> = renderComponent(storyTemplate).bind({});
 
-export const DividerPresentation: Story<FASTDivider> = renderComponent(storyTemplate).bind({});
+export const DividerPresentation: Story<DividerElement> = renderComponent(storyTemplate).bind({});
 DividerPresentation.storyName = "Divider (presentation role)";
 DividerPresentation.args = {
-    role: DividerRole.presentation,
+    role: "presentation",
 };
 
-export const DividerVertical: Story<FASTDivider> = renderComponent(html<StoryArgs<FASTDivider>>`
+export const DividerVertical: Story<DividerElement> = renderComponent(html<StoryArgs<DividerElement>>`
     <div style="height: 300px;">
         ${storyTemplate}
     </div>

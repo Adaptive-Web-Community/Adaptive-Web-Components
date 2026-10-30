@@ -5,7 +5,7 @@ import { NumberFieldStatics } from "./number-field.template.js";
 import { styleModules } from "./number-field.styles.modules.js";
 
 /**
- * The Number Field custom element definition. Implements {@link @microsoft/fast-foundation#FASTNumberField}.
+ * The Number Field custom element definition. Implements {@link NumberField}.
  *
  * @remarks
  * HTML Element: \<adaptive-number-field\>
@@ -20,5 +20,9 @@ export const numberFieldDefinition = composeNumberField(
             [NumberFieldStatics.stepUp]: chevronUpIcon,
         },
         styleModules,
+        shadowOptions: {
+            // Focusing the element, or a label of it, focuses the native control.
+            delegatesFocus: true,
+        },
     }
 );

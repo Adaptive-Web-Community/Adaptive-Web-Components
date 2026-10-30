@@ -1,3 +1,4 @@
+export { Listbox } from "./listbox.js";
 export { composeListbox } from "./listbox.compose.js";
 export {
     templateStyles as listboxTemplateStyles,

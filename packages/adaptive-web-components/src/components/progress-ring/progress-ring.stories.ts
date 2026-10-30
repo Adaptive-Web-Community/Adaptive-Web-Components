@@ -1,10 +1,11 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTProgressRing } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { ProgressRing as ProgressRingElement } from "./progress-ring.js";
 
-const storyTemplate = html<StoryArgs<FASTProgressRing>>`
+const storyTemplate = html<StoryArgs<ProgressRingElement>>`
     <adaptive-progress-ring
+        aria-label="Progress"
         max="${(x) => x.max}"
         min="${(x) => x.min}"
         value="${(x) => x.value}"
@@ -26,6 +27,6 @@ export default {
         min: { control: "number" },
         value: { control: "number", if: { arg: "indeterminate", truthy: false } },
     },
-} as Meta<FASTProgressRing>;
+} as Meta<ProgressRingElement>;
 
-export const ProgressRing: Story<FASTProgressRing> = renderComponent(storyTemplate).bind({});
+export const ProgressRing: Story<ProgressRingElement> = renderComponent(storyTemplate).bind({});

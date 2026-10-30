@@ -5,7 +5,7 @@ import { TreeItemStatics } from "./tree-item.template.js";
 import { styleModules } from "./tree-item.styles.modules.js";
 
 /**
- * The tree item custom element definition. Implements {@link @microsoft/fast-foundation#FASTTreeItem}.
+ * The tree item custom element definition. Implements {@link TreeItem}.
  *
  * @remarks
  * HTML Element: \<adaptive-tree-item\>

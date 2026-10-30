@@ -3,6 +3,7 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { density, heightNumber } from "../../styles/index.js";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -19,9 +20,8 @@ export const templateStyles: ElementStyles = css`
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
     }
 
     .root,
@@ -52,25 +52,25 @@ export const templateStyles: ElementStyles = css`
         font: inherit;
     }
 
-    .clear-button__hidden {
-        opacity: 0;
+    /* Hidden without a value, keeping its place, so the field doesn't move as the user types. */
+    .clear-button[hidden] {
+        display: inline-block;
+        visibility: hidden;
     }
 
-    :host(:not([disabled], [readonly]):hover) .clear-button,
-    :host(:not([disabled], [readonly]):active) .clear-button,
-    :host(:not([disabled], [readonly]):focus-within) .clear-button {
+    :host(:not(:disabled, [readonly]):hover) .clear-button,
+    :host(:not(:disabled, [readonly]):active) .clear-button,
+    :host(:not(:disabled, [readonly]):focus-within) .clear-button {
         opacity: 1;
-    }
-
-    :host(:not([disabled], [readonly]):hover) .clear-button__hidden,
-    :host(:not([disabled], [readonly]):active) .clear-button__hidden,
-    :host(:not([disabled], [readonly]):focus-within) .clear-button__hidden {
-        opacity: 0;
     }
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

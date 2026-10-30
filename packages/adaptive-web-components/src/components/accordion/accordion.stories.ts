@@ -1,12 +1,12 @@
 import { html } from "@microsoft/fast-element";
-import type { FASTAccordion } from "@microsoft/fast-foundation";
-import { AccordionExpandMode } from "@microsoft/fast-foundation";
+import { AccordionExpandMode } from "@adaptive-web/components-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Accordion as AccordionElement } from "./accordion.js";
 
-const storyTemplate = html<StoryArgs<FASTAccordion>>`
+const storyTemplate = html<StoryArgs<AccordionElement>>`
     <adaptive-accordion
-        expand-mode="${(x) => x.expandmode}"
+        expand-mode="${(x) => x.expandMode}"
     >
         ${(x) => x.storyContent}
     </adaptive-accordion>
@@ -15,15 +15,15 @@ const storyTemplate = html<StoryArgs<FASTAccordion>>`
 export default {
     title: "Components/Accordion",
     args: {
-        expandmode: AccordionExpandMode.multi,
+        expandMode: AccordionExpandMode.multi,
     },
     argTypes: {
-        expandmode: { control: "radio", options: Object.values(AccordionExpandMode) },
+        expandMode: { control: "radio", options: Object.values(AccordionExpandMode) },
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTAccordion>;
+} as Meta<AccordionElement>;
 
-export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
+export const Accordion: Story<AccordionElement> = renderComponent(storyTemplate).bind({});
 Accordion.args = {
     storyContent: html`
         <adaptive-accordion-item>
@@ -32,7 +32,7 @@ Accordion.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item disabled>
             <span slot="heading">Accordion Item 3 Heading</span>
@@ -41,7 +41,7 @@ Accordion.args = {
     `,
 };
 
-export const AccordionWithExpandedChild: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
+export const AccordionWithExpandedChild: Story<AccordionElement> = renderComponent(storyTemplate).bind({});
 AccordionWithExpandedChild.args = {
     storyContent: html`
         <adaptive-accordion-item>
@@ -50,7 +50,7 @@ AccordionWithExpandedChild.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item expanded>
             <span slot="heading">Accordion Item 3 Heading</span>
@@ -59,9 +59,9 @@ AccordionWithExpandedChild.args = {
     `,
 };
 
-export const AccordionWithSingleExpandMode: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
+export const AccordionWithSingleExpandMode: Story<AccordionElement> = renderComponent(storyTemplate).bind({});
 AccordionWithSingleExpandMode.args = {
-    expandmode: "single",
+    expandMode: AccordionExpandMode.single,
     storyContent: html`
         <adaptive-accordion-item expanded disabled>
             <span slot="heading">Accordion Item 1 Heading</span>
@@ -69,7 +69,7 @@ AccordionWithSingleExpandMode.args = {
         </adaptive-accordion-item>
         <adaptive-accordion-item expanded>
             <span slot="heading">Accordion Item 2 Heading</span>
-            <adaptive-checkbox>A checkbox as content</adaptive-checkbox>
+            <adaptive-checkbox label="A checkbox as content"></adaptive-checkbox>
         </adaptive-accordion-item>
         <adaptive-accordion-item>
             <span slot="heading">Accordion Item 3 Heading</span>

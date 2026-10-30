@@ -1,7 +1,7 @@
-import { FASTListboxElement } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { Listbox } from "./listbox.js";
 import { aestheticStyles, templateStyles } from "./listbox.styles.js";
 import { ListboxAnatomy, template } from "./listbox.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeListbox(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTListboxElement>
-): FASTElementDefinition {
+    options?: ComposeOptions<Listbox>
+): Promise<FASTElementDefinition<typeof Listbox>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, ListboxAnatomy, options);
 
-    return FASTListboxElement.compose({
+    return FASTElementDefinition.compose(Listbox, {
         name: `${ds.prefix}-listbox`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -3,7 +3,7 @@ import { composeToolbar } from "./toolbar.compose.js";
 import { styleModules } from "./toolbar.styles.modules.js";
 
 /**
- * The Toolbar custom element definition. Implements {@link @microsoft/fast-foundation#FASTToolbar}.
+ * The Toolbar custom element definition. Implements {@link Toolbar}.
  *
  * @remarks
  * HTML Element: \<adaptive-toolbar\>

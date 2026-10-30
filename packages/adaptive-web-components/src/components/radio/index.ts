@@ -1,3 +1,4 @@
+export { Radio } from "./radio.js";
 export { composeRadio } from "./radio.compose.js";
 export {
     templateStyles as radioTemplateStyles,

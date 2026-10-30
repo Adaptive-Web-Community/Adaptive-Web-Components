@@ -1,7 +1,7 @@
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
-import { AdaptiveMenu } from "./menu.js";
+import { Menu } from "./menu.js";
 import { aestheticStyles, templateStyles } from "./menu.styles.js";
 import { MenuAnatomy, template } from "./menu.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeMenu(
     ds: DesignSystem,
-    options?: ComposeOptions<AdaptiveMenu>
-): FASTElementDefinition {
+    options?: ComposeOptions<Menu>
+): Promise<FASTElementDefinition<typeof Menu>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, MenuAnatomy, options);
 
-    return AdaptiveMenu.compose({
+    return FASTElementDefinition.compose(Menu, {
         name: `${ds.prefix}-menu`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

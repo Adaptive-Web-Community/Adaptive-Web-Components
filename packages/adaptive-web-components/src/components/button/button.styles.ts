@@ -1,4 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -7,19 +8,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
-    }
-
-    .control {
-        display: flex;
         align-items: center;
-        white-space: nowrap;
-        /* explicit width */
-        flex-grow: 1;
         justify-content: center;
-        /* reset */
-        border: none;
-        margin: 0;
-        padding: 0;
+        white-space: nowrap;
     }
 
     ::slotted([slot="start"]),
@@ -27,8 +18,12 @@ export const templateStyles: ElementStyles = css`
         display: flex;
     }
 
-    :host(:not([disabled])) .control {
+    :host(:not(:disabled)) {
         cursor: pointer;
+    }
+
+    :host([hide-label]) .content {
+        ${visuallyHidden}
     }
 `;
 

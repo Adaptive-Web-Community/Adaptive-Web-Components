@@ -1,25 +1,119 @@
-import { FASTButton } from "@microsoft/fast-foundation";
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { ButtonController, type ButtonElement, ButtonType, findById } from "@adaptive-web/components-foundation";
 
 /**
- * The Adaptive version of Button. Extends {@link @microsoft/fast-foundation#FASTButton}.
+ * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
  *
  * @public
  */
-export class AdaptiveButton extends FASTButton {
+export class Button extends FASTElement implements ButtonElement {
     /**
-     * Applies 'icon-only' class when there is only an SVG in the default slot.
+     * The element is a form control.
      */
-    protected defaultSlottedContentChanged(): void {
-        const slottedElements = this.defaultSlottedContent.filter((x) => x.nodeType === Node.ELEMENT_NODE);
+    public static readonly formAssociated = true;
 
-        if (slottedElements.length === 1 && slottedElements[0] instanceof SVGElement) {
-            this.control.classList.add("icon-only");
-        } else {
-            this.control.classList.remove("icon-only");
-        }
+    private readonly internals = this.attachInternals();
+    private readonly controller = new ButtonController(this, this.internals);
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.disabled}
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement."type"}
+     */
+    @attr
+    public type: ButtonType = ButtonType.button;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.name}
+     */
+    @attr
+    public name: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.value}
+     */
+    @attr
+    public value: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.formAction}
+     */
+    @attr({ attribute: "formaction" })
+    public formAction: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.formEnctype}
+     */
+    @attr({ attribute: "formenctype" })
+    public formEnctype: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.formMethod}
+     */
+    @attr({ attribute: "formmethod" })
+    public formMethod: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.formNoValidate}
+     */
+    @attr({ attribute: "formnovalidate", mode: "boolean" })
+    public formNoValidate: boolean = false;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.formTarget}
+     */
+    @attr({ attribute: "formtarget" })
+    public formTarget: string | null = null;
+
+    private explicitCommandFor: Element | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#InvokerElement.commandForElement}
+     */
+    public get commandForElement(): Element | null {
+        return this.explicitCommandFor ?? findById(this, this.getAttribute("commandfor"));
+    }
+    public set commandForElement(element: Element | null) {
+        this.explicitCommandFor = element;
     }
 
-    public focus(options?: FocusOptions): void {
-        this.control.focus(options);
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#InvokerElement.command}
+     */
+    @attr
+    public command: string | null = null;
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.form}
+     */
+    public get form(): HTMLFormElement | null {
+        return this.internals.form;
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.labels}
+     */
+    public get labels(): NodeList {
+        return this.internals.labels;
+    }
+
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#ButtonElement.hideLabel}
+     */
+    @attr({ attribute: "hide-label", mode: "boolean" })
+    public hideLabel: boolean = false;
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.controller.connect();
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.controller.disconnect();
     }
 }

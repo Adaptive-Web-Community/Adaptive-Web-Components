@@ -1,16 +1,17 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { dataGridCellTemplate, DataGridCellTypes, FASTDataGridCell } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { DataGridCellType } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { DataGridCell } from "./data-grid-cell.js";
 
 /**
  * @public
  */
 export const DataGridCellConditions = {
     cellType: {
-        default: `[cell-type='${DataGridCellTypes.default}']`,
-        columnHeader: `[cell-type='${DataGridCellTypes.columnHeader}']`,
-        rowHeader: `[cell-type='${DataGridCellTypes.rowHeader}']`,
+        default: `[cell-type='${DataGridCellType.default}']`,
+        columnHeader: `[cell-type='${DataGridCellType.columnHeader}']`,
+        rowHeader: `[cell-type='${DataGridCellType.rowHeader}']`,
     }
 };
 
@@ -31,9 +32,10 @@ export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions
 };
 
 /**
- * Default Data Grid Cell template, {@link @microsoft/fast-foundation#dataGridCellTemplate}.
+ * Default Data Grid Cell template: the generated content, and the slot.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTDataGridCell> =
-    (ds: DesignSystem) =>
-        dataGridCellTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<DataGridCell> =
+    (ds: DesignSystem) => html<DataGridCell>`
+        ${x => x.content}<slot></slot>
+    `;

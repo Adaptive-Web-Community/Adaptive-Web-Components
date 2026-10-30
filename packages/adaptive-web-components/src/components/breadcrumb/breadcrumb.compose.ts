@@ -1,7 +1,7 @@
-import { FASTBreadcrumb } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { Breadcrumb } from "./breadcrumb.js";
 import { aestheticStyles, templateStyles } from "./breadcrumb.styles.js";
 import { BreadcrumbAnatomy, template } from "./breadcrumb.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeBreadcrumb(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTBreadcrumb>
-): FASTElementDefinition {
+    options?: ComposeOptions<Breadcrumb>
+): Promise<FASTElementDefinition<typeof Breadcrumb>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, BreadcrumbAnatomy, options);
 
-    return FASTBreadcrumb.compose({
+    return FASTElementDefinition.compose(Breadcrumb, {
         name: `${ds.prefix}-breadcrumb`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -13,25 +13,15 @@ export const templateStyles: ElementStyles = css`
         overflow: hidden;
     }
 
-    object {
-        position: absolute;
-        width: 100%;
-        height: auto;
-        z-index: 2;
-    }
-
-    object img {
-        width: 100%;
-        height: auto;
-    }
-
     ::slotted(svg) {
         z-index: 2;
     }
 
     .pattern {
+        position: absolute;
         width: 100%;
-        height: 100%;
+        height: auto;
+        z-index: 2;
     }
 
     .shimmer {

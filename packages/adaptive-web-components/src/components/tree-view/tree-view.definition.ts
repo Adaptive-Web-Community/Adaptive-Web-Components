@@ -3,7 +3,7 @@ import { composeTreeView } from "./tree-view.compose.js";
 import { styleModules } from "./tree-view.styles.modules.js";
 
 /**
- * The tree view custom element definition. Implements {@link @microsoft/fast-foundation#FASTTreeView}.
+ * The tree view custom element definition. Implements {@link TreeView}.
  *
  * @remarks
  * HTML Element: \<adaptive-tree-view\>

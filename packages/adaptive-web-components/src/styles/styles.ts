@@ -20,6 +20,24 @@ export const componentBaseStyles = /* css */`
 `;
 
 /**
+ * The declarations that hide an element visually and keep it in the accessibility tree, for a label hidden by `hide-label`, which still names
+ * its element.
+ *
+ * @public
+ */
+export const visuallyHidden = /* css */`
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+`;
+
+/**
  * Styles for default svg icons.
  * 
  * @public

@@ -3,7 +3,7 @@ import { composeButton } from "./button.compose.js";
 import { styleModules } from "./button.styles.modules.js";
 
 /**
- * The Button custom element definition. Implements {@link AdaptiveButton}.
+ * The Button custom element definition. Implements {@link Button}.
  *
  * @remarks
  * HTML Element: \<adaptive-button\>
@@ -14,8 +14,5 @@ export const buttonDefinition = composeButton(
     DefaultDesignSystem,
     {
         styleModules,
-        shadowOptions: {
-            delegatesFocus: true
-        }
     }
 );

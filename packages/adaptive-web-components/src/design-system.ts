@@ -6,7 +6,6 @@ import {
     type PartialFASTElementDefinition,
     type ShadowRootOptions,
 } from '@microsoft/fast-element';
-import type { StaticallyComposableHTML } from "@microsoft/fast-foundation";
 import {
     type ComponentAnatomy,
     ElementStylesRenderer,
@@ -18,24 +17,25 @@ import { disabledStyles, focusIndicatorStyles, focusResetStyles } from "@adaptiv
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
+    CalendarStatics,
     CheckboxStatics,
-    ComboboxStatics,
-    FlipperStatics,
     MenuItemStatics,
     NumberFieldStatics,
+    PickerStatics,
     RadioStatics,
     SelectStatics,
     TreeItemStatics
 } from "./components/index.js";
+import type { StaticallyComposableHTML } from "./utilities/template-helpers.js";
 
 type ComponentStatics =
     AccordionItemStatics
     | BreadcrumbItemStatics
+    | CalendarStatics
     | CheckboxStatics
-    | ComboboxStatics
-    | FlipperStatics
     | MenuItemStatics
     | NumberFieldStatics
+    | PickerStatics
     | RadioStatics
     | SelectStatics
     | TreeItemStatics;

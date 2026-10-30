@@ -1,43 +1,41 @@
 import { html } from "@microsoft/fast-element";
-import { FASTSearch } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
+import type { Search as SearchElement } from "./search.js";
 
-const storyTemplate = html<StoryArgs<FASTSearch>>`
+const storyTemplate = html<StoryArgs<SearchElement>>`
     <adaptive-search
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?autofocus="${(x) => x.autofocus}"
         ?disabled="${(x) => x.disabled}"
-        list="${(x) => x.list}"
-        maxlength="${(x) => x.maxlength}"
-        minlength="${(x) => x.minlength}"
+        maxlength="${(x) => x.maxLength}"
+        minlength="${(x) => x.minLength}"
         name="${(x) => x.name}"
         pattern="${(x) => x.pattern}"
         placeholder="${(x) => x.placeholder}"
         ?readonly="${(x) => x.readOnly}"
         ?required="${(x) => x.required}"
-        resize="${(x) => x.resize}"
-        size="${(x) => x.size}"
-        ?spellcheck="${(x) => x.spellcheck}"
         value="${(x) => x.value}"
-        :ariaAtomic="${(x) => x.ariaAtomic}"
-        :ariaBusy="${(x) => x.ariaBusy}"
-        :ariaControls="${(x) => x.ariaControls}"
-        :ariaCurrent="${(x) => x.ariaCurrent}"
-        :ariaDescribedby="${(x) => x.ariaDescribedby}"
-        :ariaDetails="${(x) => x.ariaDetails}"
-        :ariaDisabled="${(x) => x.ariaDisabled}"
-        :ariaErrormessage="${(x) => x.ariaErrormessage}"
-        :ariaFlowto="${(x) => x.ariaFlowto}"
-        :ariaHaspopup="${(x) => x.ariaHaspopup}"
-        :ariaHidden="${(x) => x.ariaHidden}"
-        :ariaInvalid="${(x) => x.ariaInvalid}"
-        :ariaKeyshortcuts="${(x) => x.ariaKeyshortcuts}"
-        :ariaLabel="${(x) => x.ariaLabel}"
-        :ariaLabelledby="${(x) => x.ariaLabelledby}"
-        :ariaLive="${(x) => x.ariaLive}"
-        :ariaOwns="${(x) => x.ariaOwns}"
-        :ariaRelevant="${(x) => x.ariaRelevant}"
-        :ariaRoledescription="${(x) => x.ariaRoledescription}"
+        aria-atomic="${(x) => x.ariaAtomic}"
+        aria-busy="${(x) => x.ariaBusy}"
+        aria-controls="${(x) => x.ariaControls}"
+        aria-current="${(x) => x.ariaCurrent}"
+        aria-describedby="${(x) => x.ariaDescribedby}"
+        aria-details="${(x) => x.ariaDetails}"
+        aria-disabled="${(x) => x.ariaDisabled}"
+        aria-errormessage="${(x) => x.ariaErrormessage}"
+        aria-flowto="${(x) => x.ariaFlowto}"
+        aria-haspopup="${(x) => x.ariaHaspopup}"
+        aria-hidden="${(x) => x.ariaHidden}"
+        aria-invalid="${(x) => x.ariaInvalid}"
+        aria-keyshortcuts="${(x) => x.ariaKeyshortcuts}"
+        aria-label="${(x) => x.ariaLabel}"
+        aria-labelledby="${(x) => x.ariaLabelledby}"
+        aria-live="${(x) => x.ariaLive}"
+        aria-owns="${(x) => x.ariaOwns}"
+        aria-relevant="${(x) => x.ariaRelevant}"
+        aria-roledescription="${(x) => x.ariaRoledescription}"
     >
         ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
@@ -50,25 +48,24 @@ export default {
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
-        storyContent: "Search",
+        label: "Search",
         autofocus: false,
         disabled: false,
         readOnly: false,
     },
     argTypes: {
         storyContent: { table: { disable: true } },
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
-        list: { control: "text" },
-        maxlength: { control: "number" },
-        minlength: { control: "number" },
+        maxLength: { control: "number" },
+        minLength: { control: "number" },
         name: { control: "text" },
         pattern: { control: "text" },
         placeholder: { control: "text" },
         readOnly: { control: "boolean" },
         required: { control: "boolean" },
-        size: { control: "number" },
-        spellcheck: { control: "boolean" },
         value: { control: "text" },
         ariaAtomic: { control: "text" },
         ariaBusy: { control: "text" },
@@ -90,6 +87,6 @@ export default {
         ariaRelevant: { control: "text" },
         ariaRoledescription: { control: "text" },
     },
-} as Meta<FASTSearch>;
+} as Meta<SearchElement>;
 
-export const Search: Story<FASTSearch> = renderComponent(storyTemplate).bind({});
+export const Search: Story<SearchElement> = renderComponent(storyTemplate).bind({});

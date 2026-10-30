@@ -1,7 +1,7 @@
-import { FASTCheckbox } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
+import { Checkbox } from "./checkbox.js";
 import { aestheticStyles, templateStyles } from "./checkbox.styles.js";
 import { CheckboxAnatomy, CheckboxStatics, template } from "./checkbox.template.js";
 
@@ -12,8 +12,8 @@ const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aesth
  */
 export function composeCheckbox(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTCheckbox, CheckboxStatics>
-): FASTElementDefinition {
+    options?: ComposeOptions<Checkbox, CheckboxStatics>
+): Promise<FASTElementDefinition<typeof Checkbox>> {
     if (options?.statics) {
         if (!ds.statics.has(CheckboxStatics.checked)) {
             ds.statics.set(
@@ -32,7 +32,7 @@ export function composeCheckbox(
 
     const styles = DesignSystem.assembleStyles(defaultStyles, CheckboxAnatomy, options);
 
-    return FASTCheckbox.compose({
+    return FASTElementDefinition.compose(Checkbox, {
         name: `${ds.prefix}-checkbox`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

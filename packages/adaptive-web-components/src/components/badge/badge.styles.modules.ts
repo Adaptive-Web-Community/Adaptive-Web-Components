@@ -6,7 +6,6 @@ import {
     neutralFillReadableControlStyles,
     typeRampMinus1Styles,
 } from "@adaptive-web/adaptive-ui/reference";
-import { BadgeAnatomy } from "./badge.template.js";
 
 /**
  * Visual styles composed by style rules.
@@ -15,13 +14,8 @@ import { BadgeAnatomy } from "./badge.template.js";
  */
 export const styleModules: StyleRules = [
     {
-        styles: typeRampMinus1Styles,
-    },
-    {
-        target : {
-            part: BadgeAnatomy.parts.control,
-        },
         styles: [
+            typeRampMinus1Styles,
             controlShapeStyles,
             neutralFillReadableControlStyles,
         ],

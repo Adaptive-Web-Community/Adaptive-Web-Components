@@ -1,3 +1,4 @@
+export { SliderLabel } from "./slider-label.js";
 export { composeSliderLabel } from "./slider-label.compose.js";
 export {
     templateStyles as sliderLabelTemplateStyles,

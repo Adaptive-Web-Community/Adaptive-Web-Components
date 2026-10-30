@@ -45,7 +45,7 @@ export const templateStyles: ElementStyles = css`
         white-space: nowrap;
     }
 
-    :host([nested]) .control {
+    :host(:state(nested)) .control {
         padding-inline-start: calc(8px + var(--expand-collapse-button-size) + var(--tree-item-nested-width, 0px));
     }
     
@@ -75,16 +75,16 @@ export const templateStyles: ElementStyles = css`
     }
     
     .items {
-        display: none;
         --tree-item-nested-width-slotted: calc(16px + var(--tree-item-nested-width, 0px));
+    }
+
+    .items[hidden],
+    .expand-collapse-button[hidden] {
+        display: none;
     }
 
     :host([expanded]) slot[name="expand-collapse-icon"] * {
         transform: rotate(45deg);
-    }
-
-    :host([expanded]) > .items {
-        display: block;
     }
 
     ::slotted(adaptive-tree-item) {

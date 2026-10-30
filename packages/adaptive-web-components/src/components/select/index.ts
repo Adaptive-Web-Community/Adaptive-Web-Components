@@ -1,3 +1,4 @@
+export { Select } from "./select.js";
 export { composeSelect } from "./select.compose.js";
 export {
     templateStyles as selectTemplateStyles,

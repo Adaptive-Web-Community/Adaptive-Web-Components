@@ -1,7 +1,7 @@
-import { FASTTooltip } from '@microsoft/fast-foundation';
-import type { FASTElementDefinition } from '@microsoft/fast-element';
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
 import { componentBaseStyles } from "../../styles/styles.js";
+import { Tooltip } from "./tooltip.js";
 import { aestheticStyles, templateStyles } from "./tooltip.styles.js";
 import { template, TooltipAnatomy } from "./tooltip.template.js";
 
@@ -12,11 +12,11 @@ const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
  */
 export function composeTooltip(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTTooltip>
-): FASTElementDefinition {
+    options?: ComposeOptions<Tooltip>
+): Promise<FASTElementDefinition<typeof Tooltip>> {
     const styles = DesignSystem.assembleStyles(defaultStyles, TooltipAnatomy, options);
 
-    return FASTTooltip.compose({
+    return FASTElementDefinition.compose(Tooltip, {
         name: `${ds.prefix}-tooltip`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

@@ -1,3 +1,4 @@
+export { Card } from "./card.js";
 export { composeCard } from "./card.compose.js";
 export {
     templateStyles as cardTemplateStyles,

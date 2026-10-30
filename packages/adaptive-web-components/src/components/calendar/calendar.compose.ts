@@ -1,22 +1,30 @@
-import { FASTCalendar } from "@microsoft/fast-foundation";
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import { FASTElementDefinition } from "@microsoft/fast-element";
 import { ComposeOptions, DesignSystem } from "../../design-system.js";
-import { componentBaseStyles } from "../../styles/styles.js";
+import { componentBaseStyles, svgIconStyles } from "../../styles/styles.js";
+import { Calendar } from "./calendar.js";
 import { aestheticStyles, templateStyles } from "./calendar.styles.js";
-import { CalendarAnatomy, template } from "./calendar.template.js";
+import { CalendarAnatomy, CalendarStatics, template } from "./calendar.template.js";
 
-const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+const defaultStyles = [componentBaseStyles, templateStyles, svgIconStyles, aestheticStyles];
 
 /**
  * @public
  */
 export function composeCalendar(
     ds: DesignSystem,
-    options?: ComposeOptions<FASTCalendar>
-): FASTElementDefinition {
+    options?: ComposeOptions<Calendar, CalendarStatics>
+): Promise<FASTElementDefinition<typeof Calendar>> {
+    if (options?.statics) {
+        for (const key of Object.values(CalendarStatics)) {
+            if (!ds.statics.has(key)) {
+                ds.statics.set(key, options.statics[key]);
+            }
+        }
+    }
+
     const styles = DesignSystem.assembleStyles(defaultStyles, CalendarAnatomy, options);
 
-    return FASTCalendar.compose({
+    return FASTElementDefinition.compose(Calendar, {
         name: `${ds.prefix}-calendar`,
         template: options?.template?.(ds) ?? template(ds),
         styles,

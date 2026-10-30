@@ -1,3 +1,4 @@
+export { Dialog } from "./dialog.js";
 export { composeDialog } from "./dialog.compose.js";
 export {
     templateStyles as dialogTemplateStyles,

@@ -1,4 +1,5 @@
-export { composeCalendar} from "./calendar.compose.js";
+export { Calendar } from "./calendar.js";
+export { composeCalendar } from "./calendar.compose.js";
 export {
     templateStyles as calendarTemplateStyles,
     aestheticStyles as calendarAestheticStyles,
@@ -6,4 +7,4 @@ export {
 export {
     styleModules as calendarStyleModules,
 } from "./calendar.styles.modules.js";
-export { template as calendarTemplate, CalendarAnatomy, CalendarConditions, CalendarParts } from "./calendar.template.js";
+export { template as calendarTemplate, CalendarAnatomy, CalendarConditions, CalendarParts, CalendarStatics } from "./calendar.template.js";

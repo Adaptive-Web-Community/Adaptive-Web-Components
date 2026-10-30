@@ -1,0 +1,9 @@
+{
+    "colors": true,
+    "recursive": true,
+    "timeout": 5000,
+    "spec": "dist/**/*.spec.js",
+    "require": [
+        "./.mocha-jsdom.js"
+    ]
+}

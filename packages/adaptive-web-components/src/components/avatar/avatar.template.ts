@@ -1,19 +1,15 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { avatarTemplate, FASTAvatar } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { AvatarParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Avatar } from "./avatar.js";
 
 /**
  * @public
  */
 export const AvatarConditions = {};
 
-/**
- * @public
- */
-export const AvatarParts = {
-    backplate: "backplate",
-};
+export { AvatarParts };
 
 /**
  * @public
@@ -25,9 +21,14 @@ export const AvatarAnatomy: ComponentAnatomy<typeof AvatarConditions, typeof Ava
 };
 
 /**
- * Default Avatar template, {@link @microsoft/fast-foundation#avatarTemplate}.
+ * Default Avatar template.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAvatar> =
-    (ds: DesignSystem) =>
-        avatarTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Avatar> =
+    (ds: DesignSystem) => html<Avatar>`
+        <div class="backplate" part="backplate">
+            <slot name="media"></slot>
+            <slot></slot>
+        </div>
+        <slot name="badge"></slot>
+    `;

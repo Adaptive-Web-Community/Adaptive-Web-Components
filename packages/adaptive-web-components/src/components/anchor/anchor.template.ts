@@ -1,23 +1,18 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { anchorTemplate, FASTAnchor } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { AnchorParts } from "@adaptive-web/components-foundation";
 import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Anchor } from "./anchor.js";
 
 /**
  * @public
  */
 export const AnchorConditions = {
-    iconOnly: ".icon-only",
+    hideLabel: "[hide-label]",
     noHref: ":not([href])",
 };
 
-/**
- * @public
- */
-export const AnchorParts = {
-    control: "control",
-    content: "content",
-};
+export { AnchorParts };
 
 /**
  * @public
@@ -30,9 +25,29 @@ export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof Anc
 };
 
 /**
- * Default Anchor template, {@link @microsoft/fast-foundation#anchorTemplate}.
+ * Default Anchor template: a native link, which has the element's link attributes and, through the
+ * {@link @adaptive-web/components-foundation#AriaForwardingController}, its ARIA attributes.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTAnchor> =
-    (ds: DesignSystem) =>
-        anchorTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Anchor> =
+    (ds: DesignSystem) => html<Anchor>`
+        <a
+            class="control"
+            part="control"
+            download="${x => x.download}"
+            href="${x => x.href}"
+            hreflang="${x => x.hreflang}"
+            ping="${x => x.ping}"
+            referrerpolicy="${x => x.referrerPolicy}"
+            rel="${x => x.rel}"
+            target="${x => x.target}"
+            type="${x => x.type}"
+            ${ref("control")}
+        >
+            <slot name="start"></slot>
+            <span class="content" part="content">
+                <slot></slot>
+            </span>
+            <slot name="end"></slot>
+        </a>
+    `;

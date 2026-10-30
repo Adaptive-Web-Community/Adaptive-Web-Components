@@ -1,3 +1,4 @@
+export { Search } from "./search.js";
 export { composeSearch } from "./search.compose.js";
 export {
     templateStyles as searchTemplateStyles,

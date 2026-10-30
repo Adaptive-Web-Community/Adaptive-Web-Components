@@ -1,16 +1,18 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { FASTSelect } from "@microsoft/fast-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as listboxOptionTemplate } from "../listbox-option/listbox-option.stories.js";
+import type { Select as SelectElement } from "./select.js";
 
-const storyTemplate = html<StoryArgs<FASTSelect>>`
+const storyTemplate = html<StoryArgs<SelectElement>>`
     <adaptive-select
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
-        ?multiple="${(x) => x.multiple}"
-        ?open="${(x) => x.open}"
-        size="${(x) => x.size}"
-        value="${(x) => x.value}"
+        ?readonly="${(x) => x.readOnly}"
+        ?required="${(x) => x.required}"
+        name="${(x) => x.name}"
+        :value="${(x) => x.value}"
     >
         ${(x) => maybeStartSlotIcon(x)}
         ${(x) => x.storyContent}
@@ -21,9 +23,10 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
 export default {
     title: "Components/Select",
     args: {
+        label: "Doctor",
         startSlotIcon: false,
         endSlotIcon: false,
-        storyContent: html<StoryArgs<FASTSelect>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
+        storyContent: html<StoryArgs<SelectElement>>` ${repeat((x) => x.storyItems, listboxOptionTemplate)} `,
         storyItems: [
             { storyContent: "William Hartnell" },
             { storyContent: "Patrick Troughton" },
@@ -41,34 +44,25 @@ export default {
             { storyContent: "Ncuti Gatwa" },
         ],
         disabled: false,
-        multiple: false,
-        open: false,
+        readOnly: false,
+        required: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },
-        multiple: { control: "boolean" },
         name: { control: "text" },
-        open: { control: "boolean" },
-        size: { control: "number" },
+        readOnly: { control: "boolean" },
+        required: { control: "boolean" },
         value: { control: "text" },
     },
-} as Meta<FASTSelect>;
+} as Meta<SelectElement>;
 
-export const Select: Story<FASTSelect> = renderComponent(storyTemplate).bind({});
+export const Select: Story<SelectElement> = renderComponent(storyTemplate).bind({});
 
-export const SelectMultiple: Story<FASTSelect> = Select.bind({});
-SelectMultiple.args = {
-    multiple: true,
-};
-
-export const SelectWithSize: Story<FASTSelect> = Select.bind({});
-SelectWithSize.args = {
-    size: 5,
-};
-
-export const SelectDisabled: Story<FASTSelect> = Select.bind({});
+export const SelectDisabled: Story<SelectElement> = Select.bind({});
 SelectDisabled.args = {
     disabled: true,
 };

@@ -7,10 +7,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
-    }
-
-    .listitem {
-        display: flex;
         align-items: center;
     }
 

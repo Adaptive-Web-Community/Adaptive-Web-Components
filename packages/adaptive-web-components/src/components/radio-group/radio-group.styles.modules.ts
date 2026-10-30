@@ -1,7 +1,7 @@
 import {
     StyleRules,
 } from "@adaptive-web/adaptive-ui";
-import { densityControl } from "@adaptive-web/adaptive-ui/reference";
+import { densityControl, labelTextStyles } from "@adaptive-web/adaptive-ui/reference";
 import { RadioGroupAnatomy } from "./radio-group.template.js";
 
 /**
@@ -14,6 +14,12 @@ export const styleModules: StyleRules = [
         properties: {
             gap: densityControl.verticalGap,
         },
+    },
+    {
+        target : {
+            part: RadioGroupAnatomy.parts.label,
+        },
+        styles: labelTextStyles,
     },
     {
         target : {

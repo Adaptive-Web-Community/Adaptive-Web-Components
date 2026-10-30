@@ -5,7 +5,7 @@ import { BreadcrumbItemStatics } from "./breadcrumb-item.template.js";
 import { styleModules } from "./breadcrumb-item.styles.modules.js";
 
 /**
- * The Breadcrumb custom element definition. Implements {@link @microsoft/fast-foundation#FASTBreadcrumb}.
+ * The Breadcrumb Item custom element definition. Implements {@link BreadcrumbItem}.
  *
  * @remarks
  * HTML Element: \<adaptive-breadcrumb\>
@@ -19,5 +19,9 @@ export const breadcrumbItemDefinition = composeBreadcrumbItem(
             [BreadcrumbItemStatics.separator]: chevronRightIcon,
         },
         styleModules,
+        shadowOptions: {
+            // Focusing the element focuses the native link, as the Anchor's.
+            delegatesFocus: true,
+        },
     }
 );

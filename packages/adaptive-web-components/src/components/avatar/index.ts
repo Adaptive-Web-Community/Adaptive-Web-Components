@@ -1,3 +1,4 @@
+export { Avatar } from "./avatar.js";
 export { composeAvatar } from "./avatar.compose.js";
 export {
     templateStyles as avatarTemplateStyles,

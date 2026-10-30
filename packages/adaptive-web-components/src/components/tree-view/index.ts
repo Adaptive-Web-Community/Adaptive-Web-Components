@@ -1,3 +1,4 @@
+export { TreeView } from "./tree-view.js";
 export { composeTreeView } from "./tree-view.compose.js";
 export {
     templateStyles as treeViewTemplateStyles,

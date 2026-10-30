@@ -1,3 +1,4 @@
+export { TreeItem } from "./tree-item.js";
 export { composeTreeItem } from "./tree-item.compose.js";
 export {
     templateStyles as treeItemTemplateStyles,

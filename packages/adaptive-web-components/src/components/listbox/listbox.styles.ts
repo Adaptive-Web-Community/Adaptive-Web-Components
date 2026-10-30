@@ -3,6 +3,7 @@ import {
     focusStrokeThickness,
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -13,6 +14,30 @@ export const templateStyles: ElementStyles = css`
         display: inline-flex;
         flex-direction: column;
     }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    ::slotted(*) {
+        flex: 0 0 auto;
+    }
+
+    .label {
+        align-self: start;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
+    }
 `;
 
 /**
@@ -20,8 +45,7 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
-    :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
+    :host(:focus-visible) ::slotted(:state(active)) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
         outline-offset: 1px;
     }

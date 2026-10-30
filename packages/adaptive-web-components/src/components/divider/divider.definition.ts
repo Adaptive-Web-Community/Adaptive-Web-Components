@@ -3,7 +3,7 @@ import { composeDivider } from "./divider.compose.js";
 import { styleModules } from "./divider.styles.modules.js";
 
 /**
- * The Divider custom element definition. Implements {@link @microsoft/fast-foundation#FASTDivider}.
+ * The Divider custom element definition. Implements {@link Divider}.
  *
  * @remarks
  * HTML Element: \<adaptive-divider\>

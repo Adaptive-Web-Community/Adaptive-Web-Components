@@ -1,14 +1,18 @@
 import { html, repeat } from "@microsoft/fast-element";
-import type { FASTListboxElement } from "@microsoft/fast-foundation";
 import { renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as listboxOptionStoryTemplate } from "../listbox-option/listbox-option.stories.js";
+import type { Listbox as ListboxElement } from "./listbox.js";
 
-const storyTemplate = html<StoryArgs<FASTListboxElement>>`
+const storyTemplate = html<StoryArgs<ListboxElement>>`
     <adaptive-listbox
+        label="${(x) => x.label}"
+        ?hide-label="${(x) => x.hideLabel}"
         ?disabled="${(x) => x.disabled}"
         ?multiple="${(x) => x.multiple}"
-        size="${(x) => x.size}"
+        ?readonly="${(x) => x.readOnly}"
+        ?required="${(x) => x.required}"
+        style="max-height: 300px;"
     >
         ${(x) => x.storyContent}
     </adaptive-listbox>
@@ -17,7 +21,8 @@ const storyTemplate = html<StoryArgs<FASTListboxElement>>`
 export default {
     title: "Components/Listbox",
     args: {
-        storyContent: html<StoryArgs<FASTListboxElement>>`
+        label: "Fruit",
+        storyContent: html<StoryArgs<ListboxElement>>`
             ${repeat((x) => x.storyItems, listboxOptionStoryTemplate)}
         `,
         storyItems: [
@@ -38,14 +43,19 @@ export default {
         ],
         disabled: false,
         multiple: false,
+        readOnly: false,
+        required: false,
     },
     argTypes: {
+        label: { control: "text" },
+        hideLabel: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
         disabled: { control: "boolean" },
         multiple: { control: "boolean" },
-        size: { control: "number" },
+        readOnly: { control: "boolean" },
+        required: { control: "boolean" },
     },
-} as Meta<FASTListboxElement>;
+} as Meta<ListboxElement>;
 
-export const Listbox: Story<FASTListboxElement> = renderComponent(storyTemplate).bind({});
+export const Listbox: Story<ListboxElement> = renderComponent(storyTemplate).bind({});

@@ -3,7 +3,7 @@ import { composeSkeleton } from "./skeleton.compose.js";
 import { styleModules } from "./skeleton.styles.modules.js";
 
 /**
- * The Skeleton custom element definition. Implements {@link @microsoft/fast-foundation#FASTSkeleton}.
+ * The Skeleton custom element definition. Implements {@link Skeleton}.
  *
  * @remarks
  * HTML Element: \<adaptive-skeleton\>

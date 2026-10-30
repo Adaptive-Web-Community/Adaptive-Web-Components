@@ -1,3 +1,4 @@
+export { TabPanel } from "./tab-panel.js";
 export { composeTabPanel } from "./tab-panel.compose.js";
 export {
     templateStyles as tabPanelTemplateStyles,

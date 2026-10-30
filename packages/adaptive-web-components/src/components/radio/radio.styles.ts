@@ -3,6 +3,7 @@ import {
 } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { heightNumber } from "../../styles/index.js";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -23,26 +24,20 @@ export const templateStyles: ElementStyles = css`
     }
 
     slot[name="checked-indicator"] * {
-        pointer-events: none;
-    }
-
-    slot[name="checked-indicator"] * {
-        /*opacity: 0;*/
-        display: none;
-    }
-
-    :host([aria-checked="true"]) slot[name="checked-indicator"] * {
-        /*opacity: 1;*/
         display: flex;
+        pointer-events: none;
     }
 
     .label {
         cursor: pointer;
     }
 
-    .label.label__hidden {
+    .label[hidden] {
         display: none;
-        visibility: hidden;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 

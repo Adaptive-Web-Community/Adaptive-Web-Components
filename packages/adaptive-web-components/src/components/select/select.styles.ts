@@ -1,11 +1,6 @@
-import {
-    designUnit,
-    focusStrokeOuter,
-    focusStrokeThickness,
-    strokeThickness,
-} from "@adaptive-web/adaptive-ui/reference";
+import { focusStrokeOuter, focusStrokeThickness } from "@adaptive-web/adaptive-ui/reference";
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { heightNumber } from "../../styles/index.js";
+import { visuallyHidden } from "../../styles/styles.js";
 
 /**
  * Basic layout styling associated with the anatomy of the template.
@@ -14,18 +9,9 @@ import { heightNumber } from "../../styles/index.js";
 export const templateStyles: ElementStyles = css`
     :host {
         display: inline-flex;
-        position: relative;
+        flex-direction: column;
         user-select: none;
         vertical-align: top;
-    }
-
-    :host(:not([aria-haspopup])) {
-        height: auto;
-        min-width: 0;
-    }
-
-    :host([size="0"]) .listbox {
-        max-height: none;
     }
 
     .control {
@@ -33,6 +19,10 @@ export const templateStyles: ElementStyles = css`
         align-items: center;
         cursor: pointer;
         width: 100%;
+    }
+
+    :host(:disabled) .control {
+        cursor: default;
     }
 
     ::slotted([slot="start"]),
@@ -50,26 +40,35 @@ export const templateStyles: ElementStyles = css`
     }
 
     .listbox {
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
+        margin: 0;
+        inset: auto;
+        position-area: block-end span-inline-end;
+        position-try-fallbacks: flip-block;
+        min-width: anchor-size(width);
+        max-height: 50vh;
         overflow-y: auto;
     }
 
-    :host([aria-haspopup]) .listbox {
-        position: fixed;
+    .listbox:popover-open {
+        display: flex;
+        flex-direction: column;
     }
 
-    .listbox[hidden] {
-        display: none;
-    }
-
-    ::slotted([role="option"]) {
+    ::slotted(*) {
         flex: 0 0 auto;
     }
 
-    :host([disabled]) .control {
-        user-select: none;
+    .label {
+        align-self: start;
+        cursor: pointer;
+    }
+
+    .label[hidden] {
+        display: none;
+    }
+
+    :host([hide-label]) .label {
+        ${visuallyHidden}
     }
 `;
 
@@ -78,13 +77,8 @@ export const templateStyles: ElementStyles = css`
  * @public
  */
 export const aestheticStyles: ElementStyles = css`
-    :host(:not([aria-multiselectable]):not([disabled]):focus-visible) ::slotted([aria-selected="true"][role="option"]:not([disabled])),
-    :host([aria-multiselectable="true"]:not([disabled]):focus-visible) ::slotted([aria-checked="true"][role="option"]:not([disabled])) {
+    ::slotted(:state(active)) {
         outline: ${focusStrokeThickness} solid ${focusStrokeOuter};
-        outline-offset: 1px;
-    }
-
-    .listbox {
-        max-height: calc((var(--size, 0) * ${heightNumber}) * 1px + (${designUnit} + ${strokeThickness} * 2));
+        outline-offset: calc(${focusStrokeThickness} * -1);
     }
 `;

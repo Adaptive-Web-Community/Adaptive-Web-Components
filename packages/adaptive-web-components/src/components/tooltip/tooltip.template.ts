@@ -1,14 +1,13 @@
-import { ElementViewTemplate } from "@microsoft/fast-element";
-import { FASTTooltip, tooltipTemplate } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
+import type { Tooltip } from "./tooltip.js";
 
 /**
  * @public
  */
 export const TooltipConditions = {
-    show: "[show='true']",
-    visible: "[visible]",
+    open: ":popover-open",
 };
 
 /**
@@ -27,9 +26,10 @@ export const TooltipAnatomy: ComponentAnatomy<typeof TooltipConditions, typeof T
 };
 
 /**
- * Default Tooltip template, {@link @microsoft/fast-foundation#tooltipTemplate}.
+ * Default Tooltip template. The element is the popover, in the top layer, placed next to its anchor by the template's styles.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<FASTTooltip> =
-    (ds: DesignSystem) =>
-        tooltipTemplate();
+export const template: (ds: DesignSystem) => ElementViewTemplate<Tooltip> =
+    (ds: DesignSystem) => html<Tooltip>`
+        <slot></slot>
+    `;

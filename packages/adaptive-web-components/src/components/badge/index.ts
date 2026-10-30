@@ -1,3 +1,4 @@
+export { Badge } from "./badge.js";
 export { composeBadge } from "./badge.compose.js";
 export {
     templateStyles as badgeTemplateStyles,
