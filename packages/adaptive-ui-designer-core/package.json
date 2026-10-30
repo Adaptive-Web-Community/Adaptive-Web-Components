@@ -34,7 +34,6 @@
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "dependencies": {
     "@adaptive-web/adaptive-ui": "^0.14.0",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.31",
     "culori": "^4.0.2",
     "tslog": "^4.10.2"
   },
