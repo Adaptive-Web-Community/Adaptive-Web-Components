@@ -5,7 +5,7 @@ import { SerializableAnatomy } from '@adaptive-web/adaptive-ui';
 import type * as FigmaRestAPI from '@figma/rest-api-spec';
 import { kebabCase } from 'change-case';
 import { parseNode } from '../lib/node-parser.js';
-import { Anatomy } from '../lib/anatomy.js';
+import { anatomyOf } from '../lib/anatomy.js';
 import { ILibraryConfig } from './library-config.js';
 import { ILogger } from './logger.js';
 
@@ -37,7 +37,7 @@ export class AnatomyConfiguration implements IAnatomyConfiguration {
     } catch (e) {
       if ((e as Error).message.startsWith("ENOENT")) {
         logger.success(`Writing anatomy file for ${name}.`);
-        const nodeAnatomy = Anatomy.fromPluginUINodeData(parseNode(node))
+        const nodeAnatomy = anatomyOf(parseNode(node));
         const nodeAnatomyFileData = JSON.stringify(nodeAnatomy, null, 2);
         anatomy = JSON.parse(nodeAnatomyFileData);
         await fs.mkdir(path.parse(configurationPath).dir, { recursive: true }); // ensure dir exists or fs.writeFile will throw
