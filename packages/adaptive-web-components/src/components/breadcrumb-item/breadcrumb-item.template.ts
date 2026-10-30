@@ -8,14 +8,14 @@ import type { BreadcrumbItem } from "./breadcrumb-item.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the breadcrumb item.
  *
- * @beta
+ * @public
  */
 export const BreadcrumbItemStatics = {
     separator: "breadcrumb-item-separator"
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 

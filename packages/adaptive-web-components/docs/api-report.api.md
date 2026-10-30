@@ -23,6 +23,7 @@ import { ButtonParts } from '@adaptive-web/components-foundation';
 import { ButtonType } from '@adaptive-web/components-foundation';
 import { CalendarElement } from '@adaptive-web/components-foundation';
 import { CalendarParts } from '@adaptive-web/components-foundation';
+import { CaptureType } from '@microsoft/fast-element';
 import type { CheckableController } from '@adaptive-web/components-foundation';
 import type { CheckableElement } from '@adaptive-web/components-foundation';
 import { CheckboxController } from '@adaptive-web/components-foundation';
@@ -168,20 +169,18 @@ export const AccordionItemConditions: {
 
 export { AccordionItemParts }
 
-// @beta
+// @public
 export const AccordionItemStatics: {
     readonly collapsed: "accordion-item-collapsed-icon";
     readonly expanded: "accordion-item-expanded-icon";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
 // @public
 export const accordionItemStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const accordionItemTemplate: (ds: DesignSystem) => ElementViewTemplate<AccordionItem>;
 
@@ -194,15 +193,13 @@ export const AccordionParts: {};
 // @public
 export const accordionStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const accordionTemplate: (ds: DesignSystem) => ElementViewTemplate<Accordion>;
 
 // @public
 export const accordionTemplateStyles: ElementStyles;
 
-// @beta
+// @public
 export const AdaptiveDesignSystem: DesignSystem;
 
 // @public
@@ -243,8 +240,6 @@ export { AnchorParts }
 // @public
 export const anchorStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const anchorTemplate: (ds: DesignSystem) => ElementViewTemplate<Anchor>;
 
@@ -272,8 +267,6 @@ export { AvatarParts }
 // @public
 export const avatarStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const avatarTemplate: (ds: DesignSystem) => ElementViewTemplate<Avatar>;
 
@@ -298,16 +291,12 @@ export { BadgeParts }
 // @public
 export const badgeStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const badgeTemplate: (ds: DesignSystem) => ElementViewTemplate<Badge>;
 
 // @public
 export const badgeTemplateStyles: ElementStyles;
 
-// Warning: (ae-forgotten-export) The symbol "BaseFormControl" needs to be exported by the entry point index.d.ts
-//
 // @public
 export abstract class BaseCheckable<C extends CheckableController = CheckableController> extends BaseFormControl implements CheckableElement {
     checked: boolean;
@@ -334,6 +323,20 @@ export abstract class BaseCheckable<C extends CheckableController = CheckableCon
     value: string;
     // (undocumented)
     protected valueChanged(): void;
+}
+
+// @public
+export abstract class BaseFormControl extends FASTElement implements FormControlElement {
+    checkValidity(): boolean;
+    get form(): HTMLFormElement | null;
+    static readonly formAssociated = true;
+    // (undocumented)
+    protected readonly internals: ElementInternals;
+    get labels(): NodeList;
+    reportValidity(): boolean;
+    get validationMessage(): string;
+    get validity(): ValidityState;
+    get willValidate(): boolean;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "baseHeightMultiplier" should be prefixed with an underscore because the declaration is marked as @internal
@@ -439,19 +442,17 @@ export const BreadcrumbItemConditions: {
 
 export { BreadcrumbItemParts }
 
-// @beta
+// @public
 export const BreadcrumbItemStatics: {
     readonly separator: "breadcrumb-item-separator";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type BreadcrumbItemStatics = ValuesOf<typeof BreadcrumbItemStatics>;
 
 // @public
 export const breadcrumbItemStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const breadcrumbItemTemplate: (ds: DesignSystem) => ElementViewTemplate<BreadcrumbItem>;
 
@@ -463,8 +464,6 @@ export { BreadcrumbParts }
 // @public
 export const breadcrumbStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const breadcrumbTemplate: (ds: DesignSystem) => ElementViewTemplate<Breadcrumb>;
 
@@ -511,8 +510,6 @@ export { ButtonParts }
 // @public
 export const buttonStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const buttonTemplate: (ds: DesignSystem) => ElementViewTemplate<Button>;
 
@@ -593,20 +590,18 @@ export const CalendarConditions: {
 
 export { CalendarParts }
 
-// @beta
+// @public
 export const CalendarStatics: {
     readonly previous: "calendar-previous-month-icon";
     readonly next: "calendar-next-month-icon";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type CalendarStatics = ValuesOf<typeof CalendarStatics>;
 
 // @public
 export const calendarStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const calendarTemplate: (ds: DesignSystem) => ElementViewTemplate<Calendar>;
 
@@ -632,8 +627,6 @@ export const CardParts: {};
 // @public
 export const cardStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const cardTemplate: (ds: DesignSystem) => ElementViewTemplate<Card>;
 
@@ -669,20 +662,18 @@ export const CheckboxConditions: {
 
 export { CheckboxParts }
 
-// @beta
+// @public
 export const CheckboxStatics: {
     readonly checked: "checkbox-checked-indicator";
     readonly indeterminate: "checkbox-indeterminate-indicator";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 
 // @public
 export const checkboxStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const checkboxTemplate: (ds: DesignSystem) => ElementViewTemplate<Checkbox>;
 
@@ -701,232 +692,148 @@ export interface ColumnDefinition {
 // @public
 export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n\n    :host {\n        box-sizing: border-box;\n    }\n\n    *, *:before, *:after {\n        box-sizing: inherit;\n    }\n";
 
-// @beta
+// @public
 export type ComponentDefinition = Promise<FASTElementDefinition> | ((ds: DesignSystem) => Promise<FASTElementDefinition>);
 
-// Warning: (ae-forgotten-export) The symbol "ComposeOptions" needs to be exported by the entry point index.d.ts
-// Warning: (ae-incompatible-release-tags) The symbol "composeAccordion" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
+// @public
+export type ComponentStatics = AccordionItemStatics | BreadcrumbItemStatics | CalendarStatics | CheckboxStatics | MenuItemStatics | NumberFieldStatics | PickerStatics | RadioStatics | SelectStatics | TreeItemStatics;
+
 // @public (undocumented)
 export function composeAccordion(ds: DesignSystem, options?: ComposeOptions<Accordion>): Promise<FASTElementDefinition<typeof Accordion>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeAccordionItem" is marked as @public, but its signature references "AccordionItemStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeAccordionItem(ds: DesignSystem, options?: ComposeOptions<AccordionItem, AccordionItemStatics>): Promise<FASTElementDefinition<typeof AccordionItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeAnchor" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeAnchor(ds: DesignSystem, options?: ComposeOptions<Anchor>): Promise<FASTElementDefinition<typeof Anchor>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeAvatar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeAvatar(ds: DesignSystem, options?: ComposeOptions<Avatar>): Promise<FASTElementDefinition<typeof Avatar>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeBadge" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeBadge(ds: DesignSystem, options?: ComposeOptions<Badge>): Promise<FASTElementDefinition<typeof Badge>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumb" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeBreadcrumb(ds: DesignSystem, options?: ComposeOptions<Breadcrumb>): Promise<FASTElementDefinition<typeof Breadcrumb>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeBreadcrumbItem" is marked as @public, but its signature references "BreadcrumbItemStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeBreadcrumbItem(ds: DesignSystem, options?: ComposeOptions<BreadcrumbItem, BreadcrumbItemStatics>): Promise<FASTElementDefinition<typeof BreadcrumbItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeButton" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeButton(ds: DesignSystem, options?: ComposeOptions<Button>): Promise<FASTElementDefinition<typeof Button>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeCalendar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeCalendar" is marked as @public, but its signature references "CalendarStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeCalendar(ds: DesignSystem, options?: ComposeOptions<Calendar, CalendarStatics>): Promise<FASTElementDefinition<typeof Calendar>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeCard" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeCard(ds: DesignSystem, options?: ComposeOptions<Card>): Promise<FASTElementDefinition<typeof Card>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeCheckbox" is marked as @public, but its signature references "CheckboxStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeCheckbox(ds: DesignSystem, options?: ComposeOptions<Checkbox, CheckboxStatics>): Promise<FASTElementDefinition<typeof Checkbox>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeDataGrid" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeDataGrid(ds: DesignSystem, options?: ComposeOptions<DataGrid>): Promise<FASTElementDefinition<typeof DataGrid>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeDataGridCell" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeDataGridCell(ds: DesignSystem, options?: ComposeOptions<DataGridCell>): Promise<FASTElementDefinition<typeof DataGridCell>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeDataGridRow" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeDataGridRow(ds: DesignSystem, options?: ComposeOptions<DataGridRow>): Promise<FASTElementDefinition<typeof DataGridRow>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeDialog" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeDialog(ds: DesignSystem, options?: ComposeOptions<Dialog>): Promise<FASTElementDefinition<typeof Dialog>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeDivider" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeDivider(ds: DesignSystem, options?: ComposeOptions<Divider>): Promise<FASTElementDefinition<typeof Divider>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeList" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeList(ds: DesignSystem, options?: ComposeOptions<List>): Promise<FASTElementDefinition<typeof List>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeListbox" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeListbox(ds: DesignSystem, options?: ComposeOptions<Listbox>): Promise<FASTElementDefinition<typeof Listbox>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeListboxOption" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeListboxOption(ds: DesignSystem, options?: ComposeOptions<ListboxOption>): Promise<FASTElementDefinition<typeof ListboxOption>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeListItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeListItem(ds: DesignSystem, options?: ComposeOptions<ListItem>): Promise<FASTElementDefinition<typeof ListItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeMenu" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeMenu(ds: DesignSystem, options?: ComposeOptions<Menu>): Promise<FASTElementDefinition<typeof Menu>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeMenuItem" is marked as @public, but its signature references "MenuItemStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeMenuItem(ds: DesignSystem, options?: ComposeOptions<MenuItem, MenuItemStatics>): Promise<FASTElementDefinition<typeof MenuItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeNumberField" is marked as @public, but its signature references "NumberFieldStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeNumberField(ds: DesignSystem, options?: ComposeOptions<NumberField, NumberFieldStatics>): Promise<FASTElementDefinition<typeof NumberField>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composePicker" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composePicker" is marked as @public, but its signature references "PickerStatics" which is marked as @beta
-//
+// @public
+export type ComposeOptions<TSource, TStatics extends string = any> = {
+    template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;
+    styles?: ElementStyles | ElementStyles[];
+    styleRules?: StyleRules;
+    shadowOptions?: Partial<ShadowRootOptions>;
+    elementOptions?: ElementDefinitionOptions;
+    statics?: Record<TStatics, StaticallyComposableHTML>;
+};
+
 // @public (undocumented)
 export function composePicker(ds: DesignSystem, options?: ComposeOptions<Picker, PickerStatics>): Promise<FASTElementDefinition<typeof Picker>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeProgress" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeProgress(ds: DesignSystem, options?: ComposeOptions<Progress>): Promise<FASTElementDefinition<typeof Progress>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeProgressRing" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeProgressRing(ds: DesignSystem, options?: ComposeOptions<ProgressRing>): Promise<FASTElementDefinition<typeof ProgressRing>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeRadio" is marked as @public, but its signature references "RadioStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeRadio(ds: DesignSystem, options?: ComposeOptions<Radio, RadioStatics>): Promise<FASTElementDefinition<typeof Radio>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeRadioGroup" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeRadioGroup(ds: DesignSystem, options?: ComposeOptions<RadioGroup>): Promise<FASTElementDefinition<typeof RadioGroup>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSearch" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSearch(ds: DesignSystem, options?: ComposeOptions<Search>): Promise<FASTElementDefinition<typeof Search>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeSelect" is marked as @public, but its signature references "SelectStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSelect(ds: DesignSystem, options?: ComposeOptions<Select, SelectStatics>): Promise<FASTElementDefinition<typeof Select>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSkeleton" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSkeleton(ds: DesignSystem, options?: ComposeOptions<Skeleton>): Promise<FASTElementDefinition<typeof Skeleton>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSlider" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSlider(ds: DesignSystem, options?: ComposeOptions<Slider>): Promise<FASTElementDefinition<typeof Slider>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSliderLabel" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSliderLabel(ds: DesignSystem, options?: ComposeOptions<SliderLabel>): Promise<FASTElementDefinition<typeof SliderLabel>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeSwitch" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeSwitch(ds: DesignSystem, options?: ComposeOptions<Switch>): Promise<FASTElementDefinition<typeof Switch>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTab" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTab(ds: DesignSystem, options?: ComposeOptions<Tab>): Promise<FASTElementDefinition<typeof Tab>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTablist" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTablist(ds: DesignSystem, options?: ComposeOptions<Tablist>): Promise<FASTElementDefinition<typeof Tablist>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTabPanel" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTabPanel(ds: DesignSystem, options?: ComposeOptions<TabPanel>): Promise<FASTElementDefinition<typeof TabPanel>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTextArea" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTextArea(ds: DesignSystem, options?: ComposeOptions<TextArea>): Promise<FASTElementDefinition<typeof TextArea>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTextField" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTextField(ds: DesignSystem, options?: ComposeOptions<TextField>): Promise<FASTElementDefinition<typeof TextField>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeToolbar" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeToolbar(ds: DesignSystem, options?: ComposeOptions<Toolbar>): Promise<FASTElementDefinition<typeof Toolbar>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTooltip" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTooltip(ds: DesignSystem, options?: ComposeOptions<Tooltip>): Promise<FASTElementDefinition<typeof Tooltip>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-// Warning: (ae-incompatible-release-tags) The symbol "composeTreeItem" is marked as @public, but its signature references "TreeItemStatics" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTreeItem(ds: DesignSystem, options?: ComposeOptions<TreeItem, TreeItemStatics>): Promise<FASTElementDefinition<typeof TreeItem>>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "composeTreeView" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public (undocumented)
 export function composeTreeView(ds: DesignSystem, options?: ComposeOptions<TreeView>): Promise<FASTElementDefinition<typeof TreeView>>;
 
@@ -996,8 +903,6 @@ export const DataGridCellParts: {};
 // @public
 export const dataGridCellStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const dataGridCellTemplate: (ds: DesignSystem) => ElementViewTemplate<DataGridCell>;
 
@@ -1057,8 +962,6 @@ export const DataGridRowParts: {};
 // @public
 export const dataGridRowStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const dataGridRowTemplate: (ds: DesignSystem) => ElementViewTemplate<DataGridRow>;
 
@@ -1068,8 +971,6 @@ export const dataGridRowTemplateStyles: ElementStyles;
 // @public
 export const dataGridStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const dataGridTemplate: (ds: DesignSystem) => ElementViewTemplate<DataGrid>;
 
@@ -1081,14 +982,12 @@ export const dataGridTemplateStyles: ElementStyles;
 // @internal @deprecated (undocumented)
 export const density: CSSDirective;
 
-// @beta
+// @public
 export class DesignSystem {
-    // Warning: (ae-forgotten-export) The symbol "ElementStaticMap" needs to be exported by the entry point index.d.ts
     constructor(_prefix: string, _registry?: CustomElementRegistry, _statics?: ElementStaticMap, _library?: Library.Library<any>, _anatomyTreatments?: AnatomyTreatments);
     adoptTokenStyles(target?: Document | ShadowRoot): void;
     get anatomyTreatments(): AnatomyTreatments;
     assembleStyles(defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>): ElementStyles;
-    // Warning: (ae-forgotten-export) The symbol "PartialDesignSystem" needs to be exported by the entry point index.d.ts
     configure(options: PartialDesignSystem): this;
     defineComponents(components: Record<string, ComponentDefinition>): Promise<void>;
     get library(): Library.Library<any, any>;
@@ -1135,8 +1034,6 @@ export { DialogParts }
 // @public
 export const dialogStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const dialogTemplate: (ds: DesignSystem) => ElementViewTemplate<Dialog>;
 
@@ -1170,13 +1067,14 @@ export const DividerParts: {};
 // @public
 export const dividerStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const dividerTemplate: (ds: DesignSystem) => ElementViewTemplate<Divider>;
 
 // @public
 export const dividerTemplateStyles: ElementStyles;
+
+// @public (undocumented)
+export type ElementStaticMap = Map<ComponentStatics, StaticallyComposableHTML>;
 
 // @public
 export function generateColumns(row: object): ColumnDefinition[];
@@ -1296,8 +1194,6 @@ export { ListboxOptionParts }
 // @public
 export const listboxOptionStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const listboxOptionTemplate: (ds: DesignSystem) => ElementViewTemplate<ListboxOption>;
 
@@ -1309,8 +1205,6 @@ export { ListboxParts }
 // @public
 export const listboxStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const listboxTemplate: (ds: DesignSystem) => ElementViewTemplate<Listbox>;
 
@@ -1345,8 +1239,6 @@ export const ListItemParts: {};
 // @public
 export const listItemStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const listItemTemplate: (ds: DesignSystem) => ElementViewTemplate<ListItem>;
 
@@ -1359,8 +1251,6 @@ export const ListParts: {};
 // @public
 export const listStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const listTemplate: (ds: DesignSystem) => ElementViewTemplate<List>;
 
@@ -1431,21 +1321,19 @@ export const MenuItemConditions: {
 
 export { MenuItemParts }
 
-// @beta
+// @public
 export const MenuItemStatics: {
     readonly checkbox: "menu-item-checkbox-indicator";
     readonly radio: "menu-item-radio-indicator";
     readonly submenu: "menu-item-submenu-item";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 
 // @public
 export const menuItemStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const menuItemTemplate: (ds: DesignSystem) => ElementViewTemplate<MenuItem>;
 
@@ -1458,8 +1346,6 @@ export const MenuParts: {};
 // @public
 export const menuStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const menuTemplate: (ds: DesignSystem) => ElementViewTemplate<Menu>;
 
@@ -1495,25 +1381,26 @@ export const NumberFieldConditions: {};
 
 export { NumberFieldParts }
 
-// @beta
+// @public
 export const NumberFieldStatics: {
     readonly stepDown: "number-field-step-down-icon";
     readonly stepUp: "number-field-step-up-icon";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 
 // @public
 export const numberFieldStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const numberFieldTemplate: (ds: DesignSystem) => ElementViewTemplate<NumberField>;
 
 // @public
 export const numberFieldTemplateStyles: ElementStyles;
+
+// @public
+export type PartialDesignSystem = Partial<DesignSystem>;
 
 // @public
 export class Picker extends BaseFormControl implements PickerElement {
@@ -1594,20 +1481,18 @@ export const PickerConditions: {
 
 export { PickerParts }
 
-// @beta
+// @public
 export const PickerStatics: {
     readonly indicator: "picker-indicator";
     readonly removeValue: "picker-remove-value";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type PickerStatics = ValuesOf<typeof PickerStatics>;
 
 // @public
 export const pickerStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const pickerTemplate: (ds: DesignSystem) => ElementViewTemplate<Picker>;
 
@@ -1647,8 +1532,6 @@ export { ProgressRingParts }
 // @public
 export const progressRingStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const progressRingTemplate: (ds: DesignSystem) => ElementViewTemplate<ProgressRing>;
 
@@ -1658,8 +1541,6 @@ export const progressRingTemplateStyles: ElementStyles;
 // @public
 export const progressStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const progressTemplate: (ds: DesignSystem) => ElementViewTemplate<Progress>;
 
@@ -1745,8 +1626,6 @@ export { RadioGroupParts }
 // @public
 export const radioGroupStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const radioGroupTemplate: (ds: DesignSystem) => ElementViewTemplate<RadioGroup>;
 
@@ -1755,19 +1634,17 @@ export const radioGroupTemplateStyles: ElementStyles;
 
 export { RadioParts }
 
-// @beta
+// @public
 export const RadioStatics: {
     readonly checked: "radio-checked-indicator";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type RadioStatics = ValuesOf<typeof RadioStatics>;
 
 // @public
 export const radioStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const radioTemplate: (ds: DesignSystem) => ElementViewTemplate<Radio>;
 
@@ -1798,8 +1675,6 @@ export { SearchParts }
 // @public
 export const searchStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const searchTemplate: (ds: DesignSystem) => ElementViewTemplate<Search>;
 
@@ -1858,19 +1733,17 @@ export const SelectConditions: {
 
 export { SelectParts }
 
-// @beta
+// @public
 export const SelectStatics: {
     readonly indicator: "select-indicator";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type SelectStatics = ValuesOf<typeof SelectStatics>;
 
 // @public
 export const selectStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const selectTemplate: (ds: DesignSystem) => ElementViewTemplate<Select>;
 
@@ -1904,8 +1777,6 @@ export { SkeletonParts }
 // @public
 export const skeletonStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const skeletonTemplate: (ds: DesignSystem) => ElementViewTemplate<Skeleton>;
 
@@ -2014,8 +1885,6 @@ export { SliderLabelParts }
 // @public
 export const sliderLabelStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const sliderLabelTemplate: (ds: DesignSystem) => ElementViewTemplate<SliderLabel>;
 
@@ -2027,13 +1896,17 @@ export { SliderParts }
 // @public
 export const sliderStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const sliderTemplate: (ds: DesignSystem) => ElementViewTemplate<Slider>;
 
 // @public
 export const sliderTemplateStyles: ElementStyles;
+
+// @public
+export type StaticallyComposableHTML<TSource = any, TParent = any> = string | HTMLDirective | SyntheticViewTemplate<TSource, TParent> | undefined;
+
+// @public
+export function staticallyCompose<TSource = any, TParent = any>(item: StaticallyComposableHTML<TSource, TParent>): CaptureType<TSource, TParent>;
 
 // @public
 export const svgIconStyles = "\n    .stroked {\n        stroke: currentcolor;\n        stroke-linecap: round;\n        stroke-linejoin: round;\n        stroke-width: 1px;\n    }\n";
@@ -2066,8 +1939,6 @@ export { SwitchParts }
 // @public
 export const switchStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const switchTemplate: (ds: DesignSystem) => ElementViewTemplate<Switch>;
 
@@ -2140,8 +2011,6 @@ export const TablistParts: {};
 // @public
 export const tablistStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const tablistTemplate: (ds: DesignSystem) => ElementViewTemplate<Tablist>;
 
@@ -2170,8 +2039,6 @@ export const TabPanelParts: {};
 // @public
 export const tabPanelStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const tabPanelTemplate: (ds: DesignSystem) => ElementViewTemplate<TabPanel>;
 
@@ -2183,8 +2050,6 @@ export { TabParts }
 // @public
 export const tabStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const tabTemplate: (ds: DesignSystem) => ElementViewTemplate<Tab>;
 
@@ -2218,8 +2083,6 @@ export { TextAreaParts }
 // @public
 export const textAreaStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const textAreaTemplate: (ds: DesignSystem) => ElementViewTemplate<TextArea>;
 
@@ -2252,8 +2115,6 @@ export { TextFieldParts }
 // @public
 export const textFieldStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const textFieldTemplate: (ds: DesignSystem) => ElementViewTemplate<TextField>;
 
@@ -2306,8 +2167,6 @@ export { ToolbarParts }
 // @public
 export const toolbarStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const toolbarTemplate: (ds: DesignSystem) => ElementViewTemplate<Toolbar>;
 
@@ -2347,8 +2206,6 @@ export const TooltipParts: {};
 // @public
 export const tooltipStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const tooltipTemplate: (ds: DesignSystem) => ElementViewTemplate<Tooltip>;
 
@@ -2396,19 +2253,17 @@ export const TreeItemConditions: {
 
 export { TreeItemParts }
 
-// @beta
+// @public
 export const TreeItemStatics: {
     readonly expandCollapse: "tree-item-expand-collapse-icon";
 };
 
-// @beta (undocumented)
+// @public (undocumented)
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 
 // @public
 export const treeItemStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const treeItemTemplate: (ds: DesignSystem) => ElementViewTemplate<TreeItem>;
 
@@ -2442,8 +2297,6 @@ export const TreeViewParts: {};
 // @public
 export const treeViewStyleRules: StyleRules;
 
-// Warning: (ae-incompatible-release-tags) The symbol "template" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
-//
 // @public
 export const treeViewTemplate: (ds: DesignSystem) => ElementViewTemplate<TreeView>;
 

@@ -16,7 +16,10 @@ instead. A component that isn't listed hasn't changed yet.
   One whose native element is labelled by a `<label>` (an input, a select) has a `label` attribute, or a `label` slot for markup, and its
   default slot is never the label. One named by its content (a button, a link) is labelled by its default slot. `hide-label` hides either,
   and the label still names the control.
-- `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
+- `StaticallyComposableHTML` and `staticallyCompose` are this package's, exported from its entry point. `ValuesOf` is the components foundation's.
+- The design system's API is public, no longer beta: `DesignSystem` and its methods, `PartialDesignSystem`, `ElementStaticMap`,
+  `ComponentStatics`, `ComponentDefinition`, the `<Name>Statics` of the templates, and `ComposeOptions` (the options of `compose<Name>`, which
+  wasn't exported). `BaseFormControl` is exported too.
 - The components depend on `@adaptive-web/adaptive-ui` 1.0 (see its `MIGRATION.md`), whose tokens are those of a token library and not
   FAST design tokens. The styles are rendered with the library of the design system, see
   `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.

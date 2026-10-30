@@ -8,7 +8,7 @@ import type { AccordionItem } from "./accordion-item.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the accordion item collapsed icon.
  *
- * @beta
+ * @public
  */
 export const AccordionItemStatics = {
     collapsed: "accordion-item-collapsed-icon",
@@ -16,7 +16,7 @@ export const AccordionItemStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 

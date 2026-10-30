@@ -8,7 +8,7 @@ import type { Calendar } from "./calendar.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the calendar.
  *
- * @beta
+ * @public
  */
 export const CalendarStatics = {
     previous: "calendar-previous-month-icon",
@@ -16,7 +16,7 @@ export const CalendarStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type CalendarStatics = ValuesOf<typeof CalendarStatics>;
 

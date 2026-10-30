@@ -9,7 +9,7 @@ import type { Picker } from "./picker.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the picker.
  *
- * @beta
+ * @public
  */
 export const PickerStatics = {
     indicator: "picker-indicator",
@@ -17,7 +17,7 @@ export const PickerStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type PickerStatics = ValuesOf<typeof PickerStatics>;
 
