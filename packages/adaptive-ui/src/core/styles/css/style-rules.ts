@@ -1,9 +1,11 @@
+import { isRef } from "design-token-library";
 import { isInteractiveSet } from "../../interactive.js";
 import { ComponentAnatomy, Interactivity } from "../anatomy.js";
 import { isOnFill, onFillsOf, OnFillWithFill } from "../on-fill.js";
 import { StyleProperties, StyleValues } from "../properties.js";
 import { StyleRule, StyleRules, StyleRuleTarget } from "../rule.js";
 import { Treatment, treatmentProperties } from "../treatment.js";
+import { TreatmentRef, TreatmentResolver } from "../treatment-token.js";
 import { CssRule, renderRules, TokenPropertiesResolver } from "./rules.js";
 import { SelectorParameters } from "./selector.js";
 
@@ -23,17 +25,17 @@ export interface AnatomyTreatments {
      * Applied where a component that can be disabled is disabled: to the context, or to all of it when the focus is on a part, so the
      * indicator (usually the `not-allowed` cursor) doesn't show over the empty space between the parts.
      */
-    readonly disabled?: Treatment;
+    readonly disabled?: TreatmentRef;
 
     /**
      * Applied to the focus target in the focus state, the focus indicator.
      */
-    readonly focusIndicator?: Treatment;
+    readonly focusIndicator?: TreatmentRef;
 
     /**
      * Applied to the reset target in the focus state, which takes the focus but doesn't show it.
      */
-    readonly focusReset?: Treatment;
+    readonly focusReset?: TreatmentRef;
 }
 
 /**
@@ -48,6 +50,11 @@ export interface StyleRulesOptions {
     readonly tokens: TokenPropertiesResolver;
 
     /**
+     * Gets the treatment of a ref that a rule refers to, see {@link libraryTreatments}.
+     */
+    readonly treatments: TreatmentResolver;
+
+    /**
      * The anatomy of the component, for the context, the interactivity, the focus, and the cursor.
      */
     readonly anatomy?: ComponentAnatomy<any, any>;
@@ -60,7 +67,7 @@ export interface StyleRulesOptions {
      *
      * @beta
      */
-    readonly treatments?: AnatomyTreatments;
+    readonly anatomyTreatments?: AnatomyTreatments;
 }
 
 // The properties of a treatment in the focus state only: the focus of a set, or the value itself.
@@ -79,7 +86,7 @@ function inFocus(treatment: Treatment): StyleProperties {
 }
 
 // The rules that the anatomy adds: the disabled, the cursor, the focus reset, and the focus indicator.
-function anatomyRules(anatomy: ComponentAnatomy<any, any>, treatments: AnatomyTreatments): StyleRule[] {
+function anatomyRules(anatomy: ComponentAnatomy<any, any>, treatments: AnatomyTreatments, resolve: TreatmentResolver): StyleRule[] {
     const rules: StyleRule[] = [];
     const { interactivity, focus, cursor } = anatomy;
 
@@ -100,23 +107,26 @@ function anatomyRules(anatomy: ComponentAnatomy<any, any>, treatments: AnatomyTr
 
     if (focus) {
         if (treatments.focusReset && focus.resetTarget) {
-            rules.push({ target: focus.resetTarget, properties: inFocus(treatments.focusReset) });
+            rules.push({ target: focus.resetTarget, properties: inFocus(resolve(treatments.focusReset)) });
         }
         if (treatments.focusIndicator) {
-            rules.push({ target: focus.focusTarget, properties: inFocus(treatments.focusIndicator) });
+            rules.push({ target: focus.focusTarget, properties: inFocus(resolve(treatments.focusIndicator)) });
         }
     }
 
     return rules;
 }
 
-// The treatments of a rule, with those it gives by the deprecated name `styles` first.
-function withStyles(rule: StyleRule): StyleRule {
-    if (rule.styles === undefined) {
-        return rule;
-    }
-    const styles: readonly Treatment[] = isTreatmentList(rule.styles) ? rule.styles : [rule.styles];
-    return { ...rule, treatments: [...styles, ...(rule.treatments ?? [])] };
+// The treatment of a rule, with the treatments it refers to, after those it gives by the deprecated name `styles`.
+function treatmentOf(rule: StyleRule, resolve: TreatmentResolver): Treatment {
+    const styles: readonly Treatment[] = rule.styles === undefined ? [] : isTreatmentList(rule.styles) ? rule.styles : [rule.styles];
+    const treatments = (rule.treatments ?? []).map(treatment => (isWrittenInPlace(treatment) ? treatment : resolve(treatment)));
+    return { treatments: [...styles, ...treatments], properties: rule.properties };
+}
+
+// A treatment written in place isn't a ref; a ref to a treatment token, and to a group that stands for its root, is.
+function isWrittenInPlace(treatment: TreatmentRef | Treatment): treatment is Treatment {
+    return !isRef(treatment);
 }
 
 function isTreatmentList(styles: Treatment | readonly Treatment[]): styles is readonly Treatment[] {
@@ -127,10 +137,10 @@ function isTreatmentList(styles: Treatment | readonly Treatment[]): styles is re
 // the anatomy.
 function effectiveRules(
     styleRules: StyleRules,
-    options: Pick<StyleRulesOptions, "anatomy" | "treatments">
+    options: Pick<StyleRulesOptions, "treatments" | "anatomy" | "anatomyTreatments">
 ): { properties: Map<string, StyleValues>; params: SelectorParameters }[] {
-    const { anatomy, treatments = {} } = options;
-    const rules = anatomy ? [...anatomyRules(anatomy, treatments), ...styleRules] : styleRules;
+    const { treatments, anatomy, anatomyTreatments = {} } = options;
+    const rules = anatomy ? [...anatomyRules(anatomy, anatomyTreatments, treatments), ...styleRules] : styleRules;
 
     return rules.map(rule => {
         const target: StyleRuleTarget = { ...rule.target };
@@ -141,7 +151,7 @@ function effectiveRules(
             }
         }
         const interactivity = { ...anatomy?.interactivity, ...(target.ignoreInteractivity ? Interactivity.always : {}) };
-        return { properties: treatmentProperties(withStyles(rule)), params: { ...interactivity, ...target } };
+        return { properties: treatmentProperties(treatmentOf(rule, treatments)), params: { ...interactivity, ...target } };
     });
 }
 
@@ -154,7 +164,7 @@ function effectiveRules(
  * context has the context of the anatomy, and a part that is the context is the context itself.
  *
  * @param styleRules - The style rules of the component
- * @param options - The tokens, the anatomy, and the treatments the anatomy applies
+ * @param options - The tokens, the treatments the rules refer to, the anatomy, and the treatments the anatomy applies
  * @returns The rules of CSS
  *
  * @public
@@ -167,11 +177,14 @@ export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOpti
  * Gets the values on a fill of the style rules of a component, each with its fill, for the CSS of the tokens, see {@link onFillCSS}.
  *
  * @param styleRules - The style rules of the component
- * @param options - The anatomy, and the treatments the anatomy applies
+ * @param options - The treatments the rules refer to, the anatomy, and the treatments the anatomy applies
  * @returns The values on a fill
  *
  * @public
  */
-export function styleRulesOnFills(styleRules: StyleRules, options: Pick<StyleRulesOptions, "anatomy" | "treatments"> = {}): OnFillWithFill[] {
+export function styleRulesOnFills(
+    styleRules: StyleRules,
+    options: Pick<StyleRulesOptions, "treatments" | "anatomy" | "anatomyTreatments">
+): OnFillWithFill[] {
     return effectiveRules(styleRules, options).flatMap(({ properties }) => onFillsOf(properties));
 }

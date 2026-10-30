@@ -1,11 +1,36 @@
 Skipping <root>/dist/esm/__test__/styles-oracle/anatomies/stress-no-name.json: JSON anatomy has no name property.
 The token "accent-stroke-safety-rest" was renamed to "color.accent.stroke.safety.rest", update the source.
+The token "color.accent-fill-ideal-control" was renamed to "color.accent.treatments.fillIdealControl", update the source.
+The token "color.accent-fill-stealth-control" was renamed to "color.accent.treatments.fillStealthControl", update the source.
+The token "color.accent-fill-subtle-control" was renamed to "color.accent.treatments.fillSubtleControl", update the source.
+The token "color.accent-foreground-readable-control" was renamed to "color.accent.treatments.foregroundReadableControl", update the source.
+The token "color.critical-fill-readable-control" was renamed to "color.critical.treatments.fillReadableControl", update the source.
+The token "color.critical-foreground-readable-control" was renamed to "color.critical.treatments.foregroundReadableControl", update the source.
+The token "color.neutral-fill-subtle-control" was renamed to "color.neutral.treatments.fillSubtleControl", update the source.
+The token "color.neutral-foreground-readable-element" was renamed to "color.neutral.treatments.foregroundReadableElement", update the source.
 The token "corner-radius-control" was renamed to "shape.cornerRadius.default", update the source.
+The token "density.autofill-inner" was renamed to "density.control.treatment.autofillInner", update the source.
+The token "density.autofill-outer" was renamed to "density.control.treatment.autofillOuter", update the source.
+The token "density.control" was renamed to "density.control.treatment", update the source.
+The token "density.control-list" was renamed to "density.controlList.treatment", update the source.
+The token "density.control-square" was renamed to "density.control.treatment.square", update the source.
 The token "density_control-horizontal-gap" was renamed to "density.control.horizontal.gap", update the source.
 The token "focus-stroke" was renamed to "color.focusStroke", update the source.
 The token "neutral-fill-subtle" was renamed to "color.neutral.fill.subtle", update the source.
 The token "neutral-stroke-strong" was renamed to "color.neutral.stroke.strong", update the source.
+The token "shape.control" was renamed to "shape.treatments.control", update the source.
+The token "shape.layer" was renamed to "shape.treatments.layer", update the source.
+The token "shape.round" was renamed to "shape.treatments.round", update the source.
 The token "stroke-thickness" was renamed to "shape.strokeThickness.default", update the source.
+The token "styles.action-control" was renamed to "treatments.actionControl", update the source.
+The token "styles.input-control" was renamed to "treatments.inputControl", update the source.
+The token "styles.selectable-control-selected" was renamed to "treatments.selectableControlSelected", update the source.
+The token "styles.selectable-control-unselected" was renamed to "treatments.selectableControlUnselected", update the source.
+The token "styles.text-label" was renamed to "treatments.textLabel", update the source.
+The token "styles.text-plain" was renamed to "treatments.textPlain", update the source.
+The token "text.type-ramp-base" was renamed to "typography.ramp.default.treatments.base", update the source.
+The token "text.type-ramp-plus-2" was renamed to "typography.ramp.default.treatments.plus2", update the source.
+The token "text.type-ramp-plus-5" was renamed to "typography.ramp.default.treatments.plus5", update the source.
 The token "type-ramp-base-font-size" was renamed to "typography.ramp.default.fontSize.base", update the source.
 The token "typography.ramp.base.lineHeight" was renamed to "typography.ramp.default.lineHeight.base", update the source.
 Unknown part "Missing cursor part" in cursor, skipping.

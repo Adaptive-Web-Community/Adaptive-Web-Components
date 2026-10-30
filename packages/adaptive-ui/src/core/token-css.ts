@@ -94,6 +94,8 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         paint: (value: Paint) => formatPaint(value),
         // A palette is not CSS.
         palette: false as const,
+        // A treatment is rendered as rules, which refer to the custom properties of the tokens.
+        treatment: false as const,
         wcagContrastLevel: false as const,
         expression: (value: Operand) => formatExpression(value, property),
     };

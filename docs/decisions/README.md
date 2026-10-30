@@ -30,6 +30,7 @@ reason with the code.
 | [0006](0006-interactive-values-are-one-token.md) | The values of an interactive element are one composite token | Accepted |
 | [0008](0008-disabled-is-fixed-in-tokens.md) | The disabled color is fixed in tokens, shared by the recipes | Accepted |
 | [0011](0011-styles-render-to-css-without-fast.md) | Styles render to rules of CSS, without FAST, and refer to tokens by ref | Accepted |
-| [0012](0012-a-treatment-is-a-named-set-of-style-properties.md) | A treatment is a named set of style properties, as plain data | Accepted, its pairs superseded by 0013 |
+| [0012](0012-a-treatment-is-a-named-set-of-style-properties.md) | A treatment is a named set of style properties, as plain data | Accepted, its pairs superseded by 0013, its names by 0015 |
 | [0013](0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md) | A value on a fill is made in the context of the fill, for the pairs the treatments have | Accepted |
 | [0014](0014-a-names-history-is-kept-with-what-it-names.md) | A name's history is kept with what it names | Accepted |
+| [0015](0015-a-treatment-is-a-token.md) | A treatment is a token, named in the group it styles | Accepted |

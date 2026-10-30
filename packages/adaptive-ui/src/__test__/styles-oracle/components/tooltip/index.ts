@@ -1,14 +1,9 @@
 import { refs } from "design-token-library";
 import { ComponentAnatomy, Interactivity, StyleRules } from "../../../../core/styles/index.js";
 import { ReferenceLibraryTokens } from "../../../../reference/library.js";
-import {
-    controlDensityTreatment,
-    controlShapeTreatment,
-    plainTextTreatment,
-    shadowTooltipTreatment,
-} from "../../../../reference/treatments.js";
 
-const { color } = refs<ReferenceLibraryTokens>();
+const tokens = refs<ReferenceLibraryTokens>();
+const { color } = tokens;
 
 // Adapted from the Adaptive Web Components `tooltip`.
 
@@ -29,10 +24,10 @@ export const TooltipAnatomy: ComponentAnatomy<typeof TooltipConditions, typeof T
 export const tooltipStyleModules: StyleRules = [
     {
         treatments: [
-            controlShapeTreatment,
-            controlDensityTreatment,
-            plainTextTreatment,
-            shadowTooltipTreatment,
+            tokens.shape.treatments.control,
+            tokens.density.control.treatment,
+            tokens.treatments.textPlain,
+            tokens.elevation.tooltip.treatment,
         ],
         properties: {
             backgroundFill: { rest: color.neutral.fill.subtle },

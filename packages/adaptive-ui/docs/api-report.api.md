@@ -21,6 +21,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     }) => string;
     paint: (value: Paint) => string;
     palette: false;
+    treatment: false;
     wcagContrastLevel: false;
     expression: (value: Operand) => string;
 };
@@ -36,6 +37,7 @@ export const AdaptiveDesignToken: {
     readonly interactive: "interactive";
     readonly paint: "paint";
     readonly palette: "palette";
+    readonly treatment: "treatment";
     readonly wcagContrastLevel: "wcagContrastLevel";
 };
 
@@ -44,9 +46,9 @@ export const add: (...args: (Operand | TokenRef)[]) => Expression;
 
 // @beta
 export interface AnatomyTreatments {
-    readonly disabled?: Treatment;
-    readonly focusIndicator?: Treatment;
-    readonly focusReset?: Treatment;
+    readonly disabled?: TreatmentRef;
+    readonly focusIndicator?: TreatmentRef;
+    readonly focusReset?: TreatmentRef;
 }
 
 // Warning: (ae-forgotten-export) The symbol "Color_2" needs to be exported by the entry point index.d.ts
@@ -79,6 +81,9 @@ export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean
 
 // @public
 export function calculateOverlayColor(match: Color_2, background: Color_2): Color_2;
+
+// @public
+export function changeTreatment(library: Library.Library<any>, base: TreatmentRef, changes: TreatmentChanges, metadata?: TokenMetadata): TreatmentConfig;
 
 // @public
 export function closestSwatchIndex(palette: Palette, reference: Paint): number;
@@ -494,6 +499,9 @@ export function isShadow(value: unknown): value is DesignToken.Values.Readonly.S
 // @public
 export function isTransparent(color: Color_2): boolean;
 
+// @public
+export function isTreatmentRef(library: Library.Library<any>, ref: Library.Ref<unknown, never>): ref is Library.Ref<TreatmentValue, never>;
+
 // Warning: (ae-internal-missing-underscore) The name "kebabName" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -501,6 +509,9 @@ export function kebabName(path: readonly string[]): string;
 
 // @public
 export function libraryTokenProperties(library: Library.Library<any>, options?: TokenPropertiesOptions): TokenPropertiesResolver;
+
+// @public
+export function libraryTreatments(library: Library.Library<any>): TreatmentResolver;
 
 // @public
 export type LinearGradient = LinearGradient_2;
@@ -854,21 +865,22 @@ export interface StyleRule {
     // @deprecated (undocumented)
     readonly styles?: Treatment | readonly Treatment[];
     readonly target?: StyleRuleTarget;
-    readonly treatments?: readonly Treatment[];
+    readonly treatments?: readonly (TreatmentRef | Treatment)[];
 }
 
 // @public
 export type StyleRules = readonly StyleRule[];
 
 // @public
-export function styleRulesOnFills(styleRules: StyleRules, options?: Pick<StyleRulesOptions, "anatomy" | "treatments">): OnFillWithFill[];
+export function styleRulesOnFills(styleRules: StyleRules, options: Pick<StyleRulesOptions, "treatments" | "anatomy" | "anatomyTreatments">): OnFillWithFill[];
 
 // @public
 export interface StyleRulesOptions {
     readonly anatomy?: ComponentAnatomy<any, any>;
-    readonly tokens: TokenPropertiesResolver;
     // @beta
-    readonly treatments?: AnatomyTreatments;
+    readonly anatomyTreatments?: AnatomyTreatments;
+    readonly tokens: TokenPropertiesResolver;
+    readonly treatments: TreatmentResolver;
 }
 
 // @public
@@ -936,6 +948,11 @@ export interface TokenNameIndex {
 // @public
 export function tokenNames(library: Library.Library<any>): TokenNameIndex;
 
+// Warning: (ae-internal-missing-underscore) The name "tokenPathAt" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function tokenPathAt(library: Library.Library<any>, path: string): string;
+
 // @public
 export interface TokenProperties {
     // (undocumented)
@@ -966,7 +983,83 @@ export interface Treatment {
 }
 
 // @public
+export function treatment(spec: {
+    treatments?: readonly TreatmentRef[];
+    properties?: StyleProperties;
+}, metadata?: TokenMetadata): TreatmentConfig;
+
+// @public
+export function treatmentAt(library: Library.Library<any>, path: string): Treatment;
+
+// @public
+export interface TreatmentChanges {
+    // (undocumented)
+    readonly properties?: Readonly<Record<string, StyleValues | null>>;
+    // (undocumented)
+    readonly treatments?: readonly TreatmentStep[];
+}
+
+// @public
+export interface TreatmentConfig {
+    // (undocumented)
+    readonly $extensions?: Record<string, unknown>;
+    // (undocumented)
+    readonly $type: typeof AdaptiveDesignToken.treatment;
+    // (undocumented)
+    readonly $value: TreatmentValue;
+}
+
+// @public
+export interface TreatmentOnFill {
+    // (undocumented)
+    readonly activeFollowsRest?: boolean;
+    // (undocumented)
+    readonly fill?: Reference;
+    // (undocumented)
+    readonly token: Reference;
+}
+
+// @public
 export function treatmentProperties(treatment: Pick<Treatment, "treatments" | "properties">): Map<string, StyleValues>;
+
+// @public
+export type TreatmentRef = Library.Ref<TreatmentValue, never> | {
+    readonly $root: Library.Ref<TreatmentValue, never>;
+};
+
+// @public
+export type TreatmentResolver = (ref: TreatmentRef) => Treatment;
+
+// @public
+export type TreatmentStep = {
+    readonly replace: TreatmentRef;
+    readonly with: TreatmentRef;
+} | {
+    readonly remove: TreatmentRef;
+} | {
+    readonly insert: TreatmentRef;
+    readonly before: TreatmentRef | "start";
+} | {
+    readonly insert: TreatmentRef;
+    readonly after?: TreatmentRef | "end";
+};
+
+// @public
+export type TreatmentStyleValue = Exclude<StyleValue, Library.Ref<unknown, never>> | Reference;
+
+// @public
+export type TreatmentStyleValues = TreatmentStyleValue | InteractiveSet<TreatmentStyleValue> | TreatmentOnFill;
+
+// @public
+export type TreatmentToken = DesignToken.Custom<typeof AdaptiveDesignToken.treatment, TreatmentValue>;
+
+// @public
+export interface TreatmentValue {
+    // (undocumented)
+    readonly properties?: Readonly<Record<string, TreatmentStyleValues>>;
+    // (undocumented)
+    readonly treatments?: readonly Reference[];
+}
 
 // @beta
 export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, options?: TwoPaletteGradientOptions): Gradient;

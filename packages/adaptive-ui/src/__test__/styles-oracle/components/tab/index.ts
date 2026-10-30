@@ -1,5 +1,8 @@
+import { refs } from "design-token-library";
 import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
-import { itemTreatment } from "../../../../reference/treatments.js";
+import { ReferenceLibraryTokens } from "../../../../reference/library.js";
+
+const tokens = refs<ReferenceLibraryTokens>();
 
 // Adapted from the Adaptive Web Components `tab`.
 
@@ -18,6 +21,6 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
 
 export const tabStyleModules: StyleRules = [
     {
-        treatments: [itemTreatment],
+        treatments: [tokens.treatments.itemControl],
     },
 ];

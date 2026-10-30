@@ -1,10 +1,11 @@
 import chai from "chai";
-import { DesignToken, hex, Library, refs } from "design-token-library";
+import { DesignToken, hex, Library, pathOf, refs } from "design-token-library";
 import { AdaptiveDesignToken, InteractiveToken } from "../../token-types.js";
 import { ComponentAnatomy, Focus, Interactivity } from "../anatomy.js";
 import { onFill } from "../on-fill.js";
 import { StyleRules } from "../rule.js";
 import { Treatment } from "../treatment.js";
+import { libraryTreatments, treatment, TreatmentToken } from "../treatment-token.js";
 import { formatRules, libraryTokenProperties } from "./rules.js";
 import { AnatomyTreatments, renderStyleRules, styleRulesOnFills } from "./style-rules.js";
 
@@ -13,13 +14,36 @@ const { expect } = chai;
 interface Tokens {
     focus: DesignToken.Color;
     fill: InteractiveToken<DesignToken.Values.Color>;
+    // The treatments of the anatomy that the specs apply, and some to refer to from a rule.
+    treatments: {
+        disabled: TreatmentToken;
+        focusIndicator: TreatmentToken;
+        focusStates: TreatmentToken;
+        focusOnFill: TreatmentToken;
+        focusReset: TreatmentToken;
+        disabledOnFill: TreatmentToken;
+        shape: { $root: TreatmentToken; round: TreatmentToken };
+    };
 }
 
 const tokens = refs<Tokens>();
 const library = Library.create<Tokens>({
     focus: { $type: DesignToken.Type.Color, $value: hex("#0000ff") },
     fill: { $type: AdaptiveDesignToken.interactive, $value: { rest: hex("#ffffff"), hover: hex("#eeeeee"), focus: hex("#dddddd") } },
+    treatments: {
+        disabled: treatment({ properties: { cursor: "not-allowed" } }),
+        focusIndicator: treatment({ properties: { outlineColor: tokens.focus, outlineStyle: "solid" } }),
+        focusStates: treatment({ properties: { backgroundFill: tokens.fill, outlineStyle: { rest: "none" }, opacity: { focus: 1 } } }),
+        focusOnFill: treatment({ properties: { foregroundFill: onFill(tokens.focus, { fill: tokens.fill }) } }),
+        focusReset: treatment({ properties: { outlineStyle: "none" } }),
+        disabledOnFill: treatment({ properties: { backgroundFill: tokens.fill, foregroundFill: onFill(tokens.focus) } }),
+        shape: {
+            $root: treatment({ properties: { cornerRadius: "4px" } }),
+            round: treatment({ properties: { cornerRadius: "999px" } }),
+        },
+    },
 });
+const treatments = libraryTreatments(library);
 
 type Parts = { control: string };
 const anatomy = (overrides: Partial<ComponentAnatomy<any, any>> = {}): ComponentAnatomy<any, any> => ({
@@ -29,9 +53,9 @@ const anatomy = (overrides: Partial<ComponentAnatomy<any, any>> = {}): Component
     ...overrides,
 });
 
-const disabled: Treatment = { properties: { cursor: "not-allowed" } };
-const render = (styleRules: StyleRules, componentAnatomy?: ComponentAnatomy<any, any>, treatments?: AnatomyTreatments): string[] =>
-    formatRules(renderStyleRules(styleRules, { tokens: libraryTokenProperties(library), anatomy: componentAnatomy, treatments }))
+const disabled = tokens.treatments.disabled;
+const render = (styleRules: StyleRules, componentAnatomy?: ComponentAnatomy<any, any>, anatomyTreatments?: AnatomyTreatments): string[] =>
+    formatRules(renderStyleRules(styleRules, { tokens: libraryTokenProperties(library), treatments, anatomy: componentAnatomy, anatomyTreatments }))
         .split("\n")
         .filter(line => line !== "");
 
@@ -40,6 +64,13 @@ describe("renderStyleRules", () => {
         const shape: Treatment = { properties: { opacity: 0.5, cursor: "default" } };
 
         expect(render([{ treatments: [shape], properties: { cursor: "pointer" } }])).to.deep.equal([":host { opacity: 0.5; cursor: pointer; }"]);
+    });
+
+    it("should read a treatment of the library that a rule refers to, a group standing for its root", () => {
+        expect(render([{ treatments: [tokens.treatments.shape] }])).to.deep.equal([":host { border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; }"]);
+        expect(render([{ treatments: [tokens.treatments.shape, tokens.treatments.shape.round, { properties: { opacity: 0.5 } }] }])).to.deep.equal([
+            ":host { border-top-left-radius: 999px; border-top-right-radius: 999px; border-bottom-right-radius: 999px; border-bottom-left-radius: 999px; opacity: 0.5; }",
+        ]);
     });
 
     it("should apply the interactivity of the anatomy to the rules", () => {
@@ -122,7 +153,7 @@ describe("renderStyleRules", () => {
     });
 
     describe("the focus", () => {
-        const focusIndicator: Treatment = { properties: { outlineColor: tokens.focus, outlineStyle: "solid" } };
+        const focusIndicator = tokens.treatments.focusIndicator;
 
         it("should apply the focus indicator to the focus target, in the focus state", () => {
             expect(render([], anatomy({ interactivity: Interactivity.never, focus: Focus.contextFocused() }), { focusIndicator })).to.deep.equal([
@@ -131,7 +162,7 @@ describe("renderStyleRules", () => {
         });
 
         it("should take the focus of a set or of an interactive token, and leave out a set without one", () => {
-            const indicator: Treatment = { properties: { backgroundFill: tokens.fill, outlineStyle: { rest: "none" }, opacity: { focus: 1 } } };
+            const indicator = tokens.treatments.focusStates;
 
             expect(render([], anatomy({ interactivity: Interactivity.never, focus: Focus.contextFocused() }), { focusIndicator: indicator })).to.deep.equal([
                 ":host(:focus-visible) { background: var(--fill-focus); opacity: 1; }",
@@ -139,7 +170,7 @@ describe("renderStyleRules", () => {
         });
 
         it("should not take a value on a fill, which has no focus of its own", () => {
-            const indicator: Treatment = { properties: { foregroundFill: onFill(tokens.focus, { fill: tokens.fill }) } };
+            const indicator = tokens.treatments.focusOnFill;
 
             expect(() => render([], anatomy({ interactivity: Interactivity.never, focus: Focus.contextFocused() }), { focusIndicator: indicator })).to.throw(
                 "The foregroundFill of a treatment of the focus is a value on a fill"
@@ -147,7 +178,7 @@ describe("renderStyleRules", () => {
         });
 
         it("should apply the focus reset to the reset target", () => {
-            const focusReset: Treatment = { properties: { outlineStyle: "none" } };
+            const focusReset = tokens.treatments.focusReset;
             const rules = render(
                 [],
                 anatomy({ interactivity: Interactivity.never, focus: Focus.partWithin<Parts>(".indicator" as "control", ".input" as "control") }),
@@ -158,7 +189,7 @@ describe("renderStyleRules", () => {
         });
 
         it("should not apply without a focus, or the reset without a reset target", () => {
-            const focusReset: Treatment = { properties: { outlineStyle: "none" } };
+            const focusReset = tokens.treatments.focusReset;
 
             expect(render([], anatomy({ interactivity: Interactivity.never }), { focusIndicator, focusReset })).to.deep.equal([]);
             expect(render([], anatomy({ interactivity: Interactivity.never, focus: Focus.contextFocused() }), { focusReset })).to.deep.equal([]);
@@ -186,20 +217,19 @@ describe("styleRulesOnFills", () => {
     const foreground: Treatment = { properties: { foregroundFill: onFill(tokens.focus) } };
 
     it("should be the values on a fill of the rules, on the background fill of the treatments they are composed with", () => {
-        expect(styleRulesOnFills([{ treatments: [fillTreatment, foreground] }, { properties: { opacity: 0.5 } }])).to.deep.equal([
+        expect(styleRulesOnFills([{ treatments: [fillTreatment, foreground] }, { properties: { opacity: 0.5 } }], { treatments })).to.deep.equal([
             { token: tokens.focus, fill: tokens.fill },
         ]);
     });
 
     it("should leave out a value without a background fill, which is the token itself", () => {
-        expect(styleRulesOnFills([{ treatments: [foreground] }])).to.deep.equal([]);
+        expect(styleRulesOnFills([{ treatments: [foreground] }], { treatments })).to.deep.equal([]);
     });
 
     it("should have those of the treatments of the anatomy", () => {
-        const disabledOnFill: Treatment = { properties: { backgroundFill: tokens.fill, foregroundFill: onFill(tokens.focus) } };
+        const values = styleRulesOnFills([], { treatments, anatomy: anatomy(), anatomyTreatments: { disabled: tokens.treatments.disabledOnFill } });
 
-        expect(styleRulesOnFills([], { anatomy: anatomy(), treatments: { disabled: disabledOnFill } })).to.deep.equal([
-            { token: tokens.focus, fill: tokens.fill },
-        ]);
+        // A ref read from a treatment of the library is a new one, so it is compared by its path.
+        expect(values.map(({ token, fill }) => [pathOf(token), pathOf(fill)])).to.deep.equal([[["focus"], ["fill"]]]);
     });
 });

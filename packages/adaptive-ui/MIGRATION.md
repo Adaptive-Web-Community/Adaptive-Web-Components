@@ -315,9 +315,12 @@ class (`horizontalPadding`, `verticalGapUnits`, ...), each the token of the libr
 
 ## Treatments and the rendering of styles
 
-A style module is a **treatment** (`Treatment`), a named set of style properties that is plain data: `{ name, treatments, properties }`, where
-`treatments` are the ones it is composed of and `properties` are applied after them, see
-[decision 0012](../../docs/decisions/0012-a-treatment-is-a-named-set-of-style-properties.md). A value refers to a token by a ref of the library
+A style module is a **treatment**, a named set of style properties, see
+[decision 0012](../../docs/decisions/0012-a-treatment-is-a-named-set-of-style-properties.md). A treatment is a token of the library, of the
+`treatment` type, named by its path in the group of the tokens it styles, and extended and renamed as a token is, see
+[decision 0015](../../docs/decisions/0015-a-treatment-is-a-token.md). `treatment({ treatments, properties })` makes its config, where
+`treatments` are the ones it is composed of, by ref, and `properties` are applied after them; `treatmentAt(library, name)` reads it as a
+`Treatment`, the plain data the renderer takes. A rule refers to a treatment by ref, or has one written in place. A value refers to a token by a ref of the library
 (`refs<ReferenceLibraryTokens>().color.accent.fill.readable`), and in a set of values a ref to an interactive token is the token in that
 state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, and `formatRules` writes them, without FAST and without a DOM
 ([decision 0011](../../docs/decisions/0011-styles-render-to-css-without-fast.md)). The styling is in `core/styles`, and its CSS output in
@@ -325,12 +328,12 @@ state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, 
 
 | 0.14 | 1.0 |
 | --- | --- |
-| `Styles` | `Treatment`, an object |
-| `Styles.fromProperties(properties, name)` | `{ name, properties }` |
-| `Styles.compose(styles, properties, name)` | `{ name, treatments, properties }` |
+| `Styles` | a treatment token (`TreatmentToken`), read as a `Treatment` |
+| `Styles.fromProperties(properties, name)` | `treatment({ properties })`, a token of the library, or `{ properties }` written in place in a rule |
+| `Styles.compose(styles, properties, name)` | `treatment({ treatments: [refs], properties })` |
 | `Styles.fromDeclaration(declaration)`, `styles.effectiveProperties` | `treatmentProperties(treatmentOrRule)` |
-| `Styles.Shared`, the registry by name | `referenceTreatments`, a list that an anatomy written as data is looked up in |
-| `styles.properties = ...`, `appendComposed`, `clearComposed` | a new treatment: a treatment isn't changed |
+| `Styles.Shared`, the registry by name | the library: a treatment is a token, `treatmentAt(library, name)` and `libraryTreatments(library)` |
+| `styles.properties = ...`, `appendComposed`, `clearComposed` | a library that extends the one of the treatment, with `treatment(...)`, or with `changeTreatment(library, ref, { treatments: steps, properties })`, whose steps replace, remove, or insert a treatment, and whose properties merge, where `null` removes one |
 | `effectiveAdaptiveProperties` | `treatmentProperties`, with the keys that are a `StyleProperty` |
 | `StyleDeclaration`, a rule's `styles` and `properties` | a rule's `treatments` and `properties` (`StyleRule`) |
 | `StyleModuleTarget` | `StyleRuleTarget` |
@@ -341,10 +344,25 @@ state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, 
 | `Fill.backgroundNonInteractive(token, disabled)`, `Fill.foregroundNonInteractive(token, disabled)` | `{ rest: token, disabled }`, a set that has only those states |
 | `convertStylesToFocusState(styles)` | part of `renderStyleRules`, which applies the focus indicator in the focus state |
 | `ElementStylesRenderer`, `new ElementStylesRenderer(styles).render(target, interactivity)` | `renderRules(treatmentProperties(treatment), { ...interactivity, ...target }, libraryTokenProperties(library, { context: color.context }))` |
-| `ElementStylesRenderer.renderStyleRules(base, rules, anatomy)` | `renderStyleRules(rules, { tokens: libraryTokenProperties(library, { context: color.context }), anatomy, treatments: referenceAnatomyTreatments })` |
-| `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles` | the `treatments` of `renderStyleRules` (`AnatomyTreatments`: `disabled`, `focusIndicator`, `focusReset`) |
-| the `...Styles` of `reference/modules.ts`, like `actionStyles` | the `...Treatment` of `reference/treatments.ts`, like `actionTreatment`, with the same names |
-| `StyleNameMapping` | `TreatmentNameMapping`, to the names of the treatments |
+| `ElementStylesRenderer.renderStyleRules(base, rules, anatomy)` | `renderStyleRules(rules, { tokens: libraryTokenProperties(library, { context: color.context }), treatments: libraryTreatments(library), anatomy, anatomyTreatments: referenceAnatomyTreatments })` |
+| `ElementStylesRenderer.disabledStyles`, `focusStateStyles`, `focusResetStyles` | the `anatomyTreatments` of `renderStyleRules` (`AnatomyTreatments`: `disabled`, `focusIndicator`, `focusReset`, refs to treatments) |
+| the `...Styles` of `reference/modules.ts`, like `actionStyles` | the treatment tokens of the reference library, named by their path, like `treatments.actionControl`, see below |
+| `StyleNameMapping`, a name to the name of its export | the name of a treatment is its path, and its name of 0.14 is a former name (`resolveTokenName`) |
+
+The treatments of the reference system are named by two patterns, with the word in the path. The treatment of a set of tokens is the set's
+`treatment`, beside its tokens; with variants, it is a group whose `$root` is the treatment and whose children are the variants, and a ref to
+the group stands for the root. The other treatments of a group are in its `treatments` group, and those composed across the groups are in the
+`treatments` group of the root. The categories follow the tokens: `text` is `typography`, `shadow` is `elevation`, and `styles` is `treatments`.
+
+| 0.14 | 1.0 |
+| --- | --- |
+| `shape.control`, `.layer`, `.round` | `shape.treatments.control`, `.layer`, `.round` |
+| `density.text`, `.control`, `.control-list` (or `.item-container`), `.layer` | `density.text.treatment`, `density.control.treatment`, `density.controlList.treatment`, `density.layer.treatment` |
+| `density.control-square`, `.autofill-outer`, `.autofill-inner` | `density.control.treatment.square`, `.autofillOuter`, `.autofillInner` |
+| `text.type-ramp-base`, `-minus-1` … `-plus-6` | `typography.ramp.default.treatments.base`, `.minus1` … `.plus6` |
+| `shadow.card`, `shadow.card-interactive`, `shadow.tooltip`, `.flyout`, `.dialog` | `elevation.card.treatment`, `elevation.card.treatment.interactive`, `elevation.tooltip.treatment`, … |
+| `color.<palette>-<name>`, like `color.accent-fill-readable-control` | `color.<palette>.treatments.<name>`, like `color.accent.treatments.fillReadableControl` |
+| `styles.<name>`, like `styles.action-control` | `treatments.<name>`, like `treatments.actionControl` |
 
 A foreground on a fill is a value on a fill (decision [0013](../../docs/decisions/0013-a-value-on-a-fill-is-made-in-the-context-of-the-fill.md)):
 `onFill(token, { fill })`, the token made in the context of each state of the fill, as 0.14 made a foreground recipe over a background. It is
@@ -365,7 +383,8 @@ scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole refe
 - The rules of the states are in the order rest, focus, hover, active, disabled. States that have the same selector, like those of a
   pseudo-element, are one rule, where the later state wins, as before.
 - The `aui` CLI renders with the reference library and needs no DOM. An anatomy written as JSON names its treatments in `treatments` (was
-  `styles`), and an unknown name is a warning. A property names a token by its path, and `<token>.rest` of an interactive token is its rest.
+  `styles`), by their path, and a name of 0.14 still finds one, with a warning to update it; an unknown name is a warning. A property names
+  a token by its path, and `<token>.rest` of an interactive token is its rest.
   A property can be a value on a fill, written as data: `{ "token": "color.critical.stroke.readable" }` on the background fill of the rule,
   or with a `fill` and `activeFollowsRest` (`SerializableOnFill`). With `--on-fills <file>`, the CLI writes the values on a fill of the
   styles it compiles as a JSON list, which the CSS of the tokens of each scope is written from: `onFillCSS(library,
@@ -373,13 +392,13 @@ scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole refe
 
 ### Deprecated, the old name is the new one
 
-The 99 `...Styles` of `reference/modules.ts` are exported from `reference/deprecated.ts`, each the `...Treatment` of the same name, and
-`StyleNameMapping` is `TreatmentNameMapping`. `StyleModuleTarget` and `StyleModuleEvaluateParameters` are `StyleRuleTarget` and
+The 99 `...Styles` of `reference/modules.ts` are exported from `reference/deprecated.ts`, each the treatment of the reference library that it
+was (`treatmentAt(library, name)`), and `StyleNameMapping` is the map of 0.14, to those names. `StyleModuleTarget` and `StyleModuleEvaluateParameters` are `StyleRuleTarget` and
 `SelectorParameters`, and the type `Styles` is `Treatment`. `Styles.fromProperties(properties, name)` and `Styles.compose(treatments,
 properties, name)` make a treatment. A rule's `styles` (one treatment or a list) is applied before its `treatments`, and an anatomy written as
 JSON may name its treatments in `styles`.
 
-Not exported, with what to use: `Styles.Shared` (`referenceTreatments`), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
+Not exported, with what to use: `Styles.Shared` (the library), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
 `Fill` (`onFill`), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
 
 ## The token helpers of 0.14
@@ -412,7 +431,7 @@ their config, which the reference library spreads into `color` (`ExperimentalLib
 | `gradientAngle`, `gradientStartShift`, `gradientEndShift` | `color.gradient.angle`, `.startShift`, `.endShift`, numbers, in CSS as before |
 | `accentHueShiftGradientFillSubtleRest`, `accentToHighlightGradientFillSubtleRest` | `color.accentHueShiftGradient.fill.subtle`, `color.accentToHighlightGradient.fill.subtle`, tokens of the `paint` type, written as their `linear-gradient()` (CSS `--color-accentHueShiftGradient-fill-subtle`, was `...-subtle-rest`) |
 | the recipes in the value of the tokens | `experimentalRecipes.hueShiftGradient` and `.twoPaletteGradient`, recipes of the library, which `override()` replaces |
-| `accentHueShiftGradientFillSubtleElementStyles`, `accentToHighlightGradientFillSubtleElementStyles` | `accentHueShiftGradientFillSubtleElementTreatment`, `accentToHighlightGradientFillSubtleElementTreatment`, in `referenceTreatments` |
+| `accentHueShiftGradientFillSubtleElementStyles`, `accentToHighlightGradientFillSubtleElementStyles` | the treatments `color.accent.treatments.hueShiftGradientFillSubtleElement` and `.toHighlightGradientFillSubtleElement` |
 | `createTokenPaint(name)` | a token of the `paint` type (`AdaptiveDesignToken.paint`, `PaintToken`), a color or a gradient |
 
 ### Behavior

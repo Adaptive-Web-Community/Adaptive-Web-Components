@@ -1,5 +1,4 @@
 import chai from "chai";
-import { accentFillReadableControlTreatment, actionTreatment, TreatmentNameMapping } from "./treatments.js";
 import {
     cornerRadiusControl,
     cornerRadiusLayer,
@@ -63,7 +62,8 @@ import {
     accentHueShiftGradientFillSubtleElementStyles,
     accentToHighlightGradientFillSubtleElementStyles,
 } from "./deprecated.js";
-import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
+import { treatmentAt } from "../core/styles/treatment-token.js";
+import { createReferenceLibrary } from "./library.js";
 import { formatColor } from "../core/color/color.js";
 import { createColorLibrary } from "./color.js";
 import { createElevationLibrary } from "./elevation.js";
@@ -194,10 +194,17 @@ describe("deprecated appearance and density tokens", () => {
 });
 
 describe("deprecated style modules", () => {
-    it("should be the treatments with the names they had", () => {
-        expect(actionStyles).to.equal(actionTreatment);
-        expect(accentFillReadableControlStyles).to.equal(accentFillReadableControlTreatment);
-        expect(StyleNameMapping).to.equal(TreatmentNameMapping);
+    it("should be the treatments of the library, by their new names", () => {
+        const library = createReferenceLibrary();
+
+        expect(actionStyles).to.deep.equal(treatmentAt(library, "treatments.actionControl"));
+        expect(accentFillReadableControlStyles.name).to.equal("color.accent.treatments.fillReadableControl");
+    });
+
+    it("should map the names of 0.14 to the names of their exports, which are here", () => {
+        expect(StyleNameMapping["styles.action-control"]).to.equal("actionStyles");
+        expect(StyleNameMapping["color.accent-fill-readable-control"]).to.equal("accentFillReadableControlStyles");
+        expect(Object.keys(StyleNameMapping)).to.have.length(96);
     });
 });
 
@@ -212,7 +219,7 @@ describe("deprecated experimental tokens", () => {
     });
 
     it("should be the treatments of the gradients", () => {
-        expect(accentHueShiftGradientFillSubtleElementStyles).to.equal(accentHueShiftGradientFillSubtleElementTreatment);
-        expect(accentToHighlightGradientFillSubtleElementStyles).to.equal(accentToHighlightGradientFillSubtleElementTreatment);
+        expect(accentHueShiftGradientFillSubtleElementStyles.name).to.equal("color.accent.treatments.hueShiftGradientFillSubtleElement");
+        expect(accentToHighlightGradientFillSubtleElementStyles.name).to.equal("color.accent.treatments.toHighlightGradientFillSubtleElement");
     });
 });

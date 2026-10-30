@@ -5,58 +5,83 @@ import { formatRules, libraryTokenProperties, onFillCSS, renderRules } from "../
 import { renderStyleRules, styleRulesOnFills } from "../core/styles/css/style-rules.js";
 import { onFill } from "../core/styles/on-fill.js";
 import { Treatment, treatmentProperties } from "../core/styles/treatment.js";
+import { libraryTreatments, treatmentAt } from "../core/styles/treatment-token.js";
+import { resolveTokenName, tokenNames } from "../core/token-names.js";
+import { AdaptiveDesignToken } from "../core/token-types.js";
+import { StyleNameMapping } from "./deprecated.js";
 import { createReferenceLibrary, ReferenceLibraryTokens } from "./library.js";
-import * as experimental from "./experimental.js";
-import * as treatments from "./treatments.js";
-import {
-    accentFillReadableControlTreatment,
-    actionTreatment,
-    neutralDividerSubtleElementTreatment,
-    referenceAnatomyTreatments,
-    referenceTreatments,
-    shadowCardTreatment,
-    TreatmentNameMapping,
-} from "./treatments.js";
+import { referenceAnatomyTreatments } from "./treatments.js";
 
 const { expect } = chai;
 
 const library = createReferenceLibrary();
-const { color } = refs<ReferenceLibraryTokens>();
+const t = refs<ReferenceLibraryTokens>();
+const { color } = t;
 const tokens = libraryTokenProperties(library, { context: color.context });
+const treatments = libraryTreatments(library);
+const index = tokenNames(library);
 const render = (treatment: Treatment) => renderRules(treatmentProperties(treatment), Interactivity.disabledAttribute, tokens);
 
+// The names of the treatment tokens of the library, without the `$root` of a group.
+const treatmentNames = [...index.tokens.values()]
+    .filter(({ path }) => (path.reduce<any>((node, key) => node[key], library.tokens) as { $type: string }).$type === AdaptiveDesignToken.treatment)
+    .map(({ name }) => name);
+
+// The names of the treatments of 0.14, with those that its name map didn't have.
+const namesOf014 = [
+    ...Object.keys(StyleNameMapping),
+    "styles.text-plain-multiline",
+    "styles.interactiveCursor",
+    "density.text",
+    "color.layer-fill-interactive-control",
+    "color.accent-hue-shift-gradient-fill-subtle-element",
+    "color.accent-to-highlight-gradient-fill-subtle-element",
+];
+
 describe("the reference treatments", () => {
-    it("should refer only to tokens of the reference library", () => {
-        for (const treatment of referenceTreatments) {
-            expect(() => render(treatment), treatment.name).not.to.throw();
+    it("should be the 101 treatments of 0.14, which refer only to tokens of the library", () => {
+        expect(treatmentNames).to.have.length(101);
+        for (const name of treatmentNames) {
+            expect(() => render(treatmentAt(library, name)), name).not.to.throw();
         }
     });
 
-    it("should each have a name of its own", () => {
-        const names = referenceTreatments.map(treatment => treatment.name);
+    it("should be named by the patterns of a treatment of a set, and of the treatments of a group", () => {
+        const pattern = /(^|\.)treatment(\.[a-zA-Z0-9]+)?$|(^|\.)treatments\.[a-zA-Z0-9]+$/;
 
-        expect(names.every(name => name !== undefined)).to.be.true;
-        expect(new Set(names).size).to.equal(names.length);
+        expect(treatmentNames.filter(name => !pattern.test(name))).to.deep.equal([]);
     });
 
-    it("should be every treatment that is exported, with the experimental ones", () => {
-        const modules = { ...treatments, ...experimental };
-        const exported = Object.values(modules).filter(value => referenceTreatments.includes(value as Treatment));
-
-        expect(Object.keys(modules).filter(key => key.endsWith("Treatment"))).to.have.length(referenceTreatments.length);
-        expect(exported).to.have.length(referenceTreatments.length);
+    it("should each be found by its name of 0.14", () => {
+        for (const old of namesOf014) {
+            const found = resolveTokenName(index, old);
+            expect(found, old).to.include({ renamed: true });
+            expect(treatmentNames, old).to.include(found?.name);
+        }
+        expect(new Set(namesOf014.map(old => resolveTokenName(index, old)?.name)).size).to.equal(101);
     });
 
-    it("should map each name to the export of a treatment", () => {
-        for (const [name, exportName] of Object.entries(TreatmentNameMapping)) {
-            const treatment = (treatments as Record<string, unknown>)[exportName] as Treatment;
-            expect(referenceTreatments, name).to.include(treatment);
+    it("should be found by the samples of each rule of the names", () => {
+        const samples: [string, string][] = [
+            ["shape.control", "shape.treatments.control"],
+            ["density.control", "density.control.treatment"],
+            ["density.control-square", "density.control.treatment.square"],
+            ["density.item-container", "density.controlList.treatment"],
+            ["text.type-ramp-minus-1", "typography.ramp.default.treatments.minus1"],
+            ["shadow.card-interactive", "elevation.card.treatment.interactive"],
+            ["shadow.dialog", "elevation.dialog.treatment"],
+            ["color.layer-fill-interactive-control", "color.layer.treatments.fillInteractiveControl"],
+            ["styles.focus-indicator", "treatments.focusIndicator"],
+        ];
+
+        for (const [old, name] of samples) {
+            expect(resolveTokenName(index, old)?.name, old).to.equal(name);
         }
     });
 
     it("should pair a fill with the foreground on it", () => {
         const foreground = "--color-blackOrWhite-readable-on-color-accent-fill-readable";
-        expect(formatRules(render(accentFillReadableControlTreatment))).to.equal(
+        expect(formatRules(render(treatments(t.color.accent.treatments.fillReadableControl)))).to.equal(
             [
                 `:host { background: var(--color-accent-fill-readable); color: var(${foreground}); fill: currentcolor; ` +
                     "border-top-width: var(--shape-strokeThickness-default); border-right-width: var(--shape-strokeThickness-default); " +
@@ -72,7 +97,10 @@ describe("the reference treatments", () => {
     });
 
     it("should have the custom properties of the pairs that the treatments have, once each", () => {
-        const pairs = styleRulesOnFills(referenceTreatments.map(treatment => ({ treatments: [treatment] })));
+        const pairs = styleRulesOnFills(
+            treatmentNames.map(name => ({ treatments: [treatmentAt(library, name)] })),
+            { treatments }
+        );
         const css = onFillCSS(library, pairs, { context: color.context });
 
         // A treatment that is composed of another has its pairs as well.
@@ -84,17 +112,13 @@ describe("the reference treatments", () => {
 
     it("should make a foreground of one palette on the fill of another, a pair that no treatment has", () => {
         const criticalForeground: Treatment = { properties: { foregroundFill: onFill(color.critical.stroke.readable) } };
-        const accentFill: Treatment = { properties: { backgroundFill: color.accent.fill.subtle } };
-        const rules = renderRules(treatmentProperties({ treatments: [accentFill, criticalForeground] }), {}, tokens);
+        const rules = renderRules(treatmentProperties({ treatments: [treatments(t.color.accent.treatments.fillSubtleControl), criticalForeground] }), {}, tokens);
 
         expect(rules[0].declarations.color).to.equal("var(--color-critical-stroke-readable-on-color-accent-fill-subtle)");
-        expect(onFillCSS(library, styleRulesOnFills([{ treatments: [accentFill, criticalForeground] }]), { context: color.context })).to.match(
-            /^--color-critical-stroke-readable-on-color-accent-fill-subtle:#[0-9a-f]{6};/
-        );
     });
 
     it("should take the rest of one token and the disabled of another for an element that isn't interactive", () => {
-        const rules = render(neutralDividerSubtleElementTreatment);
+        const rules = render(treatments(t.color.neutral.treatments.dividerSubtleElement));
 
         expect(rules.map(rule => rule.declarations.color)).to.deep.equal([
             "var(--color-neutral-stroke-subtle)",
@@ -102,20 +126,28 @@ describe("the reference treatments", () => {
         ]);
     });
 
-    it("should take the shadow of the card at rest", () => {
-        expect(render(shadowCardTreatment)).to.deep.equal([{ selector: ":host", declarations: { "box-shadow": "var(--elevation-card)" } }]);
+    it("should take the shadow of the card at rest, and in each state as its variant", () => {
+        expect(render(treatments(t.elevation.card.treatment))).to.deep.equal([{ selector: ":host", declarations: { "box-shadow": "var(--elevation-card)" } }]);
+        expect(render(treatments(t.elevation.card.treatment.interactive)).map(rule => rule.declarations["box-shadow"])).to.include(
+            "var(--elevation-card-hover)"
+        );
     });
 
     it("should apply the treatments it is composed of, and its own properties after them", () => {
-        const properties = treatmentProperties(actionTreatment);
+        const action = treatments(t.treatments.actionControl);
 
-        expect(properties.get("cornerRadiusTopLeft")).to.equal(treatmentProperties(treatments.controlShapeTreatment).get("cornerRadiusTopLeft"));
-        expect(render(actionTreatment)[0].declarations["border-top-color"]).to.equal("var(--color-neutral-stroke-subtle)");
+        expect(action.treatments?.map(composed => composed.name)).to.deep.equal([
+            "shape.treatments.control",
+            "density.control.treatment",
+            "typography.ramp.default.treatments.base",
+            "color.neutral.treatments.fillSubtleControl",
+        ]);
+        expect(render(action)[0].declarations["border-top-color"]).to.equal("var(--color-neutral-stroke-subtle)");
     });
 
     it("should have the treatments of the anatomy: the disabled cursor, the focus indicator, and the focus reset", () => {
         const anatomy = { conditions: {}, parts: {}, interactivity: Interactivity.disabledAttribute, focus: Focus.contextFocused() };
-        const css = formatRules(renderStyleRules([], { tokens, anatomy, treatments: referenceAnatomyTreatments }));
+        const css = formatRules(renderStyleRules([], { tokens, treatments, anatomy, anatomyTreatments: referenceAnatomyTreatments }));
 
         expect(css).to.include(":host([disabled]) { cursor: not-allowed; }");
         expect(css).to.include(

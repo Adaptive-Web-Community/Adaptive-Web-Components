@@ -26,13 +26,14 @@ import {
 import { formatRules, libraryTokenProperties } from '../core/styles/css/rules.js';
 import { renderStyleRules, styleRulesOnFills } from '../core/styles/css/style-rules.js';
 import { deserializeOnFill, isSerializableOnFill, OnFill, SerializableOnFill, serializeOnFill } from '../core/styles/on-fill.js';
+import { isTreatmentRef, libraryTreatments, TreatmentRef } from '../core/styles/treatment-token.js';
 import { StyleProperties, StyleValues } from '../core/styles/properties.js';
 import { StyleRule, StyleRules, StyleRuleTarget } from '../core/styles/rule.js';
 import { InteractiveState } from '../core/interactive.js';
 import { ResolvedTokenName, resolveTokenName, tokenNames } from '../core/token-names.js';
 import { refAt } from '../core/token-ref.js';
 import { createReferenceLibrary, ReferenceLibraryTokens } from '../reference/library.js';
-import { referenceAnatomyTreatments, referenceTreatments } from '../reference/treatments.js';
+import { referenceAnatomyTreatments } from '../reference/treatments.js';
 
 const program = new Command();
 
@@ -319,7 +320,7 @@ interface SheetCompiler {
 // TODO This is a reasonable default using the reference AUI configuration, but should be configurable.
 const library = createReferenceLibrary();
 const tokens = libraryTokenProperties(library, { context: refs<ReferenceLibraryTokens>().color.context });
-const treatmentsByName = new Map(referenceTreatments.map(treatment => [treatment.name, treatment]));
+const treatments = libraryTreatments(library);
 
 class SheetCompilerImpl implements SheetCompiler {
     /**
@@ -328,11 +329,11 @@ class SheetCompilerImpl implements SheetCompiler {
      * @returns 
      */
     compile(sheet: AUIStyleSheet): string {
-        return formatRules(renderStyleRules(sheet.rules, { tokens, anatomy: sheet.anatomy, treatments: referenceAnatomyTreatments }));
+        return formatRules(renderStyleRules(sheet.rules, { tokens, treatments, anatomy: sheet.anatomy, anatomyTreatments: referenceAnatomyTreatments }));
     }
 
     onFills(sheet: AUIStyleSheet): SerializableOnFill[] {
-        return styleRulesOnFills(sheet.rules, { anatomy: sheet.anatomy, treatments: referenceAnatomyTreatments }).map(value => serializeOnFill(value));
+        return styleRulesOnFills(sheet.rules, { treatments, anatomy: sheet.anatomy, anatomyTreatments: referenceAnatomyTreatments }).map(value => serializeOnFill(value));
     }
 }
 
@@ -371,6 +372,18 @@ function propertyValue(value: string): StyleValues | undefined {
     }
     console.warn(warnColor, `The token "${value}" is a state of an interactive token, which only its rest can be used as, skipping.`);
     return undefined;
+}
+
+/**
+ * The treatment of a name written as data, a name it had as well, or nothing for a name that isn't a treatment's.
+ */
+function treatmentOf(name: string): TreatmentRef | undefined {
+    const found = tokenOf(name);
+    if (found === undefined || found.state !== undefined) {
+        return undefined;
+    }
+    const ref = refAt(found.path);
+    return isTreatmentRef(library, ref) ? ref : undefined;
 }
 
 /**
@@ -461,7 +474,7 @@ function jsonToAUIStyleSheet(obj: SerializableAnatomy): AUIStyleSheet {
 
             // `styles` is the deprecated name of `treatments`.
             const treatments = [...(style.styles ?? []), ...(style.treatments ?? [])].flatMap(name => {
-                const treatment = treatmentsByName.get(name);
+                const treatment = treatmentOf(name);
                 if (treatment === undefined) {
                     console.warn(warnColor, `Unknown treatment "${name}" in style rule, skipping.`);
                     return [];

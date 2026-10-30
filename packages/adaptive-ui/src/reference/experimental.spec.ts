@@ -5,11 +5,12 @@ import { hueShiftGradient } from "../core/color/recipes/hue-shift-gradient.js";
 import { twoPaletteGradient } from "../core/color/recipes/two-palette-gradient.js";
 import { Interactivity } from "../core/styles/anatomy.js";
 import { formatRules, libraryTokenProperties, renderRules } from "../core/styles/css/rules.js";
-import { treatmentProperties } from "../core/styles/treatment.js";
+import { Treatment, treatmentProperties } from "../core/styles/treatment.js";
 import { adaptiveConverters } from "../core/token-css.js";
 import { getIntendedFor } from "../core/token-metadata.js";
 import { StyleProperty } from "../core/styles/properties.js";
-import { accentHueShiftGradientFillSubtleElementTreatment, accentToHighlightGradientFillSubtleElementTreatment } from "./experimental.js";
+import { treatmentAt } from "../core/styles/treatment-token.js";
+import { resolveTokenName, tokenNames } from "../core/token-names.js";
 import { createReferenceLibrary } from "./library.js";
 
 const { expect } = chai;
@@ -73,23 +74,28 @@ describe("the experimental tokens", () => {
 });
 
 describe("the experimental treatments", () => {
-    const tokens = libraryTokenProperties(createReferenceLibrary());
-    const render = (treatment: typeof accentHueShiftGradientFillSubtleElementTreatment) =>
+    const library = createReferenceLibrary();
+    const tokens = libraryTokenProperties(library);
+    const hueShift = treatmentAt(library, "color.accent.treatments.hueShiftGradientFillSubtleElement");
+    const toHighlight = treatmentAt(library, "color.accent.treatments.toHighlightGradientFillSubtleElement");
+    const render = (treatment: Treatment) =>
         formatRules(renderRules(treatmentProperties(treatment), Interactivity.disabledAttribute, tokens)).split("\n");
 
     it("should have the gradient at rest and the disabled fill when disabled, with the border", () => {
-        const css = render(accentHueShiftGradientFillSubtleElementTreatment);
+        const css = render(hueShift);
 
         expect(css[0]).to.match(/^:host \{ background: var\(--color-accentHueShiftGradient-fill-subtle\); border-top-width: /);
         expect(css[0]).to.include("border-top-color: var(--color-accent-stroke-safety);");
         expect(css[css.length - 1]).to.match(/^:host\(\[disabled\]\) \{ background: var\(--color-neutral-fill-subtle-disabled\);/);
-        expect(render(accentToHighlightGradientFillSubtleElementTreatment)[0]).to.match(
+        expect(render(toHighlight)[0]).to.match(
             /^:host \{ background: var\(--color-accentToHighlightGradient-fill-subtle\);/
         );
     });
 
-    it("should have the names they had", () => {
-        expect(accentHueShiftGradientFillSubtleElementTreatment.name).to.equal("color.accent-hue-shift-gradient-fill-subtle-element");
-        expect(accentToHighlightGradientFillSubtleElementTreatment.name).to.equal("color.accent-to-highlight-gradient-fill-subtle-element");
+    it("should be the treatments of the accent palette, found by the names they had", () => {
+        const index = tokenNames(library);
+
+        expect(resolveTokenName(index, "color.accent-hue-shift-gradient-fill-subtle-element")?.name).to.equal(hueShift.name);
+        expect(resolveTokenName(index, "color.accent-to-highlight-gradient-fill-subtle-element")?.name).to.equal(toHighlight.name);
     });
 });

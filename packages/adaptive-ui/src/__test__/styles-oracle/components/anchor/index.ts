@@ -1,14 +1,9 @@
 import { refs } from "design-token-library";
 import { ComponentAnatomy, Focus, Interactivity, StyleRules } from "../../../../core/styles/index.js";
 import { ReferenceLibraryTokens } from "../../../../reference/library.js";
-import {
-    accentForegroundReadableControlTreatment,
-    controlShapeTreatment,
-    neutralForegroundStrongElementTreatment,
-    typeRampBaseTreatment,
-} from "../../../../reference/treatments.js";
 
-const { density } = refs<ReferenceLibraryTokens>();
+const tokens = refs<ReferenceLibraryTokens>();
+const { density } = tokens;
 
 // Adapted from the Adaptive Web Components `anchor`.
 
@@ -35,9 +30,9 @@ export const anchorStyleModules: StyleRules = [
             part: AnchorAnatomy.parts.control,
         },
         treatments: [
-            controlShapeTreatment,
-            typeRampBaseTreatment,
-            accentForegroundReadableControlTreatment,
+            tokens.shape.treatments.control,
+            tokens.typography.ramp.default.treatments.base,
+            tokens.color.accent.treatments.foregroundReadableControl,
         ],
         properties: {
             gap: density.control.horizontal.gap,
@@ -48,6 +43,6 @@ export const anchorStyleModules: StyleRules = [
             contextCondition: AnchorAnatomy.conditions.noHref,
             part: AnchorAnatomy.parts.control,
         },
-        treatments: [neutralForegroundStrongElementTreatment],
+        treatments: [tokens.color.neutral.treatments.foregroundStrongElement],
     },
 ];

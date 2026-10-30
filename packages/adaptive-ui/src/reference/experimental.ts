@@ -2,7 +2,7 @@ import { DesignToken, Library, recipes, refs } from "design-token-library";
 import { hueShiftGradient } from "../core/color/recipes/hue-shift-gradient.js";
 import { twoPaletteGradient } from "../core/color/recipes/two-palette-gradient.js";
 import { StyleProperty } from "../core/styles/properties.js";
-import { Treatment } from "../core/styles/treatment.js";
+import { treatment, TreatmentToken } from "../core/styles/treatment-token.js";
 import { intendedFor } from "../core/token-metadata.js";
 import { AdaptiveDesignToken, PaintToken } from "../core/token-types.js";
 import { ColorLibraryTokens, ColorTokens } from "./color.js";
@@ -119,27 +119,51 @@ export const experimentalColor: Library.Config<ExperimentalColorTokens, Experime
 };
 
 /**
- * Treatment for an element that has the accent hue shift gradient as its fill, and the disabled fill when it is disabled.
+ * The experimental treatments, with the treatments of the accent palette.
  *
  * @beta
  */
-export const accentHueShiftGradientFillSubtleElementTreatment: Treatment = {
-    name: "color.accent-hue-shift-gradient-fill-subtle-element",
-    properties: {
-        backgroundFill: { rest: tokens.accentHueShiftGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
-        ...densityBorder(tokens.accent.stroke.safety),
-    },
-};
+export interface ExperimentalTreatmentTokens {
+    color: {
+        accent: {
+            treatments: {
+                /** The accent hue shift gradient as the fill of an element, and the disabled fill when it is disabled. */
+                hueShiftGradientFillSubtleElement: TreatmentToken;
+                /** The accent to highlight gradient as the fill of an element, and the disabled fill when it is disabled. */
+                toHighlightGradientFillSubtleElement: TreatmentToken;
+            };
+        };
+    };
+}
 
 /**
- * Treatment for an element that has the accent to highlight gradient as its fill, and the disabled fill when it is disabled.
+ * The configuration of the experimental treatments, for the library, which puts them in the treatments of the accent palette.
  *
  * @beta
  */
-export const accentToHighlightGradientFillSubtleElementTreatment: Treatment = {
-    name: "color.accent-to-highlight-gradient-fill-subtle-element",
-    properties: {
-        backgroundFill: { rest: tokens.accentToHighlightGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
-        ...densityBorder(tokens.accent.stroke.safety),
+export const experimentalTreatments: Library.Config<ExperimentalTreatmentTokens, ExperimentalLibraryTokens & ExperimentalTreatmentTokens> = {
+    color: {
+        accent: {
+            treatments: {
+                hueShiftGradientFillSubtleElement: treatment(
+                    {
+                        properties: {
+                            backgroundFill: { rest: tokens.accentHueShiftGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
+                            ...densityBorder(tokens.accent.stroke.safety),
+                        },
+                    },
+                    { formerNames: ["color.accent-hue-shift-gradient-fill-subtle-element"] }
+                ),
+                toHighlightGradientFillSubtleElement: treatment(
+                    {
+                        properties: {
+                            backgroundFill: { rest: tokens.accentToHighlightGradient.fill.subtle, disabled: tokens.neutral.fill.subtle },
+                            ...densityBorder(tokens.accent.stroke.safety),
+                        },
+                    },
+                    { formerNames: ["color.accent-to-highlight-gradient-fill-subtle-element"] }
+                ),
+            },
+        },
     },
 };
