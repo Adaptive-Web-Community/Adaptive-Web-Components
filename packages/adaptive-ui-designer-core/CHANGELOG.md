@@ -1,5 +1,16 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-core
 
+## 1.0.0-beta.0
+
+### Major Changes
+
+-   [#341](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/341) [`d8a2b6d`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d8a2b6dc33fcbf70947dafbc106d590011e31137) Thanks [@bheston](https://github.com/bheston)! - Move the designer core to the 1.0 beta of Adaptive UI: the token registry is removed, the names a node stores are found through the names of the library, what a node stores is plain data, and the style modules applied to a node are its treatments. See the [migration guide](./MIGRATION.md).
+
+### Patch Changes
+
+-   Updated dependencies [[`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751)]:
+    -   @adaptive-web/adaptive-ui@1.0.0-beta.2
+
 ## 0.6.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
+## 1.0.0-beta.0
+
+### Major Changes
+
+-   [#346](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/346) [`48a3cd9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/48a3cd96bd9dfb5dbded82dde3066664b8fbc041) Thanks [@bheston](https://github.com/bheston)! - Move the components to `fast-element` 3 and the components foundation, styled with the 1.0 beta of Adaptive UI and the token library of their design system, under a new name: `@adaptive-web/components-fast`, formerly `@adaptive-web/adaptive-web-components`. `fast-element` is a peer dependency and the package has no CommonJS bundle. See the [migration guide](./MIGRATION.md).
+
+### Patch Changes
+
+-   Updated dependencies [[`48a3cd9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/48a3cd96bd9dfb5dbded82dde3066664b8fbc041), [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751)]:
+    -   @adaptive-web/components-foundation@1.0.0-beta.0
+    -   @adaptive-web/adaptive-ui@1.0.0-beta.2
+
 ## 0.10.0
 
 ### Minor Changes
