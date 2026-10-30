@@ -26,7 +26,7 @@
     "build:styles": "aui compile-styles ./dist/esm/components/**/*/index.js -a '*Anatomy' -s '*StyleRules'",
     "build:tsc": "tsc -p ./tsconfig.build.json",
     "build:bundle": "rollup -c",
-    "build": "rimraf clean ./dist && npm run build:tsc && npm run build:bundle && npm run cem:analyze",
+    "build": "rimraf dist && npm run build:tsc && npm run build:bundle && npm run cem:analyze",
     "build:storybook": "storybook build",
     "clean": "rimraf dist storybook-static",
     "cem:analyze": "cem analyze --config ./cem.config.mjs",
