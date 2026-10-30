@@ -20,6 +20,8 @@ instead. A component that isn't listed hasn't changed yet.
 - The design system's API is public, no longer beta: `DesignSystem` and its methods, `PartialDesignSystem`, `ElementStaticMap`,
   `ComponentStatics`, `ComponentDefinition`, the `<Name>Statics` of the templates, and `ComposeOptions` (the options of `compose<Name>`, which
   wasn't exported). `BaseFormControl` is exported too.
+- The package has no CommonJS bundle (`dist/adaptive-web-components.cjs`, its `main`): its modules are ES modules, and `main` is
+  `dist/esm/index.js`. The bundle for a CDN, `dist/adaptive-web-components.min.js`, is unchanged.
 - The components depend on `@adaptive-web/adaptive-ui` 1.0 (see its `MIGRATION.md`), whose tokens are those of a token library and not
   FAST design tokens. The styles are rendered with the library of the design system, see
   `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.
