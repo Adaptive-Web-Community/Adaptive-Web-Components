@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSwitch } from "./switch.compose.js";
-import { styleModules } from "./switch.styles.modules.js";
+import { styleRules } from "./switch.styles.rules.js";
 
 /**
  * The Switch custom element definition. Implements {@link Switch}.
@@ -13,6 +13,6 @@ import { styleModules } from "./switch.styles.modules.js";
 export const switchDefinition = composeSwitch(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

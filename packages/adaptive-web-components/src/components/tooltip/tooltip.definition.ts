@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTooltip } from "./tooltip.compose.js";
-import { styleModules } from "./tooltip.styles.modules.js";
+import { styleRules } from "./tooltip.styles.rules.js";
 
 /**
  * The Tooltip custom element definition. Implements {@link Tooltip}.
@@ -13,6 +13,6 @@ import { styleModules } from "./tooltip.styles.modules.js";
 export const tooltipDefinition = composeTooltip(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

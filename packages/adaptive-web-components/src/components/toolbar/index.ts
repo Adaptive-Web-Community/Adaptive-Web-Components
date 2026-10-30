@@ -5,6 +5,6 @@ export {
     aestheticStyles as toolbarAestheticStyles,
 } from "./toolbar.styles.js";
 export {
-    styleModules as toolbarStyleModules,
-} from "./toolbar.styles.modules.js";
+    styleRules as toolbarStyleRules,
+} from "./toolbar.styles.rules.js";
 export { template as toolbarTemplate, ToolbarAnatomy, ToolbarConditions, ToolbarParts } from "./toolbar.template.js";

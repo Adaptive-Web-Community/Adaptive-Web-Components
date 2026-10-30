@@ -2,7 +2,7 @@ import { chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 import { BreadcrumbItemStatics } from "./breadcrumb-item.template.js";
-import { styleModules } from "./breadcrumb-item.styles.modules.js";
+import { styleRules } from "./breadcrumb-item.styles.rules.js";
 
 /**
  * The Breadcrumb Item custom element definition. Implements {@link BreadcrumbItem}.
@@ -18,7 +18,7 @@ export const breadcrumbItemDefinition = composeBreadcrumbItem(
         statics: {
             [BreadcrumbItemStatics.separator]: chevronRightIcon,
         },
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element focuses the native link, as the Anchor's.
             delegatesFocus: true,

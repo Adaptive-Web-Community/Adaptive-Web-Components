@@ -4,8 +4,8 @@ export {
     aestheticStyles as accordionItemAestheticStyles,
 } from "./accordion-item.styles.js";
 export {
-    styleModules as accordionItemStyleModules,
-} from "./accordion-item.styles.modules.js";
+    styleRules as accordionItemStyleRules,
+} from "./accordion-item.styles.rules.js";
 export { AccordionItem } from "./accordion-item.js";
 export {
     template as accordionItemTemplate,

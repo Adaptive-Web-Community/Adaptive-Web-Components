@@ -1,7 +1,7 @@
 import { chevronLeftIcon, chevronRightIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCalendar } from "./calendar.compose.js";
-import { styleModules } from "./calendar.styles.modules.js";
+import { styleRules } from "./calendar.styles.rules.js";
 import { CalendarStatics } from "./calendar.template.js";
 
 /**
@@ -19,7 +19,7 @@ export const calendarDefinition = composeCalendar(
             [CalendarStatics.previous]: chevronLeftIcon,
             [CalendarStatics.next]: chevronRightIcon,
         },
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses its first button.
             delegatesFocus: true,

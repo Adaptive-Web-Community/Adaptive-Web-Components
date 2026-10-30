@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCard } from "./card.compose.js";
-import { styleModules } from "./card.styles.modules.js";
+import { styleRules } from "./card.styles.rules.js";
 
 /**
  * The Card custom element definition. Implements {@link Card}.
@@ -13,6 +13,6 @@ import { styleModules } from "./card.styles.modules.js";
 export const cardDefinition = composeCard(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

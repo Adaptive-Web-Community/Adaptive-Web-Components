@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTab } from "./tab.compose.js";
-import { styleModules } from "./tab.styles.modules.js";
+import { styleRules } from "./tab.styles.rules.js";
 
 /**
  * The Tab custom element definition. Implements {@link Tab}.
@@ -13,6 +13,6 @@ import { styleModules } from "./tab.styles.modules.js";
 export const tabDefinition = composeTab(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

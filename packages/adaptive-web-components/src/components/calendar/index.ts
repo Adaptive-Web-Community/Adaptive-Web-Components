@@ -5,6 +5,6 @@ export {
     aestheticStyles as calendarAestheticStyles,
 } from "./calendar.styles.js";
 export {
-    styleModules as calendarStyleModules,
-} from "./calendar.styles.modules.js";
+    styleRules as calendarStyleRules,
+} from "./calendar.styles.rules.js";
 export { template as calendarTemplate, CalendarAnatomy, CalendarConditions, CalendarParts, CalendarStatics } from "./calendar.template.js";

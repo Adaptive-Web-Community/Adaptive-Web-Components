@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDataGrid } from "./data-grid.compose.js";
-import { styleModules } from "./data-grid.styles.modules.js";
+import { styleRules } from "./data-grid.styles.rules.js";
 
 /**
  * The Data Grid custom element definition. Implements {@link DataGrid}.
@@ -13,6 +13,6 @@ import { styleModules } from "./data-grid.styles.modules.js";
 export const dataGridDefinition = composeDataGrid(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

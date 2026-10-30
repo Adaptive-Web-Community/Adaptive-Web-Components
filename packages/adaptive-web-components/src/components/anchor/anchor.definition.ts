@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAnchor } from "./anchor.compose.js";
-import { styleModules } from "./anchor.styles.modules.js";
+import { styleRules } from "./anchor.styles.rules.js";
 
 /**
  * The Anchor custom element definition. Implements {@link Anchor}.
@@ -13,7 +13,7 @@ import { styleModules } from "./anchor.styles.modules.js";
 export const anchorDefinition = composeAnchor(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element focuses the native link, and the element's tabindex is the link's (a toolbar's roving focus).
             delegatesFocus: true,

@@ -14,7 +14,7 @@ export const StressNoFocusAnatomy: ComponentAnatomy<Record<string, never>, Recor
     parts: {},
 };
 
-export const stressNoFocusStyleModules: StyleRules = [
+export const stressNoFocusStyleRules: StyleRules = [
     {
         properties: { backgroundFill: color.neutral.fill.subtle },
     },

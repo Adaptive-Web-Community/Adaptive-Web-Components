@@ -5,6 +5,6 @@ export {
     aestheticStyles as switchAestheticStyles,
 } from "./switch.styles.js";
 export {
-    styleModules as switchStyleModules,
-} from "./switch.styles.modules.js";
+    styleRules as switchStyleRules,
+} from "./switch.styles.rules.js";
 export { template as switchTemplate, SwitchAnatomy, SwitchConditions, SwitchParts } from "./switch.template.js";

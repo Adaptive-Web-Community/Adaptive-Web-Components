@@ -1,7 +1,7 @@
 import { chevronDownIcon, dismissIcon } from "../../assets.js";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composePicker } from "./picker.compose.js";
-import { styleModules } from "./picker.styles.modules.js";
+import { styleRules } from "./picker.styles.rules.js";
 import { PickerStatics } from "./picker.template.js";
 
 /**
@@ -19,7 +19,7 @@ export const pickerDefinition = composePicker(
             [PickerStatics.indicator]: chevronDownIcon,
             [PickerStatics.removeValue]: dismissIcon,
         },
-        styleModules,
+        styleRules,
         shadowOptions: {
             // Focusing the element, or a label of it, focuses the input.
             delegatesFocus: true,

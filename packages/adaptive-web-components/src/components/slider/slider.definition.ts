@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSlider } from "./slider.compose.js";
-import { styleModules } from "./slider.styles.modules.js";
+import { styleRules } from "./slider.styles.rules.js";
 
 /**
  * The Slider custom element definition. Implements {@link Slider}.
@@ -13,6 +13,6 @@ import { styleModules } from "./slider.styles.modules.js";
 export const sliderDefinition = composeSlider(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

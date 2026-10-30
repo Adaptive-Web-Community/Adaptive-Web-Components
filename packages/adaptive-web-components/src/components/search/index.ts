@@ -5,6 +5,6 @@ export {
     aestheticStyles as searchAestheticStyles,
 } from "./search.styles.js";
 export {
-    styleModules as searchStyleModules,
-} from "./search.styles.modules.js";
+    styleRules as searchStyleRules,
+} from "./search.styles.rules.js";
 export { template as searchTemplate, SearchAnatomy, SearchConditions, SearchParts } from "./search.template.js";

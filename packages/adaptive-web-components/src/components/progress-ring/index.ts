@@ -5,8 +5,8 @@ export {
     aestheticStyles as progressRingAestheticStyles,
 } from "./progress-ring.styles.js";
 export {
-    styleModules as progressRingStyleModules,
-} from "./progress-ring.styles.modules.js";
+    styleRules as progressRingStyleRules,
+} from "./progress-ring.styles.rules.js";
 export {
     template as progressRingTemplate,
     ProgressRingAnatomy,

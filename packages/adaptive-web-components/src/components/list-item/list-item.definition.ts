@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeListItem } from "./list-item.compose.js";
-import { styleModules } from "./list-item.styles.modules.js";
+import { styleRules } from "./list-item.styles.rules.js";
 
 /**
  * The List Item custom element definition. Implements {@link ListItem}.
@@ -13,6 +13,6 @@ import { styleModules } from "./list-item.styles.modules.js";
 export const listItemDefinition = composeListItem(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

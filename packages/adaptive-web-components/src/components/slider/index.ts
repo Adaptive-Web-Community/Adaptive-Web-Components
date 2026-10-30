@@ -5,6 +5,6 @@ export {
     aestheticStyles as sliderAestheticStyles,
 } from "./slider.styles.js";
 export {
-    styleModules as sliderStyleModules,
-} from "./slider.styles.modules.js";
+    styleRules as sliderStyleRules,
+} from "./slider.styles.rules.js";
 export { template as sliderTemplate, SliderAnatomy, SliderConditions, SliderParts } from "./slider.template.js";

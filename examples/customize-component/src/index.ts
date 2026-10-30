@@ -25,7 +25,7 @@ import indeterminateIcon from "./assets/indeterminate.svg";
 
 // --- Example part 1 ---
 
-// Compose and define the components. Note that currently some style modules are adjusted in `init-ds` first.
+// Compose and define the components. Note that currently some treatments are adjusted in `init-ds` first.
 AdaptiveDesignSystem.defineComponents({
     checkboxDefinition,
     radioDefinition,
@@ -35,7 +35,7 @@ AdaptiveDesignSystem.defineComponents({
 
 // --- Example part 2 ---
 
-// Define a custom style module.
+// Define a custom treatment.
 const accentOutlineReadableControlStyles: Styles = Styles.fromProperties({
     backgroundFill: neutralFillSubtle,
     borderFill: accentStrokeReadable,
@@ -52,8 +52,8 @@ const myCheckboxDefinition = composeCheckbox(
             [CheckboxStatics.checked]: checkIcon,
             [CheckboxStatics.indeterminate]: indeterminateIcon,
         },
-        // Custom modular styles.
-        styleModules: [
+        // Custom style rules.
+        styleRules: [
             {
                 target: {
                     part: CheckboxAnatomy.parts.control,

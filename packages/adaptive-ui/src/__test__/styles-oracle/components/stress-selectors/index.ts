@@ -45,7 +45,7 @@ export const StressSelectorsAnatomy: ComponentAnatomy<typeof StressSelectorsCond
     },
 };
 
-export const stressSelectorsStyleModules: StyleRules = [
+export const stressSelectorsStyleRules: StyleRules = [
     // Interactive token set on the context
     {
         properties: {

@@ -5,6 +5,6 @@ export {
     aestheticStyles as listItemAestheticStyles,
 } from "./list-item.styles.js";
 export {
-    styleModules as listItemStyleModules,
-} from "./list-item.styles.modules.js";
+    styleRules as listItemStyleRules,
+} from "./list-item.styles.rules.js";
 export { template as listItemTemplate, ListItemAnatomy, ListItemConditions, ListItemParts } from "./list-item.template.js";

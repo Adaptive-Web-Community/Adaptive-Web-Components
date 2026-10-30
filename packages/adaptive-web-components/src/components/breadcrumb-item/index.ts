@@ -5,8 +5,8 @@ export {
     aestheticStyles as breadcrumbItemAestheticStyles,
 } from "./breadcrumb-item.styles.js";
 export {
-    styleModules as breadcrumbItemStyleModules,
-} from "./breadcrumb-item.styles.modules.js";
+    styleRules as breadcrumbItemStyleRules,
+} from "./breadcrumb-item.styles.rules.js";
 export {
     template as breadcrumbItemTemplate,
     BreadcrumbItemAnatomy,

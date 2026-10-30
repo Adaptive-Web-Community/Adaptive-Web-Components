@@ -5,8 +5,8 @@ export {
     aestheticStyles as dataGridCellAestheticStyles,
 } from "./data-grid-cell.styles.js";
 export {
-    styleModules as dataGridCellStyleModules,
-} from "./data-grid-cell.styles.modules.js";
+    styleRules as dataGridCellStyleRules,
+} from "./data-grid-cell.styles.rules.js";
 export {
     template as dataGridCellTemplate,
     DataGridCellAnatomy,

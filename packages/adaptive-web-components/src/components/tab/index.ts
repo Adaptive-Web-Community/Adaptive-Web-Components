@@ -5,6 +5,6 @@ export {
     aestheticStyles as tabAestheticStyles,
 } from "./tab.styles.js";
 export {
-    styleModules as tabStyleModules,
-} from "./tab.styles.modules.js";
+    styleRules as tabStyleRules,
+} from "./tab.styles.rules.js";
 export { template as tabTemplate, TabAnatomy, TabConditions, TabParts } from "./tab.template.js";

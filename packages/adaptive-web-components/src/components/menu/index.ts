@@ -5,6 +5,6 @@ export {
     aestheticStyles as menuAestheticStyles,
 } from "./menu.styles.js";
 export {
-    styleModules as menuStyleModules,
-} from "./menu.styles.modules.js";
+    styleRules as menuStyleRules,
+} from "./menu.styles.rules.js";
 export { template as menuTemplate, MenuAnatomy, MenuConditions, MenuParts } from "./menu.template.js";

@@ -6,6 +6,6 @@ export {
     aestheticStyles as progressAestheticStyles,
 } from "./progress.styles.js";
 export {
-    styleModules as progressStyleModules,
-} from "./progress.styles.modules.js";
+    styleRules as progressStyleRules,
+} from "./progress.styles.rules.js";
 export { template as progressTemplate, ProgressAnatomy, ProgressConditions, ProgressParts } from "./progress.template.js";

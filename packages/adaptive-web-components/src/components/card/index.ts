@@ -5,6 +5,6 @@ export {
     aestheticStyles as cardAestheticStyles,
 } from "./card.styles.js";
 export {
-    styleModules as cardStyleModules,
-} from "./card.styles.modules.js";
+    styleRules as cardStyleRules,
+} from "./card.styles.rules.js";
 export { template as cardTemplate, CardAnatomy, CardConditions, CardParts } from "./card.template.js";

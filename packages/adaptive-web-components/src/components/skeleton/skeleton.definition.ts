@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSkeleton } from "./skeleton.compose.js";
-import { styleModules } from "./skeleton.styles.modules.js";
+import { styleRules } from "./skeleton.styles.rules.js";
 
 /**
  * The Skeleton custom element definition. Implements {@link Skeleton}.
@@ -13,6 +13,6 @@ import { styleModules } from "./skeleton.styles.modules.js";
 export const skeletonDefinition = composeSkeleton(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

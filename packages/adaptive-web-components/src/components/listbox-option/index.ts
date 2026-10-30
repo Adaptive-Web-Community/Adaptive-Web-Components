@@ -5,8 +5,8 @@ export {
     aestheticStyles as listboxOptionAestheticStyles,
 } from "./listbox-option.styles.js";
 export {
-    styleModules as listboxOptionStyleModules,
-} from "./listbox-option.styles.modules.js";
+    styleRules as listboxOptionStyleRules,
+} from "./listbox-option.styles.rules.js";
 export {
     template as listboxOptionTemplate,
     ListboxOptionAnatomy,

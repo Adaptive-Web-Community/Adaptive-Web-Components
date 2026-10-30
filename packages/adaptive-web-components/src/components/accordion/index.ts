@@ -5,6 +5,6 @@ export {
     aestheticStyles as accordionAestheticStyles,
 } from "./accordion.styles.js";
 export {
-    styleModules as accordionStyleModules,
-} from "./accordion.styles.modules.js";
+    styleRules as accordionStyleRules,
+} from "./accordion.styles.rules.js";
 export { template as accordionTemplate, AccordionAnatomy, AccordionConditions, AccordionParts } from "./accordion.template.js";

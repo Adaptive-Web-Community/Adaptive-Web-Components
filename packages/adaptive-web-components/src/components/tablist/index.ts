@@ -5,6 +5,6 @@ export {
     aestheticStyles as tablistAestheticStyles,
 } from "./tablist.styles.js";
 export {
-    styleModules as tablistStyleModules,
-} from "./tablist.styles.modules.js";
+    styleRules as tablistStyleRules,
+} from "./tablist.styles.rules.js";
 export { template as tablistTemplate, TablistAnatomy, TablistConditions, TablistParts } from "./tablist.template.js";

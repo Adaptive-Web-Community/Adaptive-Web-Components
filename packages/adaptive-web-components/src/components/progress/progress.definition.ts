@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeProgress } from "./progress.compose.js";
-import { styleModules } from "./progress.styles.modules.js";
+import { styleRules } from "./progress.styles.rules.js";
 
 /**
  * The Progress custom element definition. Implements {@link Progress}.
@@ -13,6 +13,6 @@ import { styleModules } from "./progress.styles.modules.js";
 export const progressDefinition = composeProgress(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

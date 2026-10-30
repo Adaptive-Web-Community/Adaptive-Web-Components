@@ -5,6 +5,6 @@ export {
     aestheticStyles as textAreaAestheticStyles,
 } from "./text-area.styles.js";
 export {
-    styleModules as textAreaStyleModules,
-} from "./text-area.styles.modules.js";
+    styleRules as textAreaStyleRules,
+} from "./text-area.styles.rules.js";
 export { template as textAreaTemplate, TextAreaAnatomy, TextAreaConditions, TextAreaParts } from "./text-area.template.js";

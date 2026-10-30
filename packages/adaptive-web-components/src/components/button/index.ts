@@ -4,7 +4,7 @@ export {
     aestheticStyles as buttonAestheticStyles,
 } from "./button.styles.js";
 export {
-    styleModules as buttonStyleModules,
-} from "./button.styles.modules.js";
+    styleRules as buttonStyleRules,
+} from "./button.styles.rules.js";
 export { template as buttonTemplate, ButtonAnatomy, ButtonConditions, ButtonParts } from "./button.template.js";
 export { Button } from "./button.js";

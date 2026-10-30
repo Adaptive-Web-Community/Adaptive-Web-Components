@@ -5,6 +5,6 @@ export {
     aestheticStyles as radioAestheticStyles,
 } from "./radio.styles.js";
 export {
-    styleModules as radioStyleModules,
-} from "./radio.styles.modules.js";
+    styleRules as radioStyleRules,
+} from "./radio.styles.rules.js";
 export { template as radioTemplate, RadioAnatomy, RadioConditions, RadioParts, RadioStatics } from "./radio.template.js";

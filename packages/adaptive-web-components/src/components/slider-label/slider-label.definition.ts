@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSliderLabel } from "./slider-label.compose.js";
-import { styleModules } from "./slider-label.styles.modules.js";
+import { styleRules } from "./slider-label.styles.rules.js";
 
 /**
  * The Slider Label custom element definition. Implements {@link SliderLabel}.
@@ -13,6 +13,6 @@ import { styleModules } from "./slider-label.styles.modules.js";
 export const sliderLabelDefinition = composeSliderLabel(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

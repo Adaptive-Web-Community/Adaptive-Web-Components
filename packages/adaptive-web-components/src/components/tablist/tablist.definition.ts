@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTablist } from "./tablist.compose.js";
-import { styleModules } from "./tablist.styles.modules.js";
+import { styleRules } from "./tablist.styles.rules.js";
 
 /**
  * The Tablist custom element definition. Implements {@link Tablist}.
@@ -13,6 +13,6 @@ import { styleModules } from "./tablist.styles.modules.js";
 export const tablistDefinition = composeTablist(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );

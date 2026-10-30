@@ -1,6 +1,6 @@
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeDataGridCell } from "./data-grid-cell.compose.js";
-import { styleModules } from "./data-grid-cell.styles.modules.js";
+import { styleRules } from "./data-grid-cell.styles.rules.js";
 
 /**
  * The Data Grid Cell custom element definition. Implements {@link DataGridCell}.
@@ -13,6 +13,6 @@ import { styleModules } from "./data-grid-cell.styles.modules.js";
 export const dataGridCellDefinition = composeDataGridCell(
     DefaultDesignSystem,
     {
-        styleModules,
+        styleRules,
     }
 );
