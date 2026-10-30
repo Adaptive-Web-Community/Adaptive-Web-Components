@@ -9,7 +9,7 @@ import type { Checkbox } from "./checkbox.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the checkbox.
  *
- * @beta
+ * @public
  */
 export const CheckboxStatics = {
     checked: "checkbox-checked-indicator",
@@ -17,7 +17,7 @@ export const CheckboxStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 

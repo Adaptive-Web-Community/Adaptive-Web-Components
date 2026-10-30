@@ -37,7 +37,12 @@ import type {
 } from "./components/index.js";
 import type { StaticallyComposableHTML } from "./utilities/template-helpers.js";
 
-type ComponentStatics =
+/**
+ * The keys of the statics of the components, which an {@link ElementStaticMap} maps to their HTML.
+ *
+ * @public
+ */
+export type ComponentStatics =
     AccordionItemStatics
     | BreadcrumbItemStatics
     | CalendarStatics
@@ -52,14 +57,21 @@ type ComponentStatics =
 /**
  * Represents partial metadata configuration for a custom element.
  * 
- * @beta
+ * @public
  */
 export type PartialDesignSystem = Partial<DesignSystem>;
 
 /**
- * @beta
+ * @public
  */
 export type ElementStaticMap = Map<ComponentStatics, StaticallyComposableHTML>;
+
+/**
+ * The definition of a component, as `compose<Name>` returns it, or a function that composes it with a design system.
+ *
+ * @public
+ */
+export type ComponentDefinition = Promise<FASTElementDefinition> | ((ds: DesignSystem) => Promise<FASTElementDefinition>);
 
 // The token of the color context, which a value on a fill is made in the context of. A library of a design system has the shape of the
 // reference library.
@@ -72,7 +84,7 @@ const colorContext = refs<ReferenceLibraryTokens>().color.context;
  * The styles of the components are rendered with the token library of the design system: the rules refer to the custom properties of its
  * tokens, which {@link DesignSystem.adoptTokenStyles} writes. See `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.
  *
- * @beta
+ * @public
  */
 export class DesignSystem {
     // The values on a fill of the components composed with this design system, for the token styles.
@@ -119,7 +131,7 @@ export class DesignSystem {
     /**
      * Overrides DesignSystem properties.
      * 
-     * @beta
+     * @public
      */
     public configure(options: PartialDesignSystem): this {
         this._prefix = options.prefix ?? this._prefix;
@@ -144,7 +156,7 @@ export class DesignSystem {
      * @remarks
      * Can be chained with other methods on the DesignSystem class.
      * 
-     * @beta
+     * @public
      */
     public withPrefix(prefix: string): this {
         this._prefix = prefix;
@@ -153,30 +165,35 @@ export class DesignSystem {
 
     /**
      * Defines a set of components using the prefix and registry defined with the DesignSystem
-     * 
-     * @beta
+     *
+     * @remarks
+     * Composing a definition is asynchronous in `fast-element` 3, so the components are defined once their definitions are composed.
+     *
+     * @returns A promise that resolves when the components are defined.
+     *
+     * @public
      */
-    public defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>) {
-        for (const key in components) {
-            let definition = components[key];
-
-            if (typeof definition === 'function') {
-                definition(this).define();
-            } else if (definition instanceof FASTElementDefinition) {
-                const elementNameParts = definition.name.split('-');
-                const prefix = elementNameParts.shift();
-
-                if (prefix !== this._prefix) {
-                    const newDefinition = {
-                        ...(definition as unknown as PartialFASTElementDefinition),
-                        name: `${this._prefix}-${elementNameParts.join('-')}`
-                    };
-
-                    definition = FASTElementDefinition.compose(definition.type, newDefinition);
-                }
-
-                definition.define(this._registry);
+    public async defineComponents(components: Record<string, ComponentDefinition>): Promise<void> {
+        for (const component of Object.values(components)) {
+            if (typeof component === 'function') {
+                (await component(this)).define();
+                continue;
             }
+
+            let definition = await component;
+            const elementNameParts = definition.name.split('-');
+            const prefix = elementNameParts.shift();
+
+            if (prefix !== this._prefix) {
+                const newDefinition = {
+                    ...(definition as unknown as PartialFASTElementDefinition),
+                    name: `${this._prefix}-${elementNameParts.join('-')}`
+                };
+
+                definition = await FASTElementDefinition.compose(definition.type, newDefinition);
+            }
+
+            definition.define(this._registry);
         }
     }
 
@@ -193,7 +210,7 @@ export class DesignSystem {
      * @param options - The component options, using `styles` and `styleRules`.
      * @returns The collection of desired styles.
      *
-     * @beta
+     * @public
      */
     public assembleStyles(
         defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>
@@ -227,7 +244,7 @@ export class DesignSystem {
      *
      * @param target - The document, whose `:root` has the properties, or a shadow root, whose `:host` has them.
      *
-     * @beta
+     * @public
      */
     public adoptTokenStyles(target: Document | ShadowRoot = document): void {
         const selector = target instanceof Document ? ":root" : ":host";
@@ -247,7 +264,7 @@ export class DesignSystem {
      * @param selector - The selector of the rule, like `:root`.
      * @returns The rule.
      *
-     * @beta
+     * @public
      */
     public tokenStyles(selector: string): string {
         const tokens = toCSS(this._library, { converters: adaptiveConverters(this._library) });
@@ -298,14 +315,14 @@ function classPartsOfAnatomy(anatomy: ComponentAnatomy<any, any>): ComponentAnat
 /**
  * The default {@link DesignSystem} configuration.
  *
- * @beta
+ * @public
  */
 export const DefaultDesignSystem: DesignSystem = new DesignSystem("adaptive");
 
 /**
  * Configuration options for composing an element definition.
- * 
- * @internal
+ *
+ * @public
  */
 export type ComposeOptions<TSource, TStatics extends string = any> = {
     template?: (ds: DesignSystem) => ElementViewTemplate<TSource, any>;

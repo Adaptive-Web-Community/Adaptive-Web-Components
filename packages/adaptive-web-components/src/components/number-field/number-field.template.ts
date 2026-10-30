@@ -9,7 +9,7 @@ import type { NumberField } from "./number-field.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the number field.
  *
- * @beta
+ * @public
  */
 export const NumberFieldStatics = {
     stepDown: "number-field-step-down-icon",
@@ -17,7 +17,7 @@ export const NumberFieldStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 

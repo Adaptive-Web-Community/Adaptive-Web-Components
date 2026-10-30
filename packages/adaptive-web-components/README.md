@@ -34,9 +34,10 @@ npm install "@adaptive-web/adaptive-web-components"
 
 Import and use everything:
 ```ts
-import { AdaptiveDesignSystem } "@adaptive-web/adaptive-web-components";
+import { AdaptiveDesignSystem } from "@adaptive-web/adaptive-web-components";
 import { AllComponents } from "@adaptive-web/adaptive-web-components/all-components";
-AdaptiveDesignSystem.defineComponents(AllComponents);
+AdaptiveDesignSystem.adoptTokenStyles();
+await AdaptiveDesignSystem.defineComponents(AllComponents);
 ```
 
 Import via CDN link on a script tag:

@@ -1,62 +1,19 @@
 import resolve from "@rollup/plugin-node-resolve";
-import filesize from "rollup-plugin-filesize";
-import svgo from 'rollup-plugin-svgo'
-import { terser } from "rollup-plugin-terser";
-import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import {
-    transformCSSFragment,
-    transformHTMLFragment,
-} from "../../build/transform-fragments.js";
-import manifest from './package.json';
+import terser from "@rollup/plugin-terser";
+import fastTaggedTemplates from "rollup-plugin-fast-tagged-templates";
+import { transformHTMLFragment } from "../../build/transform-fragments.js";
+import manifest from "./package.json" with { type: "json" };
 
-const parserOptions = {
-	sourceType: "module"
-};
-
-const plugins = [
-	resolve(),
-	svgo({
-		raw: true
-	}),
-	transformTaggedTemplate({
-		tagsToProcess: ["css","css.partial"],
-		transformer: transformCSSFragment,
-		parserOptions
-	}),
-	transformTaggedTemplate({
-		tagsToProcess: ["html"],
-		transformer: transformHTMLFragment,
-		parserOptions
-	}),
-	filesize({
-		showMinifiedSize: true,
-		showBrotliSize: true,
-		showGzippedSize: true,
-		showBeforeSizes: true
-	}),
-]
-
-export default [
-	{
-		plugins,
-		input: "dist/esm/index.bundle.js",
-		output: [
-			{
-				file: manifest.unpkg,
-				format: "esm",
-				plugins: [terser()]
-			},
-		],
+// The bundle for a CDN: a module that defines every component, with its dependencies.
+export default {
+	input: "dist/esm/index.bundle.js",
+	plugins: [
+		resolve(),
+		fastTaggedTemplates({ html: transformHTMLFragment, css: true }),
+	],
+	output: {
+		file: manifest.unpkg,
+		format: "esm",
+		plugins: [terser()],
 	},
-	{
-		plugins,
-		input: "dist/esm/index.js",
-		output: [
-			{
-				file: manifest.main,
-				format: "cjs",
-				plugins: [terser()]
-			}
-		]
-	}
-]
+};

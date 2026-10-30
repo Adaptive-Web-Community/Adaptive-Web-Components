@@ -1,54 +1,32 @@
-import { FASTElement, html, ViewTemplate } from "@microsoft/fast-element";
-import type { AnnotatedStoryFn, Args, ComponentAnnotations, StoryAnnotations, StoryContext } from "@storybook/csf";
+import { type FASTElement, html, ViewTemplate } from "@microsoft/fast-element";
+import type { Args, Meta as HtmlMeta, StoryContext, StoryFn } from "@storybook/html-vite";
 
 /**
  * A helper that returns a function to bind a Storybook story to a ViewTemplate.
  *
  * @param template - The ViewTemplate to render
- * @returns - a function to bind a Storybook story
+ * @returns - a function to bind a Storybook story, which renders the element of the template, or its fragment when it has several
  */
 export function renderComponent<TArgs = Args>(
     template: ViewTemplate
-): (args: TArgs, context: StoryContext) => Element | DocumentFragment | null {
+): (args: TArgs, context: StoryContext) => Element | DocumentFragment {
     return function (args, { updateArgs }) {
         const storyFragment = new DocumentFragment();
         template.render({ ...args, updateArgs }, storyFragment);
-        if (storyFragment.childElementCount === 1) {
-            return storyFragment.firstElementChild;
-        }
-        return storyFragment;
+        const element = storyFragment.childElementCount === 1 ? storyFragment.firstElementChild : null;
+        return element ?? storyFragment;
     };
 }
 
 /**
- *
- */
-export type FASTFramework = {
-    component: typeof FASTElement;
-    storyResult: FASTElement | Element | DocumentFragment;
-};
-
-/**
  * Metadata to configure the stories for a component.
  */
-export type Meta<TArgs = Args> = ComponentAnnotations<FASTFramework, Omit<TArgs, keyof FASTElement>>;
-
-/**
- * Story function that represents a CSFv3 component example.
- */
-export declare type StoryObj<TArgs = Args> = StoryAnnotations<FASTFramework, TArgs>;
+export type Meta<TArgs = Args> = HtmlMeta<Omit<TArgs, keyof FASTElement>>;
 
 /**
  * Story function that represents a CSFv2 component example.
  */
-export declare type StoryFn<TArgs = Args> = AnnotatedStoryFn<FASTFramework, TArgs>;
-
-/**
- * Story function that represents a CSFv2 component example.
- *
- * NOTE that in Storybook 7.0, this type will be renamed to `StoryFn` and replaced by the current `StoryObj` type.
- */
-export declare type Story<TArgs = Args> = StoryFn<StoryArgs<TArgs>>;
+export type Story<TArgs = Args> = StoryFn<StoryArgs<TArgs>>;
 
 /**
  * Combined Storybook story args.

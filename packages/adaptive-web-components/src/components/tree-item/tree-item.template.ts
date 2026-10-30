@@ -8,14 +8,14 @@ import type { TreeItem } from "./tree-item.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the tree item.
  *
- * @beta
+ * @public
  */
 export const TreeItemStatics = {
     expandCollapse: "tree-item-expand-collapse-icon"
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 

@@ -8,7 +8,7 @@ import type { MenuItem } from "./menu-item.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the menu item.
  *
- * @beta
+ * @public
  */
 export const MenuItemStatics = {
     checkbox: "menu-item-checkbox-indicator",
@@ -17,7 +17,7 @@ export const MenuItemStatics = {
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type MenuItemStatics = ValuesOf<typeof MenuItemStatics>;
 

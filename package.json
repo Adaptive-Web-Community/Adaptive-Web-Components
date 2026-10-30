@@ -14,10 +14,10 @@
         "version": "changeset version",
         "change": "changeset",
         "publish:ci": "changeset publish",
-        "clean": "npm run clean --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --if-present",
-        "build": "npm run build --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --if-present",
-        "lint": "npm run lint --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --if-present",
-        "test": "npm run test --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --if-present"
+        "clean": "npm run clean --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --workspace=@adaptive-web/adaptive-web-components --if-present",
+        "build": "npm run build --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --workspace=@adaptive-web/adaptive-web-components --if-present",
+        "lint": "npm run lint --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --workspace=@adaptive-web/adaptive-web-components --if-present",
+        "test": "npm run test --workspace=@adaptive-web/adaptive-ui --workspace=@adaptive-web/adaptive-ui-designer-core --workspace=@adaptive-web/adaptive-ui-designer-figma --workspace=@adaptive-web/components-foundation --workspace=@adaptive-web/adaptive-web-components --if-present"
     },
     "workspaces": [
         "./packages/adaptive-ui",

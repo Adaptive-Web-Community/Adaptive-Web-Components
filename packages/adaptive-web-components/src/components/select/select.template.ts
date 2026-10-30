@@ -9,14 +9,14 @@ import type { Select } from "./select.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the select.
  *
- * @beta
+ * @public
  */
 export const SelectStatics = {
     indicator: "select-indicator"
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type SelectStatics = ValuesOf<typeof SelectStatics>;
 

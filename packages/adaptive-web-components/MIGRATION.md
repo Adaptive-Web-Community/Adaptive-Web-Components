@@ -8,13 +8,20 @@ instead. A component that isn't listed hasn't changed yet.
 - The components depend on `@microsoft/fast-element` 3 and `@adaptive-web/components-foundation`, and not on `@microsoft/fast-foundation`. The contract of
   each element (its properties, enumerations, and parts) and its behavior are in the foundation; the element classes and templates are here.
 - `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.
+  So the `<name>Definition`s are promises, and `ds.defineComponents(components)` returns a promise that resolves when the components are
+  defined. A function in `components` returns the promise of a definition too (`ComponentDefinition`).
 - A form control has the validity API of a native one (`validity`, `validationMessage`, `willValidate`, `checkValidity()`,
   `reportValidity()`), from `BaseFormControl`.
 - A control is labelled as its native element is ([decision 0016](../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)).
   One whose native element is labelled by a `<label>` (an input, a select) has a `label` attribute, or a `label` slot for markup, and its
   default slot is never the label. One named by its content (a button, a link) is labelled by its default slot. `hide-label` hides either,
   and the label still names the control.
-- `StaticallyComposableHTML` and `staticallyCompose` are this package's, in `utilities/template-helpers.ts`. `ValuesOf` is the components foundation's.
+- `StaticallyComposableHTML` and `staticallyCompose` are this package's, exported from its entry point. `ValuesOf` is the components foundation's.
+- The design system's API is public, no longer beta: `DesignSystem` and its methods, `PartialDesignSystem`, `ElementStaticMap`,
+  `ComponentStatics`, `ComponentDefinition`, the `<Name>Statics` of the templates, and `ComposeOptions` (the options of `compose<Name>`, which
+  wasn't exported). `BaseFormControl` is exported too.
+- The package has no CommonJS bundle (`dist/adaptive-web-components.cjs`, its `main`): its modules are ES modules, and `main` is
+  `dist/esm/index.js`. The bundle for a CDN, `dist/adaptive-web-components.min.js`, is unchanged.
 - The components depend on `@adaptive-web/adaptive-ui` 1.0 (see its `MIGRATION.md`), whose tokens are those of a token library and not
   FAST design tokens. The styles are rendered with the library of the design system, see
   `docs/decisions/0017-a-design-system-renders-the-styles-with-its-library.md`.

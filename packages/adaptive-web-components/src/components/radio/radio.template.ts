@@ -9,14 +9,14 @@ import type { Radio } from "./radio.js";
 /**
  * Keys for {@link DesignSystem} `statics` registration for the radio.
  *
- * @beta
+ * @public
  */
 export const RadioStatics = {
     checked: "radio-checked-indicator"
 } as const;
 
 /**
- * @beta
+ * @public
  */
 export type RadioStatics = ValuesOf<typeof RadioStatics>;
 

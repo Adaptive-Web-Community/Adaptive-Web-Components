@@ -1,30 +1,13 @@
 /**
  * Reduces extra spaces in HTML tagged templates.
  *
+ * The minifier of `rollup-plugin-fast-tagged-templates` can't parse a binding as the name of an element (`<${cell}>`), which a template
+ * of FAST may have, so the HTML is only collapsed.
+ *
  * @param {string} data - the fragment value
  * @returns string
  */
 export function transformHTMLFragment(data) {
     data = data.replace(/\s*([<>])\s*/g, "$1"); // remove spaces before and after angle brackets
     return data.replace(/\s{2,}/g, " "); // Collapse all sequences to 1 space
-}
-
-/**
-* Reduces extra spaces in CSS tagged templates.
-*
-* Breakdown of this regex:
-*   (?:\s*\/\*(?:[\s\S])+?\*\/\s*)  Remove comments (non-capturing)
-*   (?:;)\s+(?=\})  Remove semicolons and spaces followed by property list end (non-capturing)
-*   \s+(?=\{)  Remove spaces before property list start (non-capturing)
-*   (?<=:)\s+  Remove spaces after property declarations (non-capturing)
-*   \s*([{};,])\s*  Remove extra spaces before and after braces, semicolons, and commas (captures)
-*
-* @param {string} data - the fragment value
-* @returns string
-*/
-export function transformCSSFragment(data) {
-    return data.replace(
-        /(?:\s*\/\*(?:[\s\S])+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g,
-        "$1"
-    );
 }
