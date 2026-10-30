@@ -19,7 +19,7 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
     focus: Focus.contextFocused(),
 };
 
-export const tabStyleModules: StyleRules = [
+export const tabStyleRules: StyleRules = [
     {
         treatments: [tokens.treatments.itemControl],
     },

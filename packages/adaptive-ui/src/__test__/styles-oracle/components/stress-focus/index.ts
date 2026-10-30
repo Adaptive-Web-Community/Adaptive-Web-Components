@@ -25,7 +25,7 @@ export const StressFocusAnatomy: ComponentAnatomy<Record<string, never>, typeof 
     },
 };
 
-export const stressFocusStyleModules: StyleRules = [
+export const stressFocusStyleRules: StyleRules = [
     {
         target: {
             part: StressFocusAnatomy.parts.indicator,

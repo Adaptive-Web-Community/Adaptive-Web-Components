@@ -24,7 +24,7 @@ export const StressAlwaysAnatomy: ComponentAnatomy<Record<string, never>, typeof
     },
 };
 
-export const stressAlwaysStyleModules: StyleRules = [
+export const stressAlwaysStyleRules: StyleRules = [
     {
         target: {
             part: StressAlwaysAnatomy.parts.root,

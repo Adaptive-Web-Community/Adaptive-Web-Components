@@ -59,20 +59,20 @@ for (const dir of ["anatomies", "stylesheets", "single", "on-fills", "output", "
 fs.mkdirSync(path.join(outDir, "anatomies"), { recursive: true });
 fs.cpSync(path.join(sourceDir, "anatomies"), path.join(outDir, "anatomies"), { recursive: true });
 
-// Anatomies defined in code, with the anatomy and style module export name matchers.
+// Anatomies defined in code, with the anatomy and style rules export name matchers.
 // The values on a fill of each run are written to `on-fills`, for the CSS of the tokens.
 const onFills = name => ["--on-fills", path.join(outDir, "on-fills", `${name}.json`)];
 
-runAui(["compile-styles", path.join(outDir, "components/*/index.js"), "-a", "*Anatomy", "-s", "*StyleModules", ...onFills("code")]);
+runAui(["compile-styles", path.join(outDir, "components/*/index.js"), "-a", "*Anatomy", "-s", "*StyleRules", ...onFills("code")]);
 
 // Anatomies defined in JSON, excluding the partial files which are only used for `imports`.
 runAui(["compile-styles", path.join(outDir, "anatomies/[!_]*.json"), ...onFills("json")]);
 
 // A different extension for the output.
-runAui(["compile-styles", path.join(outDir, "components/tab/index.js"), "-a", "*Anatomy", "-s", "*StyleModules", "-e", ".scss"]);
+runAui(["compile-styles", path.join(outDir, "components/tab/index.js"), "-a", "*Anatomy", "-s", "*StyleRules", "-e", ".scss"]);
 
 // A single file to a specific location.
-runAui(["compile-style", path.join(outDir, "components/button/index.js"), path.join(outDir, "single/button.css"), "-a", "*Anatomy", "-s", "*StyleModules", ...onFills("single")]);
+runAui(["compile-style", path.join(outDir, "components/button/index.js"), path.join(outDir, "single/button.css"), "-a", "*Anatomy", "-s", "*StyleRules", ...onFills("single")]);
 
 // A JSON anatomy to stdout.
 const stdout = runAui(["compile-json-anatomy", path.join(outDir, "anatomies/button.json"), ...onFills("single.json")]);

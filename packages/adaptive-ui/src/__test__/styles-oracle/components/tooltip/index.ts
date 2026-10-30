@@ -21,7 +21,7 @@ export const TooltipAnatomy: ComponentAnatomy<typeof TooltipConditions, typeof T
     parts: TooltipParts,
 };
 
-export const tooltipStyleModules: StyleRules = [
+export const tooltipStyleRules: StyleRules = [
     {
         treatments: [
             tokens.shape.treatments.control,

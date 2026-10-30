@@ -22,7 +22,7 @@ export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof But
     focus: Focus.partFocused("control"),
 };
 
-export const buttonStyleModules: StyleRules = [
+export const buttonStyleRules: StyleRules = [
     {
         target: {
             part: ButtonAnatomy.parts.control,

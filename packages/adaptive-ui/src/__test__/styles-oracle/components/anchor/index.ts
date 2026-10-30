@@ -24,7 +24,7 @@ export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof Anc
     focus: Focus.partFocused("control"),
 };
 
-export const anchorStyleModules: StyleRules = [
+export const anchorStyleRules: StyleRules = [
     {
         target: {
             part: AnchorAnatomy.parts.control,

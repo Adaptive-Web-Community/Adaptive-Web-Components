@@ -22,7 +22,7 @@ export const DividerAnatomy: ComponentAnatomy<typeof DividerConditions, typeof D
     parts: DividerParts,
 };
 
-export const dividerStyleModules: StyleRules = [
+export const dividerStyleRules: StyleRules = [
     {
         target: {
             contextCondition: DividerAnatomy.conditions.orientation.horizontal,

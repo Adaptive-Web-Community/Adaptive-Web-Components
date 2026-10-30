@@ -23,7 +23,7 @@ export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, type
     focus: Focus.partWithin("root", "control"),
 };
 
-export const textFieldStyleModules: StyleRules = [
+export const textFieldStyleRules: StyleRules = [
     {
         treatments: [tokens.typography.ramp.default.treatments.base],
         properties: {
