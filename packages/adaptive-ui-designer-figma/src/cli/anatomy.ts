@@ -1,13 +1,18 @@
 /* eslint @typescript-eslint/naming-convention: off */
 import fs from 'fs/promises';
 import path from 'path';
-import { SerializableAnatomy } from '@adaptive-web/adaptive-ui';
+import { SerializableAnatomy, tokenNames } from '@adaptive-web/adaptive-ui';
+import { createReferenceLibrary } from '@adaptive-web/adaptive-ui/reference';
 import type * as FigmaRestAPI from '@figma/rest-api-spec';
 import { kebabCase } from 'change-case';
 import { parseNode } from '../lib/node-parser.js';
 import { anatomyOf } from '../lib/anatomy.js';
 import { ILibraryConfig } from './library-config.js';
 import { ILogger } from './logger.js';
+
+// The names of the library that the Adaptive UI CLI compiles the anatomies with, the reference library, so an anatomy is written with the
+// current names of its tokens and treatments.
+const names = tokenNames(createReferenceLibrary());
 
 export interface IAnatomyConfiguration {
   readonly name: string;
@@ -37,7 +42,7 @@ export class AnatomyConfiguration implements IAnatomyConfiguration {
     } catch (e) {
       if ((e as Error).message.startsWith("ENOENT")) {
         logger.success(`Writing anatomy file for ${name}.`);
-        const nodeAnatomy = anatomyOf(parseNode(node));
+        const nodeAnatomy = anatomyOf(parseNode(node, names));
         const nodeAnatomyFileData = JSON.stringify(nodeAnatomy, null, 2);
         anatomy = JSON.parse(nodeAnatomyFileData);
         await fs.mkdir(path.parse(configurationPath).dir, { recursive: true }); // ensure dir exists or fs.writeFile will throw
