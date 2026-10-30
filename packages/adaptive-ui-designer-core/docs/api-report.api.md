@@ -34,9 +34,6 @@ export interface AppliedDesignToken {
 export type AppliedDesignTokens = Partial<Record<StyleProperty, AppliedDesignToken>>;
 
 // @public
-export type AppliedStyleModules = string[];
-
-// @public
 export interface AppliedStyleValue {
     // (undocumented)
     value: any;
@@ -44,6 +41,9 @@ export interface AppliedStyleValue {
 
 // @public
 export type AppliedStyleValues = Partial<Record<StyleProperty, AppliedStyleValue>>;
+
+// @public
+export type AppliedTreatments = string[];
 
 // @public
 export interface Config {
@@ -75,6 +75,11 @@ export type DesignTokenValues = Record<string, DesignTokenValue>;
 // @public
 export const focusIndicatorNodeName = "Focus indicator";
 
+// @public
+export const formerPluginDataKeys: {
+    readonly appliedTreatments: "appliedStyleModules";
+};
+
 // @public (undocumented)
 export const getLogger: () => Logger<unknown>;
 
@@ -88,13 +93,16 @@ export function isAppliedDesignToken(value: unknown): value is AppliedDesignToke
 export function isDesignTokenValue(value: unknown): value is DesignTokenValue;
 
 // @public
+export type PluginDataKey = keyof PluginNodeData | (typeof formerPluginDataKeys)[keyof typeof formerPluginDataKeys];
+
+// @public
 export abstract class PluginNode {
     constructor(level?: number);
     protected _additionalData: AdditionalData;
     get appliedDesignTokens(): ReadonlyAppliedDesignTokens;
     protected _appliedDesignTokens: AppliedDesignTokens;
-    get appliedStyleModules(): ReadonlyAppliedStyleModules;
-    protected _appliedStyleModules: AppliedStyleModules;
+    get appliedTreatments(): ReadonlyAppliedTreatments;
+    protected _appliedTreatments: AppliedTreatments;
     abstract readonly codeGenName?: string;
     config: Config;
     get debugInfo(): {
@@ -103,7 +111,7 @@ export abstract class PluginNode {
         name: string;
     };
     deserializeAppliedDesignTokens(json: string | null): AppliedDesignTokens;
-    deserializeAppliedStyleModules(json: string | null): AppliedStyleModules;
+    deserializeAppliedTreatments(json: string | null): AppliedTreatments;
     deserializeDesignTokens(json: string | null): DesignTokenValues;
     get designTokens(): ReadonlyDesignTokenValues;
     protected _designTokens: DesignTokenValues;
@@ -127,10 +135,10 @@ export abstract class PluginNode {
     abstract paint(values: AppliedStyleValues): Promise<void>;
     static pluginDataAccessor: PluginNodeDataAccessor;
     get refAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined;
-    get refAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined;
+    get refAppliedTreatments(): ReadonlyAppliedTreatments | undefined;
     get refDesignTokens(): ReadonlyDesignTokenValues | undefined;
     setAppliedDesignTokens(appliedTokens: AppliedDesignTokens): void;
-    setAppliedStyleModules(appliedModules: AppliedStyleModules): void;
+    setAppliedTreatments(appliedTreatments: AppliedTreatments): void;
     setDesignTokens(tokens: DesignTokenValues): Promise<void>;
     abstract readonly states?: StatesState;
     abstract readonly supportsCodeGen: boolean;
@@ -141,18 +149,18 @@ export abstract class PluginNode {
 // @public
 export interface PluginNodeData {
     appliedDesignTokens: AppliedDesignTokens;
-    appliedStyleModules: AppliedStyleModules;
+    appliedTreatments: AppliedTreatments;
     config: Config;
     designTokens: DesignTokenValues;
 }
 
 // @public
 export interface PluginNodeDataAccessor {
-    deletePluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): void;
+    deletePluginData<K extends PluginDataKey>(node: PluginNode, key: K): void;
     getAppliedDesignTokensRawData(node: PluginNode): Promise<string | null>;
-    getAppliedStyleModulesRawData(node: PluginNode): Promise<string | null>;
+    getAppliedTreatmentsRawData(node: PluginNode): Promise<string | null>;
     getDesignTokensRawData(node: PluginNode): Promise<string | null>;
-    getPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): string | null;
+    getPluginData<K extends PluginDataKey>(node: PluginNode, key: K): string | null;
     setPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K, value: string): void;
 }
 
@@ -165,7 +173,7 @@ export interface PluginUINodeData extends PluginNodeData {
     inheritedDesignTokens: ReadonlyDesignTokenValues;
     name: string;
     refAppliedDesignTokens?: ReadonlyAppliedDesignTokens;
-    refAppliedStyleModules?: ReadonlyAppliedStyleModules;
+    refAppliedTreatments?: ReadonlyAppliedTreatments;
     refDesignTokens?: ReadonlyDesignTokenValues;
     supports: Array<StyleProperty>;
     type: string;
@@ -181,7 +189,7 @@ export interface PluginUIState {
 export type ReadonlyAppliedDesignTokens = Readonly<AppliedDesignTokens>;
 
 // @public
-export type ReadonlyAppliedStyleModules = readonly string[];
+export type ReadonlyAppliedTreatments = readonly string[];
 
 // @public
 export type ReadonlyDesignTokenValues = Readonly<DesignTokenValues>;

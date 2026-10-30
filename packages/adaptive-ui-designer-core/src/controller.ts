@@ -103,7 +103,7 @@ export abstract class Controller {
             if (pluginNode) {
                 await pluginNode.handleManualDarkMode();
                 await pluginNode.setDesignTokens(node.designTokens);
-                pluginNode.setAppliedStyleModules(node.appliedStyleModules);
+                pluginNode.setAppliedTreatments(node.appliedTreatments);
                 pluginNode.setAppliedDesignTokens(node.appliedDesignTokens);
 
                 // Paint all applied design tokens on the node

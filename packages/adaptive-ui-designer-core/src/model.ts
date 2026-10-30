@@ -96,14 +96,14 @@ export type DesignTokenValues = Record<string, DesignTokenValue>;
 export type ReadonlyDesignTokenValues = Readonly<DesignTokenValues>;
 
 /**
- * Style modules applied to the style of a node.
+ * Treatments applied to the style of a node, by name.
  */
-export type AppliedStyleModules = string[]; // TODO This is more accurate as a Set
+export type AppliedTreatments = string[]; // TODO This is more accurate as a Set
 
 /**
- * Readonly style modules applied to the style of a node.
+ * Readonly treatments applied to the style of a node, by name.
  */
-export type ReadonlyAppliedStyleModules = readonly string[]; // TODO This is more accurate as a Set
+export type ReadonlyAppliedTreatments = readonly string[]; // TODO This is more accurate as a Set
 
 /**
  * Design tokens applied to the style of a node. The key is the target style property.
@@ -150,10 +150,26 @@ export interface PluginNodeData {
     appliedDesignTokens: AppliedDesignTokens;
 
     /**
-     * Style modules applied to the node.
+     * Treatments applied to the node.
      */
-    appliedStyleModules: AppliedStyleModules;
+    appliedTreatments: AppliedTreatments;
 }
+
+/**
+ * The keys that a node stored its data under in earlier versions, by the key it has now. A design tool reads the earlier key of a
+ * node that doesn't have the current one, and a node deletes it when it saves the data under the current one.
+ */
+export const formerPluginDataKeys = {
+    /**
+     * Treatments were called style modules.
+     */
+    appliedTreatments: "appliedStyleModules",
+} as const;
+
+/**
+ * A key of the data stored on a node: a key of {@link PluginNodeData}, or one that earlier versions stored (see {@link formerPluginDataKeys}).
+ */
+export type PluginDataKey = keyof PluginNodeData | (typeof formerPluginDataKeys)[keyof typeof formerPluginDataKeys];
 
 /**
  * Represents a Node on the UI side.
@@ -195,9 +211,9 @@ export interface PluginUINodeData extends PluginNodeData {
     refDesignTokens?: ReadonlyDesignTokenValues;
 
     /**
-     * Applied style modules from the chain of reference nodes, like the main component for an instance node.
+     * Applied treatments from the chain of reference nodes, like the main component for an instance node.
      */
-    refAppliedStyleModules?: ReadonlyAppliedStyleModules;
+    refAppliedTreatments?: ReadonlyAppliedTreatments;
 
     /**
      * Applied design tokens from the chain of reference nodes, like the main component for an instance node.
@@ -207,7 +223,7 @@ export interface PluginUINodeData extends PluginNodeData {
     /**
      * The resultant set of effective applied design tokens and values that need to be updated
      * to the node. This will include the sum of applied design tokens inherited from the main
-     * component, applied directly to this node, or applied via style modules.
+     * component, applied directly to this node, or applied via treatments.
      */
     effectiveAppliedStyleValues: AppliedStyleValues;
 
@@ -238,13 +254,13 @@ export const pluginNodesToUINodes = async (
                 additionalData: await node.getAdditionalData(),
                 inheritedDesignTokens,
                 refDesignTokens: node.refDesignTokens,
-                refAppliedStyleModules: node.refAppliedStyleModules,
+                refAppliedTreatments: node.refAppliedTreatments,
                 refAppliedDesignTokens: node.refAppliedDesignTokens,
                 effectiveAppliedStyleValues: {},
                 children,
                 config: node.config,
                 designTokens: { ...node.designTokens },
-                appliedStyleModules: [...node.appliedStyleModules],
+                appliedTreatments: [...node.appliedTreatments],
                 appliedDesignTokens: { ...node.appliedDesignTokens },
             };
         }

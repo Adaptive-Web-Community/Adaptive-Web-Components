@@ -17,8 +17,8 @@ The tokens of the designer are the tokens of a library, so the registry and its 
 
 ## Names stored on a node
 
-A node stores the names of the tokens set to it, of the tokens applied to its style, and of the treatments (style modules)
-applied to it. They're read by the current name of each, which the library's names find from any name the token had, as
+A node stores the names of the tokens set to it, of the tokens applied to its style, and of the treatments applied
+to it. They're read by the current name of each, which the library's names find from any name the token had, as
 `@adaptive-web/adaptive-ui` keeps them ([decision 0014](../../docs/decisions/0014-a-names-history-is-kept-with-what-it-names.md)).
 A node saved by 0.6 reads as it was, and is saved with the current names. A name that finds no token is kept as it is.
 
@@ -38,8 +38,23 @@ stored are still read.
 | 0.6 | Now |
 | --- | --- |
 | `DesignTokenValues`, `AppliedDesignTokens`, `AppliedStyleValues`, `AdditionalData`, which extended `Map` | Records: `tokens[name]`, `Object.entries(tokens)`, `Object.keys(tokens).length` for `size` |
-| `AppliedStyleModules`, which extended `Array` | `string[]` |
+| `AppliedStyleModules`, which extended `Array` | `AppliedTreatments`, a `string[]` |
 | `Config`, `DesignTokenValue`, `AppliedDesignToken`, `AppliedStyleValue`, classes with a constructor | Interfaces: `{ value }`, `{ tokenID }` |
 | `deserializeMap(json)`, which returned a `Map` of any value | `deserializeRecord(json, isValue)`, which keeps the values a guard accepts (`isDesignTokenValue`, `isAppliedDesignToken`) and warns about the others |
 | `serializeMap(map)` | `JSON.stringify(record)` |
 | `mapReplacer`, `mapReviver`, which tagged a `Map` in a message between the UI and the design tool | Nothing: a message is plain data, and `JSON.stringify` and `JSON.parse` take it as it is |
+
+## Treatments, not style modules
+
+What 0.6 called a style module is a treatment, a token of the library
+([decision 0015](../../docs/decisions/0015-a-treatment-is-a-token.md)). A node stores the treatments applied to it under
+`appliedTreatments`, and deletes `appliedStyleModules` when it saves them. A design tool reads `appliedStyleModules` from a node that
+doesn't have `appliedTreatments` yet.
+
+| 0.6 | Now |
+| --- | --- |
+| `AppliedStyleModules`, `ReadonlyAppliedStyleModules` | `AppliedTreatments`, `ReadonlyAppliedTreatments` |
+| `appliedStyleModules`, `refAppliedStyleModules` of a node | `appliedTreatments`, `refAppliedTreatments` |
+| `deserializeAppliedStyleModules`, `setAppliedStyleModules` | `deserializeAppliedTreatments`, `setAppliedTreatments` |
+| `getAppliedStyleModulesRawData` of the `PluginNodeDataAccessor` | `getAppliedTreatmentsRawData`, which reads `formerPluginDataKeys.appliedTreatments` when the node doesn't have the current key |
+| The plugin data key `appliedStyleModules` | `appliedTreatments`. `PluginDataKey` is a current key or a former one, which the accessor reads and deletes |

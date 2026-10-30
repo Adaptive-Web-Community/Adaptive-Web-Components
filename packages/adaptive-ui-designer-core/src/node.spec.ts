@@ -1,7 +1,7 @@
 import { tokenNames } from "@adaptive-web/adaptive-ui";
 import { createReferenceLibrary } from "@adaptive-web/adaptive-ui/reference";
 import { expect } from "chai";
-import { AppliedStyleValues, PluginNodeData } from "./model.js";
+import { AppliedStyleValues, PluginDataKey } from "./model.js";
 import { PluginNode } from "./node.js";
 
 class TestNode extends PluginNode {
@@ -24,7 +24,7 @@ class TestNode extends PluginNode {
 }
 
 describe("PluginNode", () => {
-    const stored = new Map<keyof PluginNodeData, string>();
+    const stored = new Map<PluginDataKey, string>();
 
     before(() => {
         PluginNode.tokenNames = tokenNames(createReferenceLibrary());
@@ -34,7 +34,7 @@ describe("PluginNode", () => {
             deletePluginData: (node, key) => { stored.delete(key); },
             getDesignTokensRawData: async () => null,
             getAppliedDesignTokensRawData: async () => null,
-            getAppliedStyleModulesRawData: async () => null,
+            getAppliedTreatmentsRawData: async () => null,
         };
     });
 
@@ -64,9 +64,9 @@ describe("PluginNode", () => {
         });
 
         it("for the treatments applied to its style", () => {
-            const modules = new TestNode().deserializeAppliedStyleModules('["color.accent-fill-readable-control","shape.control"]');
+            const treatments = new TestNode().deserializeAppliedTreatments('["color.accent-fill-readable-control","shape.control"]');
 
-            expect(modules).to.deep.equal(["color.accent.treatments.fillReadableControl", "shape.treatments.control"]);
+            expect(treatments).to.deep.equal(["color.accent.treatments.fillReadableControl", "shape.treatments.control"]);
         });
     });
 
@@ -118,11 +118,19 @@ describe("PluginNode", () => {
         const node = new TestNode();
         await node.setDesignTokens({ "color.accent.base": { value: "#0078D4" } });
         node.setAppliedDesignTokens({ backgroundFill: { tokenID: "color.accent.fill.readable" } });
-        node.setAppliedStyleModules(["shape.treatments.control"]);
+        node.setAppliedTreatments(["shape.treatments.control"]);
 
         expect(stored.get("designTokens")).to.equal('{"color.accent.base":{"value":"#0078D4"}}');
         expect(stored.get("appliedDesignTokens")).to.equal('{"backgroundFill":{"tokenID":"color.accent.fill.readable"}}');
-        expect(stored.get("appliedStyleModules")).to.equal('["shape.treatments.control"]');
+        expect(stored.get("appliedTreatments")).to.equal('["shape.treatments.control"]');
+    });
+
+    it("saves the treatments applied to it under their current key, and removes the key of 0.6", () => {
+        stored.set("appliedStyleModules", '["shape.control"]');
+        new TestNode().setAppliedTreatments(["shape.treatments.control"]);
+
+        expect(stored.get("appliedTreatments")).to.equal('["shape.treatments.control"]');
+        expect(stored.has("appliedStyleModules")).to.equal(false);
     });
 
     it("removes what is empty", async () => {

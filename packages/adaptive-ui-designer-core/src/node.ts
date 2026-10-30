@@ -6,15 +6,17 @@ import {
     AdditionalData,
     AdditionalDataKeys,
     AppliedDesignTokens,
-    AppliedStyleModules,
     AppliedStyleValues,
+    AppliedTreatments,
     Config,
     DesignTokenValues,
+    formerPluginDataKeys,
     isAppliedDesignToken,
     isDesignTokenValue,
+    PluginDataKey,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
-    ReadonlyAppliedStyleModules,
+    ReadonlyAppliedTreatments,
     ReadonlyDesignTokenValues,
 } from "./model.js";
 import { deserializeRecord } from "./serialization.js";
@@ -58,7 +60,7 @@ export interface PluginNodeDataAccessor {
      * Gets custom data from the design tool storage.
      * @param key - The data storage key.
      */
-    getPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): string | null;
+    getPluginData<K extends PluginDataKey>(node: PluginNode, key: K): string | null;
 
     /**
      * Sets custom data to the design tool storage.
@@ -71,7 +73,7 @@ export interface PluginNodeDataAccessor {
      * Deletes custom data from the design tool storage.
      * @param key - The data storage key.
      */
-    deletePluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): void;
+    deletePluginData<K extends PluginDataKey>(node: PluginNode, key: K): void;
 
     /**
      * Gets the raw data for the local design tokens for a given node, without reference node values.
@@ -88,11 +90,12 @@ export interface PluginNodeDataAccessor {
     getAppliedDesignTokensRawData(node: PluginNode): Promise<string | null>;
 
     /**
-     * Gets the raw data for the local applied style modules for a given node, without reference node values.
-     * @param node - The node to get the raw data for the local applied style modules for.
-     * @returns The raw data for the local applied style modules for the node.
+     * Gets the raw data for the local applied treatments for a given node, without reference node values, from the key that earlier
+     * versions stored them under (`formerPluginDataKeys.appliedTreatments`) when the node doesn't have the current one.
+     * @param node - The node to get the raw data for the local applied treatments for.
+     * @returns The raw data for the local applied treatments for the node.
      */
-    getAppliedStyleModulesRawData(node: PluginNode): Promise<string | null>;
+    getAppliedTreatmentsRawData(node: PluginNode): Promise<string | null>;
 }
 
 /**
@@ -130,11 +133,11 @@ export abstract class PluginNode {
     protected _appliedDesignTokens: AppliedDesignTokens = {};
 
     /**
-     * Style modules applied to the style of this node.
+     * Treatments applied to the style of this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _appliedStyleModules: AppliedStyleModules = [];
+    protected _appliedTreatments: AppliedTreatments = [];
 
     /**
      * Additional data associated with this node.
@@ -190,20 +193,20 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets the applied style modules from the chain of reference nodes, like the main component for an instance node.
+     * Gets the applied treatments from the chain of reference nodes, like the main component for an instance node.
      */
-    public get refAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
+    public get refAppliedTreatments(): ReadonlyAppliedTreatments | undefined {
         const refNode = this.getRefNode();
-        const appliedStyleModules: AppliedStyleModules = [];
+        const appliedTreatments: AppliedTreatments = [];
         
         if (refNode) {
-            if (refNode.refAppliedStyleModules) {
-                appliedStyleModules.push(...refNode.refAppliedStyleModules);
+            if (refNode.refAppliedTreatments) {
+                appliedTreatments.push(...refNode.refAppliedTreatments);
             }
-            appliedStyleModules.push(...refNode.appliedStyleModules);
+            appliedTreatments.push(...refNode.appliedTreatments);
         }
 
-        return appliedStyleModules;
+        return appliedTreatments;
     }
 
     /**
@@ -368,34 +371,35 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets the styler modules applied to the style of this node.
+     * Gets the treatments applied to the style of this node.
      */
-    public get appliedStyleModules(): ReadonlyAppliedStyleModules {
-        return this._appliedStyleModules;
+    public get appliedTreatments(): ReadonlyAppliedTreatments {
+        return this._appliedTreatments;
     }
 
     /**
-     * Deserializes the style modules applied to the style of this node, by the current name of each treatment.
+     * Deserializes the treatments applied to the style of this node, by the current name of each.
      * @param json - The raw plugin data string.
-     * @returns The deserialized applied style modules.
+     * @returns The deserialized applied treatments.
      */
-    public deserializeAppliedStyleModules(json: string | null): AppliedStyleModules {
+    public deserializeAppliedTreatments(json: string | null): AppliedTreatments {
         const names: string[] = JSON.parse(json || "[]");
         return names.map(currentName);
     }
 
     /**
-     * Sets the style modules applied to the style of this node.
-     * @param appliedModules - The complete style modules applied to the style.
+     * Sets the treatments applied to the style of this node.
+     * @param appliedTreatments - The complete treatments applied to the style.
      */
-    public setAppliedStyleModules(appliedModules: AppliedStyleModules) {
-        this._appliedStyleModules = appliedModules;
-        if (appliedModules.length) {
-            const json = JSON.stringify(appliedModules);
-            PluginNode.pluginDataAccessor.setPluginData(this, "appliedStyleModules", json);
+    public setAppliedTreatments(appliedTreatments: AppliedTreatments) {
+        this._appliedTreatments = appliedTreatments;
+        if (appliedTreatments.length) {
+            const json = JSON.stringify(appliedTreatments);
+            PluginNode.pluginDataAccessor.setPluginData(this, "appliedTreatments", json);
         } else {
-            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedStyleModules");
+            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedTreatments");
         }
+        PluginNode.pluginDataAccessor.deletePluginData(this, formerPluginDataKeys.appliedTreatments);
     }
 
     /**
