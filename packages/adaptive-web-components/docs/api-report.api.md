@@ -701,6 +701,9 @@ export interface ColumnDefinition {
 // @public
 export const componentBaseStyles = "\n    :host([hidden]) {\n        display: none !important;\n    }\n\n    :host {\n        box-sizing: border-box;\n    }\n\n    *, *:before, *:after {\n        box-sizing: inherit;\n    }\n";
 
+// @beta
+export type ComponentDefinition = Promise<FASTElementDefinition> | ((ds: DesignSystem) => Promise<FASTElementDefinition>);
+
 // Warning: (ae-forgotten-export) The symbol "ComposeOptions" needs to be exported by the entry point index.d.ts
 // Warning: (ae-incompatible-release-tags) The symbol "composeAccordion" is marked as @public, but its signature references "DesignSystem" which is marked as @beta
 //
@@ -1087,7 +1090,7 @@ export class DesignSystem {
     assembleStyles(defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>): ElementStyles;
     // Warning: (ae-forgotten-export) The symbol "PartialDesignSystem" needs to be exported by the entry point index.d.ts
     configure(options: PartialDesignSystem): this;
-    defineComponents(components: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>): void;
+    defineComponents(components: Record<string, ComponentDefinition>): Promise<void>;
     get library(): Library.Library<any, any>;
     // (undocumented)
     get prefix(): string;

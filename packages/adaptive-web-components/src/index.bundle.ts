@@ -1,5 +1,4 @@
-import type { FASTElementDefinition } from '@microsoft/fast-element';
-import type { DesignSystem } from './design-system.js';
+import type { ComponentDefinition, DesignSystem } from './design-system.js';
 import { AllComponents } from './custom-elements.js';
 import { DefaultDesignSystem } from './design-system.js';
 
@@ -10,7 +9,7 @@ declare global {
 
 interface AWC {
 	designSystem: DesignSystem;
-	allComponents: Record<string, ((ds: DesignSystem) => FASTElementDefinition) | FASTElementDefinition>;
+	allComponents: Record<string, ComponentDefinition>;
 }
 
 const AWC: AWC = {
@@ -27,7 +26,5 @@ if (globalThis.AWC === void 0) {
 	});
 }
 
-(() => {
-	AWC.designSystem.adoptTokenStyles();
-	AWC.designSystem.defineComponents(AWC.allComponents);
-})();
+AWC.designSystem.adoptTokenStyles();
+await AWC.designSystem.defineComponents(AWC.allComponents);

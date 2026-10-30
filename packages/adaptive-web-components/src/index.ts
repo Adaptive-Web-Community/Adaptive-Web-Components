@@ -1,4 +1,5 @@
 export {
+	type ComponentDefinition,
 	DesignSystem,
 	DefaultDesignSystem as AdaptiveDesignSystem,
 } from "./design-system.js";

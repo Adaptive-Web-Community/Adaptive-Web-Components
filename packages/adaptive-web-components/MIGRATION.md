@@ -8,6 +8,8 @@ instead. A component that isn't listed hasn't changed yet.
 - The components depend on `@microsoft/fast-element` 3 and `@adaptive-web/components-foundation`, and not on `@microsoft/fast-foundation`. The contract of
   each element (its properties, enumerations, and parts) and its behavior are in the foundation; the element classes and templates are here.
 - `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.
+  So the `<name>Definition`s are promises, and `ds.defineComponents(components)` returns a promise that resolves when the components are
+  defined. A function in `components` returns the promise of a definition too (`ComponentDefinition`).
 - A form control has the validity API of a native one (`validity`, `validationMessage`, `willValidate`, `checkValidity()`,
   `reportValidity()`), from `BaseFormControl`.
 - A control is labelled as its native element is ([decision 0016](../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)).
