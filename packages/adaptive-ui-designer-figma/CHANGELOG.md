@@ -1,5 +1,17 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-figma
 
+## 1.0.0-beta.0
+
+### Major Changes
+
+-   [#344](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/344) [`711ccb5`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/711ccb5734d5ee8b6af30425f519e1a17887b358) Thanks [@bheston](https://github.com/bheston)! - Move the Figma compiler to the 1.0 beta of Adaptive UI: the anatomy of a component is the `SerializableAnatomy` of Adaptive UI, its rules name their treatments in `treatments`, the names a node stores are written by their current name, and the data of a node is read as the designer core's records. See the [migration guide](./MIGRATION.md).
+
+### Patch Changes
+
+-   Updated dependencies [[`d8a2b6d`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d8a2b6dc33fcbf70947dafbc106d590011e31137), [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751)]:
+    -   @adaptive-web/adaptive-ui-designer-core@1.0.0-beta.0
+    -   @adaptive-web/adaptive-ui@1.0.0-beta.2
+
 ## 0.6.1
 
 ### Patch Changes

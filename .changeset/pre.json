@@ -9,10 +9,15 @@
     "@adaptive-web/adaptive-ui-designer-figma": "0.6.1",
     "@adaptive-web/adaptive-ui-designer-figma-plugin": "0.0.1",
     "@adaptive-web/adaptive-ui-explorer": "0.0.1",
-    "@adaptive-web/components-fast": "0.10.0"
+    "@adaptive-web/components-fast": "0.10.0",
+    "@adaptive-web/components-foundation": "0.1.0"
   },
   "changesets": [
     "cli-on-fills",
+    "components-foundation",
+    "components-on-fast-element-3",
+    "designer-core-on-the-token-library",
+    "designer-figma-on-the-token-library",
     "migrate-color-sets",
     "migrate-color",
     "migrate-density",
@@ -25,6 +30,7 @@
     "remove-fast-token-helpers",
     "render-style-rules",
     "start-one-point-oh-beta",
-    "token-names"
+    "token-names",
+    "treatment-tokens"
   ]
 }

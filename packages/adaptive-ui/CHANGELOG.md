@@ -1,5 +1,11 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 1.0.0-beta.2
+
+### Major Changes
+
+-   [#337](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/337) [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751) Thanks [@bheston](https://github.com/bheston)! - Make the treatments tokens of the library, named by their path in the groups they style, which a system changes by extending the library. See the [migration guide](./MIGRATION.md).
+
 ## 1.0.0-beta.1
 
 ### Major Changes
