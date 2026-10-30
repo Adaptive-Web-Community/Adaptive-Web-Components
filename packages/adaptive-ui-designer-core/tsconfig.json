@@ -3,10 +3,12 @@
     "compilerOptions": {
         "baseUrl": ".",
         "importHelpers": true,
+        "types": ["mocha", "node"],
         "lib": ["DOM", "ES2020"],
         "skipLibCheck": true,
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "rootDir": "src"
     },
+    "include": ["src"]
 }

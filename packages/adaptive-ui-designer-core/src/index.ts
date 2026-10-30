@@ -3,7 +3,7 @@ export { getLogger, indent } from "./logger.js";
 export {
     Config,
     PluginNodeData,
-    AppliedStyleModules,
+    AppliedTreatments,
     AppliedStyleValues,
     PluginUINodeData,
     AdditionalDataKeys,
@@ -12,9 +12,14 @@ export {
     AppliedStyleValue,
     AdditionalData,
     AppliedDesignTokens,
-    DesignTokenValues
+    DesignTokenValues,
+    formerPluginDataKeys,
+    PluginDataKey,
+    ReadonlyAppliedDesignTokens,
+    ReadonlyAppliedTreatments,
+    ReadonlyDesignTokenValues,
+    isAppliedDesignToken,
+    isDesignTokenValue,
 } from "./model.js";
-export { mapReplacer, mapReviver, deserializeMap, serializeMap } from "./serialization.js";
+export { deserializeRecord } from "./serialization.js";
 export { State, StatesState, PluginNode, PluginNodeDataAccessor, focusIndicatorNodeName, } from "./node.js";
-export { AdaptiveDesignToken, AdaptiveDesignTokenOrGroup, DesignTokenRegistry } from "./registry/design-token-registry.js";
-export { registerAppliableTokens, registerTokens } from "./registry/recipes.js";

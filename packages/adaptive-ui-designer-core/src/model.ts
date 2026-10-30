@@ -1,8 +1,6 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
 
-type ValuesOf<T> = T[keyof T];
-
 // TODO: This structure was used to pass design token values (specifically fill-color) but this isn't used
 // anymore and it's not a good way to structure the data it _is_ being used for now. Refactor with `PluginNodeData`.
 export const AdditionalDataKeys = {
@@ -38,88 +36,99 @@ export const AdditionalDataKeys = {
     codeGenName: "code-gen-name",
 } as const;
 
-export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
+export type AdditionalDataKeys = (typeof AdditionalDataKeys)[keyof typeof AdditionalDataKeys];
 
 /**
  * Configuration options for a node.
  */
-export class Config {
+export interface Config {
     /**
      * Indicator to treat the node as flattened or inline with the containing hierarchy.
      * Usable on Component nodes which exist as a construction convenience and are not
      * actual implemented components.
      */
-    public inline?: boolean;
+    inline?: boolean;
 }
 
 /**
  * A design token value.
  */
-export class DesignTokenValue {
-    constructor(public value: string) {
-    }
+export interface DesignTokenValue {
+    value: string;
 }
 
 /**
- * A token + value pair from an applied design token.
+ * Whether a value, as read from plugin data, is a {@link DesignTokenValue}.
  */
-export class AppliedDesignToken {
-    constructor(public tokenID: string) {
-    }
+export function isDesignTokenValue(value: unknown): value is DesignTokenValue {
+    return typeof value === "object" && value !== null && "value" in value && typeof value.value === "string";
+}
+
+/**
+ * A design token applied to a style property.
+ */
+export interface AppliedDesignToken {
+    tokenID: string;
+}
+
+/**
+ * Whether a value, as read from plugin data, is an {@link AppliedDesignToken}.
+ */
+export function isAppliedDesignToken(value: unknown): value is AppliedDesignToken {
+    return typeof value === "object" && value !== null && "tokenID" in value && typeof value.tokenID === "string";
 }
 
 /**
  * A value applied to a style property, possibly from a token evaluation or fixed value.
  */
-export class AppliedStyleValue {
-    constructor(public value: any) {
-    }
+export interface AppliedStyleValue {
+    value: any;
 }
 
 /**
- * Map of design tokens set for a node. The key is the design token ID.
+ * Design tokens set for a node. The key is the design token ID.
  */
-export class DesignTokenValues extends Map<string, DesignTokenValue> {}
+export type DesignTokenValues = Record<string, DesignTokenValue>;
 
 /**
- * Readonly Map of design tokens set for a node. The key is the design token ID.
+ * Readonly design tokens set for a node. The key is the design token ID.
  */
-export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
+export type ReadonlyDesignTokenValues = Readonly<DesignTokenValues>;
 
 /**
- * Array of style modules applied to the style of a node.
+ * Treatments applied to the style of a node, by name.
  */
-export class AppliedStyleModules extends Array<string> {} // TODO This is more accurate as a Set
+export type AppliedTreatments = string[]; // TODO This is more accurate as a Set
 
 /**
- * Readonly Array of style modules applied to the style of a node.
+ * Readonly treatments applied to the style of a node, by name.
  */
-export type ReadonlyAppliedStyleModules = ReadonlyArray<string>; // TODO This is more accurate as a Set
+export type ReadonlyAppliedTreatments = readonly string[]; // TODO This is more accurate as a Set
 
 /**
- * Map of design tokens applied to the style of a node. The key is the target style property.
+ * Design tokens applied to the style of a node. The key is the target style property.
  */
-export class AppliedDesignTokens extends Map<StyleProperty, AppliedDesignToken> {}
+export type AppliedDesignTokens = Partial<Record<StyleProperty, AppliedDesignToken>>;
 
 /**
- * Readonly Map of design tokens applied to the style of a node. The key is the target style property.
+ * Readonly design tokens applied to the style of a node. The key is the target style property.
  */
-export type ReadonlyAppliedDesignTokens = ReadonlyMap<StyleProperty, AppliedDesignToken>;
+export type ReadonlyAppliedDesignTokens = Readonly<AppliedDesignTokens>;
 
 /**
- * Map of values applied to the style of a node. The key is the target style property.
+ * Values applied to the style of a node. The key is the target style property.
  */
-export class AppliedStyleValues extends Map<StyleProperty, AppliedStyleValue> {}
+export type AppliedStyleValues = Partial<Record<StyleProperty, AppliedStyleValue>>;
 
 /**
- * Readonly Map of values applied to the style of a node. The key is the target style property.
+ * Readonly values applied to the style of a node. The key is the target style property.
  */
-export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyleValue>;
+export type ReadonlyAppliedStyleValues = Readonly<AppliedStyleValues>;
 
 /**
- * Map of additional data exchanged between the design tool and plugin. Not persisted.
+ * Additional data exchanged between the design tool and plugin. Not persisted.
  */
-export class AdditionalData extends Map<string, string> {}
+export type AdditionalData = Partial<Record<AdditionalDataKeys, string>>;
 
 /**
  * Defines the data stored by the plugin on a node instance.
@@ -141,10 +150,26 @@ export interface PluginNodeData {
     appliedDesignTokens: AppliedDesignTokens;
 
     /**
-     * Style modules applied to the node.
+     * Treatments applied to the node.
      */
-    appliedStyleModules: AppliedStyleModules;
+    appliedTreatments: AppliedTreatments;
 }
+
+/**
+ * The keys that a node stored its data under in earlier versions, by the key it has now. A design tool reads the earlier key of a
+ * node that doesn't have the current one, and a node deletes it when it saves the data under the current one.
+ */
+export const formerPluginDataKeys = {
+    /**
+     * Treatments were called style modules.
+     */
+    appliedTreatments: "appliedStyleModules",
+} as const;
+
+/**
+ * A key of the data stored on a node: a key of {@link PluginNodeData}, or one that earlier versions stored (see {@link formerPluginDataKeys}).
+ */
+export type PluginDataKey = keyof PluginNodeData | (typeof formerPluginDataKeys)[keyof typeof formerPluginDataKeys];
 
 /**
  * Represents a Node on the UI side.
@@ -166,7 +191,7 @@ export interface PluginUINodeData extends PluginNodeData {
     name: string;
 
     /**
-     * The {@link StyleProperty} the node supports.
+     * The {@link @adaptive-web/adaptive-ui#StyleProperty} the node supports.
      */
     supports: Array<StyleProperty>;
 
@@ -186,9 +211,9 @@ export interface PluginUINodeData extends PluginNodeData {
     refDesignTokens?: ReadonlyDesignTokenValues;
 
     /**
-     * Applied style modules from the chain of reference nodes, like the main component for an instance node.
+     * Applied treatments from the chain of reference nodes, like the main component for an instance node.
      */
-    refAppliedStyleModules?: ReadonlyAppliedStyleModules;
+    refAppliedTreatments?: ReadonlyAppliedTreatments;
 
     /**
      * Applied design tokens from the chain of reference nodes, like the main component for an instance node.
@@ -198,7 +223,7 @@ export interface PluginUINodeData extends PluginNodeData {
     /**
      * The resultant set of effective applied design tokens and values that need to be updated
      * to the node. This will include the sum of applied design tokens inherited from the main
-     * component, applied directly to this node, or applied via style modules.
+     * component, applied directly to this node, or applied via treatments.
      */
     effectiveAppliedStyleValues: AppliedStyleValues;
 
@@ -219,7 +244,7 @@ export const pluginNodesToUINodes = async (
             const children = includeChildren ? await pluginNodesToUINodes(await node.getChildren(), false, true) : [];
             const inheritedDesignTokens = includeInherited
                 ? await node.getInheritedDesignTokens()
-                : new DesignTokenValues();
+                : {};
 
             return {
                 id: node.id,
@@ -229,14 +254,14 @@ export const pluginNodesToUINodes = async (
                 additionalData: await node.getAdditionalData(),
                 inheritedDesignTokens,
                 refDesignTokens: node.refDesignTokens,
-                refAppliedStyleModules: node.refAppliedStyleModules,
+                refAppliedTreatments: node.refAppliedTreatments,
                 refAppliedDesignTokens: node.refAppliedDesignTokens,
-                effectiveAppliedStyleValues: new AppliedStyleValues(),
+                effectiveAppliedStyleValues: {},
                 children,
                 config: node.config,
-                designTokens: node.designTokens as DesignTokenValues,
-                appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
-                appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,
+                designTokens: { ...node.designTokens },
+                appliedTreatments: [...node.appliedTreatments],
+                appliedDesignTokens: { ...node.appliedDesignTokens },
             };
         }
     ));

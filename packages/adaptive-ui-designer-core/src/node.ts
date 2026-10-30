@@ -1,5 +1,4 @@
-import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { TokenNameMapping } from "@adaptive-web/adaptive-ui/reference";
+import { resolveTokenName, StyleProperty, TokenNameIndex } from "@adaptive-web/adaptive-ui";
 import { type Color, formatHex8 } from "culori/fn";
 import { Logger } from "tslog";
 import { getLogger, indent } from "./logger.js";
@@ -7,22 +6,20 @@ import {
     AdditionalData,
     AdditionalDataKeys,
     AppliedDesignTokens,
-    AppliedStyleModules,
     AppliedStyleValues,
+    AppliedTreatments,
     Config,
     DesignTokenValues,
+    formerPluginDataKeys,
+    isAppliedDesignToken,
+    isDesignTokenValue,
+    PluginDataKey,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
-    ReadonlyAppliedStyleModules,
+    ReadonlyAppliedTreatments,
     ReadonlyDesignTokenValues,
 } from "./model.js";
-import { deserializeMap, serializeMap } from "./serialization.js";
-
-/**
- * Helper for enumerating a type from a const object
- * Example: export type Foo = ValuesOf\<typeof Foo\>
- */
-type ValuesOf<T> = T[keyof T];
+import { deserializeRecord } from "./serialization.js";
 
 /**
  * Layer name for special handling of the focus indicator in design tools.
@@ -42,12 +39,18 @@ export const StatesState = {
     configured: "configured",
 } as const;
 
-export type StatesState = ValuesOf<typeof StatesState>;
+export type StatesState = (typeof StatesState)[keyof typeof StatesState];
 
 /**
  * The states for an interactive component.
  */
 export type State = "Rest" | "Hover" | "Active" | "Focus" | "Disabled";
+
+// Gets the current name of a token or a treatment stored on a node, which an earlier version may have stored by another name (decision
+// 0014). A name that finds nothing is kept, so a node doesn't lose what it has when the library doesn't have the token.
+function currentName(name: string): string {
+    return resolveTokenName(PluginNode.tokenNames, name)?.name ?? name;
+}
 
 /**
  * Interface for accessing plugin node data storage.
@@ -57,7 +60,7 @@ export interface PluginNodeDataAccessor {
      * Gets custom data from the design tool storage.
      * @param key - The data storage key.
      */
-    getPluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): string | null;
+    getPluginData<K extends PluginDataKey>(node: PluginNode, key: K): string | null;
 
     /**
      * Sets custom data to the design tool storage.
@@ -70,7 +73,7 @@ export interface PluginNodeDataAccessor {
      * Deletes custom data from the design tool storage.
      * @param key - The data storage key.
      */
-    deletePluginData<K extends keyof PluginNodeData>(node: PluginNode, key: K): void;
+    deletePluginData<K extends PluginDataKey>(node: PluginNode, key: K): void;
 
     /**
      * Gets the raw data for the local design tokens for a given node, without reference node values.
@@ -87,11 +90,12 @@ export interface PluginNodeDataAccessor {
     getAppliedDesignTokensRawData(node: PluginNode): Promise<string | null>;
 
     /**
-     * Gets the raw data for the local applied style modules for a given node, without reference node values.
-     * @param node - The node to get the raw data for the local applied style modules for.
-     * @returns The raw data for the local applied style modules for the node.
+     * Gets the raw data for the local applied treatments for a given node, without reference node values, from the key that earlier
+     * versions stored them under (`formerPluginDataKeys.appliedTreatments`) when the node doesn't have the current one.
+     * @param node - The node to get the raw data for the local applied treatments for.
+     * @returns The raw data for the local applied treatments for the node.
      */
-    getAppliedStyleModulesRawData(node: PluginNode): Promise<string | null>;
+    getAppliedTreatmentsRawData(node: PluginNode): Promise<string | null>;
 }
 
 /**
@@ -109,32 +113,38 @@ export abstract class PluginNode {
     public static pluginDataAccessor: PluginNodeDataAccessor;
 
     /**
+     * The names of the tokens of the library the designer works with, which find a token or a treatment by a name an earlier version
+     * stored, from `tokenNames(library)`.
+     */
+    public static tokenNames: TokenNameIndex;
+
+    /**
      * Design tokens set for this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _designTokens: DesignTokenValues = new DesignTokenValues();
+    protected _designTokens: DesignTokenValues = {};
 
     /**
      * Design tokens applied to the style of this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+    protected _appliedDesignTokens: AppliedDesignTokens = {};
 
     /**
-     * Style modules applied to the style of this node.
+     * Treatments applied to the style of this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _appliedStyleModules: AppliedStyleModules = new AppliedStyleModules();
+    protected _appliedTreatments: AppliedTreatments = [];
 
     /**
      * Additional data associated with this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _additionalData: AdditionalData = new AdditionalData();
+    protected _additionalData: AdditionalData = {};
 
     /**
      * Convenience logger for the subclass.
@@ -162,17 +172,17 @@ export abstract class PluginNode {
 
         // TODO Revisit this logic to make sure we actually want to include the reference node's design tokens.
 
-        let designTokens = new DesignTokenValues();
+        let designTokens: ReadonlyDesignTokenValues = {};
         const parent = await this.getParent();
         const parentRefNode = parent?.getRefNode();
         if (parent !== null) {
-            designTokens = new DesignTokenValues([
+            designTokens = {
                 ...await parent.getInheritedDesignTokens(),
                 ...(parentRefNode)
                     ? await parentRefNode.getInheritedDesignTokens()
-                    : [],
+                    : {},
                 ...parent.designTokens,
-            ]);
+            };
         }
 
         // console.log("  PluginNode.inheritedDesignTokens", this.debugInfo, designTokens.entries());
@@ -183,20 +193,20 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets the applied style modules from the chain of reference nodes, like the main component for an instance node.
+     * Gets the applied treatments from the chain of reference nodes, like the main component for an instance node.
      */
-    public get refAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
+    public get refAppliedTreatments(): ReadonlyAppliedTreatments | undefined {
         const refNode = this.getRefNode();
-        const appliedStyleModules = new AppliedStyleModules();
+        const appliedTreatments: AppliedTreatments = [];
         
         if (refNode) {
-            if (refNode.refAppliedStyleModules) {
-                appliedStyleModules.push(...refNode.refAppliedStyleModules);
+            if (refNode.refAppliedTreatments) {
+                appliedTreatments.push(...refNode.refAppliedTreatments);
             }
-            appliedStyleModules.push(...refNode.appliedStyleModules);
+            appliedTreatments.push(...refNode.appliedTreatments);
         }
 
-        return appliedStyleModules;
+        return appliedTreatments;
     }
 
     /**
@@ -204,15 +214,10 @@ export abstract class PluginNode {
      */
     public get refAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
         const refNode = this.getRefNode();
-        const appliedDesignTokens = new AppliedDesignTokens([
-            ...(refNode && refNode.refAppliedDesignTokens
-                ? refNode.refAppliedDesignTokens
-                : []),
-            ...(refNode && refNode.appliedDesignTokens
-                ? refNode.appliedDesignTokens
-                : []),
-        ]);
-        return appliedDesignTokens;
+        return {
+            ...refNode?.refAppliedDesignTokens,
+            ...refNode?.appliedDesignTokens,
+        };
     }
 
     /**
@@ -220,15 +225,10 @@ export abstract class PluginNode {
      */
     public get refDesignTokens(): ReadonlyDesignTokenValues | undefined {
         const refNode = this.getRefNode();
-        const designTokens = new DesignTokenValues([
-            ...(refNode && refNode.refDesignTokens
-                ? refNode.refDesignTokens
-                : []),
-            ...(refNode && refNode.designTokens
-                ? refNode.designTokens
-                : []),
-        ]);
-        return designTokens;
+        return {
+            ...refNode?.refDesignTokens,
+            ...refNode?.designTokens,
+        };
     }
 
     /**
@@ -304,7 +304,7 @@ export abstract class PluginNode {
     /**
      * Configuration options for a node.
      */
-    public config: Config = new Config();
+    public config: Config = {};
 
     /**
      * Gets the design tokens set for this node.
@@ -314,24 +314,13 @@ export abstract class PluginNode {
     }
 
     /**
-     * Deserializes design tokens set to the node.
+     * Deserializes design tokens set to the node, by the current name of each token.
      * @param json - The raw plugin data string.
      * @returns The deserialized design tokens set to the node.
      */
     public deserializeDesignTokens(json: string | null): DesignTokenValues {
-        if (json !== null) {
-            // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
-        }
-        const map: DesignTokenValues = deserializeMap(json);
-
-        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
-        const retMap = new DesignTokenValues();
-        map.forEach((value, tokenName) => {
-            const currentTokenName = TokenNameMapping[tokenName as keyof typeof TokenNameMapping] || tokenName;
-            retMap.set(currentTokenName, value);
-        })
-
-        return retMap;
+        const stored = deserializeRecord(json, isDesignTokenValue);
+        return Object.fromEntries(Object.entries(stored).map(([name, { value }]) => [currentName(name), { value }]));
     }
 
     /**
@@ -340,8 +329,8 @@ export abstract class PluginNode {
      */
     public async setDesignTokens(tokens: DesignTokenValues) {
         this._designTokens = tokens;
-        if (tokens.size) {
-            const json = serializeMap(tokens);
+        if (Object.keys(tokens).length) {
+            const json = JSON.stringify(tokens);
             PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", json);
         } else {
             PluginNode.pluginDataAccessor.deletePluginData(this, "designTokens");
@@ -358,27 +347,13 @@ export abstract class PluginNode {
     }
 
     /**
-     * Deserializes the design tokens applied to the style of this node.
+     * Deserializes the design tokens applied to the style of this node, by the current name of each token.
      * @param json - The raw plugin data string.
      * @returns The deserialized applied design tokens.
      */
     public deserializeAppliedDesignTokens(json: string | null): AppliedDesignTokens {
-        if (json !== null) {
-            // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
-        }
-        const map: AppliedDesignTokens = deserializeMap(json);
-
-        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
-        const retMap = new AppliedDesignTokens();
-        map.forEach((value, key) => {
-            const currentTokenName = TokenNameMapping[value.tokenID as keyof typeof TokenNameMapping] || value.tokenID;
-            if (currentTokenName !== value.tokenID) {
-                value.tokenID = currentTokenName;
-            }
-            retMap.set(key, value);
-        })
-
-        return retMap;
+        const stored = deserializeRecord(json, isAppliedDesignToken);
+        return Object.fromEntries(Object.entries(stored).map(([property, { tokenID }]) => [property, { tokenID: currentName(tokenID) }]));
     }
 
     /**
@@ -387,8 +362,8 @@ export abstract class PluginNode {
      */
     public setAppliedDesignTokens(appliedTokens: AppliedDesignTokens) {
         this._appliedDesignTokens = appliedTokens;
-        if (appliedTokens.size) {
-            const json = serializeMap(appliedTokens);
+        if (Object.keys(appliedTokens).length) {
+            const json = JSON.stringify(appliedTokens);
             PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", json);
         } else {
             PluginNode.pluginDataAccessor.deletePluginData(this, "appliedDesignTokens");
@@ -396,36 +371,35 @@ export abstract class PluginNode {
     }
 
     /**
-     * Gets the styler modules applied to the style of this node.
+     * Gets the treatments applied to the style of this node.
      */
-    public get appliedStyleModules(): ReadonlyAppliedStyleModules {
-        return this._appliedStyleModules;
+    public get appliedTreatments(): ReadonlyAppliedTreatments {
+        return this._appliedTreatments;
     }
 
     /**
-     * Deserializes the style modules applied to the style of this node.
+     * Deserializes the treatments applied to the style of this node, by the current name of each.
      * @param json - The raw plugin data string.
-     * @returns The deserialized applied style modules.
+     * @returns The deserialized applied treatments.
      */
-    public deserializeAppliedStyleModules(json: string | null): AppliedStyleModules {
-        if (json !== null) {
-            // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
-        }
-        return JSON.parse(json || "[]");
+    public deserializeAppliedTreatments(json: string | null): AppliedTreatments {
+        const names: string[] = JSON.parse(json || "[]");
+        return names.map(currentName);
     }
 
     /**
-     * Sets the style modules applied to the style of this node.
-     * @param appliedModules - The complete style modules applied to the style.
+     * Sets the treatments applied to the style of this node.
+     * @param appliedTreatments - The complete treatments applied to the style.
      */
-    public setAppliedStyleModules(appliedModules: AppliedStyleModules) {
-        this._appliedStyleModules = appliedModules;
-        if (appliedModules.length) {
-            const json = JSON.stringify(appliedModules);
-            PluginNode.pluginDataAccessor.setPluginData(this, "appliedStyleModules", json);
+    public setAppliedTreatments(appliedTreatments: AppliedTreatments) {
+        this._appliedTreatments = appliedTreatments;
+        if (appliedTreatments.length) {
+            const json = JSON.stringify(appliedTreatments);
+            PluginNode.pluginDataAccessor.setPluginData(this, "appliedTreatments", json);
         } else {
-            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedStyleModules");
+            PluginNode.pluginDataAccessor.deletePluginData(this, "appliedTreatments");
         }
+        PluginNode.pluginDataAccessor.deletePluginData(this, formerPluginDataKeys.appliedTreatments);
     }
 
     /**
@@ -433,25 +407,25 @@ export abstract class PluginNode {
      */
     public async getAdditionalData(): Promise<AdditionalData> {
         if (this.states) {
-            this._additionalData.set(AdditionalDataKeys.states, this.states);
+            this._additionalData[AdditionalDataKeys.states] = this.states;
         }
 
         const state = await this.getState();
         if (state) {
-            this._additionalData.set(AdditionalDataKeys.state, state);
+            this._additionalData[AdditionalDataKeys.state] = state;
         }
 
-        this._additionalData.set(AdditionalDataKeys.supportsCodeGen, "" + this.supportsCodeGen);
+        this._additionalData[AdditionalDataKeys.supportsCodeGen] = "" + this.supportsCodeGen;
         if (this.codeGenName) {
-            this._additionalData.set(AdditionalDataKeys.codeGenName, this.codeGenName);
+            this._additionalData[AdditionalDataKeys.codeGenName] = this.codeGenName;
         }
 
         const parent = await this.getParent();
         if (parent) {
             const fillColor = await parent.getEffectiveFillColor();
-            if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && fillColor) {
+            if (!(AdditionalDataKeys.toolParentFillColor in this._additionalData) && fillColor) {
                 this._logger.debug(indent(this._level) + "    PluginNode.getAdditionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(fillColor));
-                this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(fillColor));
+                this._additionalData[AdditionalDataKeys.toolParentFillColor] = formatHex8(fillColor);
             }
         }
 

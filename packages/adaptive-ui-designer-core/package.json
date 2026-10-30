@@ -13,9 +13,13 @@
   "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
+    "test": "npm run lint && npm run build && npm run unit-tests",
+    "unit-tests": "mocha",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc",
     "watch": "tsc --watch"
   },
   "repository": {
@@ -33,13 +37,17 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^0.14.0",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.31",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "culori": "^4.0.2",
     "tslog": "^4.10.2"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.59.4",
+    "@types/chai": "^4.3.4",
     "@types/culori": "^4.0.1",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "rimraf": "^3.0.2"
   }
 }
