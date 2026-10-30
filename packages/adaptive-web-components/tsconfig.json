@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.json",
     "compilerOptions": {
         "importHelpers": true,
-        "lib": ["DOM", "DOM.Iterable", "ES2020"],
+        "lib": ["DOM", "DOM.Iterable", "ES2020", "ES2022.Error"],
         "declarationDir": "dist/dts",
         "outDir": "dist/esm"
     },

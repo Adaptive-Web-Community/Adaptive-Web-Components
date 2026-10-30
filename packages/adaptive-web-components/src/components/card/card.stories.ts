@@ -22,9 +22,9 @@ export default {
 
 export const Card: Story<CardElement> = renderComponent(storyTemplate).bind({});
 
-export const CardWithCustomDimensions = renderComponent(storyTemplate).bind({});
+export const CardWithCustomDimensions: Story<CardElement> = renderComponent(storyTemplate).bind({});
 CardWithCustomDimensions.decorators = [
-    (Story: () => CardElement) => {
+    (Story) => {
         const renderedStory = Story() as CardElement;
         renderedStory.style.setProperty("height", "400px");
         renderedStory.style.setProperty("width", "500px");
@@ -40,7 +40,7 @@ CardWithControls.args = {
     `,
 };
 CardWithControls.decorators = [
-    (Story: () => CardElement) => {
+    (Story) => {
         const renderedStory = Story() as CardElement;
         renderedStory.style.setProperty("height", "400px");
         renderedStory.style.setProperty("width", "500px");
