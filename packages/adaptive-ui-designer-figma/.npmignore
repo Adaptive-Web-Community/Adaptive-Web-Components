@@ -25,3 +25,6 @@ temp
 # npm pack excludes dist directory without this line. Removing 'dist' from the root .gitignore
 # results in the correct packing behavior, so this appears to be a npm pack bug.
 !dist
+
+# API Extractor
+dist/*.api.json
