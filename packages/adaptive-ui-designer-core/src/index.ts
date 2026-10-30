@@ -12,7 +12,9 @@ export {
     AppliedStyleValue,
     AdditionalData,
     AppliedDesignTokens,
-    DesignTokenValues
+    DesignTokenValues,
+    isAppliedDesignToken,
+    isDesignTokenValue,
 } from "./model.js";
-export { mapReplacer, mapReviver, deserializeMap, serializeMap } from "./serialization.js";
+export { deserializeRecord } from "./serialization.js";
 export { State, StatesState, PluginNode, PluginNodeDataAccessor, focusIndicatorNodeName, } from "./node.js";

@@ -43,83 +43,94 @@ export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
 /**
  * Configuration options for a node.
  */
-export class Config {
+export interface Config {
     /**
      * Indicator to treat the node as flattened or inline with the containing hierarchy.
      * Usable on Component nodes which exist as a construction convenience and are not
      * actual implemented components.
      */
-    public inline?: boolean;
+    inline?: boolean;
 }
 
 /**
  * A design token value.
  */
-export class DesignTokenValue {
-    constructor(public value: string) {
-    }
+export interface DesignTokenValue {
+    value: string;
 }
 
 /**
- * A token + value pair from an applied design token.
+ * Whether a value, as read from plugin data, is a {@link DesignTokenValue}.
  */
-export class AppliedDesignToken {
-    constructor(public tokenID: string) {
-    }
+export function isDesignTokenValue(value: unknown): value is DesignTokenValue {
+    return typeof value === "object" && value !== null && "value" in value && typeof value.value === "string";
+}
+
+/**
+ * A design token applied to a style property.
+ */
+export interface AppliedDesignToken {
+    tokenID: string;
+}
+
+/**
+ * Whether a value, as read from plugin data, is an {@link AppliedDesignToken}.
+ */
+export function isAppliedDesignToken(value: unknown): value is AppliedDesignToken {
+    return typeof value === "object" && value !== null && "tokenID" in value && typeof value.tokenID === "string";
 }
 
 /**
  * A value applied to a style property, possibly from a token evaluation or fixed value.
  */
-export class AppliedStyleValue {
-    constructor(public value: any) {
-    }
+export interface AppliedStyleValue {
+    value: any;
 }
 
 /**
- * Map of design tokens set for a node. The key is the design token ID.
+ * Design tokens set for a node. The key is the design token ID.
  */
-export class DesignTokenValues extends Map<string, DesignTokenValue> {}
+export type DesignTokenValues = Record<string, DesignTokenValue>;
 
 /**
- * Readonly Map of design tokens set for a node. The key is the design token ID.
+ * Readonly design tokens set for a node. The key is the design token ID.
  */
-export type ReadonlyDesignTokenValues = ReadonlyMap<string, DesignTokenValue>;
+export type ReadonlyDesignTokenValues = Readonly<DesignTokenValues>;
 
 /**
- * Array of style modules applied to the style of a node.
+ * Style modules applied to the style of a node.
  */
-export class AppliedStyleModules extends Array<string> {} // TODO This is more accurate as a Set
+export type AppliedStyleModules = string[]; // TODO This is more accurate as a Set
 
 /**
- * Readonly Array of style modules applied to the style of a node.
+ * Readonly style modules applied to the style of a node.
  */
-export type ReadonlyAppliedStyleModules = ReadonlyArray<string>; // TODO This is more accurate as a Set
+export type ReadonlyAppliedStyleModules = readonly string[]; // TODO This is more accurate as a Set
 
 /**
- * Map of design tokens applied to the style of a node. The key is the target style property.
+ * Design tokens applied to the style of a node. The key is the target style property.
  */
-export class AppliedDesignTokens extends Map<StyleProperty, AppliedDesignToken> {}
+export type AppliedDesignTokens = Partial<Record<StyleProperty, AppliedDesignToken>>;
 
 /**
- * Readonly Map of design tokens applied to the style of a node. The key is the target style property.
+ * Readonly design tokens applied to the style of a node. The key is the target style property.
  */
-export type ReadonlyAppliedDesignTokens = ReadonlyMap<StyleProperty, AppliedDesignToken>;
+export type ReadonlyAppliedDesignTokens = Readonly<AppliedDesignTokens>;
 
 /**
- * Map of values applied to the style of a node. The key is the target style property.
+ * Values applied to the style of a node. The key is the target style property.
  */
-export class AppliedStyleValues extends Map<StyleProperty, AppliedStyleValue> {}
+export type AppliedStyleValues = Partial<Record<StyleProperty, AppliedStyleValue>>;
 
 /**
- * Readonly Map of values applied to the style of a node. The key is the target style property.
+ * Readonly values applied to the style of a node. The key is the target style property.
  */
-export type ReadonlyAppliedStyleValues = ReadonlyMap<StyleProperty, AppliedStyleValue>;
+export type ReadonlyAppliedStyleValues = Readonly<AppliedStyleValues>;
 
 /**
- * Map of additional data exchanged between the design tool and plugin. Not persisted.
+ * Additional data exchanged between the design tool and plugin. Not persisted.
  */
-export class AdditionalData extends Map<string, string> {}
+export type AdditionalData = Partial<Record<AdditionalDataKeys, string>>;
 
 /**
  * Defines the data stored by the plugin on a node instance.
@@ -219,7 +230,7 @@ export const pluginNodesToUINodes = async (
             const children = includeChildren ? await pluginNodesToUINodes(await node.getChildren(), false, true) : [];
             const inheritedDesignTokens = includeInherited
                 ? await node.getInheritedDesignTokens()
-                : new DesignTokenValues();
+                : {};
 
             return {
                 id: node.id,
@@ -231,12 +242,12 @@ export const pluginNodesToUINodes = async (
                 refDesignTokens: node.refDesignTokens,
                 refAppliedStyleModules: node.refAppliedStyleModules,
                 refAppliedDesignTokens: node.refAppliedDesignTokens,
-                effectiveAppliedStyleValues: new AppliedStyleValues(),
+                effectiveAppliedStyleValues: {},
                 children,
                 config: node.config,
-                designTokens: node.designTokens as DesignTokenValues,
-                appliedStyleModules: node.appliedStyleModules as AppliedStyleModules,
-                appliedDesignTokens: node.appliedDesignTokens as AppliedDesignTokens,
+                designTokens: { ...node.designTokens },
+                appliedStyleModules: [...node.appliedStyleModules],
+                appliedDesignTokens: { ...node.appliedDesignTokens },
             };
         }
     ));

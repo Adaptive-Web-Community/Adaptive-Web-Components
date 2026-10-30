@@ -28,3 +28,18 @@ A node saved by 0.6 reads as it was, and is saved with the current names. A name
 | `accent-fill-readable`, an interactive token group | `color.accent.fill.readable`, an interactive token |
 | `neutral-fill-stealth-rest`, a token of the group | `color.neutral.fill.stealth.rest`, a state of the interactive token |
 | `color.accent-fill-readable-control`, a style module | `color.accent.treatments.fillReadableControl`, a treatment token |
+
+## Plain data
+
+What a node stores and what the plugin passes between its UI and the design tool are plain objects and arrays, so they are
+JSON as they are. A node stores the same JSON as 0.6, an object by name, and the forms of a `Map` that earlier versions
+stored are still read.
+
+| 0.6 | Now |
+| --- | --- |
+| `DesignTokenValues`, `AppliedDesignTokens`, `AppliedStyleValues`, `AdditionalData`, which extended `Map` | Records: `tokens[name]`, `Object.entries(tokens)`, `Object.keys(tokens).length` for `size` |
+| `AppliedStyleModules`, which extended `Array` | `string[]` |
+| `Config`, `DesignTokenValue`, `AppliedDesignToken`, `AppliedStyleValue`, classes with a constructor | Interfaces: `{ value }`, `{ tokenID }` |
+| `deserializeMap(json)`, which returned a `Map` of any value | `deserializeRecord(json, isValue)`, which keeps the values a guard accepts (`isDesignTokenValue`, `isAppliedDesignToken`) and warns about the others |
+| `serializeMap(map)` | `JSON.stringify(record)` |
+| `mapReplacer`, `mapReviver`, which tagged a `Map` in a message between the UI and the design tool | Nothing: a message is plain data, and `JSON.stringify` and `JSON.parse` take it as it is |

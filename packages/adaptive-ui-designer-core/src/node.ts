@@ -10,12 +10,14 @@ import {
     AppliedStyleValues,
     Config,
     DesignTokenValues,
+    isAppliedDesignToken,
+    isDesignTokenValue,
     PluginNodeData,
     ReadonlyAppliedDesignTokens,
     ReadonlyAppliedStyleModules,
     ReadonlyDesignTokenValues,
 } from "./model.js";
-import { deserializeMap, serializeMap } from "./serialization.js";
+import { deserializeRecord } from "./serialization.js";
 
 /**
  * Helper for enumerating a type from a const object
@@ -124,28 +126,28 @@ export abstract class PluginNode {
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _designTokens: DesignTokenValues = new DesignTokenValues();
+    protected _designTokens: DesignTokenValues = {};
 
     /**
      * Design tokens applied to the style of this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _appliedDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+    protected _appliedDesignTokens: AppliedDesignTokens = {};
 
     /**
      * Style modules applied to the style of this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _appliedStyleModules: AppliedStyleModules = new AppliedStyleModules();
+    protected _appliedStyleModules: AppliedStyleModules = [];
 
     /**
      * Additional data associated with this node.
      *
      * It is the responsibility of the subclass to load this field.
      */
-    protected _additionalData: AdditionalData = new AdditionalData();
+    protected _additionalData: AdditionalData = {};
 
     /**
      * Convenience logger for the subclass.
@@ -173,17 +175,17 @@ export abstract class PluginNode {
 
         // TODO Revisit this logic to make sure we actually want to include the reference node's design tokens.
 
-        let designTokens = new DesignTokenValues();
+        let designTokens: ReadonlyDesignTokenValues = {};
         const parent = await this.getParent();
         const parentRefNode = parent?.getRefNode();
         if (parent !== null) {
-            designTokens = new DesignTokenValues([
+            designTokens = {
                 ...await parent.getInheritedDesignTokens(),
                 ...(parentRefNode)
                     ? await parentRefNode.getInheritedDesignTokens()
-                    : [],
+                    : {},
                 ...parent.designTokens,
-            ]);
+            };
         }
 
         // console.log("  PluginNode.inheritedDesignTokens", this.debugInfo, designTokens.entries());
@@ -198,7 +200,7 @@ export abstract class PluginNode {
      */
     public get refAppliedStyleModules(): ReadonlyAppliedStyleModules | undefined {
         const refNode = this.getRefNode();
-        const appliedStyleModules = new AppliedStyleModules();
+        const appliedStyleModules: AppliedStyleModules = [];
         
         if (refNode) {
             if (refNode.refAppliedStyleModules) {
@@ -215,15 +217,10 @@ export abstract class PluginNode {
      */
     public get refAppliedDesignTokens(): ReadonlyAppliedDesignTokens | undefined {
         const refNode = this.getRefNode();
-        const appliedDesignTokens = new AppliedDesignTokens([
-            ...(refNode && refNode.refAppliedDesignTokens
-                ? refNode.refAppliedDesignTokens
-                : []),
-            ...(refNode && refNode.appliedDesignTokens
-                ? refNode.appliedDesignTokens
-                : []),
-        ]);
-        return appliedDesignTokens;
+        return {
+            ...refNode?.refAppliedDesignTokens,
+            ...refNode?.appliedDesignTokens,
+        };
     }
 
     /**
@@ -231,15 +228,10 @@ export abstract class PluginNode {
      */
     public get refDesignTokens(): ReadonlyDesignTokenValues | undefined {
         const refNode = this.getRefNode();
-        const designTokens = new DesignTokenValues([
-            ...(refNode && refNode.refDesignTokens
-                ? refNode.refDesignTokens
-                : []),
-            ...(refNode && refNode.designTokens
-                ? refNode.designTokens
-                : []),
-        ]);
-        return designTokens;
+        return {
+            ...refNode?.refDesignTokens,
+            ...refNode?.designTokens,
+        };
     }
 
     /**
@@ -315,7 +307,7 @@ export abstract class PluginNode {
     /**
      * Configuration options for a node.
      */
-    public config: Config = new Config();
+    public config: Config = {};
 
     /**
      * Gets the design tokens set for this node.
@@ -330,17 +322,8 @@ export abstract class PluginNode {
      * @returns The deserialized design tokens set to the node.
      */
     public deserializeDesignTokens(json: string | null): DesignTokenValues {
-        if (json !== null) {
-            // console.log("    deserializeLocalDesignTokens", this.debugInfo, json);
-        }
-        const map: DesignTokenValues = deserializeMap(json);
-
-        const retMap = new DesignTokenValues();
-        map.forEach((value, tokenName) => {
-            retMap.set(currentName(tokenName), value);
-        })
-
-        return retMap;
+        const stored = deserializeRecord(json, isDesignTokenValue);
+        return Object.fromEntries(Object.entries(stored).map(([name, { value }]) => [currentName(name), { value }]));
     }
 
     /**
@@ -349,8 +332,8 @@ export abstract class PluginNode {
      */
     public async setDesignTokens(tokens: DesignTokenValues) {
         this._designTokens = tokens;
-        if (tokens.size) {
-            const json = serializeMap(tokens);
+        if (Object.keys(tokens).length) {
+            const json = JSON.stringify(tokens);
             PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", json);
         } else {
             PluginNode.pluginDataAccessor.deletePluginData(this, "designTokens");
@@ -372,17 +355,8 @@ export abstract class PluginNode {
      * @returns The deserialized applied design tokens.
      */
     public deserializeAppliedDesignTokens(json: string | null): AppliedDesignTokens {
-        if (json !== null) {
-            // console.log("    deserializeAppliedDesignTokens", this.debugInfo, json);
-        }
-        const map: AppliedDesignTokens = deserializeMap(json);
-
-        const retMap = new AppliedDesignTokens();
-        map.forEach((value, key) => {
-            retMap.set(key, { ...value, tokenID: currentName(value.tokenID) });
-        })
-
-        return retMap;
+        const stored = deserializeRecord(json, isAppliedDesignToken);
+        return Object.fromEntries(Object.entries(stored).map(([property, { tokenID }]) => [property, { tokenID: currentName(tokenID) }]));
     }
 
     /**
@@ -391,8 +365,8 @@ export abstract class PluginNode {
      */
     public setAppliedDesignTokens(appliedTokens: AppliedDesignTokens) {
         this._appliedDesignTokens = appliedTokens;
-        if (appliedTokens.size) {
-            const json = serializeMap(appliedTokens);
+        if (Object.keys(appliedTokens).length) {
+            const json = JSON.stringify(appliedTokens);
             PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", json);
         } else {
             PluginNode.pluginDataAccessor.deletePluginData(this, "appliedDesignTokens");
@@ -412,9 +386,6 @@ export abstract class PluginNode {
      * @returns The deserialized applied style modules.
      */
     public deserializeAppliedStyleModules(json: string | null): AppliedStyleModules {
-        if (json !== null) {
-            // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
-        }
         const names: string[] = JSON.parse(json || "[]");
         return names.map(currentName);
     }
@@ -438,25 +409,25 @@ export abstract class PluginNode {
      */
     public async getAdditionalData(): Promise<AdditionalData> {
         if (this.states) {
-            this._additionalData.set(AdditionalDataKeys.states, this.states);
+            this._additionalData[AdditionalDataKeys.states] = this.states;
         }
 
         const state = await this.getState();
         if (state) {
-            this._additionalData.set(AdditionalDataKeys.state, state);
+            this._additionalData[AdditionalDataKeys.state] = state;
         }
 
-        this._additionalData.set(AdditionalDataKeys.supportsCodeGen, "" + this.supportsCodeGen);
+        this._additionalData[AdditionalDataKeys.supportsCodeGen] = "" + this.supportsCodeGen;
         if (this.codeGenName) {
-            this._additionalData.set(AdditionalDataKeys.codeGenName, this.codeGenName);
+            this._additionalData[AdditionalDataKeys.codeGenName] = this.codeGenName;
         }
 
         const parent = await this.getParent();
         if (parent) {
             const fillColor = await parent.getEffectiveFillColor();
-            if (!this._additionalData.has(AdditionalDataKeys.toolParentFillColor) && fillColor) {
+            if (!(AdditionalDataKeys.toolParentFillColor in this._additionalData) && fillColor) {
                 this._logger.debug(indent(this._level) + "    PluginNode.getAdditionalData - adding:", AdditionalDataKeys.toolParentFillColor, this.debugInfo, formatHex8(fillColor));
-                this._additionalData.set(AdditionalDataKeys.toolParentFillColor, formatHex8(fillColor));
+                this._additionalData[AdditionalDataKeys.toolParentFillColor] = formatHex8(fillColor);
             }
         }
 
