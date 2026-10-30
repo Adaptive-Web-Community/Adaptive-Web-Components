@@ -40,14 +40,16 @@
   "dependencies": {
     "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "@adaptive-web/components-foundation": "^0.1.0",
-    "@microsoft/fast-element": "^3.1.2",
     "design-token-library": "^0.2.0",
     "tslib": "^2.5.0"
   },
+  "peerDependencies": {
+    "@microsoft/fast-element": "^3.1.2"
+  },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.11.0",
-    "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@microsoft/api-extractor": "^7.59.4",
+    "@microsoft/fast-element": "^3.1.2",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.2",
     "@storybook/addon-docs": "^10.6.5",
