@@ -14,3 +14,17 @@ The tokens of the designer are the tokens of a library, so the registry and its 
 | `AdaptiveDesignToken`, `AdaptiveDesignTokenOrGroup` (a FAST token with its metadata) | A token of the library, whose metadata is in its `$extensions` |
 | `registry.find(property)`, the tokens whose `intendedFor` has a style property | Comes with the Figma plugin, which is its first use |
 | The list of tokens that can be overridden | Comes with the Figma plugin: the tokens whose value is given, not derived by a recipe or a ref |
+
+## Names stored on a node
+
+A node stores the names of the tokens set to it, of the tokens applied to its style, and of the treatments (style modules)
+applied to it. They're read by the current name of each, which the library's names find from any name the token had, as
+`@adaptive-web/adaptive-ui` keeps them ([decision 0014](../../docs/decisions/0014-a-names-history-is-kept-with-what-it-names.md)).
+A node saved by 0.6 reads as it was, and is saved with the current names. A name that finds no token is kept as it is.
+
+| 0.6 | Now |
+| --- | --- |
+| `TokenNameMapping` of `@adaptive-web/adaptive-ui/reference`, for the tokens only | `PluginNode.tokenNames`, which the design tool sets to `tokenNames(library)` before it reads a node, for the tokens and the treatments |
+| `accent-fill-readable`, an interactive token group | `color.accent.fill.readable`, an interactive token |
+| `neutral-fill-stealth-rest`, a token of the group | `color.neutral.fill.stealth.rest`, a state of the interactive token |
+| `color.accent-fill-readable-control`, a style module | `color.accent.treatments.fillReadableControl`, a treatment token |

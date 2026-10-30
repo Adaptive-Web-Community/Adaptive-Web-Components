@@ -1,5 +1,4 @@
-import { StyleProperty } from "@adaptive-web/adaptive-ui";
-import { TokenNameMapping } from "@adaptive-web/adaptive-ui/reference";
+import { resolveTokenName, StyleProperty, TokenNameIndex } from "@adaptive-web/adaptive-ui";
 import { type Color, formatHex8 } from "culori/fn";
 import { Logger } from "tslog";
 import { getLogger, indent } from "./logger.js";
@@ -48,6 +47,12 @@ export type StatesState = ValuesOf<typeof StatesState>;
  * The states for an interactive component.
  */
 export type State = "Rest" | "Hover" | "Active" | "Focus" | "Disabled";
+
+// Gets the current name of a token or a treatment stored on a node, which an earlier version may have stored by another name (decision
+// 0014). A name that finds nothing is kept, so a node doesn't lose what it has when the library doesn't have the token.
+function currentName(name: string): string {
+    return resolveTokenName(PluginNode.tokenNames, name)?.name ?? name;
+}
 
 /**
  * Interface for accessing plugin node data storage.
@@ -107,6 +112,12 @@ export abstract class PluginNode {
      * Accessor for plugin node data storage.
      */
     public static pluginDataAccessor: PluginNodeDataAccessor;
+
+    /**
+     * The names of the tokens of the library the designer works with, which find a token or a treatment by a name an earlier version
+     * stored, from `tokenNames(library)`.
+     */
+    public static tokenNames: TokenNameIndex;
 
     /**
      * Design tokens set for this node.
@@ -314,7 +325,7 @@ export abstract class PluginNode {
     }
 
     /**
-     * Deserializes design tokens set to the node.
+     * Deserializes design tokens set to the node, by the current name of each token.
      * @param json - The raw plugin data string.
      * @returns The deserialized design tokens set to the node.
      */
@@ -324,11 +335,9 @@ export abstract class PluginNode {
         }
         const map: DesignTokenValues = deserializeMap(json);
 
-        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
         const retMap = new DesignTokenValues();
         map.forEach((value, tokenName) => {
-            const currentTokenName = TokenNameMapping[tokenName as keyof typeof TokenNameMapping] || tokenName;
-            retMap.set(currentTokenName, value);
+            retMap.set(currentName(tokenName), value);
         })
 
         return retMap;
@@ -358,7 +367,7 @@ export abstract class PluginNode {
     }
 
     /**
-     * Deserializes the design tokens applied to the style of this node.
+     * Deserializes the design tokens applied to the style of this node, by the current name of each token.
      * @param json - The raw plugin data string.
      * @returns The deserialized applied design tokens.
      */
@@ -368,14 +377,9 @@ export abstract class PluginNode {
         }
         const map: AppliedDesignTokens = deserializeMap(json);
 
-        // A future feature of this tooling is to support renaming tokens. For now, use a list for the reference tokens.
         const retMap = new AppliedDesignTokens();
         map.forEach((value, key) => {
-            const currentTokenName = TokenNameMapping[value.tokenID as keyof typeof TokenNameMapping] || value.tokenID;
-            if (currentTokenName !== value.tokenID) {
-                value.tokenID = currentTokenName;
-            }
-            retMap.set(key, value);
+            retMap.set(key, { ...value, tokenID: currentName(value.tokenID) });
         })
 
         return retMap;
@@ -403,7 +407,7 @@ export abstract class PluginNode {
     }
 
     /**
-     * Deserializes the style modules applied to the style of this node.
+     * Deserializes the style modules applied to the style of this node, by the current name of each treatment.
      * @param json - The raw plugin data string.
      * @returns The deserialized applied style modules.
      */
@@ -411,7 +415,8 @@ export abstract class PluginNode {
         if (json !== null) {
             // console.log("    deserializeAppliedStyleModules", this.debugInfo, json);
         }
-        return JSON.parse(json || "[]");
+        const names: string[] = JSON.parse(json || "[]");
+        return names.map(currentName);
     }
 
     /**
