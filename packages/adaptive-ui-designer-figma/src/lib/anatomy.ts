@@ -187,7 +187,7 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
             const styleRule: SerializableStyleRule = {
                 contextCondition: condition,
                 part: isContext ? undefined : node.name,
-                styles: appliedTreatments.length > 0 ? Array.from(new Set(appliedTreatments)) : undefined,
+                treatments: appliedTreatments.length > 0 ? Array.from(new Set(appliedTreatments)) : undefined,
                 properties: properties.length > 0 ? Object.fromEntries(properties) : undefined,
             };
 
@@ -200,7 +200,7 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
     }
 
     if (node.type === "SLOT") {
-        // We'll take styles and properties from the slot node, but not the children.
+        // We'll take treatments and properties from the slot node, but not the children.
         return;
     }
 
