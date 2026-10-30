@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 
 export const controlPaneStyles = css`
     ${componentBaseStyles}

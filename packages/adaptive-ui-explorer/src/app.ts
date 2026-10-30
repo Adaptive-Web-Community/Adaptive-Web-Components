@@ -33,7 +33,7 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DesignToken } from "@microsoft/fast-foundation";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 import { ComponentType } from "./component-type.js";
 import { ColorBlock } from "./components/color-block.js";
 import { ControlPane } from "./components/control-pane/index.js";

@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
 import { accentFillReadable, cornerRadiusControl, designUnit, highlightFillSubtle, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 
 export const samplePageStyles = css`
     ${componentBaseStyles}

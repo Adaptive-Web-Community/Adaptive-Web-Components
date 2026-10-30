@@ -1,5 +1,5 @@
 {
-  "name": "@adaptive-web/adaptive-web-components",
+  "name": "@adaptive-web/components-fast",
   "version": "0.10.0",
   "description": "Standards based, framework agnostic web components built using FAST.",
   "type": "module",
@@ -16,12 +16,23 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
-    "directory": "packages/adaptive-web-components"
+    "directory": "packages/components-fast"
   },
   "main": "dist/esm/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
   "unpkg": "dist/adaptive-web-components.min.js",
+  "files": [
+    "dist",
+    "docs",
+    "CHANGELOG.md",
+    "MIGRATION.md",
+    "!dist/**/*.spec.*",
+    "!dist/**/__test__",
+    "!dist/*.api.json",
+    "!dist/*.untrimmed.d.ts",
+    "!dist/**/*.map"
+  ],
   "scripts": {
     "build:styles": "aui compile-styles ./dist/esm/components/**/*/index.js -a '*Anatomy' -s '*StyleRules'",
     "build:tsc": "tsc -p ./tsconfig.build.json",

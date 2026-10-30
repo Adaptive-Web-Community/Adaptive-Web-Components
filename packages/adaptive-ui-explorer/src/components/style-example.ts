@@ -1,6 +1,6 @@
 import { Color, InteractiveTokenGroup, StyleProperty, Styles, TypedCSSDesignToken } from "@adaptive-web/adaptive-ui";
 import { colorContext, densityControl } from '@adaptive-web/adaptive-ui/reference';
-import { componentBaseStyles } from "@adaptive-web/adaptive-web-components";
+import { componentBaseStyles } from "@adaptive-web/components-fast";
 import { css, customElement, FASTElement, html, observable, repeat, volatile, when } from "@microsoft/fast-element";
 import { AdaptiveComponent } from "./adaptive-component.js";
 import { AppSwatch, SwatchType } from "./swatch.js";

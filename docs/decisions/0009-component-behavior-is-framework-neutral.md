@@ -18,7 +18,7 @@ observation (`Observable.getNotifier(child).subscribe(...)`), so a second framew
   slots, and events. The **behavior** is a controller that works on the host element and the DOM only. The **binding** is a framework's element
   class, which implements the contract with that framework's reactive properties, has its template, and wires its lifecycle to the controller.
 - The contract and the behavior are a package of their own, `@adaptive-web/components-foundation`, which depends on no framework and no design system. A
-  components package (`@adaptive-web/adaptive-web-components` for FAST) has the bindings, and the Adaptive UI anatomy and styles.
+  components package (`@adaptive-web/components-fast` for FAST) has the bindings, and the Adaptive UI anatomy and styles.
 - A binding keeps its framework's observation. It observes its properties, and those of its child elements, with the framework (an `@attr`
   change handler, a notifier subscription in FAST) and calls the controller. A controller doesn't observe, and has a method for each change it
   reacts to.

@@ -1,12 +1,12 @@
 // All components that are used in html must be defined.
-import { AdaptiveDesignSystem } from '@adaptive-web/adaptive-web-components';
-import { avatarDefinition } from "@adaptive-web/adaptive-web-components/avatar";
-import { buttonDefinition } from "@adaptive-web/adaptive-web-components/button";
-import { cardDefinition } from "@adaptive-web/adaptive-web-components/card";
-import { radioDefinition } from "@adaptive-web/adaptive-web-components/radio";
-import { radioGroupDefinition } from "@adaptive-web/adaptive-web-components/radio-group";
-import { switchDefinition } from "@adaptive-web/adaptive-web-components/switch";
-import { textFieldDefinition } from "@adaptive-web/adaptive-web-components/text-field";
+import { AdaptiveDesignSystem } from '@adaptive-web/components-fast';
+import { avatarDefinition } from "@adaptive-web/components-fast/avatar";
+import { buttonDefinition } from "@adaptive-web/components-fast/button";
+import { cardDefinition } from "@adaptive-web/components-fast/card";
+import { radioDefinition } from "@adaptive-web/components-fast/radio";
+import { radioGroupDefinition } from "@adaptive-web/components-fast/radio-group";
+import { switchDefinition } from "@adaptive-web/components-fast/switch";
+import { textFieldDefinition } from "@adaptive-web/components-fast/text-field";
 AdaptiveDesignSystem.defineComponents({
     avatarDefinition,
     buttonDefinition,

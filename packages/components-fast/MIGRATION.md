@@ -5,6 +5,9 @@ instead. A component that isn't listed hasn't changed yet.
 
 ## All components
 
+- The package is `@adaptive-web/components-fast`, the components on FAST, and was `@adaptive-web/adaptive-web-components`: a set on another
+  framework can be named the same way, next to `@adaptive-web/components-foundation`. Imports change from
+  `@adaptive-web/adaptive-web-components/<name>` to `@adaptive-web/components-fast/<name>`; the tag names (`adaptive-button`) don't.
 - The components depend on `@microsoft/fast-element` 3 and `@adaptive-web/components-foundation`, and not on `@microsoft/fast-foundation`. The contract of
   each element (its properties, enumerations, and parts) and its behavior are in the foundation; the element classes and templates are here.
 - `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.

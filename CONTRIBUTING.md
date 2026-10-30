@@ -38,10 +38,10 @@ npm run build
 ```
 
 ### Developing in `adaptive-web-components`
-If you're interested in contributing changes to the `adaptive-web-components` component library, start by navigating to the `packages/adaptive-web-components` directory and starting the Storybook local server there.
+If you're interested in contributing changes to the components (`@adaptive-web/components-fast`, the components on FAST), start by navigating to the `packages/components-fast` directory and starting the Storybook local server there.
 
 ```bash
-cd packages/adaptive-web-components
+cd packages/components-fast
 npm run start
 ```
 Storybook will automatically open in a browser window at `localhost:6006`.
@@ -57,7 +57,7 @@ Any pull request which includes changes within the `packages/*` directory requir
 **Example: Generated change file:**
 ```markdown
 ---
-"@adaptive-web/adaptive-web-components": patch
+"@adaptive-web/components-fast": patch
 ---
 
 add fancy new feature for awc
