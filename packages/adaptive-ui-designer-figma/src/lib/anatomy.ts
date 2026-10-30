@@ -9,7 +9,7 @@ import {
     SerializableStringCondition,
     SerializableStyleRule,
 } from "@adaptive-web/adaptive-ui";
-import { AdditionalDataKeys, AppliedDesignTokens, AppliedStyleModules, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { AdditionalDataKeys, type AppliedDesignTokens, type AppliedTreatments, type PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 
 // A simple string for ignoring layers in the design tool
 const ignoreLayerName = "(Figma)";
@@ -126,7 +126,7 @@ function parseComponent(node: PluginUINodeData): Anatomy {
     if (!(node.type === "COMPONENT_SET" || node.type === "COMPONENT" || node.type === "INSTANCE")) {
         throw new Error("Parameter `node` must have `type` = 'COMPONENT_SET', 'COMPONENT', or 'INSTANCE'");
     }
-    const componentName = node.additionalData.get(AdditionalDataKeys.codeGenName);
+    const componentName = node.additionalData[AdditionalDataKeys.codeGenName];
     if (!componentName) {
         throw new Error("Parameter `node` must provide `additionalData` value for `codeGenName`");
     }
@@ -252,37 +252,29 @@ function walkNode(node: PluginUINodeData, componentName: string, condition: Reco
             anatomy.parts.add(node.name);
         }
 
-        const appliedStyleModules = new AppliedStyleModules();
-        if (node.refAppliedStyleModules) {
-            appliedStyleModules.push(...node.refAppliedStyleModules);
-        }
-        if (node.appliedStyleModules) {
-            appliedStyleModules.push(...node.appliedStyleModules);
-        }
+        const appliedTreatments: AppliedTreatments = [
+            ...(node.refAppliedTreatments ?? []),
+            ...node.appliedTreatments,
+        ];
 
-        const appliedDesignTokens = new AppliedDesignTokens([
-            ...(node.refAppliedDesignTokens
-                ? Array.from(node.refAppliedDesignTokens.entries())
-                : []),
-            ...(node.appliedDesignTokens
-                ? Array.from(node.appliedDesignTokens.entries())
-                : []),
-        ]);
+        const appliedDesignTokens: AppliedDesignTokens = {
+            ...node.refAppliedDesignTokens,
+            ...node.appliedDesignTokens,
+        };
 
-        if (appliedStyleModules.length > 0 || appliedDesignTokens.size > 0) {
+        if (appliedTreatments.length > 0 || Object.keys(appliedDesignTokens).length > 0) {
             const styleRule = new StyleRule();
 
             if (condition) {
                 styleRule.contextCondition = condition;
             }
 
-            appliedStyleModules.forEach(style => {
-                styleRule.styles.add(style);
+            appliedTreatments.forEach(treatment => {
+                styleRule.styles.add(treatment);
             });
 
-            appliedDesignTokens.forEach((token, target) => {
-                const tokenRef = token.tokenID;
-                styleRule.properties.set(target, tokenRef);
+            Object.entries(appliedDesignTokens).forEach(([target, token]) => {
+                styleRule.properties.set(target, token.tokenID);
             });
 
             if (!isContext) {

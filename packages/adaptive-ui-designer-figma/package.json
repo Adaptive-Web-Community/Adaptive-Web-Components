@@ -40,7 +40,7 @@
     "@types/inquirer": "^9.0.7"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^0.14.0",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "@adaptive-web/adaptive-ui-designer-core": "^0.6.2",
     "@types/ajv": "^1.0.0",
     "ajv": "^8.18.0",
