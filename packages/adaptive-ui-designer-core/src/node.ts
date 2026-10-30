@@ -20,12 +20,6 @@ import {
 import { deserializeRecord } from "./serialization.js";
 
 /**
- * Helper for enumerating a type from a const object
- * Example: export type Foo = ValuesOf\<typeof Foo\>
- */
-type ValuesOf<T> = T[keyof T];
-
-/**
  * Layer name for special handling of the focus indicator in design tools.
  */
 export const focusIndicatorNodeName = "Focus indicator";
@@ -43,7 +37,7 @@ export const StatesState = {
     configured: "configured",
 } as const;
 
-export type StatesState = ValuesOf<typeof StatesState>;
+export type StatesState = (typeof StatesState)[keyof typeof StatesState];
 
 /**
  * The states for an interactive component.

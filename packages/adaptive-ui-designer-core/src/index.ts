@@ -13,6 +13,9 @@ export {
     AdditionalData,
     AppliedDesignTokens,
     DesignTokenValues,
+    ReadonlyAppliedDesignTokens,
+    ReadonlyAppliedStyleModules,
+    ReadonlyDesignTokenValues,
     isAppliedDesignToken,
     isDesignTokenValue,
 } from "./model.js";

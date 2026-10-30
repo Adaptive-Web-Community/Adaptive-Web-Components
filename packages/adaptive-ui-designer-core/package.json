@@ -18,6 +18,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "npm run lint && npm run build && npm run unit-tests",
     "unit-tests": "mocha",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc",
     "watch": "tsc --watch"
   },
   "repository": {
@@ -40,6 +42,7 @@
     "tslog": "^4.10.2"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.59.4",
     "@types/chai": "^4.3.4",
     "@types/culori": "^4.0.1",
     "@types/mocha": "^10.0.1",

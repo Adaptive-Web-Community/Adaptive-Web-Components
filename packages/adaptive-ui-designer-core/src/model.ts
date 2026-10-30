@@ -1,8 +1,6 @@
 import { StyleProperty } from "@adaptive-web/adaptive-ui";
 import { PluginNode } from "./node.js";
 
-type ValuesOf<T> = T[keyof T];
-
 // TODO: This structure was used to pass design token values (specifically fill-color) but this isn't used
 // anymore and it's not a good way to structure the data it _is_ being used for now. Refactor with `PluginNodeData`.
 export const AdditionalDataKeys = {
@@ -38,7 +36,7 @@ export const AdditionalDataKeys = {
     codeGenName: "code-gen-name",
 } as const;
 
-export type AdditionalDataKeys = ValuesOf<typeof AdditionalDataKeys>;
+export type AdditionalDataKeys = (typeof AdditionalDataKeys)[keyof typeof AdditionalDataKeys];
 
 /**
  * Configuration options for a node.
@@ -177,7 +175,7 @@ export interface PluginUINodeData extends PluginNodeData {
     name: string;
 
     /**
-     * The {@link StyleProperty} the node supports.
+     * The {@link @adaptive-web/adaptive-ui#StyleProperty} the node supports.
      */
     supports: Array<StyleProperty>;
 
