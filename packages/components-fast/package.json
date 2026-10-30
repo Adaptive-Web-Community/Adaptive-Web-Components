@@ -22,6 +22,17 @@
   "module": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
   "unpkg": "dist/adaptive-web-components.min.js",
+  "files": [
+    "dist",
+    "docs",
+    "CHANGELOG.md",
+    "MIGRATION.md",
+    "!dist/**/*.spec.*",
+    "!dist/**/__test__",
+    "!dist/*.api.json",
+    "!dist/*.untrimmed.d.ts",
+    "!dist/**/*.map"
+  ],
   "scripts": {
     "build:styles": "aui compile-styles ./dist/esm/components/**/*/index.js -a '*Anatomy' -s '*StyleRules'",
     "build:tsc": "tsc -p ./tsconfig.build.json",

@@ -1,7 +1,6 @@
 {
   "name": "@adaptive-web/components-foundation",
   "version": "0.1.0",
-  "private": true,
   "description": "The behavior of web components, without a framework or styles: what each element exposes, and controllers that implement it.",
   "type": "module",
   "sideEffects": false,
@@ -21,6 +20,16 @@
   },
   "main": "dist/esm/index.js",
   "types": "dist/dts/index.d.ts",
+  "files": [
+    "dist",
+    "docs",
+    "CHANGELOG.md",
+    "PRINCIPLES.md",
+    "!dist/**/*.spec.*",
+    "!dist/**/__test__",
+    "!dist/*.api.json",
+    "!dist/**/*.map"
+  ],
   "exports": {
     ".": {
       "types": "./dist/dts/index.d.ts",
