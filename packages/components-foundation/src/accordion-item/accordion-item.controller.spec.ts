@@ -1,5 +1,6 @@
 import chai from "chai";
-import { type AccordionItemElement, AccordionItemParts, type HeadingLevel } from "./accordion-item.js";
+import { type AccordionItemElement, type HeadingLevel } from "./accordion-item.js";
+import { AccordionItemParts } from "./accordion-item.generated.js";
 import { AccordionItemController } from "./accordion-item.controller.js";
 
 const { expect } = chai;

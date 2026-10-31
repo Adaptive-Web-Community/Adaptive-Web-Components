@@ -1,6 +1,6 @@
 # Components Foundation
 
-The behavior of the Adaptive web components, without a framework and without styles. It is what the archived
+The behavior and the styles of the Adaptive web components, without a framework. It is what the archived
 [FAST Foundation](https://github.com/microsoft/fast/tree/archives/fast-foundation-3/packages/web-components/fast-foundation) was for the FAST
 components, rebuilt so that more than one framework can implement the same elements. Why: [decision 0009](../../docs/decisions/0009-component-behavior-is-framework-neutral.md).
 
@@ -15,8 +15,11 @@ Each component has three layers. This package has the first two:
 | Binding | The element class of a framework, with that framework's reactive properties (`@attr`), its template, and its lifecycle wired to the controller | A components package: `@adaptive-web/components-fast` for FAST |
 
 A binding observes its own properties with its framework (an `@attr` change handler in FAST) and tells the controller, so nothing here
-depends on how a framework observes. The styles are not here either: a binding styles the parts that the contract names. Adaptive UI styles
-them in `@adaptive-web/components-fast`.
+depends on how a framework observes. The styles of a component are here too, as data that a binding gives its framework: its CSS as
+strings, and its anatomy and style rules, which style the parts and the conditions of the contract with Adaptive UI (so far of the button,
+the accordion, and the accordion item). What brings the components of any framework together is: the `DesignSystem`, with the prefix and the
+registry of the elements, their statics, and the token library that renders their style rules to CSS (`renderStyles`) and writes the tokens
+(`adoptTokenStyles`). A framework's components extend it, to define their elements and to give their framework the CSS.
 
 A control is the host element, made a form control through `ElementInternals`, and not a wrapper of a native element
 ([decision 0010](../../docs/decisions/0010-a-control-is-its-host-element.md)).

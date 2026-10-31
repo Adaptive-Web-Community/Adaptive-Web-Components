@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
-import { AccordionItemParts } from "../accordion-item/accordion-item.js";
+import { AccordionItemParts } from "../accordion-item/accordion-item.generated.js";
 import { accessibilityNodeOf } from "../conformance/accessibility.js";
 import { cleanupFixtures, fixture, nextFrame, partOf, queryAll } from "../conformance/fixture.js";
 import { AccordionExpandMode } from "./accordion.js";

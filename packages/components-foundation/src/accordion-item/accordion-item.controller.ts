@@ -1,4 +1,5 @@
-import { type AccordionItemElement, AccordionItemParts, toggleAccordionItem } from "./accordion-item.js";
+import { type AccordionItemElement, toggleAccordionItem } from "./accordion-item.js";
+import { AccordionItemParts } from "./accordion-item.generated.js";
 
 /**
  * The behavior of an {@link AccordionItemElement}: a click of its button expands or collapses it ({@link toggleAccordionItem}), and focusing
