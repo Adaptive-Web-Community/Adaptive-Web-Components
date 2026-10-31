@@ -47,7 +47,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "start": "storybook dev -p 6006",
     "test": "npm run lint && npm run build:tsc && tsc -p ./tsconfig.json --noEmit",
-    "test:stories": "vitest run"
+    "test:stories": "vitest run --project storybook",
+    "test:conformance": "vitest run --project conformance"
   },
   "dependencies": {
     "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
