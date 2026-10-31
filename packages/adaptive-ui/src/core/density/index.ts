@@ -1,5 +1,5 @@
 import { DesignToken, Library, refs } from "design-token-library";
-import { add, multiply, subtract } from "../expression.js";
+import { add, max, multiply, type Operand, subtract } from "../expression.js";
 import { StyleProperty, StylePropertyShorthand } from "../styles/properties.js";
 import { intendedFor } from "../token-metadata.js";
 import { AdaptiveDesignToken, ExpressionToken } from "../token-types.js";
@@ -123,18 +123,21 @@ export function createDensity<N extends string, Root extends DensityRootTokens<N
     ): Library.Config<DensityAxisTokens, Root> => {
         // The units and the adjustment are added before the multiply, as they were.
         const calculated = (units: "paddingUnits" | "gapUnits") => multiply(add(set[axis][units], adjustment), set.designUnit);
+        // A padding or a gap is never less than none, which a negative adjustment would make it, and CSS would ignore. None is in the unit
+        // of the design unit, which a padding and a gap are in.
+        const atLeastNone = (value: Operand) => max(value, multiply(set.designUnit, 0));
 
         return {
             paddingUnits: { $type: DesignToken.Type.Number, $value: paddingUnits },
             padding: {
                 $type: AdaptiveDesignToken.expression,
-                $value: subtract(calculated("paddingUnits"), set.borderThickness),
+                $value: atLeastNone(subtract(calculated("paddingUnits"), set.borderThickness)),
                 $extensions: intendedFor(...padding),
             },
             gapUnits: { $type: DesignToken.Type.Number, $value: gapUnits },
             gap: {
                 $type: AdaptiveDesignToken.expression,
-                $value: calculated("gapUnits"),
+                $value: atLeastNone(calculated("gapUnits")),
                 $extensions: intendedFor(StyleProperty.gap),
             },
         };

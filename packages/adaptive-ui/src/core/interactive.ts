@@ -88,7 +88,10 @@ const interactiveStates: ReadonlySet<string> = new Set(Object.values(Interactive
  * Checks if a value is a set of values for the states of an interactive element: an object whose keys are states. A ref, a color, a
  * dimension, or a shadow has other keys.
  *
- * @internal
+ * @param value - The value to check, like the value of a token or of a property of a treatment
+ * @returns True if the value is a set of values by state
+ *
+ * @public
  */
 export function isInteractiveSet<T>(value: unknown): value is InteractiveSet<T> {
     if (typeof value !== "object" || value === null || Array.isArray(value) || isRef(value)) {

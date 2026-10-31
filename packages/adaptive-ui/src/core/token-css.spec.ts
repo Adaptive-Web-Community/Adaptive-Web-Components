@@ -2,7 +2,7 @@ import chai from "chai";
 import { DesignToken, hex, Library, px, refs, toCSS } from "design-token-library";
 import { linearGradient } from "./color/gradient.js";
 import { multiply } from "./expression.js";
-import { adaptiveConverters, propertyResolver } from "./token-css.js";
+import { adaptiveConverters, formatValue, propertyResolver } from "./token-css.js";
 import { AdaptiveDesignToken, ExpressionToken, PaintToken } from "./token-types.js";
 
 const { expect } = chai;
@@ -99,5 +99,16 @@ describe("adaptiveConverters", () => {
 
         expect(css).to.include("--solid:#ff0000;");
         expect(css).to.include("--gradient:linear-gradient(90deg, #ff0000 0%, #0000ff 100%);");
+    });
+});
+
+describe("formatValue", () => {
+    it("should write a DTCG gradient as a gradient", () => {
+        const red = { colorSpace: "srgb", components: [1, 0, 0] } as const;
+        const blue = { colorSpace: "srgb", components: [0, 0, 1] } as const;
+
+        expect(formatValue([{ color: red, position: 0 }, { color: blue, position: 1 }])).to.equal(
+            "linear-gradient(180deg, #ff0000 0%, #0000ff 100%)"
+        );
     });
 });
