@@ -5,7 +5,6 @@ import { AccordionItemController, type AccordionItemElement, type HeadingLevel }
 /**
  * An item of an {@link Accordion}. Implements {@link @adaptive-web/components-foundation#AccordionItemElement}.
  *
- * @tagname adaptive-accordion-item
  * @slot heading - The content of the button of the heading.
  * @slot - The content of the panel.
  * @slot start - Content after the button.

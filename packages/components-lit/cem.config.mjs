@@ -1,3 +1,5 @@
+import { composedTagNames } from "../../scripts/cem.plugins.mjs";
+
 // The members of a class that aren't the API of its elements, which Storybook would otherwise show as controls: the private and the
 // static ones.
 const elementMembers = {
@@ -13,13 +15,11 @@ const elementMembers = {
 	},
 };
 
-// The tag name of an element is the one of the default design system, from the `@tagname` of its class: the analyzer can't read the name
-// that `compose<Name>` makes from the prefix of a design system.
 export default {
 	globs: ["src/components/**/*.ts"],
 	exclude: ["src/**/index.ts", "src/**/*.stories.ts", "src/**/*.spec.ts"],
 	outdir: "dist",
 	dev: false,
 	litelement: true,
-	plugins: [elementMembers],
+	plugins: [composedTagNames(), elementMembers],
 };

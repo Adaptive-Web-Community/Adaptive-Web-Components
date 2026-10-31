@@ -1,4 +1,4 @@
-import { composedTagNames } from "./cem.plugins.mjs";
+import { composedTagNames } from "../../scripts/cem.plugins.mjs";
 
 export default {
 	globs: [

@@ -7,7 +7,6 @@ import { AccordionItem } from "../accordion-item/accordion-item.js";
 /**
  * An accordion of {@link AccordionItem}s. Implements {@link @adaptive-web/components-foundation#AccordionElement}.
  *
- * @tagname adaptive-accordion
  * @slot - The items.
  *
  * @public

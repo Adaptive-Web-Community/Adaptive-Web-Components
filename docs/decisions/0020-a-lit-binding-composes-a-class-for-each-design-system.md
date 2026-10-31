@@ -34,8 +34,8 @@ name only. Lit observes the properties of an element, but not of another one, as
 - **An accordion observes the `expanded` attribute of its items** with Lit's `MutationController` (`@lit-labs/observers`) on its own
   subtree, since an item reflects it whether the user or code changed it, and tells its controller. One target is observed, as a target of
   the controller can't be unobserved when an item is removed.
-- **The custom elements manifest names an element by the `@tagname` of its class**, the name of the default design system, and Storybook
-  infers the controls of a story from it.
+- **The custom elements manifest names an element by its composition**, with the prefix of the default design system, with the plugin of
+  the analyzer that the FAST components use too, and Storybook infers the controls of a story from it.
 
 ## Consequences
 
@@ -55,7 +55,7 @@ name only. Lit observes the properties of an element, but not of another one, as
 - **An event of the item when it is expanded**, for the accordion: it isn't in the contract, and would be one more event for every binding.
 - **A `MutationObserver` of each item**: what the Lit controller does, by hand, with the observing connected to the element's lifecycle by
   hand too.
-- **A tag name from a plugin of the analyzer**, as the FAST package reads it from `FASTElementDefinition.compose`: `@tagname` is in the
-  analyzer, and the name is in the documentation of the class.
+- **A tag name from the `@tagname` of each class**: the name would be written twice, in the class and in its composition, and only for the
+  default prefix.
 - **A generic `compose` of the foundation, for every framework**: what differs is what a framework defines, a `FASTElementDefinition` or
   a class, so each framework's design system has its own.

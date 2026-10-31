@@ -5,7 +5,6 @@ import { ButtonController, type ButtonElement, ButtonType, findById } from "@ada
 /**
  * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
  *
- * @tagname adaptive-button
  * @slot start - Content before the label.
  * @slot - The label.
  * @slot end - Content after the label.
