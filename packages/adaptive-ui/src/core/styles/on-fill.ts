@@ -199,21 +199,22 @@ function isOnFillWithFill(value: unknown): value is OnFillWithFill {
     return isOnFill(value) && value.fill !== undefined;
 }
 
-// The libraries extended with a color as the context, by the library, the context, and the color, since every value on the same fill in a
-// state is made in the same context.
-const contexts = new WeakMap<Library.Library<any>, Map<string, Library.Library<any>>>();
+// A library extended for each library and context, whose context is set to the color of each fill before a value on it is read. One
+// library made for each color would cost the whole library each time (an extension extends every token, eagerly), and could never be
+// released: its tokens stay subscribed to the ones they extend.
+const probes = new WeakMap<Library.Library<any>, Map<string, Library.Library<any>>>();
 
 function inContext(library: Library.Library<any>, context: Library.Ref<unknown, never>, color: unknown): Library.Library<any> {
-    const path = pathOf(context);
-    const key = `${path.join(".")}=${JSON.stringify(color)}`;
-    const byKey = contexts.get(library) ?? new Map<string, Library.Library<any>>();
-    contexts.set(library, byKey);
-    let scoped = byKey.get(key);
-    if (scoped === undefined) {
-        scoped = library.extend(path.reduceRight<object>((value, name) => ({ [name]: value }), { $value: color }));
-        byKey.set(key, scoped);
+    const contextName = pathOf(context).join(".");
+    const byContext = probes.get(library) ?? new Map<string, Library.Library<any>>();
+    probes.set(library, byContext);
+    let probe = byContext.get(contextName);
+    if (probe === undefined) {
+        probe = library.extend({});
+        byContext.set(contextName, probe);
     }
-    return scoped;
+    atName<{ set(value: unknown): void }>(probe.tokens, contextName).set(color);
+    return probe;
 }
 
 /**
