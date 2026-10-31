@@ -141,6 +141,6 @@ export class DataGrid extends FASTElement implements DataGridElement {
 
         this.controller.refresh();
 
-        onDefined(elements, this.$fastController.definition.registry, () => this.updateRows());
+        onDefined(elements, () => this.updateRows());
     }
 }

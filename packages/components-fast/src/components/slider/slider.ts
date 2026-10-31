@@ -207,6 +207,6 @@ export class Slider extends BaseFormControl implements SliderElement {
 
     private updateLabels(): void {
         this.controller.setLabels(this.slottedElements.filter((element): element is SliderLabel => element instanceof SliderLabel));
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateLabels());
+        onDefined(this.slottedElements, () => this.updateLabels());
     }
 }

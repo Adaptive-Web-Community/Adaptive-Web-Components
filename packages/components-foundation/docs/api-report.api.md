@@ -2850,7 +2850,7 @@ export const numberFieldWebBinding: {
 };
 
 // @public
-export function onDefined(elements: readonly Element[], registry: CustomElementRegistry, callback: () => void): void;
+export function onDefined(elements: readonly Element[], callback: () => void): void;
 
 // @public
 export class OptionListController {

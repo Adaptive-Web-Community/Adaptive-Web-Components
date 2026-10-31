@@ -85,6 +85,6 @@ export class Toolbar extends FASTElement implements ToolbarElement {
         this.controller.setElements(elements);
 
         // A component that is focusable sets its `tabindex` when it is defined.
-        onDefined(elements, this.$fastController.definition.registry, () => this.updateElements());
+        onDefined(elements, () => this.updateElements());
     }
 }

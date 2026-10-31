@@ -92,7 +92,7 @@ export class TreeItem extends FASTElement implements TreeItemElement {
     private updateItems(): void {
         this.items = this.childElements.filter((element): element is TreeItem => element instanceof TreeItem);
         if (this.$fastController.definition) {
-            onDefined(this.childElements, this.$fastController.definition.registry, () => this.updateItems());
+            onDefined(this.childElements, () => this.updateItems());
         }
     }
 

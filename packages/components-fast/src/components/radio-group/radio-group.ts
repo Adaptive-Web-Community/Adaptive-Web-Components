@@ -137,6 +137,6 @@ export class RadioGroup extends BaseFormControl implements RadioGroupElement {
 
         this.controller.setRadios(this.radios);
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateRadios());
+        onDefined(this.slottedElements, () => this.updateRadios());
     }
 }

@@ -164,7 +164,7 @@ export class Select extends BaseFormControl implements SelectElement {
         this.controller.setOptions(this.options);
         this.updateSelectedText();
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateOptions());
+        onDefined(this.slottedElements, () => this.updateOptions());
     }
 
     private updateSelectedText(): void {

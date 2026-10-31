@@ -52,6 +52,6 @@ export class Menu extends FASTElement implements MenuElement {
 
         this.controller.setElements(this.slottedElements);
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateElements());
+        onDefined(this.slottedElements, () => this.updateElements());
     }
 }

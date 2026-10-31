@@ -29,6 +29,6 @@ export class Breadcrumb extends FASTElement implements BreadcrumbElement {
     private updateItems(): void {
         setBreadcrumbItems(this.slottedElements.filter((element): element is BreadcrumbItem => element instanceof BreadcrumbItem));
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateItems());
+        onDefined(this.slottedElements, () => this.updateItems());
     }
 }

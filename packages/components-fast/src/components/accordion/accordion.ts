@@ -58,6 +58,6 @@ export class Accordion extends FASTElement implements AccordionElement {
 
         this.controller.setItems(this.items);
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateItems());
+        onDefined(this.slottedElements, () => this.updateItems());
     }
 }

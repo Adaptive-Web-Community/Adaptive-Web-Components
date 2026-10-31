@@ -94,7 +94,7 @@ export class DataGridRow extends FASTElement implements DataGridRowElement {
         }
         const elements = [...this.generatedElements, ...this.slottedElements];
         this.cells = elements.filter((element): element is DataGridCell => element instanceof DataGridCell);
-        onDefined(elements, this.$fastController.definition.registry, () => this.updateCells());
+        onDefined(elements, () => this.updateCells());
     }
 
     private updateAria(): void {

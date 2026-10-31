@@ -4,6 +4,7 @@
 import "jsdom-global/register.js";
 
 global.customElements = window.customElements;
+global.CustomElementRegistry = window.CustomElementRegistry;
 global.MutationObserver = window.MutationObserver;
 global.SVGElement = window.SVGElement;
 global.FocusEvent = window.FocusEvent;

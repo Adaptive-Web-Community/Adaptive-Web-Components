@@ -88,6 +88,6 @@ export class Tablist extends FASTElement implements TablistElement {
 
         this.controller.setTabs(this.tabs);
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateTabs());
+        onDefined(this.slottedElements, () => this.updateTabs());
     }
 }

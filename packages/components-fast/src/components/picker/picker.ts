@@ -257,6 +257,6 @@ export class Picker extends BaseFormControl implements PickerElement {
 
         this.controller.setOptions(this.options);
 
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateOptions());
+        onDefined(this.slottedElements, () => this.updateOptions());
     }
 }

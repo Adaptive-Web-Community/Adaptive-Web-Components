@@ -37,7 +37,7 @@ export class TreeView extends FASTElement implements TreeViewElement {
 
     private updateItems(): void {
         this.controller.setItems(this.slottedElements.filter((element): element is TreeItem => element instanceof TreeItem));
-        onDefined(this.slottedElements, this.$fastController.definition.registry, () => this.updateItems());
+        onDefined(this.slottedElements, () => this.updateItems());
     }
 }
 
