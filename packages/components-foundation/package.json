@@ -35,6 +35,10 @@
       "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
     },
+    "./conformance": {
+      "types": "./dist/dts/conformance/index.d.ts",
+      "default": "./dist/esm/conformance/index.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -53,15 +57,31 @@
   "dependencies": {
     "@adaptive-web/adaptive-ui": "^1.0.0-beta.2"
   },
+  "peerDependencies": {
+    "@vitest/browser-playwright": "^5.0.5",
+    "vitest": "^5.0.5"
+  },
+  "peerDependenciesMeta": {
+    "@vitest/browser-playwright": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.59.4",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
+    "@vitest/browser": "^5.0.5",
+    "@vitest/browser-playwright": "^5.0.5",
     "chai": "^4.3.7",
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
     "mocha": "^10.2.0",
+    "playwright": "^1.64.1",
     "rimraf": "^3.0.2",
-    "tsx": "^4.23.0"
+    "tsx": "^4.23.0",
+    "vitest": "^5.0.5"
   }
 }

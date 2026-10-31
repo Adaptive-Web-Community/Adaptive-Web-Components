@@ -26,5 +26,15 @@ How the components are built, so that the set works the same way: [the principle
 ## Testing
 
 The unit tests (`npm test`) run the controllers in JSDOM, which has no `ElementInternals` and doesn't match `:disabled` on a custom element.
-What depends on those (the role, the disabled state of a form control, the submitter of a form) needs a test in a browser, which this package
-doesn't have yet.
+What depends on those (the role, the disabled state of a form control, the submitter of a form) is in the conformance tests of each contract
+(`<component>.conformance.ts`), which a binding runs in a browser
+([decision 0019](../../docs/decisions/0019-a-binding-is-tested-by-the-conformance-of-its-contract.md)):
+
+```ts
+import { buttonConformance } from "@adaptive-web/components-foundation/conformance";
+
+buttonConformance("adaptive-button");
+```
+
+They need Vitest's browser mode with the Playwright provider and Chromium, and read the accessibility of an element from the browser
+(`accessibilityNodeOf`), since what `ElementInternals` sets isn't in the DOM.
