@@ -1,8 +1,12 @@
 # Decisions
 
 The decisions that shape the code and that the code can't explain by itself, with why they were made and what else was considered. They are
-[architecture decision records](https://adr.github.io/): short, numbered, and not edited after they are accepted. A decision that changes is
-a new record that says it supersedes the old one.
+[architecture decision records](https://adr.github.io/): short and numbered.
+
+Until 1.0, while the beta is expected to shift, a record whose decision changes is updated in place, with what is true now, and not
+superseded by a new one. Right before the 1.0 release, a final pass makes the records and the other docs consistent with each other and with
+the code. From 1.0, a record isn't edited after it is accepted, and a decision that changes is a new record that says it supersedes the old
+one.
 
 ## When to write one
 
