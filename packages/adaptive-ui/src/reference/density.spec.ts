@@ -40,7 +40,8 @@ describe("density", () => {
                     const set = density[name];
                     (["horizontal", "vertical"] as const).forEach(axis => {
                         (["padding", "gap"] as const).forEach(property => {
-                            const expectedValue = pixels(expected[`density.${name}.${axis}.${property}`]);
+                            // 0.14 had a negative padding or gap for a negative adjustment, which CSS ignores, and 1.0 has none.
+                            const expectedValue = Math.max(0, pixels(expected[`density.${name}.${axis}.${property}`]));
                             expect(value(library, set[axis][property]), `${name} ${axis} ${property}`).to.deep.equal(px(expectedValue));
                             checked++;
                         });
@@ -138,17 +139,27 @@ describe("density", () => {
     });
 
     describe("CSS", () => {
-        it("should write the padding and gap as calculations of the custom properties", () => {
+        it("should write the padding and gap as calculations of the custom properties, at least none", () => {
             const library = createDensityLibrary();
             const css = toCSS(library, { converters: adaptiveConverters(library) });
 
             expect(css).to.include(
-                "--density-control-horizontal-padding:calc(((var(--density-control-horizontal-paddingUnits) + var(--density-adjustmentUnits)) * var(--density-control-designUnit)) - var(--density-control-borderThickness));"
+                "--density-control-horizontal-padding:max(((var(--density-control-horizontal-paddingUnits) + var(--density-adjustmentUnits)) * var(--density-control-designUnit)) - var(--density-control-borderThickness), var(--density-control-designUnit) * 0);"
             );
             expect(css).to.include(
-                "--density-control-vertical-gap:calc((var(--density-control-vertical-gapUnits) + var(--density-adjustmentUnits)) * var(--density-control-designUnit));"
+                "--density-control-vertical-gap:max((var(--density-control-vertical-gapUnits) + var(--density-adjustmentUnits)) * var(--density-control-designUnit), var(--density-control-designUnit) * 0);"
             );
             expect(css).to.include("--density-control-designUnit:4px;");
+        });
+
+        it("should not have a padding or a gap of less than none, for an adjustment that would make it", () => {
+            const library = createDensityLibrary().extend({ density: { adjustmentUnits: { $value: -1 } } });
+            const { density } = library.tokens;
+
+            expect(value(library, density.text.horizontal.padding)).to.deep.equal(px(0));
+            expect(value(library, density.controlList.horizontal.padding)).to.deep.equal(px(0));
+            expect(value(library, density.controlList.vertical.gap)).to.deep.equal(px(0));
+            expect(value(library, density.control.horizontal.padding)).to.deep.equal(px(7));
         });
     });
 });

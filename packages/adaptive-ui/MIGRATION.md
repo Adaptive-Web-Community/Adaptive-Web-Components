@@ -292,8 +292,9 @@ Not exported, with what to use: the token of a state of the card (`elevationCard
 
 The design unit, the corner radius, the stroke thickness (`appearance`), and the density (`density`) are tokens of a library, and
 `createDensityLibrary()` is a library with both. The names, values, and the padding and gap that are calculated are the same as before (the parity
-snapshot has the same pixels for every design unit, stroke thickness and adjustment). The padding and the gap are expressions of the units, the
-adjustment, and the design unit, so in CSS they are `calc()` of the custom properties.
+snapshot has the same pixels for every design unit, stroke thickness and adjustment), except that a padding or a gap is never less than none: a
+negative adjustment made some negative in 0.14 (the text padding was `-4px` at `-1`), which CSS ignores, and they are `0`. The padding and the gap
+are expressions of the units, the adjustment, and the design unit, so in CSS they are `calc()` of the custom properties.
 
 | 0.14 | 1.0 |
 | --- | --- |
