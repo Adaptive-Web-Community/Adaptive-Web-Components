@@ -16,6 +16,8 @@ package="${PACKAGE:-packages/adaptive-ui}"
 strip_color() { sed 's/\x1b\[[0-9;]*m//g'; }
 
 if [[ "${1:-}" == "--step" ]]; then
+    # In a worktree, the rebase sets GIT_DIR for the step, and git takes the current directory for the top of the tree.
+    unset GIT_DIR GIT_WORK_TREE
     cd "$(git rev-parse --show-toplevel)/$package"
 
     subject="$(git log -1 --format=%s | cut -c1-58)"
