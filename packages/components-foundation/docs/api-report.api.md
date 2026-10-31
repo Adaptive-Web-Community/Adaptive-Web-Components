@@ -69,6 +69,14 @@ export const AccordionExpandMode: {
 export type AccordionExpandMode = (typeof AccordionExpandMode)[keyof typeof AccordionExpandMode];
 
 // @public
+export class AccordionItemController {
+    constructor(host: AccordionItemElement, root: () => ParentNode | null);
+    connect(): void;
+    disconnect(): void;
+    focus(options?: FocusOptions): void;
+}
+
+// @public
 export interface AccordionItemContract {
     collapsible: boolean;
     disabled: boolean;

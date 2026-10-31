@@ -5,8 +5,8 @@ An accordion is a list of items, each a heading whose button expands and collaps
 
 - Contract: `AccordionElement` and `AccordionExpandMode` (`accordion.ts`), `AccordionItemElement`, `AccordionItemParts`, and `HeadingLevel`
   (`../accordion-item/accordion-item.ts`).
-- Behavior: `AccordionController` (keyboard, and one item expanded in the `single` mode), and `toggleAccordionItem` for the click of an item's
-  button.
+- Behavior: `AccordionController` (keyboard, and one item expanded in the `single` mode), and `AccordionItemController` (the click of an
+  item's button, with `toggleAccordionItem`, and its focus). The item's template binds its state to its parts and has no behavior.
 - An item toggles itself, so an item works without an accordion. The accordion reacts when an item's `expanded` changes, by the user or by code,
   which its binding observes and tells the controller.
 
@@ -21,10 +21,10 @@ The sources: FAST Foundation 3.0.0-alpha.33 (the archive) and 3.0.0-alpha.31 (wh
 | `aria-controls` and `aria-labelledby` | The item's `id`, generated, and overwritten by the accordion (`accordion-1`) | Fixed ids in the shadow root (`button`, `panel`), and the item's own `id` is the author's |
 | Expand modes | `expand-mode`: `single` keeps one item expanded, the first by default; `multi` | FAST, as `expandMode` |
 | The expanded item can't be collapsed in `single` | The accordion sets `aria-disabled` on the item's button, reaching into its shadow root (`expandbutton`) | FAST's behavior, through the item's `collapsible` property of the contract |
-| What toggles an item | The accordion, on the item's click | The item itself (`toggleAccordionItem`), so it works alone |
+| What toggles an item | The accordion, on the item's click | The item itself (`AccordionItemController`, on a click of its `button` part), so it works alone |
 | An item expanded by code in `single` | A notifier subscription to each item's `expanded` | FAST: the binding subscribes, and calls `itemExpandedChanged` |
 | Keyboard | Up and Down wrap, Home and End | FAST, with `preventDefault` for Home and End. Disabled items are skipped, and a key in a panel or one already handled is ignored |
-| Focus of an item | The accordion focuses `expandbutton` | The item's `focus()` focuses its button |
+| Focus of an item | The accordion focuses `expandbutton` | The item's `focus()` focuses its `button` part (`AccordionItemController`) |
 | Events | The accordion's `change`, with the active id | The item's `change`, which bubbles through the accordion, as an input's does |
 | Disabled item | `disabled` disables the button, and the item is left out of the keyboard and the `single` mode | The same, except that in `single` a disabled item is collapsed when another is expanded, so one is expanded at a time. It isn't the one expanded by default |
 | Collapsed panel | `display: none` in the styles | The `hidden` attribute, which works without styles |

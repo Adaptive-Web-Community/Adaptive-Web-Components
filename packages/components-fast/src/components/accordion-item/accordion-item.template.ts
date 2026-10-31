@@ -1,4 +1,4 @@
-import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
 import {
     accordionItemDocumentation,
     AccordionItemParts,
@@ -51,8 +51,6 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<AccordionItem> 
                 aria-expanded="${x => x.expanded}"
                 aria-disabled="${x => (x.expanded && !x.collapsible ? "true" : null)}"
                 ?disabled="${x => x.disabled}"
-                @click="${x => x.handleClick()}"
-                ${ref("expandButton")}
             >
                 <span class=${(_) => AccordionItemParts.headingContent} part=${(_) => AccordionItemParts.headingContent}>
                     <slot name=${(_) => AccordionItemSlots.heading}></slot>

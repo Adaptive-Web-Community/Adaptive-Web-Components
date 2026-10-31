@@ -1,5 +1,5 @@
 import { attr, FASTElement, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { type AccordionItemElement, type HeadingLevel, toggleAccordionItem } from "@adaptive-web/components-foundation";
+import { AccordionItemController, type AccordionItemElement, type HeadingLevel } from "@adaptive-web/components-foundation";
 
 /**
  * An item of an {@link Accordion}. Implements {@link @adaptive-web/components-foundation#AccordionItemElement}.
@@ -31,24 +31,22 @@ export class AccordionItem extends FASTElement implements AccordionItemElement {
     @observable
     public collapsible: boolean = true;
 
-    /**
-     * The button of the heading.
-     *
-     * @internal
-     */
-    public expandButton?: HTMLButtonElement;
+    private readonly controller = new AccordionItemController(this, () => this.shadowRoot);
+
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.controller.connect();
+    }
+
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.controller.disconnect();
+    }
 
     /**
      * Focuses the button of the heading.
      */
     public focus(options?: FocusOptions): void {
-        this.expandButton?.focus(options);
-    }
-
-    /**
-     * @internal
-     */
-    public handleClick(): void {
-        toggleAccordionItem(this);
+        this.controller.focus(options);
     }
 }
