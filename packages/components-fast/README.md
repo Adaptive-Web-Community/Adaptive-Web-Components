@@ -40,6 +40,13 @@ AdaptiveDesignSystem.adoptTokenStyles();
 await AdaptiveDesignSystem.defineComponents(AllComponents);
 ```
 
+Or define a component by importing it, with the default design system (so far the button, the accordion, and the accordion item):
+```ts
+import { AdaptiveDesignSystem } from "@adaptive-web/components-fast";
+import "@adaptive-web/components-fast/button/define";
+AdaptiveDesignSystem.adoptTokenStyles();
+```
+
 Import via CDN link on a script tag:
 ```html
 <!DOCTYPE html>
