@@ -4,6 +4,11 @@ import { ButtonController, type ButtonElement, ButtonType, findById } from "@ada
 /**
  * A button. Implements {@link @adaptive-web/components-foundation#ButtonElement}.
  *
+ * @slot start - Content before the label.
+ * @slot - The label.
+ * @slot end - Content after the label.
+ * @csspart content - The label.
+ *
  * @public
  */
 export class Button extends FASTElement implements ButtonElement {

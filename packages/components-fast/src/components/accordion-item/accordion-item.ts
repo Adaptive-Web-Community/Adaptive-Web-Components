@@ -4,6 +4,19 @@ import { AccordionItemController, type AccordionItemElement, type HeadingLevel }
 /**
  * An item of an {@link Accordion}. Implements {@link @adaptive-web/components-foundation#AccordionItemElement}.
  *
+ * @slot heading - The content of the button of the heading.
+ * @slot - The content of the panel.
+ * @slot start - Content after the button.
+ * @slot end - Content after the button.
+ * @slot collapsed-icon - The icon of a collapsed item.
+ * @slot expanded-icon - The icon of an expanded item.
+ * @fires change - The user expanded or collapsed the item.
+ * @csspart heading - The heading.
+ * @csspart button - The button of the heading.
+ * @csspart heading-content - The content of the button.
+ * @csspart icon - The icon.
+ * @csspart panel - The panel.
+ *
  * @public
  */
 export class AccordionItem extends FASTElement implements AccordionItemElement {
