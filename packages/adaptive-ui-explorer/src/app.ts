@@ -1,46 +1,27 @@
-import {
-    Color,
-    Palette,
-} from "@adaptive-web/adaptive-ui";
-import {
-    accentBaseColor,
-    accentPalette,
-    highlightBaseColor,
-    highlightPalette,
-    LayerBaseLuminance,
-    layerFillBaseLuminance,
-    layerFillFixedBase,
-    layerFillFixedMinus1,
-    layerFillFixedMinus2,
-    layerFillFixedMinus3,
-    layerFillFixedPlus1,
-    neutralAsOverlay,
-    neutralBaseColor,
-    neutralPalette,
-    wcagContrastLevel,
-} from "@adaptive-web/adaptive-ui/reference";
+import { formatColor, type Palette } from "@adaptive-web/adaptive-ui";
+import { LayerBaseLuminance } from "@adaptive-web/adaptive-ui/reference";
 import {
     css,
-    customElement,
     FASTElement,
     html,
-    Notifier,
+    type Notifier,
     Observable,
     observable,
     ref,
     repeat,
-    Subscriber,
-    ViewTemplate,
+    type Subscriber,
+    type ViewTemplate,
 } from "@microsoft/fast-element";
-import { DesignToken } from "@microsoft/fast-foundation";
-import { componentBaseStyles } from "@adaptive-web/components-fast";
+import { px } from "design-token-library";
 import { ComponentType } from "./component-type.js";
 import { ColorBlock } from "./components/color-block.js";
 import { ControlPane } from "./components/control-pane/index.js";
 import { LayerBackground } from "./components/layer-background/index.js";
 import { PaletteGradient } from "./components/palette-gradient/palette-gradient.js";
+import type { ExplorerLibrary } from "./library.js";
 import { SampleApp } from "./sample/index.js";
-import { typeRampScale, Typography } from "./typography/index.js";
+import { Scope } from "./scope.js";
+import { Typography } from "./typography/index.js";
 import { State } from "./state.js";
 
 ColorBlock;
@@ -48,6 +29,7 @@ ControlPane;
 LayerBackground;
 PaletteGradient;
 SampleApp;
+Scope;
 Typography;
 
 const colorBlockTemplate = html<App>`
@@ -68,11 +50,11 @@ const colorBlockTemplate = html<App>`
 `;
 
 const sampleTemplate = html<App>`
-    <app-design-system-provider style="display: flex;">
+    <div style="display: flex;">
         <app-layer-background
             id="light-mode"
             base-layer-luminance="${LayerBaseLuminance.LightMode}"
-            background-layer-recipe="-3"
+            layer="minus3"
             style="flex-grow: 1; padding: 100px;"
         >
             <app-sample-app></app-sample-app>
@@ -80,25 +62,22 @@ const sampleTemplate = html<App>`
         <app-layer-background
             id="dark-mode"
             base-layer-luminance="${LayerBaseLuminance.DarkMode}"
-            background-layer-recipe="-3"
+            layer="minus3"
             style="flex-grow: 1; padding: 100px;"
         >
             <app-sample-app></app-sample-app>
         </app-layer-background>
-    </app-design-system-provider>
+    </div>
 `;
 
 const typographyTemplate = html<App>`
-    <app-design-system-provider>
-        <app-typography></app-typography>
-    </app-design-system-provider>
+    <app-typography></app-typography>
 `;
 
-const template = html<App>`
+export const template = html<App>`
     <div class="container fill">
         <div class="row fill">
-            <app-design-system-provider class="canvas" ${ref("canvas")}>
-                <app-design-system-provider ${ref("designSystemElement")}></app-design-system-provider>
+            <app-scope class="canvas" ${ref("canvas")}>
                 <div class="container fill">
                     <div class="row gradient">
                         <app-palette-gradient :palette=${(x) => x.neutralPalette}></app-palette-gradient>
@@ -113,7 +92,7 @@ const template = html<App>`
                         <div style="display: flex; overflow: auto;">${(x) => x.componentTypeTemplate()}</div>
                     </div>
                 </div>
-            </app-design-system-provider>
+            </app-scope>
             <div>
                 <app-layer-background
                     class="control-pane-container"
@@ -126,7 +105,7 @@ const template = html<App>`
     </div>
 `;
 
-const styles = css`
+export const styles = css`
     :host {
         width: 100%;
     }
@@ -183,18 +162,17 @@ export interface SwatchInfo {
     title?: string;
 }
 
-@customElement({
-    name: `app-design-system-provider`,
-    styles: componentBaseStyles,
-    template: html`
-        <slot></slot>
-    `,
-})
-class DesignSystemProvider extends FASTElement {}
-DesignSystemProvider;
+// The fixed layers that are shown, with their titles.
+const layerFills = [
+    ["plus1", "+1"],
+    ["base", "Base"],
+    ["minus1", "-1"],
+    ["minus2", "-2"],
+    ["minus3", "-3"],
+] as const;
 
 export class App extends FASTElement {
-    public canvas?: DesignSystemProvider;
+    public canvas?: Scope;
 
     @State state!: State;
 
@@ -213,72 +191,31 @@ export class App extends FASTElement {
     @observable
     public backgrounds: SwatchInfo[] = [];
 
+    // The canvas in light mode and in dark mode, whose layers are the backgrounds. They follow the canvas.
+    private layerProbes: ExplorerLibrary[] = [];
+
     private _stateNotifier: Notifier | null = null;
     private _stateHandler: Subscriber | null = null;
 
     public connectedCallback(): void {
         super.connectedCallback();
 
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const app = this;
+        const canvas = this.canvas?.library;
+        if (!canvas) {
+            return;
+        }
+
+        this.layerProbes = [LayerBaseLuminance.LightMode, LayerBaseLuminance.DarkMode].map(baseLuminance =>
+            canvas.extend({ color: { layer: { fill: { ramp: { baseLuminance: { $value: baseLuminance } } } } } })
+        );
+
         this._stateNotifier = Observable.getNotifier(this.state);
         this._stateHandler = {
-            handleChange(source: State, propertyName: keyof State) {
-                if (app.$fastController.isConnected && app.canvas) {
-                    switch (propertyName) {
-                        case "neutralColor":
-                            neutralBaseColor.setValueFor(app.canvas, source.neutralColor);
-
-                            app.neutralPalette = neutralPalette.getValueFor(app.canvas);
-                            app.neutralColors = app.neutralPalette.swatches.map((x) => x.toString());
-
-                            app.updateBackgrounds();
-                            break;
-                        case "accentColor":
-                            accentBaseColor.setValueFor(app.canvas, source.accentColor);
-
-                            app.accentPalette = accentPalette.getValueFor(app.canvas);
-                            break;
-                        case "highlightColor":
-                            highlightBaseColor.setValueFor(app.canvas, source.highlightColor);
-
-                            app.highlightPalette = highlightPalette.getValueFor(app.canvas);
-                            break;
-                        case "neutralAsOverlay":
-                            neutralAsOverlay.setValueFor(app.canvas, source.neutralAsOverlay);
-                            break;
-                        case "showOnlyLayerBackgrounds":
-                            app.updateBackgrounds();
-                            break;
-                        case "wcagContrastLevel":
-                            wcagContrastLevel.setValueFor(app.canvas, source.wcagContrastLevel);
-                            break;
-                        case "typeScaleBaseSize":
-                            typeRampScale.base.fontSize.setValueFor(app.canvas, `${source.typeScaleBaseSize}px`);
-                            break;
-                        case "typeScaleMultiplier":
-                            typeRampScale.multiplier.setValueFor(app.canvas, source.typeScaleMultiplier);
-                            break;
-                        case "typeScaleLineHeightRatio":
-                            typeRampScale.lineHeightRatio.setValueFor(app.canvas, source.typeScaleLineHeightRatio);
-                            break;
-                        case "typeScaleLineHeightMultilineRatio":
-                            typeRampScale.lineHeightMultilineRatio.setValueFor(app.canvas, source.typeScaleLineHeightMultilineRatio);
-                            break;
-                        case "typeScaleLineHeightSnap":
-                            typeRampScale.lineHeightSnap.setValueFor(app.canvas, `${source.typeScaleLineHeightSnap}px`);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            },
+            handleChange: (source: State, propertyName: keyof State) => this.stateChanged(canvas, source, propertyName),
         };
         this._stateNotifier.subscribe(this._stateHandler);
 
-        this.state.neutralColor = neutralBaseColor.getValueFor(this);
-        this.state.accentColor = accentBaseColor.getValueFor(this);
-        this.state.highlightColor = highlightBaseColor.getValueFor(this);
+        this.updatePalettes(canvas);
     }
 
     public disconnectedCallback(): void {
@@ -287,8 +224,6 @@ export class App extends FASTElement {
             this._stateNotifier?.unsubscribe(this._stateHandler);
         }
     }
-
-    public designSystemElement?: FASTElement;
 
     public componentTypeTemplate(): ViewTemplate<App, any> {
         if (this.state.componentType === ComponentType.sample) {
@@ -300,8 +235,63 @@ export class App extends FASTElement {
         }
     }
 
+    // Sets a value of the state on the library of the canvas.
+    private stateChanged(canvas: ExplorerLibrary, state: State, propertyName: keyof State): void {
+        const { color, typography } = canvas.tokens;
+        const scale = typography.ramp.body;
+        switch (propertyName) {
+            case "neutralColor":
+                color.neutral.base.set(state.neutralColor);
+                this.updatePalettes(canvas);
+                break;
+            case "accentColor":
+                color.accent.base.set(state.accentColor);
+                this.updatePalettes(canvas);
+                break;
+            case "highlightColor":
+                color.highlight.base.set(state.highlightColor);
+                this.updatePalettes(canvas);
+                break;
+            case "neutralAsOverlay":
+                color.neutral.asOverlay.set(state.neutralAsOverlay);
+                break;
+            case "showOnlyLayerBackgrounds":
+                this.updateBackgrounds();
+                break;
+            case "wcagContrastLevel":
+                color.wcagContrast.level.set(state.wcagContrastLevel);
+                break;
+            case "typeScaleBaseSize":
+                scale.fontSize.base.set(px(state.typeScaleBaseSize));
+                break;
+            case "typeScaleMultiplier":
+                scale.multiplier.set(state.typeScaleMultiplier);
+                break;
+            case "typeScaleLineHeightRatio":
+                scale.lineHeightRatio.set(state.typeScaleLineHeightRatio);
+                break;
+            case "typeScaleLineHeightMultilineRatio":
+                scale.lineHeightMultilineRatio.set(state.typeScaleLineHeightMultilineRatio);
+                break;
+            case "typeScaleLineHeightSnap":
+                scale.lineHeightSnap.set(px(state.typeScaleLineHeightSnap));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private updatePalettes(canvas: ExplorerLibrary): void {
+        const { color } = canvas.tokens;
+        this.neutralPalette = color.neutral.palette.$value;
+        this.neutralColors = this.neutralPalette.swatches.map(formatColor);
+        this.accentPalette = color.accent.palette.$value;
+        this.highlightPalette = color.highlight.palette.$value;
+        this.updateBackgrounds();
+    }
+
     private updateBackgrounds(): void {
-        const layers: SwatchInfo[] = this.lightModeLayers.concat(this.darkModeLayers);
+        const layers: SwatchInfo[] = this.layerProbes.flatMap(probe => this.layerSwatches(probe));
 
         this.backgrounds = this.state.showOnlyLayerBackgrounds
             ? layers
@@ -318,63 +308,36 @@ export class App extends FASTElement {
               });
     }
 
-    private layerTokens: Array<[DesignToken<Color>, string]> = [
-        [layerFillFixedPlus1, "+1"],
-        [layerFillFixedBase, "Base"],
-        [layerFillFixedMinus1, "-1"],
-        [layerFillFixedMinus2, "-2"],
-        [layerFillFixedMinus3, "-3"],
-    ];
+    // The fixed layers of a library, a swatch for each color, with the titles of the layers that have it, in the order of the palette.
+    private layerSwatches(probe: ExplorerLibrary): SwatchInfo[] {
+        const ramp = probe.tokens.color.layer.fill.ramp;
+        return layerFills
+            .map(([position, title]): SwatchInfo => {
+                const color = formatColor(ramp[position].$value);
+                return {
+                    index: this.neutralColors.indexOf(color),
+                    color,
+                    title,
+                };
+            })
+            .reduce((accumulated: SwatchInfo[], value: SwatchInfo): SwatchInfo[] => {
+                const colorIndex: number = accumulated.findIndex(
+                    (config: SwatchInfo): boolean => config.color === value.color
+                );
 
-    private resolveLayerRecipes = (luminance: number): SwatchInfo[] => {
-        const ds = this.designSystemElement;
-        if (ds) {
-            layerFillBaseLuminance.setValueFor(ds, luminance);
-
-            return this.layerTokens
-                .map((conf: [DesignToken<Color>, string]): SwatchInfo => {
-                    const color = conf[0].getValueFor(ds).toString();
-                    return {
-                        index: this.neutralColors.indexOf(color),
-                        color: color,
-                        title: conf[1],
-                    };
-                })
-                .reduce((accumulated: SwatchInfo[], value: SwatchInfo): Array<SwatchInfo> => {
-                    const colorIndex: number = accumulated.findIndex(
-                        (config: SwatchInfo): boolean => config.color === value.color
+                return colorIndex === -1
+                    ? accumulated.concat(value)
+                    : accumulated.map(
+                        (config: SwatchInfo, index: number): SwatchInfo =>
+                            index === colorIndex
+                                ? {
+                                    index: value.index,
+                                    color: value.color,
+                                    title: `${value.title}, ${config.title}`,
+                                }
+                                : config
                     );
-
-                    return colorIndex === -1
-                        ? accumulated.concat(value)
-                        : accumulated.map(
-                            (config: SwatchInfo, index: number): SwatchInfo =>
-                                index === colorIndex
-                                    ? {
-                                            index: this.neutralColors.indexOf(value.color),
-                                            color: value.color,
-                                            title: value.title!.concat(", ", config.title!),
-                                        }
-                                    : config
-                        );
-                }, [])
-                .sort((a: SwatchInfo, b: SwatchInfo): number => a.index - b.index);
-        } else {
-            return [];
-        }
-    };
-
-    private get lightModeLayers(): SwatchInfo[] {
-        return this.resolveLayerRecipes(LayerBaseLuminance.LightMode);
-    }
-
-    private get darkModeLayers(): SwatchInfo[] {
-        return this.resolveLayerRecipes(LayerBaseLuminance.DarkMode);
+            }, [])
+            .sort((a: SwatchInfo, b: SwatchInfo): number => a.index - b.index);
     }
 }
-
-export const app = App.compose({
-    name: "app-main",
-    template,
-    styles,
-});

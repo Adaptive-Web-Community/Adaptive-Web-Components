@@ -1,13 +1,13 @@
-import { DesignToken } from "@microsoft/fast-foundation";
 import { AdaptiveDesignSystem } from "@adaptive-web/components-fast";
 import { AllComponents } from "@adaptive-web/components-fast/all-components";
+import { App, styles, template } from "./app.js";
+import { library } from "./library.js";
 import { DefaultState, State } from "./state.js";
-import { app } from './app.js';
 
-AdaptiveDesignSystem.defineComponents(AllComponents);
+AdaptiveDesignSystem.configure({ library });
+AdaptiveDesignSystem.adoptTokenStyles();
+await AdaptiveDesignSystem.defineComponents(AllComponents);
 
-State.provide(document, new DefaultState());
+State.provide(document, new DefaultState(library));
 
-DesignToken.registerDefaultStyleTarget();
-
-app.define();
+await App.define({ name: "app-main", template, styles });

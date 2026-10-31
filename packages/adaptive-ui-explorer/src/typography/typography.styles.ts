@@ -1,16 +1,30 @@
 import { css } from "@microsoft/fast-element";
-import { bodyFontFamily, colorContext, neutralFillSubtle, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
+import { typeRampPositions } from "@adaptive-web/adaptive-ui";
 import { componentBaseStyles } from "@adaptive-web/components-fast";
-import { typeRampScale } from "./type-scale.js";
+import { properties } from "../library.js";
+
+const ramp = properties.typography.ramp.body;
+
+// The size and the line height of each position of the ramp, and the line height of multiline text.
+const positionStyles = typeRampPositions.map(position => `
+    p.${position} {
+        font-size: ${ramp.fontSize[position].var};
+        line-height: ${ramp.lineHeight[position].var};
+    }
+
+    .multiline p.${position} {
+        line-height: ${ramp.lineHeightMultiline[position].var};
+    }
+`).join("");
 
 export const typographyStyles = css`
     ${componentBaseStyles}
 
     :host {
         display: flex;
-        font-family: ${bodyFontFamily};
-        color: ${neutralStrokeStrong.rest};
-        background: ${colorContext};
+        font-family: ${properties.typography.fontFamily.body.var};
+        color: ${properties.color.neutral.stroke.strong.var};
+        background: ${properties.color.context.var};
     }
 
     .content {
@@ -29,7 +43,7 @@ export const typographyStyles = css`
 
     .sample-text {
         display: block;
-        background: ${neutralFillSubtle.rest};
+        background: ${properties.color.neutral.fill.subtle.var};
     }
 
     .values {
@@ -38,84 +52,5 @@ export const typographyStyles = css`
         font-family: monospace;
     }
 
-    p.minus2 {
-        font-size: ${typeRampScale.minus2.fontSize};
-        line-height: ${typeRampScale.minus2.lineHeight};
-    }
-
-    .multiline p.minus2 {
-        line-height: ${typeRampScale.minus2.lineHeightMultiline};
-    }
-
-    p.minus1 {
-        font-size: ${typeRampScale.minus1.fontSize};
-        line-height: ${typeRampScale.minus1.lineHeight};
-    }
-
-    .multiline p.minus1 {
-        line-height: ${typeRampScale.minus1.lineHeightMultiline};
-    }
-
-    p.base {
-        font-size: ${typeRampScale.base.fontSize};
-        line-height: ${typeRampScale.base.lineHeight};
-    }
-
-    .multiline p.base {
-        line-height: ${typeRampScale.base.lineHeightMultiline};
-    }
-
-    p.plus1 {
-        font-size: ${typeRampScale.plus1.fontSize};
-        line-height: ${typeRampScale.plus1.lineHeight};
-    }
-
-    .multiline p.plus1 {
-        line-height: ${typeRampScale.plus1.lineHeightMultiline};
-    }
-
-    p.plus2 {
-        font-size: ${typeRampScale.plus2.fontSize};
-        line-height: ${typeRampScale.plus2.lineHeight};
-    }
-
-    .multiline p.plus2 {
-        line-height: ${typeRampScale.plus2.lineHeightMultiline};
-    }
-
-    p.plus3 {
-        font-size: ${typeRampScale.plus3.fontSize};
-        line-height: ${typeRampScale.plus3.lineHeight};
-    }
-
-    .multiline p.plus3 {
-        line-height: ${typeRampScale.plus3.lineHeightMultiline};
-    }
-
-    p.plus4 {
-        font-size: ${typeRampScale.plus4.fontSize};
-        line-height: ${typeRampScale.plus4.lineHeight};
-    }
-
-    .multiline p.plus4 {
-        line-height: ${typeRampScale.plus4.lineHeightMultiline};
-    }
-
-    p.plus5 {
-        font-size: ${typeRampScale.plus5.fontSize};
-        line-height: ${typeRampScale.plus5.lineHeight};
-    }
-
-    .multiline p.plus5 {
-        line-height: ${typeRampScale.plus5.lineHeightMultiline};
-    }
-
-    p.plus6 {
-        font-size: ${typeRampScale.plus6.fontSize};
-        line-height: ${typeRampScale.plus6.lineHeight};
-    }
-
-    .multiline p.plus6 {
-        line-height: ${typeRampScale.plus6.lineHeightMultiline};
-    }
+    ${positionStyles}
 `;

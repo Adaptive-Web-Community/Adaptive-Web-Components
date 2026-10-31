@@ -1,14 +1,25 @@
-import { customElement, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import { evaluate, type Evaluated, type TypeRampPosition, typeRampPositions } from "@adaptive-web/adaptive-ui";
+import { customElement, FASTElement, Observable, observable } from "@microsoft/fast-element";
+import type { Library } from "design-token-library";
+import type { ExplorerLibrary } from "../library.js";
+import { ScopeLibrary } from "../scope.js";
 import { State } from "../state.js";
 import { typographyStyles as styles } from "./typography.styles.js";
 import { typographyTemplate as template } from "./typography.template.js";
-import { typeRampScale } from "./type-scale.js";
 
 interface TypePosition {
     fontSize: string;
     lineHeight: string;
 }
 
+function format(value: Evaluated): string {
+    const rounded = (n: number) => `${Math.round(n * 100) / 100}`;
+    return typeof value === "number" ? rounded(value) : `${rounded(value.value)}${value.unit}`;
+}
+
+/**
+ * The positions of the body type ramp, with their sizes and line heights in the scope it is in.
+ */
 @customElement({
     name: "app-typography",
     template: template(),
@@ -18,100 +29,43 @@ export class Typography extends FASTElement {
     @State state!: State;
 
     @observable
-    minus2: TypePosition = { fontSize: "", lineHeight: "" };
+    public values: Partial<Record<TypeRampPosition, TypePosition>> = {};
 
-    @observable
-    minus1: TypePosition = { fontSize: "", lineHeight: "" };
+    private library?: ExplorerLibrary;
+    private readonly libraryChanged: Library.Subscriber<any> = { onChange: () => this.updateValues() };
 
-    @observable
-    base: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus1: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus2: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus3: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus4: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus5: TypePosition = { fontSize: "", lineHeight: "" };
-
-    @observable
-    plus6: TypePosition = { fontSize: "", lineHeight: "" };
-
-    private updateScheduled = false;
-
-    connectedCallback(): void {
+    public connectedCallback(): void {
         super.connectedCallback();
-        
-        // Wait for next frame to ensure styles are applied
-        requestAnimationFrame(() => {
-            this.updateComputedValues();
-        });
-
-        // Subscribe to token changes
-        this.subscribeToTokenChanges();
-
-        // Subscribe to state.multiline changes
+        this.library = ScopeLibrary.get(this);
+        this.library.subscribe(this.libraryChanged);
         Observable.getNotifier(this.state).subscribe(this, "multiline");
+        this.updateValues();
     }
 
-    disconnectedCallback(): void {
+    public disconnectedCallback(): void {
         super.disconnectedCallback();
-        
-        // Unsubscribe from state changes
+        this.library?.unsubscribe(this.libraryChanged);
         Observable.getNotifier(this.state).unsubscribe(this, "multiline");
     }
 
-    private subscribeToTokenChanges(): void {
-        // Subscribe to all fontSize and lineHeight tokens
-        const positions = [
-            typeRampScale.minus2, typeRampScale.minus1, typeRampScale.base,
-            typeRampScale.plus1, typeRampScale.plus2, typeRampScale.plus3,
-            typeRampScale.plus4, typeRampScale.plus5, typeRampScale.plus6
-        ];
-
-        positions.forEach(position => {
-            position.fontSize.subscribe(this);
-            position.lineHeight.subscribe(this);
-            position.lineHeightMultiline.subscribe(this);
-        });
-
-        // Also subscribe to multiplier and ratio changes
-        typeRampScale.multiplier.subscribe(this);
-        typeRampScale.lineHeightRatio.subscribe(this);
-        typeRampScale.lineHeightMultilineRatio.subscribe(this);
-        typeRampScale.lineHeightSnap.subscribe(this);
+    public handleChange(): void {
+        this.updateValues();
     }
 
-    handleChange(source: any, propertyName?: any): void {
-        // Handle both DesignToken changes and Observable property changes
-        if (!this.updateScheduled) {
-            this.updateScheduled = true;
-            requestAnimationFrame(() => {
-                this.updateComputedValues();
-                this.updateScheduled = false;
-            });
+    private updateValues(): void {
+        const library = this.library;
+        if (!library) {
+            return;
         }
-    }
-
-    private updateComputedValues(): void {
-        const positions = ["minus2", "minus1", "base", "plus1", "plus2", "plus3", "plus4", "plus5", "plus6"];
-        
-        positions.forEach(position => {
-            const element = this.shadowRoot?.querySelector(`p.${position}`) as HTMLElement;
-            if (element) {
-                const computedStyle = getComputedStyle(element);
-                (this as any)[position] = {
-                    fontSize: computedStyle.fontSize,
-                    lineHeight: computedStyle.lineHeight
-                };
-            }
-        });
+        const ramp = library.tokens.typography.ramp.body;
+        const lineHeight = this.state.multiline ? ramp.lineHeightMultiline : ramp.lineHeight;
+        const values: Partial<Record<TypeRampPosition, TypePosition>> = {};
+        for (const position of typeRampPositions) {
+            values[position] = {
+                fontSize: format(evaluate(ramp.fontSize[position].$value, library)),
+                lineHeight: format(evaluate(lineHeight[position].$value, library)),
+            };
+        }
+        this.values = values;
     }
 }
