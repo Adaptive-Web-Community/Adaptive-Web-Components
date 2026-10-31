@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "Standards based, framework agnostic web components built using Lit.",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/esm/components/*/define.js"
+  ],
   "license": "MIT",
   "author": {
     "name": "Adaptive Web Community",
@@ -79,6 +81,10 @@
     "./all-components": {
       "types": "./dist/dts/custom-elements.d.ts",
       "default": "./dist/esm/custom-elements.js"
+    },
+    "./*/define": {
+      "types": "./dist/dts/components/*/define.d.ts",
+      "default": "./dist/esm/components/*/define.js"
     }
   }
 }

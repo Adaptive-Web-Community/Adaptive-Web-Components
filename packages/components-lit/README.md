@@ -17,6 +17,15 @@ AdaptiveDesignSystem.adoptTokenStyles();
 AdaptiveDesignSystem.defineComponents(AllComponents);
 ```
 
+Or define a component by importing it, with the default design system:
+
+```ts
+import { AdaptiveDesignSystem } from "@adaptive-web/components-lit";
+import "@adaptive-web/components-lit/button/define";
+
+AdaptiveDesignSystem.adoptTokenStyles();
+```
+
 A component is composed with a design system by its `compose<Name>`, which makes a class of the element with the styles of the design
 system, and can take its own template, styles, and style rules:
 
