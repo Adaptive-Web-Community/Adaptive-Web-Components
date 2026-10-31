@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeList } from "./list.compose.js";
 import { styleRules } from "./list.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./list.styles.rules.js";
  *
  * @public
  */
-export const listDefinition = composeList(
-    DefaultDesignSystem,
+export const listDefinition: ComponentDefinition = ds => composeList(
+    ds,
     {
         styleRules,
     }

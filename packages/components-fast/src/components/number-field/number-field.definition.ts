@@ -1,5 +1,5 @@
 import { chevronDownIcon, chevronUpIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeNumberField } from "./number-field.compose.js";
 import { NumberFieldStatics } from "./number-field.template.js";
 import { styleRules } from "./number-field.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./number-field.styles.rules.js";
  *
  * @public
  */
-export const numberFieldDefinition = composeNumberField(
-    DefaultDesignSystem,
+export const numberFieldDefinition: ComponentDefinition = ds => composeNumberField(
+    ds,
     {
         statics: {
             [NumberFieldStatics.stepDown]: chevronDownIcon,

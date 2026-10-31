@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeToolbar } from "./toolbar.compose.js";
 import { styleRules } from "./toolbar.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./toolbar.styles.rules.js";
  *
  * @public
  */
-export const toolbarDefinition = composeToolbar(
-	DefaultDesignSystem,
+export const toolbarDefinition: ComponentDefinition = ds => composeToolbar(
+    ds,
 	{
 		styleRules,
 		shadowOptions: {

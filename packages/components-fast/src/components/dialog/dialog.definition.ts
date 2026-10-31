@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeDialog } from "./dialog.compose.js";
 import { styleRules } from "./dialog.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./dialog.styles.rules.js";
  *
  * @public
  */
-export const dialogDefinition = composeDialog(
-    DefaultDesignSystem,
+export const dialogDefinition: ComponentDefinition = ds => composeDialog(
+    ds,
     {
         styleRules,
     }

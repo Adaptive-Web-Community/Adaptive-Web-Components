@@ -26,6 +26,10 @@ for the pairs that the rules give ([0013](0013-a-value-on-a-fill-is-made-in-the-
   CSS, with the parts of the rules as the class names of the templates. A framework's `ds.assembleStyles(styles, anatomy, options)` gives
   its framework the component's own styles and that CSS (FAST `ElementStyles`, Lit `CSSResultGroup`). They are methods of the design system, which each
   `compose<Name>(ds, options)` already has, and were a static function.
+- **A component is composed by the design system that defines it**: a definition is a function of a design system (`(ds) =>
+  composeButton(ds, options)`), which `ds.defineComponents` calls, since the styles are rendered with the library of that design system
+  and add their pairs to its token styles. A definition composed once with the default design system, and renamed for another, would
+  have the styles of the default library.
 - **`ds.adoptTokenStyles(target)` writes the tokens** as custom properties of the document (`:root`) or of a shadow root (`:host`), with the
   values on a fill of the components composed with the design system, in an adopted style sheet. It writes them again when the library
   changes (`subscribe`), when it is replaced, and when a component composed later brings pairs. It takes the place of FAST's

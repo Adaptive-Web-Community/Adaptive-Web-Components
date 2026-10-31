@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTooltip } from "./tooltip.compose.js";
 import { styleRules } from "./tooltip.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./tooltip.styles.rules.js";
  *
  * @public
  */
-export const tooltipDefinition = composeTooltip(
-    DefaultDesignSystem,
+export const tooltipDefinition: ComponentDefinition = ds => composeTooltip(
+    ds,
     {
         styleRules,
     }

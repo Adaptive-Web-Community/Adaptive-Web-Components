@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeAvatar } from "./avatar.compose.js";
 import { styleRules } from "./avatar.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./avatar.styles.rules.js";
  *
  * @public
  */
-export const avatarDefinition = composeAvatar(
-    DefaultDesignSystem,
+export const avatarDefinition: ComponentDefinition = ds => composeAvatar(
+    ds,
     {
         styleRules,
     }

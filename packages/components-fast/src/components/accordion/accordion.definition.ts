@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeAccordion } from "./accordion.compose.js";
 import { styleRules } from "./accordion.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./accordion.styles.rules.js";
  *
  * @public
  */
-export const accordionDefinition = composeAccordion(
-    DefaultDesignSystem,
+export const accordionDefinition: ComponentDefinition = ds => composeAccordion(
+    ds,
     {
         styleRules,
     }

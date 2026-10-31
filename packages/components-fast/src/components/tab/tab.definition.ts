@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTab } from "./tab.compose.js";
 import { styleRules } from "./tab.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./tab.styles.rules.js";
  *
  * @public
  */
-export const tabDefinition = composeTab(
-    DefaultDesignSystem,
+export const tabDefinition: ComponentDefinition = ds => composeTab(
+    ds,
     {
         styleRules,
     }

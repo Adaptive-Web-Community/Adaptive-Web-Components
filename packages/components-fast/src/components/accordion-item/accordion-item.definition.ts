@@ -1,5 +1,5 @@
 import { chevronDownIcon, chevronUpIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeAccordionItem } from "./accordion-item.compose.js";
 import { AccordionItemStatics } from './accordion-item.template.js';
 import { styleRules } from "./accordion-item.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./accordion-item.styles.rules.js";
  *
  * @public
  */
-export const accordionItemDefinition = composeAccordionItem(
-    DefaultDesignSystem,
+export const accordionItemDefinition: ComponentDefinition = ds => composeAccordionItem(
+    ds,
     {
         statics: {
             [AccordionItemStatics.collapsed]: chevronDownIcon,

@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeMenu } from "./menu.compose.js";
 import { styleRules } from "./menu.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./menu.styles.rules.js";
  *
  * @public
  */
-export const menuDefinition = composeMenu(
-    DefaultDesignSystem,
+export const menuDefinition: ComponentDefinition = ds => composeMenu(
+    ds,
     {
         styleRules,
     }

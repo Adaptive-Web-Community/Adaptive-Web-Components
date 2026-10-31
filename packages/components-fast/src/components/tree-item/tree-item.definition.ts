@@ -1,5 +1,5 @@
 import { chevronRightIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTreeItem } from "./tree-item.compose.js";
 import { TreeItemStatics } from "./tree-item.template.js";
 import { styleRules } from "./tree-item.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./tree-item.styles.rules.js";
  *
  * @public
  */
-export const treeItemDefinition = composeTreeItem(
-    DefaultDesignSystem,
+export const treeItemDefinition: ComponentDefinition = ds => composeTreeItem(
+    ds,
     {
         statics: {
             [TreeItemStatics.expandCollapse]: chevronRightIcon,

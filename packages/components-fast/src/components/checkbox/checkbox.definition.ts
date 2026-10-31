@@ -1,5 +1,5 @@
 import { checkboxIcon, checkboxIndeterminateIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeCheckbox } from './checkbox.compose.js';
 import { CheckboxStatics } from "./checkbox.template.js";
 import { styleRules } from "./checkbox.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./checkbox.styles.rules.js";
  *
  * @public
  */
-export const checkboxDefinition = composeCheckbox(
-    DefaultDesignSystem,
+export const checkboxDefinition: ComponentDefinition = ds => composeCheckbox(
+    ds,
     {
         statics: {
             [CheckboxStatics.checked]: checkboxIcon,

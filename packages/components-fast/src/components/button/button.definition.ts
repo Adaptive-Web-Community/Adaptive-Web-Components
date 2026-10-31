@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeButton } from "./button.compose.js";
 import { styleRules } from "./button.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./button.styles.rules.js";
  *
  * @public
  */
-export const buttonDefinition = composeButton(
-    DefaultDesignSystem,
+export const buttonDefinition: ComponentDefinition = ds => composeButton(
+    ds,
     {
         styleRules,
     }

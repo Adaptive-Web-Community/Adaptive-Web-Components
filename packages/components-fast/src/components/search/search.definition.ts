@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSearch } from "./search.compose.js";
 import { styleRules } from "./search.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./search.styles.rules.js";
  *
  * @public
  */
-export const searchDefinition = composeSearch(
-    DefaultDesignSystem,
+export const searchDefinition: ComponentDefinition = ds => composeSearch(
+    ds,
     {
         styleRules,
         shadowOptions: {

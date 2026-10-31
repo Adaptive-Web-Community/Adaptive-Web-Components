@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeListboxOption } from "./listbox-option.compose.js";
 import { styleRules } from "./listbox-option.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./listbox-option.styles.rules.js";
  *
  * @public
  */
-export const listboxOptionDefinition = composeListboxOption(
-    DefaultDesignSystem,
+export const listboxOptionDefinition: ComponentDefinition = ds => composeListboxOption(
+    ds,
     {
         styleRules,
     }

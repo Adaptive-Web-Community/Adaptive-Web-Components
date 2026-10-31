@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSliderLabel } from "./slider-label.compose.js";
 import { styleRules } from "./slider-label.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./slider-label.styles.rules.js";
  *
  * @public
  */
-export const sliderLabelDefinition = composeSliderLabel(
-    DefaultDesignSystem,
+export const sliderLabelDefinition: ComponentDefinition = ds => composeSliderLabel(
+    ds,
     {
         styleRules,
     }

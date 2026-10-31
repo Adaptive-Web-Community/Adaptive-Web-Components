@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeCard } from "./card.compose.js";
 import { styleRules } from "./card.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./card.styles.rules.js";
  *
  * @public
  */
-export const cardDefinition = composeCard(
-    DefaultDesignSystem,
+export const cardDefinition: ComponentDefinition = ds => composeCard(
+    ds,
     {
         styleRules,
     }

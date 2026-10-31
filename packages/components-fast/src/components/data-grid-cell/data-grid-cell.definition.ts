@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeDataGridCell } from "./data-grid-cell.compose.js";
 import { styleRules } from "./data-grid-cell.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./data-grid-cell.styles.rules.js";
  *
  * @public
  */
-export const dataGridCellDefinition = composeDataGridCell(
-    DefaultDesignSystem,
+export const dataGridCellDefinition: ComponentDefinition = ds => composeDataGridCell(
+    ds,
     {
         styleRules,
     }

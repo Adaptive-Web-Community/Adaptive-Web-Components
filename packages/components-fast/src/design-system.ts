@@ -2,8 +2,7 @@ import {
     type ComposableStyles,
     ElementStyles,
     type ElementViewTemplate,
-    FASTElementDefinition,
-    type PartialFASTElementDefinition,
+    type FASTElementDefinition,
     type ShadowRootOptions,
 } from '@microsoft/fast-element';
 import type { ComponentAnatomy, StyleRules } from "@adaptive-web/adaptive-ui";
@@ -52,11 +51,11 @@ export type PartialDesignSystem = DesignSystemOptions<ComponentStatics, Statical
 export type ElementStaticMap = Map<ComponentStatics, StaticallyComposableHTML>;
 
 /**
- * The definition of a component, as `compose<Name>` returns it, or a function that composes it with a design system.
+ * The definition of a component: a function that composes it with a design system, with `compose<Name>`.
  *
  * @public
  */
-export type ComponentDefinition = Promise<FASTElementDefinition> | ((ds: DesignSystem) => Promise<FASTElementDefinition>);
+export type ComponentDefinition = (ds: DesignSystem) => Promise<FASTElementDefinition>;
 
 /**
  * The design system of the FAST components: the {@link @adaptive-web/components-foundation#DesignSystem} of the foundation, which defines
@@ -66,7 +65,7 @@ export type ComponentDefinition = Promise<FASTElementDefinition> | ((ds: DesignS
  */
 export class DesignSystem extends FoundationDesignSystem<ComponentStatics, StaticallyComposableHTML> {
     /**
-     * Defines a set of components using the prefix and registry defined with the DesignSystem
+     * Defines a set of components, each composed with this design system: its prefix, its registry, its statics, and its token library.
      *
      * @remarks
      * Composing a definition is asynchronous in `fast-element` 3, so the components are defined once their definitions are composed.
@@ -77,25 +76,7 @@ export class DesignSystem extends FoundationDesignSystem<ComponentStatics, Stati
      */
     public async defineComponents(components: Record<string, ComponentDefinition>): Promise<void> {
         for (const component of Object.values(components)) {
-            if (typeof component === 'function') {
-                (await component(this)).define();
-                continue;
-            }
-
-            let definition = await component;
-            const elementNameParts = definition.name.split('-');
-            const prefix = elementNameParts.shift();
-
-            if (prefix !== this.prefix) {
-                const newDefinition = {
-                    ...(definition as unknown as PartialFASTElementDefinition),
-                    name: `${this.prefix}-${elementNameParts.join('-')}`
-                };
-
-                definition = await FASTElementDefinition.compose(definition.type, newDefinition);
-            }
-
-            definition.define(this.registry);
+            (await component(this)).define();
         }
     }
 

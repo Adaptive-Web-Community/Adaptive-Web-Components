@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeRadioGroup } from "./radio-group.compose.js";
 import { styleRules } from "./radio-group.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./radio-group.styles.rules.js";
  *
  * @public
  */
-export const radioGroupDefinition = composeRadioGroup(
-    DefaultDesignSystem,
+export const radioGroupDefinition: ComponentDefinition = ds => composeRadioGroup(
+    ds,
     {
         styleRules,
     }

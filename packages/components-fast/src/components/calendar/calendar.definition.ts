@@ -1,5 +1,5 @@
 import { chevronLeftIcon, chevronRightIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeCalendar } from "./calendar.compose.js";
 import { styleRules } from "./calendar.styles.rules.js";
 import { CalendarStatics } from "./calendar.template.js";
@@ -12,8 +12,8 @@ import { CalendarStatics } from "./calendar.template.js";
  *
  * @public
  */
-export const calendarDefinition = composeCalendar(
-    DefaultDesignSystem,
+export const calendarDefinition: ComponentDefinition = ds => composeCalendar(
+    ds,
     {
         statics: {
             [CalendarStatics.previous]: chevronLeftIcon,

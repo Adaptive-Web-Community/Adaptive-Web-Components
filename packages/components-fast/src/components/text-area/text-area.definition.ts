@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTextArea } from "./text-area.compose.js";
 import { styleRules } from "./text-area.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./text-area.styles.rules.js";
  *
  * @public
  */
-export const textAreaDefinition = composeTextArea(
-    DefaultDesignSystem,
+export const textAreaDefinition: ComponentDefinition = ds => composeTextArea(
+    ds,
     {
         styleRules,
         shadowOptions: {

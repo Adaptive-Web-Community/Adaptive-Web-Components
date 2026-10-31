@@ -1,5 +1,5 @@
 import { chevronDownIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSelect } from "./select.compose.js";
 import { SelectStatics } from "./select.template.js";
 import { styleRules } from "./select.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./select.styles.rules.js";
  *
  * @public
  */
-export const selectDefinition = composeSelect(
-    DefaultDesignSystem,
+export const selectDefinition: ComponentDefinition = ds => composeSelect(
+    ds,
     {
         statics: {
             [SelectStatics.indicator]: chevronDownIcon,

@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSwitch } from "./switch.compose.js";
 import { styleRules } from "./switch.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./switch.styles.rules.js";
  *
  * @public
  */
-export const switchDefinition = composeSwitch(
-    DefaultDesignSystem,
+export const switchDefinition: ComponentDefinition = ds => composeSwitch(
+    ds,
     {
         styleRules,
     }

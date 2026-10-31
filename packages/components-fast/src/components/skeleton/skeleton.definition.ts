@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSkeleton } from "./skeleton.compose.js";
 import { styleRules } from "./skeleton.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./skeleton.styles.rules.js";
  *
  * @public
  */
-export const skeletonDefinition = composeSkeleton(
-    DefaultDesignSystem,
+export const skeletonDefinition: ComponentDefinition = ds => composeSkeleton(
+    ds,
     {
         styleRules,
     }

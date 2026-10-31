@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeSlider } from "./slider.compose.js";
 import { styleRules } from "./slider.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./slider.styles.rules.js";
  *
  * @public
  */
-export const sliderDefinition = composeSlider(
-    DefaultDesignSystem,
+export const sliderDefinition: ComponentDefinition = ds => composeSlider(
+    ds,
     {
         styleRules,
     }

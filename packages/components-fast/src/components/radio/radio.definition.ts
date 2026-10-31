@@ -1,5 +1,5 @@
 import { radioIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeRadio } from "./radio.compose.js";
 import { RadioStatics } from "./radio.template.js";
 import { styleRules } from "./radio.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./radio.styles.rules.js";
  *
  * @public
  */
-export const radioDefinition = composeRadio(
-    DefaultDesignSystem,
+export const radioDefinition: ComponentDefinition = ds => composeRadio(
+    ds,
     {
         statics: {
             [RadioStatics.checked]: radioIcon,

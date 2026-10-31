@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeProgress } from "./progress.compose.js";
 import { styleRules } from "./progress.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./progress.styles.rules.js";
  *
  * @public
  */
-export const progressDefinition = composeProgress(
-    DefaultDesignSystem,
+export const progressDefinition: ComponentDefinition = ds => composeProgress(
+    ds,
     {
         styleRules,
     }

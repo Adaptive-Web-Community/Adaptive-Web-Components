@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeBadge } from "./badge.compose.js";
 import { styleRules } from "./badge.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./badge.styles.rules.js";
  *
  * @public
  */
-export const badgeDefinition = composeBadge(
-    DefaultDesignSystem,
+export const badgeDefinition: ComponentDefinition = ds => composeBadge(
+    ds,
     {
         styleRules,
     }

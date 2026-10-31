@@ -1,5 +1,5 @@
 import { chevronDownIcon, dismissIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composePicker } from "./picker.compose.js";
 import { styleRules } from "./picker.styles.rules.js";
 import { PickerStatics } from "./picker.template.js";
@@ -12,8 +12,8 @@ import { PickerStatics } from "./picker.template.js";
  *
  * @public
  */
-export const pickerDefinition = composePicker(
-    DefaultDesignSystem,
+export const pickerDefinition: ComponentDefinition = ds => composePicker(
+    ds,
     {
         statics: {
             [PickerStatics.indicator]: chevronDownIcon,

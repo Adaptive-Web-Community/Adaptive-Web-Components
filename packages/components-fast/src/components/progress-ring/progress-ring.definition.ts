@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeProgressRing } from "./progress-ring.compose.js";
 import { styleRules } from "./progress-ring.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./progress-ring.styles.rules.js";
  *
  * @public
  */
-export const progressRingDefinition = composeProgressRing(
-    DefaultDesignSystem,
+export const progressRingDefinition: ComponentDefinition = ds => composeProgressRing(
+    ds,
     {
         styleRules,
     }

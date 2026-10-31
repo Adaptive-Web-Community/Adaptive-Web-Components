@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeAnchor } from "./anchor.compose.js";
 import { styleRules } from "./anchor.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./anchor.styles.rules.js";
  *
  * @public
  */
-export const anchorDefinition = composeAnchor(
-    DefaultDesignSystem,
+export const anchorDefinition: ComponentDefinition = ds => composeAnchor(
+    ds,
     {
         styleRules,
         shadowOptions: {

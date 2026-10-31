@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTextField } from "./text-field.compose.js";
 import { styleRules } from "./text-field.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./text-field.styles.rules.js";
  *
  * @public
  */
-export const textFieldDefinition = composeTextField(
-    DefaultDesignSystem,
+export const textFieldDefinition: ComponentDefinition = ds => composeTextField(
+    ds,
     {
         styleRules,
         shadowOptions: {

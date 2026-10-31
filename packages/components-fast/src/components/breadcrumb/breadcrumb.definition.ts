@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeBreadcrumb } from "./breadcrumb.compose.js";
 import { styleRules } from "./breadcrumb.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./breadcrumb.styles.rules.js";
  *
  * @public
  */
-export const breadcrumbDefinition = composeBreadcrumb(
-    DefaultDesignSystem,
+export const breadcrumbDefinition: ComponentDefinition = ds => composeBreadcrumb(
+    ds,
     {
         styleRules,
     }

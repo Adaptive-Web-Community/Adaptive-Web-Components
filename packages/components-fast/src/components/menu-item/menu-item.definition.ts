@@ -1,5 +1,5 @@
 import { checkboxIcon, chevronRightIcon, radioIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeMenuItem } from "./menu-item.compose.js";
 import { MenuItemStatics } from "./menu-item.template.js";
 import { styleRules } from "./menu-item.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./menu-item.styles.rules.js";
  *
  * @public
  */
-export const menuItemDefinition = composeMenuItem(
-    DefaultDesignSystem,
+export const menuItemDefinition: ComponentDefinition = ds => composeMenuItem(
+    ds,
     {
         statics: {
             [MenuItemStatics.checkbox]: checkboxIcon,

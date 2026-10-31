@@ -1,4 +1,4 @@
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeTreeView } from "./tree-view.compose.js";
 import { styleRules } from "./tree-view.styles.rules.js";
 
@@ -10,8 +10,8 @@ import { styleRules } from "./tree-view.styles.rules.js";
  *
  * @public
  */
-export const treeViewDefinition = composeTreeView(
-    DefaultDesignSystem,
+export const treeViewDefinition: ComponentDefinition = ds => composeTreeView(
+    ds,
     {
         styleRules,
     }

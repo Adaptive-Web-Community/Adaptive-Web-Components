@@ -10,9 +10,12 @@ instead. A component that isn't listed hasn't changed yet.
   `@adaptive-web/adaptive-web-components/<name>` to `@adaptive-web/components-fast/<name>`; the tag names (`adaptive-button`) don't.
 - The components depend on `@microsoft/fast-element` 3 and `@adaptive-web/components-foundation`, and not on `@microsoft/fast-foundation`. The contract of
   each element (its properties, enumerations, and parts) and its behavior are in the foundation; the element classes and templates are here.
-- `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3.
-  So the `<name>Definition`s are promises, and `ds.defineComponents(components)` returns a promise that resolves when the components are
-  defined. A function in `components` returns the promise of a definition too (`ComponentDefinition`).
+- `compose<Name>(ds, options)` returns a `Promise<FASTElementDefinition>`, since composing a definition is asynchronous in `fast-element` 3,
+  and `ds.defineComponents(components)` returns a promise that resolves when the components are defined.
+- A `<name>Definition` is a function of a design system that composes the component with it (`ComponentDefinition`), and not a definition
+  composed with the default design system. So the components that a design system defines have its prefix, statics, and token library: one
+  composed with the default design system and renamed had the styles of the default library. To define a component without a design system
+  of your own, call it with the default one: `(await buttonDefinition(AdaptiveDesignSystem)).define()`.
 - A form control has the validity API of a native one (`validity`, `validationMessage`, `willValidate`, `checkValidity()`,
   `reportValidity()`), from `BaseFormControl`.
 - A control is labelled as its native element is ([decision 0016](../../docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md)).

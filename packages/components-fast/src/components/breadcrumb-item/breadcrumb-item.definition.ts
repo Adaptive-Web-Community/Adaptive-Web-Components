@@ -1,5 +1,5 @@
 import { chevronRightIcon } from "@adaptive-web/components-foundation";
-import { DefaultDesignSystem } from "../../design-system.js";
+import type { ComponentDefinition } from "../../design-system.js";
 import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 import { BreadcrumbItemStatics } from "./breadcrumb-item.template.js";
 import { styleRules } from "./breadcrumb-item.styles.rules.js";
@@ -12,8 +12,8 @@ import { styleRules } from "./breadcrumb-item.styles.rules.js";
  *
  * @public
  */
-export const breadcrumbItemDefinition = composeBreadcrumbItem(
-    DefaultDesignSystem,
+export const breadcrumbItemDefinition: ComponentDefinition = ds => composeBreadcrumbItem(
+    ds,
     {
         statics: {
             [BreadcrumbItemStatics.separator]: chevronRightIcon,
