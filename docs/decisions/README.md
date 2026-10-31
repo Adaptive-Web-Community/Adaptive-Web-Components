@@ -44,5 +44,6 @@ reason with the code.
 | [0017](0017-a-design-system-renders-the-styles-with-its-library.md) | A design system renders the styles of its components with its token library, in FAST | Accepted |
 | [0018](0018-a-scope-writes-the-tokens-it-changes.md) | A scope writes the tokens it sets and the tokens that depend on them | Accepted |
 | [0019](0019-a-binding-is-tested-by-the-conformance-of-its-contract.md) | A binding is tested by the conformance tests of its contract, in a browser | Accepted |
+| [0020](0020-a-lit-binding-composes-a-class-for-each-design-system.md) | A Lit binding composes a class of its element for each design system | Accepted |
 | [0021](0021-the-aui-cli-is-its-own-package.md) | The `aui` CLI is `@adaptive-web/adaptive-ui-cli`; the library has the compile API | Accepted |
 | [0022](0022-component-documentation-layers.md) | Component documentation is layered: structure, binding, rules, and usage | Accepted |

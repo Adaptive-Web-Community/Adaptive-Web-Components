@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-27
-- Package: components-foundation, components-fast
+- Package: components-foundation, components-fast, components-lit
 
 ## Context
 
@@ -21,10 +21,12 @@ observation (`Observable.getNotifier(child).subscribe(...)`), so a second framew
   the `DesignSystem` that brings the components of any framework together, so it depends on Adaptive UI and the token library
   ([0017](0017-a-design-system-renders-the-styles-with-its-library.md)). The styles of a component are there too, as data that a binding
   gives its framework: its CSS as strings, and its Adaptive UI anatomy and style rules. A components package (`@adaptive-web/components-fast`
-  for FAST) has the bindings: the element classes, their templates, and what composes them with a design system.
+  for FAST, `@adaptive-web/components-lit` for Lit) has the bindings: the element classes, their templates, and what composes them with a
+  design system.
 - A binding keeps its framework's observation. It observes its properties, and those of its child elements, with the framework (an `@attr`
   change handler, a notifier subscription in FAST) and calls the controller. A controller doesn't observe, and has a method for each change it
-  reacts to.
+  reacts to. Lit doesn't observe the properties of another element, so a Lit binding observes the attribute that a child reflects, with a
+  reactive controller of Lit ([0020](0020-a-lit-binding-composes-a-class-for-each-design-system.md)).
 - The parts are in the contract, so the styles of each framework's components target the same names.
 
 ## Consequences

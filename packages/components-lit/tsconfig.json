@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "importHelpers": true,
+        "emitDecoratorMetadata": false,
+        "lib": ["DOM", "DOM.Iterable", "ES2020", "ES2022.Error"],
+        "skipLibCheck": true,
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm"
+    },
+    "include": ["./src"]
+}

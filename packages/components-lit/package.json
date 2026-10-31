@@ -1,0 +1,84 @@
+{
+  "name": "@adaptive-web/components-lit",
+  "version": "0.0.0",
+  "description": "Standards based, framework agnostic web components built using Lit.",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "author": {
+    "name": "Adaptive Web Community",
+    "url": "https://github.com/adaptive-web-community"
+  },
+  "bugs": {
+    "url": "https://github.com/adaptive-web-community/adaptive-web-components/issues"
+  },
+  "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
+    "directory": "packages/components-lit"
+  },
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "files": [
+    "dist",
+    "docs",
+    "CHANGELOG.md",
+    "!dist/**/*.spec.*",
+    "!dist/**/*.stories.*",
+    "!dist/*.api.json",
+    "!dist/*.untrimmed.d.ts",
+    "!dist/**/*.map"
+  ],
+  "scripts": {
+    "build:tsc": "tsc -p ./tsconfig.build.json",
+    "build": "rimraf dist && npm run build:tsc && npm run cem:analyze",
+    "build:storybook": "npm run cem:analyze && storybook build",
+    "clean": "rimraf dist storybook-static",
+    "cem:analyze": "cem analyze --config ./cem.config.mjs",
+    "doc": "api-extractor run --local",
+    "postbuild": "npm run doc",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "start": "npm run cem:analyze && storybook dev -p 6007",
+    "test": "npm run lint && npm run build:tsc && tsc -p ./tsconfig.json --noEmit",
+    "test:stories": "npm run cem:analyze && vitest run --project storybook",
+    "test:conformance": "vitest run --project conformance"
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
+    "@adaptive-web/components-foundation": "^0.1.0",
+    "@lit-labs/observers": "^2.1.0",
+    "lit": "^3.3.3",
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "@microsoft/api-extractor": "^7.59.4",
+    "@storybook/addon-a11y": "^10.6.5",
+    "@storybook/addon-docs": "^10.6.5",
+    "@storybook/addon-vitest": "^10.6.5",
+    "@storybook/web-components-vite": "^10.6.5",
+    "@vitest/browser": "^5.0.5",
+    "@vitest/browser-playwright": "^5.0.5",
+    "playwright": "^1.64.1",
+    "rimraf": "^3.0.2",
+    "storybook": "^10.6.5",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  },
+  "customElements": "dist/custom-elements.json",
+  "exports": {
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./all-components": {
+      "types": "./dist/dts/custom-elements.d.ts",
+      "default": "./dist/esm/custom-elements.js"
+    }
+  }
+}

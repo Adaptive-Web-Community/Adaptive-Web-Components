@@ -12,7 +12,7 @@ Each component has three layers. This package has the first two:
 | --- | --- | --- |
 | Contract | What the element exposes: an interface of its properties (`AccordionItemElement`), the values of its enumerations (`AccordionExpandMode`), its parts, slots, and events | This package |
 | Behavior | A controller that implements what isn't a template: keyboard interaction, form submission, coordination between elements. It works on the host element and the DOM only | This package |
-| Binding | The element class of a framework, with that framework's reactive properties (`@attr`), its template, and its lifecycle wired to the controller | A components package: `@adaptive-web/components-fast` for FAST |
+| Binding | The element class of a framework, with that framework's reactive properties (`@attr`), its template, and its lifecycle wired to the controller | A components package: `@adaptive-web/components-fast` for FAST, `@adaptive-web/components-lit` for Lit |
 
 A binding observes its own properties with its framework (an `@attr` change handler in FAST) and tells the controller, so nothing here
 depends on how a framework observes. The styles of a component are here too, as data that a binding gives its framework: its CSS as
