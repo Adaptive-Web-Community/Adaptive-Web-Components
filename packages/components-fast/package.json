@@ -46,7 +46,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "start": "storybook dev -p 6006",
-    "test": "npm run lint && npm run build:tsc && tsc -p ./tsconfig.json --noEmit"
+    "test": "npm run lint && npm run build:tsc && tsc -p ./tsconfig.json --noEmit",
+    "test:stories": "vitest run"
   },
   "dependencies": {
     "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
@@ -64,13 +65,19 @@
     "@microsoft/fast-element": "^3.1.2",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-terser": "^1.0.2",
+    "@storybook/addon-a11y": "^10.6.5",
     "@storybook/addon-docs": "^10.6.5",
+    "@storybook/addon-vitest": "^10.6.5",
     "@storybook/html-vite": "^10.6.5",
+    "@vitest/browser": "^5.0.5",
+    "@vitest/browser-playwright": "^5.0.5",
+    "playwright": "^1.64.1",
     "rimraf": "^3.0.2",
     "rollup": "^4.66.0",
     "rollup-plugin-fast-tagged-templates": "^1.0.3",
     "storybook": "^10.6.5",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "customElements": "dist/custom-elements.json",
   "exports": {

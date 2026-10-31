@@ -1,5 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
+import { disabledControlParameters, maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import { storyTemplate as listboxOptionTemplate } from "../listbox-option/listbox-option.stories.js";
 import type { Select as SelectElement } from "./select.js";
@@ -63,6 +63,7 @@ export default {
 export const Select: Story<SelectElement> = renderComponent(storyTemplate).bind({});
 
 export const SelectDisabled: Story<SelectElement> = Select.bind({});
+SelectDisabled.parameters = disabledControlParameters;
 SelectDisabled.args = {
     disabled: true,
 };

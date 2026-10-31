@@ -1,5 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { disabledControlParameters, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import type { Checkbox as CheckboxElement } from "./checkbox.js";
 
@@ -50,6 +50,7 @@ export const CheckboxDisabled: Story<CheckboxElement> = renderComponent(
         </div>
     `
 ).bind({});
+CheckboxDisabled.parameters = disabledControlParameters;
 CheckboxDisabled.args = {
     storyItems: [
         { label: "Disabled (unchecked)", disabled: true },

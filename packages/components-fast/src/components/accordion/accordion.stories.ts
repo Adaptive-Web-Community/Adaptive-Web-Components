@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import { AccordionExpandMode } from "@adaptive-web/components-foundation";
-import { renderComponent } from "../../utilities/storybook-helpers.js";
+import { disabledControlParameters, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import type { Accordion as AccordionElement } from "./accordion.js";
 
@@ -60,6 +60,7 @@ AccordionWithExpandedChild.args = {
 };
 
 export const AccordionWithSingleExpandMode: Story<AccordionElement> = renderComponent(storyTemplate).bind({});
+AccordionWithSingleExpandMode.parameters = disabledControlParameters;
 AccordionWithSingleExpandMode.args = {
     expandMode: AccordionExpandMode.single,
     storyContent: html`

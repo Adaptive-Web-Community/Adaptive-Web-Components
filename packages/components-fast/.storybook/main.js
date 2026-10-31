@@ -9,7 +9,11 @@ const resolvePackage = name => dirname(require.resolve(`${name}/package.json`));
 
 /** @type {import("@storybook/html-vite").StorybookConfig} */
 export default {
-    addons: [resolvePackage("@storybook/addon-docs")],
+    addons: [
+        resolvePackage("@storybook/addon-docs"),
+        resolvePackage("@storybook/addon-a11y"),
+        resolvePackage("@storybook/addon-vitest"),
+    ],
     stories: ["../src/**/*.stories.ts"],
     framework: resolvePackage("@storybook/html-vite"),
     core: {
