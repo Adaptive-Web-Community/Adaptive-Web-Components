@@ -2,6 +2,7 @@ import { isRef, Library, pathOf } from "design-token-library";
 import { InteractiveSet, InteractiveState, isInteractiveSet } from "../interactive.js";
 import { atName, formatValue } from "../token-css.js";
 import { refAt } from "../token-ref.js";
+import { isGradient, isPaint } from "../color/paint.js";
 import { StyleProperty, type StyleValues } from "./properties.js";
 
 /**
@@ -215,8 +216,6 @@ function inContext(library: Library.Library<any>, context: Library.Ref<unknown, 
     return scoped;
 }
 
-const isGradient = (value: unknown): boolean => typeof value === "object" && value !== null && "stops" in value;
-
 /**
  * Gets the value on a fill in each state of the fill: the token in the context of the fill in that state, the rest of an interactive token,
  * or its disabled in the disabled state.
@@ -248,7 +247,7 @@ export function valueOnFill(library: Library.Library<any>, value: OnFillWithFill
             }
             continue;
         }
-        if (isGradient(background)) {
+        if (isPaint(background) && isGradient(background)) {
             throw new Error(`The ${state} of ${fillName} is a gradient, which can't be the context of ${tokenName}`);
         }
         const made: unknown = atName<{ $value: unknown }>(inContext(library, context, background).tokens, tokenName).$value;

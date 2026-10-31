@@ -488,7 +488,13 @@ export function isDtcgGradient(gradient: Gradient | DtcgGradient): gradient is D
 export function isGradient(paint: Paint): paint is Gradient | DtcgGradient;
 
 // @public
+export function isInteractiveSet<T>(value: unknown): value is InteractiveSet<T>;
+
+// @public
 export function isOnFill(value: unknown): value is OnFill;
+
+// @public
+export function isPaint(value: unknown): value is Paint;
 
 // @beta
 export function isSerializableOnFill(value: unknown): value is SerializableOnFill;

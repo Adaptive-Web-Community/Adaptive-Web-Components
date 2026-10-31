@@ -1,5 +1,5 @@
 import { convert, CSSPropertiesOptions, DesignToken, Library, toProperties } from "design-token-library";
-import { formatPaint, Paint } from "./color/paint.js";
+import { formatPaint, isPaint, type Paint } from "./color/paint.js";
 import { formatExpression, Operand } from "./expression.js";
 import { InteractiveSet } from "./interactive.js";
 import { isShadow } from "./shadow/index.js";
@@ -51,10 +51,10 @@ export function formatValue(value: unknown): string {
     if (isShadow(value)) {
         return convert(DesignToken.Type.Shadow, value);
     }
+    if (isPaint(value)) {
+        return formatPaint(value);
+    }
     if (typeof value === "object" && value !== null) {
-        if ("colorSpace" in value || "stops" in value) {
-            return formatPaint(value as Paint);
-        }
         if ("unit" in value) {
             const { value: amount, unit } = value as Dimensional;
             return `${amount}${unit}`;

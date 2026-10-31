@@ -1,7 +1,7 @@
 import chai from "chai";
 import { rgbColor } from "./color.js";
 import { DtcgGradient, linearGradient } from "./gradient.js";
-import { formatPaint, isGradient, Paint } from "./paint.js";
+import { formatPaint, isGradient, isPaint, Paint } from "./paint.js";
 import { black, white } from "./utilities/color-constants.js";
 
 const { expect } = chai;
@@ -27,6 +27,18 @@ describe("Paint", () => {
 
         expect(isGradient(dtcg)).to.be.true;
         expect(formatPaint(dtcg)).to.equal("linear-gradient(180deg, #ff0000 0%, #0000ff 100%)");
+    });
+
+    it("should tell a paint from any other value", () => {
+        const dtcg: DtcgGradient = [
+            { color: rgbColor(1, 0, 0), position: 0 },
+            { color: rgbColor(0, 0, 1), position: 1 },
+        ];
+
+        expect([white, gradient, dtcg].map(isPaint)).to.deep.equal([true, true, true]);
+        expect([undefined, null, 4, "#fff", [], [1, 2], { value: 4, unit: "px" }, { rest: white }].map(isPaint)).to.deep.equal(
+            [false, false, false, false, false, false, false, false]
+        );
     });
 
     it("should identify a color", () => {
