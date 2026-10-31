@@ -25,7 +25,7 @@ export default {
             <adaptive-button>Adaptive Button</adaptive-button>
             <adaptive-anchor href="javascript:void;">Adaptive Anchor</adaptive-anchor>
             <button>Button</button>
-            <select>
+            <select aria-label="Select">
                 <option>Option 1</option>
                 <option>Second option</option>
                 <option>Option 3</option>
@@ -42,7 +42,7 @@ export default {
                 <input type="checkbox" name="checkbox" id="check-3" />
                 Checkbox 3
             </label>
-            <input type="text" name="text" id="text-input" />
+            <input type="text" name="text" id="text-input" aria-label="Text" />
             <button slot="end">End Slot Button</button>
         `,
     },
