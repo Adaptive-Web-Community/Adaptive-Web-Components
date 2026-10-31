@@ -1,12 +1,17 @@
 import {
     type ComposableStyles,
+    type Constructable,
     ElementStyles,
     type ElementViewTemplate,
-    type FASTElementDefinition,
+    FASTElementDefinition,
     type ShadowRootOptions,
 } from '@microsoft/fast-element';
 import type { ComponentAnatomy, StyleRules } from "@adaptive-web/adaptive-ui";
-import { type DesignSystemOptions, DesignSystem as FoundationDesignSystem } from "@adaptive-web/components-foundation";
+import {
+    type ComponentComposition,
+    type DesignSystemOptions,
+    DesignSystem as FoundationDesignSystem,
+} from "@adaptive-web/components-foundation";
 import type {
     AccordionItemStatics,
     BreadcrumbItemStatics,
@@ -78,6 +83,37 @@ export class DesignSystem extends FoundationDesignSystem<ComponentStatics, Stati
         for (const component of Object.values(components)) {
             (await component(this)).define();
         }
+    }
+
+    /**
+     * Composes the element definition of a component with this design system: its name with the prefix, its statics, its styles rendered
+     * with the token library, and the template of the options or the default one.
+     *
+     * @param type - The class of the element.
+     * @param composition - What the component is composed from, of the foundation.
+     * @param template - The default template.
+     * @param options - The options of the composition.
+     * @returns A promise of the definition, which defines the element in the registry of the design system.
+     *
+     * @public
+     */
+    public compose<TType extends Constructable<HTMLElement>, TStatics extends ComponentStatics = never>(
+        type: TType,
+        composition: ComponentComposition<TStatics>,
+        template: (ds: DesignSystem) => ElementViewTemplate<InstanceType<TType>, any>,
+        options?: ComposeOptions<InstanceType<TType>, TStatics>
+    ): Promise<FASTElementDefinition<TType>> {
+        this.addStatics(composition, options?.statics);
+        const styles = this.assembleStyles([...composition.styles], composition.anatomy, options);
+
+        return FASTElementDefinition.compose(type, {
+            name: this.elementName(composition),
+            template: (options?.template ?? template)(this),
+            styles,
+            registry: this.registry,
+            elementOptions: options?.elementOptions,
+            shadowOptions: options?.shadowOptions,
+        });
     }
 
     /**

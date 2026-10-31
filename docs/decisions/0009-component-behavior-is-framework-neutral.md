@@ -20,7 +20,8 @@ observation (`Observable.getNotifier(child).subscribe(...)`), so a second framew
 - The contract and the behavior are a package of their own, `@adaptive-web/components-foundation`, which depends on no framework. It has
   the `DesignSystem` that brings the components of any framework together, so it depends on Adaptive UI and the token library
   ([0017](0017-a-design-system-renders-the-styles-with-its-library.md)). The styles of a component are there too, as data that a binding
-  gives its framework: its CSS as strings, and its Adaptive UI anatomy and style rules. A components package (`@adaptive-web/components-fast`
+  gives its framework: its CSS as strings, and its Adaptive UI anatomy and style rules. So is what a design system composes it from, its
+  composition: the name of its element, its CSS, its anatomy, and the keys of its statics. A components package (`@adaptive-web/components-fast`
   for FAST, `@adaptive-web/components-lit` for Lit) has the bindings: the element classes, their templates, and what composes them with a
   design system.
 - A binding keeps its framework's observation. It observes its properties, and those of its child elements, with the framework (an `@attr`
@@ -35,8 +36,8 @@ observation (`Observable.getNotifier(child).subscribe(...)`), so a second framew
   syntax of templates differs.
 - The foundation builds and is tested without a framework.
 - A controller gets the parts of `ElementInternals` it uses from the binding, since only the element class can attach them.
-- The Adaptive UI anatomy (conditions, focus, interactivity), the CSS, and the style rules of a component are in the foundation, so the
-  components of each framework have the same styles. So far those of the button, the accordion, and the accordion item, which a second
+- The Adaptive UI anatomy (conditions, focus, interactivity), the CSS, the style rules, and the composition of a component are in the
+  foundation, so the components of each framework have the same styles and names. So far those of the button, the accordion, and the accordion item, which a second
   framework binds first; the others move as they get a second binding.
 
 ## Alternatives

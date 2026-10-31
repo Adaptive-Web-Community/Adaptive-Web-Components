@@ -1,11 +1,16 @@
+import * as foundation from "@adaptive-web/components-foundation";
+
 /**
- * Names each element as its `compose<Name>` names it with a design system of the given prefix.
+ * Names each element as its `compose<Name>` names it with a design system of the given prefix, for the custom elements manifest of a
+ * package of components.
  *
  * @remarks
- * The analyzer can't read the name, which `compose<Name>` makes from the prefix of the design system
- * (`FASTElementDefinition.compose(Button, { name: `${ds.prefix}-button` })`). The manifest has the names of the default design system.
+ * The analyzer can't read the name, which `compose<Name>` makes from the prefix of the design system. The manifest has the names of the
+ * default design system. The name after the prefix is the `name` of the composition of the foundation that the component is composed
+ * from (`ds.compose(Button, buttonComposition, …)`), read from the built foundation, or, for a FAST component that isn't composed from one
+ * yet, the end of the `name` of its definition (`FASTElementDefinition.compose(Checkbox, { name: `${ds.prefix}-checkbox` })`).
  * A class that is composed is a custom element, which the analyzer finds only of a class that extends an element directly, not of one
- * that extends a base of this package (`Checkbox`, of `BaseCheckable`).
+ * that extends a base of the package (`Checkbox`, of `BaseCheckable`).
  *
  * @param {string} prefix - The prefix of the design system, `adaptive` by default.
  * @returns {import("@custom-elements-manifest/analyzer").Plugin}
@@ -15,20 +20,21 @@ export function composedTagNames(prefix = "adaptive") {
 	return {
 		name: "composed-tag-names",
 		analyzePhase({ ts, node }) {
-			if (!ts.isCallExpression(node)) {
-				return;
-			}
-			const callee = node.expression;
-			if (
-				!ts.isPropertyAccessExpression(callee) ||
-				callee.name.text !== "compose" ||
-				!ts.isIdentifier(callee.expression) ||
-				callee.expression.text !== "FASTElementDefinition"
-			) {
+			if (!ts.isCallExpression(node) || !ts.isPropertyAccessExpression(node.expression) || node.expression.name.text !== "compose") {
 				return;
 			}
 			const [type, definition] = node.arguments;
-			if (!type || !ts.isIdentifier(type) || !definition || !ts.isObjectLiteralExpression(definition)) {
+			if (!type || !ts.isIdentifier(type) || !definition) {
+				return;
+			}
+			if (ts.isIdentifier(definition)) {
+				const name = foundation[definition.text]?.name;
+				if (typeof name === "string") {
+					tagNames.set(type.text, `${prefix}-${name}`);
+				}
+				return;
+			}
+			if (!ts.isObjectLiteralExpression(definition)) {
 				return;
 			}
 			const name = definition.properties.find(

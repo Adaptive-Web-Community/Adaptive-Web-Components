@@ -15,6 +15,7 @@ import {
 } from "@adaptive-web/adaptive-ui";
 import { createReferenceLibrary, referenceAnatomyTreatments, type ReferenceLibraryTokens } from "@adaptive-web/adaptive-ui/reference";
 import { type Library, pathOf, refs, toCSS } from "design-token-library";
+import type { ComponentComposition } from "./composition.js";
 
 /**
  * What {@link DesignSystem.configure} changes of a design system.
@@ -124,6 +125,33 @@ export class DesignSystem<TKey extends string = string, TStatic = unknown> {
     public withPrefix(prefix: string): this {
         this._prefix = prefix;
         return this;
+    }
+
+    /**
+     * The name of the element of a component in this design system: the name of its composition after the prefix.
+     *
+     * @param composition - The composition of the component.
+     * @returns The name of the element.
+     */
+    protected elementName(composition: ComponentComposition<any>): string {
+        return `${this._prefix}-${composition.name}`;
+    }
+
+    /**
+     * Adds the statics of a component that the options of its composition give and that this design system doesn't have yet.
+     *
+     * @param composition - The composition of the component, with the keys of its statics.
+     * @param statics - The statics of the options, by their key.
+     */
+    protected addStatics<TStatics extends TKey>(
+        composition: ComponentComposition<TStatics>, statics?: Partial<Record<TStatics, TStatic>>
+    ): void {
+        for (const key of composition.statics ?? []) {
+            const value = statics?.[key];
+            if (value !== undefined && !this._statics.has(key)) {
+                this._statics.set(key, value);
+            }
+        }
     }
 
     /**

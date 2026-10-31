@@ -12,6 +12,7 @@ import { AccordionItemAnatomy } from '@adaptive-web/components-foundation';
 import { AccordionItemConditions } from '@adaptive-web/components-foundation';
 import { AccordionItemElement } from '@adaptive-web/components-foundation';
 import { AccordionItemParts } from '@adaptive-web/components-foundation';
+import { AccordionItemStatics } from '@adaptive-web/components-foundation';
 import { AccordionParts } from '@adaptive-web/components-foundation';
 import { ButtonAnatomy } from '@adaptive-web/components-foundation';
 import { ButtonConditions } from '@adaptive-web/components-foundation';
@@ -19,6 +20,7 @@ import { ButtonElement } from '@adaptive-web/components-foundation';
 import { ButtonParts } from '@adaptive-web/components-foundation';
 import { ButtonType } from '@adaptive-web/components-foundation';
 import type { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
+import { ComponentComposition } from '@adaptive-web/components-foundation';
 import { CSSResultGroup } from 'lit';
 import { DesignSystem as DesignSystem_2 } from '@adaptive-web/components-foundation';
 import { HeadingLevel } from '@adaptive-web/components-foundation';
@@ -26,7 +28,6 @@ import { LitElement } from 'lit';
 import { PropertyValues } from 'lit';
 import type { StyleRules } from '@adaptive-web/adaptive-ui';
 import { TemplateResult } from 'lit';
-import { ValuesOf } from '@adaptive-web/components-foundation';
 
 // @public
 export class Accordion extends LitElement implements AccordionElement {
@@ -68,14 +69,7 @@ export const accordionItemDefinition: ComponentDefinition;
 
 export { AccordionItemParts }
 
-// @public
-export const AccordionItemStatics: {
-    readonly collapsed: "accordion-item-collapsed-icon";
-    readonly expanded: "accordion-item-expanded-icon";
-};
-
-// @public (undocumented)
-export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
+export { AccordionItemStatics }
 
 // @public
 export const accordionItemTemplate: (ds: DesignSystem) => (x: AccordionItem) => TemplateResult;
@@ -152,11 +146,13 @@ export type ComposeOptions<TElement, TStatics extends string = never> = {
 // @public
 export class DesignSystem extends DesignSystem_2<ComponentStatics, string> {
     assembleStyles(defaultStyles: string[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any, any>): CSSResultGroup;
+    // Warning: (ae-forgotten-export) The symbol "LitElementClass" needs to be exported by the entry point index.d.ts
+    compose<TType extends LitElementClass, TStatics extends ComponentStatics = never>(type: TType, composition: ComponentComposition<TStatics>, template: (ds: DesignSystem) => (element: InstanceType<TType>) => TemplateResult, options?: ComposeOptions<InstanceType<TType>, TStatics>): ElementDefinition<TType>;
     defineComponents(components: Record<string, ComponentDefinition>): void;
 }
 
 // @public
-export interface ElementDefinition<TType extends typeof LitElement = typeof LitElement> {
+export interface ElementDefinition<TType extends LitElementClass = LitElementClass> {
     // (undocumented)
     readonly elementOptions?: ElementDefinitionOptions;
     // (undocumented)

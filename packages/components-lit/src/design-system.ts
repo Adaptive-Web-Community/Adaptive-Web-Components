@@ -1,6 +1,6 @@
 import { type CSSResultGroup, type LitElement, type TemplateResult, unsafeCSS } from "lit";
 import type { ComponentAnatomy, StyleRules } from "@adaptive-web/adaptive-ui";
-import { DesignSystem as FoundationDesignSystem } from "@adaptive-web/components-foundation";
+import { type ComponentComposition, DesignSystem as FoundationDesignSystem } from "@adaptive-web/components-foundation";
 import type { AccordionItemStatics } from "./components/index.js";
 
 /**
@@ -16,11 +16,19 @@ export type ComponentStatics = AccordionItemStatics;
 export type ElementStaticMap = Map<ComponentStatics, string>;
 
 /**
+ * The class of a Lit element, which a design system composes a class of for each definition.
+ *
+ * @public
+ */
+export type LitElementClass<TElement extends LitElement = LitElement> =
+    (new (...args: any[]) => TElement) & Pick<typeof LitElement, "shadowRootOptions">;
+
+/**
  * An element that `compose<Name>` made with a design system: its name, the class that renders it, and the options of its definition.
  *
  * @public
  */
-export interface ElementDefinition<TType extends typeof LitElement = typeof LitElement> {
+export interface ElementDefinition<TType extends LitElementClass = LitElementClass> {
     readonly name: string;
     readonly type: TType;
     readonly elementOptions?: ElementDefinitionOptions;
@@ -62,6 +70,42 @@ export class DesignSystem extends FoundationDesignSystem<ComponentStatics, strin
             const { name, type, elementOptions } = component(this);
             this.registry.define(name, type, elementOptions);
         }
+    }
+
+    /**
+     * Composes a component with this design system: a class of its element with its styles rendered with the token library, the template
+     * of the options or the default one, and the shadow root options of the options over its own; its name with the prefix; and its statics.
+     *
+     * @param type - The class of the element.
+     * @param composition - What the component is composed from, of the foundation.
+     * @param template - The default template.
+     * @param options - The options of the composition.
+     * @returns The definition, which {@link DesignSystem.defineComponents} defines.
+     */
+    public compose<TType extends LitElementClass, TStatics extends ComponentStatics = never>(
+        type: TType,
+        composition: ComponentComposition<TStatics>,
+        template: (ds: DesignSystem) => (element: InstanceType<TType>) => TemplateResult,
+        options?: ComposeOptions<InstanceType<TType>, TStatics>
+    ): ElementDefinition<TType> {
+        this.addStatics(composition, options?.statics);
+        const styles = this.assembleStyles([...composition.styles], composition.anatomy, options);
+        const render = (options?.template ?? template)(this);
+        const shadowRootOptions = { ...type.shadowRootOptions, ...options?.shadowRootOptions };
+
+        return {
+            name: this.elementName(composition),
+            type: class extends type {
+                public static styles = styles;
+                public static shadowRootOptions = shadowRootOptions;
+
+                protected render() {
+                    // TypeScript types the instance of a class that extends a type parameter as the instance of its constraint.
+                    return render(this as InstanceType<TType>);
+                }
+            },
+            elementOptions: options?.elementOptions,
+        };
     }
 
     /**

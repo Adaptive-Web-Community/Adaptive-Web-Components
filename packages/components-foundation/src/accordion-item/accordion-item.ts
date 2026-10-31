@@ -24,6 +24,21 @@ export const AccordionItemStatics = {
 export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
 
 /**
+ * The keys of the statics of an {@link AccordionItemElement}, its collapsed and expanded icons, in the statics of a design system.
+ *
+ * @public
+ */
+export const AccordionItemStatics = {
+    collapsed: "accordion-item-collapsed-icon",
+    expanded: "accordion-item-expanded-icon",
+} as const;
+
+/**
+ * @public
+ */
+export type AccordionItemStatics = ValuesOf<typeof AccordionItemStatics>;
+
+/**
  * An item of an accordion: a heading whose button expands and collapses a panel of content. Implements the heading and panel of the
  * {@link https://www.w3.org/WAI/ARIA/apg/patterns/accordion/ | ARIA accordion pattern}.
  *
