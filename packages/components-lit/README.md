@@ -27,7 +27,7 @@ AdaptiveDesignSystem.adoptTokenStyles();
 ```
 
 A component is composed with a design system by its `compose<Name>`, which makes a class of the element with the styles of the design
-system, and can take its own template, styles, and style rules:
+system, and can take its own template, styles, style rules, and shadow root options:
 
 ```ts
 import { buttonStyleRules } from "@adaptive-web/components-foundation";

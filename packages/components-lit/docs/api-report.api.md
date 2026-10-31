@@ -144,6 +144,7 @@ export type ComposeOptions<TElement, TStatics extends string = never> = {
     template?: (ds: DesignSystem) => (element: TElement) => TemplateResult;
     styles?: CSSResultGroup;
     styleRules?: StyleRules;
+    shadowRootOptions?: Partial<ShadowRootInit>;
     elementOptions?: ElementDefinitionOptions;
     statics?: Record<TStatics, string>;
 };

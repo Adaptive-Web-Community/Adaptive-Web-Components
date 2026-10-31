@@ -40,6 +40,7 @@ export function composeAccordionItem(
         name: `${ds.prefix}-accordion-item`,
         type: class extends AccordionItem {
             public static styles = styles;
+            public static shadowRootOptions = { ...AccordionItem.shadowRootOptions, ...options?.shadowRootOptions };
 
             protected render() {
                 return render(this);

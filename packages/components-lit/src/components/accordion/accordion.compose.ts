@@ -16,6 +16,7 @@ export function composeAccordion(ds: DesignSystem, options?: ComposeOptions<Acco
         name: `${ds.prefix}-accordion`,
         type: class extends Accordion {
             public static styles = styles;
+            public static shadowRootOptions = { ...Accordion.shadowRootOptions, ...options?.shadowRootOptions };
 
             protected render() {
                 return render(this);

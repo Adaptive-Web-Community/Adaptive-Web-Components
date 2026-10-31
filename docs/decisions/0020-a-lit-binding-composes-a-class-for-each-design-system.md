@@ -20,9 +20,9 @@ name only. Lit observes the properties of an element, but not of another one, as
 - **An element is a `LitElement` with the properties of its contract**, reflected as FAST's `@attr` reflects them, and with the same
   controller of the foundation, connected with the element's lifecycle.
 - **`compose<Name>(ds, options)` makes a class of the element for a design system**: a subclass with the styles that the design system
-  renders and the template of the options or the default one. It returns its name, the class, and the options of its definition, and
-  `DesignSystem.defineComponents` defines them. A definition is a function of a design system, so it is composed with the design system
-  that defines it, and not with the default one and then renamed.
+  renders, the template of the options or the default one, and the shadow root options of the options over those of the class. It returns
+  its name, the class, and the options of its definition, and `DesignSystem.defineComponents` defines them. A definition is a function of a
+  design system, so it is composed with the design system that defines it, and not with the default one and then renamed.
 - **The CSS and the statics of the foundation are trusted strings**: the styles are wrapped in `unsafeCSS`, and the icons are rendered with
   `unsafeHTML`.
 - **A template is a function of the design system that returns a function of the element** (`(ds) => (x) => html\`…\``), as FAST's is of the

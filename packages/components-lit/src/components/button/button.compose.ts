@@ -16,6 +16,7 @@ export function composeButton(ds: DesignSystem, options?: ComposeOptions<Button>
         name: `${ds.prefix}-button`,
         type: class extends Button {
             public static styles = styles;
+            public static shadowRootOptions = { ...Button.shadowRootOptions, ...options?.shadowRootOptions };
 
             protected render() {
                 return render(this);
