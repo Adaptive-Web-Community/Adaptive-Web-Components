@@ -1,4 +1,4 @@
-import { checkboxIcon, checkboxIndeterminateIcon } from "../../assets.js";
+import { checkboxIcon, checkboxIndeterminateIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCheckbox } from './checkbox.compose.js';
 import { CheckboxStatics } from "./checkbox.template.js";

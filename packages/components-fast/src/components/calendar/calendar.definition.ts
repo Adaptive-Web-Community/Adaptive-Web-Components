@@ -1,4 +1,4 @@
-import { chevronLeftIcon, chevronRightIcon } from "../../assets.js";
+import { chevronLeftIcon, chevronRightIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeCalendar } from "./calendar.compose.js";
 import { styleRules } from "./calendar.styles.rules.js";

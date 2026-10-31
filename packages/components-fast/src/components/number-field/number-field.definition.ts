@@ -1,4 +1,4 @@
-import { chevronDownIcon, chevronUpIcon } from "../../assets.js";
+import { chevronDownIcon, chevronUpIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeNumberField } from "./number-field.compose.js";
 import { NumberFieldStatics } from "./number-field.template.js";

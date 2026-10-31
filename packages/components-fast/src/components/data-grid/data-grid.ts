@@ -1,6 +1,5 @@
 import { attr, FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { DataGridController, type DataGridElement, DataGridSelectionMode } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { DataGridController, type DataGridElement, DataGridSelectionMode, onDefined } from "@adaptive-web/components-foundation";
 import { DataGridCell } from "../data-grid-cell/data-grid-cell.js";
 import { DataGridRow } from "../data-grid-row/data-grid-row.js";
 import { type ColumnDefinition, generateColumns, GenerateHeaderOptions } from "./column-definition.js";

@@ -1,7 +1,6 @@
 import { attr, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { Orientation, RadioGroupController, type RadioGroupElement } from "@adaptive-web/components-foundation";
+import { onDefined, Orientation, RadioGroupController, type RadioGroupElement } from "@adaptive-web/components-foundation";
 import { BaseFormControl } from "../../utilities/base-form-control.js";
-import { onDefined } from "../../utilities/defined.js";
 import { Radio } from "../radio/radio.js";
 
 /**

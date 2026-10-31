@@ -1,6 +1,5 @@
 import { attr, FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { AccordionController, type AccordionElement, AccordionExpandMode } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { AccordionController, type AccordionElement, AccordionExpandMode, onDefined } from "@adaptive-web/components-foundation";
 import { AccordionItem } from "../accordion-item/accordion-item.js";
 
 /**

@@ -1,6 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { dataGridRowAria, type DataGridRowElement, DataGridRowType } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { dataGridRowAria, type DataGridRowElement, DataGridRowType, onDefined } from "@adaptive-web/components-foundation";
 import { DataGridCell } from "../data-grid-cell/data-grid-cell.js";
 import type { ColumnDefinition } from "../data-grid/column-definition.js";
 

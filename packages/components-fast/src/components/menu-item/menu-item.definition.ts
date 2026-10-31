@@ -1,4 +1,4 @@
-import { checkboxIcon, chevronRightIcon, radioIcon } from "../../assets.js";
+import { checkboxIcon, chevronRightIcon, radioIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeMenuItem } from "./menu-item.compose.js";
 import { MenuItemStatics } from "./menu-item.template.js";

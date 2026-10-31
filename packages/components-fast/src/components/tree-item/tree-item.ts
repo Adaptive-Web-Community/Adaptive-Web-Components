@@ -1,6 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { placeTreeItems, toggleTreeItem, treeItemAria, type TreeItemElement } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { onDefined, placeTreeItems, toggleTreeItem, treeItemAria, type TreeItemElement } from "@adaptive-web/components-foundation";
 
 /**
  * An item of a {@link TreeView}. Implements {@link @adaptive-web/components-foundation#TreeItemElement}.

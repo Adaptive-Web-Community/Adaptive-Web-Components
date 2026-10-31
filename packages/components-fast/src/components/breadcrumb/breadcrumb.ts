@@ -1,6 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { breadcrumbAria, type BreadcrumbElement, setBreadcrumbItems } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { breadcrumbAria, type BreadcrumbElement, onDefined, setBreadcrumbItems } from "@adaptive-web/components-foundation";
 import { BreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
 
 /**

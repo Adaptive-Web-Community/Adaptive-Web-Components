@@ -1,4 +1,4 @@
-import { chevronDownIcon, dismissIcon } from "../../assets.js";
+import { chevronDownIcon, dismissIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composePicker } from "./picker.compose.js";
 import { styleRules } from "./picker.styles.rules.js";

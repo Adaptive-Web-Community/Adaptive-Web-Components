@@ -1,7 +1,6 @@
 import { attr, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { ListboxController, type ListboxElement } from "@adaptive-web/components-foundation";
+import { ListboxController, type ListboxElement, onDefined } from "@adaptive-web/components-foundation";
 import { BaseFormControl } from "../../utilities/base-form-control.js";
-import { onDefined } from "../../utilities/defined.js";
 import { ListboxOption } from "../listbox-option/listbox-option.js";
 
 /**

@@ -1,4 +1,4 @@
-import { chevronRightIcon } from "../../assets.js";
+import { chevronRightIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeBreadcrumbItem } from "./breadcrumb-item.compose.js";
 import { BreadcrumbItemStatics } from "./breadcrumb-item.template.js";

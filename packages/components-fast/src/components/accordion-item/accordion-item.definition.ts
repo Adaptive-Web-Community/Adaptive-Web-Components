@@ -1,4 +1,4 @@
-import { chevronDownIcon, chevronUpIcon } from "../../assets.js";
+import { chevronDownIcon, chevronUpIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeAccordionItem } from "./accordion-item.compose.js";
 import { AccordionItemStatics } from './accordion-item.template.js';

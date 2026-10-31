@@ -1,4 +1,4 @@
-import { radioIcon } from "../../assets.js";
+import { radioIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeRadio } from "./radio.compose.js";
 import { RadioStatics } from "./radio.template.js";

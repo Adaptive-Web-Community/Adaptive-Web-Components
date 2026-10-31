@@ -1,4 +1,4 @@
-import { chevronRightIcon } from "../../assets.js";
+import { chevronRightIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeTreeItem } from "./tree-item.compose.js";
 import { TreeItemStatics } from "./tree-item.template.js";

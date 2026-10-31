@@ -1,6 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { TreeViewController, type TreeViewElement } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { onDefined, TreeViewController, type TreeViewElement } from "@adaptive-web/components-foundation";
 import { TreeItem } from "../tree-item/tree-item.js";
 
 /**

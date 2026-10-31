@@ -1,6 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { Orientation, ToolbarController, type ToolbarElement } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { onDefined, Orientation, ToolbarController, type ToolbarElement } from "@adaptive-web/components-foundation";
 
 /**
  * A toolbar. Implements {@link @adaptive-web/components-foundation#ToolbarElement}.

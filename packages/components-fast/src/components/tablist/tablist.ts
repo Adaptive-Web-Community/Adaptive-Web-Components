@@ -1,6 +1,5 @@
 import { attr, FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { findById, Orientation, TablistController, type TablistElement } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { findById, onDefined, Orientation, TablistController, type TablistElement } from "@adaptive-web/components-foundation";
 import { TabPanel } from "../tab-panel/tab-panel.js";
 import { Tab } from "../tab/tab.js";
 

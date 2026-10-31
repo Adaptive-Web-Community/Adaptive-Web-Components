@@ -1,4 +1,4 @@
-import { chevronDownIcon } from "../../assets.js";
+import { chevronDownIcon } from "@adaptive-web/components-foundation";
 import { DefaultDesignSystem } from "../../design-system.js";
 import { composeSelect } from "./select.compose.js";
 import { SelectStatics } from "./select.template.js";

@@ -1,8 +1,7 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
-import { Orientation, SliderController, type SliderElement, sliderPercent } from "@adaptive-web/components-foundation";
+import { onDefined, Orientation, SliderController, type SliderElement, sliderPercent } from "@adaptive-web/components-foundation";
 import { BaseFormControl } from "../../utilities/base-form-control.js";
 import { numberConverter } from "../../utilities/converters.js";
-import { onDefined } from "../../utilities/defined.js";
 import { SliderLabel } from "../slider-label/slider-label.js";
 
 /**

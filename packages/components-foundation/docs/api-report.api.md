@@ -1417,6 +1417,12 @@ export interface CheckboxElement extends CheckableElement, CheckboxContract {
 }
 
 // @public
+export const checkboxIcon: string;
+
+// @public
+export const checkboxIndeterminateIcon: string;
+
+// @public
 export const CheckboxParts: {
     readonly control: "control";
     readonly label: "label";
@@ -1451,6 +1457,18 @@ export const checkboxWebBinding: {
     focus: FocusDefinition<any>;
     cursor: false;
 };
+
+// @public
+export const chevronDownIcon: string;
+
+// @public
+export const chevronLeftIcon: string;
+
+// @public
+export const chevronRightIcon: string;
+
+// @public
+export const chevronUpIcon: string;
 
 // @public
 export function collapsedText(element: Element): string;
@@ -1866,6 +1884,9 @@ export const dialogWebBinding: {
     };
     interactivity: InteractivityDefinition;
 };
+
+// @public
+export const dismissIcon: string;
 
 // @public
 export function dividerAria(divider: DividerElement): DefaultAria;
@@ -2829,6 +2850,9 @@ export const numberFieldWebBinding: {
 };
 
 // @public
+export function onDefined(elements: readonly Element[], registry: CustomElementRegistry, callback: () => void): void;
+
+// @public
 export class OptionListController {
     constructor(owner: OptionListOwner, options: OptionListOptions);
     activateSelected(): void;
@@ -3604,6 +3628,9 @@ export const radioGroupWebBinding: {
         disabled: string;
     };
 };
+
+// @public
+export const radioIcon: string;
 
 // @public
 export const RadioParts: {

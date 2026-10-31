@@ -1,6 +1,5 @@
 import { FASTElement, Observable, observable, type Subscriber } from "@microsoft/fast-element";
-import { MenuController, type MenuElement } from "@adaptive-web/components-foundation";
-import { onDefined } from "../../utilities/defined.js";
+import { MenuController, type MenuElement, onDefined } from "@adaptive-web/components-foundation";
 import { MenuItem } from "../menu-item/menu-item.js";
 
 /**
