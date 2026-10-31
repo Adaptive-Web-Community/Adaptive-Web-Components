@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/components-fast",
-  "version": "0.10.0",
+  "version": "1.0.0-beta.0",
   "description": "Standards based, framework agnostic web components built using FAST.",
   "type": "module",
   "sideEffects": false,
@@ -49,8 +49,8 @@
     "test": "npm run lint && npm run build:tsc && tsc -p ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
-    "@adaptive-web/components-foundation": "^0.1.0",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
+    "@adaptive-web/components-foundation": "^1.0.0-beta.0",
     "design-token-library": "^0.2.0",
     "tslib": "^2.5.0"
   },
