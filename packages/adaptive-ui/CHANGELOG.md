@@ -1,5 +1,21 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 1.0.0-beta.2
+
+### Major Changes
+
+-   [#337](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/337) [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751) Thanks [@bheston](https://github.com/bheston)! - Make the treatments tokens of the library, named by their path in the groups they style, which a system changes by extending the library. See the [migration guide](./MIGRATION.md).
+
+### Minor Changes
+
+-   [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - A density padding or gap is never less than none: a negative adjustment that made one negative, which CSS ignores, makes it `0`.
+
+-   [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - `isPaint(value)` tells a color or a gradient from any other value, and `isInteractiveSet(value)` a set of values by state; both are public. `formatValue` writes a DTCG gradient as a gradient.
+
+### Patch Changes
+
+-   [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - The values on a fill are made in one library extended for each library, not one for each color of a fill, so writing them again for a scope whose colors change no longer keeps a library for each color.
+
 ## 1.0.0-beta.1
 
 ### Major Changes
