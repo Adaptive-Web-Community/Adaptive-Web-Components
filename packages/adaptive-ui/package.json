@@ -45,7 +45,7 @@
     "culori": "^4.0.2",
     "deepmerge-ts": "^7.1.3",
     "design-token-library": "^0.2.0",
-    "glob": "^10.5.0",
+    "glob": "^14.0.2",
     "matcher": "^5.0.0",
     "postcss": "^8.4.39",
     "postcss-merge-border-radius": "^1.0.1",
