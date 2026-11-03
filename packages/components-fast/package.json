@@ -51,7 +51,7 @@
   "dependencies": {
     "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
     "@adaptive-web/components-foundation": "^0.1.0",
-    "design-token-library": "^0.2.0",
+    "design-token-library": "^0.3.1",
     "tslib": "^2.5.0"
   },
   "peerDependencies": {
