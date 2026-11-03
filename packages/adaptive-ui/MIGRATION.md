@@ -204,6 +204,8 @@ state, see [decision 0006](../../docs/decisions/0006-interactive-values-are-one-
 and a set of colors is an `InteractiveToken<Color>`, the `InteractiveColorSet` that they give: the recipe decides which states have a color, and a state that has no value is not there
 (`null` clears one on purpose), so not even the `rest` is needed.
 
+The `interactive` converter of `adaptiveConverters()` now returns a record, `{ "": rest, hover, … }`, which the library writes as `--x` and `--x-hover`, named as it names every other property (design token library 0.3). It was `(value, token) => string`, a string of the properties with the names made by the converter. A set with no `rest` no longer writes an empty `--x:;`, which `var()` would have taken as a value instead of using its fallback. If you wrote your own converters from this one, return a record.
+
 ## Color sets
 
 The 84 color sets (a fill or a stroke of each of the seven palettes), the minimum contrasts, the deltas of the recipes, the focus stroke, and the

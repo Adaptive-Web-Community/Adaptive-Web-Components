@@ -202,9 +202,10 @@ describe("an interactive token", () => {
             expect(lift.$value).to.deep.equal({ hover: px(-2), active: px(0) });
         });
 
-        it("writes only the states that have a value, and the property of a set with no rest is empty", () => {
-            expect(output).to.include("--control-ring:;--control-ring-focus:#0000ff;");
-            expect(output).to.include("--control-lift:;--control-lift-hover:-2px;--control-lift-active:0px;");
+        it("writes only the states that have a value, and a set with no rest has no property of its own", () => {
+            expect(output).to.include("--control-ring-focus:#0000ff;");
+            expect(output).to.include("--control-lift-hover:-2px;--control-lift-active:0px;");
+            expect(output).not.to.match(/--control-ring:|--control-lift:/);
             expect(output).not.to.include("--control-ring-hover");
         });
 
