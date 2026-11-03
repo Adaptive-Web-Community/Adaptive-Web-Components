@@ -1,4 +1,4 @@
-import { Library } from "design-token-library";
+import { entriesOf, Library } from "design-token-library";
 import { InteractiveState } from "./interactive.js";
 import { getFormerNames } from "./token-metadata.js";
 import { AdaptiveDesignToken } from "./token-types.js";
@@ -91,7 +91,6 @@ export function kebabName(path: readonly string[]): string {
         .join("-");
 }
 
-const isNode = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null;
 
 /**
  * Indexes the names that find the tokens of a library: the name of each token, the names it and its groups had before (see
@@ -137,45 +136,40 @@ export function tokenNames(library: Library.Library<any>): TokenNameIndex {
         }
     };
 
-    const walk = (node: Record<string, unknown>, path: string[]) => {
-        for (const [key, child] of Object.entries(node)) {
-            if ((key.startsWith("$") && key !== "$root") || !isNode(child)) {
-                continue;
+    for (const entry of entriesOf(library)) {
+        const { path } = entry;
+        const last = path[path.length - 1];
+        const node = entry.kind === "token" ? entry.token : entry.group;
+        if (entry.kind === "token") {
+            const name = path.join(".");
+            const deprecated = entry.token.$deprecated;
+            tokens.set(name, {
+                path: [...path],
+                name: (last === "$root" ? path.slice(0, -1) : path).join("."),
+                interactive: entry.token.$type === AdaptiveDesignToken.interactive,
+                deprecated: typeof deprecated === "string" || typeof deprecated === "boolean" ? deprecated : false,
+            });
+            add(name, name, true);
+            if (last === "$root") {
+                add(path.slice(0, -1).join("."), name, true);
             }
-            const childPath = [...path, key];
-            if ("$value" in child) {
-                const name = childPath.join(".");
-                const deprecated = child.$deprecated;
-                tokens.set(name, {
-                    path: childPath,
-                    name: (key === "$root" ? path : childPath).join("."),
-                    interactive: child.$type === AdaptiveDesignToken.interactive,
-                    deprecated: typeof deprecated === "string" || typeof deprecated === "boolean" ? deprecated : false,
-                });
-                add(name, name, true);
-                if (key === "$root") {
-                    add(path.join("."), name, true);
-                }
-                deriveAll(childPath, name);
-                for (const former of getFormerNames(child as { $extensions?: Record<string, unknown> })) {
-                    add(former, name, false);
-                    deriveAll(former.split("."), name);
-                }
-            } else {
-                for (const former of getFormerNames(child as { $extensions?: Record<string, unknown> })) {
-                    for (const form of new Set([former, kebabName(former.split("."))])) {
-                        const existing = groups.get(form);
-                        if (existing !== undefined && existing !== childPath.join(".")) {
-                            throw new Error(`The former name "${form}" is of both ${existing} and ${childPath.join(".")}`);
-                        }
-                        groups.set(form, childPath.join("."));
+            deriveAll(path, name);
+            for (const former of getFormerNames(node)) {
+                add(former, name, false);
+                deriveAll(former.split("."), name);
+            }
+        } else {
+            for (const former of getFormerNames(node)) {
+                for (const form of new Set([former, kebabName(former.split("."))])) {
+                    const existing = groups.get(form);
+                    if (existing !== undefined && existing !== path.join(".")) {
+                        throw new Error(`The former name "${form}" is of both ${existing} and ${path.join(".")}`);
                     }
+                    groups.set(form, path.join("."));
                 }
-                walk(child, childPath);
             }
         }
-    };
-    walk(library.tokens, []);
+    }
 
     for (const [name, token] of derived) {
         if (token !== null && !names.has(name)) {

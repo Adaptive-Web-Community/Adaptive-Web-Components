@@ -42,7 +42,7 @@ name, with no replacement yet, and a renamed token isn't always deprecated.
   finds the same token as its name in 0.14, so a rename that isn't kept fails it.
 - The foregrounds on a fill and the recipes of 0.14 find no token. They were never applied to a design directly, and the designer
   handles a stray one when it is migrated.
-- The library has no way to walk its tokens, so the index walks `library.tokens` (an upstream gap).
+- The index visits the tokens and groups of the library with its `entriesOf()` (0.3.0), and doesn't restate the library's rules for what is a token or a group.
 
 ## Alternatives
 
