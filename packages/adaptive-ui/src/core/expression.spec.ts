@@ -1,6 +1,6 @@
 import chai from "chai";
-import { DesignToken, hex, Library, px, ref, refs } from "design-token-library";
-import { add, divide, evaluate, formatExpression, max, min, multiply, Operand, pow, Reference, round, subtract } from "./expression.js";
+import { CircularReferenceError, configuredValueOf, dependenciesOf, DesignToken, hex, isRef, Library, pathOf, px, ref, refs } from "design-token-library";
+import { add, divide, evaluate, formatExpression, max, min, multiply, Operand, pow, round, subtract } from "./expression.js";
 import { AdaptiveDesignToken, ExpressionToken } from "./token-types.js";
 
 const { expect } = chai;
@@ -13,14 +13,13 @@ interface Tokens {
         double: ExpressionToken;
         snap: ExpressionToken;
         rem: ExpressionToken;
-        x: ExpressionToken;
-        y: ExpressionToken;
     };
     group: { $type: typeof AdaptiveDesignToken.expression; $root: ExpressionToken };
     color: DesignToken.Color;
 }
 
-const a = refs<Tokens>().a;
+const tokens = refs<Tokens>();
+const a = tokens.a;
 const create = () =>
     Library.create<Tokens>({
         a: {
@@ -30,26 +29,52 @@ const create = () =>
             double: { $value: multiply(a.size, 2) },
             snap: { $value: px(4) },
             rem: { $value: { value: 1, unit: "rem" } },
-            // Tokens that use each other, which the library doesn't see, since an expression has the paths of the tokens.
-            x: { $value: add(a.y, 1) },
-            y: { $value: add(a.x, 1) },
         },
         group: { $type: AdaptiveDesignToken.expression, $root: { $value: px(2) } },
         color: { $type: DesignToken.Type.Color, $value: hex("#ffffff") },
     });
 const library = create();
 const property = (name: string) => `--${name.replace(/\./g, "-")}`;
-// A token by its path, as an expression keeps the ref of one.
-const token = (path: string): Reference => ({ ref: path });
 
 describe("an expression", () => {
-    it("should keep the path of a ref of the library", () => {
-        expect(multiply(a.size, 2)).to.deep.equal({ fn: "multiply", args: [{ ref: "a.size" }, 2] });
+    it("should keep a ref of the library as an operand", () => {
+        const { fn, args } = multiply(a.size, 2);
+
+        expect(fn).to.equal("multiply");
+        expect(args.map(isRef)).to.deep.equal([true, false]);
+        expect(args.map(arg => isRef(arg) && pathOf(arg).join("."))).to.deep.equal(["a.size", false]);
         expect(multiply(ref<Operand, Library.TokenValues<Tokens>>("a.size"), 2)).to.deep.equal(multiply(a.size, 2));
     });
 
-    it("should keep the references in the value of a token, which the library doesn't resolve", () => {
-        expect(library.tokens.a.double.$value).to.deep.equal({ fn: "multiply", args: [{ ref: "a.size" }, 2] });
+    it("should be the configured value of a token with its refs, which the library resolves in its value", () => {
+        const token = library.tokens.a.double;
+        const configured = configuredValueOf(token);
+
+        expect(token.$value).to.deep.equal({ fn: "multiply", args: [px(16), 2] });
+        expect(configured).to.deep.equal(multiply(a.size, 2));
+        expect(multiply(a.size, 2).args.map(isRef)).to.deep.equal([true, false]);
+    });
+
+    it("should be a dependency of the token that has it", () => {
+        expect(dependenciesOf(library.tokens.a.double)).to.deep.equal([library.tokens.a.size]);
+    });
+
+    it("should be a circular reference for the library when tokens use each other", () => {
+        const circular = () =>
+            Library.create<Pick<Tokens, "a">>({
+                a: {
+                    $type: AdaptiveDesignToken.expression,
+                    size: { $value: add(a.double, 1) },
+                    ratio: { $value: 1 },
+                    double: { $value: multiply(a.size, 2) },
+                    snap: { $value: px(4) },
+                    rem: { $value: { value: 1, unit: "rem" } },
+                },
+            });
+
+        // The library says so when the value of one is read.
+        expect(() => circular().tokens.a.size.$value).to.throw(CircularReferenceError);
+        expect(() => evaluate(a.size, circular())).to.throw(CircularReferenceError);
     });
 });
 
@@ -59,8 +84,8 @@ describe("formatExpression", () => {
         expect(formatExpression(px(16), property)).to.equal("16px");
     });
 
-    it("should write a reference as the custom property of the token", () => {
-        expect(formatExpression(token("a.size"), property)).to.equal("var(--a-size)");
+    it("should write a ref as the custom property of the token", () => {
+        expect(formatExpression(a.size, property)).to.equal("var(--a-size)");
     });
 
     it("should write the operators in a calc", () => {
@@ -100,11 +125,11 @@ describe("evaluate", () => {
     });
 
     it("should get the value of a token", () => {
-        expect(evaluate(token("a.size"), library)).to.deep.equal(px(16));
+        expect(evaluate(a.size, library)).to.deep.equal(px(16));
     });
 
     it("should get the value of the root of a group", () => {
-        expect(evaluate(token("group.$root"), library)).to.deep.equal(px(2));
+        expect(evaluate(tokens.group.$root, library)).to.deep.equal(px(2));
     });
 
     it("should use the values that the tokens have now", () => {
@@ -112,11 +137,11 @@ describe("evaluate", () => {
 
         own.tokens.a.size.set(px(10));
 
-        expect(evaluate(token("a.double"), own)).to.deep.equal(px(20));
+        expect(evaluate(a.double, own)).to.deep.equal(px(20));
     });
 
     it("should get the value of a token that is an expression", () => {
-        expect(evaluate(token("a.double"), library)).to.deep.equal(px(32));
+        expect(evaluate(a.double, library)).to.deep.equal(px(32));
     });
 
     it("should add and subtract numbers and dimensions of the same unit", () => {
@@ -170,15 +195,11 @@ describe("evaluate", () => {
         expect(() => evaluate(round(px(5), a.rem), library)).to.throw("Can't round px and rem");
     });
 
-    it("should not go on forever for tokens that use each other", () => {
-        expect(() => evaluate(token("a.x"), library)).to.throw("Circular reference: a.x → a.y → a.x");
-    });
-
     it("should say when there is no token", () => {
-        expect(() => evaluate(token("a.none"), library)).to.throw("There is no token named a.none");
+        expect(() => evaluate(refs<{ a: { none: ExpressionToken } }>().a.none, library)).to.throw("There is no token named a.none");
     });
 
     it("should say when a token isn't a number, a dimension, or an expression", () => {
-        expect(() => evaluate(token("color"), library)).to.throw("The token color is not a number, a dimension, or an expression");
+        expect(() => evaluate(refs<{ color: ExpressionToken }>().color, library)).to.throw("The token color is not a number, a dimension, or an expression");
     });
 });

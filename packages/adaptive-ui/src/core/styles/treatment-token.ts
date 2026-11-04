@@ -1,5 +1,4 @@
 import { DesignToken, isRef, Library, pathOf } from "design-token-library";
-import { Reference } from "../expression.js";
 import { InteractiveSet, isInteractiveSet, mapStates } from "../interactive.js";
 import { atName } from "../token-css.js";
 import { TokenMetadata, tokenMetadata } from "../token-metadata.js";
@@ -8,6 +7,15 @@ import { AdaptiveDesignToken } from "../token-types.js";
 import { isOnFill } from "./on-fill.js";
 import { StyleProperties, StyleValue, StyleValues } from "./properties.js";
 import { Treatment } from "./treatment.js";
+
+/**
+ * A token, by its path, that a treatment token refers to, which it keeps as the path since the library resolves the refs in a value.
+ *
+ * @public
+ */
+export interface Reference {
+    readonly ref: string;
+}
 
 /**
  * A value of a style property in a treatment token: a value, or a {@link Reference} to a token.

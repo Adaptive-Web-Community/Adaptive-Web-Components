@@ -1,8 +1,9 @@
-import { convert, CSSPropertiesOptions, DesignToken, Library, toProperties } from "design-token-library";
+import { configuredValueOf, convert, CSSPropertiesOptions, DesignToken, Library, toProperties } from "design-token-library";
 import { formatPaint, isPaint, type Paint } from "./color/paint.js";
-import { formatExpression, Operand } from "./expression.js";
+import { formatExpression, isConfiguredOperand, Operand } from "./expression.js";
 import { InteractiveSet } from "./interactive.js";
 import { isShadow } from "./shadow/index.js";
+import type { ExpressionToken } from "./token-types.js";
 
 /**
  * Gets what is at the name of a token in a tree of the tokens of a library.
@@ -96,6 +97,12 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         // A treatment is rendered as rules, which refer to the custom properties of the tokens.
         treatment: false as const,
         wcagContrastLevel: false as const,
-        expression: (value: Operand) => formatExpression(value, property),
+        // The value the converter is given has the values of the tokens it refers to in place of its refs, so it reads the configured value
+        // of the token, to write the refs as the custom properties of the tokens. A value that a recipe computes isn't a calculation, and
+        // is written as it is.
+        expression: (value: Operand, token: Library.Token<ExpressionToken, any>) => {
+            const configured = configuredValueOf(token);
+            return formatExpression(isConfiguredOperand(configured) ? configured : value, property);
+        },
     };
 }
