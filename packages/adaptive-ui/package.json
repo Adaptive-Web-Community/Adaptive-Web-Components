@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/adaptive-ui",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "A collection of design utilities supporting basic styling and Adaptive UI",
   "type": "module",
   "sideEffects": false,
