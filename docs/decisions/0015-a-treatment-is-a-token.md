@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-29
+- Revised: 2026-11-04, the refs are kept in the treatment (design-token-library 0.3)
 - Package: adaptive-ui
 - Supersedes: the registry and the names of the treatments in [0012](0012-a-treatment-is-a-named-set-of-style-properties.md)
 
@@ -20,17 +21,19 @@ The names a token had are kept on it (decision 0014), which a treatment needs as
 
 - **A treatment is a token of the library**, of the `treatment` type (`TreatmentToken`), which isn't written to CSS. Its name is its path,
   its only identifier; it is extended, renamed and deprecated as a token is.
-- **Its value is plain data.** `treatment({ treatments, properties })` makes its config, written with refs, and keeps each ref as the path of
-  its token, as an expression does (decision 0004), since the library resolves the refs in a value (design-token-library#106). In JSON a ref
-  is a DTCG alias, `"{color.accent.fill.readable}"`.
+- **Its value is plain data, with refs.** `treatment({ treatments, properties })` makes its config, written with refs, and keeps them as they
+  are given, as an expression does (decision 0004): the library keeps the configured value, and `treatmentValueOf(token)` reads it, since
+  `$value` has the refs resolved. In JSON a ref is a DTCG alias, `"{color.accent.fill.readable}"`.
 - **The names follow two patterns, with the word in the path**, so a treatment isn't taken for a token, and a tool groups it with its
   tokens by taking the word out:
   - The treatment of a set of tokens is the set's `treatment`, beside its tokens (`density.control.treatment`). With variants, it is a
     group whose `$root` is the treatment and whose children are the variants (`density.control.treatment.square`).
   - The other treatments of a group are in its `treatments` group (`color.accent.treatments.fillReadableControl`), and those composed
     across the groups are in the `treatments` group of the root (`treatments.actionControl`).
-- **A ref to a group whose `$root` is a treatment stands for the root**, by name and by ref (`TreatmentRef`), so adding a variant changes
-  nothing that refers to the treatment. The library takes no alias to a group, so a token's own value still writes `.$root`.
+- **A ref to a group whose `$root` is a treatment stands for the root**, by name and by ref (`TreatmentRef`), where a ref is read when it is
+  rendered: a rule's, and the steps of `changeTreatment`. A treatment token keeps a ref to a token, since the library takes no ref to a
+  group, and `refs()` makes the same kind of ref for a group as for a token: its `treatments` are refs to tokens, the type of a group isn't
+  one, and the composition of a treatment of a group writes `.$root` (`density.control.treatment.$root`).
 - **A rule refers to a treatment by ref, or has one written in place**, and the renderer reads a ref from the library
   (`libraryTreatments(library)`). The treatments of the anatomy are refs.
 - **A treatment is changed by extending the library**: with a new value, `treatment(...)`, or with changes to the one it extends,
@@ -49,6 +52,12 @@ The names a token had are kept on it (decision 0014), which a treatment needs as
 - A stored name of 0.14 finds its treatment, and the CLI says what to write instead.
 - In JSON, a file that extends another may write a treatment as changes, which its loader applies to the file it extends.
 - The values of a rule's own properties don't take a group for its root yet; only the treatments do.
+- An anatomy written as JSON, the CLI, and the deprecated names still name a token or a treatment by a string, `refAt` and `tokenPathAt` find
+  it in the library; the library has no ref made from a string (design-token-library, the gap this records), and what depends on it is only
+  these entry points now that the values keep refs.
+- A treatment token composed of another by `.$root` keeps that ref: a treatment that is a token and becomes a group by an extension is a
+  change to what refers to it, where a ref to the group was read as the root. A treatment of a set that may have variants is a group with a
+  `$root` from the start, as the reference system has it.
 
 ## Alternatives
 

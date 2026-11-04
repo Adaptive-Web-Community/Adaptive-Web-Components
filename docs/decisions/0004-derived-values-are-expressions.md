@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-17
+- Revised: 2026-11-04, the refs are kept in the expression (design-token-library 0.3)
 - Package: adaptive-ui
 
 ## Context
@@ -16,8 +17,8 @@ dimension, and is what the first version of the type scale did, but the CSS then
 
 ## Decision
 
-An `Expression` is plain data: numbers, dimensions, references to tokens, and math (`add`, `subtract`, `multiply`, `divide`, `pow`, `round`,
-`min`, `max`). It has two uses:
+An `Expression` is plain data: numbers, dimensions, refs of the library to tokens, and math (`add`, `subtract`, `multiply`, `divide`, `pow`,
+`round`, `min`, `max`). It has two uses:
 
 - **In CSS** it is a `calc()` of the custom properties of the tokens it refers to. So a change to one of those custom properties, in a
   stylesheet or on an element, changes the result in the browser.
@@ -25,29 +26,33 @@ An `Expression` is plain data: numbers, dimensions, references to tokens, and ma
   unit, a dimension times a number, and a dimension over a dimension for a number. Only the result is rounded, to four decimal places.
 
 A token of the `expression` type holds a number, a dimension, or an expression, so a value is fixed or calculated, and can be changed from one
-to the other. A reference is made with a ref of the library (`refs<Tokens>().size`, or `ref("size")`), which is typed by the value of its
-token, and not from a string. The expression keeps the path of the ref (`{ ref: "size" }`) and not the ref, since the library resolves the refs
-in a value, which would put the values of the tokens in the expression in place of their custom properties. The name of the custom property
-comes from the library (`toProperties`), so there isn't a second way of naming, and `evaluate(value, library)` gets the values of the tokens
-from the library.
+to the other. A reference is a ref of the library (`refs<Tokens>().size`, or `ref("size")`), typed by the value of its token, and not a string.
+The expression keeps the ref as it is given (`ConfiguredOperand`): the library keeps what a token was configured with (`configuredValueOf`), and
+resolves the refs only in `$value`. So the tokens it refers to are the library's dependencies of the token (`dependenciesOf`), tokens that use
+each other are the library's `CircularReferenceError`, and an expression is a `calc()` of the custom properties of those tokens, which the CSS
+converter writes from the configured value of the token it is given, with the name of each custom property from the library (`toProperties`).
+`evaluate(value, library)` reads the tokens as configured, and gets the number or dimension by following the refs.
 
 ## Consequences
 
 - The value of a derived token isn't a DTCG dimension. A consumer that needs the number, like the Figma plugin, calls `evaluate`, which replaces
   evaluating the CSS string.
-- The tokens that an expression refers to are not read when it is resolved, so the library doesn't track them. The expression stays the same when
-  they change, and what changes is what `evaluate` gets, and what the browser calculates.
+- `$value` of an expression token has the values of the tokens it refers to in place of the refs, so it is a number or a dimension in the
+  state of the library, and the expression is read with `configuredValueOf`. A change to a token changes `$value`, and the library tells
+  what depends on it, so the expression stays the same and what changes is what `evaluate` gets, and what the browser calculates.
 - The units of what is added or rounded have to match, and `evaluate` says so when they don't.
-- An expression reads the path of a ref with the library's `isRef` and `pathOf`. For expressions to be part of the library, it would need a ref
-  that it keeps as it is in a value, instead of resolving it to its token's value.
-- A reference has the path of its token and not its type, so `evaluate` checks that the value of a token is a number, a dimension, or an
-  expression.
+- A ref has the path of its token and not its type, so `evaluate` checks that the value of a token is a number, a dimension, or an expression.
+- The refs of an expression aren't typed with the shape of one library, since the operands of one expression may be of more than one shape.
+  A path that isn't a token is found when the value of the token is read.
+- A value that a recipe computes in an expression token isn't a calculation, and is written as the value it has.
 
 ## Alternatives
 
 - **Work out the numbers when the token is resolved.** It was the first version, and it doesn't change in the browser.
 - **CSS strings**, as before. They can't be evaluated without parsing, and they have the problem above.
-- **Keep the ref in the expression.** The library resolves it, so the token's value would have the value of the token it refers to.
+- **Keep the path of the ref in the expression**, as `{ ref: "size" }`, which this decision replaces. The library 0.2 resolved the refs in a
+  value, which would have put the values of the tokens in the expression, and a path was the way to keep the token. The library doesn't know
+  a dependency that is a string, so it didn't track it, and the cycles of tokens were found by `evaluate`.
 - **A recipe of the library.** A recipe's value is computed when the token is read, so the CSS would have the numbers, as in the first version.
 - **Support in the library.** It would be shared, but the library holds DTCG values and the calculation isn't part of the format. It is likely
   to move there, and until then it's an add-on that uses the library's refs.
