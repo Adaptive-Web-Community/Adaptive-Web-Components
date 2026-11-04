@@ -82,15 +82,14 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
         delta: false as const,
         fontStyle: (value: string) => value,
         fontVariations: (value: string) => value,
-        // The `rest` is the value of the property and the other states are more declarations after it, named `--name-<state>`,
-        // until the library can write more than one property for a token (library #64). A state that has no value is not written,
-        // and the property of a set that has no `rest` is empty.
-        interactive: (value: InteractiveSet<unknown>, token: { name: string }) => {
-            const base = property(token.name);
-            const given = Object.entries(value).filter(([, v]) => v !== undefined && v !== null);
-            const others = given.filter(([state]) => state !== "rest").map(([state, v]) => `${base}-${state}:${formatValue(v)}`);
-            return [value.rest === undefined || value.rest === null ? "" : formatValue(value.rest), ...others].join(";");
-        },
+        // The `rest` is the value of the property and the other states are more properties, named `<property>-<state>`, as the library
+        // writes the keys of a record. A state that has no value is not written, so a set that has no `rest` has no property of its own.
+        interactive: (value: InteractiveSet<unknown>): Record<string, string> =>
+            Object.fromEntries(
+                Object.entries(value)
+                    .filter(([, v]) => v !== undefined && v !== null)
+                    .map(([state, v]) => [state === "rest" ? "" : state, formatValue(v)])
+            ),
         paint: (value: Paint) => formatPaint(value),
         // A palette is not CSS.
         palette: false as const,

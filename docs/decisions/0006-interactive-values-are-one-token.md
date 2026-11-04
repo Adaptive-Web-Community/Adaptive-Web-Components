@@ -32,8 +32,7 @@ What it needs:
   `InteractiveDeltaTokens<InteractiveState.hover | InteractiveState.active>`), since a recipe doesn't need a delta for every state, and `interactiveDeltas` gets the refs of a group for a recipe (a group of refs makes a ref for any name, so a group of some
   of the states says which), so a group can be shared (the disabled deltas of the recipes of one kind) or be alone, as the layer's are.
 - In CSS `--x` is the `rest` value, and a state is `--x-<state>`. Only a state that has a value is written, and a state without one is not there for a style to use, as it was when each state was a token. The
-  states are mutually exclusive in the rules that a style renders, and the order of the rules is where the precedence of one over another is, so a value doesn't fall back to another. The converter writes the
-  other states after the value of `--x`, until the library can write more than one property for a token (library #64), and the property of a set that has no `rest` is empty.
+  states are mutually exclusive in the rules that a style renders, and the order of the rules is where the precedence of one over another is, so a value doesn't fall back to another. The converter returns a record, `{ "": rest, hover, ... }`, which the library writes as `--x` and `--x-hover` (library #64, 0.3.0), and a set that has no `rest` has no `--x`.
 - A recipe that gives a set gives the states that it has, and leaves the others out, so a set that is spread over another leaves what it doesn't mention. A recipe that follows another set (a foreground of a
   background) gives the states that the other set has.
 - A palette is a token of its own custom type, `palette`, that isn't CSS: its converter is `false`. A delta is too, `delta`, a number that only a recipe reads:

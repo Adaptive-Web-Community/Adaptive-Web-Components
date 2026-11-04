@@ -16,9 +16,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     delta: false;
     fontStyle: (value: string) => string;
     fontVariations: (value: string) => string;
-    interactive: (value: InteractiveSet<unknown>, token: {
-        name: string;
-    }) => string;
+    interactive: (value: InteractiveSet<unknown>) => Record<string, string>;
     paint: (value: Paint) => string;
     palette: false;
     treatment: false;
