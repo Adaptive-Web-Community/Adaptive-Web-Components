@@ -88,8 +88,8 @@ These were types and functions of the design tokens that are replaced by the tok
 
 ## Derived values are expressions
 
-A value that is calculated from other tokens is an expression, plain data of numbers, dimensions, references to tokens,
-and math. It is written to CSS as a `calc()` of the custom properties of the tokens it refers to, so a change to one of
+A value that is calculated from other tokens is an expression, plain data of numbers, dimensions, refs of the library to
+tokens, and math. It is written to CSS as a `calc()` of the custom properties of the tokens it refers to, so a change to one of
 the tokens still changes the result in the browser. This is new, there is nothing to replace, except a `calc()` string
 that was the value of a token.
 
@@ -102,6 +102,14 @@ A token of the `expression` type holds a number, a dimension, or an expression. 
 or dimension of an expression when it is needed in code, with the values of the tokens of the library and the rules of
 units that CSS has. Any `calc()` string that was written for a
 value of a token needs to be written as an expression, since a string is no longer a value of a token that is calculated.
+
+An operand that is a token is a ref of the library, and the expression keeps it (`ConfiguredOperand`, `ConfiguredExpression`), so the library
+knows the tokens an expression depends on (`dependenciesOf`), and tokens that use each other are its `CircularReferenceError`. The library
+resolves the refs in the `$value` of the token, which is then a number or a dimension; the expression is read with `configuredValueOf`.
+`Operand` and `Expression` are the value as it is read, and `ConfiguredOperand` is it as it is given. The 1.0 betas before this one had
+`Reference`, `{ ref: "size" }`, a path that is not a ref, and `TokenRef`; both are gone, and nothing needs to be written in their place: `add(refs.size, 2)`
+takes the ref as before. `formatExpression(value, property)` and `evaluate(value, library)` take a `ConfiguredOperand` value, which is what
+`configuredValueOf(token)` returns, and not `token.$value`.
 
 ## Type ramps
 
@@ -333,7 +341,7 @@ state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, 
 | --- | --- |
 | `Styles` | a treatment token (`TreatmentToken`), read as a `Treatment` |
 | `Styles.fromProperties(properties, name)` | `treatment({ properties })`, a token of the library, or `{ properties }` written in place in a rule |
-| `Styles.compose(styles, properties, name)` | `treatment({ treatments: [refs], properties })` |
+| `Styles.compose(styles, properties, name)` | `treatment({ treatments: [refs], properties })`, where a ref is to a token, so a treatment that is a group is written with its `.$root` (`density.control.treatment.$root`) |
 | `Styles.fromDeclaration(declaration)`, `styles.effectiveProperties` | `treatmentProperties(treatmentOrRule)` |
 | `Styles.Shared`, the registry by name | the library: a treatment is a token, `treatmentAt(library, name)` and `libraryTreatments(library)` |
 | `styles.properties = ...`, `appendComposed`, `clearComposed` | a library that extends the one of the treatment, with `treatment(...)`, or with `changeTreatment(library, ref, { treatments: steps, properties })`, whose steps replace, remove, or insert a treatment, and whose properties merge, where `null` removes one |
@@ -354,7 +362,9 @@ state. Styles render to rules of CSS with `renderRules` and `renderStyleRules`, 
 
 The treatments of the reference system are named by two patterns, with the word in the path. The treatment of a set of tokens is the set's
 `treatment`, beside its tokens; with variants, it is a group whose `$root` is the treatment and whose children are the variants, and a ref to
-the group stands for the root. The other treatments of a group are in its `treatments` group, and those composed across the groups are in the
+the group stands for the root in a rule, where it is read when it is rendered. The value of a treatment token keeps the refs it was given,
+so a treatment it is composed of is a ref to the token, which `treatmentValueOf(token)` reads (the `$value` has them resolved), and the
+local `Reference`, `TreatmentStyleValue`, `TreatmentOnFill` and `TreatmentStyleValues`, which were paths, are gone: a property is a `StyleValues`. The other treatments of a group are in its `treatments` group, and those composed across the groups are in the
 `treatments` group of the root. The categories follow the tokens: `text` is `typography`, `shadow` is `elevation`, and `styles` is `treatments`.
 
 | 0.14 | 1.0 |

@@ -21,7 +21,7 @@ export function adaptiveConverters(library: Library.Library<any>, options?: CSSP
     palette: false;
     treatment: false;
     wcagContrastLevel: false;
-    expression: (value: Operand) => string;
+    expression: (value: Operand, token: Library.Token<ExpressionToken, any>) => string;
 };
 
 // @public
@@ -40,7 +40,7 @@ export const AdaptiveDesignToken: {
 };
 
 // @public
-export const add: (...args: (Operand | TokenRef)[]) => Expression;
+export const add: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @beta
 export interface AnatomyTreatments {
@@ -146,6 +146,19 @@ export function conditionalColorSet(set: InteractiveColorSet, condition: boolean
 
 // @public @deprecated (undocumented)
 export const conditionalSwatchSet: typeof conditionalColorSet;
+
+// @public
+export interface ConfiguredExpression {
+    // (undocumented)
+    readonly args: readonly ConfiguredOperand[];
+    // (undocumented)
+    readonly fn: MathFunction;
+}
+
+// Warning: (ae-forgotten-export) The symbol "Dimension" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type ConfiguredOperand = number | Dimension | Library.Ref<Operand, any> | ConfiguredExpression;
 
 // Warning: (ae-forgotten-export) The symbol "ConicGradient_2" needs to be exported by the entry point index.d.ts
 //
@@ -270,16 +283,14 @@ export function deserializeOnFill(value: SerializableOnFill): OnFill;
 export function directionByIsDark(color: Paint): PaletteDirection;
 
 // @public
-export const divide: (...args: (Operand | TokenRef)[]) => Expression;
+export const divide: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
 export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
 
 // @public
-export function evaluate(value: Operand, library: Library.Library<any>): Evaluated;
+export function evaluate(value: ConfiguredOperand, library: Library.Library<any>): Evaluated;
 
-// Warning: (ae-forgotten-export) The symbol "Dimension" needs to be exported by the entry point index.d.ts
-//
 // @public
 export type Evaluated = number | Dimension;
 
@@ -321,7 +332,7 @@ export type FontVariationsToken = DesignToken.Custom<typeof AdaptiveDesignToken.
 export function formatColor(color: Color_2): string;
 
 // @public
-export function formatExpression(value: Operand, property: (token: string) => string): string;
+export function formatExpression(value: ConfiguredOperand, property: (token: string) => string): string;
 
 // @public
 export function formatGradient(value: Gradient | DtcgGradient): string;
@@ -476,6 +487,11 @@ export type InteractivityDefinition = {
 // @public
 export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveSet<number>): InteractiveSet<number>;
 
+// Warning: (ae-internal-missing-underscore) The name "isConfiguredOperand" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const isConfiguredOperand: (value: unknown) => value is ConfiguredOperand;
+
 // @public
 export function isDark(color: Paint): boolean;
 
@@ -542,13 +558,13 @@ export function mapStates<T, U>(set: InteractiveSet<T>, map: (value: T, state: I
 export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
 
 // @public
-export const max: (...args: (Operand | TokenRef)[]) => Expression;
+export const max: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
-export const min: (...args: (Operand | TokenRef)[]) => Expression;
+export const min: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
-export const multiply: (...args: (Operand | TokenRef)[]) => Expression;
+export const multiply: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
 export interface OnFill {
@@ -574,7 +590,7 @@ export type OnFillWithFill = OnFill & {
 };
 
 // @public
-export type Operand = number | Dimension | Reference | Expression;
+export type Operand = number | Dimension | Expression;
 
 // @public
 export interface OverlayColor extends Color_2 {
@@ -633,7 +649,7 @@ export type PaletteToken = DesignToken.Custom<typeof AdaptiveDesignToken.palette
 export function parseColor(color: string): Color_2 | undefined;
 
 // @public
-export const pow: (...args: (Operand | TokenRef)[]) => Expression;
+export const pow: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
 export function propertyResolver(library: Library.Library<any>, options?: CSSPropertiesOptions): (name: string) => string;
@@ -646,12 +662,6 @@ export const RadialGradient: new (stops: GradientStop[]) => RadialGradient_2;
 
 // @public
 export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient_2;
-
-// @public
-export interface Reference {
-    // (undocumented)
-    readonly ref: string;
-}
 
 // @public
 export function relativeLuminance(paint: Paint): number;
@@ -687,7 +697,7 @@ export function reversedSwatches(palette: Palette): ReadonlyArray<Color_2>;
 export function rgbColor(r: number, g: number, b: number, alpha?: number): Color_2;
 
 // @public
-export const round: (...args: (Operand | TokenRef)[]) => Expression;
+export const round: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
 export type SelectorParameters = StyleRuleTarget & InteractivityDefinition;
@@ -914,7 +924,7 @@ export type StyleValue = string | number | Paint | DesignToken.Values.Readonly.S
 export type StyleValues = StyleValue | InteractiveSet<StyleValue> | OnFill;
 
 // @public
-export const subtract: (...args: (Operand | TokenRef)[]) => Expression;
+export const subtract: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public @deprecated (undocumented)
 export const swatchAsOverlay: typeof colorAsOverlay;
@@ -974,9 +984,6 @@ export interface TokenPropertiesOptions extends CSSPropertiesOptions {
 export type TokenPropertiesResolver = (path: readonly string[], fill?: readonly string[]) => TokenProperties;
 
 // @public
-export type TokenRef = Library.Ref<Operand, any>;
-
-// @public
 export const transparent: Color_2;
 
 // @public
@@ -988,7 +995,7 @@ export interface Treatment {
 
 // @public
 export function treatment(spec: {
-    treatments?: readonly TreatmentRef[];
+    treatments?: readonly Library.Ref<TreatmentValue, never>[];
     properties?: StyleProperties;
 }, metadata?: TokenMetadata): TreatmentConfig;
 
@@ -1011,16 +1018,6 @@ export interface TreatmentConfig {
     readonly $type: typeof AdaptiveDesignToken.treatment;
     // (undocumented)
     readonly $value: TreatmentValue;
-}
-
-// @public
-export interface TreatmentOnFill {
-    // (undocumented)
-    readonly activeFollowsRest?: boolean;
-    // (undocumented)
-    readonly fill?: Reference;
-    // (undocumented)
-    readonly token: Reference;
 }
 
 // @public
@@ -1049,21 +1046,18 @@ export type TreatmentStep = {
 };
 
 // @public
-export type TreatmentStyleValue = Exclude<StyleValue, Library.Ref<unknown, never>> | Reference;
-
-// @public
-export type TreatmentStyleValues = TreatmentStyleValue | InteractiveSet<TreatmentStyleValue> | TreatmentOnFill;
-
-// @public
 export type TreatmentToken = DesignToken.Custom<typeof AdaptiveDesignToken.treatment, TreatmentValue>;
 
 // @public
 export interface TreatmentValue {
     // (undocumented)
-    readonly properties?: Readonly<Record<string, TreatmentStyleValues>>;
+    readonly properties?: Readonly<Record<string, StyleValues>>;
     // (undocumented)
-    readonly treatments?: readonly Reference[];
+    readonly treatments?: readonly Library.Ref<TreatmentValue, never>[];
 }
+
+// @public
+export function treatmentValueOf(token: Library.Token<TreatmentToken, any>): TreatmentValue;
 
 // @beta
 export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, options?: TwoPaletteGradientOptions): Gradient;

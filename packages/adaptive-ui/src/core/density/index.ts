@@ -1,5 +1,5 @@
 import { DesignToken, Library, refs } from "design-token-library";
-import { add, max, multiply, type Operand, subtract } from "../expression.js";
+import { add, type ConfiguredOperand, max, multiply, subtract } from "../expression.js";
 import { StyleProperty, StylePropertyShorthand } from "../styles/properties.js";
 import { intendedFor } from "../token-metadata.js";
 import { AdaptiveDesignToken, ExpressionToken } from "../token-types.js";
@@ -125,7 +125,7 @@ export function createDensity<N extends string, Root extends DensityRootTokens<N
         const calculated = (units: "paddingUnits" | "gapUnits") => multiply(add(set[axis][units], adjustment), set.designUnit);
         // A padding or a gap is never less than none, which a negative adjustment would make it, and CSS would ignore. None is in the unit
         // of the design unit, which a padding and a gap are in.
-        const atLeastNone = (value: Operand) => max(value, multiply(set.designUnit, 0));
+        const atLeastNone = (value: ConfiguredOperand) => max(value, multiply(set.designUnit, 0));
 
         return {
             paddingUnits: { $type: DesignToken.Type.Number, $value: paddingUnits },

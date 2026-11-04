@@ -1,27 +1,7 @@
-import { DesignToken, isRef, Library, pathOf } from "design-token-library";
+import { configuredValueOf, DesignToken, isRef, Library, pathOf } from "design-token-library";
+import type { ExpressionToken } from "./token-types.js";
 
 type Dimension = DesignToken.Values.Readonly.Dimension;
-
-/**
- * A token, by its path, that an {@link Expression} uses the value of.
- *
- * @remarks
- * An expression is given a ref of the library ({@link TokenRef}) and keeps its path. It doesn't keep the ref, since
- * the library resolves the refs in a value, and the expression is written to CSS with the custom properties of the
- * tokens it refers to.
- *
- * @public
- */
-export interface Reference {
-    readonly ref: string;
-}
-
-/**
- * A ref of the library, made by `ref()` or `refs()`, to a token whose value is an {@link Operand}.
- *
- * @public
- */
-export type TokenRef = Library.Ref<Operand, any>;
 
 /**
  * The math that an {@link Expression} does.
@@ -34,9 +14,11 @@ export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | 
  * A calculation of numbers and dimensions, which may be the values of other tokens.
  *
  * @remarks
- * An expression is plain data, so it can be the value of a token (why: `docs/decisions/0004-derived-values-are-expressions.md`), and it has two uses: it is written to CSS as a
- * `calc()` of the custom properties of the tokens it references, so changing one of them changes the result in
- * the browser, and {@link evaluate} gets the value of it for something that needs the number.
+ * An expression is plain data, so it can be the value of a token (why: `docs/decisions/0004-derived-values-are-expressions.md`). Where
+ * one is made, an operand may be a ref of the library to another token ({@link ConfiguredOperand}), which the library keeps as the token's
+ * configured value, and tracks as a dependency. An expression has two uses: it is written to CSS as a `calc()` of the custom
+ * properties of the tokens it refers to, so changing one of them changes the result in the browser, and {@link evaluate} gets the
+ * value of it for something that needs the number.
  *
  * @public
  */
@@ -46,11 +28,33 @@ export interface Expression {
 }
 
 /**
- * What an {@link Expression} is made of: a number, a dimension, another token, or another expression.
+ * What an {@link Expression} is made of, and the value of a token of the `expression` type: a number, a dimension, or an expression.
+ *
+ * @remarks
+ * This is the value as it is read from a token, with the values of the tokens it refers to in place of the refs. See {@link ConfiguredOperand}
+ * for it as it is given, with refs.
  *
  * @public
  */
-export type Operand = number | Dimension | Reference | Expression;
+export type Operand = number | Dimension | Expression;
+
+/**
+ * An {@link Expression} as it is given, in which an operand may be a ref of the library.
+ *
+ * @public
+ */
+export interface ConfiguredExpression {
+    readonly fn: MathFunction;
+    readonly args: readonly ConfiguredOperand[];
+}
+
+/**
+ * An {@link Operand} as it is given: any operand of an expression may be a ref of the library, made by `ref()` or `refs()`, to a token
+ * whose value is an operand, and the library keeps it as a ref and not as the value of the token.
+ *
+ * @public
+ */
+export type ConfiguredOperand = number | Dimension | Library.Ref<Operand, any> | ConfiguredExpression;
 
 /**
  * The value of an {@link Operand}.
@@ -59,11 +63,11 @@ export type Operand = number | Dimension | Reference | Expression;
  */
 export type Evaluated = number | Dimension;
 
-const operand = (arg: Operand | TokenRef): Operand => (isRef(arg) ? { ref: pathOf(arg).join(".") } : arg);
-
 const expression =
     (fn: MathFunction) =>
-    (...args: (Operand | TokenRef)[]): Expression => ({ fn, args: args.map(operand) });
+    // The refs of the operands may be of libraries of different shapes, so they aren't checked against one here: a path that isn't a token is
+    // found when the value of the token is read.
+    (...args: ConfiguredOperand[]): ConfiguredExpression => ({ fn, args });
 
 /** The sum of the operands. @public */
 export const add = expression("add");
@@ -82,15 +86,18 @@ export const min = expression("min");
 /** The largest of the operands. @public */
 export const max = expression("max");
 
-const isReference = (operand: Operand): operand is Reference => typeof operand === "object" && "ref" in operand;
-const isExpression = (operand: Operand): operand is Expression => typeof operand === "object" && "fn" in operand;
+const isExpression = (operand: ConfiguredOperand): operand is ConfiguredExpression => typeof operand === "object" && "fn" in operand;
 
-// Whether the value of a token is one an expression can use, which the type of a reference can't say.
-const isOperand = (value: unknown): value is Operand =>
-    typeof value === "number" || (typeof value === "object" && value !== null && ("unit" in value || "ref" in value || "fn" in value));
+/**
+ * Tests whether the configured value of a token is an operand that an expression can use, which is not a value that a recipe computes.
+ *
+ * @internal
+ */
+export const isConfiguredOperand = (value: unknown): value is ConfiguredOperand =>
+    typeof value === "number" || isRef(value) || (typeof value === "object" && value !== null && ("unit" in value || "fn" in value));
 
-// The value of the token at a path of a library.
-function valueAt(library: Library.Library<any>, path: string): Operand {
+// The configured value of the token at a path of a library, which has the refs in it as they were given.
+function valueAt(library: Library.Library<any>, path: string): ConfiguredOperand {
     let node: unknown = library.tokens;
     for (const key of path.split(".")) {
         node = typeof node === "object" && node !== null ? Reflect.get(node, key) : undefined;
@@ -98,10 +105,14 @@ function valueAt(library: Library.Library<any>, path: string): Operand {
     if (typeof node !== "object" || node === null || !("$value" in node)) {
         throw new Error(`There is no token named ${path}`);
     }
-    if (!isOperand(node.$value)) {
+    // The value as the library resolves it, which throws for tokens that refer to each other, and is the one to check the type of.
+    const resolved = node.$value;
+    if (!isConfiguredOperand(resolved)) {
         throw new Error(`The token ${path} is not a number, a dimension, or an expression`);
     }
-    return node.$value;
+    // The path is a string, so the token is found by name and not by its type.
+    const configured = configuredValueOf(node as Library.Token<ExpressionToken, any>);
+    return isConfiguredOperand(configured) ? configured : resolved;
 }
 
 // The values are written to CSS, so they are rounded to avoid noise like 19.360000000000003
@@ -119,13 +130,13 @@ const infix: Partial<Record<MathFunction, string>> = { add: "+", subtract: "-", 
  *
  * @public
  */
-export function formatExpression(value: Operand, property: (token: string) => string): string {
-    const format = (operand: Operand, parent?: Expression): string => {
+export function formatExpression(value: ConfiguredOperand, property: (token: string) => string): string {
+    const format = (operand: ConfiguredOperand, parent?: ConfiguredExpression): string => {
         if (typeof operand === "number") {
             return String(operand);
         }
-        if (isReference(operand)) {
-            return `var(${property(operand.ref)})`;
+        if (isRef(operand)) {
+            return `var(${property(pathOf(operand).join("."))})`;
         }
         if (isExpression(operand)) {
             const operator = infix[operand.fn];
@@ -192,18 +203,16 @@ function fold(fn: MathFunction, values: Evaluated[], op: (a: number, b: number) 
  *
  * @public
  */
-export function evaluate(value: Operand, library: Library.Library<any>): Evaluated {
-    const run = (operand: Operand, seen: string[]): Evaluated => {
-        if (typeof operand === "number" || (typeof operand === "object" && "unit" in operand)) {
+export function evaluate(value: ConfiguredOperand, library: Library.Library<any>): Evaluated {
+    // The library doesn't allow tokens that refer to each other, so a chain of refs ends.
+    const run = (operand: ConfiguredOperand): Evaluated => {
+        if (isRef(operand)) {
+            return run(valueAt(library, pathOf(operand).join(".")));
+        }
+        if (typeof operand === "number" || "unit" in operand) {
             return operand;
         }
-        if (isReference(operand)) {
-            if (seen.includes(operand.ref)) {
-                throw new Error(`Circular reference: ${[...seen, operand.ref].join(" → ")}`);
-            }
-            return run(valueAt(library, operand.ref), [...seen, operand.ref]);
-        }
-        const values = operand.args.map(arg => run(arg, seen));
+        const values = operand.args.map(run);
         switch (operand.fn) {
             case "add":
                 return fold("add", values, (a, b) => a + b);
@@ -227,6 +236,6 @@ export function evaluate(value: Operand, library: Library.Library<any>): Evaluat
         }
     };
     // Only the result is rounded, like the browser does with the numbers in a calculation until it has the value.
-    const result = run(value, []);
+    const result = run(value);
     return isDimension(result) ? { value: clean(result.value), unit: result.unit } : clean(result);
 }

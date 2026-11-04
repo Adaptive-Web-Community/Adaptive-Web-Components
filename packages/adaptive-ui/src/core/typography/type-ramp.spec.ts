@@ -1,10 +1,10 @@
 import chai from "chai";
-import { DesignToken, Library, px, refs } from "design-token-library";
-import { evaluate, formatExpression, multiply } from "../expression.js";
+import { configuredValueOf, DesignToken, Library, px, refs } from "design-token-library";
+import { evaluate, formatExpression, isConfiguredOperand, multiply } from "../expression.js";
 import { StyleProperty } from "../styles/properties.js";
 import { propertyResolver } from "../token-css.js";
 import { getIntendedFor } from "../token-metadata.js";
-import { FontVariationsToken } from "../token-types.js";
+import { ExpressionToken, FontVariationsToken } from "../token-types.js";
 import { typeRamp, TypeRampTokens, typeRampPositions, TypeScaleTokens, typeScale } from "./type-ramp.js";
 
 const { expect } = chai;
@@ -18,6 +18,15 @@ interface Tokens {
 const config = (n: number) => ({ fontSize: px(n), lineHeight: px(n + 6), lineHeightMultiline: px(n + 10) });
 
 const tokenRefs = refs<Tokens>();
+
+// The value of a token of the expression type as it is configured, with refs to the tokens it is calculated from.
+const configured = (token: Library.Token<ExpressionToken, any>) => {
+    const value = configuredValueOf(token);
+    if (!isConfiguredOperand(value)) {
+        throw new Error(`${token.name} isn't a calculation`);
+    }
+    return value;
+};
 const createLibrary = (scale = typeScale(tokenRefs.scale, px(16), 1.25)) =>
     Library.create<Tokens>({
         ramp: typeRamp({
@@ -90,8 +99,8 @@ describe("typeRamp", () => {
             ramp: { fontSize: { plus1: { $value: multiply(tokenRefs.ramp.fontSize.base, 2) } } },
         });
 
-        expect(evaluate(extended.tokens.ramp.fontSize.plus1.$value, extended)).to.deep.equal(px(28));
-        expect(formatExpression(extended.tokens.ramp.fontSize.plus1.$value, propertyResolver(extended))).to.equal(
+        expect(evaluate(configured(extended.tokens.ramp.fontSize.plus1), extended)).to.deep.equal(px(28));
+        expect(formatExpression(configured(extended.tokens.ramp.fontSize.plus1), propertyResolver(extended))).to.equal(
             "calc(var(--ramp-fontSize-base) * 2)"
         );
     });
@@ -116,10 +125,10 @@ describe("typeScale", () => {
     const library = createLibrary();
     const scale = library.tokens.scale;
     // The value of a token of a library, which is calculated from the tokens it is an expression of.
-    const valueIn = (of: typeof library) => (token: { $value: any }) => evaluate(token.$value, of);
+    const valueIn = (of: typeof library) => (token: Library.Token<ExpressionToken, any>) => evaluate(configured(token), of);
     const value = valueIn(library);
-    const dimension = (token: { $value: any }) => (value(token) as DesignToken.Values.Dimension).value;
-    const css = (token: { $value: any }) => formatExpression(token.$value, propertyResolver(library));
+    const dimension = (token: Library.Token<ExpressionToken, any>) => (value(token) as DesignToken.Values.Dimension).value;
+    const css = (token: Library.Token<ExpressionToken, any>) => formatExpression(configured(token), propertyResolver(library));
 
     it("should create tokens for the scale configuration", () => {
         expect(scale.multiplier.name).to.equal("scale.multiplier");
@@ -218,7 +227,7 @@ describe("typeScale", () => {
     it("should have values that follow the tokens they are calculated from", () => {
         const own = createLibrary();
         const tokens = own.tokens.scale;
-        const before = tokens.fontSize.plus1.$value;
+        const before = configured(tokens.fontSize.plus1);
         const own_value = valueIn(own);
 
         tokens.multiplier.set(2);
@@ -227,7 +236,7 @@ describe("typeScale", () => {
         tokens.lineHeightSnap.set(px(1));
 
         // The expression itself is the same, it is the values of the tokens in it that changed.
-        expect(tokens.fontSize.plus1.$value).to.deep.equal(before);
+        expect(configured(tokens.fontSize.plus1)).to.deep.equal(before);
         expect(own_value(tokens.fontSize.plus1)).to.deep.equal(px(40));
         expect(own_value(tokens.lineHeight.plus1)).to.deep.equal(px(60));
         expect(own_value(tokens.fontSize.minus1)).to.deep.equal(px(10));
