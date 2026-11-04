@@ -5,7 +5,7 @@ import { getFormerNames } from "../token-metadata.js";
 import { AdaptiveDesignToken, InteractiveToken } from "../token-types.js";
 import { onFill } from "./on-fill.js";
 import { refAt } from "../token-ref.js";
-import { changeTreatment, isTreatmentRef, libraryTreatments, treatment, treatmentAt, TreatmentChanges, TreatmentToken } from "./treatment-token.js";
+import { changeTreatment, isTreatmentRef, libraryTreatments, treatment, treatmentAt, TreatmentChanges, TreatmentToken, treatmentValueOf } from "./treatment-token.js";
 
 const { expect } = chai;
 
@@ -42,7 +42,7 @@ const create = () =>
         treatments: {
             action: treatment(
                 {
-                    treatments: [t.shape.treatments.round, t.density.treatment],
+                    treatments: [t.shape.treatments.round, t.density.treatment.$root],
                     properties: { backgroundFill: t.fill, foregroundFill: onFill(t.stroke, { activeFollowsRest: true }), borderFill: { rest: t.stroke } },
                 },
                 { formerNames: ["styles.action"] }
@@ -52,22 +52,22 @@ const create = () =>
     });
 
 describe("treatment", () => {
-    it("should be plain data, with the path of each ref", () => {
+    it("should be plain data, with the refs as they are given", () => {
         expect(treatment({ treatments: [t.shape.treatments.round], properties: { backgroundFill: t.fill, opacity: 0.5 } })).to.deep.equal({
             $type: AdaptiveDesignToken.treatment,
-            $value: { treatments: [{ ref: "shape.treatments.round" }], properties: { backgroundFill: { ref: "fill" }, opacity: 0.5 } },
+            $value: { treatments: [t.shape.treatments.round], properties: { backgroundFill: t.fill, opacity: 0.5 } },
         });
     });
 
-    it("should keep a value on a fill and a set of states, with the paths of their refs", () => {
-        expect(create().tokens.treatments.action.$value.properties).to.deep.include({
-            foregroundFill: { token: { ref: "stroke" }, activeFollowsRest: true },
-            borderFill: { rest: { ref: "stroke" } },
+    it("should keep a value on a fill and a set of states, with their refs", () => {
+        expect(treatmentValueOf(create().tokens.treatments.action).properties).to.deep.include({
+            foregroundFill: { token: t.stroke, activeFollowsRest: true },
+            borderFill: { rest: t.stroke },
         });
     });
 
-    it("should keep a group that stands for its root as the path of the group", () => {
-        expect(create().tokens.treatments.action.$value.treatments).to.deep.equal([{ ref: "shape.treatments.round" }, { ref: "density.treatment" }]);
+    it("should keep the ref to the root of a group that stands for it", () => {
+        expect(treatmentValueOf(create().tokens.treatments.action).treatments).to.deep.equal([t.shape.treatments.round, t.density.treatment.$root]);
     });
 
     it("should have the metadata it is given, like the names it had", () => {
@@ -130,7 +130,7 @@ describe("changeTreatment", () => {
                     { insert: t.shape.treatments.round },
                 ],
             }).treatments
-        ).to.deep.equal([{ ref: "treatments.other" }, { ref: "shape.treatments.square" }, { ref: "density.treatment.tight" }, { ref: "shape.treatments.round" }]);
+        ).to.deep.equal([t.treatments.other, t.shape.treatments.square, t.density.treatment.tight, t.shape.treatments.round]);
     });
 
     it("should insert before a treatment, and at the end", () => {
@@ -138,21 +138,21 @@ describe("changeTreatment", () => {
             change({ treatments: [{ insert: t.treatments.other, before: t.density.treatment }, { insert: t.density.treatment.tight, after: "end" }] })
                 .treatments
         ).to.deep.equal([
-            { ref: "shape.treatments.round" },
-            { ref: "treatments.other" },
-            { ref: "density.treatment" },
-            { ref: "density.treatment.tight" },
+            t.shape.treatments.round,
+            t.treatments.other,
+            t.density.treatment.$root,
+            t.density.treatment.tight,
         ]);
     });
 
     it("should find a treatment by its group or its $root, the same one", () => {
-        expect(change({ treatments: [{ remove: t.density.treatment.$root }] }).treatments).to.deep.equal([{ ref: "shape.treatments.round" }]);
+        expect(change({ treatments: [{ remove: t.density.treatment.$root }] }).treatments).to.deep.equal([t.shape.treatments.round]);
     });
 
     it("should merge the properties, where null removes one", () => {
         expect(change({ properties: { backgroundFill: t.stroke, borderFill: null, opacity: 1 } }).properties).to.deep.equal({
-            backgroundFill: { ref: "stroke" },
-            foregroundFill: { token: { ref: "stroke" }, activeFollowsRest: true },
+            backgroundFill: t.stroke,
+            foregroundFill: { token: t.stroke, activeFollowsRest: true },
             opacity: 1,
         });
     });

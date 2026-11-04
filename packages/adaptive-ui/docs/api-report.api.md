@@ -664,12 +664,6 @@ export const RadialGradient: new (stops: GradientStop[]) => RadialGradient_2;
 export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient_2;
 
 // @public
-export interface Reference {
-    // (undocumented)
-    readonly ref: string;
-}
-
-// @public
 export function relativeLuminance(paint: Paint): number;
 
 // @public
@@ -1001,7 +995,7 @@ export interface Treatment {
 
 // @public
 export function treatment(spec: {
-    treatments?: readonly TreatmentRef[];
+    treatments?: readonly Library.Ref<TreatmentValue, never>[];
     properties?: StyleProperties;
 }, metadata?: TokenMetadata): TreatmentConfig;
 
@@ -1024,16 +1018,6 @@ export interface TreatmentConfig {
     readonly $type: typeof AdaptiveDesignToken.treatment;
     // (undocumented)
     readonly $value: TreatmentValue;
-}
-
-// @public
-export interface TreatmentOnFill {
-    // (undocumented)
-    readonly activeFollowsRest?: boolean;
-    // (undocumented)
-    readonly fill?: Reference;
-    // (undocumented)
-    readonly token: Reference;
 }
 
 // @public
@@ -1062,21 +1046,18 @@ export type TreatmentStep = {
 };
 
 // @public
-export type TreatmentStyleValue = Exclude<StyleValue, Library.Ref<unknown, never>> | Reference;
-
-// @public
-export type TreatmentStyleValues = TreatmentStyleValue | InteractiveSet<TreatmentStyleValue> | TreatmentOnFill;
-
-// @public
 export type TreatmentToken = DesignToken.Custom<typeof AdaptiveDesignToken.treatment, TreatmentValue>;
 
 // @public
 export interface TreatmentValue {
     // (undocumented)
-    readonly properties?: Readonly<Record<string, TreatmentStyleValues>>;
+    readonly properties?: Readonly<Record<string, StyleValues>>;
     // (undocumented)
-    readonly treatments?: readonly Reference[];
+    readonly treatments?: readonly Library.Ref<TreatmentValue, never>[];
 }
+
+// @public
+export function treatmentValueOf(token: Library.Token<TreatmentToken, any>): TreatmentValue;
 
 // @beta
 export function twoPaletteGradient(startPalette: Palette, endPalette: Palette, reference: Paint, delta: number, options?: TwoPaletteGradientOptions): Gradient;

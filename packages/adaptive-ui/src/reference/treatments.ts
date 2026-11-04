@@ -1671,7 +1671,7 @@ export const treatments: Library.Config<ReferenceTreatmentTokens, ReferenceLibra
     treatments: {
         actionControl: treatment(
             {
-                treatments: [tokens.shape.treatments.control, tokens.density.control.treatment, tokens.typography.ramp.default.treatments.base, tokens.color.neutral.treatments.fillSubtleControl],
+                treatments: [tokens.shape.treatments.control, tokens.density.control.treatment.$root, tokens.typography.ramp.default.treatments.base, tokens.color.neutral.treatments.fillSubtleControl],
                 properties: {
                     ...densityBorder(color.neutral.stroke.subtle),
                 },
@@ -1689,7 +1689,7 @@ export const treatments: Library.Config<ReferenceTreatmentTokens, ReferenceLibra
         ),
         inputControl: treatment(
             {
-                treatments: [tokens.treatments.inputBase, tokens.density.control.treatment],
+                treatments: [tokens.treatments.inputBase, tokens.density.control.treatment.$root],
             },
             { formerNames: ["styles.input-control"] }
         ),
@@ -1713,7 +1713,7 @@ export const treatments: Library.Config<ReferenceTreatmentTokens, ReferenceLibra
         ),
         itemControl: treatment(
             {
-                treatments: [tokens.shape.treatments.control, tokens.density.control.treatment, tokens.typography.ramp.default.treatments.base, tokens.color.neutral.treatments.fillStealthControl],
+                treatments: [tokens.shape.treatments.control, tokens.density.control.treatment.$root, tokens.typography.ramp.default.treatments.base, tokens.color.neutral.treatments.fillStealthControl],
             },
             { formerNames: ["styles.item-control"] }
         ),

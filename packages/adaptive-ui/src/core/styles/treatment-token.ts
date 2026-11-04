@@ -1,59 +1,24 @@
-import { DesignToken, isRef, Library, pathOf } from "design-token-library";
-import { InteractiveSet, isInteractiveSet, mapStates } from "../interactive.js";
+import { configuredValueOf, DesignToken, isComputed, isRef, Library, pathOf } from "design-token-library";
 import { atName } from "../token-css.js";
-import { TokenMetadata, tokenMetadata } from "../token-metadata.js";
 import { refAt } from "../token-ref.js";
+import { TokenMetadata, tokenMetadata } from "../token-metadata.js";
 import { AdaptiveDesignToken } from "../token-types.js";
-import { isOnFill } from "./on-fill.js";
-import { StyleProperties, StyleValue, StyleValues } from "./properties.js";
+import { StyleProperties, StyleValues } from "./properties.js";
 import { Treatment } from "./treatment.js";
 
 /**
- * A token, by its path, that a treatment token refers to, which it keeps as the path since the library resolves the refs in a value.
- *
- * @public
- */
-export interface Reference {
-    readonly ref: string;
-}
-
-/**
- * A value of a style property in a treatment token: a value, or a {@link Reference} to a token.
- *
- * @public
- */
-export type TreatmentStyleValue = Exclude<StyleValue, Library.Ref<unknown, never>> | Reference;
-
-/**
- * A value on a fill in a treatment token, with references to its token and fill, the shape of `SerializableOnFill`.
- *
- * @public
- */
-export interface TreatmentOnFill {
-    readonly token: Reference;
-    readonly fill?: Reference;
-    readonly activeFollowsRest?: boolean;
-}
-
-/**
- * The values of a style property in a treatment token.
- *
- * @public
- */
-export type TreatmentStyleValues = TreatmentStyleValue | InteractiveSet<TreatmentStyleValue> | TreatmentOnFill;
-
-/**
- * The value of a treatment token: the treatments it is composed of, as references to treatment tokens, in order, and its own properties.
+ * The value of a treatment token: the treatments it is composed of, as refs to treatment tokens, in order, and its own properties.
  *
  * @remarks
- * It is plain data, which is what a token of the library holds and what it is in JSON. A ref is kept as the path of its token, a
- * {@link Reference}, as an expression keeps one, since the library resolves the refs in a value; in JSON it is a DTCG alias.
+ * It is plain data apart from the refs, which is what a token of the library holds and what it is in JSON, where a ref is a DTCG alias.
+ * The library keeps a ref as it is configured, and resolves it in the value of the token, so the value is read with `configuredValueOf`
+ * (see {@link treatmentAt}), and not from `$value`.
  *
  * @public
  */
 export interface TreatmentValue {
-    readonly treatments?: readonly Reference[];
-    readonly properties?: Readonly<Record<string, TreatmentStyleValues>>;
+    readonly treatments?: readonly Library.Ref<TreatmentValue, never>[];
+    readonly properties?: Readonly<Record<string, StyleValues>>;
 }
 
 /**
@@ -79,9 +44,11 @@ type RefOrRoot = Library.Ref<unknown, never> | { readonly $root: Library.Ref<unk
 
 // The path of a ref, or of a group that stands for its root, which is read as the root when the treatment is read.
 const pathOfRef = (ref: RefOrRoot): string => (isRef(ref) ? pathOf(ref) : pathOf(ref.$root).slice(0, -1)).join(".");
-const reference = (ref: RefOrRoot): Reference => ({ ref: pathOfRef(ref) });
-const isReference = (value: unknown): value is Reference =>
-    typeof value === "object" && value !== null && !isRef(value) && typeof Reflect.get(value, "ref") === "string";
+// The name of the treatment that a ref is to, which is the name of the group whose `$root` it is.
+const nameOfRef = (ref: Library.Ref<unknown, never>): string => {
+    const path = pathOf(ref);
+    return (path[path.length - 1] === "$root" ? path.slice(0, -1) : path).join(".");
+};
 
 /**
  * Gets the path of the token at a path of a library, which is the `$root` of a group at the path.
@@ -99,39 +66,6 @@ export function tokenPathAt(library: Library.Library<any>, path: string): string
         return `${path}.$root`;
     }
     throw new Error(`${path} is a group without a $root, which a reference can't be to`);
-}
-
-function toValue(value: StyleValues): TreatmentStyleValues {
-    if (isRef(value)) {
-        return reference(value);
-    }
-    if (isOnFill(value)) {
-        const { token, fill, activeFollowsRest } = value;
-        return {
-            token: reference(token),
-            ...(fill !== undefined && { fill: reference(fill) }),
-            ...(activeFollowsRest !== undefined && { activeFollowsRest }),
-        };
-    }
-    if (isInteractiveSet<StyleValue>(value)) {
-        return mapStates(value, state => (isRef(state) ? reference(state) : state));
-    }
-    return value;
-}
-
-function fromValue(library: Library.Library<any>, value: TreatmentStyleValues): StyleValues {
-    const at = (data: Reference) => refAt(tokenPathAt(library, data.ref).split("."));
-    if (isReference(value)) {
-        return at(value);
-    }
-    if (typeof value === "object" && value !== null && "token" in value) {
-        const { token, fill, activeFollowsRest } = value;
-        return { token: at(token), ...(fill !== undefined && { fill: at(fill) }), ...(activeFollowsRest !== undefined && { activeFollowsRest }) };
-    }
-    if (isInteractiveSet<TreatmentStyleValue>(value)) {
-        return mapStates(value, state => (isReference(state) ? at(state) : state));
-    }
-    return value;
 }
 
 /**
@@ -168,13 +102,13 @@ const config = (value: TreatmentValue, metadata?: TokenMetadata): TreatmentConfi
  *
  * @public
  */
-export function treatment(spec: { treatments?: readonly TreatmentRef[]; properties?: StyleProperties }, metadata?: TokenMetadata): TreatmentConfig {
+export function treatment(spec: { treatments?: readonly Library.Ref<TreatmentValue, never>[]; properties?: StyleProperties }, metadata?: TokenMetadata): TreatmentConfig {
     const properties = Object.fromEntries(
-        Object.entries(spec.properties ?? {}).flatMap(([key, value]) => (value === undefined ? [] : [[key, toValue(value)] as const]))
+        Object.entries(spec.properties ?? {}).flatMap(([key, value]) => (value === undefined ? [] : [[key, value] as const]))
     );
     return config(
         {
-            ...(spec.treatments && { treatments: spec.treatments.map(reference) }),
+            ...(spec.treatments && { treatments: spec.treatments }),
             ...(Object.keys(properties).length > 0 && { properties }),
         },
         metadata
@@ -238,10 +172,18 @@ export function changeTreatment(
     metadata?: TokenMetadata
 ): TreatmentConfig {
     const basePath = tokenPathAt(library, pathOfRef(base));
-    const value = atName<{ $value: TreatmentValue }>(library.tokens, basePath).$value;
+    const value = valueAt(library, basePath);
     // The treatments are compared as the tokens they are for, so a group and its `$root` are the same.
     const key = (ref: TreatmentRef) => tokenPathAt(library, pathOfRef(ref));
-    const list = (value.treatments ?? []).map(composed => ({ key: tokenPathAt(library, composed.ref), reference: composed }));
+    // The ref that is kept is to the token, which a group stands for with its `$root`, since the library takes no ref to a group.
+    const tokenRef = (ref: TreatmentRef): Library.Ref<TreatmentValue, never> => {
+        const made = refAt(key(ref).split("."));
+        if (!isTreatmentRef(library, made)) {
+            throw new Error(`${pathOfRef(ref)} isn't a treatment`);
+        }
+        return made;
+    };
+    const list = (value.treatments ?? []).map(composed => ({ key: tokenPathAt(library, pathOf(composed).join(".")), reference: composed }));
     const indexOf = (ref: TreatmentRef, step: string) => {
         const index = list.findIndex(entry => entry.key === key(ref));
         if (index === -1) {
@@ -252,7 +194,7 @@ export function changeTreatment(
 
     for (const step of changes.treatments ?? []) {
         if ("replace" in step) {
-            list.splice(indexOf(step.replace, "replace"), 1, { key: key(step.with), reference: reference(step.with) });
+            list.splice(indexOf(step.replace, "replace"), 1, { key: key(step.with), reference: tokenRef(step.with) });
         } else if ("remove" in step) {
             const index = list.findIndex(entry => entry.key === key(step.remove));
             if (index === -1) {
@@ -261,7 +203,7 @@ export function changeTreatment(
                 list.splice(index, 1);
             }
         } else {
-            const entry = { key: key(step.insert), reference: reference(step.insert) };
+            const entry = { key: key(step.insert), reference: tokenRef(step.insert) };
             if ("before" in step) {
                 list.splice(step.before === "start" ? 0 : indexOf(step.before, "insert"), 0, entry);
             } else {
@@ -270,12 +212,12 @@ export function changeTreatment(
         }
     }
 
-    const properties: Record<string, TreatmentStyleValues> = { ...value.properties };
+    const properties: Record<string, StyleValues> = { ...value.properties };
     for (const [property, change] of Object.entries(changes.properties ?? {})) {
         if (change === null) {
             delete properties[property];
         } else {
-            properties[property] = toValue(change);
+            properties[property] = change;
         }
     }
 
@@ -288,6 +230,31 @@ export function changeTreatment(
     );
 }
 
+const isTreatmentValue = (value: unknown): value is TreatmentValue => typeof value === "object" && value !== null && !isRef(value) && !isComputed(value);
+
+/**
+ * Gets the value of a treatment token as it was configured, with the refs in it.
+ *
+ * @remarks
+ * The library resolves a ref in the `$value` of a token to the value of its token, so the treatments a treatment is composed of are in
+ * `$value` as their values, and not as refs to them.
+ *
+ * @param token - The treatment token
+ * @returns The treatments it is composed of, by ref, and its properties
+ *
+ * @public
+ */
+export function treatmentValueOf(token: Library.Token<TreatmentToken, any>): TreatmentValue {
+    const value = configuredValueOf(token);
+    // A treatment token is its own value, which is composed of refs but isn't one, and isn't computed.
+    if (!isTreatmentValue(value)) {
+        throw new Error(`The value of ${token.name} is not a treatment, but a ref or a computed value`);
+    }
+    return value;
+}
+
+const valueAt = (library: Library.Library<any>, path: string) => treatmentValueOf(atName<Library.Token<TreatmentToken, any>>(library.tokens, path));
+
 /**
  * Gets the treatment of a treatment token of a library, as the renderer takes it, with the treatments it is composed of.
  *
@@ -298,13 +265,11 @@ export function changeTreatment(
  * @public
  */
 export function treatmentAt(library: Library.Library<any>, path: string): Treatment {
-    const value = atName<{ $value: TreatmentValue }>(library.tokens, tokenPathAt(library, path)).$value;
+    const value = valueAt(library, tokenPathAt(library, path));
     return {
         name: path,
-        ...(value.treatments && { treatments: value.treatments.map(composed => treatmentAt(library, composed.ref)) }),
-        ...(value.properties && {
-            properties: Object.fromEntries(Object.entries(value.properties).map(([key, data]) => [key, fromValue(library, data)])),
-        }),
+        ...(value.treatments && { treatments: value.treatments.map(composed => treatmentAt(library, nameOfRef(composed))) }),
+        ...(value.properties && { properties: { ...value.properties } }),
     };
 }
 
