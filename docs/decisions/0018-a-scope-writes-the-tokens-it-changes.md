@@ -33,7 +33,9 @@ inherits; declaring the padding's `calc()` again in the scope does.
   of the components whose token or fill is among them. `ds.tokenStyles(selector, library)` writes the same rule. The others are inherited.
 - **A token made by a recipe is written as its value**, which the library computes in the scope; a calculation is left to CSS.
 - **It writes them again when the library of the scope notifies a change**, which includes a change of a token it extends, and only when
-  the rule changed. `ds.removeTokenStyles(shadowRoot)` stops that, for an element that is disconnected.
+  the rule changed. It writes them in the update queue of `fast-element`, after the updates queued before it, so a change of a scope and
+  the one its element makes when it renders, like the color of a block of a background after a change of the neutral color, are written
+  once. `ds.removeTokenStyles(shadowRoot)` stops that, for an element that is disconnected.
 - **The element is the explorer's for now**, which finds the scope it is in by the context protocol of `fast-element`. It moves to the
   components when one of them is a scope (a fill as the context of its content), or the plugin needs it in the DOM.
 

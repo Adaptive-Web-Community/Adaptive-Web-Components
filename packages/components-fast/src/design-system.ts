@@ -5,6 +5,7 @@ import {
     FASTElementDefinition,
     type PartialFASTElementDefinition,
     type ShadowRootOptions,
+    Updates,
 } from '@microsoft/fast-element';
 import {
     adaptiveConverters,
@@ -364,7 +365,9 @@ export class DesignSystem {
             return;
         }
         tokenSheet.pending = true;
-        queueMicrotask(() => {
+        // In the update queue of the elements, after the updates that were queued before it: a change of a scope is often followed by
+        // one that its element makes when it renders, like the color of a block of a background, and the sheet is written once for both.
+        Updates.enqueue(() => {
             tokenSheet.pending = false;
             this.write(tokenSheet);
         });
