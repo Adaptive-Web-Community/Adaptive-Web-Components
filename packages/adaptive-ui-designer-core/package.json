@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/adaptive-ui-designer-core",
-  "version": "0.6.2",
+  "version": "1.0.0-beta.0",
   "description": "Core infrastructure for the Adaptive UI Designer",
   "main": "dist/esm/index.js",
   "exports": {
@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
     "culori": "^4.0.2",
     "tslog": "^4.10.2"
   },

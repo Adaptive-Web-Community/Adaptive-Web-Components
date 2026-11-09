@@ -9,10 +9,20 @@
     "@adaptive-web/adaptive-ui-designer-figma": "0.6.1",
     "@adaptive-web/adaptive-ui-designer-figma-plugin": "0.0.1",
     "@adaptive-web/adaptive-ui-explorer": "0.0.1",
-    "@adaptive-web/components-fast": "0.10.0"
+    "@adaptive-web/components-fast": "0.10.0",
+    "@adaptive-web/adaptive-ui-cli": "1.0.0-beta.0",
+    "@adaptive-web/components-foundation": "0.1.0"
   },
   "changesets": [
+    "adaptive-ui-cli",
     "cli-on-fills",
+    "components-foundation",
+    "components-on-fast-element-3",
+    "density-at-least-none",
+    "design-token-library-0-3",
+    "designer-core-on-the-token-library",
+    "designer-figma-on-the-token-library",
+    "expressions-keep-refs",
     "migrate-color-sets",
     "migrate-color",
     "migrate-density",
@@ -21,10 +31,14 @@
     "migrate-palette-layer",
     "migrate-styles",
     "migrate-typography",
+    "paint-and-set-guards",
     "pair-values-on-a-fill",
     "remove-fast-token-helpers",
     "render-style-rules",
+    "split-aui-cli",
     "start-one-point-oh-beta",
-    "token-names"
+    "token-names",
+    "treatment-tokens",
+    "values-on-a-fill-in-one-library"
   ]
 }

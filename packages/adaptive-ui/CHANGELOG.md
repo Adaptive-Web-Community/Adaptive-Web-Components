@@ -1,109 +1,131 @@
 # Change Log - @adaptive-web/adaptive-ui
 
+## 1.0.0-beta.2
+
+### Major Changes
+
+- [#349](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/349) [`f2894b9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f2894b93e8ff9c6d6a57d671f11785283b93b8e1) Thanks [@bheston](https://github.com/bheston)! - Requires design token library 0.3.1. The `interactive` converter of `adaptiveConverters()` returns a record (`{ "": rest, hover }`) that the library writes as `--x` and `--x-hover`, not a string of properties, and a set with no `rest` no longer writes an empty `--x:;`. See the [migration guide](./MIGRATION.md#interactive-values).
+
+- [#351](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/351) [`fe6cc2e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/fe6cc2e0887e5584c934404e4f37252225d67022) Thanks [@bheston](https://github.com/bheston)! - The `aui` command is published as `@adaptive-web/adaptive-ui-cli`. The library exports a compile API (`jsonToStyleSheet`, `compileStyleRulesToCss`, `referenceCompileContext`, and related types). Install the CLI package for `aui`; see the [migration guide](./MIGRATION.md).
+
+- [#337](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/337) [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751) Thanks [@bheston](https://github.com/bheston)! - Make the treatments tokens of the library, named by their path in the groups they style, which a system changes by extending the library. See the [migration guide](./MIGRATION.md).
+
+### Minor Changes
+
+- [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - A density padding or gap is never less than none: a negative adjustment that made one negative, which CSS ignores, makes it `0`.
+
+- [#350](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/350) [`ab2d59f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/ab2d59feba31f9df696474ebab259d327b67c789) Thanks [@bheston](https://github.com/bheston)! - An expression and a treatment token keep the refs of the library, not paths (`Reference` is gone), so the library tracks what they depend on, and `configuredValueOf` reads them. `treatment()` takes the `.$root` of a group. See the [migration guide](./MIGRATION.md#derived-values-are-expressions).
+
+- [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - `isPaint(value)` tells a color or a gradient from any other value, and `isInteractiveSet(value)` a set of values by state; both are public. `formatValue` writes a DTCG gradient as a gradient.
+
+### Patch Changes
+
+- [#348](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/348) [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f) Thanks [@bheston](https://github.com/bheston)! - The values on a fill are made in one library extended for each library, not one for each color of a fill, so writing them again for a scope whose colors change no longer keeps a library for each color.
+
 ## 1.0.0-beta.1
 
 ### Major Changes
 
--   [#326](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/326) [`21a4755`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/21a475576997a585b95ef18610c834568daf3684) Thanks [@bheston](https://github.com/bheston)! - Migrate the color sets, the fills and strokes of each palette, to the design token library. See the [migration guide](./MIGRATION.md).
+- [#326](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/326) [`21a4755`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/21a475576997a585b95ef18610c834568daf3684) Thanks [@bheston](https://github.com/bheston)! - Migrate the color sets, the fills and strokes of each palette, to the design token library. See the [migration guide](./MIGRATION.md).
 
--   [#322](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/322) [`d317364`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d31736424a1f473929c462b457141c22ac71c29f) Thanks [@bheston](https://github.com/bheston)! - Migrate the colors, palettes, gradients, and color recipes to the design token library. See the [migration guide](./MIGRATION.md).
+- [#322](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/322) [`d317364`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d31736424a1f473929c462b457141c22ac71c29f) Thanks [@bheston](https://github.com/bheston)! - Migrate the colors, palettes, gradients, and color recipes to the design token library. See the [migration guide](./MIGRATION.md).
 
--   [#328](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/328) [`4b3fa36`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4b3fa36e5b860e0d205fe66e29ac58397624cec9) Thanks [@bheston](https://github.com/bheston)! - Migrate the appearance and the density to the design token library. See the [migration guide](./MIGRATION.md).
+- [#328](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/328) [`4b3fa36`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4b3fa36e5b860e0d205fe66e29ac58397624cec9) Thanks [@bheston](https://github.com/bheston)! - Migrate the appearance and the density to the design token library. See the [migration guide](./MIGRATION.md).
 
--   [#327](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/327) [`d21fec4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d21fec4dc41e79293ea5837732f66f228b15879e) Thanks [@bheston](https://github.com/bheston)! - Migrate the shadows and the elevation to the design token library. See the [migration guide](./MIGRATION.md).
+- [#327](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/327) [`d21fec4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d21fec4dc41e79293ea5837732f66f228b15879e) Thanks [@bheston](https://github.com/bheston)! - Migrate the shadows and the elevation to the design token library. See the [migration guide](./MIGRATION.md).
 
--   [#334](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/334) [`fe9a7bf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/fe9a7bfe0423fc103ea95d7b9b2f2ddf3f8ea9b9) Thanks [@bheston](https://github.com/bheston)! - Migrate the experimental gradients to the design token library, with a `paint` token type for a fill that is a color or a gradient. See the [migration guide](./MIGRATION.md).
+- [#334](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/334) [`fe9a7bf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/fe9a7bfe0423fc103ea95d7b9b2f2ddf3f8ea9b9) Thanks [@bheston](https://github.com/bheston)! - Migrate the experimental gradients to the design token library, with a `paint` token type for a fill that is a color or a gradient. See the [migration guide](./MIGRATION.md).
 
--   [#325](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/325) [`a234536`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/a234536fee0f238d1bb4977a68ebd5985699c1d8) Thanks [@bheston](https://github.com/bheston)! - Migrate the palettes, the color context, and the layers to the design token library, with one token for the values of the states of an interactive element. See the [migration guide](./MIGRATION.md).
+- [#325](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/325) [`a234536`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/a234536fee0f238d1bb4977a68ebd5985699c1d8) Thanks [@bheston](https://github.com/bheston)! - Migrate the palettes, the color context, and the layers to the design token library, with one token for the values of the states of an interactive element. See the [migration guide](./MIGRATION.md).
 
--   [#330](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/330) [`dceb147`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dceb1477580e8be127149841b48d906c1382c692) Thanks [@bheston](https://github.com/bheston)! - Migrate the styles to the design token library: treatments that refer to tokens by ref, rendered to CSS without FAST, and a CLI that needs no DOM. See the [migration guide](./MIGRATION.md).
+- [#330](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/330) [`dceb147`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dceb1477580e8be127149841b48d906c1382c692) Thanks [@bheston](https://github.com/bheston)! - Migrate the styles to the design token library: treatments that refer to tokens by ref, rendered to CSS without FAST, and a CLI that needs no DOM. See the [migration guide](./MIGRATION.md).
 
--   [#324](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/324) [`28f7c32`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/28f7c32afad428e08a1af5a61b99712c33fb64f9) Thanks [@bheston](https://github.com/bheston)! - Migrate the typography and type ramps to the design token library, with expressions for values calculated from other tokens. See the [migration guide](./MIGRATION.md).
+- [#324](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/324) [`28f7c32`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/28f7c32afad428e08a1af5a61b99712c33fb64f9) Thanks [@bheston](https://github.com/bheston)! - Migrate the typography and type ramps to the design token library, with expressions for values calculated from other tokens. See the [migration guide](./MIGRATION.md).
 
--   [#333](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/333) [`56ec0df`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/56ec0df9ac38b2a393cad3680befd9cbe3bac41f) Thanks [@bheston](https://github.com/bheston)! - Remove the token helpers of 0.14, which made FAST tokens, and the dependencies on FAST. See the [migration guide](./MIGRATION.md).
+- [#333](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/333) [`56ec0df`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/56ec0df9ac38b2a393cad3680befd9cbe3bac41f) Thanks [@bheston](https://github.com/bheston)! - Remove the token helpers of 0.14, which made FAST tokens, and the dependencies on FAST. See the [migration guide](./MIGRATION.md).
 
--   [#336](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/336) [`1b83643`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1b8364348f509d6dc6c7a64d4aac7414a4b1880d) Thanks [@bheston](https://github.com/bheston)! - Keep the names a token had on the token, find a token by any of them with `resolveTokenName`, and build the `./reference` entry. `TokenNameMapping` is removed. See the [migration guide](./MIGRATION.md).
+- [#336](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/336) [`1b83643`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1b8364348f509d6dc6c7a64d4aac7414a4b1880d) Thanks [@bheston](https://github.com/bheston)! - Keep the names a token had on the token, find a token by any of them with `resolveTokenName`, and build the `./reference` entry. `TokenNameMapping` is removed. See the [migration guide](./MIGRATION.md).
 
 ### Minor Changes
 
--   [#332](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/332) [`f69abc7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f69abc79e0742231de48762ac7945aabe91c82dd) Thanks [@bheston](https://github.com/bheston)! - The `aui` CLI reads a value on a fill in an anatomy written as JSON, and writes the values on a fill of the styles it compiles with `--on-fills`, for the CSS of the tokens. See the [migration guide](./MIGRATION.md).
+- [#332](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/332) [`f69abc7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f69abc79e0742231de48762ac7945aabe91c82dd) Thanks [@bheston](https://github.com/bheston)! - The `aui` CLI reads a value on a fill in an anatomy written as JSON, and writes the values on a fill of the styles it compiles with `--on-fills`, for the CSS of the tokens. See the [migration guide](./MIGRATION.md).
 
--   [#331](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/331) [`189441c`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/189441cee7ad4ee45e398a5ac90a6c01df6f921b) Thanks [@bheston](https://github.com/bheston)! - Pair a value with the fill it is on in a treatment (`onFill`), made in the context of each state of the fill, for any combination, in place of `Fill.backgroundAndForeground`. See the [migration guide](./MIGRATION.md).
+- [#331](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/331) [`189441c`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/189441cee7ad4ee45e398a5ac90a6c01df6f921b) Thanks [@bheston](https://github.com/bheston)! - Pair a value with the fill it is on in a treatment (`onFill`), made in the context of each state of the fill, for any combination, in place of `Fill.backgroundAndForeground`. See the [migration guide](./MIGRATION.md).
 
--   [#329](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/329) [`d99d527`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d99d52797c6b369436033be32bb30156897f75c7) Thanks [@bheston](https://github.com/bheston)! - Add `renderRules` and `formatRules`, which render the values of a style to rules of CSS from a library of tokens, without FAST or a DOM.
+- [#329](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/329) [`d99d527`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d99d52797c6b369436033be32bb30156897f75c7) Thanks [@bheston](https://github.com/bheston)! - Add `renderRules` and `formatRules`, which render the values of a style to rules of CSS from a library of tokens, without FAST or a DOM.
 
 ## 1.0.0-beta.0
 
 ### Major Changes
 
--   Begin the 1.0 beta line for the new token model. Other packages in the repository are not built or published until they are migrated.
+- Begin the 1.0 beta line for the new token model. Other packages in the repository are not built or published until they are migrated.
 
 ## 0.14.0
 
 ### Minor Changes
 
--   [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
+- [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
 
 ## 0.13.2
 
 ### Patch Changes
 
--   [#314](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/314) [`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27) Thanks [@bheston](https://github.com/bheston)! - Fixed several issues found while improving test coverage of `core`:
+- [#314](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/314) [`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27) Thanks [@bheston](https://github.com/bheston)! - Fixed several issues found while improving test coverage of `core`:
 
-    -   `Shadow` now writes a zero blur radius when a spread is set.
-    -   `Styles` keeps property values of `0`, and `Styles.compose` no longer modifies the array it is given.
-    -   `convertStylesToFocusState` keeps number and zero values.
-    -   `ElementStylesRenderer.render` no longer accumulates rules between calls.
-    -   `BasePalette.get` rounds a fractional index.
-    -   `PaletteRGB` no longer throws with a larger `stepContrast`, and `preserveSource` keeps the source color and no longer duplicates a black or white source.
+    - `Shadow` now writes a zero blur radius when a spread is set.
+    - `Styles` keeps property values of `0`, and `Styles.compose` no longer modifies the array it is given.
+    - `convertStylesToFocusState` keeps number and zero values.
+    - `ElementStylesRenderer.render` no longer accumulates rules between calls.
+    - `BasePalette.get` rounds a fractional index.
+    - `PaletteRGB` no longer throws with a larger `stepContrast`, and `preserveSource` keeps the source color and no longer duplicates a black or white source.
 
--   [#307](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/307) [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4) Thanks [@bheston](https://github.com/bheston)! - Figma: Added support for slot layers
+- [#307](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/307) [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4) Thanks [@bheston](https://github.com/bheston)! - Figma: Added support for slot layers
 
--   [#296](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/296) [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623) Thanks [@bheston](https://github.com/bheston)! - Consolidate style generation and enable bulk update.
+- [#296](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/296) [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623) Thanks [@bheston](https://github.com/bheston)! - Consolidate style generation and enable bulk update.
 
--   [#309](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/309) [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3) Thanks [@bheston](https://github.com/bheston)! - AUI: Added full test coverage to `core` capabilities.
+- [#309](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/309) [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3) Thanks [@bheston](https://github.com/bheston)! - AUI: Added full test coverage to `core` capabilities.
 
--   [#316](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/316) [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046) Thanks [@bheston](https://github.com/bheston)! - Fixed `aui compile-styles` failing to format the stylesheet for components with a TypeScript or JavaScript anatomy, which caused prettier to parse the CSS as JavaScript.
+- [#316](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/316) [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046) Thanks [@bheston](https://github.com/bheston)! - Fixed `aui compile-styles` failing to format the stylesheet for components with a TypeScript or JavaScript anatomy, which caused prettier to parse the CSS as JavaScript.
 
--   [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
+- [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
 
--   [#298](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/298) [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d) Thanks [@bheston](https://github.com/bheston)! - AUI: Fix part resolution
+- [#298](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/298) [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d) Thanks [@bheston](https://github.com/bheston)! - AUI: Fix part resolution
 
--   [#289](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/289) [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d) Thanks [@bheston](https://github.com/bheston)! - AUI: Updated layer fill interactive to invert colors to avoid white on white scenario
+- [#289](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/289) [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d) Thanks [@bheston](https://github.com/bheston)! - AUI: Updated layer fill interactive to invert colors to avoid white on white scenario
 
 ## 0.13.1
 
 ### Patch Changes
 
--   [#281](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/281) [`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935) Thanks [@bheston](https://github.com/bheston)! - Fixed an issue with overlay handling of transparent colors
+- [#281](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/281) [`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935) Thanks [@bheston](https://github.com/bheston)! - Fixed an issue with overlay handling of transparent colors
 
 ## 0.13.0
 
 ### Minor Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add gradient recipes
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add gradient recipes
 
 ### Patch Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Bump glob from 10.3.12 to 10.5.0
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Bump glob from 10.3.12 to 10.5.0
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add full tests for Color and Swatch classes
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add full tests for Color and Swatch classes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added support for generated type scale token values
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added support for generated type scale token values
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Fix a style generation bug on placement of state selector
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Fix a style generation bug on placement of state selector
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated style properties to readonly, adjusted token group types
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated style properties to readonly, adjusted token group types
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated typography tokens into token group
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Updated typography tokens into token group
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add legacy alias tokens for updated typography tokens
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add legacy alias tokens for updated typography tokens
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added token for multiline line height in type ramp
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added token for multiline line height in type ramp
 
 This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
@@ -115,12 +137,12 @@ Fri, 31 Jan 2025 15:36:53 GMT
 
 ### Minor changes
 
--   Updated reference density recipes (47367562+bheston@users.noreply.github.com)
--   AUI: Added layout wrap support (47367562+bheston@users.noreply.github.com)
+- Updated reference density recipes (47367562+bheston@users.noreply.github.com)
+- AUI: Added layout wrap support (47367562+bheston@users.noreply.github.com)
 
 ### Patches
 
--   AUI: Fix minor color recipe bug (47367562+bheston@users.noreply.github.com)
+- AUI: Fix minor color recipe bug (47367562+bheston@users.noreply.github.com)
 
 ## 0.11.0
 
@@ -128,7 +150,7 @@ Fri, 01 Nov 2024 01:04:24 GMT
 
 ### Minor changes
 
--   AUI: Added parts support to anatomy import (47367562+bheston@users.noreply.github.com)
+- AUI: Added parts support to anatomy import (47367562+bheston@users.noreply.github.com)
 
 ## 0.10.0
 
@@ -136,19 +158,19 @@ Fri, 25 Oct 2024 03:02:05 GMT
 
 ### Minor changes
 
--   AUI: Add import capability to component anatomy definitions (47367562+bheston@users.noreply.github.com)
--   AUI: Add a few style properties (47367562+bheston@users.noreply.github.com)
--   Updating palette base color token type for better type safety (47367562+bheston@users.noreply.github.com)
--   AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Added palette options for Okhsl (47367562+bheston@users.noreply.github.com)
--   AUI: Add support for looking up Token Groups in anatomy (47367562+bheston@users.noreply.github.com)
+- AUI: Add import capability to component anatomy definitions (47367562+bheston@users.noreply.github.com)
+- AUI: Add a few style properties (47367562+bheston@users.noreply.github.com)
+- Updating palette base color token type for better type safety (47367562+bheston@users.noreply.github.com)
+- AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added palette options for Okhsl (47367562+bheston@users.noreply.github.com)
+- AUI: Add support for looking up Token Groups in anatomy (47367562+bheston@users.noreply.github.com)
 
 ### Patches
 
--   Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
--   fix module imports on windows (32497422+KingOfTac@users.noreply.github.com)
--   Add support for margin properties (47367562+bheston@users.noreply.github.com)
--   AUI: Added support for pseudo selectors in part conditions (47367562+bheston@users.noreply.github.com)
+- Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
+- fix module imports on windows (32497422+KingOfTac@users.noreply.github.com)
+- Add support for margin properties (47367562+bheston@users.noreply.github.com)
+- AUI: Added support for pseudo selectors in part conditions (47367562+bheston@users.noreply.github.com)
 
 ## 0.9.1
 
@@ -156,7 +178,7 @@ Thu, 25 Jul 2024 17:29:23 GMT
 
 ### Patches
 
--   Define order of interactivity states as focus - hover - active (nicholasrice@users.noreply.github.com)
+- Define order of interactivity states as focus - hover - active (nicholasrice@users.noreply.github.com)
 
 ## 0.9.0
 
@@ -164,7 +186,7 @@ Fri, 19 Jul 2024 17:39:45 GMT
 
 ### Minor changes
 
--   AUI: Update CLI from `tokens` to align with existing `properties` (47367562+bheston@users.noreply.github.com)
+- AUI: Update CLI from `tokens` to align with existing `properties` (47367562+bheston@users.noreply.github.com)
 
 ## 0.8.0
 
@@ -172,7 +194,7 @@ Mon, 15 Jul 2024 18:51:14 GMT
 
 ### Minor changes
 
--   Merge CSS rules during CSS generation from JSON anatomy (nicholasrice@users.noreply.github.com)
+- Merge CSS rules during CSS generation from JSON anatomy (nicholasrice@users.noreply.github.com)
 
 ## 0.7.0
 
@@ -180,7 +202,7 @@ Thu, 11 Jul 2024 17:06:10 GMT
 
 ### Minor changes
 
--   AUI: Fix global style generation (47367562+bheston@users.noreply.github.com)
+- AUI: Fix global style generation (47367562+bheston@users.noreply.github.com)
 
 ## 0.6.0
 
@@ -188,12 +210,12 @@ Tue, 09 Jul 2024 16:29:52 GMT
 
 ### Minor changes
 
--   Improved Figma CLI (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
+- Improved Figma CLI (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
 
 ### Patches
 
--   Adaptive UI: Anatomy CLI fixes (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Anatomy CLI fixes (47367562+bheston@users.noreply.github.com)
 
 ## 0.5.0
 
@@ -201,7 +223,7 @@ Mon, 24 Jun 2024 21:29:12 GMT
 
 ### Minor changes
 
--   Adaptive UI: Improve color palette accuracy (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Improve color palette accuracy (47367562+bheston@users.noreply.github.com)
 
 ## 0.4.1
 
@@ -209,7 +231,7 @@ Mon, 10 Jun 2024 23:22:54 GMT
 
 ### Patches
 
--   Add runtime dependencies as dependencies (nicholasrice@users.noreply.github.com)
+- Add runtime dependencies as dependencies (nicholasrice@users.noreply.github.com)
 
 ## 0.4.0
 
@@ -217,13 +239,13 @@ Thu, 30 May 2024 17:37:24 GMT
 
 ### Minor changes
 
--   AUI: Remove assumption on `part` selector (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Fix module name (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Updated token names to hierarchical format (47367562+bheston@users.noreply.github.com)
--   Designer: Added anatomy code generation (47367562+bheston@users.noreply.github.com)
--   Added a registry for Design Tokens (47367562+bheston@users.noreply.github.com)
--   Adds stylesheet generation from JSON anatomy (nicholasrice@users.noreply.github.com)
--   Adaptive UI: Add support for multi-value string anatomy conditions (47367562+bheston@users.noreply.github.com)
+- AUI: Remove assumption on `part` selector (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Fix module name (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Updated token names to hierarchical format (47367562+bheston@users.noreply.github.com)
+- Designer: Added anatomy code generation (47367562+bheston@users.noreply.github.com)
+- Added a registry for Design Tokens (47367562+bheston@users.noreply.github.com)
+- Adds stylesheet generation from JSON anatomy (nicholasrice@users.noreply.github.com)
+- Adaptive UI: Add support for multi-value string anatomy conditions (47367562+bheston@users.noreply.github.com)
 
 ## 0.3.0
 
@@ -231,22 +253,22 @@ Fri, 26 Apr 2024 21:58:21 GMT
 
 ### Minor changes
 
--   Added subtle inverse color recipes (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Added support for overriding interactive state selectors - Naming and type cleanup around interactive states (47367562+bheston@users.noreply.github.com)
--   Added shadows to Designer plugin (47367562+bheston@users.noreply.github.com)
+- Added subtle inverse color recipes (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Added support for overriding interactive state selectors - Naming and type cleanup around interactive states (47367562+bheston@users.noreply.github.com)
+- Added shadows to Designer plugin (47367562+bheston@users.noreply.github.com)
 
 ### Patches
 
--   Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Fix circular palette reference (47367562+bheston@users.noreply.github.com)
--   Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
--   Adaptive UI : Organized package structure (47367562+bheston@users.noreply.github.com)
--   Added warning and success palettes and recipes Deprecated color recipe set aliases (47367562+bheston@users.noreply.github.com)
--   Added info color palette (47367562+bheston@users.noreply.github.com)
--   Updated density token settings (47367562+bheston@users.noreply.github.com)
--   refactor compiler to add compile commands and allow paramaterized inputs (nicholasrice@users.noreply.github.com)
--   Adaptive UI: Fix a sequence issue in the density helper (47367562+bheston@users.noreply.github.com)
+- Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Fix circular palette reference (47367562+bheston@users.noreply.github.com)
+- Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
+- Adaptive UI : Organized package structure (47367562+bheston@users.noreply.github.com)
+- Added warning and success palettes and recipes Deprecated color recipe set aliases (47367562+bheston@users.noreply.github.com)
+- Added info color palette (47367562+bheston@users.noreply.github.com)
+- Updated density token settings (47367562+bheston@users.noreply.github.com)
+- refactor compiler to add compile commands and allow paramaterized inputs (nicholasrice@users.noreply.github.com)
+- Adaptive UI: Fix a sequence issue in the density helper (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.2
 
@@ -254,17 +276,17 @@ Fri, 12 Jan 2024 00:16:08 GMT
 
 ### Patches
 
--   Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
--   Updated elevation tokens to work with Adaptive Styles - Fixed an issue with objects converting to css values (47367562+bheston@users.noreply.github.com)
--   Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
--   Fixed border not getting set on fill styles (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Update culori imports for tree shaking (47367562+bheston@users.noreply.github.com)
--   Migrated from fast-colors to culori (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Adjust color deltas (47367562+bheston@users.noreply.github.com)
--   Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
--   Updated focus stroke recipes for more control (47367562+bheston@users.noreply.github.com)
--   Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
--   Added support for focus styling and css outline properties (47367562+bheston@users.noreply.github.com)
+- Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
+- Updated elevation tokens to work with Adaptive Styles - Fixed an issue with objects converting to css values (47367562+bheston@users.noreply.github.com)
+- Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
+- Fixed border not getting set on fill styles (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Update culori imports for tree shaking (47367562+bheston@users.noreply.github.com)
+- Migrated from fast-colors to culori (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Adjust color deltas (47367562+bheston@users.noreply.github.com)
+- Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
+- Updated focus stroke recipes for more control (47367562+bheston@users.noreply.github.com)
+- Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
+- Added support for focus styling and css outline properties (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.1
 
@@ -272,20 +294,20 @@ Tue, 17 Oct 2023 16:10:46 GMT
 
 ### Patches
 
--   Designer - Fix the fill color evaluation (47367562+bheston@users.noreply.github.com)
--   Added `destructive` color palette and recipes (47367562+bheston@users.noreply.github.com)
--   Rename "font" styles to "text" (47367562+bheston@users.noreply.github.com)
--   Fix corner radius style not applying (47367562+bheston@users.noreply.github.com)
--   Adaptive UI - Updated color palette based on okhsl (47367562+bheston@users.noreply.github.com)
--   Add a few styles and tokens to Adaptive UI reference (47367562+bheston@users.noreply.github.com)
--   update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
--   Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
--   Adaptive UI - Improve density support (47367562+bheston@users.noreply.github.com)
--   Added support for setting font weight and italic style (47367562+bheston@users.noreply.github.com)
--   Renamed "destructive" palette to "critical" (47367562+bheston@users.noreply.github.com)
--   Added support for `disabled` state colors - Added deltas to base semantic recipes - Added a disabled palette to enable neutral disabled states - Added support for global styles - Added disabled cursor to global styles (47367562+bheston@users.noreply.github.com)
--   Adjusted adaptive density styles (47367562+bheston@users.noreply.github.com)
--   Swapped default setting for transparent output from delta rules, added square density modifier, and update outline modules to include fillColor (47367562+bheston@users.noreply.github.com)
+- Designer - Fix the fill color evaluation (47367562+bheston@users.noreply.github.com)
+- Added `destructive` color palette and recipes (47367562+bheston@users.noreply.github.com)
+- Rename "font" styles to "text" (47367562+bheston@users.noreply.github.com)
+- Fix corner radius style not applying (47367562+bheston@users.noreply.github.com)
+- Adaptive UI - Updated color palette based on okhsl (47367562+bheston@users.noreply.github.com)
+- Add a few styles and tokens to Adaptive UI reference (47367562+bheston@users.noreply.github.com)
+- update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
+- Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
+- Adaptive UI - Improve density support (47367562+bheston@users.noreply.github.com)
+- Added support for setting font weight and italic style (47367562+bheston@users.noreply.github.com)
+- Renamed "destructive" palette to "critical" (47367562+bheston@users.noreply.github.com)
+- Added support for `disabled` state colors - Added deltas to base semantic recipes - Added a disabled palette to enable neutral disabled states - Added support for global styles - Added disabled cursor to global styles (47367562+bheston@users.noreply.github.com)
+- Adjusted adaptive density styles (47367562+bheston@users.noreply.github.com)
+- Swapped default setting for transparent output from delta rules, added square density modifier, and update outline modules to include fillColor (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.0
 
@@ -293,17 +315,17 @@ Sat, 01 Jul 2023 03:28:44 GMT
 
 ### Minor changes
 
--   fixed modules exported from wrong path (nbrown414@outlook.com)
--   Export color token and style helpers (47367562+bheston@users.noreply.github.com)
--   Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
--   Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
--   move type ramp tokens to reference path (32497422+KingOfTac@users.noreply.github.com)
--   Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
--   Add highlight palette and recipes (47367562+bheston@users.noreply.github.com)
--   Improved typing and metadata on color recipes (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Token helpers cleanup (47367562+bheston@users.noreply.github.com)
--   Designer: add style module support (47367562+bheston@users.noreply.github.com)
+- fixed modules exported from wrong path (nbrown414@outlook.com)
+- Export color token and style helpers (47367562+bheston@users.noreply.github.com)
+- Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
+- Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
+- move type ramp tokens to reference path (32497422+KingOfTac@users.noreply.github.com)
+- Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
+- Add highlight palette and recipes (47367562+bheston@users.noreply.github.com)
+- Improved typing and metadata on color recipes (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Token helpers cleanup (47367562+bheston@users.noreply.github.com)
+- Designer: add style module support (47367562+bheston@users.noreply.github.com)
 
 ## 0.1.0
 
@@ -311,25 +333,25 @@ Sat, 03 Jun 2023 04:25:41 GMT
 
 ### Minor changes
 
--   Migrated interactive color styles to style modules (47367562+bheston@users.noreply.github.com)
--   Migration and update to Adaptive UI for the Figma plugin (47367562+bheston@users.noreply.github.com)
--   Migrate density related styles to style modules (47367562+bheston@users.noreply.github.com)
--   Package color tokens as sets and style modules, add style module rendering to ElementStyles (47367562+bheston@users.noreply.github.com)
--   Update to latest FAST (47367562+bheston@users.noreply.github.com)
--   Bridge token structure between Adaptive UI and DT community group (47367562+bheston@users.noreply.github.com)
--   Update Adaptive UI code sequence (organization only) (47367562+bheston@users.noreply.github.com)
--   Renamed `perceivable` colors to `discernible` (47367562+bheston@users.noreply.github.com)
--   Updated more color tokens and modules - Renamed remaining "foreground" tokens - Added support for derived foreground recipes over a background - Minor recipe tweaks (47367562+bheston@users.noreply.github.com)
--   Migrated type ramp to style modules (47367562+bheston@users.noreply.github.com)
--   Clean up style module definition (47367562+bheston@users.noreply.github.com)
--   Finish semantic color recipe system and foundation style modules (47367562+bheston@users.noreply.github.com)
--   Designer token model update - Aligned plugin to new model where a token might have multiple uses - Aligned token registration - Cleanup of some component handling logic - More comments (47367562+bheston@users.noreply.github.com)
--   Update Styles to typed StylesProperty key (47367562+bheston@users.noreply.github.com)
+- Migrated interactive color styles to style modules (47367562+bheston@users.noreply.github.com)
+- Migration and update to Adaptive UI for the Figma plugin (47367562+bheston@users.noreply.github.com)
+- Migrate density related styles to style modules (47367562+bheston@users.noreply.github.com)
+- Package color tokens as sets and style modules, add style module rendering to ElementStyles (47367562+bheston@users.noreply.github.com)
+- Update to latest FAST (47367562+bheston@users.noreply.github.com)
+- Bridge token structure between Adaptive UI and DT community group (47367562+bheston@users.noreply.github.com)
+- Update Adaptive UI code sequence (organization only) (47367562+bheston@users.noreply.github.com)
+- Renamed `perceivable` colors to `discernible` (47367562+bheston@users.noreply.github.com)
+- Updated more color tokens and modules - Renamed remaining "foreground" tokens - Added support for derived foreground recipes over a background - Minor recipe tweaks (47367562+bheston@users.noreply.github.com)
+- Migrated type ramp to style modules (47367562+bheston@users.noreply.github.com)
+- Clean up style module definition (47367562+bheston@users.noreply.github.com)
+- Finish semantic color recipe system and foundation style modules (47367562+bheston@users.noreply.github.com)
+- Designer token model update - Aligned plugin to new model where a token might have multiple uses - Aligned token registration - Cleanup of some component handling logic - More comments (47367562+bheston@users.noreply.github.com)
+- Update Styles to typed StylesProperty key (47367562+bheston@users.noreply.github.com)
 
 ### Patches
 
--   Fix API docs (47367562+bheston@users.noreply.github.com)
--   Restructure color recipe design token definition (47367562+bheston@users.noreply.github.com)
+- Fix API docs (47367562+bheston@users.noreply.github.com)
+- Restructure color recipe design token definition (47367562+bheston@users.noreply.github.com)
 
 ## 0.0.3
 
@@ -337,4 +359,4 @@ Wed, 15 Mar 2023 23:46:48 GMT
 
 ### Patches
 
--   Fix black or white foreground recipe Minor Adaptive UI Explorer fixes (47367562+bheston@users.noreply.github.com)
+- Fix black or white foreground recipe Minor Adaptive UI Explorer fixes (47367562+bheston@users.noreply.github.com)
