@@ -9,3 +9,4 @@ export * from "./token-css.js";
 export * from "./token-metadata.js";
 export * from "./token-names.js";
 export * from "./token-types.js";
+export * from "./compile/index.js";

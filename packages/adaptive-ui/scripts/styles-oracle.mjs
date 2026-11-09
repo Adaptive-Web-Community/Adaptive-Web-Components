@@ -14,7 +14,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const aui = path.join(root, "bin/aui.js");
+const cliRoot = path.resolve(root, "../adaptive-ui-cli");
+const aui = path.join(cliRoot, "bin/aui.js");
 const sourceDir = path.join(root, "src/__test__/styles-oracle");
 const baselineDir = path.join(sourceDir, "baseline");
 const outDir = path.join(root, "dist/esm/__test__/styles-oracle");
@@ -47,8 +48,8 @@ function runAui(args) {
     return result;
 }
 
-if (!fs.existsSync(path.join(root, "dist/esm/bin/aui.js"))) {
-    console.error("The package is not built. Run `npm run build` first.");
+if (!fs.existsSync(path.join(cliRoot, "dist/esm/aui.js"))) {
+    console.error("Build adaptive-ui and adaptive-ui-cli first (`npm run build` at the repo root).");
     process.exit(1);
 }
 

@@ -38,3 +38,4 @@ reason with the code.
 | [0015](0015-a-treatment-is-a-token.md) | A treatment is a token, named in the group it styles | Accepted |
 | [0016](0016-a-control-is-labelled-as-its-native-element-is.md) | A control is labelled as its native element is | Accepted |
 | [0017](0017-a-design-system-renders-the-styles-with-its-library.md) | A design system renders the styles of its components with its token library, in FAST | Accepted |
+| [0021](0021-the-aui-cli-is-its-own-package.md) | The `aui` CLI is `@adaptive-web/adaptive-ui-cli`; the library has the compile API | Accepted |

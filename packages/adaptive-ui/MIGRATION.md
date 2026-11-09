@@ -395,7 +395,7 @@ scope, beside `toCSS`. `createReferenceLibrary()` is a library of the whole refe
   disabled, has no rules for the hover, the active, and the focus, which repeated the rest.
 - The rules of the states are in the order rest, focus, hover, active, disabled. States that have the same selector, like those of a
   pseudo-element, are one rule, where the later state wins, as before.
-- The `aui` CLI renders with the reference library and needs no DOM. An anatomy written as JSON names its treatments in `treatments` (was
+- The `aui` CLI (package `@adaptive-web/adaptive-ui-cli`) renders with the reference library and needs no DOM. An anatomy written as JSON names its treatments in `treatments` (was
   `styles`), by their path, and a name of 0.14 still finds one, with a warning to update it; an unknown name is a warning. A property names
   a token by its path, and `<token>.rest` of an interactive token is its rest.
   A property can be a value on a fill, written as data: `{ "token": "color.critical.stroke.readable" }` on the background fill of the rule,
@@ -472,8 +472,19 @@ The names a token had are kept on the token, and a name of 0.x or of 0.14 still 
 ### Behavior
 
 - A tool that stores names, like the designer, stores the `name` of the result when `renamed` is true, so the source gets updated.
-- The `aui` CLI finds a token of an anatomy written as JSON by a name it had, and warns with the name to write instead. It warns for a
+- The `aui` CLI (`@adaptive-web/adaptive-ui-cli`) finds a token of an anatomy written as JSON by a name it had, and warns with the name to write instead. It warns for a
   deprecated token as well.
 - A name of 0.x is the kebab case of the path, with or without the first group, and a name of 0.14 may end in a state or in `.value`.
   The names of the foregrounds on a fill (`...-on-...`) and of the recipes find no token: they aren't tokens any more.
 - The reference tokens have the names they had, and the `./reference` entry is built.
+
+## The `aui` CLI
+
+The `aui` command is not published from `@adaptive-web/adaptive-ui` any more (decision [0021](../../docs/decisions/0021-the-aui-cli-is-its-own-package.md)).
+
+| 0.14 / earlier 1.0 beta | 1.0 |
+| --- | --- |
+| `npm install @adaptive-web/adaptive-ui` and run `aui` | `npm install --save-dev @adaptive-web/adaptive-ui-cli` and run `aui` |
+| Compile logic only via the CLI | `jsonToStyleSheet`, `compileStyleRulesToCss`, `onFillsFromStyleSheet`, `referenceCompileContext`, and related types on the library |
+
+Commands are unchanged: `compile-style`, `compile-styles`, and `compile-json-anatomy`, with the same flags.

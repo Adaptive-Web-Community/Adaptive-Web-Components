@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "importHelpers": false,
+        "types": ["node"],
+        "lib": ["ES2020"],
+        "skipLibCheck": true,
+        "declaration": false,
+        "outDir": "dist/esm",
+        "rootDir": "src"
+    },
+    "include": ["src"]
+}
