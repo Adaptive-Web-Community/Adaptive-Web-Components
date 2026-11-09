@@ -1,47 +1,58 @@
 # Change Log - @adaptive-web/adaptive-ui-designer-core
 
+## 1.0.0-beta.0
+
+### Major Changes
+
+- [#341](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/341) [`d8a2b6d`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/d8a2b6dc33fcbf70947dafbc106d590011e31137) Thanks [@bheston](https://github.com/bheston)! - Move the designer core to the 1.0 beta of Adaptive UI: the token registry is removed, the names a node stores are found through the names of the library, what a node stores is plain data, and the style modules applied to a node are its treatments. See the [migration guide](./MIGRATION.md).
+
+### Patch Changes
+
+- Updated dependencies [[`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f), [`f2894b9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f2894b93e8ff9c6d6a57d671f11785283b93b8e1), [`ab2d59f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/ab2d59feba31f9df696474ebab259d327b67c789), [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f), [`fe6cc2e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/fe6cc2e0887e5584c934404e4f37252225d67022), [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751), [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f)]:
+    - @adaptive-web/adaptive-ui@1.0.0-beta.2
+
 ## 0.6.2
 
 ### Patch Changes
 
--   [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
+- [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
 
--   Updated dependencies [[`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013)]:
-    -   @adaptive-web/adaptive-ui@0.14.0
+- Updated dependencies [[`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013)]:
+    - @adaptive-web/adaptive-ui@0.14.0
 
 ## 0.6.1
 
 ### Patch Changes
 
--   [#307](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/307) [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4) Thanks [@bheston](https://github.com/bheston)! - Figma: Added support for slot layers
+- [#307](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/307) [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4) Thanks [@bheston](https://github.com/bheston)! - Figma: Added support for slot layers
 
--   [#283](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/283) [`46beeb4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/46beeb4d472267085dd1f3f0d9a08421f28ef03c) Thanks [@bheston](https://github.com/bheston)! - Fix plugin data storage
+- [#283](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/283) [`46beeb4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/46beeb4d472267085dd1f3f0d9a08421f28ef03c) Thanks [@bheston](https://github.com/bheston)! - Fix plugin data storage
 
--   [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
+- [#297](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/297) [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c) Thanks [@bheston](https://github.com/bheston)! - AUI: Added support for generating default cursor styles
 
--   Updated dependencies [[`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27), [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4), [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623), [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3), [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046), [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c), [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d), [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
-    -   @adaptive-web/adaptive-ui@0.13.2
+- Updated dependencies [[`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27), [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4), [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623), [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3), [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046), [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c), [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d), [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
+    - @adaptive-web/adaptive-ui@0.13.2
 
 ## 0.6.0
 
 ### Minor Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add gradient recipes
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add gradient recipes
 
 ### Patch Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Improve tracking of applied plugin data
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Improve tracking of applied plugin data
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add subtle inverse recipes to Designer plugin
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add subtle inverse recipes to Designer plugin
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add legacy alias tokens for updated typography tokens
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Add legacy alias tokens for updated typography tokens
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added support for registering interactive token groups
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Added support for registering interactive token groups
 
--   Updated dependencies [[`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5)]:
-    -   @adaptive-web/adaptive-ui@0.13.0
+- Updated dependencies [[`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5)]:
+    - @adaptive-web/adaptive-ui@0.13.0
 
 This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
@@ -53,9 +64,9 @@ Fri, 31 Jan 2025 15:36:53 GMT
 
 ### Minor changes
 
--   Designer: Finished migration away from Token Definition wrapper (47367562+bheston@users.noreply.github.com)
--   Updated reference density recipes (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.12.0
+- Designer: Finished migration away from Token Definition wrapper (47367562+bheston@users.noreply.github.com)
+- Updated reference density recipes (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.12.0
 
 ## 0.4.1
 
@@ -63,7 +74,7 @@ Fri, 01 Nov 2024 01:04:24 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.11.0
+- Bump @adaptive-web/adaptive-ui to v0.11.0
 
 ## 0.4.0
 
@@ -71,15 +82,15 @@ Fri, 25 Oct 2024 03:02:05 GMT
 
 ### Minor changes
 
--   Updating palette base color token type for better type safety (47367562+bheston@users.noreply.github.com)
--   AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
--   Designer: Support Figma async page loading model (47367562+bheston@users.noreply.github.com)
--   Designer: Fix parent fill color handling (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.10.0
+- Updating palette base color token type for better type safety (47367562+bheston@users.noreply.github.com)
+- AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
+- Designer: Support Figma async page loading model (47367562+bheston@users.noreply.github.com)
+- Designer: Fix parent fill color handling (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.10.0
 
 ### Patches
 
--   Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
+- Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
 
 ## 0.3.1
 
@@ -87,7 +98,7 @@ Thu, 25 Jul 2024 17:29:23 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.9.1
+- Bump @adaptive-web/adaptive-ui to v0.9.1
 
 ## 0.3.0
 
@@ -95,8 +106,8 @@ Fri, 19 Jul 2024 17:39:45 GMT
 
 ### Minor changes
 
--   Designer: Added ability to mark a node `inline` for styling (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.9.0
+- Designer: Added ability to mark a node `inline` for styling (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.9.0
 
 ## 0.2.3
 
@@ -104,7 +115,7 @@ Mon, 15 Jul 2024 18:51:14 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.8.0
+- Bump @adaptive-web/adaptive-ui to v0.8.0
 
 ## 0.2.2
 
@@ -112,7 +123,7 @@ Thu, 11 Jul 2024 17:06:10 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.7.0
+- Bump @adaptive-web/adaptive-ui to v0.7.0
 
 ## 0.2.1
 
@@ -120,7 +131,7 @@ Tue, 09 Jul 2024 16:29:52 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.6.0
+- Bump @adaptive-web/adaptive-ui to v0.6.0
 
 ## 0.2.0
 
@@ -128,8 +139,8 @@ Mon, 24 Jun 2024 21:29:12 GMT
 
 ### Minor changes
 
--   Adaptive UI: Improve color palette accuracy (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.5.0
+- Adaptive UI: Improve color palette accuracy (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.5.0
 
 ## 0.1.1
 
@@ -137,7 +148,7 @@ Mon, 10 Jun 2024 23:22:54 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.4.1
+- Bump @adaptive-web/adaptive-ui to v0.4.1
 
 ## 0.1.0
 
@@ -145,9 +156,9 @@ Thu, 30 May 2024 17:37:24 GMT
 
 ### Minor changes
 
--   Initial package creation (nicholasrice@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.4.0
+- Initial package creation (nicholasrice@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.4.0
 
 ### Patches
 
--   Add support for resolving renamed tokens (47367562+bheston@users.noreply.github.com)
+- Add support for resolving renamed tokens (47367562+bheston@users.noreply.github.com)

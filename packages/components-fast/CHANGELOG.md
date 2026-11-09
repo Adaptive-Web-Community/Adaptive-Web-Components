@@ -1,42 +1,54 @@
 # Change Log - @adaptive-web/adaptive-web-components
 
+## 1.0.0-beta.0
+
+### Major Changes
+
+- [#346](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/346) [`48a3cd9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/48a3cd96bd9dfb5dbded82dde3066664b8fbc041) Thanks [@bheston](https://github.com/bheston)! - Move the components to `fast-element` 3 and the components foundation, styled with the 1.0 beta of Adaptive UI and the token library of their design system, under a new name: `@adaptive-web/components-fast`, formerly `@adaptive-web/adaptive-web-components`. `fast-element` is a peer dependency and the package has no CommonJS bundle. See the [migration guide](./MIGRATION.md).
+
+### Patch Changes
+
+- Updated dependencies [[`48a3cd9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/48a3cd96bd9dfb5dbded82dde3066664b8fbc041), [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f), [`f2894b9`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/f2894b93e8ff9c6d6a57d671f11785283b93b8e1), [`ab2d59f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/ab2d59feba31f9df696474ebab259d327b67c789), [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f), [`fe6cc2e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/fe6cc2e0887e5584c934404e4f37252225d67022), [`c8ed3cf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/c8ed3cf07b7fb256d7538de91b3d114a5f49b751), [`4805b5a`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4805b5a526f0f4afb7fa80bf68901a40b2329f0f)]:
+    - @adaptive-web/components-foundation@1.0.0-beta.0
+    - @adaptive-web/adaptive-ui@1.0.0-beta.2
+
 ## 0.10.0
 
 ### Minor Changes
 
--   [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
+- [#318](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/318) [`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013) Thanks [@bheston](https://github.com/bheston)! - Remove deprecated public APIs, the `adaptive-ui/migration` export, the `Swatch` class (use `Color`), and per-state color token aliases. Internal packages now use `ColorSet` properties, `controlListDensityStyles`, `densityControlList`, and `Color.toString()`.
 
 ### Patch Changes
 
--   Updated dependencies [[`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013)]:
-    -   @adaptive-web/adaptive-ui@0.14.0
+- Updated dependencies [[`dea75f4`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/dea75f443e22330abb653ff6ddda64953e80e013)]:
+    - @adaptive-web/adaptive-ui@0.14.0
 
 ## 0.9.2
 
 ### Patch Changes
 
--   Updated dependencies [[`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27), [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4), [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623), [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3), [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046), [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c), [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d), [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
-    -   @adaptive-web/adaptive-ui@0.13.2
+- Updated dependencies [[`4a6c306`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/4a6c3068371d619c3a2d3322d920811c6ca87f27), [`0255d8f`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/0255d8fbf3972c21c3b60271832cbe702c9e75a4), [`7d6fd23`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/7d6fd2335a0438dd63e24dd8c75f8ed0636dd623), [`b294ebf`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b294ebf6c702db82f05698469b988e8709cd53f3), [`74a20e7`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/74a20e7387059f3ee8a43675bad70807fe92a046), [`b74a178`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/b74a178a0aaccb37fe53c89f64bec1820dd0ef0c), [`eaf8997`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/eaf89972b3215946bc42e44468e84906fd32e92d), [`6cabf9e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/6cabf9e7a87d5f14c191a0c213951bd7eba1757d)]:
+    - @adaptive-web/adaptive-ui@0.13.2
 
 ## 0.9.1
 
 ### Patch Changes
 
--   Updated dependencies [[`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935)]:
-    -   @adaptive-web/adaptive-ui@0.13.1
+- Updated dependencies [[`1c3e934`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/1c3e9343950cbe716753927bedf15856a4b67935)]:
+    - @adaptive-web/adaptive-ui@0.13.1
 
 ## 0.9.0
 
 ### Minor Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - AUI: Refactored Swatch to Color
 
 ### Patch Changes
 
--   [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
+- [#278](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/pull/278) [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5) Thanks [@bheston](https://github.com/bheston)! - Rename fillColor to colorContext
 
--   Updated dependencies [[`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5)]:
-    -   @adaptive-web/adaptive-ui@0.13.0
+- Updated dependencies [[`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5), [`069752e`](https://github.com/Adaptive-Web-Community/Adaptive-Web-Components/commit/069752e6d68d33233c23a8483e170cc757d752c5)]:
+    - @adaptive-web/adaptive-ui@0.13.0
 
 This log was last generated on Fri, 31 Jan 2025 15:36:53 GMT and should not be manually modified.
 
@@ -48,7 +60,7 @@ Fri, 31 Jan 2025 15:36:53 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.12.0
+- Bump @adaptive-web/adaptive-ui to v0.12.0
 
 ## 0.8.1
 
@@ -56,7 +68,7 @@ Fri, 01 Nov 2024 01:04:24 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.11.0
+- Bump @adaptive-web/adaptive-ui to v0.11.0
 
 ## 0.8.0
 
@@ -64,12 +76,12 @@ Fri, 25 Oct 2024 03:02:05 GMT
 
 ### Minor changes
 
--   AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.10.0
+- AUI: Improve StyleProperty shorthand capabilities (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.10.0
 
 ### Patches
 
--   Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
+- Turn on strict compilation mode (47367562+bheston@users.noreply.github.com)
 
 ## 0.7.4
 
@@ -77,7 +89,7 @@ Thu, 25 Jul 2024 17:29:23 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.9.1
+- Bump @adaptive-web/adaptive-ui to v0.9.1
 
 ## 0.7.3
 
@@ -85,7 +97,7 @@ Fri, 19 Jul 2024 17:39:45 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.9.0
+- Bump @adaptive-web/adaptive-ui to v0.9.0
 
 ## 0.7.2
 
@@ -93,7 +105,7 @@ Mon, 15 Jul 2024 18:51:14 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.8.0
+- Bump @adaptive-web/adaptive-ui to v0.8.0
 
 ## 0.7.1
 
@@ -101,7 +113,7 @@ Thu, 11 Jul 2024 17:06:10 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.7.0
+- Bump @adaptive-web/adaptive-ui to v0.7.0
 
 ## 0.7.0
 
@@ -109,8 +121,8 @@ Tue, 09 Jul 2024 16:29:52 GMT
 
 ### Minor changes
 
--   Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.6.0
+- Adaptive UI: Migrated global disabled and focus style support from AWC to AUI (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.6.0
 
 ## 0.6.2
 
@@ -118,7 +130,7 @@ Mon, 24 Jun 2024 21:29:12 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.5.0
+- Bump @adaptive-web/adaptive-ui to v0.5.0
 
 ## 0.6.1
 
@@ -126,7 +138,7 @@ Mon, 10 Jun 2024 23:22:54 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.4.1
+- Bump @adaptive-web/adaptive-ui to v0.4.1
 
 ## 0.6.0
 
@@ -134,9 +146,9 @@ Thu, 30 May 2024 17:37:24 GMT
 
 ### Minor changes
 
--   AUI: Remove assumption on `part` selector (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Add support for multi-value string anatomy conditions (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.4.0
+- AUI: Remove assumption on `part` selector (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Add support for multi-value string anatomy conditions (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.4.0
 
 ## 0.5.0
 
@@ -144,14 +156,14 @@ Fri, 26 Apr 2024 21:58:21 GMT
 
 ### Minor changes
 
--   Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.3.0
+- Adaptive UI: Added styles build script (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.3.0
 
 ### Patches
 
--   Updated Adaptive UI interactive state support (47367562+bheston@users.noreply.github.com)
--   Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
--   Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
+- Updated Adaptive UI interactive state support (47367562+bheston@users.noreply.github.com)
+- Adaptive UI : Cleaned up type definition for Style Rules (formerly Style Modules) (47367562+bheston@users.noreply.github.com)
+- Expand styling capabilities to not assume `:host` container (47367562+bheston@users.noreply.github.com)
 
 ## 0.4.2
 
@@ -159,17 +171,17 @@ Fri, 12 Jan 2024 00:16:08 GMT
 
 ### Patches
 
--   Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
--   Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
--   Migrated the focus styling to style modules - Change `delegatesFocus` usage to override `focus` instead - Select includes additional style fixes (47367562+bheston@users.noreply.github.com)
--   Updated the style assembly function to get the full anatomy definition (47367562+bheston@users.noreply.github.com)
--   Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
--   Export default component styles (47367562+bheston@users.noreply.github.com)
--   Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
--   Component style cleanup (47367562+bheston@users.noreply.github.com)
--   Component cleanup - Adjust small control label style - Fix position issue on combobox - Fix shortcut issue in Storybook (47367562+bheston@users.noreply.github.com)
--   Updated elevation styling (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.2.2
+- Added density and component styling helpers (47367562+bheston@users.noreply.github.com)
+- Updated color recipes to allow null interactive states (47367562+bheston@users.noreply.github.com)
+- Migrated the focus styling to style modules - Change `delegatesFocus` usage to override `focus` instead - Select includes additional style fixes (47367562+bheston@users.noreply.github.com)
+- Updated the style assembly function to get the full anatomy definition (47367562+bheston@users.noreply.github.com)
+- Added support for setting `fill` when `color` is set (47367562+bheston@users.noreply.github.com)
+- Export default component styles (47367562+bheston@users.noreply.github.com)
+- Components: Migrate default icons to local svgs (47367562+bheston@users.noreply.github.com)
+- Component style cleanup (47367562+bheston@users.noreply.github.com)
+- Component cleanup - Adjust small control label style - Fix position issue on combobox - Fix shortcut issue in Storybook (47367562+bheston@users.noreply.github.com)
+- Updated elevation styling (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.2
 
 ## 0.4.1
 
@@ -177,16 +189,16 @@ Tue, 17 Oct 2023 16:10:46 GMT
 
 ### Patches
 
--   picker styles (stephcomeau@msn.com)
--   update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
--   fix sticky header styles (stephcomeau@msn.com)
--   Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
--   Button style reset (47367562+bheston@users.noreply.github.com)
--   select control width (stephcomeau@msn.com)
--   Designer: Added missing highlight color (47367562+bheston@users.noreply.github.com)
--   Added support for `disabled` state colors and cursor (47367562+bheston@users.noreply.github.com)
--   text field control resizing (stephcomeau@msn.com)
--   Bump @adaptive-web/adaptive-ui to v0.2.1
+- picker styles (stephcomeau@msn.com)
+- update fast dependencies (32497422+KingOfTac@users.noreply.github.com)
+- fix sticky header styles (stephcomeau@msn.com)
+- Adaptive UI: Consolidate css selectors (47367562+bheston@users.noreply.github.com)
+- Button style reset (47367562+bheston@users.noreply.github.com)
+- select control width (stephcomeau@msn.com)
+- Designer: Added missing highlight color (47367562+bheston@users.noreply.github.com)
+- Added support for `disabled` state colors and cursor (47367562+bheston@users.noreply.github.com)
+- text field control resizing (stephcomeau@msn.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.1
 
 ## 0.4.0
 
@@ -194,7 +206,7 @@ Wed, 19 Jul 2023 04:28:43 GMT
 
 ### Minor changes
 
--   enable prefix changing for composed definitions (32497422+KingOfTac@users.noreply.github.com)
+- enable prefix changing for composed definitions (32497422+KingOfTac@users.noreply.github.com)
 
 ## 0.3.0
 
@@ -202,16 +214,16 @@ Sat, 01 Jul 2023 03:28:44 GMT
 
 ### Minor changes
 
--   Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
--   Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
--   Designer: add style module support (47367562+bheston@users.noreply.github.com)
--   Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
--   Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.2.0
+- Update styles to normalize to `border-box` sizing (47367562+bheston@users.noreply.github.com)
+- Added `migration` export for deprecated design tokens (47367562+bheston@users.noreply.github.com)
+- Designer: add style module support (47367562+bheston@users.noreply.github.com)
+- Update compound properties (padding, border, etc.) (47367562+bheston@users.noreply.github.com)
+- Adaptive UI: Formalized `Recipe` structure to enable better composition (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.2.0
 
 ### Patches
 
--   updated all token imports from adaptive-ui and updated FAST to latest versions (nbrown414@outlook.com)
+- updated all token imports from adaptive-ui and updated FAST to latest versions (nbrown414@outlook.com)
 
 ## 0.2.0
 
@@ -219,23 +231,23 @@ Sat, 03 Jun 2023 04:25:41 GMT
 
 ### Minor changes
 
--   Clean up style module definition (47367562+bheston@users.noreply.github.com)
--   Add start and end icon args in Storybook (47367562+bheston@users.noreply.github.com)
--   Finish semantic color recipe system and foundation style modules (47367562+bheston@users.noreply.github.com)
--   Migrated type ramp to style modules (47367562+bheston@users.noreply.github.com)
--   Update to latest FAST (47367562+bheston@users.noreply.github.com)
--   Migrate density related styles to style modules (47367562+bheston@users.noreply.github.com)
--   Setup style module pattern for remaining components (47367562+bheston@users.noreply.github.com)
--   Renamed `perceivable` colors to `discernible` (47367562+bheston@users.noreply.github.com)
--   Migrated interactive color styles to style modules (47367562+bheston@users.noreply.github.com)
--   Update Anchor to illustrate initial migration to style modules for components (47367562+bheston@users.noreply.github.com)
--   Migrate border styling to modules (47367562+bheston@users.noreply.github.com)
--   Bump @adaptive-web/adaptive-ui to v0.1.0
+- Clean up style module definition (47367562+bheston@users.noreply.github.com)
+- Add start and end icon args in Storybook (47367562+bheston@users.noreply.github.com)
+- Finish semantic color recipe system and foundation style modules (47367562+bheston@users.noreply.github.com)
+- Migrated type ramp to style modules (47367562+bheston@users.noreply.github.com)
+- Update to latest FAST (47367562+bheston@users.noreply.github.com)
+- Migrate density related styles to style modules (47367562+bheston@users.noreply.github.com)
+- Setup style module pattern for remaining components (47367562+bheston@users.noreply.github.com)
+- Renamed `perceivable` colors to `discernible` (47367562+bheston@users.noreply.github.com)
+- Migrated interactive color styles to style modules (47367562+bheston@users.noreply.github.com)
+- Update Anchor to illustrate initial migration to style modules for components (47367562+bheston@users.noreply.github.com)
+- Migrate border styling to modules (47367562+bheston@users.noreply.github.com)
+- Bump @adaptive-web/adaptive-ui to v0.1.0
 
 ### Patches
 
--   Fix API docs (47367562+bheston@users.noreply.github.com)
--   hide unused labels (stephcomeau@msn.com)
+- Fix API docs (47367562+bheston@users.noreply.github.com)
+- hide unused labels (stephcomeau@msn.com)
 
 ## 0.1.2
 
@@ -243,4 +255,4 @@ Wed, 15 Mar 2023 23:46:48 GMT
 
 ### Patches
 
--   Bump @adaptive-web/adaptive-ui to v0.0.3
+- Bump @adaptive-web/adaptive-ui to v0.0.3
