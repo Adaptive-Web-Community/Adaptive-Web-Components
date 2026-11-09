@@ -122,6 +122,30 @@ export interface ColorSetOptions {
 }
 
 // @public
+export interface CompileContext {
+    // Warning: (ae-incompatible-release-tags) The symbol "anatomyTreatments" is marked as @public, but its signature references "AnatomyTreatments" which is marked as @beta
+    readonly anatomyTreatments: AnatomyTreatments;
+    readonly library: Library.Library<any>;
+    readonly names: TokenNameIndex;
+    readonly tokens: TokenPropertiesResolver;
+    readonly treatments: TreatmentResolver;
+}
+
+// @public
+export function compileStyleRulesToCss(sheet: CompileStyleSheet, context: CompileContext): string;
+
+// @public
+export interface CompileStyleSheet<T extends ComponentConditions = ComponentConditions, K extends ComponentParts = ComponentParts> {
+    // (undocumented)
+    readonly anatomy: ComponentAnatomy<T, K>;
+    // (undocumented)
+    readonly rules: StyleRules;
+}
+
+// @public
+export type CompileWarn = (message: string) => void;
+
+// @public
 export interface ComponentAnatomy<TConditions extends ComponentConditions, TParts extends ComponentParts> {
     conditions: TConditions;
     context?: string;
@@ -522,6 +546,11 @@ export function isTransparent(color: Color_2): boolean;
 // @public
 export function isTreatmentRef(library: Library.Library<any>, ref: Library.Ref<unknown, never>): ref is Library.Ref<TreatmentValue, never>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "jsonToStyleSheet" is marked as @public, but its signature references "SerializableAnatomy" which is marked as @beta
+//
+// @public
+export function jsonToStyleSheet(obj: SerializableAnatomy, context: CompileContext, warn?: CompileWarn): CompileStyleSheet;
+
 // Warning: (ae-internal-missing-underscore) The name "kebabName" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -580,6 +609,11 @@ export function onFill(token: Library.Ref<unknown, never>, options?: Omit<OnFill
 export function onFillCSS(library: Library.Library<any>, values: Iterable<OnFillWithFill>, options: TokenPropertiesOptions & {
     readonly context: Library.Ref<unknown, never>;
 }): string;
+
+// Warning: (ae-incompatible-release-tags) The symbol "onFillsFromStyleSheet" is marked as @public, but its signature references "SerializableOnFill" which is marked as @beta
+//
+// @public
+export function onFillsFromStyleSheet(sheet: CompileStyleSheet, context: CompileContext): SerializableOnFill[];
 
 // @public
 export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[];
@@ -662,6 +696,9 @@ export const RadialGradient: new (stops: GradientStop[]) => RadialGradient_2;
 
 // @public
 export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient_2;
+
+// @public
+export function referenceCompileContext(): CompileContext;
 
 // @public
 export function relativeLuminance(paint: Paint): number;
