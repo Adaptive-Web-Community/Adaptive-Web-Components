@@ -16,7 +16,7 @@ while the programmatic API moves into the library.
 ## Decision
 
 - `@adaptive-web/adaptive-ui` does not publish a `bin`. It exports a compile API (`CompileContext`, `jsonToStyleSheet`, `compileStyleRulesToCss`,
-  `onFillsFromStyleSheet`, `referenceCompileContext`, and related types).
+  and related types), and `@adaptive-web/adaptive-ui/reference` has `referenceCompileContext`. The core compile code does not import the reference.
 - The `aui` command is published as `@adaptive-web/adaptive-ui-cli`, which depends on `@adaptive-web/adaptive-ui` and owns Commander, glob,
   PostCSS, Prettier, and the other Node-only dependencies.
 

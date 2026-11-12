@@ -17,12 +17,13 @@ import {
     type CompileStyleSheet,
     type ComponentAnatomy,
     jsonToStyleSheet,
-    onFillsFromStyleSheet,
-    referenceCompileContext,
     type SerializableAnatomy,
     type SerializableAnatomyWithImports,
     type SerializableOnFill,
+    serializeOnFill,
+    styleRulesOnFills,
 } from "@adaptive-web/adaptive-ui";
+import { referenceCompileContext } from "@adaptive-web/adaptive-ui/reference";
 
 const context = referenceCompileContext();
 
@@ -107,7 +108,7 @@ program.command("compile-json-anatomy <anatomyPath>")
         const outFilePath = resolveStylesheetOutputPath(jsonPath, jsonData.name, ".css");
         const css = await compileStylesheet(styles, jsonPath, outFilePath);
 
-        writeOnFillsFile(onFillsFromStyleSheet(styles, context), args.onFills, false);
+        writeOnFillsFile(onFillsOf(styles), args.onFills, false);
         process.stdout.write(css);
         process.stdout.end();
     });
@@ -236,7 +237,16 @@ async function compileFile(
 
     const css = await compileStylesheet(styles, inFilePath, formatPath);
 
-    return { css, anatomyName: resolvedAnatomyName, onFills: onFillsFromStyleSheet(styles, context) };
+    return { css, anatomyName: resolvedAnatomyName, onFills: onFillsOf(styles) };
+}
+
+// The values on a fill that the rules of a stylesheet refer to, as data for the CSS of the tokens of each scope.
+function onFillsOf(styles: CompileStyleSheet): SerializableOnFill[] {
+    return styleRulesOnFills(styles.rules, {
+        treatments: context.treatments,
+        anatomy: styles.anatomy,
+        anatomyTreatments: context.anatomyTreatments,
+    }).map(value => serializeOnFill(value));
 }
 
 function writeOnFillsFile(onFills: SerializableOnFill[], outFilePath: string | undefined, report = true) {

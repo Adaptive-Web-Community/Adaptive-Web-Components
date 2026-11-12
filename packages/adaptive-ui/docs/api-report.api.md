@@ -610,11 +610,6 @@ export function onFillCSS(library: Library.Library<any>, values: Iterable<OnFill
     readonly context: Library.Ref<unknown, never>;
 }): string;
 
-// Warning: (ae-incompatible-release-tags) The symbol "onFillsFromStyleSheet" is marked as @public, but its signature references "SerializableOnFill" which is marked as @beta
-//
-// @public
-export function onFillsFromStyleSheet(sheet: CompileStyleSheet, context: CompileContext): SerializableOnFill[];
-
 // @public
 export function onFillsOf(properties: Iterable<readonly [string, StyleValues]>): OnFillWithFill[];
 
@@ -696,9 +691,6 @@ export const RadialGradient: new (stops: GradientStop[]) => RadialGradient_2;
 
 // @public
 export function radialGradient(stops: ReadonlyArray<GradientStop>): RadialGradient_2;
-
-// @public
-export function referenceCompileContext(): CompileContext;
 
 // @public
 export function relativeLuminance(paint: Paint): number;

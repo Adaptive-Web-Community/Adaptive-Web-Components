@@ -485,6 +485,6 @@ The `aui` command is not published from `@adaptive-web/adaptive-ui` any more (de
 | 0.14 / earlier 1.0 beta | 1.0 |
 | --- | --- |
 | `npm install @adaptive-web/adaptive-ui` and run `aui` | `npm install --save-dev @adaptive-web/adaptive-ui-cli` and run `aui` |
-| Compile logic only via the CLI | `jsonToStyleSheet`, `compileStyleRulesToCss`, `onFillsFromStyleSheet`, `referenceCompileContext`, and related types on the library |
+| Compile logic only via the CLI | `jsonToStyleSheet` and `compileStyleRulesToCss` on the library, `referenceCompileContext` from `@adaptive-web/adaptive-ui/reference`; the values on a fill of rules are `styleRulesOnFills` |
 
 Commands are unchanged: `compile-style`, `compile-styles`, and `compile-json-anatomy`, with the same flags.
