@@ -1,10 +1,10 @@
 import { refs } from "design-token-library";
-import { createReferenceLibrary, type ReferenceLibraryTokens } from "../../reference/library.js";
-import { referenceAnatomyTreatments } from "../../reference/treatments.js";
-import { libraryTokenProperties } from "../styles/css/rules.js";
-import { libraryTreatments } from "../styles/treatment-token.js";
-import { tokenNames } from "../token-names.js";
-import { type CompileContext } from "./context.js";
+import { type CompileContext } from "../core/compile/context.js";
+import { libraryTokenProperties } from "../core/styles/css/rules.js";
+import { libraryTreatments } from "../core/styles/treatment-token.js";
+import { tokenNames } from "../core/token-names.js";
+import { createReferenceLibrary, type ReferenceLibraryTokens } from "./library.js";
+import { referenceAnatomyTreatments } from "./treatments.js";
 
 /**
  * A {@link CompileContext} for the reference design system.
