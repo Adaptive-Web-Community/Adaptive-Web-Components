@@ -1,5 +1,6 @@
 export * from "./appearance.js";
 export * from "./color.js";
+export * from "./compile-context.js";
 export * from "./density.js";
 export * from "./deprecated.js";
 export * from "./elevation.js";

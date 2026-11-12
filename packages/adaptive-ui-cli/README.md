@@ -8,7 +8,7 @@ Command-line tools to compile Adaptive UI style rules to CSS.
 npm install --save-dev @adaptive-web/adaptive-ui-cli
 ```
 
-The CLI depends on `@adaptive-web/adaptive-ui` for the compile API and the reference design system.
+The CLI depends on `@adaptive-web/adaptive-ui` for the compile API and on its `reference` entry for the reference design system.
 
 ## Commands
 
