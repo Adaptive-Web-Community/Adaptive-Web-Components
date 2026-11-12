@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "./token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library, px, recipes, refs, toCSS, toProperties } from "design-token-library";
 import { Color, formatColor } from "./color/color.js";
@@ -74,7 +75,7 @@ const create = () =>
             ring: { $type: AdaptiveDesignToken.interactive, $value: { focus: hex("#0000ff") } },
             lift: { $type: AdaptiveDesignToken.interactive, $value: { hover: px(-2), active: px(0) } },
         },
-    });
+    }, { types: adaptiveTokenTypes });
 
 const css = (library: ReturnType<typeof create>) => toCSS(library, { converters: adaptiveConverters(library) });
 
@@ -149,7 +150,7 @@ describe("an interactive token", () => {
                     $type: AdaptiveDesignToken.interactive,
                     $value: deltasOf.deltas(interactiveDeltas(lift, [InteractiveState.hover, InteractiveState.active])),
                 },
-            });
+            }, { types: adaptiveTokenTypes });
 
             expect(library.tokens.set.$value).to.deep.equal({ hover: -2, active: 0 });
         });

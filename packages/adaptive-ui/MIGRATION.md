@@ -520,3 +520,17 @@ The `aui` command is not published from `@adaptive-web/adaptive-ui` any more (de
 | Compile logic only via the CLI | `jsonToStyleSheet`, `compileStyleRulesToCss`, `onFillsFromStyleSheet`, `referenceCompileContext`, and related types on the library |
 
 Commands are unchanged: `compile-style`, `compile-styles`, and `compile-json-anatomy`, with the same flags.
+
+## The custom types of the tokens
+
+Adaptive UI needs design token library 0.4.0, which asks a library for the custom types of its tokens (`create()` and `extend()` throw for
+a token whose type isn't registered). Each type has an `isEqual`, so a token that resolves again to an equal value keeps the one it had and a
+subscriber isn't told of a change.
+
+| 0.3.1 | 0.4.0 |
+| --- | --- |
+| `Library.create(config)` of tokens with the types of Adaptive UI | `Library.create(config, { types: adaptiveTokenTypes })` |
+| `CSSPropertiesOptions` of the library | `CSSNameOptions` |
+
+`adaptiveTokenTypes` registers the eleven custom types, with `isPlainEqual`, one structural test of plain data. A library of your own types
+adds them: `{ types: { ...adaptiveTokenTypes, ...yours } }`.

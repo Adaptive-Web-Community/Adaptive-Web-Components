@@ -1,4 +1,5 @@
 import { DesignToken, hex, Library, recipes, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import type { Color } from "../core/color/color.js";
 import type { Palette } from "../core/color/palette.js";
 import { createPaletteOkhsl, stepCountFor } from "../core/color/palette-okhsl.js";
@@ -116,4 +117,4 @@ export const palettes: Library.Config<PaletteTokens, PaletteLibraryTokens> = wit
  *
  * @public
  */
-export const createPaletteLibrary = () => Library.create<PaletteLibraryTokens>({ color: palettes });
+export const createPaletteLibrary = () => Library.create<PaletteLibraryTokens>({ color: palettes }, { types: adaptiveTokenTypes });

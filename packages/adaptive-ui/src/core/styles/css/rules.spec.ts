@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../../token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library, px, recipes, refs, toCSS } from "design-token-library";
 import { formatColor } from "../../color/color.js";
@@ -33,7 +34,7 @@ const library = Library.create<Tokens>({
         hoverOnly: { $type: AdaptiveDesignToken.interactive, $value: { hover: hex("#707070") } },
     },
     radius: { $type: DesignToken.Type.Dimension, $value: px(4) },
-});
+}, { types: adaptiveTokenTypes });
 const resolve = libraryTokenProperties(library);
 
 const render = (properties: Record<string, StyleValues>, params: SelectorParameters = {}): CssRule[] =>
@@ -229,7 +230,7 @@ describe("values on a fill", () => {
         contrast: { $type: DesignToken.Type.Color, $value: onFillRecipes.contrast(t.context) },
         fill: { $type: AdaptiveDesignToken.interactive, $value: { rest: hex("#202020"), hover: hex("#e0e0e0"), disabled: hex("#808080") } },
         other: { $type: AdaptiveDesignToken.interactive, $value: { rest: hex("#e0e0e0") } },
-    });
+    }, { types: adaptiveTokenTypes });
     const onFills = libraryTokenProperties(fills, { context: t.context });
     const renderOnFill = (properties: Record<string, StyleValues>): string[] =>
         formatRules(renderRules(Object.entries(properties), Interactivity.disabledAttribute, onFills)).split("\n");

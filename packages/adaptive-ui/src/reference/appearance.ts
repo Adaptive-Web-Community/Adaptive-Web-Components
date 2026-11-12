@@ -1,4 +1,5 @@
 import { DesignToken, Library, px } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { StylePropertyShorthand } from "../core/styles/properties.js";
 import { tokenMetadata } from "../core/token-metadata.js";
 
@@ -74,4 +75,4 @@ export const appearance: Library.Config<AppearanceTokens, AppearanceTokens> = {
  *
  * @public
  */
-export const createAppearanceLibrary = () => Library.create<AppearanceTokens>(appearance);
+export const createAppearanceLibrary = () => Library.create<AppearanceTokens>(appearance, { types: adaptiveTokenTypes });

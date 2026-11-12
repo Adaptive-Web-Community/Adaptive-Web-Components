@@ -1,4 +1,5 @@
 import { Library } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { appearance } from "./appearance.js";
 import { color, ColorTokens } from "./color.js";
 import { density, DensityLibraryTokens } from "./density.js";
@@ -80,4 +81,4 @@ export const reference: Library.Config<ReferenceLibraryTokens, ReferenceLibraryT
  *
  * @public
  */
-export const createReferenceLibrary = () => Library.create<ReferenceLibraryTokens>(reference);
+export const createReferenceLibrary = () => Library.create<ReferenceLibraryTokens>(reference, { types: adaptiveTokenTypes });

@@ -1,4 +1,5 @@
 import { DesignToken, Library, px, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { createDensity, DensitySetTokens } from "../core/density/index.js";
 import { withFormerNames } from "../core/token-metadata.js";
 import { kebabName } from "../core/token-names.js";
@@ -63,4 +64,4 @@ export const density: Library.Config<DensityTokens, DensityLibraryTokens> = with
  *
  * @public
  */
-export const createDensityLibrary = () => Library.create<DensityLibraryTokens>({ ...appearance, density });
+export const createDensityLibrary = () => Library.create<DensityLibraryTokens>({ ...appearance, density }, { types: adaptiveTokenTypes });

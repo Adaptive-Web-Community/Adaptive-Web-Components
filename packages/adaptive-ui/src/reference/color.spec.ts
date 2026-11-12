@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import chai from "chai";
 import fs from "fs";
 import path from "path";
@@ -467,7 +468,7 @@ describe("color sets", () => {
                         ...createColorSets<Tokens>({ palette: tokens.color.brand.palette }),
                     },
                 },
-            });
+            }, { types: adaptiveTokenTypes });
 
         it("should have the sets that the default palettes have, made by createColorSets, and follow its color", () => {
             const { brand, color } = create().tokens;

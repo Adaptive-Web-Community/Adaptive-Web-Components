@@ -1,4 +1,4 @@
-import { CSSPropertiesOptions, isRef, Library, pathOf } from "design-token-library";
+import { CSSNameOptions, isRef, Library, pathOf } from "design-token-library";
 import { InteractiveSet, InteractiveState, isInteractiveSet } from "../../interactive.js";
 import { atName, formatValue, propertyResolver } from "../../token-css.js";
 import { AdaptiveDesignToken } from "../../token-types.js";
@@ -41,7 +41,7 @@ export type TokenPropertiesResolver = (path: readonly string[], fill?: readonly 
  *
  * @public
  */
-export interface TokenPropertiesOptions extends CSSPropertiesOptions {
+export interface TokenPropertiesOptions extends CSSNameOptions {
     /**
      * The token of the color context, which a value on a fill is made in the context of, like `color.context` of the reference system.
      */

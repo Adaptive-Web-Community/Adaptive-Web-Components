@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import chai from "chai";
 import fs from "fs";
 import path from "path";
@@ -124,7 +125,7 @@ describe("density", () => {
                     ...density,
                     ...createDensity("compact", { horizontalPadding: 1, horizontalGap: 1, verticalPadding: 1, verticalGap: 1 }, unit, px(0)),
                 },
-            });
+            }, { types: adaptiveTokenTypes });
 
         it("has the tokens of a set, calculated from the same adjustment and design unit", () => {
             const library = create();

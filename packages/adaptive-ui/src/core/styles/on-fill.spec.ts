@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library, pathOf, recipes, refs } from "design-token-library";
 import { Color, formatColor } from "../color/color.js";
@@ -52,7 +53,7 @@ const create = () =>
                 $value: { rest: hex("#202020"), hover: hex("#e0e0e0"), active: hex("#303030"), disabled: hex("#808080") },
             },
         },
-    });
+    }, { types: adaptiveTokenTypes });
 
 const formatSet = (set: InteractiveSet<unknown>) =>
     Object.fromEntries(Object.entries(set).map(([state, color]) => [state, color === null ? null : formatColor(color as Color)]));

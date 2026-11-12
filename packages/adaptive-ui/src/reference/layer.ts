@@ -1,4 +1,5 @@
 import { DesignToken, Library, recipes, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { Color } from "../core/color/color.js";
 import { deltaColor } from "../core/color/recipes/delta-color.js";
 import { deltaColorSet } from "../core/color/recipes/delta-color-set.js";
@@ -183,4 +184,4 @@ export const layer: Library.Config<LayerTokens, LayerLibraryTokens> = withFormer
  *
  * @public
  */
-export const createLayerLibrary = () => Library.create<LayerLibraryTokens>({ color: { ...palettes, ...colorContext, layer } });
+export const createLayerLibrary = () => Library.create<LayerLibraryTokens>({ color: { ...palettes, ...colorContext, layer } }, { types: adaptiveTokenTypes });

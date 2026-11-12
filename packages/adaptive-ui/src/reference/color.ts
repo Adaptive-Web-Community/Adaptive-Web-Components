@@ -1,4 +1,5 @@
 import { DesignToken, Library, recipes, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { Color } from "../core/color/color.js";
 import { blackOrWhiteByContrastSet } from "../core/color/recipes/black-or-white-by-contrast-set.js";
 import { blackOrWhiteByContrast } from "../core/color/recipes/black-or-white-by-contrast.js";
@@ -511,4 +512,4 @@ export const color: Library.Config<ColorTokens, ColorLibraryTokens> = {
  *
  * @public
  */
-export const createColorLibrary = () => Library.create<ColorLibraryTokens>({ color });
+export const createColorLibrary = () => Library.create<ColorLibraryTokens>({ color }, { types: adaptiveTokenTypes });
