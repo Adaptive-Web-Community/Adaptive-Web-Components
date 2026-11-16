@@ -10,6 +10,24 @@ import { DesignToken } from 'design-token-library';
 import { Library } from 'design-token-library';
 
 // @public
+export interface Accessibility {
+    readonly criteria?: readonly AccessibilityCriterionRef[];
+    readonly responsibilities?: readonly string[];
+    readonly summary?: string;
+}
+
+// @public
+export interface AccessibilityCriterionRef {
+    readonly description?: string;
+    readonly id: string;
+}
+
+// @public
+export type AccessibilitySection<TAccessibility extends Accessibility = Accessibility> = {
+    readonly accessibility?: TAccessibility;
+};
+
+// @public
 export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
     boolean: false;
     contrastRatio: false;
@@ -60,6 +78,31 @@ export function asOverlay(intendedColor: Color_2, reference: Color_2): OverlayCo
 export function atName<T>(tree: any, name: string): T;
 
 // @public
+export type BindingConditionSelector = Condition;
+
+// @public
+export type BindingConditionSelectors = ComponentConditions;
+
+// @public
+export type BindingConditionSelectorsFor<TContract extends Contract> = {
+    readonly [TProperty in TContract["properties"][number] as TProperty["id"]]: ConditionSelectorFor<TProperty>;
+};
+
+// @public
+export interface BindingCursor<TParts extends BindingPartSelectors = BindingPartSelectors> {
+    readonly cursorType?: string;
+    readonly part?: keyof TParts & string;
+}
+
+// @public
+export type BindingPartSelectors = ComponentParts;
+
+// @public
+export type BindingPartSelectorsFor<TStructure extends Structure> = {
+    readonly [K in StructurePartId<TStructure>]: string;
+};
+
+// @public
 export const black: Color_2;
 
 // @public @deprecated (undocumented)
@@ -79,6 +122,39 @@ export type BooleanToken = DesignToken.Custom<typeof AdaptiveDesignToken.boolean
 
 // @public
 export function calculateOverlayColor(match: Color_2, background: Color_2): Color_2;
+
+// @public
+export interface Capabilities {
+    readonly items?: readonly CapabilityItem[];
+    readonly summary?: string;
+}
+
+// @public
+export type CapabilitiesSection<TCapabilities extends Capabilities = Capabilities> = {
+    readonly capabilities?: TCapabilities;
+};
+
+// @public
+export interface CapabilityItem {
+    readonly description: string;
+    readonly id: string;
+}
+
+// @public
+export type Changelog<TEntry extends ChangelogEntry = ChangelogEntry> = readonly TEntry[];
+
+// @public
+export interface ChangelogEntry {
+    readonly author: string;
+    readonly changeKind: DocChangeKind;
+    readonly date: DocDate;
+    readonly summary: string;
+}
+
+// @public
+export type ChangelogSection<TChangelog extends Changelog = Changelog> = {
+    readonly changelog?: TChangelog;
+};
 
 // @public
 export function changeTreatment(library: Library.Library<any>, base: TreatmentRef, changes: TreatmentChanges, metadata?: TokenMetadata): TreatmentConfig;
@@ -172,6 +248,16 @@ export function conditionalColorSet(set: InteractiveColorSet, condition: boolean
 export const conditionalSwatchSet: typeof conditionalColorSet;
 
 // @public
+export type ConditionSelectorFor<TProperty> = TProperty extends {
+    readonly kind: "enum";
+    readonly enumValues: readonly (infer TValue extends {
+        readonly id: string;
+    })[];
+} ? {
+    readonly [K in TValue["id"]]: string;
+} : string;
+
+// @public
 export interface ConfiguredExpression {
     // (undocumented)
     readonly args: readonly ConfiguredOperand[];
@@ -194,6 +280,67 @@ export const ConicGradient: new (stops: GradientStop[], angle?: number) => Conic
 
 // @public
 export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number): ConicGradient_2;
+
+// @public
+export interface Contract {
+    readonly properties: readonly ContractProperty[];
+    readonly slots: readonly ContractSlot[];
+}
+
+// @public
+export interface ContractEnumValue {
+    readonly description?: string;
+    readonly id: string;
+    readonly label?: string;
+}
+
+// @public
+export interface ContractObjectField {
+    readonly description?: string;
+    readonly id: string;
+    readonly kind: ContractObjectFieldKind;
+    readonly label?: string;
+}
+
+// @public
+export type ContractObjectFieldKind = Exclude<ContractPropertyKind, "enum" | "object">;
+
+// @public
+export interface ContractProperty {
+    readonly description?: string;
+    readonly enumValues?: readonly ContractEnumValue[];
+    readonly id: string;
+    readonly kind: ContractPropertyKind;
+    readonly label?: string;
+    readonly objectProperties?: readonly ContractObjectField[];
+}
+
+// @public
+export type ContractPropertyId<TContract extends Contract> = TContract["properties"][number]["id"];
+
+// @public
+export const ContractPropertyKind: {
+    readonly boolean: "boolean";
+    readonly string: "string";
+    readonly number: "number";
+    readonly enum: "enum";
+    readonly object: "object";
+};
+
+// @public (undocumented)
+export type ContractPropertyKind = (typeof ContractPropertyKind)[keyof typeof ContractPropertyKind];
+
+// @public
+export type ContractSection<TContract extends Contract = Contract> = {
+    readonly contract?: TContract;
+};
+
+// @public
+export interface ContractSlot {
+    readonly description?: string;
+    readonly id: string;
+    readonly label?: string;
+}
 
 // @public
 export function contrast(a: Paint, b: Paint): number;
@@ -239,6 +386,9 @@ export interface CursorDefinition {
     cursorType?: string;
     part?: string;
 }
+
+// @public
+export function defineDocumentation<const T extends Documentation>(documentation: T): T;
 
 // @public
 export function deltaColor(palette: Palette, reference: Paint, delta: number, direction?: PaletteDirection): Color_2;
@@ -307,7 +457,68 @@ export function deserializeOnFill(value: SerializableOnFill): OnFill;
 export function directionByIsDark(color: Paint): PaletteDirection;
 
 // @public
+export type Disambiguation<TEntry extends DisambiguationEntry = DisambiguationEntry> = readonly TEntry[];
+
+// @public
+export interface DisambiguationEntry extends DocRef {
+    readonly label?: string;
+    readonly use: string;
+}
+
+// @public
+export type DisambiguationSection<TDisambiguation extends Disambiguation = Disambiguation> = {
+    readonly disambiguation?: TDisambiguation;
+};
+
+// @public
 export const divide: (...args: ConfiguredOperand[]) => ConfiguredExpression;
+
+// @public
+export type DocChangeKind = KnownDocChangeKind | (string & Record<never, never>);
+
+// @public
+export type DocDate = string;
+
+// @public
+export interface DocLinkContext {
+    readonly baseUrl?: string;
+    readonly catalogId: string;
+}
+
+// @public
+export interface DocRef {
+    readonly id: string;
+    readonly library?: string;
+}
+
+// @public
+export type DocRefResolver = (ref: DocRef, context: DocLinkContext) => string | undefined;
+
+// @public
+export const DocStatus: {
+    readonly draft: "draft";
+    readonly inReview: "in-review";
+    readonly published: "published";
+    readonly deprecated: "deprecated";
+};
+
+// @public (undocumented)
+export type DocStatus = (typeof DocStatus)[keyof typeof DocStatus];
+
+// @public
+export type Documentation = IdentitySection & GovernanceSection & DisambiguationSection & StructureSection & ContractSection & AccessibilitySection & CapabilitiesSection & UsageSection & KnownIssuesSection & ChangelogSection;
+
+// @public
+export type DocumentationForAnatomy = DocumentationForBinding;
+
+// @public
+export type DocumentationForBinding = IdentitySection & {
+    readonly structure: Structure;
+    readonly contract: Contract;
+};
+
+// @public
+export function documentationToComponentAnatomy<TConditions extends BindingConditionSelectors, TParts extends BindingPartSelectors>(documentation: DocumentationForAnatomy, binding: PlatformBinding<TConditions, TParts>, options?: StructureToComponentAnatomyOptions): ComponentAnatomy<TConditions, TParts>;
 
 // @public
 export type DtcgGradient = DesignToken.Values.Readonly.Gradient;
@@ -384,6 +595,17 @@ export function fromCulori(color: Color_3): Color_2;
 export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient_2;
 
 // @public
+export interface GenerateTypeScriptContractOptions {
+    readonly sourceModule?: string;
+    readonly symbolPrefix?: string;
+}
+
+// Warning: (ae-forgotten-export) The symbol "DocumentationForContractGeneration" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function generateTypeScriptContractSource(documentation: DocumentationForContractGeneration, options?: GenerateTypeScriptContractOptions): string;
+
+// @public
 export function getFormerNames(node: {
     $extensions?: Record<string, any>;
 }): string[];
@@ -392,6 +614,18 @@ export function getFormerNames(node: {
 export function getIntendedFor(token: {
     $extensions: Record<string, any>;
 }): StyleProperty[];
+
+// @public
+export interface Governance {
+    readonly lastReviewed?: DocDate;
+    readonly owner?: string;
+    readonly status?: DocStatus;
+}
+
+// @public
+export type GovernanceSection<TGovernance extends Governance = Governance> = {
+    readonly governance?: TGovernance;
+};
 
 // Warning: (ae-forgotten-export) The symbol "RadialGradient_2" needs to be exported by the entry point index.d.ts
 //
@@ -436,6 +670,16 @@ export function idealColorDeltaSet(palette: Palette, reference: Paint, minContra
 
 // @public @deprecated (undocumented)
 export function idealColorDeltaSwatchSet(palette: Palette, reference: Paint, minContrast: number, idealColor: Color_2, restDelta: number, hoverDelta: number, activeDelta: number, focusDelta: number, disabledDelta: number, disabledPalette?: Palette, direction?: Direction): InteractiveColorSet;
+
+// @public
+export interface Identity {
+    readonly definition?: string;
+    readonly id: string;
+    readonly label?: string;
+}
+
+// @public
+export type IdentitySection<TIdentity extends Identity = Identity> = TIdentity;
 
 // @public
 export interface IndexedToken {
@@ -555,6 +799,47 @@ export function jsonToStyleSheet(obj: SerializableAnatomy, context: CompileConte
 //
 // @internal
 export function kebabName(path: readonly string[]): string;
+
+// @public
+export const KnownDocChangeKind: {
+    readonly guidance: "guidance";
+    readonly structure: "structure";
+    readonly behavior: "behavior";
+    readonly binding: "binding";
+    readonly deprecation: "deprecation";
+    readonly removal: "removal";
+    readonly governance: "governance";
+};
+
+// @public (undocumented)
+export type KnownDocChangeKind = (typeof KnownDocChangeKind)[keyof typeof KnownDocChangeKind];
+
+// @public
+export interface KnownIssue {
+    readonly category?: string;
+    readonly id: string;
+    readonly plannedFix?: string;
+    readonly sources?: readonly string[];
+    readonly summary: string;
+    readonly workaround?: string;
+}
+
+// @public
+export type KnownIssues<TIssue extends KnownIssue = KnownIssue> = readonly TIssue[];
+
+// @public
+export type KnownIssuesSection<TKnownIssues extends KnownIssues = KnownIssues> = {
+    readonly knownIssues?: TKnownIssues;
+};
+
+// @public
+export function labelFromId(id: string): string;
+
+// @public
+export function labelOf(item: {
+    readonly id: string;
+    readonly label?: string;
+}): string;
 
 // @public
 export function libraryTokenProperties(library: Library.Library<any>, options?: TokenPropertiesOptions): TokenPropertiesResolver;
@@ -683,6 +968,29 @@ export type PaletteToken = DesignToken.Custom<typeof AdaptiveDesignToken.palette
 export function parseColor(color: string): Color_2 | undefined;
 
 // @public
+export interface PartDefinition {
+    readonly component?: DocRef;
+    readonly description?: string;
+    readonly indicatesFocus?: boolean;
+    readonly interactive?: boolean;
+    readonly label?: string;
+    readonly parts?: Record<string, PartDefinition>;
+}
+
+// @public
+export interface PlatformBinding<TConditions extends BindingConditionSelectors = BindingConditionSelectors, TParts extends BindingPartSelectors = BindingPartSelectors> {
+    readonly conditionSelectors: TConditions;
+    readonly contextSelector?: string;
+    readonly cursor?: BindingCursor<TParts> | false;
+    readonly focus?: FocusDefinition<TParts>;
+    readonly interactivity?: InteractivityDefinition;
+    readonly partSelectors: TParts;
+}
+
+// @public
+export type PlatformBindingFor<TDoc extends DocumentationForBinding> = PlatformBinding<BindingConditionSelectorsFor<TDoc["contract"]>, BindingPartSelectorsFor<TDoc["structure"]>>;
+
+// @public
 export const pow: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
@@ -702,6 +1010,9 @@ export function referenceCompileContext(): CompileContext;
 
 // @public
 export function relativeLuminance(paint: Paint): number;
+
+// @public
+export function renderMarkdown(documentation: Documentation): string;
 
 // @public
 export function renderRules(properties: Iterable<readonly [string, StyleValues]>, params: SelectorParameters, tokens: TokenPropertiesResolver): CssRule[];
@@ -735,6 +1046,26 @@ export function rgbColor(r: number, g: number, b: number, alpha?: number): Color
 
 // @public
 export const round: (...args: ConfiguredOperand[]) => ConfiguredExpression;
+
+// @public
+export const RuleSeverity: {
+    readonly must: "must";
+    readonly should: "should";
+    readonly may: "may";
+};
+
+// @public (undocumented)
+export type RuleSeverity = (typeof RuleSeverity)[keyof typeof RuleSeverity];
+
+// @public
+export const RuleStance: {
+    readonly do: "do";
+    readonly dont: "dont";
+    readonly caution: "caution";
+};
+
+// @public (undocumented)
+export type RuleStance = (typeof RuleStance)[keyof typeof RuleStance];
 
 // @public
 export type SelectorParameters = StyleRuleTarget & InteractivityDefinition;
@@ -823,6 +1154,40 @@ export function stepCountFor(stepSize: number): number;
 export type StringCondition = Record<string, string>;
 
 // @public
+export interface Structure extends PartDefinition {
+}
+
+// @public
+export interface StructurePart {
+    readonly id: string;
+    readonly parent?: string;
+    readonly part: PartDefinition;
+}
+
+// @public
+export type StructurePartId<TStructure> = TStructure extends {
+    readonly parts: infer TParts;
+} ? {
+    [K in keyof TParts & string]: K | StructurePartId<TParts[K]>;
+}[keyof TParts & string] : never;
+
+// @public
+export function structureParts(structure: Structure): StructurePart[];
+
+// @public
+export type StructureSection<TStructure extends Structure = Structure> = {
+    readonly structure?: TStructure;
+};
+
+// @public
+export function structureToComponentAnatomy<TConditions extends BindingConditionSelectors, TParts extends BindingPartSelectors>(structure: Structure, binding: PlatformBinding<TConditions, TParts>, name?: string, options?: StructureToComponentAnatomyOptions): ComponentAnatomy<TConditions, TParts>;
+
+// @public
+export interface StructureToComponentAnatomyOptions {
+    readonly validate?: boolean;
+}
+
+// @public
 export type StyleKey = StyleProperty | StylePropertyShorthand | (string & Record<never, never>);
 
 // @public @deprecated (undocumented)
@@ -830,6 +1195,16 @@ export type StyleModuleEvaluateParameters = SelectorParameters;
 
 // @public @deprecated (undocumented)
 export type StyleModuleTarget = StyleRuleTarget;
+
+// @public
+export interface StyleProfile<TConditions extends BindingConditionSelectors = BindingConditionSelectors, TParts extends BindingPartSelectors = BindingPartSelectors> {
+    readonly binding: PlatformBinding<TConditions, TParts>;
+    readonly rules?: StyleRules;
+    readonly structure: Structure;
+}
+
+// @public
+export function styleProfileToComponentAnatomy<TConditions extends BindingConditionSelectors, TParts extends BindingPartSelectors>(profile: StyleProfile<TConditions, TParts>, name: string, options?: StructureToComponentAnatomyOptions): ComponentAnatomy<TConditions, TParts>;
 
 // @public
 export type StyleProperties = Partial<Record<StyleKey, StyleValues>>;
@@ -1142,6 +1517,51 @@ export type TypeScaleTokens = TypeRampTokens & {
     lineHeightRatio: DesignToken.Number;
     lineHeightMultilineRatio: DesignToken.Number;
     lineHeightSnap: DesignToken.Dimension;
+};
+
+// @public (undocumented)
+export const typeScriptContractConvention: {
+    readonly documentationExportName: (moduleBasename: string) => string;
+    readonly generatedFileName: (moduleBasename: string) => string;
+    readonly moduleBasename: (documentationFileName: string) => string;
+};
+
+// @public
+export interface Usage {
+    readonly include?: readonly UsageRuleSetRef[];
+    readonly rules: readonly UsageRule[];
+}
+
+// @public
+export type UsageCategory = string;
+
+// @public
+export interface UsageRule {
+    readonly categories?: readonly UsageCategory[];
+    readonly exceptions?: string;
+    readonly id: string;
+    readonly reason?: string;
+    readonly set?: string;
+    readonly severity: RuleSeverity;
+    readonly sources?: readonly string[];
+    readonly stance: RuleStance;
+    readonly text: string;
+}
+
+// @public
+export interface UsageRuleSet {
+    readonly id: string;
+    readonly rules: readonly UsageRule[];
+}
+
+// @public
+export interface UsageRuleSetRef {
+    readonly id: string;
+}
+
+// @public
+export type UsageSection<TUsage extends Usage = Usage> = {
+    readonly usage?: TUsage;
 };
 
 // @public

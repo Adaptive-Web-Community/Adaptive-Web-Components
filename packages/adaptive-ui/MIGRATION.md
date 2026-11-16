@@ -414,6 +414,38 @@ JSON may name its treatments in `styles`.
 Not exported, with what to use: `Styles.Shared` (the library), `Styles.fromDeclaration` and `StyleDeclaration` (a rule),
 `Fill` (`onFill`), `convertStylesToFocusState`, and `ElementStylesRenderer` (`renderStyleRules`).
 
+## Component documentation
+
+Component documentation is a typed aggregate of slices (`Documentation` and its sections in `core/documentation`), separate from how a
+platform maps semantic **parts** and **conditions** to selectors (`PlatformBinding` in `core/styles`). `StyleProfile` is the style-compile bundle
+(structure plus binding plus rules), not the full doc; usage, narrative, and changelog stay in the documentation slices. Decision
+[0022](../../docs/decisions/0022-component-documentation-layers.md) describes the layers and file conventions.
+
+This is new in the 1.0 beta: 0.14 had no `Documentation` type. Teams still pass a hand-written `ComponentAnatomy` to `renderStyleRules`; the
+recommended path is to author structure and binding once and compile with `structureToComponentAnatomy`, `documentationToComponentAnatomy`, or
+`styleProfileToComponentAnatomy`.
+
+| 0.14 / informal | 1.0 |
+| --- | --- |
+| prose and Storybook beside style code | `defineDocumentation({ ... })` and slice types (`Structure`, `Contract`, `UsageSection`, …) in `core/documentation` |
+| “anatomy” as the whole component description | `Documentation` for the full doc; `Structure` for semantic parts and layout only; `ComponentAnatomy` only at the style-compile boundary |
+| selector strings co-located with part names | `PlatformBinding` (`partSelectors`, `conditionSelectors`, `contextSelector`); structure carries part **ids** only |
+| ad hoc TypeScript for parts and attributes | `generateTypeScriptContractSource(structure, contract, options)` emits `*.generated.ts` from `*.documentation.ts`; `typeScriptContractConvention` names exports and files |
+| copy-pasted README sections | `renderMarkdown(documentation)` projects slices to Markdown |
+
+Recommended layout for a reference component (for example in components-foundation): `{component}.documentation.ts` exporting
+`buttonDocumentation`, `{component}.{platform}.binding.ts` for web selectors, and generated `{component}.generated.ts` beside them. Adaptive UI
+consumers import types and generators only; reference **instances** live in downstream packages.
+
+| Task | 1.0 |
+| --- | --- |
+| Scan a package for `*.documentation.ts` and write sibling `*.generated.ts` | `npm run generate:typescript-contract -- --scan <srcDir>` in `packages/adaptive-ui`, or `node --import tsx @adaptive-web/adaptive-ui/generate-typescript-contract --scan <srcDir>` |
+| Emit one module (explicit paths) | `npm run generate:typescript-contract -- <module> <exportName> <output.ts> [symbolPrefix]` |
+| Regenerate foundation `*.generated.ts` on build | `npm run generate:contracts` in `packages/components-foundation` (runs before `build`) |
+
+Contract **conditions** in the typed `Contract` slice are the source of condition ids for styles; structure lists parts only. Property kinds
+(`ContractPropertyKind`) drive generated fields and docs tables.
+
 ## The token helpers of 0.14
 
 The helpers that made a FAST token are removed, and the package doesn't depend on FAST (`@microsoft/fast-element`,
