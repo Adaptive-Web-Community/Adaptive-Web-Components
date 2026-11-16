@@ -4,7 +4,7 @@ import {
     RuleSeverity,
     RuleStance,
     type Documentation,
-} from "./index.js";
+} from "../../index.js";
 import { renderMarkdown } from "./markdown.js";
 
 const { expect } = chai;

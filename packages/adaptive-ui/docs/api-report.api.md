@@ -595,6 +595,17 @@ export function fromCulori(color: Color_3): Color_2;
 export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): LinearGradient_2;
 
 // @public
+export interface GenerateTypeScriptContractOptions {
+    readonly sourceModule?: string;
+    readonly symbolPrefix?: string;
+}
+
+// Warning: (ae-forgotten-export) The symbol "DocumentationForContractGeneration" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function generateTypeScriptContractSource(documentation: DocumentationForContractGeneration, options?: GenerateTypeScriptContractOptions): string;
+
+// @public
 export function getFormerNames(node: {
     $extensions?: Record<string, any>;
 }): string[];
@@ -1506,6 +1517,13 @@ export type TypeScaleTokens = TypeRampTokens & {
     lineHeightRatio: DesignToken.Number;
     lineHeightMultilineRatio: DesignToken.Number;
     lineHeightSnap: DesignToken.Dimension;
+};
+
+// @public (undocumented)
+export const typeScriptContractConvention: {
+    readonly documentationExportName: (moduleBasename: string) => string;
+    readonly generatedFileName: (moduleBasename: string) => string;
+    readonly moduleBasename: (documentationFileName: string) => string;
 };
 
 // @public

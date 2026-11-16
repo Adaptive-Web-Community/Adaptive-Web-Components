@@ -38,6 +38,8 @@
     "./package.json": "./package.json"
   },
   "scripts": {
+    "generate:contracts": "node scripts/run-generate-contracts.mjs",
+    "prebuild": "npm run generate:contracts",
     "build": "rimraf dist && tsc",
     "clean": "rimraf dist",
     "lint": "eslint . --ext .ts",
@@ -47,6 +49,9 @@
     "doc": "api-extractor run --local",
     "postbuild": "npm run doc"
   },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "^1.0.0-beta.1"
+  },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.59.4",
     "@types/chai": "^4.3.4",
@@ -55,6 +60,7 @@
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
     "mocha": "^10.2.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "tsx": "^4.23.0"
   }
 }

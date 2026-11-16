@@ -1,17 +1,17 @@
-import type { ChangelogEntry } from "./changelog.js";
+import type { ChangelogEntry } from "../../changelog.js";
 import {
     type Contract,
     type ContractProperty,
     ContractPropertyKind,
     type ContractSlot,
-} from "./contract.js";
-import type { DisambiguationEntry } from "./disambiguation.js";
-import { labelOf } from "./doc-common.js";
-import type { Documentation } from "./documentation.js";
-import type { KnownIssue } from "./known-issues.js";
-import { type PartDefinition, type Structure, structureParts } from "./structure.js";
-import type { UsageRule } from "./usage.js";
-import { RuleStance } from "./usage.js";
+} from "../../contract.js";
+import type { DisambiguationEntry } from "../../disambiguation.js";
+import { labelOf } from "../../doc-common.js";
+import type { Documentation } from "../../documentation.js";
+import type { KnownIssue } from "../../known-issues.js";
+import { type PartDefinition, type Structure, structureParts } from "../../structure.js";
+import type { UsageRule } from "../../usage.js";
+import { RuleStance } from "../../usage.js";
 
 function heading(level: number, text: string): string {
     return `${"#".repeat(level)} ${text}\n\n`;
