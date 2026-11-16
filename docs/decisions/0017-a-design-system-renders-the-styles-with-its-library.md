@@ -38,7 +38,7 @@ for the pairs that the rules give ([0013](0013-a-value-on-a-fill-is-made-in-the-
 - A design system with another library renders the same rules for its tokens, and the components composed with it have the rules of its
   states. A library given after the components are composed changes the values, not the rules that were rendered.
 - The custom properties are written for the whole document (or shadow root). A layer, or a fill as the context of its content, is a scope of
-  its own, with the CSS of a library extended for it, which isn't done yet.
+  its own, with the CSS of a library extended for it, see [0018](0018-a-scope-writes-the-tokens-it-changes.md).
 - The custom properties are named as the library names them by default. A design system doesn't take the library's `name` option.
 
 ## Alternatives

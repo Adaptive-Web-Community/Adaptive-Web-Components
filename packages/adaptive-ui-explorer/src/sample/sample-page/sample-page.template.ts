@@ -1,5 +1,5 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
-import { staticallyCompose } from "@microsoft/fast-foundation";
+import { type ElementViewTemplate, html } from "@microsoft/fast-element";
+import { staticallyCompose } from "@adaptive-web/components-fast";
 import { downloadIcon, playIcon } from "../assets.js";
 import { SamplePage } from "./sample-page.js";
 
@@ -7,7 +7,7 @@ export function samplePageTemplate<T extends SamplePage>(): ElementViewTemplate<
     return html<T>`
         <adaptive-card>
             <div class="image-container">
-                <adaptive-badge fill="primary" color="primary" class="badge">
+                <adaptive-badge class="badge">
                     Badge
                 </adaptive-badge>
             </div>
@@ -28,17 +28,17 @@ export function samplePageTemplate<T extends SamplePage>(): ElementViewTemplate<
         <div class="preview-controls">
             <adaptive-progress aria-label="Example progress bar"></adaptive-progress>
             <adaptive-menu aria-label="Example menu">
-                <adaptive-menu-item role="menuitem" aria-label="Example menu item">
+                <adaptive-menu-item>
                     Menu item 1
                 </adaptive-menu-item>
-                <adaptive-menu-item role="menuitem" aria-label="Example menu item">
+                <adaptive-menu-item>
                     Menu item 2
                 </adaptive-menu-item>
-                <adaptive-menu-item role="menuitem" aria-label="Example menu item">
+                <adaptive-menu-item>
                     Menu item 3
                 </adaptive-menu-item>
                 <adaptive-divider></adaptive-divider>
-                <adaptive-menu-item role="menuitem" aria-label="Example menu item">
+                <adaptive-menu-item>
                     Menu item 4
                 </adaptive-menu-item>
             </adaptive-menu>
@@ -46,36 +46,34 @@ export function samplePageTemplate<T extends SamplePage>(): ElementViewTemplate<
                 <adaptive-radio-group
                     class="example-radios"
                     name="example radio group"
+                    label="Example radios"
+                    hide-label
                     orientation="vertical"
                     value="radio2"
                 >
-                    <adaptive-radio value="radio1" aria-label="Example radio 1">Radio 1</adaptive-radio>
-                    <adaptive-radio value="radio2" aria-label="Example radio 2">Radio 2</adaptive-radio>
+                    <adaptive-radio value="radio1" label="Radio 1"></adaptive-radio>
+                    <adaptive-radio value="radio2" label="Radio 2"></adaptive-radio>
                 </adaptive-radio-group>
                 <div class="control-container-grid">
-                    <adaptive-switch aria-label="Example switch">Switch</adaptive-switch>
-                    <adaptive-checkbox class="checkbox" aria-label="Example checkbox">
-                        Checkbox
-                    </adaptive-checkbox>
+                    <adaptive-switch label="Switch"></adaptive-switch>
+                    <adaptive-checkbox class="checkbox" label="Checkbox"></adaptive-checkbox>
                 </div>
             </div>
             <adaptive-text-field
                 placeholder="Text field"
-                aria-label="Example text field"
-            >Text field</adaptive-text-field>
+                label="Text field"
+            ></adaptive-text-field>
             <div class="control-container-2">
-                <adaptive-slider aria-label="Example slider"></adaptive-slider>
-                <adaptive-flipper></adaptive-flipper>
-                <adaptive-flipper disabled></adaptive-flipper>
+                <adaptive-slider label="Example slider" hide-label></adaptive-slider>
             </div>
             <div class="control-container">
-                <adaptive-button appearance="accent" aria-label="Example 'download' button">
+                <adaptive-button>
                     Button
                     <span slot="start">
                         ${staticallyCompose(downloadIcon)}
                     </span>
                 </adaptive-button>
-                <adaptive-button appearance="neutral" aria-label="Example 'play' button">
+                <adaptive-button>
                     Button
                     <span slot="start">
                         ${staticallyCompose(playIcon)}

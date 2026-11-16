@@ -1,4 +1,5 @@
 import { DesignToken, Library, px, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { withFormerNames } from "../core/token-metadata.js";
 import { kebabName } from "../core/token-names.js";
 import { AdaptiveDesignToken, FontStyleToken } from "../core/token-types.js";
@@ -112,4 +113,4 @@ export const typography: Library.Config<TypographyTokens, TypographyLibraryToken
  *
  * @public
  */
-export const createTypographyLibrary = () => Library.create<TypographyLibraryTokens>({ typography });
+export const createTypographyLibrary = () => Library.create<TypographyLibraryTokens>({ typography }, { types: adaptiveTokenTypes });

@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import chai from "chai";
 import fs from "fs";
 import path from "path";
@@ -89,7 +90,7 @@ describe("palettes", () => {
                 },
             },
             brand: { primary: { $type: DesignToken.Type.Color, $value: hex("#336699") } },
-        });
+        }, { types: adaptiveTokenTypes });
         const { brand, color } = library.tokens;
 
         expect(brand.primary.$value).to.deep.equal(hex("#336699"));

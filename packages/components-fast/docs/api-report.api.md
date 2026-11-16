@@ -985,7 +985,7 @@ export const density: CSSDirective;
 // @public
 export class DesignSystem {
     constructor(_prefix: string, _registry?: CustomElementRegistry, _statics?: ElementStaticMap, _library?: Library.Library<any>, _anatomyTreatments?: AnatomyTreatments);
-    adoptTokenStyles(target?: Document | ShadowRoot): void;
+    adoptTokenStyles(target?: Document | ShadowRoot, scope?: Library.Library<any>): void;
     get anatomyTreatments(): AnatomyTreatments;
     assembleStyles(defaultStyles: ComposableStyles[], anatomy?: ComponentAnatomy<any, any>, options?: ComposeOptions<any>): ElementStyles;
     configure(options: PartialDesignSystem): this;
@@ -995,9 +995,10 @@ export class DesignSystem {
     get prefix(): string;
     // (undocumented)
     get registry(): CustomElementRegistry;
+    removeTokenStyles(target: Document | ShadowRoot): void;
     // (undocumented)
     get statics(): ElementStaticMap;
-    tokenStyles(selector: string): string;
+    tokenStyles(selector: string, scope?: Library.Library<any>): string;
     withPrefix(prefix: string): this;
 }
 

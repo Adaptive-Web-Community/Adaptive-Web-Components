@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../token-equality.js";
 import chai from "chai";
 import { configuredValueOf, DesignToken, Library, px, refs } from "design-token-library";
 import { evaluate, formatExpression, isConfiguredOperand, multiply } from "../expression.js";
@@ -42,7 +43,7 @@ const createLibrary = (scale = typeScale(tokenRefs.scale, px(16), 1.25)) =>
         }),
         scale,
         other: typeScale(tokenRefs.other, px(12), 1.1),
-    });
+    }, { types: adaptiveTokenTypes });
 
 // The size of a position of a scale, and its line height, calculated independently of the implementation.
 const size = (base: number, multiplier: number, position: number) => base * Math.pow(multiplier, position);

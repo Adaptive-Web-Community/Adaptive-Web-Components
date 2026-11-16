@@ -7,6 +7,7 @@ export * from "./styles/index.js";
 export * from "./shadow/index.js";
 export * from "./typography/index.js";
 export * from "./token-css.js";
+export * from "./token-equality.js";
 export * from "./token-metadata.js";
 export * from "./token-names.js";
 export * from "./token-types.js";

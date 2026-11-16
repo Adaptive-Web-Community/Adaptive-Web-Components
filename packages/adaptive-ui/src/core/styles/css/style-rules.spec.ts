@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../../token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library, pathOf, refs } from "design-token-library";
 import { AdaptiveDesignToken, InteractiveToken } from "../../token-types.js";
@@ -42,7 +43,7 @@ const library = Library.create<Tokens>({
             round: treatment({ properties: { cornerRadius: "999px" } }),
         },
     },
-});
+}, { types: adaptiveTokenTypes });
 const treatments = libraryTreatments(library);
 
 type Parts = { control: string };

@@ -1,6 +1,6 @@
 import { css } from "@microsoft/fast-element";
-import { accentFillReadable, cornerRadiusControl, designUnit, highlightFillSubtle, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/components-fast";
+import { properties } from "../../library.js";
 
 export const samplePageStyles = css`
     ${componentBaseStyles}
@@ -14,7 +14,7 @@ export const samplePageStyles = css`
     }
 
     .image-container {
-        background: ${highlightFillSubtle.rest};
+        background: ${properties.color.highlight.fill.subtle.var};
         width: 100%;
         height: 215px;
         display: flex;
@@ -30,13 +30,13 @@ export const samplePageStyles = css`
         flex-direction: column;
         padding: calc(var(--gutter) * 1px);
         text-align: start;
-        color: ${neutralStrokeStrong.rest};
+        color: ${properties.color.neutral.stroke.strong.var};
     }
 
     .sample-control {
         display: flex;
         align-items: center;
-        gap: calc(${designUnit} * 2);
+        gap: calc(${properties.global.designUnit.var} * 2);
         width: 100%;
         margin-block-start: 1em;
         margin-block-end: 1em;
@@ -45,8 +45,8 @@ export const samplePageStyles = css`
     .sample-control-icon {
         width: 21px;
         height: 21px;
-        background-color: ${accentFillReadable.rest};
-        border-radius: ${cornerRadiusControl};
+        background-color: ${properties.color.accent.fill.readable.var};
+        border-radius: ${properties.shape.cornerRadius.default.var};
     }
 
     .preview-controls {
@@ -63,7 +63,7 @@ export const samplePageStyles = css`
 
     .control-container-2 {
         display: grid;
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: 1fr;
         grid-gap: 20px;
     }
 

@@ -1,24 +1,18 @@
 import { css } from "@microsoft/fast-element";
-import {
-    bodyFontFamily,
-    colorContext,
-    cornerRadiusLayer,
-    neutralStrokeStrong,
-    typeRampDefault,
-} from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/components-fast";
+import { properties } from "../../library.js";
 
 export const sampleAppStyles = css`
     ${componentBaseStyles}
 
     :host {
         display: flex;
-        font-family: ${bodyFontFamily};
-        color: ${neutralStrokeStrong.rest};
+        font-family: ${properties.typography.fontFamily.body.var};
+        color: ${properties.color.neutral.stroke.strong.var};
         min-height: 650px;
         min-width: 775px;
-        background: ${colorContext};
-        border-radius: ${cornerRadiusLayer};
+        background: ${properties.color.context.var};
+        border-radius: ${properties.shape.cornerRadius.layer.var};
         --gutter: 20;
     }
 
@@ -40,18 +34,19 @@ export const sampleAppStyles = css`
         padding: 0 12px;
     }
 
-    adaptive-tabs {
+    .tabs {
+        display: flex;
         flex-grow: 1;
     }
 
-    adaptive-tabs::part(tablist) {
+    adaptive-tablist {
         padding: 0 8px;
-        width: auto;
         align-self: start;
     }
 
-    adaptive-tabs::part(tabpanel) {
+    .panels {
         display: flex;
+        flex-grow: 1;
     }
 
     adaptive-tab {
@@ -69,8 +64,8 @@ export const sampleAppStyles = css`
         flex-grow: 1;
         gap: 8px;
         padding: 8px;
-        border-start-start-radius: ${cornerRadiusLayer};
-        border-end-end-radius: ${cornerRadiusLayer};
+        border-start-start-radius: ${properties.shape.cornerRadius.layer.var};
+        border-end-end-radius: ${properties.shape.cornerRadius.layer.var};
     }
 
     .pane {
@@ -86,8 +81,8 @@ export const sampleAppStyles = css`
     }
 
     .content .heading {
-        font-size: ${typeRampDefault.plus3.fontSize};
-        line-height: ${typeRampDefault.plus3.lineHeight};
+        font-size: ${properties.typography.ramp.default.fontSize.plus3.var};
+        line-height: ${properties.typography.ramp.default.lineHeight.plus3.var};
         margin: 0;
         margin-bottom: 10px;
         font-weight: bold;

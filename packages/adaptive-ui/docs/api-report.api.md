@@ -5,7 +5,7 @@
 ```ts
 
 import { Color as Color_3 } from 'culori/fn';
-import { CSSPropertiesOptions } from 'design-token-library';
+import { CSSNameOptions } from 'design-token-library';
 import { DesignToken } from 'design-token-library';
 import { Library } from 'design-token-library';
 
@@ -28,7 +28,7 @@ export type AccessibilitySection<TAccessibility extends Accessibility = Accessib
 };
 
 // @public
-export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions): {
+export function adaptiveConverters(library: Library.Library<any>, options?: CSSNameOptions): {
     boolean: false;
     contrastRatio: false;
     delta: false;
@@ -55,6 +55,13 @@ export const AdaptiveDesignToken: {
     readonly palette: "palette";
     readonly treatment: "treatment";
     readonly wcagContrastLevel: "wcagContrastLevel";
+};
+
+// @public
+export const adaptiveTokenTypes: {
+    readonly [N in keyof typeof AdaptiveDesignToken]: {
+        isEqual(previous: any, next: any): boolean;
+    };
 };
 
 // @public
@@ -778,6 +785,9 @@ export function isOnFill(value: unknown): value is OnFill;
 // @public
 export function isPaint(value: unknown): value is Paint;
 
+// @public
+export function isPlainEqual(previous: unknown, next: unknown): boolean;
+
 // @beta
 export function isSerializableOnFill(value: unknown): value is SerializableOnFill;
 
@@ -994,7 +1004,7 @@ export type PlatformBindingFor<TDoc extends DocumentationForBinding> = PlatformB
 export const pow: (...args: ConfiguredOperand[]) => ConfiguredExpression;
 
 // @public
-export function propertyResolver(library: Library.Library<any>, options?: CSSPropertiesOptions): (name: string) => string;
+export function propertyResolver(library: Library.Library<any>, options?: CSSNameOptions): (name: string) => string;
 
 // @public
 export type RadialGradient = RadialGradient_2;
@@ -1388,7 +1398,7 @@ export interface TokenProperties {
 }
 
 // @public
-export interface TokenPropertiesOptions extends CSSPropertiesOptions {
+export interface TokenPropertiesOptions extends CSSNameOptions {
     readonly context?: Library.Ref<unknown, never>;
 }
 

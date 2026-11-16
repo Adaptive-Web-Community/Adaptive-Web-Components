@@ -1,17 +1,16 @@
-import { ElementStylesRenderer, Interactivity } from "@adaptive-web/adaptive-ui";
-import type { Styles } from "@adaptive-web/adaptive-ui";
-import { cornerRadiusControl, densityControl, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
-import { componentBaseStyles } from "@adaptive-web/components-fast";
+import { type ComponentAnatomy, type ComponentConditions, type ComponentParts, Interactivity, type TreatmentRef } from "@adaptive-web/adaptive-ui";
+import { AdaptiveDesignSystem, componentBaseStyles } from "@adaptive-web/components-fast";
 import {
     attr,
     css,
     customElement,
-    ElementStyles,
-    ElementViewTemplate,
+    type ElementStyles,
+    type ElementViewTemplate,
     FASTElement,
     html,
     observable,
 } from "@microsoft/fast-element";
+import { properties } from "../library.js";
 
 function template<T extends AdaptiveComponent>(): ElementViewTemplate<T> {
     return html<T>`
@@ -30,13 +29,23 @@ const styles = css`
         display: flex;
         align-items: center;
         justify-items: start;
-        border-radius: ${cornerRadiusControl};
-        padding: ${densityControl.padding};
-        font-size: ${typeRampDefault.base.fontSize};
+        border-radius: ${properties.shape.cornerRadius.default.var};
+        padding: ${properties.density.control.vertical.padding.var} ${properties.density.control.horizontal.padding.var};
+        font-size: ${properties.typography.ramp.default.fontSize.base.var};
         cursor: pointer;
     }
 `;
 
+// An element that has the states of a treatment, and is disabled by its attribute.
+const anatomy: ComponentAnatomy<ComponentConditions, ComponentParts> = {
+    conditions: {},
+    parts: {},
+    interactivity: Interactivity.disabledAttribute,
+};
+
+/**
+ * An element styled by a treatment, which the design system renders.
+ */
 @customElement({
     name: "app-adaptive-component",
     template: template(),
@@ -47,15 +56,13 @@ export class AdaptiveComponent extends FASTElement {
     public disabled: boolean = false;
 
     @observable
-    public styles?: Styles;
-    protected stylesChanged(prev: Styles, next: Styles) {
-        if (prev) {
+    public treatment?: TreatmentRef;
+    protected treatmentChanged(_prev: TreatmentRef | undefined, next: TreatmentRef | undefined) {
+        if (this._addedStyles) {
             this.$fastController.removeStyles(this._addedStyles);
         }
-        if (next) {
-            this._addedStyles = new ElementStylesRenderer(next).render({}, Interactivity.disabledAttribute);
-            this.$fastController.addStyles(this._addedStyles);
-        }
+        this._addedStyles = next ? AdaptiveDesignSystem.assembleStyles([], anatomy, { styleRules: [{ treatments: [next] }] }) : undefined;
+        this.$fastController.addStyles(this._addedStyles);
     }
 
     // Keep track of the styles we added so we can remove them without recreating.

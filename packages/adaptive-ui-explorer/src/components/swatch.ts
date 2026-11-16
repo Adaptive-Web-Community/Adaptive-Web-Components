@@ -1,17 +1,13 @@
-import { Color } from "@adaptive-web/adaptive-ui";
-import { colorContext, densityControl, neutralStrokeReadable, typeRampDefault } from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from "@adaptive-web/components-fast";
 import {
-    attr,
     css,
     customElement,
-    ElementViewTemplate,
+    type ElementViewTemplate,
     FASTElement,
     html,
     observable,
 } from "@microsoft/fast-element";
-import { DesignToken } from "@microsoft/fast-foundation";
-import { parse, wcagContrast } from "culori/fn";
+import { properties } from "../library.js";
 
 export enum SwatchType {
     fill = "fill",
@@ -19,15 +15,40 @@ export enum SwatchType {
     outline = "outline",
 }
 
+/**
+ * A color of a treatment in a state, as CSS, with what it is drawn on.
+ */
+export interface SwatchInfo {
+    type: SwatchType;
+    name: string;
+    fill: string;
+    foreground?: string;
+    outline?: string;
+    value: string;
+    contrast: string;
+}
+
+function iconStyle(swatch: SwatchInfo): string {
+    const background = `background: ${swatch.fill}`;
+    switch (swatch.type) {
+        case SwatchType.outline:
+            return `border: 4px solid ${swatch.outline}; ${background}`;
+        case SwatchType.foreground:
+            return `color: ${swatch.foreground}; ${background}`;
+        default:
+            return background;
+    }
+}
+
 function template<T extends AppSwatch>(): ElementViewTemplate<T> {
     return html<T>`
         <div
-            class="icon"
-            style="${x => x.iconStyle}"
-            title="${x => x.contrastMessage}"
+            class="icon ${x => x.swatch?.type}"
+            style="${x => x.swatch ? iconStyle(x.swatch) : ""}"
+            title="${x => x.swatch?.contrast}"
         ></div>
-        <code class="recipe-name" title="${x => x.recipeName}">${x => x.recipeName}</code>
-        <code class="hex-code">${x => x.colorValue}</code>
+        <code class="recipe-name" title="${x => x.swatch?.name}">${x => x.swatch?.name}</code>
+        <code class="hex-code">${x => x.swatch?.value.toUpperCase()}</code>
     `;
 }
 
@@ -39,12 +60,12 @@ const styles = css`
         grid-template-columns: auto 1fr auto;
         align-items: center;
         justify-items: start;
-        grid-column-gap: ${densityControl.horizontalGap};
-        color: ${neutralStrokeReadable.rest};
-        font-size: ${typeRampDefault.minus1.fontSize};
+        grid-column-gap: ${properties.density.control.horizontal.gap.var};
+        color: ${properties.color.neutral.stroke.readable.var};
+        font-size: ${properties.typography.ramp.default.fontSize.minus1.var};
     }
 
-    :host([type="foreground"]) .icon::before {
+    .icon.foreground::before {
         font-size: 13px;
         content: "A";
     }
@@ -73,129 +94,15 @@ const styles = css`
     }
 `;
 
+/**
+ * A swatch of a color of a treatment, its name, its value, and its contrast.
+ */
 @customElement({
     name: "app-swatch",
     template: template(),
     styles,
 })
 export class AppSwatch extends FASTElement {
-    @attr
-    public type?: SwatchType;
-
-    @attr({ attribute: "recipe-name" })
-    public recipeName?: string;
-
     @observable
-    public foregroundRecipe?: DesignToken<Color>;
-    protected foregroundRecipeChanged() {
-        this.updateObservables();
-    }
-
-    @observable
-    public fillRecipe?: DesignToken<Color>;
-    protected fillRecipeChanged() {
-        this.updateObservables();
-    }
-
-    @observable
-    public outlineRecipe?: DesignToken<Color>;
-    protected outlineRecipeChanged() {
-        this.updateObservables();
-    }
-
-    @observable
-    public iconStyle?: string;
-
-    @observable
-    public contrastMessage?: string;
-
-    @observable
-    public colorValue?: string;
-
-    public connectedCallback() {
-        super.connectedCallback();
-
-        colorContext.subscribe(this);
-
-        this.updateObservables();
-    }
-
-    public disconnectedCallback() {
-        super.disconnectedCallback();
-
-        colorContext.unsubscribe(this);
-    }
-
-    public handleChange() {
-        this.updateObservables();
-    }
-
-    private updateObservables() {
-        this.updateIconStyle();
-        this.updateContrastMessage();
-        this.updateColorValue();
-    }
-
-    private tokenCSS(token?: DesignToken<Color>): string {
-        return token && typeof (token as any).createCSS === "function"
-            ? (token as any).createCSS()
-            : "";
-    }
-
-    private evaluateToken(token?: DesignToken<Color>): string {
-        return token?.getValueFor(this).toString() || "";
-    }
-
-    private updateIconStyle(): void {
-        const background = `background-color: ${this.tokenCSS(this.fillRecipe)}`;
-        this.iconStyle =
-            this.type === SwatchType.outline
-                ? `border: 4px solid ${this.tokenCSS(this.outlineRecipe)}; ${background}`
-                : this.type === SwatchType.foreground
-                ? `color: ${this.tokenCSS(this.foregroundRecipe)}; ${background}`
-                : background;
-    }
-
-    private formatContrast(a?: DesignToken<Color>, b?: DesignToken<Color>): string {
-        return a && b
-            ? wcagContrast(
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  parse(this.evaluateToken(a))!,
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  parse(this.evaluateToken(b))!
-              ).toFixed(2)
-            : "";
-    }
-
-    private formatContrastMessage(
-        a?: DesignToken<Color>,
-        b?: DesignToken<Color>
-    ): string {
-        return `Contrast: ${this.formatContrast(a, b)} : 1`;
-    }
-
-    private updateContrastMessage(): void {
-        const contrastMessage: string = this.formatContrastMessage(
-            this.type === SwatchType.foreground
-                ? this.foregroundRecipe
-                : this.type === SwatchType.outline
-                ? this.outlineRecipe
-                : this.fillRecipe,
-            this.type === SwatchType.foreground
-                ? this.fillRecipe
-                : colorContext
-        );
-
-        this.contrastMessage = contrastMessage;
-    }
-
-    private updateColorValue(): void {
-        const recipe =
-            this.type === SwatchType.outline
-                ? this.outlineRecipe
-                : this.type === SwatchType.foreground
-                ? this.foregroundRecipe
-                : this.fillRecipe;
-        this.colorValue = this.evaluateToken(recipe).toUpperCase();
-    }
+    public swatch?: SwatchInfo;
 }

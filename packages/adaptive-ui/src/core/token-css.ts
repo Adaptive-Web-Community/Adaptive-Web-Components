@@ -1,4 +1,4 @@
-import { configuredValueOf, convert, CSSPropertiesOptions, DesignToken, Library, toProperties } from "design-token-library";
+import { configuredValueOf, convert, CSSNameOptions, DesignToken, Library, toProperties } from "design-token-library";
 import { formatPaint, isPaint, type Paint } from "./color/paint.js";
 import { formatExpression, isConfiguredOperand, Operand } from "./expression.js";
 import { InteractiveSet } from "./interactive.js";
@@ -30,7 +30,7 @@ export function atName<T>(tree: any, name: string): T {
  *
  * @public
  */
-export function propertyResolver(library: Library.Library<any>, options?: CSSPropertiesOptions): (name: string) => string {
+export function propertyResolver(library: Library.Library<any>, options?: CSSNameOptions): (name: string) => string {
     const properties = toProperties(library, options);
     return (name: string) => atName<{ property: string }>(properties, name).property;
 }
@@ -73,7 +73,7 @@ export function formatValue(value: unknown): string {
  *
  * @public
  */
-export function adaptiveConverters(library: Library.Library<any>, options?: CSSPropertiesOptions) {
+export function adaptiveConverters(library: Library.Library<any>, options?: CSSNameOptions) {
     const property = propertyResolver(library, options);
     return {
         // A switch, a contrast ratio, a delta, and a WCAG level are read by a recipe, which is calculated in JavaScript, so they are not CSS,

@@ -1,4 +1,5 @@
 import { DesignToken, Library, recipes, refs } from "design-token-library";
+import { adaptiveTokenTypes } from "../core/token-equality.js";
 import { Color, withAlpha } from "../core/color/color.js";
 import { InteractiveColorSet } from "../core/color/interactive-set.js";
 import { StyleProperty } from "../core/styles/properties.js";
@@ -150,4 +151,4 @@ export const elevation: Library.Config<ElevationTokens, ElevationLibraryTokens> 
  *
  * @public
  */
-export const createElevationLibrary = () => Library.create<ElevationLibraryTokens>({ color, elevation });
+export const createElevationLibrary = () => Library.create<ElevationLibraryTokens>({ color, elevation }, { types: adaptiveTokenTypes });

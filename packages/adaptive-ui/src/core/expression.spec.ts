@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "./token-equality.js";
 import chai from "chai";
 import { CircularReferenceError, configuredValueOf, dependenciesOf, DesignToken, hex, isRef, Library, pathOf, px, ref, refs } from "design-token-library";
 import { add, divide, evaluate, formatExpression, max, min, multiply, Operand, pow, round, subtract } from "./expression.js";
@@ -32,7 +33,7 @@ const create = () =>
         },
         group: { $type: AdaptiveDesignToken.expression, $root: { $value: px(2) } },
         color: { $type: DesignToken.Type.Color, $value: hex("#ffffff") },
-    });
+    }, { types: adaptiveTokenTypes });
 const library = create();
 const property = (name: string) => `--${name.replace(/\./g, "-")}`;
 
@@ -70,7 +71,7 @@ describe("an expression", () => {
                     snap: { $value: px(4) },
                     rem: { $value: { value: 1, unit: "rem" } },
                 },
-            });
+            }, { types: adaptiveTokenTypes });
 
         // The library says so when the value of one is read.
         expect(() => circular().tokens.a.size.$value).to.throw(CircularReferenceError);

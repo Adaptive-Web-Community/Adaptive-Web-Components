@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "./token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library } from "design-token-library";
 import { Color } from "./color/color.js";
@@ -46,7 +47,7 @@ const create = () =>
             },
             old: { $type: DesignToken.Type.Color, $value: red, $deprecated: "Use color.context." },
         },
-    });
+    }, { types: adaptiveTokenTypes });
 
 const resolve = (name: string) => resolveTokenName(tokenNames(create()), name);
 

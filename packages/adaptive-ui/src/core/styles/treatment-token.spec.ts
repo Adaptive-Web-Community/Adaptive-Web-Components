@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "../token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, isRef, Library, pathOf, px, refs, toCSS } from "design-token-library";
 import { adaptiveConverters } from "../token-css.js";
@@ -49,7 +50,7 @@ const create = () =>
             ),
             other: treatment({ properties: { opacity: 0.5 } }),
         },
-    });
+    }, { types: adaptiveTokenTypes });
 
 describe("treatment", () => {
     it("should be plain data, with the refs as they are given", () => {

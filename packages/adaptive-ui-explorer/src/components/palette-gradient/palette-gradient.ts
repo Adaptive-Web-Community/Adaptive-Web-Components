@@ -1,4 +1,4 @@
-import { Color, Palette } from "@adaptive-web/adaptive-ui";
+import { closestSwatchIndex, type Color, type Palette, swatchAt } from "@adaptive-web/adaptive-ui";
 import { customElement, FASTElement, observable } from "@microsoft/fast-element";
 import { paletteGradientStyles as styles } from "./palette-gradient.styles.js";
 import { paletteGradientTemplate as template } from "./palette-gradient.template.js";
@@ -14,6 +14,6 @@ export class PaletteGradient extends FASTElement {
     @observable
     public palette?: Palette;
     protected paletteChanged() {
-        this.closestSource = this.palette?.get(this.palette?.closestIndexOf(this.palette?.source));
+        this.closestSource = this.palette ? swatchAt(this.palette, closestSwatchIndex(this.palette, this.palette.source)) : undefined;
     }
 }

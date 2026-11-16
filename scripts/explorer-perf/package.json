@@ -1,0 +1,13 @@
+{
+    "name": "explorer-perf",
+    "private": true,
+    "description": "Measures a build of the explorer in Chromium: load, the token sheets of the scopes, color changes, and the heap.",
+    "type": "module",
+    "scripts": {
+        "perf": "node perf.mjs",
+        "profile": "node profile.mjs"
+    },
+    "devDependencies": {
+        "playwright-core": "1.56.1"
+    }
+}

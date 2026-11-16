@@ -1,120 +1,61 @@
-import { Color } from '@adaptive-web/adaptive-ui';
-import {
-    colorContext,
-    layerFillBaseLuminance,
-    layerFillFixedBase,
-    layerFillFixedMinus1,
-    layerFillFixedMinus2,
-    layerFillFixedMinus3,
-    layerFillFixedMinus4,
-    layerFillFixedPlus1,
-    layerFillFixedPlus2,
-    layerFillFixedPlus3,
-    layerFillFixedPlus4,
-    layerPalette,
-    neutralStrokeStrong,
-} from "@adaptive-web/adaptive-ui/reference";
 import { componentBaseStyles } from '@adaptive-web/components-fast';
-import { attr, css, customElement, ElementViewTemplate, FASTElement, html, nullableNumberConverter } from "@microsoft/fast-element";
-import { DesignToken, DesignTokenChangeRecord } from "@microsoft/fast-foundation";
+import { attr, css, customElement, html, nullableNumberConverter } from "@microsoft/fast-element";
+import { type ExplorerLibrary, properties, tokens } from "../../library.js";
+import { ScopeElement } from "../../scope.js";
+
+// The fixed layers, by their position in the ramp.
+const layerFills = {
+    minus4: tokens.color.layer.fill.ramp.minus4,
+    minus3: tokens.color.layer.fill.ramp.minus3,
+    minus2: tokens.color.layer.fill.ramp.minus2,
+    minus1: tokens.color.layer.fill.ramp.minus1,
+    base: tokens.color.layer.fill.ramp.base,
+    plus1: tokens.color.layer.fill.ramp.plus1,
+    plus2: tokens.color.layer.fill.ramp.plus2,
+    plus3: tokens.color.layer.fill.ramp.plus3,
+    plus4: tokens.color.layer.fill.ramp.plus4,
+};
+
+/**
+ * The position of a fixed layer in the ramp of the layers.
+ */
+export type LayerFill = keyof typeof layerFills;
 
 const layerBackgroundStyles = css`
     ${componentBaseStyles}
 
     :host {
         display: block;
-        background: ${colorContext};
-        color: ${neutralStrokeStrong.rest};
+        background: ${properties.color.context.var};
+        color: ${properties.color.neutral.stroke.strong.var};
     }
 `;
 
-function layerBackgroundTemplate<T extends LayerBackground>(): ElementViewTemplate<T> {
-    return html<T>`
-        <slot></slot>
-    `;
-}
-
+/**
+ * A layer: a scope whose color context is a fixed layer, and which may set the luminance of the base layer, as for a dark mode.
+ */
 @customElement({
     name: "app-layer-background",
     styles: layerBackgroundStyles,
-    template: layerBackgroundTemplate(),
+    template: html`<slot></slot>`,
 })
-export class LayerBackground extends FASTElement {
+export class LayerBackground extends ScopeElement {
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
-    public baseLayerLuminance?: number;
-    protected baseLayerLuminanceChanged(prev: number, next: number): void {
-        if (next) {
-            layerFillBaseLuminance.setValueFor(this, next);
-            this.updateBackgroundColor();
+    public baseLayerLuminance: number | null = null;
+    protected baseLayerLuminanceChanged(): void {
+        this.scopeChanged();
+    }
+
+    @attr
+    public layer: LayerFill = "base";
+    protected layerChanged(): void {
+        this.scopeChanged();
+    }
+
+    protected updateScope(library: ExplorerLibrary): void {
+        if (this.baseLayerLuminance !== null) {
+            library.tokens.color.layer.fill.ramp.baseLuminance.set(this.baseLayerLuminance);
         }
-    }
-
-    @attr({ attribute: "background-layer-recipe" })
-    public backgroundLayerRecipe: string = "Base";
-    protected backgroundLayerRecipeChanged(prev: string, next: string): void {
-        this.updateBackgroundColor();
-    }
-
-    private updateBackgroundColor(): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-
-        if (this.backgroundLayerRecipe !== undefined) {
-            let swatch: Color | null = null;
-            switch (this.backgroundLayerRecipe) {
-                case "-1":
-                    swatch = layerFillFixedMinus1.getValueFor(this);
-                    break;
-                case "-2":
-                    swatch = layerFillFixedMinus2.getValueFor(this);
-                    break;
-                case "-3":
-                    swatch = layerFillFixedMinus3.getValueFor(this);
-                    break;
-                case "-4":
-                    swatch = layerFillFixedMinus4.getValueFor(this);
-                    break;
-                case "Base":
-                    swatch = layerFillFixedBase.getValueFor(this);
-                    break;
-                case "+1":
-                    swatch = layerFillFixedPlus1.getValueFor(this);
-                    break;
-                case "+2":
-                    swatch = layerFillFixedPlus2.getValueFor(this);
-                    break;
-                case "+3":
-                    swatch = layerFillFixedPlus3.getValueFor(this);
-                    break;
-                case "+4":
-                    swatch = layerFillFixedPlus4.getValueFor(this);
-                    break;
-            }
-
-            if (swatch !== null) {
-                colorContext.setValueFor(this, swatch);
-            }
-        }
-    }
-
-    public handleChange(token: DesignToken<any>, record: DesignTokenChangeRecord<any>): void {
-        if (record.target === this && token === layerPalette) {
-            this.updateBackgroundColor();
-        }
-    }
-
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        layerPalette.subscribe(this);
-
-        this.updateBackgroundColor();
-    }
-
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-
-        layerPalette.unsubscribe(this);
+        library.tokens.color.context.set(layerFills[this.layer] ?? layerFills.base);
     }
 }

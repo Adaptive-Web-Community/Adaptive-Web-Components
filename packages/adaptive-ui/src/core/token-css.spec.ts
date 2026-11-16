@@ -1,3 +1,4 @@
+import { adaptiveTokenTypes } from "./token-equality.js";
 import chai from "chai";
 import { DesignToken, hex, Library, px, refs, toCSS } from "design-token-library";
 import { linearGradient } from "./color/gradient.js";
@@ -25,7 +26,7 @@ const create = () =>
             other: { $value: px(3) },
         },
         derived: { $type: AdaptiveDesignToken.expression, $value: multiply(tokens.size, tokens.ratio) },
-    });
+    }, { types: adaptiveTokenTypes });
 
 describe("propertyResolver", () => {
     it("should get the name of the custom property from the name of the token", () => {
@@ -94,7 +95,7 @@ describe("adaptiveConverters", () => {
                     90
                 ),
             },
-        });
+        }, { types: adaptiveTokenTypes });
         const css = toCSS(library, { converters: adaptiveConverters(library) });
 
         expect(css).to.include("--solid:#ff0000;");

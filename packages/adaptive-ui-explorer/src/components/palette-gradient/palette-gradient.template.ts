@@ -1,11 +1,12 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { Color, isDark } from "@adaptive-web/adaptive-ui";
+import { type Color, formatColor, isDark } from "@adaptive-web/adaptive-ui";
 import { PaletteGradient } from "./palette-gradient.js";
 
 function getClass(color: Color, source?: Color, closestSource?: Color) {
-    return color.toString() === source?.toString()
+    const value = formatColor(color);
+    return source && value === formatColor(source)
         ? "source"
-        : color.toString() === closestSource?.toString()
+        : closestSource && value === formatColor(closestSource)
         ? "source closest"
         : "";
 }
@@ -21,8 +22,8 @@ export const paletteGradientTemplate = html<PaletteGradient>`
         html<Color, PaletteGradient>`
             <a
                 class="${(x, c) => getClass(x, c.parent.palette?.source, c.parent.closestSource)}"
-                style="background: ${(x) => x.toString()}; color: ${(x) => getColor(x)}"
-                title="${(x, c) => c.index.toString().concat(": ", x.toString().toUpperCase())}"
+                style="background: ${(x) => formatColor(x)}; color: ${(x) => getColor(x)}"
+                title="${(x, c) => c.index.toString().concat(": ", formatColor(x).toUpperCase())}"
             ></a>
         `,
         { positioning: true }
