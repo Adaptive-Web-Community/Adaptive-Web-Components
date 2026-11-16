@@ -24,21 +24,25 @@ export type StringCondition = Record<string, string>;
 export type Condition = BooleanCondition | StringCondition;
 
 /**
- * Type of the `conditions` for component {@link ComponentAnatomy}.
+ * Condition id to platform selector map on {@link ComponentAnatomy} and {@link PlatformBinding | platform binding}.
  *
  * @public
  */
 export type ComponentConditions = Record<string, Condition>;
 
 /**
- * Type of the `parts` for component {@link ComponentAnatomy}.
+ * Part id to platform selector map on {@link ComponentAnatomy} and {@link PlatformBinding | platform binding}.
  *
  * @public
  */
 export type ComponentParts = Record<string, string>;
 
 /**
- * Structure describing component anatomy for modular styling.
+ * Combined structure and platform selectors for modular styling.
+ *
+ * @remarks
+ * Prefer authoring {@link Structure} with {@link PlatformBinding}; use
+ * {@link structureToComponentAnatomy} when calling `renderStyleRules` until the renderer is layer-aware.
  *
  * @public
  */

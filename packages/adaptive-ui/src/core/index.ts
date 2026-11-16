@@ -1,4 +1,5 @@
 export * from "./color/index.js";
+export * from "./documentation/index.js";
 export * from "./density/index.js";
 export * from "./expression.js";
 export { InteractiveState, type InteractiveSet, type InteractiveValues, isInteractiveSet, mapStates } from "./interactive.js";
