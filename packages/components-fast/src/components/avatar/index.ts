@@ -7,4 +7,5 @@ export {
 export {
     styleRules as avatarStyleRules,
 } from "./avatar.styles.rules.js";
-export { template as avatarTemplate, AvatarAnatomy, AvatarConditions, AvatarParts } from "./avatar.template.js";
+export { AvatarParts, AvatarSlots } from "@adaptive-web/components-foundation";
+export { template as avatarTemplate, AvatarAnatomy } from "./avatar.template.js";

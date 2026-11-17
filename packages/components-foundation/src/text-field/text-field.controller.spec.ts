@@ -1,7 +1,8 @@
 import chai from "chai";
 import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
-import { type TextFieldElement, TextFieldType } from "./text-field.js";
+import type { TextFieldElement } from "./text-field.js";
+import { TextFieldType } from "./text-field.generated.js";
 import { TextFieldController } from "./text-field.controller.js";
 
 const { expect } = chai;

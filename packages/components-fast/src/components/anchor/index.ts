@@ -7,4 +7,5 @@ export {
 export {
     styleRules as anchorStyleRules,
 } from "./anchor.styles.rules.js";
-export { template as anchorTemplate, AnchorAnatomy, AnchorConditions, AnchorParts } from "./anchor.template.js";
+export { AnchorParts, AnchorSlots } from "@adaptive-web/components-foundation";
+export { template as anchorTemplate, AnchorAnatomy } from "./anchor.template.js";

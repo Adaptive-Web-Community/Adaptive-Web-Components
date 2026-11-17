@@ -2,16 +2,30 @@ import type { ChangelogEntry } from "../../changelog.js";
 import {
     type Contract,
     type ContractProperty,
-    ContractPropertyKind,
     type ContractSlot,
+    resolveContract,
 } from "../../contract.js";
 import type { DisambiguationEntry } from "../../disambiguation.js";
 import { labelOf } from "../../doc-common.js";
 import type { Documentation } from "../../documentation.js";
 import type { KnownIssue } from "../../known-issues.js";
 import { type PartDefinition, type Structure, structureParts } from "../../structure.js";
+import { typeScriptContractConvention } from "../typescript/contract.js";
 import type { UsageRule } from "../../usage.js";
 import { RuleStance } from "../../usage.js";
+
+/**
+ * Naming convention for paired documentation and generated Markdown modules.
+ *
+ * @public
+ */
+export const markdownConvention = {
+    documentationExportName: typeScriptContractConvention.documentationExportName,
+    moduleBasename: typeScriptContractConvention.moduleBasename,
+    generatedFileName(moduleBasename: string): string {
+        return `${moduleBasename}.generated.md`;
+    },
+} as const;
 
 function heading(level: number, text: string): string {
     return `${"#".repeat(level)} ${text}\n\n`;
@@ -30,16 +44,16 @@ function renderDisambiguation(entries: readonly DisambiguationEntry[]): string {
 }
 
 function renderProperty(property: ContractProperty): string {
-    const title = property.label ?? property.id;
+    const title = labelOf(property);
     let out = `### ${title}\n\n`;
     if (property.description) {
         out += `${property.description}\n\n`;
     }
-    out += `Type: \`${property.kind}\`\n\n`;
+    out += `Type: \`${property.kind}\`${property.nullable ? " or `null`" : ""}\n\n`;
     if (property.objectProperties?.length) {
         out += "| Field | Type | Description |\n| --- | --- | --- |\n";
         for (const field of property.objectProperties) {
-            const label = field.label ?? field.id;
+            const label = labelOf(field);
             out += `| ${label} | \`${field.kind}\` | ${field.description ?? ""} |\n`;
         }
         out += "\n";
@@ -47,7 +61,7 @@ function renderProperty(property: ContractProperty): string {
     if (property.enumValues?.length) {
         out += "| Value | Description |\n| --- | --- |\n";
         for (const value of property.enumValues) {
-            const label = value.label ?? value.id;
+            const label = labelOf(value);
             out += `| ${label} | ${value.description ?? ""} |\n`;
         }
         out += "\n";
@@ -60,7 +74,7 @@ function contractSlotName(slot: ContractSlot): string | undefined {
 }
 
 function renderSlot(slot: ContractSlot): string {
-    const title = slot.label ?? slot.id;
+    const title = labelOf(slot);
     let out = `### ${title}\n\n`;
     const name = contractSlotName(slot);
     if (name) {
@@ -73,16 +87,17 @@ function renderSlot(slot: ContractSlot): string {
 }
 
 function renderContract(contract: Contract): string {
+    const { properties, slots } = resolveContract(contract);
     let out = "";
-    if (contract.properties.length > 0) {
+    if (properties.length > 0) {
         out += heading(2, "Properties");
-        for (const property of contract.properties) {
+        for (const property of properties) {
             out += renderProperty(property);
         }
     }
-    if (contract.slots.length > 0) {
+    if (slots.length > 0) {
         out += heading(2, "Slots");
-        for (const slot of contract.slots) {
+        for (const slot of slots) {
             out += renderSlot(slot);
         }
     }
@@ -90,7 +105,7 @@ function renderContract(contract: Contract): string {
 }
 
 function renderPart(id: string, part: PartDefinition, parent?: string): string {
-    const title = part.label ?? id;
+    const title = labelOf({ id, label: part.label });
     let out = `### ${title}\n\n`;
     if (parent) {
         out += `Inside \`${parent}\`.\n\n`;
@@ -99,7 +114,7 @@ function renderPart(id: string, part: PartDefinition, parent?: string): string {
         out += `${part.description}\n\n`;
     }
     const traits = [
-        ...(part.component ? [`Component: \`${part.component.id}\``] : []),
+        ...(part.component ? [`Component: \`${labelOf(part.component)}\``] : []),
         ...(part.interactive ? ["Interactive: **yes**"] : []),
         ...(part.indicatesFocus ? ["Indicates focus: **yes**"] : []),
     ];
@@ -109,25 +124,7 @@ function renderPart(id: string, part: PartDefinition, parent?: string): string {
     return out;
 }
 
-function renderStyleCondition(property: ContractProperty): string {
-    const title = property.label ?? property.id;
-    let out = `### ${title}\n\n`;
-    if (property.description) {
-        out += `${property.description}\n\n`;
-    }
-    out += `Type: \`${property.kind}\`\n\n`;
-    if (property.kind === ContractPropertyKind.enum && property.enumValues?.length) {
-        out += "| Value | Description |\n| --- | --- |\n";
-        for (const value of property.enumValues) {
-            const label = value.label ?? value.id;
-            out += `| ${label} | ${value.description ?? ""} |\n`;
-        }
-        out += "\n";
-    }
-    return out;
-}
-
-function renderStructure(structure: Structure, contract?: Contract): string {
+function renderStructure(structure: Structure): string {
     let out = heading(2, "Structure");
     const traits = [
         ...(structure.interactive ? ["Interactive: **yes**"] : []),
@@ -147,14 +144,6 @@ function renderStructure(structure: Structure, contract?: Contract): string {
         out += heading(3, "Parts");
         for (const { id, part, parent } of parts) {
             out += renderPart(id, part, parent);
-        }
-    }
-    if (contract?.properties.length) {
-        out += heading(3, "Conditions");
-        out +=
-            "Each contract property maps to a style condition id in platform bindings.\n\n";
-        for (const property of contract.properties) {
-            out += renderStyleCondition(property);
         }
     }
     return out;
@@ -193,7 +182,7 @@ function renderUsageRules(rules: readonly UsageRule[]): string {
 function renderKnownIssues(issues: readonly KnownIssue[]): string {
     let out = heading(2, "Known issues");
     for (const issue of issues) {
-        out += `### ${issue.id}\n\n${issue.summary}\n\n`;
+        out += `### ${labelOf(issue)}\n\n${issue.summary}\n\n`;
         if (issue.workaround) {
             out += `**Workaround:** ${issue.workaround}\n\n`;
         }
@@ -223,6 +212,9 @@ export function renderMarkdown(documentation: Documentation): string {
     if (documentation.definition) {
         md += `${documentation.definition}\n\n`;
     }
+    if (documentation.remarks) {
+        md += `${documentation.remarks.trim()}\n\n`;
+    }
     if (documentation.disambiguation?.length) {
         md += renderDisambiguation(documentation.disambiguation);
     }
@@ -233,7 +225,7 @@ export function renderMarkdown(documentation: Documentation): string {
         }
         if (documentation.capabilities.items?.length) {
             for (const item of documentation.capabilities.items) {
-                md += `- **${item.id}** — ${item.description}\n`;
+                md += `- **${labelOf(item)}** — ${item.description}\n`;
             }
             md += "\n";
         }
@@ -252,7 +244,7 @@ export function renderMarkdown(documentation: Documentation): string {
         }
     }
     if (documentation.structure) {
-        md += renderStructure(documentation.structure, documentation.contract);
+        md += renderStructure(documentation.structure);
     }
     if (documentation.contract) {
         md += renderContract(documentation.contract);

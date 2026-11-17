@@ -26,7 +26,7 @@ export abstract class BaseTextInput<C extends TextInputController = TextInputCon
     public control?: TextControl;
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#TextInputElement.value}
+     * {@inheritDoc @adaptive-web/components-foundation#TextInputContract.value}
      */
     @observable
     public value: string = "";
@@ -118,13 +118,13 @@ export abstract class BaseTextInput<C extends TextInputController = TextInputCon
     public labelElements: Element[] = [];
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.label}
      */
     @attr
     public label: string | null = null;
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.hideLabel}
      */
     @attr({ attribute: "hide-label", mode: "boolean" })
     public hideLabel: boolean = false;

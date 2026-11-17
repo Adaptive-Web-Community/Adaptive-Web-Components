@@ -1,24 +1,13 @@
 import { type ElementViewTemplate, html } from "@microsoft/fast-element";
-import { BadgeParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { badgeDocumentation, BadgeParts, BadgeSlots, badgeWebBinding } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Badge } from "./badge.js";
 
 /**
  * @public
  */
-export const BadgeConditions = {};
-
-export { BadgeParts };
-
-/**
- * @public
- */
-export const BadgeAnatomy: ComponentAnatomy<typeof BadgeConditions, typeof BadgeParts> = {
-    interactivity: Interactivity.never,
-    conditions: BadgeConditions,
-    parts: BadgeParts,
-};
+export const BadgeAnatomy = documentationToComponentAnatomy(badgeDocumentation, badgeWebBinding);
 
 /**
  * Default Badge template. The host is the badge's box, and the template is its content.
@@ -26,9 +15,9 @@ export const BadgeAnatomy: ComponentAnatomy<typeof BadgeConditions, typeof Badge
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Badge> =
     (ds: DesignSystem) => html<Badge>`
-        <slot name="start"></slot>
-        <span class="content" part="content">
+        <slot name=${(_) => BadgeSlots.start}></slot>
+        <span class=${(_) => BadgeParts.content} part=${(_) => BadgeParts.content}>
             <slot></slot>
         </span>
-        <slot name="end"></slot>
+        <slot name=${(_) => BadgeSlots.end}></slot>
     `;

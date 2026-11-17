@@ -72,7 +72,7 @@ The element is the button now, with the `button` role and form association throu
 | --- | --- |
 | `AdaptiveButton` (extends FAST Foundation's `FASTButton`) | `Button` |
 | The `control` part, the native button | The host. Styles target the host, and its focus is the host's (`Focus.contextFocused()`) |
-| `ButtonParts.control` | Gone. `ButtonParts` is the foundation's (`content`), also exported here |
+| `ButtonParts.control` | Gone. `ButtonParts` is the foundation's (`content`), from `@adaptive-web/components-foundation` |
 | `ButtonType` from `@microsoft/fast-foundation` | From `@adaptive-web/components-foundation` |
 | The `aria-*` properties (`ariaLabel`, `ariaDescribedby`, and the others) mirrored onto the native button | The `aria-*` attributes of the host, as for any element |
 | `formaction`, `formenctype`, `formmethod`, `formnovalidate`, `formtarget` properties | `formAction`, `formEnctype`, `formMethod`, `formNoValidate`, `formTarget` (the attributes are the same) |
@@ -257,7 +257,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | 0.10 | Now |
 | --- | --- |
 | `AdaptiveTextArea` (extends FAST Foundation's `FASTTextArea`) | `TextArea`, which extends `BaseTextInput`; the rest is as for the text field |
-| `TextAreaResize` from `@microsoft/fast-foundation`, `TextAreaParts` from this package | From the components foundation, also exported here |
+| `TextAreaResize` from `@microsoft/fast-foundation`, `TextAreaParts` from this package | From the components foundation, which also has the anatomy from its documentation and web binding, so the `TextAreaConditions` and `TextAreaParts` exports of this package are gone |
 | `list`, `form` (a property), `spellcheck` | Gone for now; the `form` attribute works, as for any form control |
 | The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
@@ -268,7 +268,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `AdaptiveNumberField` (extends FAST Foundation's `FASTNumberField`) | `NumberField`, which extends `BaseTextInput`; the rest is as for the text field |
 | An `<input type="text" inputmode="numeric">` with its own parsing and stepping | A native `<input type="number">`, which parses, steps, and validates its range and step |
 | `maxlength`, `minlength`, `size`, `list` | Gone: they don't apply to a number input |
-| `NumberFieldParts` from this package | The components foundation's, also exported here |
+| `NumberFieldParts` from this package | The components foundation's: the ids of the parts are camelCase (`stepUp`, `stepDown`), and the anatomy comes from its documentation and web binding, so the `NumberFieldConditions` and `NumberFieldParts` exports of this package are gone |
 | The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Search
@@ -278,7 +278,7 @@ The element wraps a native `<input>`, as it did, and is the form control itself,
 | `AdaptiveSearch` (extends FAST Foundation's `FASTSearch`) | `Search`, which extends `BaseTextInput`; the rest is as for the text field |
 | The `clear-button__hidden` class | The `hidden` attribute, keeping the button's place |
 | | `clear()`, which the clear button calls: it emits `input` and `change`, and focuses the field |
-| `SearchParts` from this package | The components foundation's, which adds `input-wrapper`, also exported here |
+| `SearchParts` from this package | The components foundation's, which adds `inputWrapper`: the ids of the parts are camelCase (`inputWrapper`, `clearButton`), and the anatomy comes from its documentation and web binding, so the `SearchConditions` and `SearchParts` exports of this package are gone |
 | The default slot, the label | The `label` attribute, or the `label` slot for markup (`<span slot="label">`); `hide-label` hides it visually, and it still names the control |
 
 ## Dialog

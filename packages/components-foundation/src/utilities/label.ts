@@ -1,32 +1,19 @@
+import type { ContentLabelledContract } from "./content-labelled.generated.js";
+import type { LabelledContract } from "./labelled.generated.js";
+
 /**
  * An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a
  * `<select>`, a `<textarea>`), and a group of them. See `docs/decisions/0016-a-control-is-labelled-as-its-native-element-is.md`.
  *
  * @remarks
- * Slots: `label`, for a label that is more than text, which replaces the text of {@link LabelledElement.label}. The default slot is never the
+ * Slots: `label`, for a label that is more than text, which replaces the text of `label`. The default slot is never the
  * label: it is the element's items (options, radios), when it has any.
  *
  * An outside `<label for>` of the element names it too.
  *
  * @public
  */
-export interface LabelledElement {
-    /**
-     * The text of its label, which names it.
-     *
-     * @remarks
-     * HTML attribute: `label`. The `label` slot replaces it.
-     */
-    label: string | null;
-
-    /**
-     * Whether its label is hidden. The label still names it.
-     *
-     * @remarks
-     * HTML attribute: `hide-label`.
-     */
-    hideLabel: boolean;
-}
+export interface LabelledElement extends LabelledContract {}
 
 /**
  * An element labelled by its content: one whose native element is named by its content (a `<button>`, an `<a>`). See
@@ -37,15 +24,7 @@ export interface LabelledElement {
  *
  * @public
  */
-export interface ContentLabelledElement {
-    /**
-     * Whether its label, the content of its default slot, is hidden, as for a control that shows only an icon. The label still names it.
-     *
-     * @remarks
-     * HTML attribute: `hide-label`.
-     */
-    hideLabel: boolean;
-}
+export interface ContentLabelledElement extends ContentLabelledContract {}
 
 /**
  * What {@link labelHost} uses of the element's `ElementInternals`.

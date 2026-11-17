@@ -7,4 +7,4 @@ export {
 export {
     styleRules as menuStyleRules,
 } from "./menu.styles.rules.js";
-export { template as menuTemplate, MenuAnatomy, MenuConditions, MenuParts } from "./menu.template.js";
+export { template as menuTemplate, MenuAnatomy } from "./menu.template.js";

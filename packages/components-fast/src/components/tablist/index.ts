@@ -7,4 +7,5 @@ export {
 export {
     styleRules as tablistStyleRules,
 } from "./tablist.styles.rules.js";
-export { template as tablistTemplate, TablistAnatomy, TablistConditions, TablistParts } from "./tablist.template.js";
+export { TablistSlots } from "@adaptive-web/components-foundation";
+export { template as tablistTemplate, TablistAnatomy } from "./tablist.template.js";

@@ -7,4 +7,4 @@ export {
 export {
     styleRules as searchStyleRules,
 } from "./search.styles.rules.js";
-export { template as searchTemplate, SearchAnatomy, SearchConditions, SearchParts } from "./search.template.js";
+export { template as searchTemplate, SearchAnatomy } from "./search.template.js";

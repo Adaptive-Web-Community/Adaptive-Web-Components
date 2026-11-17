@@ -7,4 +7,4 @@ export {
 export {
     styleRules as listboxStyleRules,
 } from "./listbox.styles.rules.js";
-export { template as listboxTemplate, ListboxAnatomy, ListboxConditions, ListboxParts } from "./listbox.template.js";
+export { template as listboxTemplate, ListboxAnatomy } from "./listbox.template.js";

@@ -8,6 +8,7 @@ const { expect } = chai;
 class TestDialog extends HTMLElement implements DialogElement {
     public closedBy: DialogClosedBy = DialogClosedBy.closeRequest;
     public readonly open = false;
+    public modal = false;
     public returnValue = "";
     public show(): void {}
     public showModal(): void {}

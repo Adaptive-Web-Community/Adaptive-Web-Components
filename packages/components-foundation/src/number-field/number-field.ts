@@ -1,29 +1,5 @@
 import type { TextInputElement } from "../text-input/text-input.js";
-
-/**
- * The parts of a {@link NumberFieldElement}.
- *
- * @public
- */
-export const NumberFieldParts = {
-    /** The label: the `label` slot, or the text of the `label` attribute. */
-    label: "label",
-
-    /** The box around the control, the step buttons, and the `start` and `end` slots. */
-    root: "root",
-
-    /** The native `<input type="number">`. */
-    control: "control",
-
-    /** The step buttons. */
-    controls: "controls",
-
-    /** The button that steps up. */
-    stepUp: "step-up",
-
-    /** The button that steps down. */
-    stepDown: "step-down",
-} as const;
+import type { NumberFieldContract } from "./number-field.generated.js";
 
 /**
  * A number field: a {@link TextInputElement} around a native `<input type="number">`, which parses the number, steps it with the arrow
@@ -34,39 +10,7 @@ export const NumberFieldParts = {
  *
  * @public
  */
-export interface NumberFieldElement extends TextInputElement {
-    /**
-     * The least valid value.
-     *
-     * @remarks
-     * HTML attribute: `min`.
-     */
-    min: number | null;
-
-    /**
-     * The greatest valid value.
-     *
-     * @remarks
-     * HTML attribute: `max`.
-     */
-    max: number | null;
-
-    /**
-     * The step between valid values, from `min`. The default is 1, as a native number input's.
-     *
-     * @remarks
-     * HTML attribute: `step`.
-     */
-    step: number | null;
-
-    /**
-     * Whether the step buttons are hidden.
-     *
-     * @remarks
-     * HTML attribute: `hide-step`.
-     */
-    hideStep: boolean;
-
+export interface NumberFieldElement extends TextInputElement, NumberFieldContract {
     /**
      * Steps the value up, as the user does with the step button: it emits `input` and `change`.
      */

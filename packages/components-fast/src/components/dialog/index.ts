@@ -7,4 +7,4 @@ export {
 export {
     styleRules as dialogStyleRules,
 } from "./dialog.styles.rules.js";
-export { template as dialogTemplate, DialogAnatomy, DialogConditions, DialogParts } from "./dialog.template.js";
+export { template as dialogTemplate, DialogAnatomy } from "./dialog.template.js";

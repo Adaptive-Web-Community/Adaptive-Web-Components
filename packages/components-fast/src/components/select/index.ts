@@ -7,4 +7,4 @@ export {
 export {
     styleRules as selectStyleRules,
 } from "./select.styles.rules.js";
-export { template as selectTemplate, SelectAnatomy, SelectConditions, SelectParts, SelectStatics } from "./select.template.js";
+export { template as selectTemplate, SelectAnatomy, SelectStatics } from "./select.template.js";

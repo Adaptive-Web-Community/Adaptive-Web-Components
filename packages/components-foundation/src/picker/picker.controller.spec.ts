@@ -36,6 +36,9 @@ class TestPicker extends TestFormControl implements PickerElement {
     public get selectedOptions(): readonly ListboxOptionElement[] {
         return this.controller.list.selected;
     }
+    public get open(): boolean {
+        return this.controller.open;
+    }
 }
 customElements.define("test-picker", TestPicker);
 

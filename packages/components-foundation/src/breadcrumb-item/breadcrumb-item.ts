@@ -1,18 +1,6 @@
-import { AnchorParts } from "../anchor/anchor.js";
 import type { AnchorElement } from "../anchor/anchor.js";
 import type { DefaultAria } from "../utilities/aria.js";
-
-/**
- * The parts of a {@link BreadcrumbItemElement}: those of a link, and its separator.
- *
- * @public
- */
-export const BreadcrumbItemParts = {
-    ...AnchorParts,
-
-    /** The separator after the link, hidden from assistive technology, and hidden for the current item. */
-    separator: "separator",
-} as const;
+import type { BreadcrumbItemContract } from "./breadcrumb-item.generated.js";
 
 /**
  * An item of a breadcrumb (`role="listitem"`): a link to a page of the path, and a separator after it. The link wraps a native `<a>`, as a
@@ -23,12 +11,7 @@ export const BreadcrumbItemParts = {
  *
  * @public
  */
-export interface BreadcrumbItemElement extends AnchorElement {
-    /**
-     * Whether it is the current page, given by its breadcrumb: its last item. Its link is `aria-current="page"`, and its separator is hidden.
-     */
-    current: boolean;
-}
+export interface BreadcrumbItemElement extends AnchorElement, BreadcrumbItemContract {}
 
 /**
  * The default ARIA of a breadcrumb item: the `listitem` role.

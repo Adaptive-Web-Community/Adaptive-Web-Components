@@ -7,9 +7,5 @@ export {
 export {
     styleRules as progressRingStyleRules,
 } from "./progress-ring.styles.rules.js";
-export {
-    template as progressRingTemplate,
-    ProgressRingAnatomy,
-    ProgressRingConditions,
-    ProgressRingParts
-} from "./progress-ring.template.js";
+export { ProgressRingParts, ProgressRingSlots } from "@adaptive-web/components-foundation";
+export { template as progressRingTemplate, ProgressRingAnatomy } from "./progress-ring.template.js";

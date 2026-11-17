@@ -18,6 +18,14 @@ export interface Identity {
      * Consumer-facing definition and overview (Markdown).
      */
     readonly definition?: string;
+
+    /**
+     * What a reader needs after the definition: details of how it behaves or is to be used (Markdown, paragraphs separated by a blank line).
+     *
+     * @remarks
+     * Rendered after the definition in the Markdown projection, and as the `@remarks` of the generated TypeScript contract.
+     */
+    readonly remarks?: string;
 }
 
 /**

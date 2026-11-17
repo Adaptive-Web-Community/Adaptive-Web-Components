@@ -1,6 +1,7 @@
 import { InvokerController } from "../utilities/invoker.controller.js";
 import { SpacePressController } from "../utilities/space-press.controller.js";
-import { type ButtonElement, ButtonType } from "./button.js";
+import type { ButtonElement } from "./button.js";
+import { ButtonType } from "./button.generated.js";
 
 /**
  * What the {@link ButtonController} uses of the element's `ElementInternals`.

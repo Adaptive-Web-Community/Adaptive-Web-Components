@@ -1,20 +1,5 @@
 import type { Orientation } from "../utilities/orientation.js";
-
-/**
- * The parts of a {@link SliderLabelElement}.
- *
- * @public
- */
-export const SliderLabelParts = {
-    /** The container of the mark and the content, with the `--slider-label-position` custom property: where it is, from 0 to 100. */
-    container: "container",
-
-    /** The mark on the track. */
-    mark: "mark",
-
-    /** The container of the default slot. */
-    content: "content",
-} as const;
+import type { SliderLabelContract } from "./slider-label.generated.js";
 
 /**
  * A label of a value along a slider's track, with a mark.
@@ -27,23 +12,7 @@ export const SliderLabelParts = {
  *
  * @public
  */
-export interface SliderLabelElement extends HTMLElement {
-    /**
-     * The value it labels.
-     *
-     * @remarks
-     * HTML attribute: `position`.
-     */
-    position: number;
-
-    /**
-     * Whether its mark is hidden.
-     *
-     * @remarks
-     * HTML attribute: `hide-mark`.
-     */
-    hideMark: boolean;
-
+export interface SliderLabelElement extends HTMLElement, SliderLabelContract {
     /**
      * Where it is along the track, from 0 to 100, given by its slider.
      */

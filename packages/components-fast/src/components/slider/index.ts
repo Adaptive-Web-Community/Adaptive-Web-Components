@@ -7,4 +7,5 @@ export {
 export {
     styleRules as sliderStyleRules,
 } from "./slider.styles.rules.js";
-export { template as sliderTemplate, SliderAnatomy, SliderConditions, SliderParts } from "./slider.template.js";
+export { SliderParts, SliderSlots } from "@adaptive-web/components-foundation";
+export { template as sliderTemplate, SliderAnatomy } from "./slider.template.js";

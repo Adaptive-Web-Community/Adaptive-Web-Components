@@ -7,4 +7,4 @@ export {
 export {
     styleRules as tooltipStyleRules,
 } from "./tooltip.styles.rules.js";
-export { template as tooltipTemplate, TooltipAnatomy, TooltipConditions, TooltipParts } from "./tooltip.template.js";
+export { template as tooltipTemplate, TooltipAnatomy } from "./tooltip.template.js";

@@ -1,6 +1,7 @@
 import type { DataGridCellElement } from "../data-grid-cell/data-grid-cell.js";
 import type { DefaultAria } from "../utilities/aria.js";
 import type { ValuesOf } from "../utilities/typings.js";
+import type { DataGridRowContract } from "./data-grid-row.generated.js";
 
 /**
  * The kind of a {@link DataGridRowElement}.
@@ -8,13 +9,8 @@ import type { ValuesOf } from "../utilities/typings.js";
  * @public
  */
 export const DataGridRowType = {
-    /** A row of data, which can be selected. */
     default: "default",
-
-    /** A row of headers. */
     header: "header",
-
-    /** A row of headers that stays at the top as the grid scrolls. */
     stickyHeader: "sticky-header",
 } as const;
 
@@ -35,22 +31,11 @@ export type DataGridRowType = ValuesOf<typeof DataGridRowType>;
  *
  * @public
  */
-export interface DataGridRowElement extends HTMLElement {
+export interface DataGridRowElement extends HTMLElement, Omit<DataGridRowContract, "rowType"> {
     /**
      * Its kind.
-     *
-     * @remarks
-     * HTML attribute: `row-type`. The default is `default`.
      */
     rowType: DataGridRowType;
-
-    /**
-     * Whether it is selected.
-     *
-     * @remarks
-     * HTML attribute: `selected`.
-     */
-    selected: boolean;
 
     /**
      * Whether its grid selects rows, given by the grid.

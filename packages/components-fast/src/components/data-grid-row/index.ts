@@ -7,4 +7,4 @@ export {
 export {
     styleRules as dataGridRowStyleRules,
 } from "./data-grid-row.styles.rules.js";
-export { template as dataGridRowTemplate, DataGridRowAnatomy, DataGridRowConditions, DataGridRowParts } from "./data-grid-row.template.js";
+export { template as dataGridRowTemplate, DataGridRowAnatomy } from "./data-grid-row.template.js";

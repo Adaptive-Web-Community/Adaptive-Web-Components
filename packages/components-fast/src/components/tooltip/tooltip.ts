@@ -47,6 +47,13 @@ export class Tooltip extends FASTElement implements TooltipElement {
     @attr({ mode: "fromView", converter: numberConverter(300) })
     public delay: number = 300;
 
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#TooltipElement.open}
+     */
+    public get open(): boolean {
+        return this.matches(":popover-open");
+    }
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.controller.connect();

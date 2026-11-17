@@ -1,14 +1,5 @@
 import type { DefaultAria } from "../utilities/aria.js";
-
-/**
- * The parts of an {@link AvatarElement}.
- *
- * @public
- */
-export const AvatarParts = {
-    /** The box of the media and the text. */
-    backplate: "backplate",
-} as const;
+import type { AvatarContract } from "./avatar.generated.js";
 
 /**
  * An avatar: the picture, initials, or icon of a person or an entity. It is an image (`role="img"`), whose accessible name is
@@ -19,15 +10,7 @@ export const AvatarParts = {
  *
  * @public
  */
-export interface AvatarElement extends HTMLElement {
-    /**
-     * The name of whom the avatar shows, which is its accessible name.
-     *
-     * @remarks
-     * HTML attribute: `name`. An `aria-label` of the author overrides it.
-     */
-    name: string | null;
-}
+export interface AvatarElement extends HTMLElement, AvatarContract {}
 
 /**
  * The default ARIA of an avatar: the `img` role, named by its {@link AvatarElement.name}.

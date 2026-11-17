@@ -1,6 +1,6 @@
 import { children, elements, type ElementViewTemplate, html } from "@microsoft/fast-element";
-import { TreeItemParts, type ValuesOf } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import { treeItemDocumentation, TreeItemParts, TreeItemSlots, treeItemWebBinding, type ValuesOf } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import { staticallyCompose } from "../../utilities/template-helpers.js";
 import type { TreeItem } from "./tree-item.js";
@@ -22,22 +22,7 @@ export type TreeItemStatics = ValuesOf<typeof TreeItemStatics>;
 /**
  * @public
  */
-export const TreeItemConditions = {
-    selected: "[selected]",
-    expanded: "[expanded]",
-};
-
-export { TreeItemParts };
-
-/**
- * @public
- */
-export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof TreeItemParts> = {
-    interactivity: Interactivity.disabledAttribute,
-    conditions: TreeItemConditions,
-    parts: TreeItemParts,
-    focus: Focus.contextChildFocused("control"),
-};
+export const TreeItemAnatomy = documentationToComponentAnatomy(treeItemDocumentation, treeItemWebBinding);
 
 /**
  * Default Tree Item template: the row, with the button that expands and collapses it when it has items, and the group of its items.
@@ -46,24 +31,24 @@ export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof
 export const template: (ds: DesignSystem) => ElementViewTemplate<TreeItem> =
     (ds: DesignSystem) => html<TreeItem>`
         <template ${children({ property: "childElements", filter: elements() })}>
-            <div class="control" part="control">
+            <div class=${(_) => TreeItemParts.control} part=${(_) => TreeItemParts.control}>
                 <span
-                    class="expand-collapse-button"
-                    part="expand-collapse-button"
+                    class=${(_) => TreeItemParts.expandCollapseButton}
+                    part=${(_) => TreeItemParts.expandCollapseButton}
                     aria-hidden="true"
                     ?hidden="${x => x.items.length === 0}"
                     @click="${x => x.handleExpandCollapseClick()}"
                 >
-                    <slot name="expand-collapse-icon">${staticallyCompose(ds.statics.get(TreeItemStatics.expandCollapse))}</slot>
+                    <slot name=${(_) => TreeItemSlots.expandCollapseIcon}>${staticallyCompose(ds.statics.get(TreeItemStatics.expandCollapse))}</slot>
                 </span>
-                <slot name="start"></slot>
-                <span class="content" part="content">
+                <slot name=${(_) => TreeItemSlots.start}></slot>
+                <span class=${(_) => TreeItemParts.content} part=${(_) => TreeItemParts.content}>
                     <slot></slot>
                 </span>
-                <slot name="end"></slot>
+                <slot name=${(_) => TreeItemSlots.end}></slot>
             </div>
-            <div class="items" part="items" role="group" ?hidden="${x => !x.expanded || x.items.length === 0}">
-                <slot name="item"></slot>
+            <div class=${(_) => TreeItemParts.items} part=${(_) => TreeItemParts.items} role="group" ?hidden="${x => !x.expanded || x.items.length === 0}">
+                <slot name=${(_) => TreeItemSlots.item}></slot>
             </div>
         </template>
     `;

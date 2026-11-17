@@ -7,4 +7,4 @@ export {
 export {
     styleRules as calendarStyleRules,
 } from "./calendar.styles.rules.js";
-export { template as calendarTemplate, CalendarAnatomy, CalendarConditions, CalendarParts, CalendarStatics } from "./calendar.template.js";
+export { template as calendarTemplate, CalendarAnatomy, CalendarStatics } from "./calendar.template.js";

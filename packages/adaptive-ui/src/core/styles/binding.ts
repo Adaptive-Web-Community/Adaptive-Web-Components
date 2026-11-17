@@ -1,4 +1,4 @@
-import type { Contract } from "../documentation/contract.js";
+import type { Contract, ContractConditionProperties, ContractProperties } from "../documentation/contract.js";
 import type { IdentitySection } from "../documentation/identity.js";
 import type { Structure } from "../documentation/structure.js";
 import type {
@@ -20,12 +20,12 @@ export type DocumentationForBinding = IdentitySection & {
 };
 
 /**
- * Contract property ids on a {@link Contract}.
+ * Contract property ids on a {@link Contract}, and on the contracts it includes.
  *
  * @public
  */
 export type ContractPropertyId<TContract extends Contract> =
-    TContract["properties"][number]["id"];
+    ContractProperties<TContract>["id"];
 
 /**
  * Structure part ids on a {@link Structure}, at every level of its tree.
@@ -49,15 +49,16 @@ export type ConditionSelectorFor<TProperty> = TProperty extends {
     : string;
 
 /**
- * Condition selector map with one entry per {@link ContractProperty.id}, each typed from its property (see {@link ConditionSelectorFor}).
+ * Condition selector map with one entry per condition of a contract (see {@link ContractProperty.condition}), each typed from its property
+ * (see {@link ConditionSelectorFor}).
  *
  * @remarks
- * Typed from the literal ids of the documentation, which {@link defineDocumentation} keeps.
+ * Typed from the literal ids and kinds of the documentation, which {@link defineDocumentation} keeps.
  *
  * @public
  */
 export type BindingConditionSelectorsFor<TContract extends Contract> = {
-    readonly [TProperty in TContract["properties"][number] as TProperty["id"]]: ConditionSelectorFor<TProperty>;
+    readonly [TProperty in ContractConditionProperties<TContract> as TProperty["id"]]: ConditionSelectorFor<TProperty>;
 };
 
 /**
@@ -83,7 +84,7 @@ export type PlatformBindingFor<TDoc extends DocumentationForBinding> = PlatformB
  * Maps each structure condition id to platform selectors (boolean) or value-to-selector maps (enum).
  *
  * @remarks
- * Keys align with {@link ContractProperty.id} on the component contract. This is the long-term binding shape;
+ * Keys align with the {@link ContractProperty.id} of each condition on the component contract. This is the long-term binding shape;
  * {@link ComponentConditions} is the same type, also used on {@link ComponentAnatomy} during migration.
  *
  * @public

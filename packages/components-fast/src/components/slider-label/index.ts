@@ -7,4 +7,5 @@ export {
 export {
     styleRules as sliderLabelStyleRules,
 } from "./slider-label.styles.rules.js";
-export { template as sliderLabelTemplate, SliderLabelAnatomy, SliderLabelConditions, SliderLabelParts } from "./slider-label.template.js";
+export { SliderLabelParts } from "@adaptive-web/components-foundation";
+export { template as sliderLabelTemplate, SliderLabelAnatomy } from "./slider-label.template.js";

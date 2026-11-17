@@ -65,6 +65,13 @@ export class Select extends BaseFormControl implements SelectElement {
     }
 
     /**
+     * {@inheritDoc @adaptive-web/components-foundation#SelectElement.open}
+     */
+    public get open(): boolean {
+        return this.controller.open;
+    }
+
+    /**
      * The text of the selected option, which the control shows.
      *
      * @internal
@@ -102,13 +109,13 @@ export class Select extends BaseFormControl implements SelectElement {
     public labelElements: Element[] = [];
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.label}
      */
     @attr
     public label: string | null = null;
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.hideLabel}
      */
     @attr({ attribute: "hide-label", mode: "boolean" })
     public hideLabel: boolean = false;

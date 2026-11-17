@@ -9,4 +9,4 @@ export {
 export {
     styleRules as dataGridStyleRules,
 } from "./data-grid.styles.rules.js";
-export { template as dataGridTemplate, DataGridAnatomy, DataGridConditions, DataGridParts } from "./data-grid.template.js";
+export { template as dataGridTemplate, DataGridAnatomy } from "./data-grid.template.js";

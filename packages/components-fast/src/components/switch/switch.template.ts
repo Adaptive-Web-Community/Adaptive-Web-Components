@@ -1,28 +1,13 @@
 import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { SwitchParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import { switchDocumentation, SwitchParts, SwitchSlots, switchWebBinding } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import type { Switch } from "./switch.js";
 
 /**
  * @public
  */
-export const SwitchConditions = {
-    checked: ":state(checked)",
-};
-
-export { SwitchParts };
-
-/**
- * @public
- */
-export const SwitchAnatomy: ComponentAnatomy<typeof SwitchConditions, typeof SwitchParts> = {
-    interactivity: controlInteractivity,
-    conditions: SwitchConditions,
-    parts: SwitchParts,
-    focus: Focus.contextFocused(),
-};
+export const SwitchAnatomy = documentationToComponentAnatomy(switchDocumentation, switchWebBinding);
 
 /**
  * Default Switch template. The element is the switch, and its label names it.
@@ -30,12 +15,12 @@ export const SwitchAnatomy: ComponentAnatomy<typeof SwitchConditions, typeof Swi
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Switch> =
     (ds: DesignSystem) => html<Switch>`
-        <span class="label" part="label" ?hidden="${x => !x.label && !x.labelElements.length}">
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <span class=${(_) => SwitchParts.label} part=${(_) => SwitchParts.label} ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name=${(_) => SwitchSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </span>
-        <div class="switch" part="switch">
-            <slot name="switch">
-                <div class="thumb" part="thumb"></div>
+        <div class=${(_) => SwitchParts.switch} part=${(_) => SwitchParts.switch}>
+            <slot name=${(_) => SwitchSlots.switch}>
+                <div class=${(_) => SwitchParts.thumb} part=${(_) => SwitchParts.thumb}></div>
             </slot>
         </div>
     `;

@@ -1,40 +1,5 @@
-import type { ValuesOf } from "../utilities/typings.js";
-
 import type { InvokerElement } from "../utilities/invoker.js";
-import type { ContentLabelledElement } from "../utilities/label.js";
-
-/**
- * What a {@link ButtonElement} does in its form.
- *
- * @public
- */
-export const ButtonType = {
-    /** Submits the form. */
-    submit: "submit",
-
-    /** Resets the form. */
-    reset: "reset",
-
-    /** Nothing in the form. */
-    button: "button",
-} as const;
-
-/**
- * What a {@link ButtonElement} does in its form.
- *
- * @public
- */
-export type ButtonType = ValuesOf<typeof ButtonType>;
-
-/**
- * The parts of a {@link ButtonElement}.
- *
- * @public
- */
-export const ButtonParts = {
-    /** The content of the default slot, its label. */
-    content: "content",
-} as const;
+import type { ButtonContract } from "./button.generated.js";
 
 /**
  * A button. The element itself is the button, as a native `<button>` is: it has the `button` role, takes focus, and is a form control. See
@@ -51,23 +16,7 @@ export const ButtonParts = {
  *
  * @public
  */
-export interface ButtonElement extends InvokerElement, ContentLabelledElement {
-    /**
-     * Whether the button is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.
-     *
-     * @remarks
-     * HTML attribute: `disabled`.
-     */
-    disabled: boolean;
-
-    /**
-     * What the button does in its form.
-     *
-     * @remarks
-     * HTML attribute: `type`. The default is `button`, unlike a native button's `submit`.
-     */
-    type: ButtonType;
-
+export interface ButtonElement extends InvokerElement, ButtonContract {
     /**
      * The name of the button's value in the form data, when it submits the form.
      *

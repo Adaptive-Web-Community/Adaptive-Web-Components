@@ -1,27 +1,18 @@
 import { type ElementViewTemplate, html } from "@microsoft/fast-element";
-import { ListboxOptionParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import {
+    listboxOptionDocumentation,
+    ListboxOptionParts,
+    ListboxOptionSlots,
+    listboxOptionWebBinding,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { ListboxOption } from "./listbox-option.js";
 
 /**
  * @public
  */
-export const ListboxOptionConditions = {
-    selected: ":state(selected)",
-    active: ":state(active)",
-};
-
-export { ListboxOptionParts };
-
-/**
- * @public
- */
-export const ListboxOptionAnatomy: ComponentAnatomy<typeof ListboxOptionConditions, typeof ListboxOptionParts> = {
-    interactivity: Interactivity.disabledAttribute,
-    conditions: ListboxOptionConditions,
-    parts: ListboxOptionParts,
-};
+export const ListboxOptionAnatomy = documentationToComponentAnatomy(listboxOptionDocumentation, listboxOptionWebBinding);
 
 /**
  * Default Listbox Option template.
@@ -29,9 +20,9 @@ export const ListboxOptionAnatomy: ComponentAnatomy<typeof ListboxOptionConditio
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<ListboxOption> =
     (ds: DesignSystem) => html<ListboxOption>`
-        <slot name="start"></slot>
-        <span class="content" part="content">
+        <slot name=${(_) => ListboxOptionSlots.start}></slot>
+        <span class=${(_) => ListboxOptionParts.content} part=${(_) => ListboxOptionParts.content}>
             <slot></slot>
         </span>
-        <slot name="end"></slot>
+        <slot name=${(_) => ListboxOptionSlots.end}></slot>
     `;

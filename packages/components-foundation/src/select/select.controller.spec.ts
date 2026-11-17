@@ -22,6 +22,9 @@ class TestSelect extends TestFormControl implements SelectElement {
     public set value(value: string) {
         this.controller.setValue(value);
     }
+    public get open(): boolean {
+        return this.controller.open;
+    }
 }
 customElements.define("test-select", TestSelect);
 

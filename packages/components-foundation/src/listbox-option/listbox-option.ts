@@ -1,14 +1,5 @@
 import type { DefaultAria } from "../utilities/aria.js";
-
-/**
- * The parts of a {@link ListboxOptionElement}.
- *
- * @public
- */
-export const ListboxOptionParts = {
-    /** The container of the default slot, between `start` and `end`. */
-    content: "content",
-} as const;
+import type { ListboxOptionContract } from "./listbox-option.generated.js";
 
 /**
  * An option of a listbox (`role="option"`), in a Listbox, a Select, or a Picker, as a native `<option>`.
@@ -21,45 +12,19 @@ export const ListboxOptionParts = {
  *
  * @public
  */
-export interface ListboxOptionElement extends HTMLElement {
+export interface ListboxOptionElement extends HTMLElement, ListboxOptionContract {
     /**
-     * The value it gives to the form when it is selected.
+     * Whether it is selected by default: before the user or code changes selection, and when its form is reset.
      *
      * @remarks
-     * HTML attribute: `value`. Without it, its text, as a native option's.
+     * HTML attribute: `selected`.
      */
-    value: string;
+    defaultSelected: boolean;
 
     /**
      * Its label as text, with the white space collapsed, for typing to find it and for showing the selection.
      */
     readonly text: string;
-
-    /**
-     * Whether it is selected by default, and when its form is reset.
-     *
-     * @remarks
-     * HTML attribute: `selected`, as a native option's.
-     */
-    defaultSelected: boolean;
-
-    /**
-     * Whether it is selected now. The `selected` attribute sets it until the user or code changes it.
-     */
-    selected: boolean;
-
-    /**
-     * Whether it is disabled: the keys reach it, as the ARIA practices ask of listbox options, and it can't be selected.
-     *
-     * @remarks
-     * HTML attribute: `disabled`.
-     */
-    disabled: boolean;
-
-    /**
-     * Whether it is the active option, given by its listbox: the one the keys are on, which the element with the focus points at.
-     */
-    active: boolean;
 }
 
 /**

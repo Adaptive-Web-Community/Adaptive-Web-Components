@@ -7,4 +7,4 @@ export {
 export {
     styleRules as cardStyleRules,
 } from "./card.styles.rules.js";
-export { template as cardTemplate, CardAnatomy, CardConditions, CardParts } from "./card.template.js";
+export { template as cardTemplate, CardAnatomy } from "./card.template.js";

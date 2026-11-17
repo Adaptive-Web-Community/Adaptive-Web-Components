@@ -7,10 +7,9 @@ export {
 export {
     styleRules as breadcrumbItemStyleRules,
 } from "./breadcrumb-item.styles.rules.js";
+export { BreadcrumbItemParts, BreadcrumbItemSlots } from "@adaptive-web/components-foundation";
 export {
     template as breadcrumbItemTemplate,
     BreadcrumbItemAnatomy,
-    BreadcrumbItemConditions,
-    BreadcrumbItemParts,
-    BreadcrumbItemStatics
+    BreadcrumbItemStatics,
 } from "./breadcrumb-item.template.js";

@@ -1,7 +1,8 @@
 import chai from "chai";
 import { TestFormControl } from "../__test__/form-control.js";
 import { TestInternals } from "../__test__/internals.js";
-import { type TextAreaElement, TextAreaResize } from "./text-area.js";
+import { TextAreaResize } from "./text-area.generated.js";
+import type { TextAreaElement } from "./text-area.js";
 import { TextAreaController } from "./text-area.controller.js";
 
 const { expect } = chai;

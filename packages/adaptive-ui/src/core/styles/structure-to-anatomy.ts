@@ -1,5 +1,5 @@
 import { labelOf } from "../documentation/doc-common.js";
-import type { Contract } from "../documentation/contract.js";
+import { type Contract, isConditionProperty, resolveContract } from "../documentation/contract.js";
 import { type Structure, structureParts } from "../documentation/structure.js";
 import type { DocumentationForBinding } from "./binding.js";
 import { type ComponentAnatomy, type CursorDefinition, Focus, type FocusDefinition } from "./anatomy.js";
@@ -18,7 +18,7 @@ function assertStructureBindingAlignment(structure: Structure, partSelectors: Bi
 }
 
 function assertContractBindingAlignment(contract: Contract, conditionSelectors: BindingConditionSelectors): void {
-    for (const property of contract.properties) {
+    for (const property of resolveContract(contract).properties.filter(isConditionProperty)) {
         if (!(property.id in conditionSelectors)) {
             throw new Error(
                 `Contract property "${property.id}" has no condition selector in the platform binding.`,

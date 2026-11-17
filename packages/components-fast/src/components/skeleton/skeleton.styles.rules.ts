@@ -15,7 +15,7 @@ export const styleRules: StyleRules = [
     },
     {
         target : {
-            contextCondition: SkeletonAnatomy.conditions.shape.rectangle,
+            contextCondition: SkeletonAnatomy.conditions.shape.rect,
         },
         treatments: [tokens.shape.treatments.control],
     },

@@ -39,6 +39,7 @@
   },
   "scripts": {
     "generate:contracts": "node scripts/run-generate-contracts.mjs",
+    "generate:markdown": "node scripts/run-generate-markdown.mjs",
     "prebuild": "npm run generate:contracts",
     "build": "rimraf dist && tsc",
     "clean": "rimraf dist",

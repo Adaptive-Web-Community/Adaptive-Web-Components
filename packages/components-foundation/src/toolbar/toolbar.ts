@@ -1,14 +1,4 @@
-import type { Orientation } from "../utilities/orientation.js";
-
-/**
- * The parts of a {@link ToolbarElement}.
- *
- * @public
- */
-export const ToolbarParts = {
-    /** The container of the items, laid out in the orientation. */
-    positioningRegion: "positioning-region",
-} as const;
+import type { ToolbarContract } from "./toolbar.generated.js";
 
 /**
  * A toolbar (`role="toolbar"`): controls of which one is in the tab order, and the arrow keys move the focus between them. Implements the
@@ -25,12 +15,4 @@ export const ToolbarParts = {
  *
  * @public
  */
-export interface ToolbarElement extends HTMLElement {
-    /**
-     * The direction in which the items are laid out, and the arrow keys that move between them.
-     *
-     * @remarks
-     * HTML attribute: `orientation`. The default is `horizontal`.
-     */
-    orientation: Orientation;
-}
+export interface ToolbarElement extends HTMLElement, ToolbarContract {}

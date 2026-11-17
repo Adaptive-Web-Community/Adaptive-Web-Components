@@ -7,4 +7,4 @@ export {
 export {
     styleRules as treeViewStyleRules,
 } from "./tree-view.styles.rules.js";
-export { template as treeViewTemplate, TreeViewAnatomy, TreeViewConditions, TreeViewParts } from "./tree-view.template.js";
+export { template as treeViewTemplate, TreeViewAnatomy } from "./tree-view.template.js";

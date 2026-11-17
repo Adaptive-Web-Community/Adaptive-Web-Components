@@ -1,5 +1,6 @@
 import chai from "chai";
-import { type ButtonElement, ButtonType } from "./button.js";
+import type { ButtonElement } from "./button.js";
+import { ButtonType } from "./button.generated.js";
 import { ButtonController } from "./button.controller.js";
 
 const { expect } = chai;

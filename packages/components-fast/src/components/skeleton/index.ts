@@ -7,4 +7,5 @@ export {
 export {
     styleRules as skeletonStyleRules,
 } from "./skeleton.styles.rules.js";
-export { template as skeletonTemplate, SkeletonAnatomy, SkeletonConditions, SkeletonParts } from "./skeleton.template.js";
+export { SkeletonParts } from "@adaptive-web/components-foundation";
+export { template as skeletonTemplate, SkeletonAnatomy } from "./skeleton.template.js";

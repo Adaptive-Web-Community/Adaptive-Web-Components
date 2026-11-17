@@ -4,7 +4,7 @@ A button whose element is the button, as a native `<button>` is
 ([decision 0010](../../../../docs/decisions/0010-a-control-is-its-host-element.md)): it has the `button` role through `ElementInternals`,
 takes focus, and is a form control.
 
-- Contract: `ButtonElement`, `ButtonType`, `ButtonParts` (`button.ts`).
+- Contract: `ButtonElement` (`button.ts`); `ButtonContract`, `ButtonType`, and `ButtonParts` are generated in `button.generated.ts` from `button.documentation.ts` (`npm run generate:contracts` scans all `*.documentation.ts` modules).
 - Behavior: `ButtonController` (`button.controller.ts`): the role, focus, activation by Enter and Space, and submitting or resetting the form.
   The binding is form-associated (`static formAssociated = true`) and gives the controller its `ElementInternals`.
 

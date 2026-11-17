@@ -1,5 +1,11 @@
 import { attr, FASTElement, observable, type ViewTemplate } from "@microsoft/fast-element";
-import { dataGridCellAria, type DataGridCellElement, DataGridCellType } from "@adaptive-web/components-foundation";
+import {
+    dataGridCellAria,
+    type DataGridCellElement,
+    DataGridCellType,
+    dataGridCellTypeAttribute,
+    dataGridCellTypeFromAttribute,
+} from "@adaptive-web/components-foundation";
 import type { ColumnDefinition } from "../data-grid/column-definition.js";
 
 /**
@@ -17,7 +23,18 @@ export class DataGridCell extends FASTElement implements DataGridCellElement {
     /**
      * {@inheritDoc @adaptive-web/components-foundation#DataGridCellElement.cellType}
      */
-    @attr({ attribute: "cell-type" })
+    @attr({
+        attribute: "cell-type",
+        mode: "fromView",
+        converter: {
+            toView(value: DataGridCellType): string {
+                return dataGridCellTypeAttribute[value];
+            },
+            fromView(value: unknown): DataGridCellType {
+                return dataGridCellTypeFromAttribute(typeof value === "string" ? value : null);
+            },
+        },
+    })
     public cellType: DataGridCellType = DataGridCellType.default;
     protected cellTypeChanged(): void {
         Object.assign(this.internals, dataGridCellAria(this));

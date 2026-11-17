@@ -7,4 +7,5 @@ export {
 export {
     styleRules as toolbarStyleRules,
 } from "./toolbar.styles.rules.js";
-export { template as toolbarTemplate, ToolbarAnatomy, ToolbarConditions, ToolbarParts } from "./toolbar.template.js";
+export { ToolbarParts, ToolbarSlots } from "@adaptive-web/components-foundation";
+export { template as toolbarTemplate, ToolbarAnatomy } from "./toolbar.template.js";

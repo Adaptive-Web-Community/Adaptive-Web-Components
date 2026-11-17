@@ -1,28 +1,13 @@
 import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { accordionDocumentation, accordionWebBinding } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Accordion } from "./accordion.js";
 
 /**
  * @public
  */
-export const AccordionConditions = {
-};
-
-/**
- * @public
- */
-export const AccordionParts = {
-};
-
-/**
- * @public
- */
-export const AccordionAnatomy: ComponentAnatomy<typeof AccordionConditions, typeof AccordionParts> = {
-    interactivity: Interactivity.never,
-    conditions: AccordionConditions,
-    parts: AccordionParts,
-};
+export const AccordionAnatomy = documentationToComponentAnatomy(accordionDocumentation, accordionWebBinding);
 
 /**
  * Default Accordion template.

@@ -10,7 +10,5 @@ export {
 export {
     template as numberFieldTemplate,
     NumberFieldAnatomy,
-    NumberFieldConditions,
-    NumberFieldParts,
     NumberFieldStatics
 } from "./number-field.template.js";

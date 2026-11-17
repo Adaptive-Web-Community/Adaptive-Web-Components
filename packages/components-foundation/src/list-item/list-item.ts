@@ -1,4 +1,5 @@
 import type { DefaultAria } from "../utilities/aria.js";
+import type { ListItemContract } from "./list-item.generated.js";
 
 /**
  * An item of a {@link ListElement} (`role="listitem"`).
@@ -8,7 +9,7 @@ import type { DefaultAria } from "../utilities/aria.js";
  *
  * @public
  */
-export type ListItemElement = HTMLElement;
+export interface ListItemElement extends HTMLElement, ListItemContract {}
 
 /**
  * The default ARIA of a list item: the `listitem` role.

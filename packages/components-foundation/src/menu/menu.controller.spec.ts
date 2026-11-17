@@ -1,7 +1,7 @@
 import chai from "chai";
 import { TestInternals } from "../__test__/internals.js";
 import { TestPopover } from "../__test__/popover.js";
-import { type MenuItemElement, type MenuItemStartColumns, MenuItemType } from "../menu-item/menu-item.js";
+import { type MenuItemElement, type MenuItemStartColumns, MenuItemType } from "../menu-item/index.js";
 import { MenuItemController } from "../menu-item/menu-item.controller.js";
 import { MenuController } from "./menu.controller.js";
 
@@ -18,6 +18,10 @@ class TestMenuItem extends HTMLElement implements MenuItemElement {
     public startColumns: MenuItemStartColumns = 0;
     public readonly internals = new TestInternals();
     public readonly controller = new MenuItemController(this, this.internals);
+
+    public get expanded(): boolean {
+        return this.controller.expanded;
+    }
 
     public get checked(): boolean {
         return this._checked;

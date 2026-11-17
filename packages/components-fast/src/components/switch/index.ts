@@ -7,4 +7,4 @@ export {
 export {
     styleRules as switchStyleRules,
 } from "./switch.styles.rules.js";
-export { template as switchTemplate, SwitchAnatomy, SwitchConditions, SwitchParts } from "./switch.template.js";
+export { template as switchTemplate, SwitchAnatomy } from "./switch.template.js";

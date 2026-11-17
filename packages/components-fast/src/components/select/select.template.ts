@@ -1,8 +1,13 @@
 import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { SelectParts, type ValuesOf } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import {
+    selectDocumentation,
+    SelectParts,
+    SelectSlots,
+    selectWebBinding,
+    type ValuesOf,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import { staticallyCompose } from "../../utilities/template-helpers.js";
 import type { Select } from "./select.js";
 
@@ -23,22 +28,7 @@ export type SelectStatics = ValuesOf<typeof SelectStatics>;
 /**
  * @public
  */
-export const SelectConditions = {
-    open: ":state(open)",
-    readOnly: "[readonly]",
-};
-
-export { SelectParts };
-
-/**
- * @public
- */
-export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof SelectParts> = {
-    interactivity: controlInteractivity,
-    conditions: SelectConditions,
-    parts: SelectParts,
-    focus: Focus.partFocused("control"),
-};
+export const SelectAnatomy = documentationToComponentAnatomy(selectDocumentation, selectWebBinding);
 
 /**
  * Default Select template: the combobox, which shows the selected option, and the popup of the options next to it. The element's controller
@@ -47,26 +37,26 @@ export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof Sel
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Select> =
     (ds: DesignSystem) => html<Select>`
-        <span class="label" part="label" ?hidden="${x => !x.label && !x.labelElements.length}" ${ref("labelPart")}>
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <span class=${(_) => SelectParts.label} part=${(_) => SelectParts.label} ?hidden="${x => !x.label && !x.labelElements.length}" ${ref("labelPart")}>
+            <slot name=${(_) => SelectSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </span>
         <div
-            class="control"
-            part="control"
+            class=${(_) => SelectParts.control}
+            part=${(_) => SelectParts.control}
             role="combobox"
             tabindex="0"
             aria-haspopup="listbox"
             aria-controls="listbox"
             ${ref("control")}
         >
-            <slot name="start"></slot>
-            <span class="selected-value" part="selected-value">${x => x.selectedText}</span>
-            <span class="indicator" part="indicator" aria-hidden="true">
-                <slot name="indicator">${staticallyCompose(ds.statics.get(SelectStatics.indicator))}</slot>
+            <slot name=${(_) => SelectSlots.start}></slot>
+            <span class=${(_) => SelectParts.selectedValue} part=${(_) => SelectParts.selectedValue}>${x => x.selectedText}</span>
+            <span class=${(_) => SelectParts.indicator} part=${(_) => SelectParts.indicator} aria-hidden="true">
+                <slot name=${(_) => SelectSlots.indicator}>${staticallyCompose(ds.statics.get(SelectStatics.indicator))}</slot>
             </span>
-            <slot name="end"></slot>
+            <slot name=${(_) => SelectSlots.end}></slot>
         </div>
-        <div id="listbox" class="listbox" part="listbox" role="listbox" popover="auto" ${ref("listbox")}>
+        <div id="listbox" class=${(_) => SelectParts.listbox} part=${(_) => SelectParts.listbox} role="listbox" popover="auto" ${ref("listbox")}>
             <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
         </div>
     `;

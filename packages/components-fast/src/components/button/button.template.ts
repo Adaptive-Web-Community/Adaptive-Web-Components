@@ -1,28 +1,13 @@
 import { type ElementViewTemplate, html } from "@microsoft/fast-element";
-import { ButtonParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import { buttonDocumentation, ButtonParts, ButtonSlots, buttonWebBinding } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import type { Button } from "./button.js";
 
 /**
  * @public
  */
-export const ButtonConditions = {
-    hideLabel: "[hide-label]",
-};
-
-export { ButtonParts };
-
-/**
- * @public
- */
-export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof ButtonParts> = {
-    interactivity: controlInteractivity,
-    conditions: ButtonConditions,
-    parts: ButtonParts,
-    focus: Focus.contextFocused(),
-};
+export const ButtonAnatomy = documentationToComponentAnatomy(buttonDocumentation, buttonWebBinding);
 
 /**
  * Default Button template. The element is the button, so the template is its content.
@@ -30,9 +15,9 @@ export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof But
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Button> =
     (ds: DesignSystem) => html<Button>`
-        <slot name="start"></slot>
-        <span class="content" part="content">
+        <slot name=${(_) => ButtonSlots.start}></slot>
+        <span class=${(_) => ButtonParts.content} part=${(_) => ButtonParts.content}>
             <slot></slot>
         </span>
-        <slot name="end"></slot>
+        <slot name=${(_) => ButtonSlots.end}></slot>
     `;

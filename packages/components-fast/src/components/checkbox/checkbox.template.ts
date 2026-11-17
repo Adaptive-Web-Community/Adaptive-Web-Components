@@ -1,8 +1,13 @@
 import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { CheckboxParts, type ValuesOf } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import {
+    checkboxDocumentation,
+    CheckboxParts,
+    CheckboxSlots,
+    checkboxWebBinding,
+    type ValuesOf,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import { staticallyCompose } from "../../utilities/template-helpers.js";
 import type { Checkbox } from "./checkbox.js";
 
@@ -24,22 +29,7 @@ export type CheckboxStatics = ValuesOf<typeof CheckboxStatics>;
 /**
  * @public
  */
-export const CheckboxConditions = {
-    checked: ":state(checked)",
-    indeterminate: ":state(indeterminate)",
-};
-
-export { CheckboxParts };
-
-/**
- * @public
- */
-export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof CheckboxParts> = {
-    interactivity: controlInteractivity,
-    conditions: CheckboxConditions,
-    parts: CheckboxParts,
-    focus: Focus.contextFocused(),
-};
+export const CheckboxAnatomy = documentationToComponentAnatomy(checkboxDocumentation, checkboxWebBinding);
 
 /**
  * Default Checkbox template. The element is the checkbox, and its label names it.
@@ -47,15 +37,15 @@ export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Checkbox> =
     (ds: DesignSystem) => html<Checkbox>`
-        <div class="control" part="control">
-            <slot name="checked-indicator" ?hidden="${x => !x.checked || x.indeterminate}">
+        <div class=${(_) => CheckboxParts.control} part=${(_) => CheckboxParts.control}>
+            <slot name=${(_) => CheckboxSlots.checkedIndicator} ?hidden="${x => !x.checked || x.indeterminate}">
                 ${staticallyCompose(ds.statics.get(CheckboxStatics.checked))}
             </slot>
-            <slot name="indeterminate-indicator" ?hidden="${x => !x.indeterminate}">
+            <slot name=${(_) => CheckboxSlots.indeterminateIndicator} ?hidden="${x => !x.indeterminate}">
                 ${staticallyCompose(ds.statics.get(CheckboxStatics.indeterminate))}
             </slot>
         </div>
-        <span class="label" part="label" ?hidden="${x => !x.label && !x.labelElements.length}">
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <span class=${(_) => CheckboxParts.label} part=${(_) => CheckboxParts.label} ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name=${(_) => CheckboxSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </span>
     `;

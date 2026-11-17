@@ -7,4 +7,5 @@ export {
 export {
     styleRules as tabStyleRules,
 } from "./tab.styles.rules.js";
-export { template as tabTemplate, TabAnatomy, TabConditions, TabParts } from "./tab.template.js";
+export { TabParts, TabSlots } from "@adaptive-web/components-foundation";
+export { template as tabTemplate, TabAnatomy } from "./tab.template.js";

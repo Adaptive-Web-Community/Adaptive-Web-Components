@@ -7,4 +7,4 @@ export {
 export {
     styleRules as textAreaStyleRules,
 } from "./text-area.styles.rules.js";
-export { template as textAreaTemplate, TextAreaAnatomy, TextAreaConditions, TextAreaParts } from "./text-area.template.js";
+export { template as textAreaTemplate, TextAreaAnatomy } from "./text-area.template.js";

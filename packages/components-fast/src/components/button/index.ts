@@ -6,5 +6,5 @@ export {
 export {
     styleRules as buttonStyleRules,
 } from "./button.styles.rules.js";
-export { template as buttonTemplate, ButtonAnatomy, ButtonConditions, ButtonParts } from "./button.template.js";
+export { template as buttonTemplate, ButtonAnatomy } from "./button.template.js";
 export { Button } from "./button.js";

@@ -1,6 +1,7 @@
 import chai from "chai";
 import { TestInternals } from "../__test__/internals.js";
-import { dataGridCellAria, type DataGridCellElement, DataGridCellType } from "../data-grid-cell/data-grid-cell.js";
+import { dataGridCellAria, type DataGridCellElement } from "../data-grid-cell/data-grid-cell.js";
+import { DataGridCellCellType as DataGridCellType } from "../data-grid-cell/data-grid-cell.generated.js";
 import { dataGridRowAria, type DataGridRowElement, DataGridRowType } from "../data-grid-row/data-grid-row.js";
 import { type DataGridElement, DataGridSelectionMode } from "./data-grid.js";
 import { DataGridController } from "./data-grid.controller.js";

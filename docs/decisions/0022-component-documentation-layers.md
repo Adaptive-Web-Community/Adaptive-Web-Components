@@ -62,14 +62,55 @@ at the type level (dated entries, author, summary, `changeKind` when present).
 
 | Section                                                                                                      | Role                                                             |
 | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| `IdentitySection` (`id`, optional `label` and `definition`)                                                  | Documented subject identity and overview (`id` **required**)     |
+| `IdentitySection` (`id`, optional `label`, `definition`, and `remarks`)                                      | Documented subject identity and overview (`id` **required**)     |
 | `GovernanceSection`                                                                                          | Record lifecycle: status, owner, last reviewed                   |
 | `DisambiguationSection`                                                                                      | Related components and when to choose each                       |
 | `StructureSection`                                                                                           | Semantic hooks: the parts and their participation (no separate conditions map) |
-| `ContractSection`                                                                                            | `Contract`: typed properties (also style condition ids) and slots                |
+| `ContractSection`                                                                                            | `Contract`: typed properties (the boolean and enumerated ones are also style condition ids) and slots |
 | `AccessibilitySection`, `CapabilitiesSection`, `UsageSection`, `KnownIssuesSection`, `ChangelogSection`      | Optional slices per their section types (`Accessibility`, `Usage`, …)           |
 
 Canonical **section order** favors human readers; Storybook MDX and MCP tools **project** slices—they do not define the source shape.
+
+`definition` is the summary, and `remarks` is what a reader needs after it (how it behaves, what is shared, an event, a pointer to a decision), in Markdown with
+paragraphs separated by a blank line. The Markdown projection renders it after the definition, and the generated contract carries it as its `@remarks`, so the
+TypeScript interface and the page say the same thing. The remarks that were written on an interface (`LabelledElement`) move to the documentation.
+
+### Shared contracts: `include`
+
+Components that are one kind of thing share a contract: a text field, a text area, a number field, and a search are each a text input, and `TextInputElement` is
+the interface they extend. The documentation says the same, so a property is described once.
+
+- A `Contract` may `include` other contracts, by value: `include: [textInputDocumentation]`. What is included is any record with an `id` and a `contract`
+(`ContractInclude`), so the documentation of an interface is included as it is, and the literal ids stay, which `PlatformBindingFor` types the binding from
+(`ContractProperties` is the properties of a contract and of what it includes). A binding supplies a selector for every condition, the included ones too.
+- What is shared is the **contract and nothing else**. Structure, disambiguation, usage, and accessibility belong to the concrete component: the control is an
+`<input>` in one and a `<textarea>` in another. So the documentation of an interface has no structure, which the generator allows.
+- `resolveContract` is the whole contract: what is included first, then the contract's own. A property or slot of an included id **overrides it for the
+component, to change its text** (`label`, `description`), and may not change what it is (the kind and the nullability), so a component can't diverge from the
+interface it extends. Generators, the Markdown projection, and the binding check read the resolved contract.
+- The generated contract follows the model: `TextFieldContract extends TextInputContract`, imported from the module generated from the included record (the scan
+finds it by id), with only its own properties. The slots (`TextFieldSlots`) are those of the whole contract, since a template uses them all.
+- The explicit `include` is the same choice as for usage rule sets: an override stays visible, and nothing is inherited by being of a kind.
+- A contract is of an interface, which may be a component's, an element's, or neither, so the generated source **assumes no element**: the interface is documented by
+the identity's `definition` (and `remarks`), and the parts and slots by its label (`Slot names of Text Input`), never as "of the element". `LabelledElement` and
+`ContentLabelledElement` are kept only until the components that extend them have migrated, and then they go: they were never elements (they don't extend
+`HTMLElement`), and a component extends the contract (`TextInputElement extends FormControlElement, TextInputContract`).
+- The generated contract is the **component's API as a consumer uses it**: the properties an author sets or reads, whether or not one is an attribute
+(`checked`, `value`), and the slots. What isn't that stays in the hand-written element interface, which extends the generated contract of its leaf (the chain
+of includes carries the rest). The **default of a property** that the user changes (`defaultValue`, `defaultChecked`), which the attribute sets and a form
+reset restores, is how a web element keeps its state, as an uncontrolled React component does: an implementation detail, so it isn't documented, and
+`TextInputElement extends FormControlElement, TextInputContract` adds `defaultValue`. The form association, validity, and methods come from
+`FormControlElement`, which the documentation describes as a capability. An element lists the element interface
+of an included record too when that has members beyond its contract. The contracts don't extend element interfaces: they would pull DOM types into plain data,
+import each other in a cycle, and rely on a hand-written module that the generator can't check.
+- The interfaces that components share are documented this way: `LabelledElement` (`labelled`: `label`, `hideLabel`, and the `label` slot) and `ContentLabelledElement`
+(`contentLabelled`: `hideLabel` and the default slot), and `TextInputElement` (`textInput`), which includes `labelled`. A component includes the one it is labelled by
+(a text field gets its `label` property and slot through the text input, a button its default slot from `contentLabelled`), so each of them is described once.
+
+A **property that can have no value is `nullable`**, typed `T | null`, like an attribute that isn't set (`name`, `maxLength`). `null` is the one way a property of
+an element says so: it always has a value, so `undefined` isn't one of its states, and the platform's own properties and element reflection use `null` too. A boolean isn't
+nullable (it is `false`). This is different from options and sets of values (`InteractiveSet`), where an absent member means "not given, fall through" and `null` clears
+it on purpose; there the two do differ, and the contract doesn't need the difference.
 
 ### Structure (semantic hooks)
 
@@ -77,7 +118,17 @@ Canonical **section order** favors human readers; Storybook MDX and MCP tools **
 a `DocRef` and a disambiguation entry are ids too). Display copy is `label`, which defaults to the words of the id (`textField` is `Text Field`),
 and `description` (Markdown), not object keys. "Label" is the readable text throughout; there is no `name`. A part may be an instance of another
 component (`component`, a `DocRef`).
-- **Conditions** are not duplicated on structure: every contract property id is a style condition id; `PlatformBinding.conditionSelectors` maps those ids to platform selectors. `defineDocumentation` keeps the literal ids, so `PlatformBindingFor` types the binding from the documentation: the conditions (and the values of an enumerated property) and the parts get autocomplete and checking.
+- **Conditions** are not duplicated on structure: a contract property that is a boolean or an enum is a style condition of its id, unless it says
+`condition: false`, and `PlatformBinding.conditionSelectors` maps those ids to platform selectors. A condition is a state that the component presents and
+styles key on (`checked`, `readOnly`, `orientation`), so its values are a known set. A string or a number property (`label`, `name`, `value`, `maxLength`)
+is never one: a selector for it can only test whether it is set, which is a web idiom (`[label]`) and not the property. The opt-out is for a boolean or an enum
+that only configures behavior, and since nearly every one is a condition, it is the exception that is written. An override of an included property can't change
+whether it is a condition, since the binding fragment of the interface supplies its selector. `disabled` is a condition and also the binding's `interactivity`
+for now, until the interactivity model is revised. `defineDocumentation` keeps the literal ids and kinds, so `PlatformBindingFor` types the binding from the
+documentation: the conditions (and the values of an enumerated property) and the parts get autocomplete and checking, and a selector for a property that isn't a
+condition is an error.
+- A state that isn't a property (whether a text input has a value, or the slot an item is in) isn't a condition yet. When a component needs one, it is
+declared in the documentation and named for what it tests (`hasValue`, not `value`), so a rule doesn't read as matching the value.
 - Structure is a **tree of parts whose root is the component's context**. The structure is itself the context part, so its
 markers are the context's, and its `parts` nest: a part's `parts` are the parts inside it. Part ids are unique across the whole tree, so a binding's
 `partSelectors` stays one flat map. Nesting says what is inside what, so an interactive part inside an interactive context (an expand control in a
@@ -133,7 +184,8 @@ API—not a doc-local version bump.
 
 - CEM, Storybook, designer-figma, conformance, and MCP consume one typed source; selectors never leak into manifest or cross-platform docs.
 - Theme linters can warn on hover/active rules targeting a part that isn't `interactive`.
-- Foundation holds the proof modules (Button, Text Field, Menu Item) as `Documentation` instances with separate binding modules.
+- Foundation holds the proof modules (Button, Text Field, Menu Item) as `Documentation` instances with separate binding modules, and the contract that
+the text components share (Text Input) as a record that they include.
 - Migration work: new `core/documentation/` types, foundation documentation modules, binding modules, MDX generator, then participation-aware renderer
 and removal of anatomy treatments.
 
@@ -149,3 +201,14 @@ cursor is a pointer style. Each was a second, unchecked copy of what the binding
 - **Markdown-only usage docs** — Rejected: no categories, severity, shared sets, or lint without a parallel schema.
 - **Doc semver on each component** — Rejected: docs ship with code; changelog plus package semver is enough.
 - **Implicit inheritance of usage rules from supertypes** — Rejected: explicit `include` of named rule sets keeps overrides and collisions visible.
+- **Spread the shared properties into each component's contract** (`properties: [...textInputProperties, ...]`) — Rejected: it works, but every generated
+contract repeats the properties, and the interface the components share isn't in the types.
+- **A shared contract that is a whole `Documentation`, with a structure of its own** — Rejected: the structure is the concrete component's (an `<input>` or a
+`<textarea>` is the control); only the contract is common.
+- **`undefined` as well as `null` for a property without a value** — Rejected: an element's property always has a value, so there is one way to say none (`null`).
+- **Every contract property is a condition** — Rejected: a binding made up a selector for each (`name: "[name]"`, `maxLength: "[maxlength]"`) that no style
+should key on, a selector for a string can only test whether it is set, which another platform has no way to say, and the id hid that (a `placeholder` condition
+that tested for a placeholder).
+- **Only a property that opts in is a condition** — Rejected: nearly every boolean and enum of a component is one, so the flag would be on almost all of them.
+- **The default of a property in the contract** (`defaultChecked`) — Rejected: it is how the element initializes and resets its state, not what a consumer
+uses, and as a boolean it was a condition too, which styles the wrong state once the user toggles the control.

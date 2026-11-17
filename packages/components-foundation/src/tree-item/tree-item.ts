@@ -1,23 +1,7 @@
 import type { DefaultAria } from "../utilities/aria.js";
+import type { TreeItemContract } from "./tree-item.generated.js";
 
-/**
- * The parts of a {@link TreeItemElement}.
- *
- * @public
- */
-export const TreeItemParts = {
-    /** The row of the item: its button, `start`, content, and `end`. */
-    control: "control",
-
-    /** The button that expands and collapses an item that has items, for the pointer: the arrows do it from the keyboard. */
-    expandCollapseButton: "expand-collapse-button",
-
-    /** The container of the default slot. */
-    content: "content",
-
-    /** The group of its items (`role="group"`), hidden while it is collapsed. */
-    items: "items",
-} as const;
+export { TreeItemParts, TreeItemSlots } from "./tree-item.generated.js";
 
 /**
  * An item of a tree (`role="treeitem"`), which can have items of its own, shown when it is expanded. Implements the item of the
@@ -34,40 +18,11 @@ export const TreeItemParts = {
  *
  * @public
  */
-export interface TreeItemElement extends HTMLElement {
-    /**
-     * Whether its items are shown.
-     *
-     * @remarks
-     * HTML attribute: `expanded`.
-     */
-    expanded: boolean;
-
-    /**
-     * Whether it is selected. One item of a tree is selected at a time.
-     *
-     * @remarks
-     * HTML attribute: `selected`.
-     */
-    selected: boolean;
-
-    /**
-     * Whether it is disabled: it stays focusable, and can't be selected, expanded, or collapsed.
-     *
-     * @remarks
-     * HTML attribute: `disabled`.
-     */
-    disabled: boolean;
-
+export interface TreeItemElement extends HTMLElement, TreeItemContract {
     /**
      * Its items: its child tree items.
      */
     readonly items: readonly TreeItemElement[];
-
-    /**
-     * Whether its tree has items that have items, given by the tree, so that the items without any line up with those that have a button.
-     */
-    nested: boolean;
 }
 
 /**

@@ -1,27 +1,18 @@
 import { type ElementViewTemplate, html } from "@microsoft/fast-element";
-import { TabParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import {
+    tabDocumentation,
+    TabParts,
+    TabSlots,
+    tabWebBinding,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Tab } from "./tab.js";
 
 /**
  * @public
  */
-export const TabConditions = {
-    selected: "[selected]",
-};
-
-export { TabParts };
-
-/**
- * @public
- */
-export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts> = {
-    interactivity: Interactivity.disabledAttribute,
-    conditions: TabConditions,
-    parts: TabParts,
-    focus: Focus.contextFocused(),
-};
+export const TabAnatomy = documentationToComponentAnatomy(tabDocumentation, tabWebBinding);
 
 /**
  * Default Tab template.
@@ -30,10 +21,10 @@ export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>
 export const template: (ds: DesignSystem) => ElementViewTemplate<Tab> =
     (ds: DesignSystem) => html<Tab>`
         <template @click="${x => x.handleClick()}">
-            <slot name="start"></slot>
-            <span class="content" part="content">
+            <slot name=${(_) => TabSlots.start}></slot>
+            <span class=${(_) => TabParts.content} part=${(_) => TabParts.content}>
                 <slot></slot>
             </span>
-            <slot name="end"></slot>
+            <slot name=${(_) => TabSlots.end}></slot>
         </template>
     `;
