@@ -7,4 +7,4 @@ export {
 export {
     styleRules as dividerStyleRules,
 } from "./divider.styles.rules.js";
-export { template as dividerTemplate, DividerAnatomy, DividerConditions, DividerParts } from "./divider.template.js";
+export { template as dividerTemplate, DividerAnatomy } from "./divider.template.js";
