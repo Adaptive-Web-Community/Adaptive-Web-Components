@@ -1,5 +1,6 @@
 import type { TabElement } from "../tab/tab.js";
 import type { DefaultAria } from "../utilities/aria.js";
+import type { TabPanelContract } from "./tab-panel.generated.js";
 
 /**
  * A tab panel (`role="tabpanel"`), shown when its tab is selected, and named by it.
@@ -11,7 +12,7 @@ import type { DefaultAria } from "../utilities/aria.js";
  *
  * @public
  */
-export interface TabPanelElement extends HTMLElement {
+export interface TabPanelElement extends HTMLElement, TabPanelContract {
     /**
      * The tab that shows it, given by the tablist: the tab in the same place among the tabs as the panel among the panels.
      */

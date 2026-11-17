@@ -1,15 +1,6 @@
 import type { TabPanelElement } from "../tab-panel/tab-panel.js";
 import type { DefaultAria } from "../utilities/aria.js";
-
-/**
- * The parts of a {@link TabElement}.
- *
- * @public
- */
-export const TabParts = {
-    /** The container of the default slot, between `start` and `end`. */
-    content: "content",
-} as const;
+import type { TabContract } from "./tab.generated.js";
 
 /**
  * A tab of a tablist (`role="tab"`), which shows its panel when it is selected. Implements the tab of the
@@ -24,23 +15,7 @@ export const TabParts = {
  *
  * @public
  */
-export interface TabElement extends HTMLElement {
-    /**
-     * Whether it is selected, and its panel shown. One tab of its tablist is selected: selecting one unselects the others.
-     *
-     * @remarks
-     * HTML attribute: `selected`.
-     */
-    selected: boolean;
-
-    /**
-     * Whether it is disabled: it stays focusable, as the ARIA practices ask of tabs, and can't be selected.
-     *
-     * @remarks
-     * HTML attribute: `disabled`.
-     */
-    disabled: boolean;
-
+export interface TabElement extends HTMLElement, TabContract {
     /**
      * The panel that it shows, given by its tablist: the panel in the same place among the panels as the tab among the tabs.
      */

@@ -1,4 +1,5 @@
 import type { Orientation } from "../utilities/orientation.js";
+import type { TablistContract } from "./tablist.generated.js";
 
 /**
  * A tablist (`role="tablist"`): tabs, of which one is selected, and the tab panels they show, which are elsewhere: together, in one
@@ -15,15 +16,7 @@ import type { Orientation } from "../utilities/orientation.js";
  *
  * @public
  */
-export interface TablistElement extends HTMLElement {
-    /**
-     * The direction in which the tabs are laid out, and the arrow keys that move between them.
-     *
-     * @remarks
-     * HTML attribute: `orientation`. The default is `horizontal`.
-     */
-    orientation: Orientation;
-
+export interface TablistElement extends HTMLElement, TablistContract {
     /**
      * The element whose tab panels the tabs show, in their order: the panels among its children.
      *
