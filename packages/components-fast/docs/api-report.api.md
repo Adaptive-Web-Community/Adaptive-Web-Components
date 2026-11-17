@@ -28,7 +28,6 @@ import { BreadcrumbSlots } from '@adaptive-web/components-foundation';
 import { ButtonElement } from '@adaptive-web/components-foundation';
 import { ButtonType } from '@adaptive-web/components-foundation';
 import { CalendarElement } from '@adaptive-web/components-foundation';
-import { CalendarParts } from '@adaptive-web/components-foundation';
 import { CaptureType } from '@microsoft/fast-element';
 import type { CheckableController } from '@adaptive-web/components-foundation';
 import type { CheckableElement } from '@adaptive-web/components-foundation';
@@ -41,13 +40,11 @@ import { CursorDefinition } from '@adaptive-web/adaptive-ui';
 import { DataGridCellElement } from '@adaptive-web/components-foundation';
 import { DataGridCellType } from '@adaptive-web/components-foundation';
 import { DataGridElement } from '@adaptive-web/components-foundation';
-import { DataGridParts } from '@adaptive-web/components-foundation';
 import { DataGridRowElement } from '@adaptive-web/components-foundation';
 import { DataGridRowType } from '@adaptive-web/components-foundation';
 import { DataGridSelectionMode } from '@adaptive-web/components-foundation';
 import { DialogClosedBy } from '@adaptive-web/components-foundation';
 import { DialogElement } from '@adaptive-web/components-foundation';
-import { DialogParts } from '@adaptive-web/components-foundation';
 import { DividerElement } from '@adaptive-web/components-foundation';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
@@ -121,7 +118,6 @@ import { ToolbarSlots } from '@adaptive-web/components-foundation';
 import { TooltipElement } from '@adaptive-web/components-foundation';
 import { TooltipPlacement } from '@adaptive-web/components-foundation';
 import { TreeItemElement } from '@adaptive-web/components-foundation';
-import { TreeItemParts } from '@adaptive-web/components-foundation';
 import { TreeViewElement } from '@adaptive-web/components-foundation';
 import { ValuesOf } from '@adaptive-web/components-foundation';
 import { ViewTemplate } from '@microsoft/fast-element';
@@ -677,14 +673,24 @@ export class Calendar extends BaseFormControl implements CalendarElement {
 export const calendarAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const CalendarAnatomy: ComponentAnatomy<typeof CalendarConditions, typeof CalendarParts>;
-
-// @public (undocumented)
-export const CalendarConditions: {
-    readOnly: string;
-};
-
-export { CalendarParts }
+export const CalendarAnatomy: ComponentAnatomy<    {
+disabled: string;
+readOnly: string;
+multiple: string;
+hideLabel: string;
+}, {
+label: string;
+header: string;
+previousMonth: string;
+title: string;
+nextMonth: string;
+days: string;
+weekDays: string;
+weekDay: string;
+week: string;
+day: string;
+date: string;
+}>;
 
 // @public
 export const CalendarStatics: {
@@ -712,13 +718,7 @@ export class Card extends FASTElement {
 export const cardAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const CardAnatomy: ComponentAnatomy<typeof CardConditions, typeof CardParts>;
-
-// @public (undocumented)
-export const CardConditions: {};
-
-// @public (undocumented)
-export const CardParts: {};
+export const CardAnatomy: ComponentAnatomy<    {}, {}>;
 
 // @public
 export const cardStyleRules: StyleRules;
@@ -964,7 +964,15 @@ export class DataGrid extends FASTElement implements DataGridElement {
 export const dataGridAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const DataGridAnatomy: ComponentAnatomy<typeof DataGridConditions, typeof DataGridParts>;
+export const DataGridAnatomy: ComponentAnatomy<    {
+selectionMode: {
+none: string;
+singleRow: string;
+multiRow: string;
+};
+}, {
+rows: string;
+}>;
 
 // @public
 export class DataGridCell extends FASTElement implements DataGridCellElement {
@@ -981,19 +989,13 @@ export class DataGridCell extends FASTElement implements DataGridCellElement {
 export const dataGridCellAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const DataGridCellAnatomy: ComponentAnatomy<typeof DataGridCellConditions, typeof DataGridCellParts>;
-
-// @public (undocumented)
-export const DataGridCellConditions: {
-    cellType: {
-        default: string;
-        columnHeader: string;
-        rowHeader: string;
-    };
+export const DataGridCellAnatomy: ComponentAnatomy<    {
+cellType: {
+default: string;
+columnHeader: string;
+rowHeader: string;
 };
-
-// @public (undocumented)
-export const DataGridCellParts: {};
+}, any>;
 
 // @public
 export const dataGridCellStyleRules: StyleRules;
@@ -1003,11 +1005,6 @@ export const dataGridCellTemplate: (ds: DesignSystem) => ElementViewTemplate<Dat
 
 // @public
 export const dataGridCellTemplateStyles: ElementStyles;
-
-// @public (undocumented)
-export const DataGridConditions: {};
-
-export { DataGridParts }
 
 // @public
 export class DataGridRow extends FASTElement implements DataGridRowElement {
@@ -1039,20 +1036,14 @@ export class DataGridRow extends FASTElement implements DataGridRowElement {
 export const dataGridRowAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const DataGridRowAnatomy: ComponentAnatomy<typeof DataGridRowConditions, typeof DataGridRowParts>;
-
-// @public (undocumented)
-export const DataGridRowConditions: {
-    rowType: {
-        default: string;
-        header: string;
-        stickyHeader: string;
-    };
-    selected: string;
+export const DataGridRowAnatomy: ComponentAnatomy<    {
+rowType: {
+default: string;
+header: string;
+stickyHeader: string;
 };
-
-// @public (undocumented)
-export const DataGridRowParts: {};
+selected: string;
+}, {}>;
 
 // @public
 export const dataGridRowStyleRules: StyleRules;
@@ -1107,6 +1098,7 @@ export class Dialog extends FASTElement implements DialogElement {
     control?: HTMLDialogElement;
     // (undocumented)
     disconnectedCallback(): void;
+    get modal(): boolean;
     get open(): boolean;
     get returnValue(): string;
     set returnValue(value: string);
@@ -1118,14 +1110,17 @@ export class Dialog extends FASTElement implements DialogElement {
 export const dialogAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const DialogAnatomy: ComponentAnatomy<typeof DialogConditions, typeof DialogParts>;
-
-// @public (undocumented)
-export const DialogConditions: {
-    modal: string;
+export const DialogAnatomy: ComponentAnatomy<    {
+modal: string;
+open: string;
+closedBy: {
+any: string;
+closeRequest: string;
+none: string;
 };
-
-export { DialogParts }
+}, {
+control: string;
+}>;
 
 // @public
 export const dialogStyleRules: StyleRules;
@@ -2359,6 +2354,7 @@ export class Tooltip extends FASTElement implements TooltipElement {
     delay: number;
     // (undocumented)
     disconnectedCallback(): void;
+    get open(): boolean;
     placement: TooltipPlacement;
 }
 
@@ -2366,15 +2362,23 @@ export class Tooltip extends FASTElement implements TooltipElement {
 export const tooltipAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TooltipAnatomy: ComponentAnatomy<typeof TooltipConditions, typeof TooltipParts>;
-
-// @public (undocumented)
-export const TooltipConditions: {
-    open: string;
+export const TooltipAnatomy: ComponentAnatomy<    {
+open: string;
+placement: {
+above: string;
+aboveStart: string;
+aboveEnd: string;
+below: string;
+belowStart: string;
+belowEnd: string;
+before: string;
+beforeTop: string;
+beforeBottom: string;
+after: string;
+afterTop: string;
+afterBottom: string;
 };
-
-// @public (undocumented)
-export const TooltipParts: {};
+}, {}>;
 
 // @public
 export const tooltipStyleRules: StyleRules;
@@ -2416,15 +2420,32 @@ export class TreeItem extends FASTElement implements TreeItemElement {
 export const treeItemAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TreeItemAnatomy: ComponentAnatomy<typeof TreeItemConditions, typeof TreeItemParts>;
-
-// @public (undocumented)
-export const TreeItemConditions: {
-    selected: string;
-    expanded: string;
+export const TreeItemAnatomy: ComponentAnatomy<    {
+expanded: string;
+selected: string;
+disabled: string;
+nested: string;
+}, BindingPartSelectorsFor<    {
+readonly description: "The row is the `control` part; child items live in the `items` group.";
+readonly parts: {
+readonly control: {
+readonly description: "The row: expand button, optional `start` and `end`, and the label.";
+readonly interactive: true;
+readonly indicatesFocus: true;
+readonly parts: {
+readonly expandCollapseButton: {
+readonly description: "Expands or collapses an item that has children; hidden when it has none.";
 };
-
-export { TreeItemParts }
+readonly content: {
+readonly description: "The default slot label.";
+};
+};
+};
+readonly items: {
+readonly description: "The child items (`role=\"group\"`), hidden while collapsed.";
+};
+};
+}>>;
 
 // @public
 export const TreeItemStatics: {
@@ -2459,13 +2480,7 @@ export class TreeView extends FASTElement implements TreeViewElement {
 export const treeViewAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TreeViewAnatomy: ComponentAnatomy<typeof TreeViewConditions, typeof TreeViewParts>;
-
-// @public (undocumented)
-export const TreeViewConditions: {};
-
-// @public (undocumented)
-export const TreeViewParts: {};
+export const TreeViewAnatomy: ComponentAnatomy<    {}, {}>;
 
 // @public
 export const treeViewStyleRules: StyleRules;

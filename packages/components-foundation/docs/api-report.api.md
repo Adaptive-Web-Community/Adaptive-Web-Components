@@ -934,21 +934,161 @@ export class CalendarController {
 }
 
 // @public
-export interface CalendarElement extends FormControlElement, LabelledElement {
+export const calendarDocumentation: {
+    readonly id: "calendar";
+    readonly definition: "A **Calendar** shows one month as a grid of days for selecting one date or several, as a form control.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The label and header surround a table grid the controller fills in the `days` part.";
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the grid.";
+            };
+            readonly header: {
+                readonly description: "The previous button, title, and next button.";
+                readonly parts: {
+                    readonly previousMonth: {
+                        readonly description: "Shows the previous month.";
+                        readonly interactive: true;
+                    };
+                    readonly title: {
+                        readonly description: "The month and year shown.";
+                    };
+                    readonly nextMonth: {
+                        readonly description: "Shows the next month.";
+                        readonly interactive: true;
+                    };
+                };
+            };
+            readonly days: {
+                readonly description: "The grid of days (`role=\"grid\"`).";
+                readonly parts: {
+                    readonly weekDays: {
+                        readonly description: "The row of weekday names.";
+                        readonly parts: {
+                            readonly weekDay: {
+                                readonly description: "One weekday column header.";
+                            };
+                        };
+                    };
+                    readonly week: {
+                        readonly description: "One week row.";
+                        readonly parts: {
+                            readonly day: {
+                                readonly description: "One day cell.";
+                                readonly parts: {
+                                    readonly date: {
+                                        readonly description: "The day number in the cell.";
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its value in the form data.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The selected date, or the first of several with `multiple`, or an empty string.";
+        }, {
+            readonly id: "multiple";
+            readonly kind: "boolean";
+            readonly description: "Whether any number of dates can be selected, or one.";
+        }, {
+            readonly id: "min";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The earliest selectable date, or null.";
+        }, {
+            readonly id: "max";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The latest selectable date, or null.";
+        }, {
+            readonly id: "disabledDates";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "Dates that can't be selected, comma-separated.";
+        }, {
+            readonly id: "month";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The month shown (1–12), or null to derive from the value or today.";
+        }, {
+            readonly id: "year";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The year shown, or null to derive from the value or today.";
+        }, {
+            readonly id: "locale";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The locale for names and numbers, or null for `lang` or the browser.";
+        }, {
+            readonly id: "firstDay";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The first day of the week (0–6), or null for the locale's.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: keys move but dates can't be selected.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "label";
+            readonly description: "Visible label (see the `labelled` contract).";
+        }, {
+            readonly id: "previous-month";
+            readonly description: "Content of the previous-month button.";
+        }, {
+            readonly id: "next-month";
+            readonly description: "Content of the next-month button.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "CalendarContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface CalendarElement extends FormControlElement, CalendarContract {
     defaultValue: string | null;
-    disabled: boolean;
-    disabledDates: string | null;
-    firstDay: number | null;
-    locale: string | null;
-    max: string | null;
-    min: string | null;
-    month: number | null;
-    multiple: boolean;
-    name: string | null;
-    readOnly: boolean;
-    value: string;
     readonly values: readonly string[];
-    year: number | null;
 }
 
 // @public
@@ -970,11 +1110,73 @@ export const CalendarParts: {
 };
 
 // @public
+export const CalendarSlots: {
+    readonly label: "label";
+    readonly previousMonth: "previous-month";
+    readonly nextMonth: "next-month";
+};
+
+// @public
 export type CalendarTemplateElements = {
     title: HTMLElement;
     previous: HTMLButtonElement;
     next: HTMLButtonElement;
     days: HTMLTableElement;
+};
+
+// @public
+export const calendarWebBinding: {
+    conditionSelectors: {
+        disabled: string;
+        readOnly: string;
+        multiple: string;
+        hideLabel: string;
+    };
+    partSelectors: {
+        label: string;
+        header: string;
+        previousMonth: string;
+        title: string;
+        nextMonth: string;
+        days: string;
+        weekDays: string;
+        weekDay: string;
+        week: string;
+        day: string;
+        date: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export const cardDocumentation: {
+    readonly id: "card";
+    readonly definition: "A **Card** is a container for content. It has no behavior; authors choose semantics (`article`, `group`, `region`) when needed.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is a surface; the default slot holds content.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Card content.";
+        }];
+    };
+};
+
+// @public
+export type CardElement = HTMLElement;
+
+// @public
+export const cardWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
 };
 
 // @public
