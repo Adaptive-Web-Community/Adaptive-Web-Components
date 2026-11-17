@@ -1,5 +1,8 @@
 import type { DataGridRowElement } from "../data-grid-row/data-grid-row.js";
 import type { ValuesOf } from "../utilities/typings.js";
+import type { DataGridContract } from "./data-grid.generated.js";
+
+export { DataGridParts, DataGridSlots } from "./data-grid.generated.js";
 
 /**
  * Whether a {@link DataGridElement} selects rows, one or several.
@@ -7,13 +10,8 @@ import type { ValuesOf } from "../utilities/typings.js";
  * @public
  */
 export const DataGridSelectionMode = {
-    /** No selection. */
     none: "none",
-
-    /** One row at a time. */
     singleRow: "single-row",
-
-    /** Any number of rows. */
     multiRow: "multi-row",
 } as const;
 
@@ -23,16 +21,6 @@ export const DataGridSelectionMode = {
  * @public
  */
 export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
-
-/**
- * The parts of a {@link DataGridElement}.
- *
- * @public
- */
-export const DataGridParts = {
-    /** The container of the rows, with the `--data-grid-template-columns` custom property, which the rows lay out their cells in. */
-    rows: "rows",
-} as const;
 
 /**
  * A data grid (`role="grid"`): rows of cells, which the user moves between with the keys, and can select rows of. Implements the
@@ -47,22 +35,11 @@ export const DataGridParts = {
  *
  * @public
  */
-export interface DataGridElement extends HTMLElement {
+export interface DataGridElement extends HTMLElement, Omit<DataGridContract, "selectionMode"> {
     /**
      * Whether rows are selected, one or several.
-     *
-     * @remarks
-     * HTML attribute: `selection-mode`. The default is `none`.
      */
     selectionMode: DataGridSelectionMode;
-
-    /**
-     * The columns of the rows, as CSS `grid-template-columns`, or `null` for columns of the same width.
-     *
-     * @remarks
-     * HTML attribute: `grid-template-columns`.
-     */
-    gridTemplateColumns: string | null;
 
     /**
      * Its rows, in order: those in its slot, and those its binding renders.

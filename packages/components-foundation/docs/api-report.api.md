@@ -1278,22 +1278,86 @@ export const ContentLabelledSlots: {
 };
 
 // @public
-export function dataGridCellAria(cell: DataGridCellElement): DefaultAria;
+export function dataGridCellAria(cell: {
+    cellType: DataGridCellCellType;
+}): DefaultAria;
 
 // @public
-export interface DataGridCellElement extends HTMLElement {
-    cellType: DataGridCellType;
+const DataGridCellCellType: {
+    readonly default: "default";
+    readonly columnHeader: "columnHeader";
+    readonly rowHeader: "rowHeader";
+};
+
+// @public (undocumented)
+type DataGridCellCellType = (typeof DataGridCellCellType)[keyof typeof DataGridCellCellType];
+export { DataGridCellCellType }
+export { DataGridCellCellType as DataGridCellType }
+
+// @public
+export const dataGridCellDocumentation: {
+    readonly id: "dataGridCell";
+    readonly definition: "A **Data Grid Cell** is one cell in a row.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the cell; content is generated or in the default slot.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "cellType";
+            readonly kind: "enum";
+            readonly description: "The kind of cell.";
+            readonly enumValues: readonly [{
+                readonly id: "default";
+                readonly description: "A data cell.";
+            }, {
+                readonly id: "columnHeader";
+                readonly description: "A column header.";
+            }, {
+                readonly id: "rowHeader";
+                readonly description: "A row header.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Cell content.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "DataGridCellContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface DataGridCellElement extends HTMLElement, DataGridCellContract {
 }
 
 // @public
-export const DataGridCellType: {
+export const dataGridCellTypeAttribute: {
     readonly default: "default";
     readonly columnHeader: "columnheader";
     readonly rowHeader: "rowheader";
 };
 
 // @public
-export type DataGridCellType = ValuesOf<typeof DataGridCellType>;
+export function dataGridCellTypeFromAttribute(value: string | null): DataGridCellCellType;
+
+// @public
+export const dataGridCellWebBinding: {
+    conditionSelectors: {
+        cellType: {
+            default: string;
+            columnHeader: string;
+            rowHeader: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+    focus: FocusDefinition<any>;
+};
 
 // @public
 export class DataGridController {
@@ -1305,8 +1369,53 @@ export class DataGridController {
 }
 
 // @public
-export interface DataGridElement extends HTMLElement {
-    gridTemplateColumns: string | null;
+export const dataGridDocumentation: {
+    readonly id: "dataGrid";
+    readonly definition: "A **Data Grid** is tabular data (`role=\"grid\"`): rows of cells moved with the keys, with optional row selection.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Rows are in the `rows` container; columns follow `--data-grid-template-columns`.";
+        readonly parts: {
+            readonly rows: {
+                readonly description: "The container of header, generated, and slotted rows.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "selectionMode";
+            readonly kind: "enum";
+            readonly description: "Whether rows are selected, one or several.";
+            readonly enumValues: readonly [{
+                readonly id: "none";
+                readonly description: "No selection.";
+            }, {
+                readonly id: "singleRow";
+                readonly description: "One row at a time.";
+            }, {
+                readonly id: "multiRow";
+                readonly description: "Any number of rows.";
+            }];
+        }, {
+            readonly id: "gridTemplateColumns";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "Column layout as CSS `grid-template-columns`, or null for equal columns.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Data grid rows.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "DataGridContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface DataGridElement extends HTMLElement, Omit<DataGridContract, "selectionMode"> {
     readonly rows: readonly DataGridRowElement[];
     selectionMode: DataGridSelectionMode;
 }
@@ -1328,11 +1437,51 @@ export const DataGridParts: {
 export function dataGridRowAria(row: DataGridRowElement): DefaultAria;
 
 // @public
-export interface DataGridRowElement extends HTMLElement {
+export const dataGridRowDocumentation: {
+    readonly id: "dataGridRow";
+    readonly definition: "A **Data Grid Row** (`role=\"row\"`) holds cells laid out in the grid's columns.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Generated and slotted cells share a row container.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "rowType";
+            readonly kind: "enum";
+            readonly description: "The kind of row.";
+            readonly enumValues: readonly [{
+                readonly id: "default";
+                readonly description: "A data row that can be selected.";
+            }, {
+                readonly id: "header";
+                readonly description: "A header row.";
+            }, {
+                readonly id: "stickyHeader";
+                readonly description: "A header row that stays at the top while scrolling.";
+            }];
+        }, {
+            readonly id: "selected";
+            readonly kind: "boolean";
+            readonly description: "Whether it is selected.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Cells of the row.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "DataGridRowContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface DataGridRowElement extends HTMLElement, Omit<DataGridRowContract, "rowType"> {
     readonly cells: readonly DataGridCellElement[];
     rowType: DataGridRowType;
     selectable: boolean;
-    selected: boolean;
 }
 
 // @public
@@ -1346,6 +1495,20 @@ export const DataGridRowType: {
 export type DataGridRowType = ValuesOf<typeof DataGridRowType>;
 
 // @public
+export const dataGridRowWebBinding: {
+    conditionSelectors: {
+        rowType: {
+            default: string;
+            header: string;
+            stickyHeader: string;
+        };
+        selected: string;
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
+
+// @public
 export const DataGridSelectionMode: {
     readonly none: "none";
     readonly singleRow: "single-row";
@@ -1354,6 +1517,21 @@ export const DataGridSelectionMode: {
 
 // @public
 export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
+export const dataGridWebBinding: {
+    conditionSelectors: {
+        selectionMode: {
+            none: string;
+            singleRow: string;
+            multiRow: string;
+        };
+    };
+    partSelectors: {
+        rows: string;
+    };
+    interactivity: InteractivityDefinition;
+};
 
 // @public
 export type DefaultAria = Partial<ARIAMixin>;

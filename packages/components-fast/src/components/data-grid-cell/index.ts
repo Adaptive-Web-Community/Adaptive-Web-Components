@@ -7,9 +7,4 @@ export {
 export {
     styleRules as dataGridCellStyleRules,
 } from "./data-grid-cell.styles.rules.js";
-export {
-    template as dataGridCellTemplate,
-    DataGridCellAnatomy,
-    DataGridCellConditions,
-    DataGridCellParts
-} from "./data-grid-cell.template.js";
+export { template as dataGridCellTemplate, DataGridCellAnatomy } from "./data-grid-cell.template.js";
