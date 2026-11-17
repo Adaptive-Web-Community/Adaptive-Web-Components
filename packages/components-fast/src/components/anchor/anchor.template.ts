@@ -1,27 +1,25 @@
 import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { AnchorParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus, Interactivity } from "@adaptive-web/adaptive-ui";
+import {
+    anchorDocumentation,
+    AnchorParts,
+    AnchorSlots,
+    anchorWebBinding,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Anchor } from "./anchor.js";
 
-/**
- * @public
- */
-export const AnchorConditions = {
-    hideLabel: "[hide-label]",
-    noHref: ":not([href])",
-};
-
-export { AnchorParts };
+const anchorAnatomyBase = documentationToComponentAnatomy(anchorDocumentation, anchorWebBinding);
 
 /**
  * @public
  */
-export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof AnchorParts> = {
-    interactivity: Interactivity.hrefAttribute,
-    conditions: AnchorConditions,
-    parts: AnchorParts,
-    focus: Focus.partFocused("control"),
+export const AnchorAnatomy = {
+    ...anchorAnatomyBase,
+    conditions: {
+        ...anchorAnatomyBase.conditions,
+        noHref: ":not([href])",
+    },
 };
 
 /**
@@ -32,8 +30,8 @@ export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof Anc
 export const template: (ds: DesignSystem) => ElementViewTemplate<Anchor> =
     (ds: DesignSystem) => html<Anchor>`
         <a
-            class="control"
-            part="control"
+            class=${(_) => AnchorParts.control}
+            part=${(_) => AnchorParts.control}
             download="${x => x.download}"
             href="${x => x.href}"
             hreflang="${x => x.hreflang}"
@@ -44,10 +42,10 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Anchor> =
             type="${x => x.type}"
             ${ref("control")}
         >
-            <slot name="start"></slot>
-            <span class="content" part="content">
+            <slot name=${(_) => AnchorSlots.start}></slot>
+            <span class=${(_) => AnchorParts.content} part=${(_) => AnchorParts.content}>
                 <slot></slot>
             </span>
-            <slot name="end"></slot>
+            <slot name=${(_) => AnchorSlots.end}></slot>
         </a>
     `;

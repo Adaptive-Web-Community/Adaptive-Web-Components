@@ -7,4 +7,5 @@ export {
 export {
     styleRules as badgeStyleRules,
 } from "./badge.styles.rules.js";
-export { template as badgeTemplate, BadgeAnatomy, BadgeConditions, BadgeParts } from "./badge.template.js";
+export { BadgeParts, BadgeSlots } from "@adaptive-web/components-foundation";
+export { template as badgeTemplate, BadgeAnatomy } from "./badge.template.js";
