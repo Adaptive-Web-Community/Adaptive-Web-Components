@@ -8,4 +8,5 @@ export {
 export {
     styleRules as progressStyleRules,
 } from "./progress.styles.rules.js";
-export { template as progressTemplate, ProgressAnatomy, ProgressConditions, ProgressParts } from "./progress.template.js";
+export { ProgressParts, ProgressSlots } from "@adaptive-web/components-foundation";
+export { template as progressTemplate, ProgressAnatomy } from "./progress.template.js";

@@ -1,20 +1,5 @@
 import type { DefaultAria } from "../utilities/aria.js";
-
-/**
- * The parts of a {@link ProgressElement} that is a bar.
- *
- * @public
- */
-export const ProgressParts = {
-    /** The container of the indicator when the value is known. */
-    determinate: "determinate",
-
-    /** The container of the indicator when the value isn't known. */
-    indeterminate: "indeterminate",
-
-    /** What shows the progress. */
-    indicator: "indicator",
-} as const;
+import type { ProgressContract } from "./progress.generated.js";
 
 /**
  * A progress indicator (`role="progressbar"`): how much of a task is done, between {@link ProgressElement.min} and
@@ -22,38 +7,11 @@ export const ProgressParts = {
  * are both one.
  *
  * @remarks
- * An indeterminate progress has no value for assistive technology, so the author names it (`aria-label`), as for any progress.
- *
  * Slots: `determinate` and `indeterminate`, for an indicator of the author's.
  *
  * @public
  */
-export interface ProgressElement extends HTMLElement {
-    /**
-     * How much is done, or `null` when it isn't known (indeterminate).
-     *
-     * @remarks
-     * HTML attribute: `value`. A value outside {@link ProgressElement.min} and {@link ProgressElement.max} is shown and reported at the nearest
-     * of the two, and the property keeps the author's value.
-     */
-    value: number | null;
-
-    /**
-     * The value at which nothing is done.
-     *
-     * @remarks
-     * HTML attribute: `min`. The default is 0.
-     */
-    min: number;
-
-    /**
-     * The value at which all is done.
-     *
-     * @remarks
-     * HTML attribute: `max`. The default is 100.
-     */
-    max: number;
-}
+export interface ProgressElement extends HTMLElement, ProgressContract {}
 
 function clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max);
