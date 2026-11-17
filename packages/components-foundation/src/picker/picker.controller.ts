@@ -2,7 +2,7 @@ import type { ListboxOptionElement } from "../listbox-option/listbox-option.js";
 import { OptionListController } from "../listbox/option-list.controller.js";
 import { AriaForwardingController } from "../utilities/aria-forwarding.controller.js";
 import "../utilities/dom.js";
-import { PickerParts } from "./picker.js";
+import { PickerParts } from "./picker.generated.js";
 import type { PickerElement } from "./picker.js";
 
 /**

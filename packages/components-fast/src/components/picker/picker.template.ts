@@ -1,8 +1,13 @@
 import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { PickerParts, type ValuesOf } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import {
+    pickerDocumentation,
+    PickerParts,
+    PickerSlots,
+    pickerWebBinding,
+    type ValuesOf,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import { staticallyCompose } from "../../utilities/template-helpers.js";
 import type { Picker } from "./picker.js";
 
@@ -24,24 +29,7 @@ export type PickerStatics = ValuesOf<typeof PickerStatics>;
 /**
  * @public
  */
-export const PickerConditions = {
-    open: ":state(open)",
-    multiple: "[multiple]",
-    loading: "[loading]",
-    readOnly: "[readonly]",
-};
-
-export { PickerParts };
-
-/**
- * @public
- */
-export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof PickerParts> = {
-    interactivity: controlInteractivity,
-    conditions: PickerConditions,
-    parts: PickerParts,
-    focus: Focus.partWithin("root", "control"),
-};
+export const PickerAnatomy = documentationToComponentAnatomy(pickerDocumentation, pickerWebBinding);
 
 /**
  * Default Picker template: the label, a native label of the input; the field, with the values, which the element's controller renders, and the native input, whose state the
@@ -51,16 +39,16 @@ export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof Pic
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Picker> =
     (ds: DesignSystem) => html<Picker>`
-        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <label class=${(_) => PickerParts.label} part=${(_) => PickerParts.label} for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name=${(_) => PickerSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </label>
-        <div class="root" part="root" ${ref("root")}>
-            <slot name="start"></slot>
-            <div class="values" part="values" role="list" hidden ${ref("valueList")}></div>
+        <div class=${(_) => PickerParts.root} part=${(_) => PickerParts.root} ${ref("root")}>
+            <slot name=${(_) => PickerSlots.start}></slot>
+            <div class=${(_) => PickerParts.values} part=${(_) => PickerParts.values} role="list" hidden ${ref("valueList")}></div>
             <input
                 id="control"
-                class="control"
-                part="control"
+                class=${(_) => PickerParts.control}
+                part=${(_) => PickerParts.control}
                 role="combobox"
                 autocomplete="off"
                 aria-autocomplete="list"
@@ -68,19 +56,19 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<Picker> =
                 aria-controls="listbox"
                 ${ref("control")}
             />
-            <span class="indicator" part="indicator" aria-hidden="true">
-                <slot name="indicator">${staticallyCompose(ds.statics.get(PickerStatics.indicator))}</slot>
+            <span class=${(_) => PickerParts.indicator} part=${(_) => PickerParts.indicator} aria-hidden="true">
+                <slot name=${(_) => PickerSlots.indicator}>${staticallyCompose(ds.statics.get(PickerStatics.indicator))}</slot>
             </span>
-            <slot name="end"></slot>
+            <slot name=${(_) => PickerSlots.end}></slot>
         </div>
         <span hidden ${ref("removeContent")}>${staticallyCompose(ds.statics.get(PickerStatics.removeValue))}</span>
-        <div class="popup" part="popup" popover="auto" ${ref("popup")}>
-            <div id="listbox" class="listbox" part="listbox" role="listbox" ${ref("listbox")}>
+        <div class=${(_) => PickerParts.popup} part=${(_) => PickerParts.popup} popover="auto" ${ref("popup")}>
+            <div id="listbox" class=${(_) => PickerParts.listbox} part=${(_) => PickerParts.listbox} role="listbox" ${ref("listbox")}>
                 <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
             </div>
-            <div class="status" part="status" role="status">
-                <span hidden ${ref("noResults")}><slot name="no-results">No results</slot></span>
-                <span hidden ${ref("loadingStatus")}><slot name="loading">Loading</slot></span>
+            <div class=${(_) => PickerParts.status} part=${(_) => PickerParts.status} role="status">
+                <span hidden ${ref("noResults")}><slot name=${(_) => PickerSlots.noResults}>No results</slot></span>
+                <span hidden ${ref("loadingStatus")}><slot name=${(_) => PickerSlots.loading}>Loading</slot></span>
             </div>
         </div>
     `;

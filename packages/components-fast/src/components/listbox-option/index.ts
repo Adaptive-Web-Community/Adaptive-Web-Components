@@ -7,9 +7,4 @@ export {
 export {
     styleRules as listboxOptionStyleRules,
 } from "./listbox-option.styles.rules.js";
-export {
-    template as listboxOptionTemplate,
-    ListboxOptionAnatomy,
-    ListboxOptionConditions,
-    ListboxOptionParts
-} from "./listbox-option.template.js";
+export { template as listboxOptionTemplate, ListboxOptionAnatomy } from "./listbox-option.template.js";
