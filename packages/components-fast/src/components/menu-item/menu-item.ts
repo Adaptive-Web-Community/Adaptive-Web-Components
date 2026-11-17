@@ -76,6 +76,13 @@ export class MenuItem extends FASTElement implements MenuItemElement {
         this.submenu = submenu instanceof HTMLElement ? submenu : null;
     }
 
+    /**
+     * {@inheritDoc @adaptive-web/components-foundation#MenuItemElement.expanded}
+     */
+    public get expanded(): boolean {
+        return this.controller.expanded;
+    }
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.controller.connect();

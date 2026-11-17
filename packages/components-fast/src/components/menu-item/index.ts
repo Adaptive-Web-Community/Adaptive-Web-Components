@@ -7,4 +7,5 @@ export {
 export {
     styleRules as menuItemStyleRules,
 } from "./menu-item.styles.rules.js";
-export { template as menuItemTemplate, MenuItemAnatomy, MenuItemConditions, MenuItemParts, MenuItemStatics } from "./menu-item.template.js";
+export { MenuItemParts, MenuItemSlots } from "@adaptive-web/components-foundation";
+export { template as menuItemTemplate, MenuItemAnatomy, MenuItemStatics } from "./menu-item.template.js";

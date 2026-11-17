@@ -1,6 +1,7 @@
 import "../utilities/dom.js";
 import { SpacePressController } from "../utilities/space-press.controller.js";
-import { type MenuItemElement, MenuItemType } from "./menu-item.js";
+import type { MenuItemElement } from "./menu-item.js";
+import { MenuItemType } from "./menu-item.generated.js";
 
 /**
  * What a {@link MenuItemController} uses of the element's `ElementInternals`.
@@ -99,7 +100,10 @@ export class MenuItemController {
         this.stateChanged();
     }
 
-    private get expanded(): boolean {
+    /**
+     * Whether its submenu popover is open.
+     */
+    public get expanded(): boolean {
         return this.submenu?.matches(":popover-open") ?? false;
     }
 

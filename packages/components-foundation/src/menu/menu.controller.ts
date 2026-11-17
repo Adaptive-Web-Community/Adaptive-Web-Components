@@ -1,4 +1,5 @@
-import { type MenuItemElement, type MenuItemStartColumns, MenuItemType } from "../menu-item/menu-item.js";
+import type { MenuItemElement, MenuItemStartColumns } from "../menu-item/menu-item.js";
+import { MenuItemType } from "../menu-item/menu-item.generated.js";
 import { RovingFocusController } from "../utilities/roving-focus.controller.js";
 import type { MenuElement } from "./menu.js";
 
