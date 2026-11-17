@@ -122,7 +122,7 @@ describe("generateTypeScriptContractSource", () => {
         });
 
         expect(source).to.include("/**\n * A field the user types text in.\n *\n * @public\n */\nexport interface TextInputContract");
-        expect(source).to.include("Semantic part ids of Text Input");
+        expect(source).to.include("Part names of Text Input");
         expect(source).to.include("Slot names of Text Input.");
         expect(source).to.not.include("Element");
     });
