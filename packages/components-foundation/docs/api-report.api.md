@@ -5326,12 +5326,76 @@ export const tooltipWebBinding: {
 export function treeItemAria(item: TreeItemElement): DefaultAria;
 
 // @public
-export interface TreeItemElement extends HTMLElement {
-    disabled: boolean;
-    expanded: boolean;
+export const treeItemDocumentation: {
+    readonly id: "treeItem";
+    readonly definition: "A **Tree Item** is one node in a tree (`role=\"treeitem\"`), which can have child items in a collapsible group.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The row is the `control` part; child items live in the `items` group.";
+        readonly parts: {
+            readonly control: {
+                readonly description: "The row: expand button, optional `start` and `end`, and the label.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly expandCollapseButton: {
+                        readonly description: "Expands or collapses an item that has children; hidden when it has none.";
+                    };
+                    readonly content: {
+                        readonly description: "The default slot label.";
+                    };
+                };
+            };
+            readonly items: {
+                readonly description: "The child items (`role=\"group\"`), hidden while collapsed.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "expanded";
+            readonly kind: "boolean";
+            readonly description: "Whether its child items are shown.";
+        }, {
+            readonly id: "selected";
+            readonly kind: "boolean";
+            readonly description: "Whether it is selected.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled: it stays focusable but can't be selected or toggled.";
+        }, {
+            readonly id: "nested";
+            readonly kind: "boolean";
+            readonly description: "Whether its tree has items with children, set by the tree so rows align.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The item label.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }, {
+            readonly id: "item";
+            readonly description: "Child tree items.";
+        }, {
+            readonly id: "expandCollapseIcon";
+            readonly description: "Icon in the expand/collapse button.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "TreeItemContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface TreeItemElement extends HTMLElement, TreeItemContract {
     readonly items: readonly TreeItemElement[];
-    nested: boolean;
-    selected: boolean;
 }
 
 // @public
@@ -5343,6 +5407,53 @@ export const TreeItemParts: {
 };
 
 // @public
+export const TreeItemSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+    readonly item: "item";
+    readonly expandCollapseIcon: "expandCollapseIcon";
+};
+
+// @public
+export const treeItemWebBinding: {
+    conditionSelectors: {
+        expanded: string;
+        selected: string;
+        disabled: string;
+        nested: string;
+    };
+    partSelectors: {
+        control: string;
+        expandCollapseButton: string;
+        content: string;
+        items: string;
+    };
+    interactivity: InteractivityDefinition;
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "The row is the `control` part; child items live in the `items` group.";
+    readonly parts: {
+    readonly control: {
+    readonly description: "The row: expand button, optional `start` and `end`, and the label.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly expandCollapseButton: {
+    readonly description: "Expands or collapses an item that has children; hidden when it has none.";
+    };
+    readonly content: {
+    readonly description: "The default slot label.";
+    };
+    };
+    };
+    readonly items: {
+    readonly description: "The child items (`role=\"group\"`), hidden while collapsed.";
+    };
+    };
+    }>>;
+};
+
+// @public
 export class TreeViewController {
     constructor(host: TreeViewElement, internals: TreeViewInternals, options: TreeViewOptions);
     connect(): void;
@@ -5351,7 +5462,31 @@ export class TreeViewController {
 }
 
 // @public
-export type TreeViewElement = HTMLElement;
+export const treeViewDocumentation: {
+    readonly id: "treeView";
+    readonly definition: "A **Tree View** is a hierarchy of tree items (`role=\"tree\"`): one item is selected, and items expand and collapse.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the tree; items are in the default slot.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Tree items.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "TreeViewContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface TreeViewElement extends HTMLElement, TreeViewContract {
+}
 
 // @public
 export type TreeViewInternals = Pick<ElementInternals, "role">;
@@ -5359,6 +5494,13 @@ export type TreeViewInternals = Pick<ElementInternals, "role">;
 // @public
 export type TreeViewOptions = {
     isItem: (element: Element) => element is TreeItemElement;
+};
+
+// @public
+export const treeViewWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
 };
 
 // @public

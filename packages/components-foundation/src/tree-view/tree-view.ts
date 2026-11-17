@@ -1,3 +1,5 @@
+import type { TreeViewContract } from "./tree-view.generated.js";
+
 /**
  * A tree view (`role="tree"`) of tree items, which can have items of their own: a hierarchy that the user expands and collapses, and of
  * which one item is selected. Implements the {@link https://www.w3.org/WAI/ARIA/apg/patterns/treeview/ | ARIA tree view pattern} with
@@ -13,4 +15,4 @@
  *
  * @public
  */
-export type TreeViewElement = HTMLElement;
+export interface TreeViewElement extends HTMLElement, TreeViewContract {}
