@@ -50,7 +50,7 @@ export const AccordionItemParts: {
 };
 
 // @public
-export interface AnchorElement extends HTMLElement, ContentLabelledElement {
+export interface AnchorContract extends ContentLabelledContract {
     download: string | null;
     href: string | null;
     hreflang: string | null;
@@ -62,9 +62,138 @@ export interface AnchorElement extends HTMLElement, ContentLabelledElement {
 }
 
 // @public
+export const anchorDocumentation: {
+    readonly id: "anchor";
+    readonly definition: "An **Anchor** is a link. Unlike most controls, it wraps a native `<a>` (`control` part), since browser link behavior can't be replicated on the host alone.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The native link is the `control` part; default slot content is the label inside it.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly control: {
+                readonly description: "The native `<a>`; receives focus and link styling.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+            };
+            readonly content: {
+                readonly description: "The default slot label between optional `start` and `end` slots.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "contentLabelled";
+            readonly definition: "An element labelled by its content: one whose native element is named by its content (a `<button>`, an `<a>`).";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label, the content of its default slot, is hidden, as for a control that shows only an icon. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "default";
+                    readonly description: "The content of the element, which is its label and names it.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "download";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "Whether, and with what name, to download the URL instead of navigating.";
+        }, {
+            readonly id: "href";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The URL. Without it, the element is a placeholder, not a link.";
+        }, {
+            readonly id: "hreflang";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The language of the linked resource.";
+        }, {
+            readonly id: "ping";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The URLs to notify when the link is followed.";
+        }, {
+            readonly id: "referrerPolicy";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The referrer sent with the request.";
+        }, {
+            readonly id: "rel";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The relationship of the linked resource.";
+        }, {
+            readonly id: "target";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "Where to show the linked resource.";
+        }, {
+            readonly id: "type";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The media type of the linked resource.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }];
+    };
+};
+
+// @public
+export interface AnchorElement extends HTMLElement, AnchorContract {
+}
+
+// @public
 export const AnchorParts: {
     readonly control: "control";
     readonly content: "content";
+};
+
+// @public
+export const AnchorSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const anchorWebBinding: {
+    conditionSelectors: {
+        hideLabel: string;
+    };
+    partSelectors: {
+        control: string;
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "The native link is the `control` part; default slot content is the label inside it.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`; receives focus and link styling.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The default slot label between optional `start` and `end` slots.";
+    };
+    };
+    }>>;
 };
 
 // @public
@@ -78,8 +207,48 @@ export class AriaForwardingController {
 export function avatarAria(avatar: AvatarElement): DefaultAria;
 
 // @public
-export interface AvatarElement extends HTMLElement {
+export interface AvatarContract {
     name: string | null;
+}
+
+// @public
+export const avatarDocumentation: {
+    readonly id: "avatar";
+    readonly definition: "An **Avatar** shows the picture, initials, or icon of a person or entity (`role=\"img\"`), named by `name` or author ARIA.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The `backplate` part contains media and default slot text.";
+        readonly parts: {
+            readonly backplate: {
+                readonly description: "The box of the media and text.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The accessible name for whom the avatar represents. An author `aria-label` overrides it.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "media";
+            readonly description: "A picture of the person or entity.";
+        }, {
+            readonly id: "default";
+            readonly description: "Text such as initials when there is no picture.";
+        }, {
+            readonly id: "badge";
+            readonly description: "A status badge on the avatar.";
+        }];
+    };
+};
+
+// @public
+export interface AvatarElement extends HTMLElement, AvatarContract {
 }
 
 // @public
@@ -88,12 +257,117 @@ export const AvatarParts: {
 };
 
 // @public
+export const AvatarSlots: {
+    readonly media: "media";
+    readonly default: "";
+    readonly badge: "badge";
+};
+
+// @public
+export const avatarWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {
+        backplate: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export interface BadgeContract {
+}
+
+// @public
+export const badgeDocumentation: {
+    readonly id: "badge";
+    readonly definition: "A **Badge** is a short label, such as a count or status, with optional `start` and `end` content.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the badge; the default slot is the main label in the `content` part.";
+        readonly parts: {
+            readonly content: {
+                readonly description: "The default slot label between optional `start` and `end` slots.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The badge text or icon.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }];
+    };
+};
+
+// @public
+export type BadgeElement = HTMLElement;
+
+// @public
 export const BadgeParts: {
     readonly content: "content";
 };
 
 // @public
+export const BadgeSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const badgeWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
 export function breadcrumbAria(): DefaultAria;
+
+// @public
+export interface BreadcrumbContract {
+}
+
+// @public
+export const breadcrumbDocumentation: {
+    readonly id: "breadcrumb";
+    readonly definition: "A **Breadcrumb** is a navigation landmark (`role=\"navigation\"`) with the path to the current page, which is the last item.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The `list` part wraps the default slot items (`role=\"list\"`).";
+        readonly parts: {
+            readonly list: {
+                readonly description: "The list of breadcrumb items.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Breadcrumb items.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the list.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the list.";
+        }];
+    };
+};
 
 // @public
 export type BreadcrumbElement = HTMLElement;
@@ -102,20 +376,208 @@ export type BreadcrumbElement = HTMLElement;
 export function breadcrumbItemAria(): DefaultAria;
 
 // @public
-export interface BreadcrumbItemElement extends AnchorElement {
+export interface BreadcrumbItemContract extends AnchorContract {
     current: boolean;
 }
 
 // @public
+export const breadcrumbItemDocumentation: {
+    readonly id: "breadcrumbItem";
+    readonly definition: "A **Breadcrumb Item** is a page on the path (`role=\"listitem\"`): a link and a separator, with `aria-current=\"page\"` on the last item.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Like an anchor, with a `separator` part after the link.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly control: {
+                readonly description: "The native `<a>`.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+            };
+            readonly content: {
+                readonly description: "The link label between optional `start` and `end` slots.";
+            };
+            readonly separator: {
+                readonly description: "The separator after the link, hidden for the current item.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "anchor";
+            readonly definition: "An **Anchor** is a link. Unlike most controls, it wraps a native `<a>` (`control` part), since browser link behavior can't be replicated on the host alone.";
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-17";
+            };
+            readonly structure: {
+                readonly description: "The native link is the `control` part; default slot content is the label inside it.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly control: {
+                        readonly description: "The native `<a>`; receives focus and link styling.";
+                        readonly interactive: true;
+                        readonly indicatesFocus: true;
+                    };
+                    readonly content: {
+                        readonly description: "The default slot label between optional `start` and `end` slots.";
+                    };
+                };
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "contentLabelled";
+                    readonly definition: "An element labelled by its content: one whose native element is named by its content (a `<button>`, an `<a>`).";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label, the content of its default slot, is hidden, as for a control that shows only an icon. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "default";
+                            readonly description: "The content of the element, which is its label and names it.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "download";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "Whether, and with what name, to download the URL instead of navigating.";
+                }, {
+                    readonly id: "href";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The URL. Without it, the element is a placeholder, not a link.";
+                }, {
+                    readonly id: "hreflang";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The language of the linked resource.";
+                }, {
+                    readonly id: "ping";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The URLs to notify when the link is followed.";
+                }, {
+                    readonly id: "referrerPolicy";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The referrer sent with the request.";
+                }, {
+                    readonly id: "rel";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The relationship of the linked resource.";
+                }, {
+                    readonly id: "target";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "Where to show the linked resource.";
+                }, {
+                    readonly id: "type";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The media type of the linked resource.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "start";
+                    readonly description: "Optional content before the label.";
+                }, {
+                    readonly id: "end";
+                    readonly description: "Optional content after the label.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "current";
+            readonly kind: "boolean";
+            readonly description: "Whether it is the current page: the last item in its breadcrumb.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "separator";
+            readonly description: "Replaces the default separator after the link.";
+        }];
+    };
+};
+
+// @public
+export interface BreadcrumbItemElement extends AnchorElement, BreadcrumbItemContract {
+}
+
+// @public
 export const BreadcrumbItemParts: {
-    readonly separator: "separator";
     readonly control: "control";
     readonly content: "content";
+    readonly separator: "separator";
+};
+
+// @public
+export const BreadcrumbItemSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+    readonly separator: "separator";
+};
+
+// @public
+export const breadcrumbItemWebBinding: {
+    conditionSelectors: {
+        current: string;
+        hideLabel: string;
+    };
+    partSelectors: {
+        separator: string;
+        control: string;
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "Like an anchor, with a `separator` part after the link.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The link label between optional `start` and `end` slots.";
+    };
+    readonly separator: {
+    readonly description: "The separator after the link, hidden for the current item.";
+    };
+    };
+    }>>;
 };
 
 // @public
 export const BreadcrumbParts: {
     readonly list: "list";
+};
+
+// @public
+export const BreadcrumbSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const breadcrumbWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {
+        list: string;
+    };
+    interactivity: InteractivityDefinition;
 };
 
 // @public
@@ -2853,10 +3315,62 @@ export function setBreadcrumbItems(items: readonly BreadcrumbItemElement[]): voi
 export function skeletonAria(): DefaultAria;
 
 // @public
-export interface SkeletonElement extends HTMLElement {
+export interface SkeletonContract {
     pattern: string | null;
     shape: SkeletonShape;
     shimmer: boolean;
+}
+
+// @public
+export const skeletonDocumentation: {
+    readonly id: "skeleton";
+    readonly definition: "A **Skeleton** is the shape of content that is loading, in its place. It is hidden from assistive technology (`aria-hidden`).";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Optional `shimmer` and `pattern` parts render from contract flags.";
+        readonly parts: {
+            readonly shimmer: {
+                readonly description: "The moving highlight when `shimmer` is set.";
+            };
+            readonly pattern: {
+                readonly description: "An image of the content shape when `pattern` is set.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "shape";
+            readonly kind: "enum";
+            readonly description: "The skeleton shape. The default is `rect`.";
+            readonly enumValues: readonly [{
+                readonly id: "rect";
+                readonly description: "A rectangle.";
+            }, {
+                readonly id: "circle";
+                readonly description: "A circle.";
+            }];
+        }, {
+            readonly id: "shimmer";
+            readonly kind: "boolean";
+            readonly description: "Whether a highlight moves across the skeleton.";
+        }, {
+            readonly id: "pattern";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The URL of an image of the content's shape.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Optional custom shape content such as SVG.";
+        }];
+    };
+};
+
+// @public
+export interface SkeletonElement extends HTMLElement, SkeletonContract {
 }
 
 // @public
@@ -2871,8 +3385,42 @@ export const SkeletonShape: {
     readonly circle: "circle";
 };
 
+// @public (undocumented)
+export type SkeletonShape = (typeof SkeletonShape)[keyof typeof SkeletonShape];
+
 // @public
-export type SkeletonShape = ValuesOf<typeof SkeletonShape>;
+export const SkeletonSlots: {
+    readonly default: "";
+};
+
+// @public
+export const skeletonWebBinding: {
+    conditionSelectors: {
+        shape: {
+            rect: string;
+            circle: string;
+        };
+        shimmer: string;
+    };
+    partSelectors: {
+        shimmer: string;
+        pattern: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export interface SliderContract extends LabelledContract {
+    disabled: boolean;
+    max: number;
+    min: number;
+    name: string | null;
+    // Warning: (ae-forgotten-export) The symbol "SliderOrientation" needs to be exported by the entry point index.d.ts
+    orientation: SliderOrientation;
+    readOnly: boolean;
+    step: number;
+    value: string;
+}
 
 // @public
 export class SliderController {
@@ -2891,18 +3439,122 @@ export class SliderController {
 }
 
 // @public
-export interface SliderElement extends FormControlElement, LabelledElement {
+export const sliderDocumentation: {
+    readonly id: "slider";
+    readonly definition: "A **Slider** is a value in a range (`role=\"slider\"`), which the user changes with the arrows or by dragging the thumb, as a native `<input type=\"range\">`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the slider and form control; the `positioningRegion` part holds the track, slider labels, and thumb.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the slider.";
+            };
+            readonly positioningRegion: {
+                readonly description: "The region of the track, thumb, and labels, with `--slider-position` from the value.";
+            };
+            readonly track: {
+                readonly description: "The track.";
+            };
+            readonly trackStart: {
+                readonly description: "The track from its start to the thumb.";
+            };
+            readonly thumbContainer: {
+                readonly description: "The container of the thumb at the value.";
+            };
+            readonly thumb: {
+                readonly description: "The thumb.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its value in the form data.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+        }, {
+            readonly id: "min";
+            readonly kind: "number";
+            readonly description: "The lowest value. The default is 0.";
+        }, {
+            readonly id: "max";
+            readonly kind: "number";
+            readonly description: "The highest value. The default is 100.";
+        }, {
+            readonly id: "step";
+            readonly kind: "number";
+            readonly description: "The step between values, from `min`. The default is 1.";
+        }, {
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction of the track.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "The track runs horizontally.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "The track runs vertically.";
+            }];
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: it takes focus, and the user can't change the value.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "track";
+            readonly description: "Replaces the default track.";
+        }, {
+            readonly id: "track-start";
+            readonly description: "Replaces the default filled portion of the track.";
+        }, {
+            readonly id: "thumb";
+            readonly description: "Replaces the default thumb.";
+        }, {
+            readonly id: "default";
+            readonly description: "Slider labels along the track.";
+        }];
+    };
+};
+
+// @public
+export interface SliderElement extends FormControlElement, SliderContract {
     defaultValue: string | null;
-    disabled: boolean;
-    max: number;
-    min: number;
-    name: string | null;
-    orientation: Orientation;
-    readOnly: boolean;
-    step: number;
     stepDown(count?: number): void;
     stepUp(count?: number): void;
-    value: string;
     readonly valueAsNumber: number;
     valueTextFormatter: ((value: string) => string) | null;
 }
@@ -2911,11 +3563,67 @@ export interface SliderElement extends FormControlElement, LabelledElement {
 export type SliderInternals = Pick<ElementInternals, "role" | "ariaLabel" | "ariaLabelledByElements" | "ariaValueNow" | "ariaValueMin" | "ariaValueMax" | "ariaValueText" | "ariaOrientation" | "ariaReadOnly" | "ariaDisabled" | "states" | "setFormValue">;
 
 // @public
-export interface SliderLabelElement extends HTMLElement {
+export interface SliderLabelContract {
     hideMark: boolean;
+    // Warning: (ae-forgotten-export) The symbol "SliderLabelOrientation" needs to be exported by the entry point index.d.ts
+    orientation: SliderLabelOrientation;
+    position: number;
+}
+
+// @public
+export const sliderLabelDocumentation: {
+    readonly id: "sliderLabel";
+    readonly definition: "A **Slider Label** marks a value along a slider track, with an optional mark. Its slider gives where it is and its orientation.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The `container` part is placed with `--slider-label-position` along the track.";
+        readonly parts: {
+            readonly container: {
+                readonly description: "Holds the mark and content, positioned along the track.";
+            };
+            readonly mark: {
+                readonly description: "The mark on the track, hidden when `hideMark` is set.";
+            };
+            readonly content: {
+                readonly description: "The default slot label text.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "position";
+            readonly kind: "number";
+            readonly description: "The value along the slider range that this label describes.";
+        }, {
+            readonly id: "hideMark";
+            readonly kind: "boolean";
+            readonly description: "Whether the mark on the track is hidden.";
+        }, {
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction of its slider's track, set by the slider.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "Labels along a horizontal track.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "Labels along a vertical track.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The label text.";
+        }];
+    };
+};
+
+// @public
+export interface SliderLabelElement extends HTMLElement, SliderLabelContract {
     orientation: Orientation;
     percent: number;
-    position: number;
 }
 
 // @public
@@ -2923,6 +3631,28 @@ export const SliderLabelParts: {
     readonly container: "container";
     readonly mark: "mark";
     readonly content: "content";
+};
+
+// @public
+export const SliderLabelSlots: {
+    readonly default: "";
+};
+
+// @public
+export const sliderLabelWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+        hideMark: string;
+    };
+    partSelectors: {
+        container: string;
+        mark: string;
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
 };
 
 // @public
@@ -2942,6 +3672,42 @@ export const SliderParts: {
 
 // @public
 export function sliderPercent(value: number, min: number, max: number): number;
+
+// @public
+export const SliderSlots: {
+    readonly label: "label";
+    readonly track: "track";
+    readonly trackStart: "track-start";
+    readonly thumb: "thumb";
+    readonly default: "";
+};
+
+// @public
+export const sliderWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+        readOnly: string;
+        disabled: string;
+        hideLabel: string;
+    };
+    partSelectors: {
+        label: string;
+        positioningRegion: string;
+        track: string;
+        trackStart: string;
+        thumbContainer: string;
+        thumb: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<any>;
+};
 
 // @public
 export class SpacePressController {

@@ -11,14 +11,19 @@ import { AccordionItemParts } from '@adaptive-web/components-foundation';
 import { AnatomyTreatments } from '@adaptive-web/adaptive-ui';
 import { AnchorElement } from '@adaptive-web/components-foundation';
 import { AnchorParts } from '@adaptive-web/components-foundation';
+import { AnchorSlots } from '@adaptive-web/components-foundation';
 import { AvatarElement } from '@adaptive-web/components-foundation';
 import { AvatarParts } from '@adaptive-web/components-foundation';
+import { AvatarSlots } from '@adaptive-web/components-foundation';
 import { BadgeParts } from '@adaptive-web/components-foundation';
+import { BadgeSlots } from '@adaptive-web/components-foundation';
 import { BindingPartSelectorsFor } from '@adaptive-web/adaptive-ui';
 import { BreadcrumbElement } from '@adaptive-web/components-foundation';
 import { BreadcrumbItemElement } from '@adaptive-web/components-foundation';
 import { BreadcrumbItemParts } from '@adaptive-web/components-foundation';
+import { BreadcrumbItemSlots } from '@adaptive-web/components-foundation';
 import { BreadcrumbParts } from '@adaptive-web/components-foundation';
+import { BreadcrumbSlots } from '@adaptive-web/components-foundation';
 import { ButtonElement } from '@adaptive-web/components-foundation';
 import { ButtonType } from '@adaptive-web/components-foundation';
 import { CalendarElement } from '@adaptive-web/components-foundation';
@@ -31,6 +36,7 @@ import { CheckboxElement } from '@adaptive-web/components-foundation';
 import { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
+import { CursorDefinition } from '@adaptive-web/adaptive-ui';
 import { DataGridCellElement } from '@adaptive-web/components-foundation';
 import { DataGridCellType } from '@adaptive-web/components-foundation';
 import { DataGridElement } from '@adaptive-web/components-foundation';
@@ -46,9 +52,11 @@ import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
+import { FocusDefinition } from '@adaptive-web/adaptive-ui';
 import type { FormControlElement } from '@adaptive-web/components-foundation';
 import { HeadingLevel } from '@adaptive-web/components-foundation';
 import { HTMLDirective } from '@microsoft/fast-element';
+import { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
 import { Library } from 'design-token-library';
 import { ListboxElement } from '@adaptive-web/components-foundation';
 import { ListboxOptionElement } from '@adaptive-web/components-foundation';
@@ -83,6 +91,7 @@ import { SliderElement } from '@adaptive-web/components-foundation';
 import { SliderLabelElement } from '@adaptive-web/components-foundation';
 import { SliderLabelParts } from '@adaptive-web/components-foundation';
 import { SliderParts } from '@adaptive-web/components-foundation';
+import { SliderSlots } from '@adaptive-web/components-foundation';
 import { StyleRules } from '@adaptive-web/adaptive-ui';
 import { SwitchController } from '@adaptive-web/components-foundation';
 import { SwitchElement } from '@adaptive-web/components-foundation';
@@ -218,15 +227,50 @@ export class Anchor extends FASTElement implements AnchorElement {
 export const anchorAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const AnchorAnatomy: ComponentAnatomy<typeof AnchorConditions, typeof AnchorParts>;
-
-// @public (undocumented)
-export const AnchorConditions: {
-    hideLabel: string;
-    noHref: string;
+export const AnchorAnatomy: {
+    conditions: {
+        noHref: string;
+        hideLabel: string;
+    };
+    name?: string;
+    context?: string;
+    parts: BindingPartSelectorsFor<    {
+    readonly description: "The native link is the `control` part; default slot content is the label inside it.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`; receives focus and link styling.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The default slot label between optional `start` and `end` slots.";
+    };
+    };
+    }>;
+    interactivity?: InteractivityDefinition;
+    focus?: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "The native link is the `control` part; default slot content is the label inside it.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`; receives focus and link styling.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The default slot label between optional `start` and `end` slots.";
+    };
+    };
+    }>> | undefined;
+    cursor?: CursorDefinition | false;
 };
 
 export { AnchorParts }
+
+export { AnchorSlots }
 
 // @public
 export const anchorStyleRules: StyleRules;
@@ -248,12 +292,13 @@ export class Avatar extends FASTElement implements AvatarElement {
 export const avatarAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const AvatarAnatomy: ComponentAnatomy<typeof AvatarConditions, typeof AvatarParts>;
-
-// @public (undocumented)
-export const AvatarConditions: {};
+export const AvatarAnatomy: ComponentAnatomy<    {}, {
+backplate: string;
+}>;
 
 export { AvatarParts }
+
+export { AvatarSlots }
 
 // @public
 export const avatarStyleRules: StyleRules;
@@ -272,12 +317,13 @@ export class Badge extends FASTElement {
 export const badgeAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const BadgeAnatomy: ComponentAnatomy<typeof BadgeConditions, typeof BadgeParts>;
-
-// @public (undocumented)
-export const BadgeConditions: {};
+export const BadgeAnatomy: ComponentAnatomy<    {}, {
+content: string;
+}>;
 
 export { BadgeParts }
+
+export { BadgeSlots }
 
 // @public
 export const badgeStyleRules: StyleRules;
@@ -408,10 +454,9 @@ export class Breadcrumb extends FASTElement implements BreadcrumbElement {
 export const breadcrumbAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, typeof BreadcrumbParts>;
-
-// @public (undocumented)
-export const BreadcrumbConditions: {};
+export const BreadcrumbAnatomy: ComponentAnatomy<    {}, {
+list: string;
+}>;
 
 // @public
 export class BreadcrumbItem extends Anchor implements BreadcrumbItemElement {
@@ -423,15 +468,57 @@ export class BreadcrumbItem extends Anchor implements BreadcrumbItemElement {
 export const breadcrumbItemAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const BreadcrumbItemAnatomy: ComponentAnatomy<typeof BreadcrumbItemConditions, typeof BreadcrumbItemParts>;
-
-// @public (undocumented)
-export const BreadcrumbItemConditions: {
-    noHref: string;
-    current: string;
+export const BreadcrumbItemAnatomy: {
+    conditions: {
+        noHref: string;
+        current: string;
+        hideLabel: string;
+    };
+    name?: string;
+    context?: string;
+    parts: BindingPartSelectorsFor<    {
+    readonly description: "Like an anchor, with a `separator` part after the link.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The link label between optional `start` and `end` slots.";
+    };
+    readonly separator: {
+    readonly description: "The separator after the link, hidden for the current item.";
+    };
+    };
+    }>;
+    interactivity?: InteractivityDefinition;
+    focus?: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "Like an anchor, with a `separator` part after the link.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly control: {
+    readonly description: "The native `<a>`.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    readonly content: {
+    readonly description: "The link label between optional `start` and `end` slots.";
+    };
+    readonly separator: {
+    readonly description: "The separator after the link, hidden for the current item.";
+    };
+    };
+    }>> | undefined;
+    cursor?: CursorDefinition | false;
 };
 
 export { BreadcrumbItemParts }
+
+export { BreadcrumbItemSlots }
 
 // @public
 export const BreadcrumbItemStatics: {
@@ -451,6 +538,8 @@ export const breadcrumbItemTemplate: (ds: DesignSystem) => ElementViewTemplate<B
 export const breadcrumbItemTemplateStyles: ElementStyles;
 
 export { BreadcrumbParts }
+
+export { BreadcrumbSlots }
 
 // @public
 export const breadcrumbStyleRules: StyleRules;
@@ -1838,15 +1927,16 @@ export class Skeleton extends FASTElement implements SkeletonElement {
 export const skeletonAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SkeletonAnatomy: ComponentAnatomy<typeof SkeletonConditions, typeof SkeletonParts>;
-
-// @public (undocumented)
-export const SkeletonConditions: {
-    shape: {
-        rectangle: string;
-        circle: string;
-    };
+export const SkeletonAnatomy: ComponentAnatomy<    {
+shape: {
+rect: string;
+circle: string;
 };
+shimmer: string;
+}, {
+shimmer: string;
+pattern: string;
+}>;
 
 export { SkeletonParts }
 
@@ -1921,16 +2011,15 @@ export class Slider extends BaseFormControl implements SliderElement {
 export const sliderAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SliderAnatomy: ComponentAnatomy<typeof SliderConditions, typeof SliderParts>;
-
-// @public (undocumented)
-export const SliderConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
-    readOnly: string;
+export const SliderAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
 };
+readOnly: string;
+disabled: string;
+hideLabel: string;
+}, any>;
 
 // @public
 export class SliderLabel extends FASTElement implements SliderLabelElement {
@@ -1946,15 +2035,17 @@ export class SliderLabel extends FASTElement implements SliderLabelElement {
 export const sliderLabelAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SliderLabelAnatomy: ComponentAnatomy<typeof SliderLabelConditions, typeof SliderLabelParts>;
-
-// @public (undocumented)
-export const SliderLabelConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
+export const SliderLabelAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
 };
+hideMark: string;
+}, {
+container: string;
+mark: string;
+content: string;
+}>;
 
 export { SliderLabelParts }
 
@@ -1968,6 +2059,8 @@ export const sliderLabelTemplate: (ds: DesignSystem) => ElementViewTemplate<Slid
 export const sliderLabelTemplateStyles: ElementStyles;
 
 export { SliderParts }
+
+export { SliderSlots }
 
 // @public
 export const sliderStyleRules: StyleRules;

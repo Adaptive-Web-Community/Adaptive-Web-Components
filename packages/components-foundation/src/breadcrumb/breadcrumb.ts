@@ -2,16 +2,6 @@ import type { BreadcrumbItemElement } from "../breadcrumb-item/breadcrumb-item.j
 import type { DefaultAria } from "../utilities/aria.js";
 
 /**
- * The parts of a {@link BreadcrumbElement}.
- *
- * @public
- */
-export const BreadcrumbParts = {
-    /** The list of the items (`role="list"`). */
-    list: "list",
-} as const;
-
-/**
  * A breadcrumb: a navigation landmark (`role="navigation"`) with the list of the pages on the path to the current one, which is the last.
  * Implements the {@link https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/ | ARIA breadcrumb pattern}.
  *

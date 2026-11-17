@@ -1,25 +1,18 @@
 import { elements, type ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
-import { BreadcrumbParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import {
+    breadcrumbDocumentation,
+    BreadcrumbParts,
+    BreadcrumbSlots,
+    breadcrumbWebBinding,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Breadcrumb } from "./breadcrumb.js";
 
 /**
  * @public
  */
-export const BreadcrumbConditions = {
-};
-
-export { BreadcrumbParts };
-
-/**
- * @public
- */
-export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, typeof BreadcrumbParts> = {
-    interactivity: Interactivity.never,
-    conditions: BreadcrumbConditions,
-    parts: BreadcrumbParts,
-};
+export const BreadcrumbAnatomy = documentationToComponentAnatomy(breadcrumbDocumentation, breadcrumbWebBinding);
 
 /**
  * Default Breadcrumb template: the list of the items.
@@ -27,9 +20,9 @@ export const BreadcrumbAnatomy: ComponentAnatomy<typeof BreadcrumbConditions, ty
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Breadcrumb> =
     (ds: DesignSystem) => html<Breadcrumb>`
-        <slot name="start"></slot>
-        <div class="list" part="list" role="list">
+        <slot name=${(_) => BreadcrumbSlots.start}></slot>
+        <div class=${(_) => BreadcrumbParts.list} part=${(_) => BreadcrumbParts.list} role="list">
             <slot ${slotted({ property: "slottedElements", filter: elements() })}></slot>
         </div>
-        <slot name="end"></slot>
+        <slot name=${(_) => BreadcrumbSlots.end}></slot>
     `;
