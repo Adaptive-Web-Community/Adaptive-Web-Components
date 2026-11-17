@@ -31,6 +31,13 @@ export class Dialog extends FASTElement implements DialogElement {
     }
 
     /**
+     * {@inheritDoc @adaptive-web/components-foundation#DialogElement.modal}
+     */
+    public get modal(): boolean {
+        return this.internals.states.has("modal");
+    }
+
+    /**
      * {@inheritDoc @adaptive-web/components-foundation#DialogElement.returnValue}
      */
     public get returnValue(): string {

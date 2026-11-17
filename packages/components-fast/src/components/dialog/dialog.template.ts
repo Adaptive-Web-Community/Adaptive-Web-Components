@@ -1,26 +1,13 @@
 import { type ElementViewTemplate, html, ref } from "@microsoft/fast-element";
-import { DialogParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
+import { dialogDocumentation, DialogParts, dialogWebBinding } from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
 import type { Dialog } from "./dialog.js";
 
 /**
  * @public
  */
-export const DialogConditions = {
-    modal: ":state(modal)",
-};
-
-export { DialogParts };
-
-/**
- * @public
- */
-export const DialogAnatomy: ComponentAnatomy<typeof DialogConditions, typeof DialogParts> = {
-    interactivity: Interactivity.never,
-    conditions: DialogConditions,
-    parts: DialogParts,
-};
+export const DialogAnatomy = documentationToComponentAnatomy(dialogDocumentation, dialogWebBinding);
 
 /**
  * Default Dialog template: the native `<dialog>`, which has the role, the top layer, and the backdrop (`::backdrop` of the `control`
@@ -29,7 +16,7 @@ export const DialogAnatomy: ComponentAnatomy<typeof DialogConditions, typeof Dia
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<Dialog> =
     (ds: DesignSystem) => html<Dialog>`
-        <dialog class="control" part="control" ${ref("control")}>
+        <dialog class=${(_) => DialogParts.control} part=${(_) => DialogParts.control} ${ref("control")}>
             <slot></slot>
         </dialog>
     `;

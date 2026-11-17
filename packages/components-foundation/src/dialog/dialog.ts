@@ -1,4 +1,7 @@
 import type { ValuesOf } from "../utilities/typings.js";
+import type { DialogContract } from "./dialog.generated.js";
+
+export { DialogParts, DialogSlots } from "./dialog.generated.js";
 
 /**
  * What closes a {@link DialogElement} besides its own controls, as the native `closedby` attribute has it.
@@ -6,13 +9,8 @@ import type { ValuesOf } from "../utilities/typings.js";
  * @public
  */
 export const DialogClosedBy = {
-    /** A click outside it (on the backdrop), and a close request (Escape). */
     any: "any",
-
-    /** A close request (Escape). */
     closeRequest: "closerequest",
-
-    /** Nothing: only its own controls, or code. */
     none: "none",
 } as const;
 
@@ -22,16 +20,6 @@ export const DialogClosedBy = {
  * @public
  */
 export type DialogClosedBy = ValuesOf<typeof DialogClosedBy>;
-
-/**
- * The parts of a {@link DialogElement}.
- *
- * @public
- */
-export const DialogParts = {
-    /** The native `<dialog>`. */
-    control: "control",
-} as const;
 
 /**
  * A dialog. It wraps a native `<dialog>` (the `control` part), which has the role, the top layer and its backdrop, the inertness of the page
@@ -52,22 +40,14 @@ export const DialogParts = {
  *
  * @public
  */
-export interface DialogElement extends HTMLElement {
+export interface DialogElement extends HTMLElement, Omit<DialogContract, "closedBy" | "open"> {
     /**
      * Whether it is open.
      */
     readonly open: boolean;
 
     /**
-     * The value it closed with, as `close(returnValue)` gave it.
-     */
-    returnValue: string;
-
-    /**
      * What closes it besides its own controls.
-     *
-     * @remarks
-     * HTML attribute: `closedby`. The default is `closerequest`.
      */
     closedBy: DialogClosedBy;
 

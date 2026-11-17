@@ -1,4 +1,5 @@
 import type { ValuesOf } from "../utilities/typings.js";
+import type { TooltipContract } from "./tooltip.generated.js";
 
 /**
  * Where a {@link TooltipElement} is shown, next to its anchor, in the writing direction: `above` and `below` the anchor, `before` and
@@ -41,7 +42,17 @@ export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;
  *
  * @public
  */
-export interface TooltipElement extends HTMLElement {
+export interface TooltipElement extends HTMLElement, Omit<TooltipContract, "placement" | "open"> {
+    /**
+     * Whether the popover is shown.
+     */
+    readonly open: boolean;
+
+    /**
+     * Where it is shown, next to its anchor. The styles of the template place it.
+     */
+    placement: TooltipPlacement;
+
     /**
      * The element it describes.
      *
@@ -49,20 +60,4 @@ export interface TooltipElement extends HTMLElement {
      * HTML attribute: `anchor`, the element's id. Setting the property to an element sets it directly.
      */
     anchorElement: Element | null;
-
-    /**
-     * Where it is shown, next to its anchor. The styles of the template place it.
-     *
-     * @remarks
-     * HTML attribute: `placement`. The default is `above`.
-     */
-    placement: TooltipPlacement;
-
-    /**
-     * The milliseconds the pointer stays on the anchor before it is shown, and leaves before it is hidden. Focus shows and hides it at once.
-     *
-     * @remarks
-     * HTML attribute: `delay`. The default is 300.
-     */
-    delay: number;
 }

@@ -1386,11 +1386,63 @@ export class DialogController {
 }
 
 // @public
-export interface DialogElement extends HTMLElement {
+export const dialogDocumentation: {
+    readonly id: "dialog";
+    readonly definition: "A **Dialog** wraps a native `<dialog>` (`control` part) for modal and non-modal presentation, backdrop, focus, and Escape.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host wraps a native dialog in the shadow root; content is in the default slot.";
+        readonly parts: {
+            readonly control: {
+                readonly description: "The native `<dialog>`, with role, top layer, backdrop, and focus.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "open";
+            readonly kind: "boolean";
+            readonly description: "Whether it is open.";
+        }, {
+            readonly id: "modal";
+            readonly kind: "boolean";
+            readonly description: "Whether it is open as modal, with backdrop and inert page content.";
+        }, {
+            readonly id: "closedBy";
+            readonly kind: "enum";
+            readonly description: "What closes it besides its own controls, as the native `closedby` attribute has it.";
+            readonly enumValues: readonly [{
+                readonly id: "any";
+                readonly description: "A click outside (backdrop) and Escape.";
+            }, {
+                readonly id: "closeRequest";
+                readonly description: "Escape only.";
+            }, {
+                readonly id: "none";
+                readonly description: "Only its own controls or code.";
+            }];
+        }, {
+            readonly id: "returnValue";
+            readonly kind: "string";
+            readonly description: "The value it closed with, as `close(returnValue)` gave it.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Dialog content. An element with `autofocus` takes focus when it opens.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "DialogContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface DialogElement extends HTMLElement, Omit<DialogContract, "closedBy" | "open"> {
     close(returnValue?: string): void;
     closedBy: DialogClosedBy;
     readonly open: boolean;
-    returnValue: string;
     show(): void;
     showModal(): void;
 }
@@ -1403,6 +1455,28 @@ export type DialogInternals = {
 // @public
 export const DialogParts: {
     readonly control: "control";
+};
+
+// @public
+export const DialogSlots: {
+    readonly default: "";
+};
+
+// @public
+export const dialogWebBinding: {
+    conditionSelectors: {
+        modal: string;
+        open: string;
+        closedBy: {
+            any: string;
+            closeRequest: string;
+            none: string;
+        };
+    };
+    partSelectors: {
+        control: string;
+    };
+    interactivity: InteractivityDefinition;
 };
 
 // @public
@@ -5120,9 +5194,81 @@ export class TooltipController {
 }
 
 // @public
-export interface TooltipElement extends HTMLElement {
+export const tooltipDocumentation: {
+    readonly id: "tooltip";
+    readonly definition: "A **Tooltip** is a short description of its anchor (`role=\"tooltip\"`), shown as a manual popover in the top layer while the anchor is hovered or focused.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the popover; the default slot holds the description.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "open";
+            readonly kind: "boolean";
+            readonly description: "Whether the popover is shown.";
+        }, {
+            readonly id: "placement";
+            readonly kind: "enum";
+            readonly description: "Where it is shown next to its anchor.";
+            readonly enumValues: readonly [{
+                readonly id: "above";
+                readonly description: "Above the anchor.";
+            }, {
+                readonly id: "aboveStart";
+                readonly description: "Above the anchor, aligned to the start.";
+            }, {
+                readonly id: "aboveEnd";
+                readonly description: "Above the anchor, aligned to the end.";
+            }, {
+                readonly id: "below";
+                readonly description: "Below the anchor.";
+            }, {
+                readonly id: "belowStart";
+                readonly description: "Below the anchor, aligned to the start.";
+            }, {
+                readonly id: "belowEnd";
+                readonly description: "Below the anchor, aligned to the end.";
+            }, {
+                readonly id: "before";
+                readonly description: "Before the anchor in the writing direction.";
+            }, {
+                readonly id: "beforeTop";
+                readonly description: "Before the anchor, toward the block-start edge.";
+            }, {
+                readonly id: "beforeBottom";
+                readonly description: "Before the anchor, toward the block-end edge.";
+            }, {
+                readonly id: "after";
+                readonly description: "After the anchor in the writing direction.";
+            }, {
+                readonly id: "afterTop";
+                readonly description: "After the anchor, toward the block-start edge.";
+            }, {
+                readonly id: "afterBottom";
+                readonly description: "After the anchor, toward the block-end edge.";
+            }];
+        }, {
+            readonly id: "delay";
+            readonly kind: "number";
+            readonly description: "Milliseconds the pointer stays on the anchor before show, and leaves before hide. Focus shows and hides at once.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The tooltip text.";
+        }];
+    };
+};
+
+// Warning: (ae-forgotten-export) The symbol "TooltipContract" needs to be exported by the entry point index.d.ts
+//
+// @public
+export interface TooltipElement extends HTMLElement, Omit<TooltipContract, "placement" | "open"> {
     anchorElement: Element | null;
-    delay: number;
+    readonly open: boolean;
     placement: TooltipPlacement;
 }
 
@@ -5147,6 +5293,34 @@ export const TooltipPlacement: {
 
 // @public
 export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;
+
+// @public
+export const TooltipSlots: {
+    readonly default: "";
+};
+
+// @public
+export const tooltipWebBinding: {
+    conditionSelectors: {
+        open: string;
+        placement: {
+            above: string;
+            aboveStart: string;
+            aboveEnd: string;
+            below: string;
+            belowStart: string;
+            belowEnd: string;
+            before: string;
+            beforeTop: string;
+            beforeBottom: string;
+            after: string;
+            afterTop: string;
+            afterBottom: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
 
 // @public
 export function treeItemAria(item: TreeItemElement): DefaultAria;
