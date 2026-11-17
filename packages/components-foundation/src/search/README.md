@@ -3,7 +3,7 @@
 A field that the user types a search in. It is a text input, as the text field is (see `../text-field/README.md` for what they share and
 where it came from), around a native `<input type="search">` (the `searchbox` role), with a clear button.
 
-- Contract: `SearchElement`, `SearchParts` (`search.ts`), on `TextInputElement`.
+- Contract: `SearchElement` (`search.ts`); `SearchContract`, `SearchParts`, and `SearchSlots` are generated in `search.generated.ts` from `search.documentation.ts`, which includes the contract of `text-input`; the web selectors are in `search.web.binding.ts`. The ids of the parts are camelCase (`inputWrapper`, `clearButton`); the template's `part` names are `input-wrapper` and `clear-button`.
 - Behavior: `SearchController` (`search.controller.ts`), on `TextInputController`, with `clear()`.
 
 ## What was taken from where

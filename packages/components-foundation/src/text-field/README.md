@@ -4,8 +4,7 @@ A field of one line that the user types text in. It wraps a native `<input>` (th
 (selection, input methods, spelling, autofill) can't be done for a custom element, and the host is the form control, through
 `ElementInternals`.
 
-- Contract: `TextFieldElement`, `TextFieldType`, `TextFieldParts` (`text-field.ts`), on `TextInputElement` (`../text-input/text-input.ts`),
-  which the text area, the number field, and the search share.
+- Contract: `TextFieldElement` (`text-field.ts`); `TextFieldContract`, `TextFieldType`, and `TextFieldParts` are generated in `text-field.generated.ts` from `text-field.documentation.ts` (`npm run generate:contracts` scans all `*.documentation.ts` modules), on `TextInputElement` (`../text-input/text-input.ts`), which the text area, the number field, and the search share.
 - Behavior: `TextFieldController` (`text-field.controller.ts`), on `TextInputController` (`../text-input/text-input.controller.ts`).
 
 ## What was taken from where

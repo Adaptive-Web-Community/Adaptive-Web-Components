@@ -8,4 +8,4 @@ export {
 export {
     styleRules as textFieldStyleRules,
 } from "./text-field.styles.rules.js";
-export { template as textFieldTemplate, TextFieldAnatomy, TextFieldConditions, TextFieldParts } from "./text-field.template.js";
+export { template as textFieldTemplate, TextFieldAnatomy } from "./text-field.template.js";

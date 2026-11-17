@@ -1,27 +1,18 @@
 import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { TextFieldParts } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import {
+    textFieldDocumentation,
+    TextFieldParts,
+    TextFieldSlots,
+    textFieldWebBinding,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import type { TextField } from "./text-field.js";
 
 /**
  * @public
  */
-export const TextFieldConditions = {
-};
-
-export { TextFieldParts };
-
-/**
- * @public
- */
-export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, typeof TextFieldParts> = {
-    interactivity: controlInteractivity,
-    conditions: TextFieldConditions,
-    parts: TextFieldParts,
-    focus: Focus.partWithin("root", "control"),
-};
+export const TextFieldAnatomy = documentationToComponentAnatomy(textFieldDocumentation, textFieldWebBinding);
 
 /**
  * Default Text Field template: the label, and the native `<input>`, whose attributes the element's controller writes.
@@ -29,12 +20,12 @@ export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, type
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<TextField> =
     (ds: DesignSystem) => html<TextField>`
-        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <label class=${(_) => TextFieldParts.label} part=${(_) => TextFieldParts.label} for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name=${(_) => TextFieldSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </label>
-        <div class="root" part="root">
-            <slot name="start"></slot>
-            <input class="control" part="control" id="control" ${ref("control")} />
-            <slot name="end"></slot>
+        <div class=${(_) => TextFieldParts.root} part=${(_) => TextFieldParts.root}>
+            <slot name=${(_) => TextFieldSlots.start}></slot>
+            <input class=${(_) => TextFieldParts.control} part=${(_) => TextFieldParts.control} id="control" ${ref("control")} />
+            <slot name=${(_) => TextFieldSlots.end}></slot>
         </div>
     `;

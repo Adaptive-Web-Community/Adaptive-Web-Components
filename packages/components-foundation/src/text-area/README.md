@@ -3,7 +3,7 @@
 A field of several lines that the user types text in. It is a text input, as the text field is (see `../text-field/README.md` for what they
 share and where it came from), around a native `<textarea>`. Enter starts a line; it doesn't submit the form.
 
-- Contract: `TextAreaElement`, `TextAreaResize`, `TextAreaParts` (`text-area.ts`), on `TextInputElement`.
+- Contract: `TextAreaElement` (`text-area.ts`); `TextAreaContract`, `TextAreaResize`, `TextAreaParts`, and `TextAreaSlots` are generated in `text-area.generated.ts` from `text-area.documentation.ts`, which includes the contract of `text-input`; the web selectors are in `text-area.web.binding.ts`.
 - Behavior: `TextAreaController` (`text-area.controller.ts`), on `TextInputController`, without implicit submission.
 
 ## What was taken from where

@@ -4,7 +4,7 @@ A field that the user types a number in. It is a text input, as the text field i
 where it came from), around a native `<input type="number">`, which parses the number, steps it with the arrow keys, and validates its range
 and step. Its step buttons are for the pointer, not the tab order, since the arrow keys step.
 
-- Contract: `NumberFieldElement`, `NumberFieldParts` (`number-field.ts`), on `TextInputElement`.
+- Contract: `NumberFieldElement` (`number-field.ts`); `NumberFieldContract`, `NumberFieldParts`, and `NumberFieldSlots` are generated in `number-field.generated.ts` from `number-field.documentation.ts`, which includes the contract of `text-input`; the web selectors are in `number-field.web.binding.ts`. The ids of the parts are camelCase (`stepUp`); the template's `part` names are `step-up` and `step-down`.
 - Behavior: `NumberFieldController` (`number-field.controller.ts`), on `TextInputController`, with `stepUp()` and `stepDown()`.
 
 ## What was taken from where

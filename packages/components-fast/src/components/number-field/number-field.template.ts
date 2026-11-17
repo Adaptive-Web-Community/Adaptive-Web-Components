@@ -1,8 +1,13 @@
 import { elements, type ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { NumberFieldParts, type ValuesOf } from "@adaptive-web/components-foundation";
-import { ComponentAnatomy, Focus } from "@adaptive-web/adaptive-ui";
+import {
+    numberFieldDocumentation,
+    NumberFieldParts,
+    NumberFieldSlots,
+    numberFieldWebBinding,
+    type ValuesOf,
+} from "@adaptive-web/components-foundation";
+import { documentationToComponentAnatomy } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "../../design-system.js";
-import { controlInteractivity } from "../../utilities/interactivity.js";
 import { staticallyCompose } from "../../utilities/template-helpers.js";
 import type { NumberField } from "./number-field.js";
 
@@ -24,20 +29,7 @@ export type NumberFieldStatics = ValuesOf<typeof NumberFieldStatics>;
 /**
  * @public
  */
-export const NumberFieldConditions = {
-};
-
-export { NumberFieldParts };
-
-/**
- * @public
- */
-export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, typeof NumberFieldParts> = {
-    interactivity: controlInteractivity,
-    conditions: NumberFieldConditions,
-    parts: NumberFieldParts,
-    focus: Focus.partWithin("root", "control"),
-};
+export const NumberFieldAnatomy = documentationToComponentAnatomy(numberFieldDocumentation, numberFieldWebBinding);
 
 /**
  * Default Number Field template: the label, the native `<input type="number">`, whose attributes the element's controller writes, and the
@@ -46,20 +38,20 @@ export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, 
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<NumberField> =
     (ds: DesignSystem) => html<NumberField>`
-        <label class="label" part="label" for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
-            <slot name="label" ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
+        <label class=${(_) => NumberFieldParts.label} part=${(_) => NumberFieldParts.label} for="control" ?hidden="${x => !x.label && !x.labelElements.length}">
+            <slot name=${(_) => NumberFieldSlots.label} ${slotted({ property: "labelElements", filter: elements() })}>${x => x.label}</slot>
         </label>
-        <div class="root" part="root">
-            <slot name="start"></slot>
-            <input class="control" part="control" id="control" ${ref("control")} />
-            <div class="controls" part="controls" aria-hidden="true" ?hidden="${x => x.hideStep || x.readOnly}">
-                <div class="step-up" part="step-up" @click="${x => x.stepUp()}">
-                    <slot name="step-up-glyph">${staticallyCompose(ds.statics.get(NumberFieldStatics.stepUp))}</slot>
+        <div class=${(_) => NumberFieldParts.root} part=${(_) => NumberFieldParts.root}>
+            <slot name=${(_) => NumberFieldSlots.start}></slot>
+            <input class=${(_) => NumberFieldParts.control} part=${(_) => NumberFieldParts.control} id="control" ${ref("control")} />
+            <div class=${(_) => NumberFieldParts.controls} part=${(_) => NumberFieldParts.controls} aria-hidden="true" ?hidden="${x => x.hideStep || x.readOnly}">
+                <div class=${(_) => NumberFieldParts.stepUp} part=${(_) => NumberFieldParts.stepUp} @click="${x => x.stepUp()}">
+                    <slot name=${(_) => NumberFieldSlots.stepUpGlyph}>${staticallyCompose(ds.statics.get(NumberFieldStatics.stepUp))}</slot>
                 </div>
-                <div class="step-down" part="step-down" @click="${x => x.stepDown()}">
-                    <slot name="step-down-glyph">${staticallyCompose(ds.statics.get(NumberFieldStatics.stepDown))}</slot>
+                <div class=${(_) => NumberFieldParts.stepDown} part=${(_) => NumberFieldParts.stepDown} @click="${x => x.stepDown()}">
+                    <slot name=${(_) => NumberFieldSlots.stepDownGlyph}>${staticallyCompose(ds.statics.get(NumberFieldStatics.stepDown))}</slot>
                 </div>
             </div>
-            <slot name="end"></slot>
+            <slot name=${(_) => NumberFieldSlots.end}></slot>
         </div>
     `;
