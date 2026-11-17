@@ -9,6 +9,11 @@ import { FocusDefinition } from '@adaptive-web/adaptive-ui';
 import { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
 
 // @public
+export interface AccordionContract {
+    expandMode: AccordionExpandMode;
+}
+
+// @public
 export class AccordionController {
     constructor(host: AccordionElement);
     connect(): void;
@@ -19,8 +24,39 @@ export class AccordionController {
 }
 
 // @public
-export interface AccordionElement extends HTMLElement {
-    expandMode: AccordionExpandMode;
+export const accordionDocumentation: {
+    readonly id: "accordion";
+    readonly definition: "An **Accordion** is a set of expandable sections. Each item has a heading button and a collapsible panel.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host holds accordion items in the default slot.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "expandMode";
+            readonly kind: "enum";
+            readonly description: "Whether one item or several can be expanded at a time.";
+            readonly enumValues: readonly [{
+                readonly id: "single";
+                readonly description: "One item expanded; it can't be collapsed except by expanding another.";
+            }, {
+                readonly id: "multi";
+                readonly description: "Any number of items can be expanded.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Accordion items.";
+        }];
+    };
+};
+
+// @public
+export interface AccordionElement extends HTMLElement, AccordionContract {
 }
 
 // @public
@@ -29,15 +65,88 @@ export const AccordionExpandMode: {
     readonly multi: "multi";
 };
 
-// @public
-export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;
+// @public (undocumented)
+export type AccordionExpandMode = (typeof AccordionExpandMode)[keyof typeof AccordionExpandMode];
 
 // @public
-export interface AccordionItemElement extends HTMLElement {
+export interface AccordionItemContract {
     collapsible: boolean;
     disabled: boolean;
     expanded: boolean;
-    headingLevel: HeadingLevel;
+    headingLevel: number;
+}
+
+// @public
+export const accordionItemDocumentation: {
+    readonly id: "accordionItem";
+    readonly definition: "An **Accordion Item** is a heading with a button that expands and collapses a content panel.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The `heading` part contains the expand button, optional slots, and icon; `panel` holds the region.";
+        readonly parts: {
+            readonly heading: {
+                readonly description: "The heading row with the button, slots, and icon.";
+            };
+            readonly button: {
+                readonly description: "The native button that expands and collapses the panel.";
+                readonly interactive: true;
+            };
+            readonly headingContent: {
+                readonly description: "Content from the `heading` slot inside the button.";
+            };
+            readonly icon: {
+                readonly description: "Collapsed and expanded icons.";
+            };
+            readonly panel: {
+                readonly description: "The region controlled by the button, hidden when collapsed.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "headingLevel";
+            readonly kind: "number";
+            readonly description: "The level of the heading (`aria-level`). The default is 2.";
+        }, {
+            readonly id: "expanded";
+            readonly kind: "boolean";
+            readonly description: "Whether the panel is shown.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether the item can't be expanded or collapsed.";
+        }, {
+            readonly id: "collapsible";
+            readonly kind: "boolean";
+            readonly description: "Whether the user can collapse the item when it is expanded. The accordion may set this to `false` in single-expand mode.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "heading";
+            readonly description: "Label content inside the expand button.";
+        }, {
+            readonly id: "default";
+            readonly description: "Panel content.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content after the button in the heading row.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after `start` in the heading row.";
+        }, {
+            readonly id: "collapsed-icon";
+            readonly description: "Replaces the default collapsed icon.";
+        }, {
+            readonly id: "expanded-icon";
+            readonly description: "Replaces the default expanded icon.";
+        }];
+    };
+};
+
+// @public
+export interface AccordionItemElement extends HTMLElement, AccordionItemContract {
 }
 
 // @public
@@ -47,6 +156,50 @@ export const AccordionItemParts: {
     readonly headingContent: "heading-content";
     readonly icon: "icon";
     readonly panel: "panel";
+};
+
+// @public
+export const AccordionItemSlots: {
+    readonly heading: "heading";
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+    readonly collapsedIcon: "collapsed-icon";
+    readonly expandedIcon: "expanded-icon";
+};
+
+// @public
+export const accordionItemWebBinding: {
+    conditionSelectors: {
+        expanded: string;
+        disabled: string;
+        collapsible: string;
+    };
+    partSelectors: {
+        heading: string;
+        button: string;
+        headingContent: string;
+        icon: string;
+        panel: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export const AccordionSlots: {
+    readonly default: "";
+};
+
+// @public
+export const accordionWebBinding: {
+    conditionSelectors: {
+        expandMode: {
+            single: string;
+            multi: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
 };
 
 // @public
@@ -1256,9 +1409,63 @@ export const DialogParts: {
 export function dividerAria(divider: DividerElement): DefaultAria;
 
 // @public
-export interface DividerElement extends HTMLElement {
-    orientation: Orientation;
+export interface DividerContract {
+    // Warning: (ae-forgotten-export) The symbol "DividerOrientation" needs to be exported by the entry point index.d.ts
+    orientation: DividerOrientation;
 }
+
+// @public
+export const dividerDocumentation: {
+    readonly id: "divider";
+    readonly definition: "A **Divider** is a line that separates content (`role=\"separator\"`). Authors may set `role=\"presentation\"` for decoration only.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the separator; the default slot is optional content.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction of the line.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "A horizontal rule.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "A vertical rule.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Optional content in the divider.";
+        }];
+    };
+};
+
+// @public
+export interface DividerElement extends HTMLElement, DividerContract {
+}
+
+// @public
+export const DividerSlots: {
+    readonly default: "";
+};
+
+// @public
+export const dividerWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
 
 // @public
 export function findById(from: Element, id: string | null): HTMLElement | null;
@@ -1586,15 +1793,107 @@ export const listboxWebBinding: {
 };
 
 // @public
-export interface ListElement extends HTMLElement {
-    orientation: Orientation;
+export interface ListContract {
+    // Warning: (ae-forgotten-export) The symbol "ListOrientation" needs to be exported by the entry point index.d.ts
+    orientation: ListOrientation;
+}
+
+// @public
+export const listDocumentation: {
+    readonly id: "list";
+    readonly definition: "A **List** is a static group of items (`role=\"list\"`). Keyboard focus reaches items through their own controls, not arrow-key roving.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the list; items are in the default slot.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "Layout direction only; a list has no `aria-orientation`.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "Items in a row.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "Items in a column.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "List items.";
+        }];
+    };
+};
+
+// @public
+export interface ListElement extends HTMLElement, ListContract {
 }
 
 // @public
 export function listItemAria(): DefaultAria;
 
 // @public
-export type ListItemElement = HTMLElement;
+export interface ListItemContract {
+}
+
+// @public
+export const listItemDocumentation: {
+    readonly id: "listItem";
+    readonly definition: "A **List Item** is one entry in a list (`role=\"listitem\"`).";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the item; the default slot is its content.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Item content.";
+        }];
+    };
+};
+
+// @public
+export interface ListItemElement extends HTMLElement, ListItemContract {
+}
+
+// @public
+export const ListItemSlots: {
+    readonly default: "";
+};
+
+// @public
+export const listItemWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export const ListSlots: {
+    readonly default: "";
+};
+
+// @public
+export const listWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
 
 // @public
 export interface MenuContract {
@@ -3869,10 +4168,61 @@ export const switchWebBinding: {
 export function tabAria(tab: TabElement): DefaultAria;
 
 // @public
-export interface TabElement extends HTMLElement {
+export interface TabContract {
     disabled: boolean;
-    panel: TabPanelElement | null;
     selected: boolean;
+}
+
+// @public
+export const tabDocumentation: {
+    readonly id: "tab";
+    readonly definition: "A **Tab** is one label in a tablist (`role=\"tab\"`). When selected, its paired tab panel is shown.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the tab and receives focus; label content lives in the `content` part.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly content: {
+                readonly description: "The default slot label between optional `start` and `end` slots.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "selected";
+            readonly kind: "boolean";
+            readonly description: "Whether it is selected and its panel is shown.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled: it stays focusable, as ARIA practices ask of tabs, and can't be selected.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The tab label.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }];
+    };
+};
+
+// @public
+export interface TabElement extends HTMLElement, TabContract {
+    panel: TabPanelElement | null;
+}
+
+// @public
+export interface TablistContract {
+    // Warning: (ae-forgotten-export) The symbol "TablistOrientation" needs to be exported by the entry point index.d.ts
+    orientation: TablistOrientation;
 }
 
 // @public
@@ -3887,8 +4237,39 @@ export class TablistController {
 }
 
 // @public
-export interface TablistElement extends HTMLElement {
-    orientation: Orientation;
+export const tablistDocumentation: {
+    readonly id: "tablist";
+    readonly definition: "A **Tablist** groups tabs (`role=\"tablist\"`). One tab is selected; its panel lives in a separate element referenced by `panels`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the tablist; the default slot holds tabs only.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction of the tabs and the arrow keys that move between them.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "Tabs in a row.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "Tabs in a column.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The tabs.";
+        }];
+    };
+};
+
+// @public
+export interface TablistElement extends HTMLElement, TablistContract {
     panelsElement: Element | null;
 }
 
@@ -3902,16 +4283,90 @@ export type TablistOptions = {
 };
 
 // @public
+export const TablistSlots: {
+    readonly default: "";
+};
+
+// @public
+export const tablistWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
+
+// @public
 export function tabPanelAria(panel: TabPanelElement): DefaultAria;
 
 // @public
-export interface TabPanelElement extends HTMLElement {
+export interface TabPanelContract {
+}
+
+// @public
+export const tabPanelDocumentation: {
+    readonly id: "tabPanel";
+    readonly definition: "A **Tab Panel** is the content for a tab (`role=\"tabpanel\"`), named by its tab and hidden when the tab is not selected.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the panel; the default slot is its content.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The panel content.";
+        }];
+    };
+};
+
+// @public
+export interface TabPanelElement extends HTMLElement, TabPanelContract {
     tab: TabElement | null;
 }
 
 // @public
+export const TabPanelSlots: {
+    readonly default: "";
+};
+
+// @public
+export const tabPanelWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
+
+// @public
 export const TabParts: {
     readonly content: "content";
+};
+
+// @public
+export const TabSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const tabWebBinding: {
+    conditionSelectors: {
+        selected: string;
+        disabled: string;
+    };
+    partSelectors: {
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
+    focus: FocusDefinition<any>;
 };
 
 // @public
@@ -4562,6 +5017,12 @@ export function toggleAccordionItem(item: AccordionItemElement): void;
 export function toggleTreeItem(item: TreeItemElement): void;
 
 // @public
+export interface ToolbarContract {
+    // Warning: (ae-forgotten-export) The symbol "ToolbarOrientation" needs to be exported by the entry point index.d.ts
+    orientation: ToolbarOrientation;
+}
+
+// @public
 export class ToolbarController {
     constructor(host: ToolbarElement, internals: ToolbarInternals);
     connect(): void;
@@ -4572,8 +5033,52 @@ export class ToolbarController {
 }
 
 // @public
-export interface ToolbarElement extends HTMLElement {
-    orientation: Orientation;
+export const toolbarDocumentation: {
+    readonly id: "toolbar";
+    readonly definition: "A **Toolbar** groups controls (`role=\"toolbar\"`). Arrow keys move focus between items; one item is in the tab order at a time.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Optional `label` slot names the toolbar; items live in `positioningRegion`.";
+        readonly parts: {
+            readonly positioningRegion: {
+                readonly description: "The container of the toolbar items, laid out in `orientation`.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction in which the items are laid out, and the arrow keys that move between them.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "Items in a row.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "Items in a column.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "label";
+            readonly description: "Optional label that names the toolbar.";
+        }, {
+            readonly id: "default";
+            readonly description: "The toolbar items.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional items before the default slot items.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional items after the default slot items.";
+        }];
+    };
+};
+
+// @public
+export interface ToolbarElement extends HTMLElement, ToolbarContract {
 }
 
 // @public
@@ -4582,6 +5087,28 @@ export type ToolbarInternals = Pick<ElementInternals, "role" | "ariaOrientation"
 // @public
 export const ToolbarParts: {
     readonly positioningRegion: "positioning-region";
+};
+
+// @public
+export const ToolbarSlots: {
+    readonly label: "label";
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const toolbarWebBinding: {
+    conditionSelectors: {
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+    };
+    partSelectors: {
+        positioningRegion: string;
+    };
+    interactivity: InteractivityDefinition;
 };
 
 // @public

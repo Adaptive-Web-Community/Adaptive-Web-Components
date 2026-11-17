@@ -7,4 +7,5 @@ export {
 export {
     styleRules as listItemStyleRules,
 } from "./list-item.styles.rules.js";
-export { template as listItemTemplate, ListItemAnatomy, ListItemConditions, ListItemParts } from "./list-item.template.js";
+export { ListItemSlots } from "@adaptive-web/components-foundation";
+export { template as listItemTemplate, ListItemAnatomy } from "./list-item.template.js";

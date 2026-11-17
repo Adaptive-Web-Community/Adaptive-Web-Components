@@ -1,5 +1,5 @@
 import type { DefaultAria } from "../utilities/aria.js";
-import type { Orientation } from "../utilities/orientation.js";
+import type { ListContract } from "./list.generated.js";
 
 /**
  * A list (`role="list"`) of {@link ListItemElement}s, laid out in a row or a column.
@@ -12,15 +12,7 @@ import type { Orientation } from "../utilities/orientation.js";
  *
  * @public
  */
-export interface ListElement extends HTMLElement {
-    /**
-     * The direction in which the items are laid out. It is the layout only: a list has no `aria-orientation`.
-     *
-     * @remarks
-     * HTML attribute: `orientation`. The default is `vertical`.
-     */
-    orientation: Orientation;
-}
+export interface ListElement extends HTMLElement, ListContract {}
 
 /**
  * The default ARIA of a list: the `list` role.

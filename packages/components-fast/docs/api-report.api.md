@@ -8,6 +8,7 @@ import { AccordionElement } from '@adaptive-web/components-foundation';
 import { AccordionExpandMode } from '@adaptive-web/components-foundation';
 import { AccordionItemElement } from '@adaptive-web/components-foundation';
 import { AccordionItemParts } from '@adaptive-web/components-foundation';
+import { AccordionItemSlots } from '@adaptive-web/components-foundation';
 import { AnatomyTreatments } from '@adaptive-web/adaptive-ui';
 import { AnchorElement } from '@adaptive-web/components-foundation';
 import { AnchorParts } from '@adaptive-web/components-foundation';
@@ -62,6 +63,8 @@ import { ListboxElement } from '@adaptive-web/components-foundation';
 import { ListboxOptionElement } from '@adaptive-web/components-foundation';
 import { ListElement } from '@adaptive-web/components-foundation';
 import { ListItemElement } from '@adaptive-web/components-foundation';
+import { ListItemSlots } from '@adaptive-web/components-foundation';
+import { ListSlots } from '@adaptive-web/components-foundation';
 import { MenuElement } from '@adaptive-web/components-foundation';
 import { MenuItemElement } from '@adaptive-web/components-foundation';
 import { MenuItemParts } from '@adaptive-web/components-foundation';
@@ -98,8 +101,11 @@ import { SwitchElement } from '@adaptive-web/components-foundation';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { TabElement } from '@adaptive-web/components-foundation';
 import { TablistElement } from '@adaptive-web/components-foundation';
+import { TablistSlots } from '@adaptive-web/components-foundation';
 import { TabPanelElement } from '@adaptive-web/components-foundation';
+import { TabPanelSlots } from '@adaptive-web/components-foundation';
 import { TabParts } from '@adaptive-web/components-foundation';
+import { TabSlots } from '@adaptive-web/components-foundation';
 import { TextAreaController } from '@adaptive-web/components-foundation';
 import { TextAreaElement } from '@adaptive-web/components-foundation';
 import { TextAreaResize } from '@adaptive-web/components-foundation';
@@ -111,6 +117,7 @@ import type { TextInputController } from '@adaptive-web/components-foundation';
 import type { TextInputElement } from '@adaptive-web/components-foundation';
 import { ToolbarElement } from '@adaptive-web/components-foundation';
 import { ToolbarParts } from '@adaptive-web/components-foundation';
+import { ToolbarSlots } from '@adaptive-web/components-foundation';
 import { TooltipElement } from '@adaptive-web/components-foundation';
 import { TooltipPlacement } from '@adaptive-web/components-foundation';
 import { TreeItemElement } from '@adaptive-web/components-foundation';
@@ -138,10 +145,12 @@ export class Accordion extends FASTElement implements AccordionElement {
 export const accordionAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const AccordionAnatomy: ComponentAnatomy<typeof AccordionConditions, typeof AccordionParts>;
-
-// @public (undocumented)
-export const AccordionConditions: {};
+export const AccordionAnatomy: ComponentAnatomy<    {
+expandMode: {
+single: string;
+multi: string;
+};
+}, {}>;
 
 // @public
 export class AccordionItem extends FASTElement implements AccordionItemElement {
@@ -160,14 +169,21 @@ export class AccordionItem extends FASTElement implements AccordionItemElement {
 export const accordionItemAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const AccordionItemAnatomy: ComponentAnatomy<typeof AccordionItemConditions, typeof AccordionItemParts>;
-
-// @public (undocumented)
-export const AccordionItemConditions: {
-    expanded: string;
-};
+export const AccordionItemAnatomy: ComponentAnatomy<    {
+expanded: string;
+disabled: string;
+collapsible: string;
+}, {
+heading: string;
+button: string;
+headingContent: string;
+icon: string;
+panel: string;
+}>;
 
 export { AccordionItemParts }
+
+export { AccordionItemSlots }
 
 // @public
 export const AccordionItemStatics: {
@@ -186,9 +202,6 @@ export const accordionItemTemplate: (ds: DesignSystem) => ElementViewTemplate<Ac
 
 // @public
 export const accordionItemTemplateStyles: ElementStyles;
-
-// @public (undocumented)
-export const AccordionParts: {};
 
 // @public
 export const accordionStyleRules: StyleRules;
@@ -1134,18 +1147,12 @@ export class Divider extends FASTElement implements DividerElement {
 export const dividerAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const DividerAnatomy: ComponentAnatomy<typeof DividerConditions, typeof DividerParts>;
-
-// @public (undocumented)
-export const DividerConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
+export const DividerAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
 };
-
-// @public (undocumented)
-export const DividerParts: {};
+}, {}>;
 
 // @public
 export const dividerStyleRules: StyleRules;
@@ -1187,7 +1194,12 @@ export class List extends FASTElement implements ListElement {
 export const listAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ListAnatomy: ComponentAnatomy<typeof ListConditions, typeof ListParts>;
+export const ListAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
+};
+}, {}>;
 
 // @public
 export class Listbox extends BaseFormControl implements ListboxElement {
@@ -1304,14 +1316,6 @@ export const listboxTemplate: (ds: DesignSystem) => ElementViewTemplate<Listbox>
 // @public
 export const listboxTemplateStyles: ElementStyles;
 
-// @public (undocumented)
-export const ListConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
-};
-
 // @public
 export class ListItem extends FASTElement implements ListItemElement {
     constructor();
@@ -1321,13 +1325,9 @@ export class ListItem extends FASTElement implements ListItemElement {
 export const listItemAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ListItemAnatomy: ComponentAnatomy<typeof ListItemConditions, typeof ListItemParts>;
+export const ListItemAnatomy: ComponentAnatomy<    {}, {}>;
 
-// @public (undocumented)
-export const ListItemConditions: {};
-
-// @public (undocumented)
-export const ListItemParts: {};
+export { ListItemSlots }
 
 // @public
 export const listItemStyleRules: StyleRules;
@@ -1338,8 +1338,7 @@ export const listItemTemplate: (ds: DesignSystem) => ElementViewTemplate<ListIte
 // @public
 export const listItemTemplateStyles: ElementStyles;
 
-// @public (undocumented)
-export const ListParts: {};
+export { ListSlots }
 
 // @public
 export const listStyleRules: StyleRules;
@@ -2132,12 +2131,10 @@ export class Tab extends FASTElement implements TabElement {
 export const tabAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TabAnatomy: ComponentAnatomy<typeof TabConditions, typeof TabParts>;
-
-// @public (undocumented)
-export const TabConditions: {
-    selected: string;
-};
+export const TabAnatomy: ComponentAnatomy<    {
+selected: string;
+disabled: string;
+}, any>;
 
 // @public
 export class Tablist extends FASTElement implements TablistElement {
@@ -2163,18 +2160,14 @@ export class Tablist extends FASTElement implements TablistElement {
 export const tablistAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TablistAnatomy: ComponentAnatomy<typeof TablistConditions, typeof TablistParts>;
-
-// @public (undocumented)
-export const TablistConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
+export const TablistAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
 };
+}, {}>;
 
-// @public (undocumented)
-export const TablistParts: {};
+export { TablistSlots }
 
 // @public
 export const tablistStyleRules: StyleRules;
@@ -2196,13 +2189,9 @@ export class TabPanel extends FASTElement implements TabPanelElement {
 export const tabPanelAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TabPanelAnatomy: ComponentAnatomy<typeof TabPanelConditions, typeof TabPanelParts>;
+export const TabPanelAnatomy: ComponentAnatomy<    {}, {}>;
 
-// @public (undocumented)
-export const TabPanelConditions: {};
-
-// @public (undocumented)
-export const TabPanelParts: {};
+export { TabPanelSlots }
 
 // @public
 export const tabPanelStyleRules: StyleRules;
@@ -2214,6 +2203,8 @@ export const tabPanelTemplate: (ds: DesignSystem) => ElementViewTemplate<TabPane
 export const tabPanelTemplateStyles: ElementStyles;
 
 export { TabParts }
+
+export { TabSlots }
 
 // @public
 export const tabStyleRules: StyleRules;
@@ -2333,17 +2324,18 @@ export class Toolbar extends FASTElement implements ToolbarElement {
 export const toolbarAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ToolbarAnatomy: ComponentAnatomy<typeof ToolbarConditions, typeof ToolbarParts>;
-
-// @public (undocumented)
-export const ToolbarConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
+export const ToolbarAnatomy: ComponentAnatomy<    {
+orientation: {
+horizontal: string;
+vertical: string;
 };
+}, {
+positioningRegion: string;
+}>;
 
 export { ToolbarParts }
+
+export { ToolbarSlots }
 
 // @public
 export const toolbarStyleRules: StyleRules;
