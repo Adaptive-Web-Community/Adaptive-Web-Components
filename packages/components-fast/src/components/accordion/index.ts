@@ -7,4 +7,4 @@ export {
 export {
     styleRules as accordionStyleRules,
 } from "./accordion.styles.rules.js";
-export { template as accordionTemplate, AccordionAnatomy, AccordionConditions, AccordionParts } from "./accordion.template.js";
+export { template as accordionTemplate, AccordionAnatomy } from "./accordion.template.js";
