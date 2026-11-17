@@ -14,12 +14,12 @@ import { AnchorParts } from '@adaptive-web/components-foundation';
 import { AvatarElement } from '@adaptive-web/components-foundation';
 import { AvatarParts } from '@adaptive-web/components-foundation';
 import { BadgeParts } from '@adaptive-web/components-foundation';
+import { BindingPartSelectorsFor } from '@adaptive-web/adaptive-ui';
 import { BreadcrumbElement } from '@adaptive-web/components-foundation';
 import { BreadcrumbItemElement } from '@adaptive-web/components-foundation';
 import { BreadcrumbItemParts } from '@adaptive-web/components-foundation';
 import { BreadcrumbParts } from '@adaptive-web/components-foundation';
 import { ButtonElement } from '@adaptive-web/components-foundation';
-import { ButtonParts } from '@adaptive-web/components-foundation';
 import { ButtonType } from '@adaptive-web/components-foundation';
 import { CalendarElement } from '@adaptive-web/components-foundation';
 import { CalendarParts } from '@adaptive-web/components-foundation';
@@ -28,7 +28,6 @@ import type { CheckableController } from '@adaptive-web/components-foundation';
 import type { CheckableElement } from '@adaptive-web/components-foundation';
 import { CheckboxController } from '@adaptive-web/components-foundation';
 import { CheckboxElement } from '@adaptive-web/components-foundation';
-import { CheckboxParts } from '@adaptive-web/components-foundation';
 import { ComponentAnatomy } from '@adaptive-web/adaptive-ui';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -53,34 +52,29 @@ import { HTMLDirective } from '@microsoft/fast-element';
 import { Library } from 'design-token-library';
 import { ListboxElement } from '@adaptive-web/components-foundation';
 import { ListboxOptionElement } from '@adaptive-web/components-foundation';
-import { ListboxOptionParts } from '@adaptive-web/components-foundation';
-import { ListboxParts } from '@adaptive-web/components-foundation';
 import { ListElement } from '@adaptive-web/components-foundation';
 import { ListItemElement } from '@adaptive-web/components-foundation';
 import { MenuElement } from '@adaptive-web/components-foundation';
 import { MenuItemElement } from '@adaptive-web/components-foundation';
 import { MenuItemParts } from '@adaptive-web/components-foundation';
+import { MenuItemSlots } from '@adaptive-web/components-foundation';
 import { MenuItemStartColumns } from '@adaptive-web/components-foundation';
 import { MenuItemType } from '@adaptive-web/components-foundation';
 import { NumberFieldController } from '@adaptive-web/components-foundation';
 import { NumberFieldElement } from '@adaptive-web/components-foundation';
-import { NumberFieldParts } from '@adaptive-web/components-foundation';
 import { Orientation } from '@adaptive-web/components-foundation';
 import { PickerElement } from '@adaptive-web/components-foundation';
-import { PickerParts } from '@adaptive-web/components-foundation';
 import { ProgressElement } from '@adaptive-web/components-foundation';
 import { ProgressParts } from '@adaptive-web/components-foundation';
 import { ProgressRingParts } from '@adaptive-web/components-foundation';
+import { ProgressRingSlots } from '@adaptive-web/components-foundation';
+import { ProgressSlots } from '@adaptive-web/components-foundation';
 import { RadioController } from '@adaptive-web/components-foundation';
 import { RadioElement } from '@adaptive-web/components-foundation';
 import { RadioGroupElement } from '@adaptive-web/components-foundation';
-import { RadioGroupParts } from '@adaptive-web/components-foundation';
-import { RadioParts } from '@adaptive-web/components-foundation';
 import { SearchController } from '@adaptive-web/components-foundation';
 import { SearchElement } from '@adaptive-web/components-foundation';
-import { SearchParts } from '@adaptive-web/components-foundation';
 import { SelectElement } from '@adaptive-web/components-foundation';
-import { SelectParts } from '@adaptive-web/components-foundation';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 import { SkeletonElement } from '@adaptive-web/components-foundation';
 import { SkeletonParts } from '@adaptive-web/components-foundation';
@@ -92,7 +86,6 @@ import { SliderParts } from '@adaptive-web/components-foundation';
 import { StyleRules } from '@adaptive-web/adaptive-ui';
 import { SwitchController } from '@adaptive-web/components-foundation';
 import { SwitchElement } from '@adaptive-web/components-foundation';
-import { SwitchParts } from '@adaptive-web/components-foundation';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { TabElement } from '@adaptive-web/components-foundation';
 import { TablistElement } from '@adaptive-web/components-foundation';
@@ -100,12 +93,10 @@ import { TabPanelElement } from '@adaptive-web/components-foundation';
 import { TabParts } from '@adaptive-web/components-foundation';
 import { TextAreaController } from '@adaptive-web/components-foundation';
 import { TextAreaElement } from '@adaptive-web/components-foundation';
-import { TextAreaParts } from '@adaptive-web/components-foundation';
 import { TextAreaResize } from '@adaptive-web/components-foundation';
 import type { TextControl } from '@adaptive-web/components-foundation';
 import { TextFieldController } from '@adaptive-web/components-foundation';
 import { TextFieldElement } from '@adaptive-web/components-foundation';
-import { TextFieldParts } from '@adaptive-web/components-foundation';
 import { TextFieldType } from '@adaptive-web/components-foundation';
 import type { TextInputController } from '@adaptive-web/components-foundation';
 import type { TextInputElement } from '@adaptive-web/components-foundation';
@@ -498,14 +489,17 @@ export class Button extends FASTElement implements ButtonElement {
 export const buttonAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ButtonAnatomy: ComponentAnatomy<typeof ButtonConditions, typeof ButtonParts>;
-
-// @public (undocumented)
-export const ButtonConditions: {
-    hideLabel: string;
+export const ButtonAnatomy: ComponentAnatomy<    {
+disabled: string;
+type: {
+button: string;
+submit: string;
+reset: string;
 };
-
-export { ButtonParts }
+hideLabel: string;
+}, {
+content: string;
+}>;
 
 // @public
 export const buttonStyleRules: StyleRules;
@@ -652,15 +646,14 @@ export class Checkbox extends BaseCheckable<CheckboxController> implements Check
 export const checkboxAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const CheckboxAnatomy: ComponentAnatomy<typeof CheckboxConditions, typeof CheckboxParts>;
-
-// @public (undocumented)
-export const CheckboxConditions: {
-    checked: string;
-    indeterminate: string;
-};
-
-export { CheckboxParts }
+export const CheckboxAnatomy: ComponentAnatomy<    {
+indeterminate: string;
+readOnly: string;
+required: string;
+hideLabel: string;
+checked: string;
+disabled: string;
+}, any>;
 
 // @public
 export const CheckboxStatics: {
@@ -1151,13 +1144,27 @@ export class Listbox extends BaseFormControl implements ListboxElement {
 export const listboxAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ListboxAnatomy: ComponentAnatomy<typeof ListboxConditions, typeof ListboxParts>;
-
-// @public (undocumented)
-export const ListboxConditions: {
-    multiple: string;
-    readOnly: string;
+export const ListboxAnatomy: ComponentAnatomy<    {
+hideLabel: string;
+multiple: string;
+readOnly: string;
+disabled: string;
+required: string;
+}, BindingPartSelectorsFor<    {
+readonly description: "The host is the listbox; the options part contains the default slot.";
+readonly interactive: true;
+readonly indicatesFocus: true;
+readonly parts: {
+readonly label: {
+readonly description: "The `label` slot or `label` attribute text that names the listbox, hidden from assistive technology so it isn't read twice.";
 };
+readonly options: {
+readonly description: "The box of the options, which scrolls.";
+readonly interactive: true;
+readonly indicatesFocus: true;
+};
+};
+}>>;
 
 // @public
 export class ListboxOption extends FASTElement implements ListboxOptionElement {
@@ -1182,15 +1189,13 @@ export class ListboxOption extends FASTElement implements ListboxOptionElement {
 export const listboxOptionAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ListboxOptionAnatomy: ComponentAnatomy<typeof ListboxOptionConditions, typeof ListboxOptionParts>;
-
-// @public (undocumented)
-export const ListboxOptionConditions: {
-    selected: string;
-    active: string;
-};
-
-export { ListboxOptionParts }
+export const ListboxOptionAnatomy: ComponentAnatomy<    {
+selected: string;
+active: string;
+disabled: string;
+}, {
+content: string;
+}>;
 
 // @public
 export const listboxOptionStyleRules: StyleRules;
@@ -1200,8 +1205,6 @@ export const listboxOptionTemplate: (ds: DesignSystem) => ElementViewTemplate<Li
 
 // @public
 export const listboxOptionTemplateStyles: ElementStyles;
-
-export { ListboxParts }
 
 // @public
 export const listboxStyleRules: StyleRules;
@@ -1274,12 +1277,9 @@ export class Menu extends FASTElement implements MenuElement {
 export const menuAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const MenuAnatomy: ComponentAnatomy<typeof MenuConditions, typeof MenuParts>;
-
-// @public (undocumented)
-export const MenuConditions: {
-    submenu: string;
-};
+export const MenuAnatomy: ComponentAnatomy<    {
+submenu: string;
+}, {}>;
 
 // @public
 export class MenuItem extends FASTElement implements MenuItemElement {
@@ -1293,6 +1293,7 @@ export class MenuItem extends FASTElement implements MenuItemElement {
     protected disabledChanged(): void;
     // (undocumented)
     disconnectedCallback(): void;
+    get expanded(): boolean;
     // @internal
     slottedSubmenu: Element[];
     // (undocumented)
@@ -1312,15 +1313,20 @@ export class MenuItem extends FASTElement implements MenuItemElement {
 export const menuItemAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const MenuItemAnatomy: ComponentAnatomy<typeof MenuItemConditions, typeof MenuItemParts>;
-
-// @public (undocumented)
-export const MenuItemConditions: {
-    checked: string;
-    expanded: string;
+export const MenuItemAnatomy: ComponentAnatomy<    {
+type: {
+item: string;
+checkbox: string;
+radio: string;
 };
+checked: string;
+disabled: string;
+expanded: string;
+}, any>;
 
 export { MenuItemParts }
+
+export { MenuItemSlots }
 
 // @public
 export const MenuItemStatics: {
@@ -1340,9 +1346,6 @@ export const menuItemTemplate: (ds: DesignSystem) => ElementViewTemplate<MenuIte
 
 // @public
 export const menuItemTemplateStyles: ElementStyles;
-
-// @public (undocumented)
-export const MenuParts: {};
 
 // @public
 export const menuStyleRules: StyleRules;
@@ -1375,12 +1378,13 @@ export class NumberField extends BaseTextInput<NumberFieldController> implements
 export const numberFieldAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const NumberFieldAnatomy: ComponentAnatomy<typeof NumberFieldConditions, typeof NumberFieldParts>;
-
-// @public (undocumented)
-export const NumberFieldConditions: {};
-
-export { NumberFieldParts }
+export const NumberFieldAnatomy: ComponentAnatomy<    {
+hideStep: string;
+hideLabel: string;
+disabled: string;
+readOnly: string;
+required: string;
+}, Record<"label" | "control" | "root" | "controls" | "stepUp" | "stepDown", string>>;
 
 // @public
 export const NumberFieldStatics: {
@@ -1438,6 +1442,7 @@ export class Picker extends BaseFormControl implements PickerElement {
     protected nameChanged(): void;
     // @internal
     noResults?: HTMLElement;
+    get open(): boolean;
     placeholder: string | null;
     // (undocumented)
     protected placeholderChanged(): void;
@@ -1470,17 +1475,58 @@ export class Picker extends BaseFormControl implements PickerElement {
 export const pickerAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const PickerAnatomy: ComponentAnatomy<typeof PickerConditions, typeof PickerParts>;
-
-// @public (undocumented)
-export const PickerConditions: {
-    open: string;
-    multiple: string;
-    loading: string;
-    readOnly: string;
+export const PickerAnatomy: ComponentAnatomy<    {
+open: string;
+multiple: string;
+freeform: string;
+loading: string;
+readOnly: string;
+disabled: string;
+required: string;
+hideLabel: string;
+}, BindingPartSelectorsFor<    {
+readonly parts: {
+readonly label: {
+readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
 };
-
-export { PickerParts }
+readonly root: {
+readonly description: "The box of the field, around the values and the input.";
+readonly interactive: true;
+readonly indicatesFocus: true;
+readonly parts: {
+readonly values: {
+readonly description: "The list of the values (`role=\"list\"`), before the input, in multiple selection.";
+};
+readonly value: {
+readonly description: "A value in the list (`role=\"listitem\"`).";
+};
+readonly valueLabel: {
+readonly description: "The label of a value.";
+};
+readonly valueRemove: {
+readonly description: "The button that removes a value, for the pointer.";
+};
+readonly control: {
+readonly description: "The native input (`role=\"combobox\"`), which has the focus.";
+};
+readonly indicator: {
+readonly description: "The indicator that it opens.";
+};
+};
+};
+readonly popup: {
+readonly description: "The popup, a popover anchored to the root, with the listbox and the status.";
+readonly parts: {
+readonly listbox: {
+readonly description: "The list of the options (`role=\"listbox\"`).";
+};
+readonly status: {
+readonly description: "The status of the popup (`role=\"status\"`): loading or no results.";
+};
+};
+};
+};
+}>>;
 
 // @public
 export const PickerStatics: {
@@ -1508,10 +1554,11 @@ export class Progress extends BaseProgress {
 export const progressAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ProgressAnatomy: ComponentAnatomy<typeof ProgressConditions, typeof ProgressParts>;
-
-// @public (undocumented)
-export const ProgressConditions: {};
+export const ProgressAnatomy: ComponentAnatomy<    {}, {
+determinate: string;
+indeterminate: string;
+indicator: string;
+}>;
 
 export { ProgressParts }
 
@@ -1523,12 +1570,16 @@ export class ProgressRing extends BaseProgress {
 export const progressRingAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const ProgressRingAnatomy: ComponentAnatomy<typeof ProgressRingConditions, typeof ProgressRingParts>;
-
-// @public (undocumented)
-export const ProgressRingConditions: {};
+export const ProgressRingAnatomy: ComponentAnatomy<    {}, {
+determinate: string;
+indeterminate: string;
+indicator: string;
+background: string;
+}>;
 
 export { ProgressRingParts }
+
+export { ProgressRingSlots }
 
 // @public
 export const progressRingStyleRules: StyleRules;
@@ -1538,6 +1589,8 @@ export const progressRingTemplate: (ds: DesignSystem) => ElementViewTemplate<Pro
 
 // @public
 export const progressRingTemplateStyles: ElementStyles;
+
+export { ProgressSlots }
 
 // @public
 export const progressStyleRules: StyleRules;
@@ -1564,12 +1617,13 @@ export class Radio extends BaseCheckable<RadioController> implements RadioElemen
 export const radioAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const RadioAnatomy: ComponentAnatomy<typeof RadioConditions, typeof RadioParts>;
-
-// @public (undocumented)
-export const RadioConditions: {
-    checked: string;
-};
+export const RadioAnatomy: ComponentAnatomy<    {
+groupReadOnly: string;
+groupDisabled: string;
+hideLabel: string;
+checked: string;
+disabled: string;
+}, any>;
 
 // @public
 export class RadioGroup extends BaseFormControl implements RadioGroupElement {
@@ -1612,17 +1666,19 @@ export class RadioGroup extends BaseFormControl implements RadioGroupElement {
 export const radioGroupAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const RadioGroupAnatomy: ComponentAnatomy<typeof RadioGroupConditions, typeof RadioGroupParts>;
-
-// @public (undocumented)
-export const RadioGroupConditions: {
-    orientation: {
-        horizontal: string;
-        vertical: string;
-    };
+export const RadioGroupAnatomy: ComponentAnatomy<    {
+hideLabel: string;
+orientation: {
+horizontal: string;
+vertical: string;
 };
-
-export { RadioGroupParts }
+readOnly: string;
+disabled: string;
+required: string;
+}, {
+label: string;
+positioningRegion: string;
+}>;
 
 // @public
 export const radioGroupStyleRules: StyleRules;
@@ -1632,8 +1688,6 @@ export const radioGroupTemplate: (ds: DesignSystem) => ElementViewTemplate<Radio
 
 // @public
 export const radioGroupTemplateStyles: ElementStyles;
-
-export { RadioParts }
 
 // @public
 export const RadioStatics: {
@@ -1666,12 +1720,12 @@ export class Search extends BaseTextInput<SearchController> implements SearchEle
 export const searchAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SearchAnatomy: ComponentAnatomy<typeof SearchConditions, typeof SearchParts>;
-
-// @public (undocumented)
-export const SearchConditions: {};
-
-export { SearchParts }
+export const SearchAnatomy: ComponentAnatomy<    {
+hideLabel: string;
+disabled: string;
+readOnly: string;
+required: string;
+}, Record<"label" | "control" | "root" | "inputWrapper" | "clearButton", string>>;
 
 // @public
 export const searchStyleRules: StyleRules;
@@ -1704,6 +1758,7 @@ export class Select extends BaseFormControl implements SelectElement {
     // @internal
     listbox?: HTMLElement;
     name: string | null;
+    get open(): boolean;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
@@ -1724,15 +1779,35 @@ export class Select extends BaseFormControl implements SelectElement {
 export const selectAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SelectAnatomy: ComponentAnatomy<typeof SelectConditions, typeof SelectParts>;
-
-// @public (undocumented)
-export const SelectConditions: {
-    open: string;
-    readOnly: string;
+export const SelectAnatomy: ComponentAnatomy<    {
+open: string;
+readOnly: string;
+disabled: string;
+required: string;
+hideLabel: string;
+}, BindingPartSelectorsFor<    {
+readonly parts: {
+readonly label: {
+readonly description: "The `label` slot or `label` attribute text that names the select.";
 };
-
-export { SelectParts }
+readonly control: {
+readonly description: "The combobox, which has the focus and shows the selected option.";
+readonly interactive: true;
+readonly indicatesFocus: true;
+readonly parts: {
+readonly selectedValue: {
+readonly description: "The text of the selected option, in the control.";
+};
+readonly indicator: {
+readonly description: "The indicator that it opens, in the control.";
+};
+};
+};
+readonly listbox: {
+readonly description: "The popup of the options (`role=\"listbox\"`), a popover anchored to the control.";
+};
+};
+}>>;
 
 // @public
 export const SelectStatics: {
@@ -1928,14 +2003,13 @@ export class Switch extends BaseCheckable<SwitchController> implements SwitchEle
 export const switchAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const SwitchAnatomy: ComponentAnatomy<typeof SwitchConditions, typeof SwitchParts>;
-
-// @public (undocumented)
-export const SwitchConditions: {
-    checked: string;
-};
-
-export { SwitchParts }
+export const SwitchAnatomy: ComponentAnatomy<    {
+readOnly: string;
+required: string;
+hideLabel: string;
+checked: string;
+disabled: string;
+}, any>;
 
 // @public
 export const switchStyleRules: StyleRules;
@@ -2074,12 +2148,18 @@ export class TextArea extends BaseTextInput<TextAreaController> implements TextA
 export const textAreaAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TextAreaAnatomy: ComponentAnatomy<typeof TextAreaConditions, typeof TextAreaParts>;
-
-// @public (undocumented)
-export const TextAreaConditions: {};
-
-export { TextAreaParts }
+export const TextAreaAnatomy: ComponentAnatomy<    {
+resize: {
+none: string;
+both: string;
+horizontal: string;
+vertical: string;
+};
+hideLabel: string;
+disabled: string;
+readOnly: string;
+required: string;
+}, Record<"label" | "control", string>>;
 
 // @public
 export const textAreaStyleRules: StyleRules;
@@ -2106,12 +2186,19 @@ export class TextField extends BaseTextInput<TextFieldController> implements Tex
 export const textFieldAestheticStyles: ElementStyles;
 
 // @public (undocumented)
-export const TextFieldAnatomy: ComponentAnatomy<typeof TextFieldConditions, typeof TextFieldParts>;
-
-// @public (undocumented)
-export const TextFieldConditions: {};
-
-export { TextFieldParts }
+export const TextFieldAnatomy: ComponentAnatomy<    {
+type: {
+text: string;
+email: string;
+password: string;
+tel: string;
+url: string;
+};
+hideLabel: string;
+disabled: string;
+readOnly: string;
+required: string;
+}, Record<"label" | "control" | "root", string>>;
 
 // @public
 export const textFieldStyleRules: StyleRules;

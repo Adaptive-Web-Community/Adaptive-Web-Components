@@ -99,7 +99,7 @@ export class Listbox extends BaseFormControl implements ListboxElement {
     }
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.label}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.label}
      */
     @attr
     public label: string | null = null;
@@ -108,7 +108,7 @@ export class Listbox extends BaseFormControl implements ListboxElement {
     }
 
     /**
-     * {@inheritDoc @adaptive-web/components-foundation#LabelledElement.hideLabel}
+     * {@inheritDoc @adaptive-web/components-foundation#LabelledContract.hideLabel}
      */
     @attr({ attribute: "hide-label", mode: "boolean" })
     public hideLabel: boolean = false;

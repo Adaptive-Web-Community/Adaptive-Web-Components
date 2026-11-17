@@ -4,6 +4,10 @@
 
 ```ts
 
+import { BindingPartSelectorsFor } from '@adaptive-web/adaptive-ui';
+import { FocusDefinition } from '@adaptive-web/adaptive-ui';
+import { InteractivityDefinition } from '@adaptive-web/adaptive-ui';
+
 // @public
 export class AccordionController {
     constructor(host: AccordionElement);
@@ -115,6 +119,12 @@ export const BreadcrumbParts: {
 };
 
 // @public
+export interface ButtonContract extends ContentLabelledContract {
+    disabled: boolean;
+    type: ButtonType;
+}
+
+// @public
 export class ButtonController {
     constructor(host: ButtonElement, internals: ButtonInternals);
     connect(): void;
@@ -122,8 +132,119 @@ export class ButtonController {
 }
 
 // @public
-export interface ButtonElement extends InvokerElement, ContentLabelledElement {
-    disabled: boolean;
+export const buttonDocumentation: {
+    readonly id: "button";
+    readonly definition: "A **Button** triggers an action or submits a form. The host element is the control: it receives focus, participates in forms, and exposes a default slot for its label.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-12";
+    };
+    readonly disambiguation: readonly [{
+        readonly id: "anchor";
+        readonly use: "Use when navigation to a URL is the primary outcome, not an in-place action.";
+    }, {
+        readonly id: "menuItem";
+        readonly use: "Use for choices inside a Menu, not for standalone page actions.";
+    }];
+    readonly structure: {
+        readonly description: "The host element is the control: it takes focus, shows the focus indicator, and handles activation.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly content: {
+                readonly description: "The default slot label and any inline content between optional `start` and `end` slots.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "contentLabelled";
+            readonly definition: "An element labelled by its content: one whose native element is named by its content (a `<button>`, an `<a>`).";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label, the content of its default slot, is hidden, as for a control that shows only an icon. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "default";
+                    readonly description: "The content of the element, which is its label and names it.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "When set, the button cannot be activated and is removed from the tab order.";
+        }, {
+            readonly id: "type";
+            readonly kind: "enum";
+            readonly description: "Form participation: submit, reset, or plain button.";
+            readonly enumValues: readonly [{
+                readonly id: "button";
+                readonly description: "No default form action.";
+            }, {
+                readonly id: "submit";
+                readonly description: "Submits the associated form.";
+            }, {
+                readonly id: "reset";
+                readonly description: "Resets the associated form.";
+            }];
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the label, commonly an icon.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label, commonly an icon.";
+        }];
+    };
+    readonly accessibility: {
+        readonly summary: "The host is a native `button` with the `button` role. Keyboard activation uses **Space** and **Enter** like a platform button.";
+        readonly responsibilities: readonly ["Provide an accessible name when `hide-label` hides the visible label (default slot text or `aria-label` / `aria-labelledby`).", "Do not rely on color alone to convey meaning."];
+    };
+    readonly capabilities: {
+        readonly summary: "Built-in form association, disabled state, and invoker command behavior without product handlers.";
+        readonly items: readonly [{
+            readonly id: "formAssociated";
+            readonly description: "Participates in form data and validation through `ElementInternals` when implemented by the host.";
+        }, {
+            readonly id: "disabled";
+            readonly description: "Reflects the `disabled` attribute and ancestor `fieldset[disabled]` behavior expected of buttons.";
+        }];
+    };
+    readonly usage: {
+        readonly rules: readonly [{
+            readonly id: "onePrimaryPerView";
+            readonly stance: "do";
+            readonly severity: "must";
+            readonly categories: readonly ["hierarchy"];
+            readonly text: "Limit **primary** actions to one obvious choice per view or task.";
+        }, {
+            readonly id: "hideLabelAccessibleName";
+            readonly stance: "do";
+            readonly severity: "must";
+            readonly categories: readonly ["a11y-responsibility", "content"];
+            readonly text: "When `hideLabel` is set, keep label text in the default slot (visually hidden but still naming the control) or set `aria-label` / `aria-labelledby`.";
+        }, {
+            readonly id: "noVagueCritical";
+            readonly stance: "dont";
+            readonly severity: "must";
+            readonly categories: readonly ["content"];
+            readonly text: "Do not use vague labels (for example “OK”) on **critical** or destructive actions.";
+        }, {
+            readonly id: "noNestedInteractive";
+            readonly stance: "dont";
+            readonly severity: "must";
+            readonly categories: readonly ["content"];
+            readonly text: "Do not place interactive elements inside the button slots.";
+        }];
+    };
+};
+
+// @public
+export interface ButtonElement extends InvokerElement, ButtonContract {
     readonly form: HTMLFormElement | null;
     formAction: string | null;
     formEnctype: string | null;
@@ -132,7 +253,6 @@ export interface ButtonElement extends InvokerElement, ContentLabelledElement {
     formTarget: string | null;
     readonly labels: NodeList;
     name: string | null;
-    type: ButtonType;
     value: string | null;
 }
 
@@ -147,14 +267,42 @@ export const ButtonParts: {
 };
 
 // @public
-export const ButtonType: {
-    readonly submit: "submit";
-    readonly reset: "reset";
-    readonly button: "button";
+export const ButtonSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
 };
 
 // @public
-export type ButtonType = ValuesOf<typeof ButtonType>;
+export const ButtonType: {
+    readonly button: "button";
+    readonly submit: "submit";
+    readonly reset: "reset";
+};
+
+// @public (undocumented)
+export type ButtonType = (typeof ButtonType)[keyof typeof ButtonType];
+
+// @public
+export const buttonWebBinding: {
+    conditionSelectors: {
+        disabled: string;
+        type: {
+            button: string;
+            submit: string;
+            reset: string;
+        };
+        hideLabel: string;
+    };
+    partSelectors: {
+        content: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+};
 
 // @public
 export class CalendarController {
@@ -215,6 +363,14 @@ export type CalendarTemplateElements = {
 };
 
 // @public
+export interface CheckableContract extends LabelledContract {
+    checked: boolean;
+    disabled: boolean;
+    name: string | null;
+    value: string;
+}
+
+// @public
 export class CheckableController<T extends CheckableElement = CheckableElement> {
     constructor(host: T, internals: CheckableInternals, role: CheckableRole);
     protected activate(): boolean;
@@ -236,12 +392,61 @@ export class CheckableController<T extends CheckableElement = CheckableElement> 
 }
 
 // @public
-export interface CheckableElement extends FormControlElement, LabelledElement {
-    checked: boolean;
+export const checkableDocumentation: {
+    readonly id: "checkable";
+    readonly definition: "A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. The host is the form control through `ElementInternals`.";
+    readonly remarks: string;
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "checked";
+            readonly kind: "boolean";
+            readonly description: "Whether it is checked now. Not an attribute: the `checked` attribute is whether it is checked by default, before the user or code checks or unchecks it and when its form is reset.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its value in the form data.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "Its value in the form data when it is checked. The default is `on`, as a native checkbox's is.";
+        }];
+        readonly slots: readonly [];
+    };
+};
+
+// @public
+export interface CheckableElement extends FormControlElement, CheckableContract {
     defaultChecked: boolean;
-    disabled: boolean;
-    name: string | null;
-    value: string;
 }
 
 // @public
@@ -251,6 +456,25 @@ export type CheckableInternals = Pick<ElementInternals, "role" | "ariaChecked" |
 
 // @public
 export type CheckableRole = "checkbox" | "switch" | "radio";
+
+// @public
+export const CheckableSlots: {
+    readonly label: "label";
+};
+
+// @public
+export const checkableWebConditionSelectors: {
+    hideLabel: string;
+    checked: string;
+    disabled: string;
+};
+
+// @public
+export interface CheckboxContract extends CheckableContract {
+    indeterminate: boolean;
+    readOnly: boolean;
+    required: boolean;
+}
 
 // @public
 export class CheckboxController extends CheckableController<CheckboxElement> {
@@ -268,10 +492,103 @@ export class CheckboxController extends CheckableController<CheckboxElement> {
 }
 
 // @public
-export interface CheckboxElement extends CheckableElement {
-    indeterminate: boolean;
-    readOnly: boolean;
-    required: boolean;
+export const checkboxDocumentation: {
+    readonly id: "checkbox";
+    readonly definition: "A **Checkbox** is a control the user checks and unchecks, which can be indeterminate. The host is the checkbox (`role=\"checkbox\"`) and the form control through `ElementInternals`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the checkbox; the control part holds checked and indeterminate indicators.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly control: {
+                readonly description: "The box, with the checked and indeterminate indicators.";
+            };
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the checkbox.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "checkable";
+            readonly definition: "A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. The host is the form control through `ElementInternals`.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-17";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "checked";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is checked now. Not an attribute: the `checked` attribute is whether it is checked by default, before the user or code checks or unchecks it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "Its value in the form data when it is checked. The default is `on`, as a native checkbox's is.";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "indeterminate";
+            readonly kind: "boolean";
+            readonly description: "Whether it is shown as neither checked nor unchecked (`aria-checked=\"mixed\"`). Not an attribute, as for a native checkbox.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether it must be checked for its form to be valid.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: it takes focus, and the user can't check or uncheck it. It isn't validated, as a read only native input isn't.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "checked-indicator";
+            readonly description: "Replaces the default checked glyph in the control part.";
+        }, {
+            readonly id: "indeterminate-indicator";
+            readonly description: "Replaces the default indeterminate glyph in the control part.";
+        }];
+    };
+};
+
+// @public
+export interface CheckboxElement extends CheckableElement, CheckboxContract {
 }
 
 // @public
@@ -281,12 +598,69 @@ export const CheckboxParts: {
 };
 
 // @public
+export const CheckboxSlots: {
+    readonly label: "label";
+    readonly checkedIndicator: "checked-indicator";
+    readonly indeterminateIndicator: "indeterminate-indicator";
+};
+
+// @public
+export const checkboxWebBinding: {
+    conditionSelectors: {
+        indeterminate: string;
+        readOnly: string;
+        required: string;
+        hideLabel: string;
+        checked: string;
+        disabled: string;
+    };
+    partSelectors: {
+        control: string;
+        label: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<any>;
+    cursor: false;
+};
+
+// @public
 export function collapsedText(element: Element): string;
 
 // @public
-export interface ContentLabelledElement {
+export interface ContentLabelledContract {
     hideLabel: boolean;
 }
+
+// @public
+export const contentLabelledDocumentation: {
+    readonly id: "contentLabelled";
+    readonly definition: "An element labelled by its content: one whose native element is named by its content (a `<button>`, an `<a>`).";
+    readonly remarks: string;
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "hideLabel";
+            readonly kind: "boolean";
+            readonly description: "Whether its label, the content of its default slot, is hidden, as for a control that shows only an icon. The label still names it.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The content of the element, which is its label and names it.";
+        }];
+    };
+};
+
+// @public
+export interface ContentLabelledElement extends ContentLabelledContract {
+}
+
+// @public
+export const ContentLabelledSlots: {
+    readonly default: "";
+};
 
 // @public
 export function dataGridCellAria(cell: DataGridCellElement): DefaultAria;
@@ -467,13 +841,55 @@ export function labelHost(internals: LabelInternals, label: string | null, label
 export type LabelInternals = Pick<ElementInternals, "ariaLabel" | "ariaLabelledByElements">;
 
 // @public
-export interface LabelledElement {
+export interface LabelledContract {
     hideLabel: boolean;
     label: string | null;
 }
 
 // @public
+export const labelledDocumentation: {
+    readonly id: "labelled";
+    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+    readonly remarks: string;
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "label";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+        }, {
+            readonly id: "hideLabel";
+            readonly kind: "boolean";
+            readonly description: "Whether its label is hidden. The label still names it.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "label";
+            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+        }];
+    };
+};
+
+// @public
+export interface LabelledElement extends LabelledContract {
+}
+
+// @public
+export const LabelledSlots: {
+    readonly label: "label";
+};
+
+// @public
 export function listAria(): DefaultAria;
+
+// @public
+export interface ListboxContract extends LabelledContract {
+    disabled: boolean;
+    multiple: boolean;
+    name: string | null;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
 
 // @public
 export class ListboxController {
@@ -490,14 +906,83 @@ export class ListboxController {
 }
 
 // @public
-export interface ListboxElement extends FormControlElement, LabelledElement {
-    disabled: boolean;
-    multiple: boolean;
-    name: string | null;
-    readOnly: boolean;
-    required: boolean;
+export const listboxDocumentation: {
+    readonly id: "listbox";
+    readonly definition: "A **Listbox** is a list of options of which one or any number are selected (`role=\"listbox\"`), as a native `<select>` that shows its options. The host takes focus and points at the active option.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the listbox; the options part contains the default slot.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the listbox, hidden from assistive technology so it isn't read twice.";
+            };
+            readonly options: {
+                readonly description: "The box of the options, which scrolls.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its values in the form data.";
+        }, {
+            readonly id: "multiple";
+            readonly kind: "boolean";
+            readonly description: "Whether any number of options can be selected, or one.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: the keys move between options, and the user can't change the selection.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether an option must be selected for its form to be valid.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The value of the first selected option, or an empty string when none is.";
+        }];
+        readonly slots: readonly [];
+    };
+};
+
+// @public
+export interface ListboxElement extends FormControlElement, ListboxContract {
     readonly selectedOptions: readonly ListboxOptionElement[];
-    value: string;
 }
 
 // @public
@@ -507,13 +992,64 @@ export type ListboxInternals = Pick<ElementInternals, "role" | "ariaLabel" | "ar
 export function listboxOptionAria(option: ListboxOptionElement): DefaultAria;
 
 // @public
-export interface ListboxOptionElement extends HTMLElement {
+export interface ListboxOptionContract {
     active: boolean;
-    defaultSelected: boolean;
     disabled: boolean;
     selected: boolean;
-    readonly text: string;
     value: string;
+}
+
+// @public
+export const listboxOptionDocumentation: {
+    readonly id: "listboxOption";
+    readonly definition: "An **Listbox Option** is one choice in a listbox, select, or picker (`role=\"option\"`), as a native `<option>`. It does not take focus; the listbox points at the active option with `aria-activedescendant`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Optional `start` and `end` slots flank the default label in the `content` part.";
+        readonly parts: {
+            readonly content: {
+                readonly description: "The default slot label and any inline content between optional `start` and `end` slots.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The value it gives to the form when it is selected. Without it, its text, as a native option's.";
+        }, {
+            readonly id: "selected";
+            readonly kind: "boolean";
+            readonly description: "Whether it is selected now.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled: the keys reach it, and it can't be selected.";
+        }, {
+            readonly id: "active";
+            readonly kind: "boolean";
+            readonly description: "Whether it is the active option in its listbox.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The option label.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }];
+    };
+};
+
+// @public
+export interface ListboxOptionElement extends HTMLElement, ListboxOptionContract {
+    defaultSelected: boolean;
+    readonly text: string;
 }
 
 // @public
@@ -522,9 +1058,69 @@ export const ListboxOptionParts: {
 };
 
 // @public
+export const ListboxOptionSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+};
+
+// @public
+export const listboxOptionWebBinding: {
+    conditionSelectors: {
+        selected: string;
+        active: string;
+        disabled: string;
+    };
+    partSelectors: {
+        content: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
 export const ListboxParts: {
     readonly label: "label";
     readonly options: "options";
+};
+
+// @public
+export const ListboxSlots: {
+    readonly label: "label";
+};
+
+// @public
+export const listboxWebBinding: {
+    conditionSelectors: {
+        hideLabel: string;
+        multiple: string;
+        readOnly: string;
+        disabled: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        options: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly description: "The host is the listbox; the options part contains the default slot.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly label: {
+    readonly description: "The `label` slot or `label` attribute text that names the listbox, hidden from assistive technology so it isn't read twice.";
+    };
+    readonly options: {
+    readonly description: "The box of the options, which scrolls.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    };
+    };
+    }>>;
 };
 
 // @public
@@ -539,6 +1135,11 @@ export function listItemAria(): DefaultAria;
 export type ListItemElement = HTMLElement;
 
 // @public
+export interface MenuContract {
+    submenu: boolean;
+}
+
+// @public
 export class MenuController {
     constructor(host: MenuElement, internals: MenuInternals, options: MenuOptions);
     connect(): void;
@@ -548,27 +1149,135 @@ export class MenuController {
 }
 
 // @public
+export const menuDocumentation: {
+    readonly id: "menu";
+    readonly definition: "A **Menu** is a list of menu items (`role=\"menu\"`), which the arrow keys move between. It is often a popover opened by a button, or a submenu in a menu item's `submenu` slot.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the menu; the default slot holds items and dividers.";
+        readonly parts: {};
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "submenu";
+            readonly kind: "boolean";
+            readonly description: "Whether this menu is assigned to a menu item's `submenu` slot (`slot=\"submenu\"`), not a control attribute.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "Menu items and dividers between them.";
+        }];
+    };
+};
+
+// @public
 export type MenuElement = HTMLElement;
 
 // @public
 export type MenuInternals = Pick<ElementInternals, "role">;
 
 // @public
+export interface MenuItemContract {
+    checked: boolean;
+    disabled: boolean;
+    expanded: boolean;
+    type: MenuItemType;
+}
+
+// @public
 export class MenuItemController {
     constructor(host: MenuItemElement, internals: MenuItemInternals);
     connect(): void;
     disconnect(): void;
+    get expanded(): boolean;
     stateChanged(): void;
     submenuChanged(): void;
 }
 
 // @public
-export interface MenuItemElement extends HTMLElement {
-    checked: boolean;
-    disabled: boolean;
+export const menuItemDocumentation: {
+    readonly id: "menuItem";
+    readonly definition: "A **Menu Item** is an entry in a menu: one that does something, a checkbox, a radio, or one that opens a submenu (`role=\"menuitem\"`, `menuitemcheckbox`, or `menuitemradio`).";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the item; checkbox and radio kinds show an indicator part; a submenu part holds the nested menu.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly indicator: {
+                readonly description: "The checked glyph of a checkbox or radio item, hidden for plain items.";
+            };
+            readonly content: {
+                readonly description: "The default slot label and optional `start` and `end` slots.";
+            };
+            readonly submenuIcon: {
+                readonly description: "The icon shown when the item has a submenu.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "type";
+            readonly kind: "enum";
+            readonly description: "Whether the item does something, toggles checked, or is one of a radio group.";
+            readonly enumValues: readonly [{
+                readonly id: "item";
+                readonly description: "Plain item (`role=\"menuitem\"`).";
+            }, {
+                readonly id: "checkbox";
+                readonly description: "Checkbox item (`role=\"menuitemcheckbox\"`).";
+            }, {
+                readonly id: "radio";
+                readonly description: "Radio item (`role=\"menuitemradio\"`).";
+            }];
+        }, {
+            readonly id: "checked";
+            readonly kind: "boolean";
+            readonly description: "Whether a checkbox or radio item is checked.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled: it stays focusable, and can't be activated.";
+        }, {
+            readonly id: "expanded";
+            readonly kind: "boolean";
+            readonly description: "Whether its submenu popover is open.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "default";
+            readonly description: "The item label.";
+        }, {
+            readonly id: "start";
+            readonly description: "Optional content before the label.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the label.";
+        }, {
+            readonly id: "submenu";
+            readonly description: "The nested menu popover, when the item opens a submenu.";
+        }, {
+            readonly id: "checkbox-indicator";
+            readonly description: "Replaces the default checkbox indicator.";
+        }, {
+            readonly id: "radio-indicator";
+            readonly description: "Replaces the default radio indicator.";
+        }, {
+            readonly id: "submenu-icon";
+            readonly description: "Replaces the default submenu icon.";
+        }];
+    };
+};
+
+// @public
+export interface MenuItemElement extends HTMLElement, MenuItemContract {
     startColumns: MenuItemStartColumns;
     submenu: HTMLElement | null;
-    type: MenuItemType;
 }
 
 // @public
@@ -582,6 +1291,17 @@ export const MenuItemParts: {
 };
 
 // @public
+export const MenuItemSlots: {
+    readonly default: "";
+    readonly start: "start";
+    readonly end: "end";
+    readonly submenu: "submenu";
+    readonly checkboxIndicator: "checkbox-indicator";
+    readonly radioIndicator: "radio-indicator";
+    readonly submenuIcon: "submenu-icon";
+};
+
+// @public
 export type MenuItemStartColumns = 0 | 1 | 2;
 
 // @public
@@ -591,13 +1311,59 @@ export const MenuItemType: {
     readonly radio: "radio";
 };
 
+// @public (undocumented)
+export type MenuItemType = (typeof MenuItemType)[keyof typeof MenuItemType];
+
 // @public
-export type MenuItemType = ValuesOf<typeof MenuItemType>;
+export const menuItemWebBinding: {
+    conditionSelectors: {
+        type: {
+            item: string;
+            checkbox: string;
+            radio: string;
+        };
+        checked: string;
+        disabled: string;
+        expanded: string;
+    };
+    partSelectors: {
+        indicator: string;
+        content: string;
+        submenuIcon: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+    };
+    focus: FocusDefinition<any>;
+};
 
 // @public
 export type MenuOptions = {
     isItem: (element: Element) => element is MenuItemElement;
 };
+
+// @public
+export const MenuSlots: {
+    readonly default: "";
+};
+
+// @public
+export const menuWebBinding: {
+    conditionSelectors: {
+        submenu: string;
+    };
+    partSelectors: {};
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export interface NumberFieldContract extends TextInputContract {
+    hideStep: boolean;
+    max: number | null;
+    min: number | null;
+    step: number | null;
+}
 
 // @public
 export class NumberFieldController extends TextInputController<NumberFieldElement> {
@@ -609,11 +1375,184 @@ export class NumberFieldController extends TextInputController<NumberFieldElemen
 }
 
 // @public
-export interface NumberFieldElement extends TextInputElement {
-    hideStep: boolean;
-    max: number | null;
-    min: number | null;
-    step: number | null;
+export const numberFieldDocumentation: {
+    readonly id: "numberField";
+    readonly definition: "A **Number Field** is a field that the user types a number in. It is a text input around a native `<input type=\"number\">`, which parses the number, steps it with the arrow keys, and validates its range and step. Its step buttons are for the pointer, not the tab order, since the arrow keys step.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-16";
+    };
+    readonly disambiguation: readonly [{
+        readonly id: "textField";
+        readonly use: "Use when the value is text, or a number that is an identifier (a postal code) rather than a quantity.";
+    }, {
+        readonly id: "slider";
+        readonly use: "Use when the user picks a value within a range by direction and approximate position, not by typing it.";
+    }];
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
+            };
+            readonly root: {
+                readonly description: "The box around the control, the step buttons, and the `start` and `end` slots.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly control: {
+                        readonly description: "The native `<input type=\"number\">`; receives DOM focus and shows the text cursor.";
+                    };
+                    readonly controls: {
+                        readonly description: "The step buttons, hidden from assistive technology since the arrow keys step.";
+                        readonly parts: {
+                            readonly stepUp: {
+                                readonly description: "The button that steps up.";
+                                readonly interactive: true;
+                            };
+                            readonly stepDown: {
+                                readonly description: "The button that steps down.";
+                                readonly interactive: true;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "textInput";
+            readonly definition: "A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>` (the control), since what the browser does for one (selection, input methods, spelling, autofill) can't be done for a custom element. The host is the form control, through `ElementInternals`, with the control's value and validity.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-16";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "readOnly";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is read only: it takes focus and its text can be selected, and the user can't change it. It isn't validated.";
+                }, {
+                    readonly id: "required";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it must have a value for its form to be valid.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "placeholder";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "A hint of what to type, shown while it is empty. It isn't a label.";
+                }, {
+                    readonly id: "maxLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The most characters the user can type.";
+                }, {
+                    readonly id: "minLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The fewest characters of a valid value.";
+                }, {
+                    readonly id: "autocomplete";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "What the browser can fill it with (`email`, `current-password`, ...).";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "min";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The least valid value.";
+        }, {
+            readonly id: "max";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The greatest valid value.";
+        }, {
+            readonly id: "step";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The step between valid values, from `min`. The default is 1, as a native number input's.";
+        }, {
+            readonly id: "hideStep";
+            readonly kind: "boolean";
+            readonly description: "Whether the step buttons are hidden.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the control, commonly an icon.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the control, commonly an icon or affordance.";
+        }, {
+            readonly id: "step-up-glyph";
+            readonly description: "Replaces the glyph of the button that steps up.";
+        }, {
+            readonly id: "step-down-glyph";
+            readonly description: "Replaces the glyph of the button that steps down.";
+        }];
+    };
+    readonly accessibility: {
+        readonly summary: "The label is associated with the native input, which has the `spinbutton` role. The arrow keys step the value, so the step buttons are out of the tab order and hidden from assistive technology.";
+        readonly responsibilities: readonly ["Provide a visible label (`label` or the `label` slot), or set `hideLabel` only when another clear accessible name is present.", "Do not rely on `placeholder` alone to convey the field's purpose."];
+    };
+    readonly capabilities: {
+        readonly summary: "Native number parsing, stepping, range validation, and form participation without product handlers.";
+        readonly items: readonly [{
+            readonly id: "formAssociated";
+            readonly description: "Participates in form data and validation through `ElementInternals` on the host.";
+        }, {
+            readonly id: "delegatesFocus";
+            readonly description: "`delegatesFocus` routes focus from the host and its label to the inner `<input>`.";
+        }, {
+            readonly id: "nativeValidation";
+            readonly description: "Range, step, and bad input constraints surface the input's validity on the host (`rangeUnderflow`, `rangeOverflow`, `stepMismatch`, `badInput`).";
+        }, {
+            readonly id: "stepping";
+            readonly description: "`stepUp()` and `stepDown()` step the value as the step buttons do, emitting `input` and `change`.";
+        }];
+    };
+};
+
+// @public
+export interface NumberFieldElement extends TextInputElement, NumberFieldContract {
     stepDown(): void;
     stepUp(): void;
 }
@@ -626,6 +1565,44 @@ export const NumberFieldParts: {
     readonly controls: "controls";
     readonly stepUp: "step-up";
     readonly stepDown: "step-down";
+};
+
+// @public
+export const NumberFieldSlots: {
+    readonly label: "label";
+    readonly start: "start";
+    readonly end: "end";
+    readonly stepUpGlyph: "step-up-glyph";
+    readonly stepDownGlyph: "step-down-glyph";
+};
+
+// @public
+export const numberFieldWebBinding: {
+    conditionSelectors: {
+        hideStep: string;
+        hideLabel: string;
+        disabled: string;
+        readOnly: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        root: string;
+        control: string;
+        controls: string;
+        stepUp: string;
+        stepDown: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<Record<"label" | "control" | "root" | "controls" | "stepUp" | "stepDown", string>>;
+    cursor: {
+        part: "control";
+        cursorType: string;
+    };
 };
 
 // @public
@@ -668,6 +1645,20 @@ export const Orientation: {
 export type Orientation = ValuesOf<typeof Orientation>;
 
 // @public
+export interface PickerContract extends LabelledContract {
+    disabled: boolean;
+    freeform: boolean;
+    loading: boolean;
+    multiple: boolean;
+    name: string | null;
+    open: boolean;
+    placeholder: string | null;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
+
+// @public
 export class PickerController {
     constructor(host: PickerElement, internals: PickerInternals);
     close(): void;
@@ -688,18 +1679,144 @@ export class PickerController {
 }
 
 // @public
-export interface PickerElement extends FormControlElement, LabelledElement {
-    disabled: boolean;
-    freeform: boolean;
-    loading: boolean;
-    multiple: boolean;
-    name: string | null;
-    placeholder: string | null;
+export const pickerDocumentation: {
+    readonly id: "picker";
+    readonly definition: "A **Picker** is a combobox that suggests options from a popup as the user types, and takes one value or several listed before the input.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
+            };
+            readonly root: {
+                readonly description: "The box of the field, around the values and the input.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly values: {
+                        readonly description: "The list of the values (`role=\"list\"`), before the input, in multiple selection.";
+                    };
+                    readonly value: {
+                        readonly description: "A value in the list (`role=\"listitem\"`).";
+                    };
+                    readonly valueLabel: {
+                        readonly description: "The label of a value.";
+                    };
+                    readonly valueRemove: {
+                        readonly description: "The button that removes a value, for the pointer.";
+                    };
+                    readonly control: {
+                        readonly description: "The native input (`role=\"combobox\"`), which has the focus.";
+                    };
+                    readonly indicator: {
+                        readonly description: "The indicator that it opens.";
+                    };
+                };
+            };
+            readonly popup: {
+                readonly description: "The popup, a popover anchored to the root, with the listbox and the status.";
+                readonly parts: {
+                    readonly listbox: {
+                        readonly description: "The list of the options (`role=\"listbox\"`).";
+                    };
+                    readonly status: {
+                        readonly description: "The status of the popup (`role=\"status\"`): loading or no results.";
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its values in the form data.";
+        }, {
+            readonly id: "multiple";
+            readonly kind: "boolean";
+            readonly description: "Whether it takes any number of values, or one.";
+        }, {
+            readonly id: "freeform";
+            readonly kind: "boolean";
+            readonly description: "Whether it takes values that aren't options: the text typed.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: the user can't change its values.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether a value is needed for its form to be valid.";
+        }, {
+            readonly id: "loading";
+            readonly kind: "boolean";
+            readonly description: "Whether the author is finding options; the status says so.";
+        }, {
+            readonly id: "placeholder";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The text shown in the empty input.";
+        }, {
+            readonly id: "open";
+            readonly kind: "boolean";
+            readonly description: "Whether the popup is open.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The first value, or an empty string without one.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the input in the root.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the indicator in the root.";
+        }, {
+            readonly id: "indicator";
+            readonly description: "Replaces the default open indicator.";
+        }, {
+            readonly id: "no-results";
+            readonly description: "Replaces the default no-results text in the status.";
+        }, {
+            readonly id: "loading";
+            readonly description: "Replaces the default loading text in the status.";
+        }];
+    };
+};
+
+// @public
+export interface PickerElement extends FormControlElement, PickerContract {
     readonly query: string;
-    readOnly: boolean;
-    required: boolean;
     readonly selectedOptions: readonly ListboxOptionElement[];
-    value: string;
     readonly values: readonly string[];
 }
 
@@ -722,6 +1839,16 @@ export const PickerParts: {
 };
 
 // @public
+export const PickerSlots: {
+    readonly label: "label";
+    readonly start: "start";
+    readonly end: "end";
+    readonly indicator: "indicator";
+    readonly noResults: "no-results";
+    readonly loading: "loading";
+};
+
+// @public
 export type PickerTemplateElements = {
     root: HTMLElement;
     control: HTMLInputElement;
@@ -734,16 +1861,145 @@ export type PickerTemplateElements = {
 };
 
 // @public
+export const pickerWebBinding: {
+    conditionSelectors: {
+        open: string;
+        multiple: string;
+        freeform: string;
+        loading: string;
+        readOnly: string;
+        disabled: string;
+        required: string;
+        hideLabel: string;
+    };
+    partSelectors: {
+        label: string;
+        root: string;
+        values: string;
+        value: string;
+        valueLabel: string;
+        valueRemove: string;
+        control: string;
+        indicator: string;
+        popup: string;
+        listbox: string;
+        status: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly parts: {
+    readonly label: {
+    readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
+    };
+    readonly root: {
+    readonly description: "The box of the field, around the values and the input.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly values: {
+    readonly description: "The list of the values (`role=\"list\"`), before the input, in multiple selection.";
+    };
+    readonly value: {
+    readonly description: "A value in the list (`role=\"listitem\"`).";
+    };
+    readonly valueLabel: {
+    readonly description: "The label of a value.";
+    };
+    readonly valueRemove: {
+    readonly description: "The button that removes a value, for the pointer.";
+    };
+    readonly control: {
+    readonly description: "The native input (`role=\"combobox\"`), which has the focus.";
+    };
+    readonly indicator: {
+    readonly description: "The indicator that it opens.";
+    };
+    };
+    };
+    readonly popup: {
+    readonly description: "The popup, a popover anchored to the root, with the listbox and the status.";
+    readonly parts: {
+    readonly listbox: {
+    readonly description: "The list of the options (`role=\"listbox\"`).";
+    };
+    readonly status: {
+    readonly description: "The status of the popup (`role=\"status\"`): loading or no results.";
+    };
+    };
+    };
+    };
+    }>>;
+};
+
+// @public
 export function placeTreeItems(items: readonly TreeItemElement[]): void;
 
 // @public
 export function progressAria(progress: ProgressElement): DefaultAria;
 
 // @public
-export interface ProgressElement extends HTMLElement {
+export interface ProgressContract {
     max: number;
     min: number;
     value: number | null;
+}
+
+// @public
+export const progressDocumentation: {
+    readonly id: "progress";
+    readonly definition: "A **Progress** indicator shows how much of a task is done (`role=\"progressbar\"`), between a minimum and maximum, or that work is ongoing when the value is not known.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the progress bar; either the `determinate` or `indeterminate` part is shown from whether `value` is known.";
+        readonly parts: {
+            readonly determinate: {
+                readonly description: "Shown when `value` is known; holds the `determinate` slot and the default indicator.";
+            };
+            readonly indeterminate: {
+                readonly description: "Shown when `value` is not known; holds the `indeterminate` slot and the default indicator.";
+            };
+            readonly indicator: {
+                readonly description: "What shows the progress inside the visible container part.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly properties: readonly [{
+            readonly id: "value";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "How much is done, or no value when progress is not known (indeterminate). Not styled as a condition.";
+        }, {
+            readonly id: "min";
+            readonly kind: "number";
+            readonly description: "The value at which nothing is done. The default is 0.";
+        }, {
+            readonly id: "max";
+            readonly kind: "number";
+            readonly description: "The value at which all is done. The default is 100.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "determinate";
+            readonly description: "Replaces the default indicator when progress is determinate.";
+        }, {
+            readonly id: "indeterminate";
+            readonly description: "Replaces the default indicator when progress is indeterminate.";
+        }];
+    };
+    readonly accessibility: {
+        readonly summary: "An indeterminate progress has no value for assistive technology, so the author names it (`aria-label`), as for any progress.";
+    };
+};
+
+// @public
+export interface ProgressElement extends HTMLElement, ProgressContract {
 }
 
 // @public
@@ -757,12 +2013,117 @@ export const ProgressParts: {
 export function progressPercent(progress: ProgressElement): number | null;
 
 // @public
+export interface ProgressRingContract extends ProgressContract {
+}
+
+// @public
+export const progressRingDocumentation: {
+    readonly id: "progressRing";
+    readonly definition: "A **Progress Ring** is a circular progress indicator. It has the same range and value contract as a progress bar; the ring adds a background arc behind the indicator.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "Like a progress bar, either `determinate` or `indeterminate` is shown; the default ring indicator includes a `background` part.";
+        readonly parts: {
+            readonly determinate: {
+                readonly description: "Shown when `value` is known; holds the `determinate` slot and the default ring indicator.";
+            };
+            readonly indeterminate: {
+                readonly description: "Shown when `value` is not known; holds the `indeterminate` slot and the default ring indicator.";
+            };
+            readonly indicator: {
+                readonly description: "The arc that shows progress inside the visible container part.";
+            };
+            readonly background: {
+                readonly description: "The circle behind the indicator arc in the default ring.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "progress";
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "value";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "How much is done, or no value when progress is not known (indeterminate). Not styled as a condition.";
+                }, {
+                    readonly id: "min";
+                    readonly kind: "number";
+                    readonly description: "The value at which nothing is done. The default is 0.";
+                }, {
+                    readonly id: "max";
+                    readonly kind: "number";
+                    readonly description: "The value at which all is done. The default is 100.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "determinate";
+                    readonly description: "Replaces the default indicator when progress is determinate.";
+                }, {
+                    readonly id: "indeterminate";
+                    readonly description: "Replaces the default indicator when progress is indeterminate.";
+                }];
+            };
+        }];
+        readonly properties: readonly [];
+        readonly slots: readonly [];
+    };
+};
+
+// @public
+export type ProgressRingElement = ProgressElement;
+
+// @public
 export const ProgressRingParts: {
     readonly determinate: "determinate";
     readonly indeterminate: "indeterminate";
     readonly indicator: "indicator";
     readonly background: "background";
 };
+
+// @public
+export const ProgressRingSlots: {
+    readonly determinate: "determinate";
+    readonly indeterminate: "indeterminate";
+};
+
+// @public
+export const progressRingWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {
+        determinate: string;
+        indeterminate: string;
+        indicator: string;
+        background: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export const ProgressSlots: {
+    readonly determinate: "determinate";
+    readonly indeterminate: "indeterminate";
+};
+
+// @public
+export const progressWebBinding: {
+    conditionSelectors: {};
+    partSelectors: {
+        determinate: string;
+        indeterminate: string;
+        indicator: string;
+    };
+    interactivity: InteractivityDefinition;
+};
+
+// @public
+export interface RadioContract extends CheckableContract {
+    groupDisabled: boolean;
+    groupReadOnly: boolean;
+}
 
 // @public
 export class RadioController extends CheckableController<RadioElement> {
@@ -776,9 +2137,106 @@ export class RadioController extends CheckableController<RadioElement> {
 }
 
 // @public
-export interface RadioElement extends CheckableElement {
-    groupDisabled: boolean;
-    groupReadOnly: boolean;
+export const radioDocumentation: {
+    readonly id: "radio";
+    readonly definition: "A **Radio** is one option in a radio group (`role=\"radio\"`). The host is the radio and the form control through `ElementInternals`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the radio; the control part holds the checked indicator.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly control: {
+                readonly description: "The circle, with the checked indicator.";
+            };
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the radio.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "checkable";
+            readonly definition: "A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. The host is the form control through `ElementInternals`.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-17";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "checked";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is checked now. Not an attribute: the `checked` attribute is whether it is checked by default, before the user or code checks or unchecks it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "Its value in the form data when it is checked. The default is `on`, as a native checkbox's is.";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "groupReadOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether its radio group is read only, which makes it read only.";
+        }, {
+            readonly id: "groupDisabled";
+            readonly kind: "boolean";
+            readonly description: "Whether its radio group is disabled, which disables it. The radio's own `disabled` attribute is the author's.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "checked-indicator";
+            readonly description: "Replaces the default checked glyph in the control part.";
+        }];
+    };
+};
+
+// @public
+export interface RadioElement extends CheckableElement, RadioContract {
+}
+
+// @public
+export interface RadioGroupContract extends LabelledContract {
+    disabled: boolean;
+    name: string | null;
+    orientation: RadioGroupOrientation;
+    readOnly: boolean;
+    required: boolean;
+    value: string | null;
 }
 
 // @public
@@ -799,17 +2257,98 @@ export class RadioGroupController {
 }
 
 // @public
-export interface RadioGroupElement extends FormControlElement, LabelledElement {
-    disabled: boolean;
-    name: string | null;
-    orientation: Orientation;
-    readOnly: boolean;
-    required: boolean;
-    value: string | null;
+export const radioGroupDocumentation: {
+    readonly id: "radioGroup";
+    readonly definition: "A **Radio Group** is a set of radios of which one is checked (`role=\"radiogroup\"`). The host is the form control for group validity and disabled state; each radio gives its value.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the group, hidden from assistive technology so it isn't read twice.";
+            };
+            readonly positioningRegion: {
+                readonly description: "The container of the radios, laid out in the orientation.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of the radios in the form data, given to each of them when it is set.";
+        }, {
+            readonly id: "orientation";
+            readonly kind: "enum";
+            readonly description: "The direction in which the radios are laid out.";
+            readonly enumValues: readonly [{
+                readonly id: "horizontal";
+                readonly description: "Radios in a row.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "Radios in a column.";
+            }];
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: the arrow keys move focus without checking.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled, which disables its radios. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether one of its radios must be checked for its form to be valid.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The value of the checked radio, or null when none is. Setting it checks the radio with that value.";
+        }];
+        readonly slots: readonly [];
+    };
+};
+
+// @public
+export interface RadioGroupElement extends FormControlElement, RadioGroupContract {
 }
 
 // @public
 export type RadioGroupInternals = Pick<ElementInternals, "role" | "ariaOrientation" | "ariaLabel" | "ariaLabelledByElements" | "ariaReadOnly" | "ariaRequired" | "setValidity">;
+
+// @public
+export const RadioGroupOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public (undocumented)
+export type RadioGroupOrientation = (typeof RadioGroupOrientation)[keyof typeof RadioGroupOrientation];
 
 // @public
 export const RadioGroupParts: {
@@ -818,9 +2357,63 @@ export const RadioGroupParts: {
 };
 
 // @public
+export const RadioGroupSlots: {
+    readonly label: "label";
+};
+
+// @public
+export const radioGroupWebBinding: {
+    conditionSelectors: {
+        hideLabel: string;
+        orientation: {
+            horizontal: string;
+            vertical: string;
+        };
+        readOnly: string;
+        disabled: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        positioningRegion: string;
+    };
+    interactivity: {
+        disabled: string;
+    };
+};
+
+// @public
 export const RadioParts: {
     readonly control: "control";
     readonly label: "label";
+};
+
+// @public
+export const RadioSlots: {
+    readonly label: "label";
+    readonly checkedIndicator: "checked-indicator";
+};
+
+// @public
+export const radioWebBinding: {
+    conditionSelectors: {
+        groupReadOnly: string;
+        groupDisabled: string;
+        hideLabel: string;
+        checked: string;
+        disabled: string;
+    };
+    partSelectors: {
+        control: string;
+        label: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<any>;
+    cursor: false;
 };
 
 // @public
@@ -846,6 +2439,11 @@ export type RovingFocusOptions<T extends HTMLElement = HTMLElement> = {
 };
 
 // @public
+export interface SearchContract extends TextInputContract {
+    pattern: string | null;
+}
+
+// @public
 export class SearchController extends TextInputController<SearchElement> {
     constructor(host: SearchElement, internals: TextInputInternals);
     clear(): void;
@@ -854,9 +2452,158 @@ export class SearchController extends TextInputController<SearchElement> {
 }
 
 // @public
-export interface SearchElement extends TextInputElement {
+export const searchDocumentation: {
+    readonly id: "search";
+    readonly definition: "A **Search** is a field that the user types a search in. It is a text input around a native `<input type=\"search\">` (the `searchbox` role), with a clear button. The clear button is for the pointer, not the tab order: Escape clears a search field.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-16";
+    };
+    readonly disambiguation: readonly [{
+        readonly id: "textField";
+        readonly use: "Use for a value that is entered into a form, not a query that searches or filters.";
+    }];
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
+            };
+            readonly root: {
+                readonly description: "The box around the control, the clear button, and the `start` and `end` slots.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly inputWrapper: {
+                        readonly description: "Wraps the control and the clear button.";
+                        readonly parts: {
+                            readonly control: {
+                                readonly description: "The native `<input type=\"search\">`; receives DOM focus and shows the text cursor.";
+                            };
+                            readonly clearButton: {
+                                readonly description: "The button that clears the value, hidden without a value or when read only.";
+                                readonly interactive: true;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "textInput";
+            readonly definition: "A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>` (the control), since what the browser does for one (selection, input methods, spelling, autofill) can't be done for a custom element. The host is the form control, through `ElementInternals`, with the control's value and validity.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-16";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "readOnly";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is read only: it takes focus and its text can be selected, and the user can't change it. It isn't validated.";
+                }, {
+                    readonly id: "required";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it must have a value for its form to be valid.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "placeholder";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "A hint of what to type, shown while it is empty. It isn't a label.";
+                }, {
+                    readonly id: "maxLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The most characters the user can type.";
+                }, {
+                    readonly id: "minLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The fewest characters of a valid value.";
+                }, {
+                    readonly id: "autocomplete";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "What the browser can fill it with (`email`, `current-password`, ...).";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "pattern";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "A regular expression that a valid value matches.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the control, commonly an icon.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the control, commonly an icon or affordance.";
+        }, {
+            readonly id: "clear-glyph";
+            readonly description: "Replaces the glyph of the clear button.";
+        }];
+    };
+    readonly accessibility: {
+        readonly summary: "The label is associated with the native input, which has the `searchbox` role. Escape clears the value, so the clear button is out of the tab order and hidden from assistive technology.";
+        readonly responsibilities: readonly ["Provide a visible label (`label` or the `label` slot), or set `hideLabel` only when another clear accessible name is present.", "Do not rely on `placeholder` alone to convey the field's purpose."];
+    };
+    readonly capabilities: {
+        readonly summary: "Native search input editing, constraint validation, clearing, and form participation without product handlers.";
+        readonly items: readonly [{
+            readonly id: "formAssociated";
+            readonly description: "Participates in form data and validation through `ElementInternals` on the host.";
+        }, {
+            readonly id: "delegatesFocus";
+            readonly description: "`delegatesFocus` routes focus from the host and its label to the inner `<input>`.";
+        }, {
+            readonly id: "clearing";
+            readonly description: "`clear()` and Escape empty the value, emitting `input` and `change`, and focus the field.";
+        }];
+    };
+};
+
+// @public
+export interface SearchElement extends TextInputElement, SearchContract {
     clear(): void;
-    pattern: string | null;
 }
 
 // @public
@@ -867,6 +2614,51 @@ export const SearchParts: {
     readonly control: "control";
     readonly clearButton: "clear-button";
 };
+
+// @public
+export const SearchSlots: {
+    readonly label: "label";
+    readonly start: "start";
+    readonly end: "end";
+    readonly clearGlyph: "clear-glyph";
+};
+
+// @public
+export const searchWebBinding: {
+    conditionSelectors: {
+        hideLabel: string;
+        disabled: string;
+        readOnly: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        root: string;
+        inputWrapper: string;
+        control: string;
+        clearButton: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<Record<"label" | "control" | "root" | "inputWrapper" | "clearButton", string>>;
+    cursor: {
+        part: "control";
+        cursorType: string;
+    };
+};
+
+// @public
+export interface SelectContract extends LabelledContract {
+    disabled: boolean;
+    name: string | null;
+    open: boolean;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
 
 // @public
 export class SelectController {
@@ -887,12 +2679,99 @@ export class SelectController {
 }
 
 // @public
-export interface SelectElement extends FormControlElement, LabelledElement {
-    disabled: boolean;
-    name: string | null;
-    readOnly: boolean;
-    required: boolean;
-    value: string;
+export const selectDocumentation: {
+    readonly id: "select";
+    readonly definition: "A **Select** is a combobox that shows the selected option and opens a popup of options (`role=\"combobox\"`), as a native `<select>`. The host is the form control.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the select.";
+            };
+            readonly control: {
+                readonly description: "The combobox, which has the focus and shows the selected option.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly selectedValue: {
+                        readonly description: "The text of the selected option, in the control.";
+                    };
+                    readonly indicator: {
+                        readonly description: "The indicator that it opens, in the control.";
+                    };
+                };
+            };
+            readonly listbox: {
+                readonly description: "The popup of the options (`role=\"listbox\"`), a popover anchored to the control.";
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its value in the form data.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` around it disables it too, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: it opens, and the keys move, but the user can't select.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether an option with a value must be selected for its form to be valid.";
+        }, {
+            readonly id: "open";
+            readonly kind: "boolean";
+            readonly description: "Whether the popup is open.";
+        }, {
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The value of the selected option, or an empty string when none is.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the selected value in the control.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the indicator in the control.";
+        }, {
+            readonly id: "indicator";
+            readonly description: "Replaces the default open indicator in the control.";
+        }];
+    };
+};
+
+// @public
+export interface SelectElement extends FormControlElement, SelectContract {
 }
 
 // @public
@@ -908,10 +2787,64 @@ export const SelectParts: {
 };
 
 // @public
+export const SelectSlots: {
+    readonly label: "label";
+    readonly start: "start";
+    readonly end: "end";
+    readonly indicator: "indicator";
+};
+
+// @public
 export function selectTab(tab: TabElement): void;
 
 // @public
 export function selectTreeItem(item: TreeItemElement): void;
+
+// @public
+export const selectWebBinding: {
+    conditionSelectors: {
+        open: string;
+        readOnly: string;
+        disabled: string;
+        required: string;
+        hideLabel: string;
+    };
+    partSelectors: {
+        label: string;
+        control: string;
+        selectedValue: string;
+        indicator: string;
+        listbox: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<BindingPartSelectorsFor<    {
+    readonly parts: {
+    readonly label: {
+    readonly description: "The `label` slot or `label` attribute text that names the select.";
+    };
+    readonly control: {
+    readonly description: "The combobox, which has the focus and shows the selected option.";
+    readonly interactive: true;
+    readonly indicatesFocus: true;
+    readonly parts: {
+    readonly selectedValue: {
+    readonly description: "The text of the selected option, in the control.";
+    };
+    readonly indicator: {
+    readonly description: "The indicator that it opens, in the control.";
+    };
+    };
+    };
+    readonly listbox: {
+    readonly description: "The popup of the options (`role=\"listbox\"`), a popover anchored to the control.";
+    };
+    };
+    }>>;
+};
 
 // @public
 export function setBreadcrumbItems(items: readonly BreadcrumbItemElement[]): void;
@@ -1018,6 +2951,12 @@ export class SpacePressController {
 }
 
 // @public
+export interface SwitchContract extends CheckableContract {
+    readOnly: boolean;
+    required: boolean;
+}
+
+// @public
 export class SwitchController extends CheckableController<SwitchElement> {
     constructor(host: SwitchElement, internals: CheckableInternals);
     // (undocumented)
@@ -1027,16 +2966,137 @@ export class SwitchController extends CheckableController<SwitchElement> {
 }
 
 // @public
-export interface SwitchElement extends CheckableElement {
-    readOnly: boolean;
-    required: boolean;
+export const switchDocumentation: {
+    readonly id: "switch";
+    readonly definition: "A **Switch** turns something on and off. The host is the switch (`role=\"switch\"`) and the form control through `ElementInternals`.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-17";
+    };
+    readonly structure: {
+        readonly description: "The host is the switch; the switch part holds the thumb or an author-provided track.";
+        readonly interactive: true;
+        readonly indicatesFocus: true;
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text that names the switch.";
+            };
+            readonly switch: {
+                readonly description: "The track, with the thumb.";
+                readonly parts: {
+                    readonly thumb: {
+                        readonly description: "What moves along the track.";
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "checkable";
+            readonly definition: "A control that is checked or not, as a native checkbox or radio is: a checkbox, a switch, or a radio. The host is the form control through `ElementInternals`.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-17";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "checked";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is checked now. Not an attribute: the `checked` attribute is whether it is checked by default, before the user or code checks or unchecks it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "Its value in the form data when it is checked. The default is `on`, as a native checkbox's is.";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether it must be on for its form to be valid.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: it takes focus, and the user can't check or uncheck it. It isn't validated, as a read only native input isn't.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "switch";
+            readonly description: "Replaces the default track and thumb in the switch part.";
+        }];
+    };
+};
+
+// @public
+export interface SwitchElement extends CheckableElement, SwitchContract {
 }
 
 // @public
 export const SwitchParts: {
-    readonly switch: "switch";
     readonly label: "label";
+    readonly switch: "switch";
     readonly thumb: "thumb";
+};
+
+// @public
+export const SwitchSlots: {
+    readonly label: "label";
+    readonly switch: "switch";
+};
+
+// @public
+export const switchWebBinding: {
+    conditionSelectors: {
+        readOnly: string;
+        required: string;
+        hideLabel: string;
+        checked: string;
+        disabled: string;
+    };
+    partSelectors: {
+        label: string;
+        switch: string;
+        thumb: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<any>;
+    cursor: false;
 };
 
 // @public
@@ -1089,6 +3149,13 @@ export const TabParts: {
 };
 
 // @public
+export interface TextAreaContract extends TextInputContract {
+    cols: number | null;
+    resize: TextAreaResize;
+    rows: number | null;
+}
+
+// @public
 export class TextAreaController extends TextInputController<TextAreaElement> {
     constructor(host: TextAreaElement, internals: TextInputInternals);
     // (undocumented)
@@ -1096,10 +3163,156 @@ export class TextAreaController extends TextInputController<TextAreaElement> {
 }
 
 // @public
-export interface TextAreaElement extends TextInputElement {
-    cols: number | null;
-    resize: TextAreaResize;
-    rows: number | null;
+export const textAreaDocumentation: {
+    readonly id: "textArea";
+    readonly definition: "A **Text Area** is a field of several lines that the user types text in. It is a text input around a native `<textarea>`, which receives the focus and handles editing, validation, and autofill. Enter starts a line; it doesn't submit the form.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-16";
+    };
+    readonly disambiguation: readonly [{
+        readonly id: "textField";
+        readonly use: "Use for a single line of typed text.";
+    }];
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the control.";
+            };
+            readonly control: {
+                readonly description: "The native `<textarea>`; receives DOM focus and shows the text cursor.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "textInput";
+            readonly definition: "A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>` (the control), since what the browser does for one (selection, input methods, spelling, autofill) can't be done for a custom element. The host is the form control, through `ElementInternals`, with the control's value and validity.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-16";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "readOnly";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is read only: it takes focus and its text can be selected, and the user can't change it. It isn't validated.";
+                }, {
+                    readonly id: "required";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it must have a value for its form to be valid.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "placeholder";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "A hint of what to type, shown while it is empty. It isn't a label.";
+                }, {
+                    readonly id: "maxLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The most characters the user can type.";
+                }, {
+                    readonly id: "minLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The fewest characters of a valid value.";
+                }, {
+                    readonly id: "autocomplete";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "What the browser can fill it with (`email`, `current-password`, ...).";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "rows";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The lines it shows.";
+        }, {
+            readonly id: "cols";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The characters of a line it shows.";
+        }, {
+            readonly id: "resize";
+            readonly kind: "enum";
+            readonly description: "How the user can resize it. The template's styles do it. The default is `none`.";
+            readonly enumValues: readonly [{
+                readonly id: "none";
+                readonly description: "The user can't resize it.";
+            }, {
+                readonly id: "both";
+                readonly description: "The user can resize it in both directions.";
+            }, {
+                readonly id: "horizontal";
+                readonly description: "The user can resize its width.";
+            }, {
+                readonly id: "vertical";
+                readonly description: "The user can resize its height.";
+            }];
+        }];
+        readonly slots: readonly [];
+    };
+    readonly accessibility: {
+        readonly summary: "The label is associated with the native `<textarea>`. The host forwards author `aria-*` attributes to it; an external `<label for>` also names the control.";
+        readonly responsibilities: readonly ["Provide a visible label (`label` or the `label` slot), or set `hideLabel` only when another clear accessible name is present.", "Do not rely on `placeholder` alone to convey the field's purpose."];
+    };
+    readonly capabilities: {
+        readonly summary: "Native textarea editing, constraint validation, autofill, and form participation without product handlers.";
+        readonly items: readonly [{
+            readonly id: "formAssociated";
+            readonly description: "Participates in form data and validation through `ElementInternals` on the host.";
+        }, {
+            readonly id: "delegatesFocus";
+            readonly description: "`delegatesFocus` routes focus from the host and its label to the inner `<textarea>`.";
+        }, {
+            readonly id: "multiline";
+            readonly description: "Enter starts a line; there is no implicit form submission.";
+        }];
+    };
+};
+
+// @public
+export interface TextAreaElement extends TextInputElement, TextAreaContract {
 }
 
 // @public
@@ -1116,11 +3329,52 @@ export const TextAreaResize: {
     readonly vertical: "vertical";
 };
 
+// @public (undocumented)
+export type TextAreaResize = (typeof TextAreaResize)[keyof typeof TextAreaResize];
+
 // @public
-export type TextAreaResize = ValuesOf<typeof TextAreaResize>;
+export const TextAreaSlots: {
+    readonly label: "label";
+};
+
+// @public
+export const textAreaWebBinding: {
+    conditionSelectors: {
+        resize: {
+            none: string;
+            both: string;
+            horizontal: string;
+            vertical: string;
+        };
+        hideLabel: string;
+        disabled: string;
+        readOnly: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        control: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<Record<"label" | "control", string>>;
+    cursor: {
+        part: "control";
+        cursorType: string;
+    };
+};
 
 // @public
 export type TextControl = HTMLInputElement | HTMLTextAreaElement;
+
+// @public
+export interface TextFieldContract extends TextInputContract {
+    pattern: string | null;
+    type: TextFieldType;
+}
 
 // @public
 export class TextFieldController extends TextInputController<TextFieldElement> {
@@ -1130,9 +3384,206 @@ export class TextFieldController extends TextInputController<TextFieldElement> {
 }
 
 // @public
-export interface TextFieldElement extends TextInputElement {
-    pattern: string | null;
-    type: TextFieldType;
+export const textFieldDocumentation: {
+    readonly id: "textField";
+    readonly definition: "A **Text Field** is a single-line control for typed text. The host is the form control through `ElementInternals`; a native `<input>` in the shadow root (the `control` part) handles editing, validation, and autofill.";
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-13";
+    };
+    readonly disambiguation: readonly [{
+        readonly id: "textArea";
+        readonly use: "Use when the user needs several lines of text, not a single line.";
+    }, {
+        readonly id: "search";
+        readonly use: "Use when the primary task is searching or filtering, with search-specific behavior and presentation.";
+    }, {
+        readonly id: "numberField";
+        readonly use: "Use when the value is numeric and stepping or range validation matters.";
+    }];
+    readonly structure: {
+        readonly parts: {
+            readonly label: {
+                readonly description: "The `label` slot or `label` attribute text in a `<label for>` that names the input.";
+            };
+            readonly root: {
+                readonly description: "Chrome around the control and optional `start` and `end` slots.";
+                readonly interactive: true;
+                readonly indicatesFocus: true;
+                readonly parts: {
+                    readonly control: {
+                        readonly description: "The native `<input>`; receives DOM focus and shows the text cursor.";
+                    };
+                };
+            };
+        };
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "textInput";
+            readonly definition: "A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>` (the control), since what the browser does for one (selection, input methods, spelling, autofill) can't be done for a custom element. The host is the form control, through `ElementInternals`, with the control's value and validity.";
+            readonly remarks: string;
+            readonly governance: {
+                readonly status: "published";
+                readonly lastReviewed: "2026-11-16";
+            };
+            readonly contract: {
+                readonly include: readonly [{
+                    readonly id: "labelled";
+                    readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+                    readonly remarks: string;
+                    readonly contract: {
+                        readonly properties: readonly [{
+                            readonly id: "label";
+                            readonly kind: "string";
+                            readonly nullable: true;
+                            readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                        }, {
+                            readonly id: "hideLabel";
+                            readonly kind: "boolean";
+                            readonly description: "Whether its label is hidden. The label still names it.";
+                        }];
+                        readonly slots: readonly [{
+                            readonly id: "label";
+                            readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                        }];
+                    };
+                }];
+                readonly properties: readonly [{
+                    readonly id: "value";
+                    readonly kind: "string";
+                    readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+                }, {
+                    readonly id: "disabled";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+                }, {
+                    readonly id: "readOnly";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it is read only: it takes focus and its text can be selected, and the user can't change it. It isn't validated.";
+                }, {
+                    readonly id: "required";
+                    readonly kind: "boolean";
+                    readonly description: "Whether it must have a value for its form to be valid.";
+                }, {
+                    readonly id: "name";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The name of its value in the form data.";
+                }, {
+                    readonly id: "placeholder";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "A hint of what to type, shown while it is empty. It isn't a label.";
+                }, {
+                    readonly id: "maxLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The most characters the user can type.";
+                }, {
+                    readonly id: "minLength";
+                    readonly kind: "number";
+                    readonly nullable: true;
+                    readonly description: "The fewest characters of a valid value.";
+                }, {
+                    readonly id: "autocomplete";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "What the browser can fill it with (`email`, `current-password`, ...).";
+                }];
+                readonly slots: readonly [];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "type";
+            readonly kind: "enum";
+            readonly description: "The native input `type` and its validation affordances.";
+            readonly enumValues: readonly [{
+                readonly id: "text";
+                readonly description: "Plain text.";
+            }, {
+                readonly id: "email";
+                readonly description: "Email address with built-in format validation.";
+            }, {
+                readonly id: "password";
+                readonly description: "Concealed text entry.";
+            }, {
+                readonly id: "tel";
+                readonly label: "Telephone";
+                readonly description: "Telephone number.";
+            }, {
+                readonly id: "url";
+                readonly label: "URL";
+                readonly description: "URL with built-in format validation.";
+            }];
+        }, {
+            readonly id: "pattern";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "A regular expression that a valid value matches.";
+        }];
+        readonly slots: readonly [{
+            readonly id: "start";
+            readonly description: "Optional content before the input, commonly an icon.";
+        }, {
+            readonly id: "end";
+            readonly description: "Optional content after the input, commonly an icon or affordance.";
+        }];
+    };
+    readonly accessibility: {
+        readonly summary: "The visible label is associated with the native input. The host forwards author `aria-*` attributes to the input; an external `<label for>` also names the control.";
+        readonly responsibilities: readonly ["Provide a visible label (`label` or `label` slot), or set `hideLabel` only when another clear accessible name is present.", "Do not rely on `placeholder` alone to convey the field's purpose.", "Pair validation messages with `aria-describedby` or `aria-errormessage` when showing errors."];
+    };
+    readonly capabilities: {
+        readonly summary: "Native input editing, constraint validation, autofill, and form participation without product handlers.";
+        readonly items: readonly [{
+            readonly id: "formAssociated";
+            readonly description: "Participates in form data and validation through `ElementInternals` on the host.";
+        }, {
+            readonly id: "delegatesFocus";
+            readonly description: "`delegatesFocus` routes focus from the host and its label to the inner `<input>`.";
+        }, {
+            readonly id: "nativeValidation";
+            readonly description: "Required, pattern, length, and type constraints surface the input's validity on the host.";
+        }];
+    };
+    readonly usage: {
+        readonly rules: readonly [{
+            readonly id: "labelEveryField";
+            readonly stance: "do";
+            readonly severity: "must";
+            readonly categories: readonly ["a11y-responsibility", "content"];
+            readonly text: "Give each field a persistent **label**; use `placeholder` only as a format hint.";
+        }, {
+            readonly id: "hideLabelAccessibleName";
+            readonly stance: "do";
+            readonly severity: "must";
+            readonly categories: readonly ["a11y-responsibility", "content"];
+            readonly text: "When `hideLabel` is set, keep label text in the `label` slot (visually hidden but still naming the control) or provide an equivalent accessible name.";
+        }, {
+            readonly id: "pickTypeIntentionally";
+            readonly stance: "do";
+            readonly severity: "should";
+            readonly categories: readonly ["content"];
+            readonly text: "Choose `type` (`email`, `url`, `tel`, `password`) when built-in validation or mobile keyboards help the task.";
+        }, {
+            readonly id: "noPlaceholderLabel";
+            readonly stance: "dont";
+            readonly severity: "must";
+            readonly categories: readonly ["a11y-responsibility", "content"];
+            readonly text: "Do not use `placeholder` as the only label for a field.";
+        }, {
+            readonly id: "noInteractiveInSlots";
+            readonly stance: "dont";
+            readonly severity: "must";
+            readonly categories: readonly ["content"];
+            readonly text: "Do not place nested interactive controls in `start` or `end` without a clear focus path and label association.";
+        }];
+    };
+};
+
+// @public
+export interface TextFieldElement extends TextInputElement, TextFieldContract {
 }
 
 // @public
@@ -1140,6 +3591,13 @@ export const TextFieldParts: {
     readonly label: "label";
     readonly root: "root";
     readonly control: "control";
+};
+
+// @public
+export const TextFieldSlots: {
+    readonly label: "label";
+    readonly start: "start";
+    readonly end: "end";
 };
 
 // @public
@@ -1151,8 +3609,53 @@ export const TextFieldType: {
     readonly url: "url";
 };
 
+// @public (undocumented)
+export type TextFieldType = (typeof TextFieldType)[keyof typeof TextFieldType];
+
 // @public
-export type TextFieldType = ValuesOf<typeof TextFieldType>;
+export const textFieldWebBinding: {
+    conditionSelectors: {
+        type: {
+            text: string;
+            email: string;
+            password: string;
+            tel: string;
+            url: string;
+        };
+        hideLabel: string;
+        disabled: string;
+        readOnly: string;
+        required: string;
+    };
+    partSelectors: {
+        label: string;
+        root: string;
+        control: string;
+    };
+    interactivity: {
+        interactive: string;
+        disabled: string;
+        active: string;
+    };
+    focus: FocusDefinition<Record<"label" | "control" | "root", string>>;
+    cursor: {
+        part: "control";
+        cursorType: string;
+    };
+};
+
+// @public
+export interface TextInputContract extends LabelledContract {
+    autocomplete: string | null;
+    disabled: boolean;
+    maxLength: number | null;
+    minLength: number | null;
+    name: string | null;
+    placeholder: string | null;
+    readOnly: boolean;
+    required: boolean;
+    value: string;
+}
 
 // @public
 export class TextInputController<T extends TextInputElement = TextInputElement> {
@@ -1177,17 +3680,85 @@ export class TextInputController<T extends TextInputElement = TextInputElement> 
 }
 
 // @public
-export interface TextInputElement extends FormControlElement, LabelledElement {
-    autocomplete: string | null;
+export const textInputDocumentation: {
+    readonly id: "textInput";
+    readonly definition: "A field the user types text in: a text field, a text area, a number field, or a search field. It wraps a native `<input>` or `<textarea>` (the control), since what the browser does for one (selection, input methods, spelling, autofill) can't be done for a custom element. The host is the form control, through `ElementInternals`, with the control's value and validity.";
+    readonly remarks: string;
+    readonly governance: {
+        readonly status: "published";
+        readonly lastReviewed: "2026-11-16";
+    };
+    readonly contract: {
+        readonly include: readonly [{
+            readonly id: "labelled";
+            readonly definition: "An element labelled by a label of its own: a form control whose native element is labelled from outside, by a `<label>` (an `<input>`, a `<select>`, a `<textarea>`), and a group of them.";
+            readonly remarks: string;
+            readonly contract: {
+                readonly properties: readonly [{
+                    readonly id: "label";
+                    readonly kind: "string";
+                    readonly nullable: true;
+                    readonly description: "The text of its label, which names it. The `label` slot replaces it.";
+                }, {
+                    readonly id: "hideLabel";
+                    readonly kind: "boolean";
+                    readonly description: "Whether its label is hidden. The label still names it.";
+                }];
+                readonly slots: readonly [{
+                    readonly id: "label";
+                    readonly description: "Replaces the `label` attribute when the label needs more than plain text.";
+                }];
+            };
+        }];
+        readonly properties: readonly [{
+            readonly id: "value";
+            readonly kind: "string";
+            readonly description: "The value now. Not an attribute: the `value` attribute is the value by default, before the user or code changes it and when its form is reset.";
+        }, {
+            readonly id: "disabled";
+            readonly kind: "boolean";
+            readonly description: "Whether it is disabled. A disabled `<fieldset>` also disables it, which this doesn't reflect: select `:disabled`.";
+        }, {
+            readonly id: "readOnly";
+            readonly kind: "boolean";
+            readonly description: "Whether it is read only: it takes focus and its text can be selected, and the user can't change it. It isn't validated.";
+        }, {
+            readonly id: "required";
+            readonly kind: "boolean";
+            readonly description: "Whether it must have a value for its form to be valid.";
+        }, {
+            readonly id: "name";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "The name of its value in the form data.";
+        }, {
+            readonly id: "placeholder";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "A hint of what to type, shown while it is empty. It isn't a label.";
+        }, {
+            readonly id: "maxLength";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The most characters the user can type.";
+        }, {
+            readonly id: "minLength";
+            readonly kind: "number";
+            readonly nullable: true;
+            readonly description: "The fewest characters of a valid value.";
+        }, {
+            readonly id: "autocomplete";
+            readonly kind: "string";
+            readonly nullable: true;
+            readonly description: "What the browser can fill it with (`email`, `current-password`, ...).";
+        }];
+        readonly slots: readonly [];
+    };
+};
+
+// @public
+export interface TextInputElement extends FormControlElement, TextInputContract {
     defaultValue: string;
-    disabled: boolean;
-    maxLength: number | null;
-    minLength: number | null;
-    name: string | null;
-    placeholder: string | null;
-    readOnly: boolean;
-    required: boolean;
-    value: string;
 }
 
 // @public
@@ -1196,6 +3767,26 @@ export type TextInputInternals = Pick<ElementInternals, "form" | "labels" | "set
 // @public
 export type TextInputOptions = {
     implicitSubmission: boolean;
+};
+
+// @public
+export const TextInputSlots: {
+    readonly label: "label";
+};
+
+// @public
+export const textInputWebConditionSelectors: {
+    hideLabel: string;
+    disabled: string;
+    readOnly: string;
+    required: string;
+};
+
+// @public
+export const textInputWebInteractivity: {
+    interactive: string;
+    disabled: string;
+    active: string;
 };
 
 // @public

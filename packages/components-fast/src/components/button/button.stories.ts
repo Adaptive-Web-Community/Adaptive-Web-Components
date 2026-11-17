@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { ButtonType } from "@adaptive-web/components-foundation";
+import { buttonDocumentation, ButtonType } from "@adaptive-web/components-foundation";
 import { maybeEndSlotIcon, maybeStartSlotIcon, renderComponent } from "../../utilities/storybook-helpers.js";
 import type { Meta, Story, StoryArgs } from "../../utilities/storybook-helpers.js";
 import type { Button as ButtonElement } from "./button.js";
@@ -48,7 +48,15 @@ export const storyTemplate = html<StoryArgs<ButtonElement>>`
 
 export default {
     title: "Components/Button",
+    tags: ["autodocs"],
     includeStories: ["Button", "ButtonHiddenLabel"],
+    parameters: {
+        docs: {
+            description: {
+                component: buttonDocumentation.definition,
+            },
+        },
+    },
     args: {
         startSlotIcon: false,
         endSlotIcon: false,
