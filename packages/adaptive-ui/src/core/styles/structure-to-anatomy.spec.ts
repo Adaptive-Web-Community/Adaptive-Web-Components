@@ -1,7 +1,7 @@
 import chai from "chai";
 import { ContractPropertyKind, type Documentation, structureParts } from "../documentation/index.js";
 import { Focus, Interactivity } from "./anatomy.js";
-import type { PlatformBinding } from "./binding.js";
+import type { BindingConditionSelectorsFor, PlatformBinding } from "./binding.js";
 import { documentationToComponentAnatomy, structureToComponentAnatomy } from "./structure-to-anatomy.js";
 
 const { expect } = chai;
@@ -193,5 +193,38 @@ describe("structureToComponentAnatomy", () => {
                 { ...buttonBinding, conditionSelectors: {} },
             ),
         ).to.throw('Contract property "iconOnly" has no condition selector in the platform binding.');
+    });
+
+    it("should throw when an included contract's properties are missing from binding conditions", () => {
+        const included = {
+            id: "interactive",
+            contract: { properties: [{ id: "focused", kind: ContractPropertyKind.boolean }], slots: [] },
+        };
+
+        expect(() =>
+            documentationToComponentAnatomy(
+                { ...buttonDoc, contract: { ...buttonDoc.contract, include: [included] } },
+                buttonBinding,
+            ),
+        ).to.throw('Contract property "focused" has no condition selector in the platform binding.');
+    });
+
+    it("should not need a condition selector for a string, a number, or a property that isn't a condition", () => {
+        const contract = {
+            properties: [
+                { id: "iconOnly", kind: ContractPropertyKind.boolean },
+                { id: "name", kind: ContractPropertyKind.string },
+                { id: "maxLength", kind: ContractPropertyKind.number },
+                { id: "defaultPressed", kind: ContractPropertyKind.boolean, condition: false },
+            ],
+            slots: [],
+        } as const;
+        const conditionSelectors: BindingConditionSelectorsFor<typeof contract> = {
+            iconOnly: ".icon-only",
+            // @ts-expect-error A property that isn't a condition has no selector.
+            name: "[name]",
+        };
+
+        expect(() => documentationToComponentAnatomy({ ...buttonDoc, contract }, { ...buttonBinding, conditionSelectors })).not.to.throw();
     });
 });

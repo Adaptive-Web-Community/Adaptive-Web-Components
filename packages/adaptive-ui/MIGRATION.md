@@ -432,6 +432,10 @@ recommended path is to author structure and binding once and compile with `struc
 | selector strings co-located with part names | `PlatformBinding` (`partSelectors`, `conditionSelectors`, `contextSelector`); structure carries part **ids** only |
 | ad hoc TypeScript for parts and attributes | `generateTypeScriptContractSource(structure, contract, options)` emits `*.generated.ts` from `*.documentation.ts`; `typeScriptContractConvention` names exports and files |
 | copy-pasted README sections | `renderMarkdown(documentation)` projects slices to Markdown |
+| a contract repeated by each component of a kind | `include: [textInputDocumentation]` on `Contract` (see decision 0022); `resolveContract(contract)` is the whole contract, `ContractProperties` its properties by type, and the generated contract extends the included one |
+| prose after the summary, on an interface or beside the definition | `remarks` on the identity (`Identity.remarks`), rendered by `renderMarkdown` and as the `@remarks` of the generated contract |
+| a property that can have no value (an attribute that isn't set) | `nullable: true` on a `ContractProperty`, generated as `T \| null` |
+| a condition for each contract property | A condition for each boolean and enumerated property, and no other (see decision 0022): `condition: false` on a `ContractProperty` leaves one out, `isConditionProperty(property)` tells, and `BindingConditionSelectorsFor` types the selectors of the conditions only |
 
 Recommended layout for a reference component (for example in components-foundation): `{component}.documentation.ts` exporting
 `buttonDocumentation`, `{component}.{platform}.binding.ts` for web selectors, and generated `{component}.generated.ts` beside them. Adaptive UI

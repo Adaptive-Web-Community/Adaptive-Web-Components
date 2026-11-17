@@ -92,7 +92,7 @@ export type BindingConditionSelectors = ComponentConditions;
 
 // @public
 export type BindingConditionSelectorsFor<TContract extends Contract> = {
-    readonly [TProperty in TContract["properties"][number] as TProperty["id"]]: ConditionSelectorFor<TProperty>;
+    readonly [TProperty in ContractConditionProperties<TContract> as TProperty["id"]]: ConditionSelectorFor<TProperty>;
 };
 
 // @public
@@ -290,15 +290,27 @@ export function conicGradient(stops: ReadonlyArray<GradientStop>, angle?: number
 
 // @public
 export interface Contract {
+    readonly include?: readonly ContractInclude[];
     readonly properties: readonly ContractProperty[];
     readonly slots: readonly ContractSlot[];
 }
+
+// Warning: (ae-forgotten-export) The symbol "ConditionProperty" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type ContractConditionProperties<TContract extends Contract> = ConditionProperty<ContractProperties<TContract>>;
 
 // @public
 export interface ContractEnumValue {
     readonly description?: string;
     readonly id: string;
     readonly label?: string;
+}
+
+// @public
+export interface ContractInclude {
+    readonly contract: Contract;
+    readonly id: string;
 }
 
 // @public
@@ -313,17 +325,26 @@ export interface ContractObjectField {
 export type ContractObjectFieldKind = Exclude<ContractPropertyKind, "enum" | "object">;
 
 // @public
+export type ContractProperties<TContract extends Contract> = TContract["properties"][number] | (TContract extends {
+    readonly include: readonly (infer TInclude)[];
+} ? TInclude extends {
+    readonly contract: infer TIncluded extends Contract;
+} ? ContractProperties<TIncluded> : never : never);
+
+// @public
 export interface ContractProperty {
+    readonly condition?: false;
     readonly description?: string;
     readonly enumValues?: readonly ContractEnumValue[];
     readonly id: string;
     readonly kind: ContractPropertyKind;
     readonly label?: string;
+    readonly nullable?: boolean;
     readonly objectProperties?: readonly ContractObjectField[];
 }
 
 // @public
-export type ContractPropertyId<TContract extends Contract> = TContract["properties"][number]["id"];
+export type ContractPropertyId<TContract extends Contract> = ContractProperties<TContract>["id"];
 
 // @public
 export const ContractPropertyKind: {
@@ -603,6 +624,7 @@ export function fromDtcgGradient(gradient: DtcgGradient, angle?: number): Linear
 
 // @public
 export interface GenerateTypeScriptContractOptions {
+    readonly includeModules?: Readonly<Record<string, string>>;
     readonly sourceModule?: string;
     readonly symbolPrefix?: string;
 }
@@ -683,6 +705,7 @@ export interface Identity {
     readonly definition?: string;
     readonly id: string;
     readonly label?: string;
+    readonly remarks?: string;
 }
 
 // @public
@@ -761,6 +784,9 @@ export type InteractivityDefinition = {
 
 // @public
 export function invertingPaletteDeltasForSet(palette: Palette, reference: Paint, deltas: InteractiveSet<number>): InteractiveSet<number>;
+
+// @public
+export function isConditionProperty(property: ContractProperty): boolean;
 
 // Warning: (ae-internal-missing-underscore) The name "isConfiguredOperand" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -877,6 +903,13 @@ export function makeSelector(params: SelectorParameters, state: InteractiveState
 
 // @public
 export function mapStates<T, U>(set: InteractiveSet<T>, map: (value: T, state: InteractiveState) => U): InteractiveSet<U>;
+
+// @public
+export const markdownConvention: {
+    readonly documentationExportName: (moduleBasename: string) => string;
+    readonly moduleBasename: (documentationFileName: string) => string;
+    readonly generatedFileName: (moduleBasename: string) => string;
+};
 
 // @public
 export type MathFunction = "add" | "subtract" | "multiply" | "divide" | "pow" | "round" | "min" | "max";
@@ -1021,6 +1054,12 @@ export function renderRules(properties: Iterable<readonly [string, StyleValues]>
 
 // @public
 export function renderStyleRules(styleRules: StyleRules, options: StyleRulesOptions): CssRule[];
+
+// @public
+export function resolveContract(contract: Contract): ResolvedContract;
+
+// @public
+export type ResolvedContract = Pick<Contract, "properties" | "slots">;
 
 // @public
 export interface ResolvedTokenName {

@@ -43,13 +43,13 @@ const sampleDocumentation = {
     usage: {
         rules: [
             {
-                id: "hide-label-accessible-name",
+                id: "hideLabelAccessibleName",
                 stance: RuleStance.do,
                 severity: RuleSeverity.must,
                 text: "Provide an accessible name.",
             },
             {
-                id: "no-vague-critical",
+                id: "noVagueCritical",
                 stance: RuleStance.dont,
                 severity: RuleSeverity.must,
                 text: "Avoid vague labels on critical actions.",
@@ -82,8 +82,39 @@ describe("renderMarkdown", () => {
         expect(md).to.include("#### Do (MUST)");
         expect(md).to.include("#### Don't (MUST)");
         expect(md).to.include("### Content");
-        expect(md).to.include("### Conditions");
+        expect(md).not.to.include("### Conditions");
         expect(md).to.include("## Slots");
         expect(md).to.include("Documentation changelog");
+    });
+
+    it("should render the remarks after the definition", () => {
+        const md = renderMarkdown({ id: "field", definition: "A definition.", remarks: "Some remarks." });
+
+        expect(md.indexOf("A definition.")).to.be.greaterThan(-1);
+        expect(md.indexOf("Some remarks.")).to.be.greaterThan(md.indexOf("A definition."));
+    });
+
+    it("should render the properties and slots of an included contract, and a nullable type", () => {
+        const md = renderMarkdown({
+            id: "field",
+            contract: {
+                include: [
+                    {
+                        id: "textInput",
+                        contract: {
+                            properties: [{ id: "name", kind: ContractPropertyKind.string, nullable: true }],
+                            slots: [{ id: "label", description: "The label." }],
+                        },
+                    },
+                ],
+                properties: [{ id: "pattern", kind: ContractPropertyKind.string }],
+                slots: [],
+            },
+        });
+
+        expect(md).to.include("### Name");
+        expect(md).to.include("Type: `string` or `null`");
+        expect(md).to.include("### Pattern");
+        expect(md).to.include("### Label");
     });
 });
