@@ -8,4 +8,4 @@ export {
 export {
     styleRules as checkboxStyleRules,
 } from "./checkbox.styles.rules.js";
-export { template as checkboxTemplate, CheckboxAnatomy, CheckboxConditions, CheckboxParts, CheckboxStatics } from "./checkbox.template.js";
+export { template as checkboxTemplate, CheckboxAnatomy, CheckboxStatics } from "./checkbox.template.js";

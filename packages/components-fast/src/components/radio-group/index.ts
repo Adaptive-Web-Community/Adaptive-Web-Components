@@ -7,4 +7,4 @@ export {
 export {
     styleRules as radioGroupStyleRules,
 } from "./radio-group.styles.rules.js";
-export { template as radioGroupTemplate, RadioGroupAnatomy, RadioGroupConditions, RadioGroupParts } from "./radio-group.template.js";
+export { template as radioGroupTemplate, RadioGroupAnatomy } from "./radio-group.template.js";
