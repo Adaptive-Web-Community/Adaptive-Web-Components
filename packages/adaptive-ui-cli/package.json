@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/adaptive-ui-cli",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "Command-line tools to compile Adaptive UI style rules to CSS",
   "type": "module",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "test": "npm run lint && npm run build"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "1.0.0-beta.1",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
     "change-case": "^5.4.4",
     "commander": "^12.0.0",
     "deepmerge-ts": "^7.1.3",
