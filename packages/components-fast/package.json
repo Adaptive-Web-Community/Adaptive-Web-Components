@@ -15,7 +15,7 @@
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
+    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components.git",
     "directory": "packages/components-fast"
   },
   "main": "dist/esm/index.js",
