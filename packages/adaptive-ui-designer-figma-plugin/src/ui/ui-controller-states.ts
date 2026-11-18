@@ -10,7 +10,7 @@ export class StatesController {
 
     public getState(): StatesState {
         return this.controller.selectedNodes.length === 1 ?
-            this.controller.selectedNodes[0].additionalData.get(AdditionalDataKeys.states) as StatesState :
+            this.controller.selectedNodes[0].additionalData[AdditionalDataKeys.states] as StatesState :
             StatesState.notAvailable;
     }
 
