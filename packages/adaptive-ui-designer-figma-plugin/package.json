@@ -35,10 +35,10 @@
     "test": "npm run lint && npm run compile"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "0.14.0",
-    "@adaptive-web/adaptive-ui-designer-core": "^0.6.2",
-    "@adaptive-web/adaptive-ui-designer-figma": "^0.6.1",
-    "@adaptive-web/components-fast": "0.10.0",
+    "@adaptive-web/adaptive-ui": "1.0.0-beta.2",
+    "@adaptive-web/adaptive-ui-designer-core": "^1.0.0-beta.0",
+    "@adaptive-web/adaptive-ui-designer-figma": "^1.0.0-beta.0",
+    "@adaptive-web/components-fast": "1.0.0-beta.0",
     "@csstools/css-calc": "^1.1.1",
     "@csstools/css-parser-algorithms": "^2.2.0",
     "@csstools/css-tokenizer": "^2.1.1",

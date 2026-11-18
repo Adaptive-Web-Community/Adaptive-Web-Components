@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-web/components-foundation",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.0",
   "description": "The behavior of web components, without a framework or styles: what each element exposes, and controllers that implement it.",
   "type": "module",
   "sideEffects": false,
@@ -51,7 +51,7 @@
     "postbuild": "npm run doc"
   },
   "dependencies": {
-    "@adaptive-web/adaptive-ui": "^1.0.0-beta.1"
+    "@adaptive-web/adaptive-ui": "^1.0.0-beta.2"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.59.4",
