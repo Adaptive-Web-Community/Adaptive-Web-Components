@@ -14,11 +14,11 @@
   "homepage": "https://github.com/adaptive-web-community/adaptive-web-components#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components",
+    "url": "git+https://github.com/Adaptive-Web-Community/Adaptive-Web-Components.git",
     "directory": "packages/adaptive-ui-cli"
   },
   "bin": {
-    "aui": "./bin/aui.js"
+    "aui": "bin/aui.js"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
