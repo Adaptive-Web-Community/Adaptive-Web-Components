@@ -1,10 +1,11 @@
 import { type Color as CuloriColor, formatHex8, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { Color, Gradient, Shadow, StyleProperty, tokenNames } from "@adaptive-web/adaptive-ui";
+import { StyleProperty, tokenNames } from "@adaptive-web/adaptive-ui";
 import { createReferenceLibrary } from "@adaptive-web/adaptive-ui/reference";
-import { AppliedDesignTokens, AppliedStyleValue, AppliedStyleValues, AppliedTreatments, Controller, DesignTokenValues, focusIndicatorNodeName, indent, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { AppliedStyleValue, AppliedStyleValues, Controller, focusIndicatorNodeName, indent, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLayoutNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
 import { PluginDataResolver } from "./plugin-data-resolver.js";
+import { colorToRgbOf, fontFamilyOf, fontWeightOf, gradientOf, isColor, numberOf, shadowLayersOf } from "./values.js";
 
 // For luminance
 useMode(modeLrgb);
@@ -544,9 +545,9 @@ export class FigmaPluginNode extends PluginNode {
         if (fontFamily) {
             if (isTextNode(node._node)) {
                 const fontStyle = values[StyleProperty.fontStyle]?.value; // For "italic"
-                const fontWeight: number = this.safeNumber(values[StyleProperty.fontWeight]?.value, 400);
-                const families = fontFamily.split(",");
-                let family = families[0].replace(/['"]/g, ""); // Fallback is intended for the browser, in Figma just do the first
+                const fontWeight: number = fontWeightOf(values[StyleProperty.fontWeight]?.value);
+                // Fallback is intended for the browser, in Figma just do the first
+                let family = fontFamilyOf(fontFamily) ?? "Inter";
                 if (family === STYLE_REMOVE) {
                     family = "Inter";
                 }
@@ -555,7 +556,7 @@ export class FigmaPluginNode extends PluginNode {
                 if (!styles.includes("Regular")) {
                     styles.push("Regular");
                 }
-                const italic = fontStyle?.toLowerCase() === "italic";
+                const italic = typeof fontStyle === "string" && fontStyle.toLowerCase() === "italic";
                 this.tryFont(family, styles, italic, 0).then((fontName) => {
                     if (fontName) {
                         (node._node as TextNode).fontName = fontName;
@@ -611,8 +612,8 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    protected safeNumber(value: string, defaultValue: number = 0) {
-        return value === STYLE_REMOVE ? defaultValue : Number.parseFloat(value);
+    protected safeNumber(value: unknown, defaultValue: number = 0) {
+        return numberOf(value, defaultValue);
     }
 
     public async paint(values: AppliedStyleValues): Promise<void> {
@@ -696,7 +697,7 @@ export class FigmaPluginNode extends PluginNode {
                             const numValue = this.safeNumber(value);
                             if (numValue > 0) {
                                 textNode.lineHeight = {
-                                    value: Number.parseFloat(value),
+                                    value: numValue,
                                     unit: "PIXELS",
                                 };
                             } else {
@@ -742,17 +743,16 @@ export class FigmaPluginNode extends PluginNode {
                     break;
                 case StyleProperty.shadow:
                     {
-                        const shadows: Shadow[] = Array.isArray(value) ? value : [value];
-                        const figmaShadows = shadows.map(shadow => {
+                        const figmaShadows = shadowLayersOf(value).map(shadow => {
                             return {
                                 type: 'DROP_SHADOW',
-                                color: colorToRgba(shadow.color.color as Rgb),
+                                color: colorToRgba(colorToRgbOf(shadow.color)),
                                 offset: {
-                                    x: shadow.xOffset,
-                                    y: shadow.yOffset
+                                    x: this.safeNumber(shadow.offsetX),
+                                    y: this.safeNumber(shadow.offsetY)
                                 },
-                                radius: shadow.blurRadius,
-                                spread: shadow.spread,
+                                radius: this.safeNumber(shadow.blur),
+                                spread: this.safeNumber(shadow.spread),
                                 visible: true,
                                 blendMode: "NORMAL",
                             } as DropShadowEffect
@@ -868,19 +868,19 @@ export class FigmaPluginNode extends PluginNode {
 
         if (value !== STYLE_REMOVE) {
             if (value && typeof value === "object") {
-                if (Object.keys(value).includes("color")) {
-                    const color = value as Color;
+                const gradient = gradientOf(value);
+                if (gradient) {
+                    paint = gradientToGradientPaint(gradient);
+                } else if (isColor(value)) {
+                    const rgb = colorToRgbOf(value);
                     const solidPaint: SolidPaint = {
                         type: "SOLID",
                         visible: true,
-                        opacity: color.color.alpha,
+                        opacity: rgb.alpha,
                         blendMode: "NORMAL",
-                        color: colorToRgb(color.color as Rgb),
+                        color: colorToRgb(rgb),
                     };
                     paint = solidPaint;
-                } else if (Object.keys(value).includes("stops")) {
-                    const gradient = value as Gradient;
-                    paint = gradientToGradientPaint(gradient);
                 }
             } else if (value && typeof value === "string" && value === "transparent") {
                 paint = SOLID_TRANSPARENT;

@@ -20,7 +20,7 @@ export class WeakRef<T extends object> {
 }
 
 export class FinalizationRegistry {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
     constructor(_cleanup: (held: unknown) => void) {}
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
