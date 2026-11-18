@@ -1,14 +1,15 @@
 import { css, customElement, FASTElement, html, observable, repeat, when } from "@microsoft/fast-element";
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
-import { StyleProperty, StylePropertyShorthand, Styles } from "@adaptive-web/adaptive-ui";
-import { neutralStrokeReadable } from "@adaptive-web/adaptive-ui/reference";
-import type { AdaptiveDesignTokenOrGroup, AppliedDesignToken, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
+import { staticallyCompose } from "@adaptive-web/components-fast";
+import { StyleProperty, StylePropertyShorthand } from "@adaptive-web/adaptive-ui";
+import type { AppliedDesignToken, DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
 import { StatesState } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage, SkipInvisibleNodesMessage} from "../core/messages.js";
 import SubtractIcon from "./assets/subtract.svg";
 import { UIController } from "./ui-controller.js";
-import { AppliedDesignTokenItem, StyleModuleDisplay, StyleModuleDisplayList } from "./ui-controller-styles.js";
+import type { CatalogToken } from "./tokens/catalog.js";
+import { properties } from "./tokens/library.js";
+import { AppliedDesignTokenItem, TreatmentDisplay, TreatmentDisplayList } from "./ui-controller-styles.js";
 import { AddEventDetail, DesignTokenAdd, DesignTokensForm, DetachEventDetail, Drawer, StyleTokenItem, TokenChangeEventDetail, TokenGlyph, TokenGlyphValueType } from "./components/index.js";
 import { designTokenTitle } from "./util.js";
 
@@ -18,26 +19,26 @@ Drawer;
 DesignTokenAdd;
 DesignTokensForm;
 
-const appliedStylesTemplate = (
+const appliedTreatmentsTemplate = (
     group: string
 ) => html<App>`
     ${when(
-        (x) => x.appliedStyleModules.get(group)?.length,
+        (x) => x.appliedTreatments.get(group)?.length,
         html<App>`
-            <p class="title">Styles</p>
+            <p class="title">Treatments</p>
             <div class="swatch-stack">
                 ${repeat(
-                    (x) => x.appliedStyleModules.get(group)!,
-                    html<StyleModuleDisplay, App>`
+                    (x) => x.appliedTreatments.get(group)!,
+                    html<TreatmentDisplay, App>`
                         <designer-style-token-item
                             title=${(x) => x.title}
-                            :styles=${x => x.styles}
+                            :swatchStyle=${x => x.style}
                         >
                             <adaptive-button
                                 slot="actions"
                                 appearance="stealth"
-                                aria-label="Remove style"
-                                @click=${(x, c) => c.parent.controller.styles.removeStyleModule(x.name)}
+                                aria-label="Remove treatment"
+                                @click=${(x, c) => c.parent.controller.styles.removeTreatment(x.name)}
                             >
                                 ${staticallyCompose(SubtractIcon)}
                             </adaptive-button>
@@ -49,19 +50,19 @@ const appliedStylesTemplate = (
     )}
 `;
 
-const availableStylesTemplate = (
+const availableTreatmentsTemplate = (
     group: string
 ) => html<App>`
-    <p class="title">Styles</p>
+    <p class="title">Treatments</p>
     <div class="swatch-stack">
         ${repeat(
-            (x) => x.controller.styles.getAvailableStyleModules().get(group)!,
-            html<StyleModuleDisplay, App>`
+            (x) => x.controller.styles.getAvailableTreatments().get(group)!,
+            html<TreatmentDisplay, App>`
                 <designer-style-token-item
                     title=${(x) => x.title}
-                    :styles=${x => x.styles}
+                    :swatchStyle=${x => x.style}
                     content-button
-                    @itemClick=${(x, c) => c.parent.controller.styles.applyStyleModule(x.name)}
+                    @itemClick=${(x, c) => c.parent.controller.styles.applyTreatment(x.name)}
                 >
                 </designer-style-token-item>
             `
@@ -73,19 +74,11 @@ function getAppliedToken(applied: AppliedDesignTokenItem, app: App) {
     return app.controller.styles.getAppliableDesignToken(applied.tokenID);
 }
 
-function tokenOrGroupValues(tokenOrGroup: AdaptiveDesignTokenOrGroup, app: App): string {
-    return (tokenOrGroup instanceof DesignToken) ?
-        app.controller.designTokens.getDefaultDesignTokenValueAsString(tokenOrGroup) :
-        null;
+function tokenValue(token: CatalogToken | null, app: App): string | null {
+    return token ? app.controller.styles.getDesignTokenValueAsString(token) : null;
 }
 
-function tokenOrGroupStyles(tokenOrGroup: AdaptiveDesignTokenOrGroup, tokenTypes: StyleProperty[]): Styles {
-    return (!(tokenOrGroup instanceof DesignToken)) ?
-        Styles.fromProperties(Object.fromEntries(tokenTypes.map(key => [key, tokenOrGroup]))) :
-        null;
-}
-
-function appliedStyleProperties(tokenTypes: StyleProperty[], tokenIntendedFor: StyleProperty[]): StyleProperty[] {
+function appliedStyleProperties(tokenTypes: StyleProperty[], tokenIntendedFor: readonly StyleProperty[]): StyleProperty[] {
     return tokenTypes.filter(element => tokenIntendedFor.includes(element));
 }
 
@@ -111,8 +104,7 @@ const appliedTokensTemplate = (
                                 const token = c.parent.controller.styles.getAppliableDesignToken(x.tokenID);
                                 return token ? designTokenTitle(token) : x.tokenID;
                             }}
-                            :value=${(x, c) => tokenOrGroupValues(getAppliedToken(x, c.parent), c.parent)}
-                            :styles=${(x, c) => tokenOrGroupStyles(getAppliedToken(x, c.parent), tokenTypes)}
+                            :value=${(x, c) => tokenValue(getAppliedToken(x, c.parent), c.parent)}
                             glyphType=${(_) => glyphType}
                         >
                             <adaptive-button
@@ -147,14 +139,13 @@ const availableTokensTemplate = (
             <div class="swatch-${tokenLayout}">
                 ${repeat(
                     (x) => x.controller.styles.getAppliableDesignTokenOptions(tokenTypes),
-                    html<AdaptiveDesignTokenOrGroup, App>`
+                    html<CatalogToken, App>`
                         <designer-style-token-item
                             title=${(x) => designTokenTitle(x)}
-                            :value=${(x, c) => tokenOrGroupValues(x, c.parent)}
-                            :styles=${x => tokenOrGroupStyles(x, tokenTypes)}
+                            :value=${(x, c) => tokenValue(x, c.parent)}
                             glyphType=${(_) => glyphType}
                             content-button
-                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(appliedStyleProperties(tokenTypes, x.intendedFor), x)}
+                            @itemClick=${(x, c) => c.parent.controller.styles.applyDesignToken(appliedStyleProperties(tokenTypes, x.appliesTo), x)}
                         >
                         </designer-style-token-item>
                     `
@@ -184,15 +175,15 @@ const genStylesLabel = "Copies styling code for this component.";
 const revertLabel = "Remove all plugin data from the current selection.";
 
 const viewNodeTemplate = html<PluginUINodeData>`
-    <adaptive-tree-item ?expanded="${(_) => true}" ?nested="${(_) => true}">
+    <adaptive-tree-item ?expanded="${(_) => true}">
         ${(x) => x.name} (${(x) => x.id}, ${(x) => x.type})
         ${when(
-            (x) => x.designTokens.size > 0,
+            (x) => Object.keys(x.designTokens).length > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
                     Design tokens
                     ${repeat(
-                        (x) => [...x.designTokens.entries()],
+                        (x) => Object.entries(x.designTokens),
                         html<[string, DesignTokenValue]>`
                             <adaptive-tree-item>
                                 ${(x) => x[0]}: ${(x) => x[1].value}
@@ -202,12 +193,12 @@ const viewNodeTemplate = html<PluginUINodeData>`
             `
         )}
         ${when(
-            (x) => x.appliedDesignTokens.size > 0,
+            (x) => Object.keys(x.appliedDesignTokens).length > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
                     Applied design tokens
                     ${repeat(
-                        (x) => [...x.appliedDesignTokens.entries()],
+                        (x) => Object.entries(x.appliedDesignTokens),
                         html<[StyleProperty, AppliedDesignToken]>`
                             <adaptive-tree-item>
                                 ${(x) => x[0]}: ${(x) => x[1].tokenID}
@@ -217,12 +208,12 @@ const viewNodeTemplate = html<PluginUINodeData>`
             `
         )}
         ${when(
-            (x) => x.appliedStyleModules.length > 0,
+            (x) => x.appliedTreatments.length > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
-                    Applied style modules
+                    Applied treatments
                     ${repeat(
-                        (x) => x.appliedStyleModules,
+                        (x) => x.appliedTreatments,
                         html<string>`
                             <adaptive-tree-item>
                                 ${(x) => x}
@@ -232,12 +223,12 @@ const viewNodeTemplate = html<PluginUINodeData>`
             `
         )}
         ${when(
-            (x) => x.refDesignTokens.size > 0,
+            (x) => Object.keys(x.refDesignTokens ?? {}).length > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
                     Ref design tokens
                     ${repeat(
-                        (x) => [...x.refDesignTokens.entries()],
+                        (x) => Object.entries(x.refDesignTokens ?? {}),
                         html<[string, DesignTokenValue]>`
                             <adaptive-tree-item>
                                 ${(x) => x[0]}: ${(x) => x[1].value}
@@ -247,12 +238,12 @@ const viewNodeTemplate = html<PluginUINodeData>`
             `
         )}
         ${when(
-            (x) => x.refAppliedDesignTokens.size > 0,
+            (x) => Object.keys(x.refAppliedDesignTokens ?? {}).length > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
                     Ref applied design tokens
                     ${repeat(
-                        (x) => [...x.refAppliedDesignTokens.entries()],
+                        (x) => Object.entries(x.refAppliedDesignTokens ?? {}),
                         html<[StyleProperty, AppliedDesignToken]>`
                             <adaptive-tree-item>
                                 ${(x) => x[0]}: ${(x) => x[1].tokenID}
@@ -262,12 +253,12 @@ const viewNodeTemplate = html<PluginUINodeData>`
             `
         )}
         ${when(
-            (x) => x.refAppliedStyleModules.length > 0,
+            (x) => (x.refAppliedTreatments?.length ?? 0) > 0,
             html<PluginUINodeData>`
                 <adaptive-tree-item ?expanded="${(_) => true}">
-                    Ref applied style modules
+                    Ref applied treatments
                     ${repeat(
-                        (x) => x.refAppliedStyleModules,
+                        (x) => x.refAppliedTreatments,
                         html<string>`
                             <adaptive-tree-item>
                                 ${(x) => x}
@@ -322,11 +313,14 @@ const footerTemplate = html<App>`
 `;
 
 const template = html<App>`
-    <adaptive-tabs activeid="styling">
-        <adaptive-tab id="styling">Styling</adaptive-tab>
-        <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
-        <adaptive-tab id="settings">Settings</adaptive-tab>
-        <adaptive-tab id="view">View</adaptive-tab>
+    <div class="tabs">
+        <adaptive-tablist panels="panels">
+            <adaptive-tab id="styling" selected>Styling</adaptive-tab>
+            <adaptive-tab id="tokens">Design Tokens</adaptive-tab>
+            <adaptive-tab id="settings">Settings</adaptive-tab>
+            <adaptive-tab id="view">View</adaptive-tab>
+        </adaptive-tablist>
+        <div id="panels">
         <adaptive-tab-panel id="stylingPanel">
             <div style="overflow-y: overlay;">
                 ${when(
@@ -351,10 +345,10 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Use cases">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Styles")}
+                                ${(x) => appliedTreatmentsTemplate("Styles")}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Styles")}
+                                ${(x) => availableTreatmentsTemplate("Styles")}
                             </div>
                         </designer-drawer>
                     `,
@@ -372,14 +366,14 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Color">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Color")}
+                                ${(x) => appliedTreatmentsTemplate("Color")}
                                 ${(x) => appliedTokensTemplate([StyleProperty.backgroundFill], x.layerTokens, "Layer", TokenGlyphValueType.background)}
                                 ${(x) => appliedTokensTemplate([StyleProperty.backgroundFill], x.backgroundTokens, "Background", TokenGlyphValueType.background)}
                                 ${(x) => appliedTokensTemplate(StylePropertyShorthand.borderFill, x.borderFillTokens, "Stroke", TokenGlyphValueType.border)}
                                 ${(x) => appliedTokensTemplate([StyleProperty.foregroundFill], x.foregroundTokens, "Foreground", TokenGlyphValueType.foreground)}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Color")}
+                                ${(x) => availableTreatmentsTemplate("Color")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.backgroundFill],
@@ -409,12 +403,12 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Shape">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Shape")}
+                                ${(x) => appliedTreatmentsTemplate("Shape")}
                                 ${(x) => appliedTokensTemplate(StylePropertyShorthand.cornerRadius, x.cornerRadiusTokens, null)}
                                 ${(x) => appliedTokensTemplate(StylePropertyShorthand.borderThickness, x.borderThicknessTokens, null)}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Shape")}
+                                ${(x) => availableTreatmentsTemplate("Shape")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         StylePropertyShorthand.cornerRadius,
@@ -434,11 +428,11 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Density">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Density")}
+                                ${(x) => appliedTreatmentsTemplate("Density")}
                                 ${(x) => appliedTokensTemplate([...StylePropertyShorthand.padding, StyleProperty.gap], x.densityTokens, null)}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Density")}
+                                ${(x) => availableTreatmentsTemplate("Density")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [...StylePropertyShorthand.padding, StyleProperty.gap],
@@ -453,12 +447,12 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Text">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Text")}
-                                ${(x) => appliedStylesTemplate("Font") /* TODO legacy, remove */}
+                                ${(x) => appliedTreatmentsTemplate("Text")}
+                                ${(x) => appliedTreatmentsTemplate("Font") /* TODO legacy, remove */}
                                 ${(x) => appliedTokensTemplate([StyleProperty.fontFamily], x.textTokens, null)}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Text")}
+                                ${(x) => availableTreatmentsTemplate("Text")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.fontFamily],
@@ -493,11 +487,11 @@ const template = html<App>`
                     html<App>`
                         <designer-drawer name="Shadow">
                             <div slot="collapsed-content">
-                                ${(x) => appliedStylesTemplate("Shadow")}
+                                ${(x) => appliedTreatmentsTemplate("Shadow")}
                                 ${(x) => appliedTokensTemplate([StyleProperty.shadow], x.shadowTokens, null)}
                             </div>
                             <div>
-                                ${(x) => availableStylesTemplate("Shadow")}
+                                ${(x) => availableTreatmentsTemplate("Shadow")}
                                 ${(x) =>
                                     availableTokensTemplate(
                                         [StyleProperty.shadow],
@@ -546,15 +540,15 @@ const template = html<App>`
         </adaptive-tab-panel>
         <adaptive-tab-panel id="settingsPanel">
             <div class="settings-layout">
-                <adaptive-switch :checked="${twoWay((x) => x.controller.autoRefreshEnabled)}">Auto refresh</adaptive-switch>
-                <adaptive-switch :checked="${twoWay((x) => x.skipInvisibleNodes)}">Skip invisible nodes (composition mode)</adaptive-switch>
+                <adaptive-switch label="Auto refresh" :checked="${twoWay((x) => x.controller.autoRefreshEnabled)}"></adaptive-switch>
+                <adaptive-switch label="Skip invisible nodes (composition mode)" :checked="${twoWay((x) => x.skipInvisibleNodes)}"></adaptive-switch>
             </div>
         </adaptive-tab-panel>
         <adaptive-tab-panel id="viewPanel">
             <div class="view-layout">
                 <adaptive-tree-view>
                     ${repeat(
-                        (x) => x.selectedNodes,
+                        (x) => x.selectedNodes ?? [],
                         html<PluginUINodeData, App>`
                             ${(_) => viewNodeTemplate}
                         `,
@@ -562,7 +556,8 @@ const template = html<App>`
                 </adaptive-tree-view>
             </div>
         </adaptive-tab-panel>
-    </adaptive-tabs>
+        </div>
+    </div>
     ${(x) => footerTemplate}
 `;
 
@@ -573,7 +568,7 @@ const styles = css`
         height: 100%;
     }
 
-    adaptive-tabs::part(tablist) {
+    adaptive-tablist {
         border-bottom: var(--shape-strokeThickness-default) solid var(--color-neutral-stroke-subtle-rest);
     }
 
@@ -631,7 +626,7 @@ const styles = css`
 
     .title {
         padding: 0 calc(var(--global-designUnit) * 3);
-        color: ${neutralStrokeReadable.rest}
+        color: ${properties.color.neutral.stroke.readable.var};
     }
 
     .tokens-panel-content {
@@ -728,7 +723,7 @@ export class App extends FASTElement {
     public supportsDesignSystem: boolean = false;
 
     @observable
-    public appliedStyleModules: StyleModuleDisplayList = new Map();
+    public appliedTreatments: TreatmentDisplayList = new Map();
 
     @observable
     public statesState: StatesState | "unknown" = "unknown";
@@ -804,7 +799,7 @@ export class App extends FASTElement {
             ]);
             this.shadowTokens = this.controller.styles.getAppliedDesignTokens([StyleProperty.shadow]);
 
-            this.appliedStyleModules = this.controller.styles.getAppliedStyleModules();
+            this.appliedTreatments = this.controller.styles.getAppliedTreatments();
 
             this.statesState = this.controller.states.getState();
         }

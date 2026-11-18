@@ -1,10 +1,6 @@
-import {
-    cornerRadiusControl,
-    neutralFillStealth,
-    neutralStrokeStrong,
-    neutralStrokeSubtle,
-} from "@adaptive-web/adaptive-ui/reference";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
+import { InteractiveState } from "@adaptive-web/adaptive-ui";
+import { properties, stateVar } from "../../tokens/library.js";
 
 const template = html`
     <button>
@@ -29,22 +25,22 @@ const styles = css`
         min-width: 32px;
         height: 32px;
         border: none;
-        border-radius: ${cornerRadiusControl};
-        background: ${neutralFillStealth.rest};
-        fill: ${neutralStrokeStrong.rest};
+        border-radius: ${properties.shape.cornerRadius.default.var};
+        background: ${properties.color.neutral.fill.stealth.var};
+        fill: ${properties.color.neutral.stroke.strong.var};
         outline: none;
         font-size: inherit;
     }
 
     button:focus {
-        border-color: ${neutralStrokeSubtle.rest};
+        border-color: ${properties.color.neutral.stroke.subtle.var};
     }
     button:hover {
-        background: ${neutralFillStealth.hover};
+        background: ${stateVar(properties.color.neutral.fill.stealth, InteractiveState.hover)};
     }
 
     button:active {
-        background: ${neutralFillStealth.active};
+        background: ${stateVar(properties.color.neutral.fill.stealth, InteractiveState.active)};
     }
 
     :host([aria-expanded="true"]) button {

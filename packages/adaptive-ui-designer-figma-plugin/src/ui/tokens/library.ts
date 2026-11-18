@@ -1,4 +1,4 @@
-import { adaptiveConverters, tokenNames } from "@adaptive-web/adaptive-ui";
+import { adaptiveConverters, type InteractiveState, tokenNames } from "@adaptive-web/adaptive-ui";
 import { createReferenceLibrary, type ReferenceLibraryTokens } from "@adaptive-web/adaptive-ui/reference";
 import { type Library, refs, toProperties } from "design-token-library";
 
@@ -26,3 +26,12 @@ export const properties = toProperties(library, { converters: adaptiveConverters
  * The names that find the tokens of the library, for the names that a design file stored.
  */
 export const names = tokenNames(library);
+
+/**
+ * Gets the custom property of the value of an interactive token in a state, as `var()`, which a token's property doesn't type.
+ *
+ * @param token - The custom property of the token
+ * @param state - The state
+ * @returns The `var()` of the property of the state, `--<token>-<state>`
+ */
+export const stateVar = (token: { readonly property: string }, state: InteractiveState): string => `var(${token.property}-${state})`;
