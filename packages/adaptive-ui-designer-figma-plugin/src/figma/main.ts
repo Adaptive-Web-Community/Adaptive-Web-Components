@@ -1,4 +1,3 @@
-import { mapReviver } from "@adaptive-web/adaptive-ui-designer-core";
 import type { PluginMessage } from "../core/messages.js";
 import { FigmaController } from "./controller.js";
 
@@ -60,8 +59,8 @@ function debounceSelection() {
 figma.on("selectionchange", debounceSelection);
 
 // Comes from ../ui/index.ts parent.postMessage
-figma.ui.onmessage = (json: string): void => {
-    const message: PluginMessage = JSON.parse(json, mapReviver);
+// A message is plain data, which Figma passes as it is.
+figma.ui.onmessage = (message: PluginMessage): void => {
     notifyProcessing(() => {
         controller.handleMessage(message);
     });

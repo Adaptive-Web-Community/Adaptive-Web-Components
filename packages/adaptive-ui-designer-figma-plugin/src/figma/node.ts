@@ -1,6 +1,7 @@
 import { type Color as CuloriColor, formatHex8, modeLrgb, type Rgb, useMode, wcagLuminance } from "culori/fn";
-import { Color, Gradient, Shadow, StyleProperty } from "@adaptive-web/adaptive-ui";
-import { AppliedDesignTokens, AppliedStyleModules, AppliedStyleValues, Controller, DesignTokenValues, focusIndicatorNodeName, indent, PluginNode, serializeMap, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
+import { Color, Gradient, Shadow, StyleProperty, tokenNames } from "@adaptive-web/adaptive-ui";
+import { createReferenceLibrary } from "@adaptive-web/adaptive-ui/reference";
+import { AppliedDesignTokens, AppliedStyleValue, AppliedStyleValues, AppliedTreatments, Controller, DesignTokenValues, focusIndicatorNodeName, indent, PluginNode, State, StatesState, STYLE_REMOVE } from "@adaptive-web/adaptive-ui-designer-core";
 import { canHaveChildren, canHaveIndividualStrokes, colorToRgb, colorToRgba, isContainerNode, isInstanceNode, isLayoutNode, isLineNode, isRectangleNode, isShapeNode, isTextNode, isVectorNode, SOLID_BLACK, SOLID_TRANSPARENT, variantBooleanHelper } from "./utility.js";
 import { gradientToGradientPaint } from "./gradient.js";
 import { PluginDataResolver } from "./plugin-data-resolver.js";
@@ -23,7 +24,7 @@ export class FigmaPluginNode extends PluginNode {
     private _refNode: FigmaPluginNode | null = null;
     private _designTokensRawData: string | null = null;
     private _appliedDesignTokensRawData: string | null = null;
-    private _appliedStyleModulesRawData: string | null = null;
+    private _appliedTreatmentsRawData: string | null = null;
     private _state?: State;
     public supportsCodeGen: boolean = false;
     public codeGenName: string | undefined;
@@ -32,6 +33,8 @@ export class FigmaPluginNode extends PluginNode {
 
     static {
         PluginNode.pluginDataAccessor = new PluginDataResolver();
+        // The names that find a token or a treatment that a node stored, by the name it had in an earlier version (decision 0014).
+        PluginNode.tokenNames = tokenNames(createReferenceLibrary());
     }
 
     private constructor(node: BaseNode, refNode: FigmaPluginNode | null, level: number) {
@@ -112,38 +115,38 @@ export class FigmaPluginNode extends PluginNode {
         this._designTokensRawData = await PluginNode.pluginDataAccessor.getDesignTokensRawData(this);
         if (this._designTokensRawData === null) {
             // Default case, do this silently.
-            this._designTokens = new DesignTokenValues();
+            this._designTokens = {};
         } else {
             if (this._refNode !== null) {
                 this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate design tokens");
                 if (this._refNode._designTokensRawData === this._designTokensRawData) {
                     this._logger.debug(indent(this._level) + "      ref node has the same design token raw data as this node, ignoring local data");
-                    this._designTokens = new DesignTokenValues();
+                    this._designTokens = {};
                 } else {
                     this._logger.debug(indent(this._level) + "      ref node has different design token raw data, using local data");
                     const deserializedDesignTokens = this.deserializeDesignTokens(this._designTokensRawData);
                     // Deduplicate just in case
-                    this._refNode._designTokens.forEach((value, tokenId) => {
+                    for (const [tokenId, value] of Object.entries(this._refNode._designTokens)) {
                         // If the token values are the same between the nodes, remove it from the local.
-                        if (deserializedDesignTokens.get(tokenId)?.value === value.value) {
+                        if (deserializedDesignTokens[tokenId]?.value === value.value) {
                             this._logger.debug(indent(this._level) + "        removing design token", this.debugInfo, tokenId);
-                            deserializedDesignTokens.delete(tokenId);
+                            delete deserializedDesignTokens[tokenId];
                         }
-                    });
+                    }
                     this._designTokens = deserializedDesignTokens;
                 }
             } else {
                 this._logger.debug(indent(this._level) + "    no ref node, using local data");
                 this._designTokens = this.deserializeDesignTokens(this._designTokensRawData);
             }
-            
-            if (this._designTokens.size) {
-                this._logger.debug(indent(this._level) + "    design tokens", this.debugInfo, serializeMap(this._designTokens));
+
+            if (Object.keys(this._designTokens).length) {
+                this._logger.debug(indent(this._level) + "    design tokens", this.debugInfo, JSON.stringify(this._designTokens));
             }
 
-            // Check to see if we should write back in the updated format
-            if (this._designTokensRawData.indexOf("dataType") > -1) {
-                PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", serializeMap(this._designTokens));
+            // Check to see if we should write back in the current format: an object, which versions before 1.0 stored as a `Map`.
+            if (this._designTokensRawData.indexOf("dataType") > -1 || this._designTokensRawData.indexOf("__dataType__") > -1) {
+                PluginNode.pluginDataAccessor.setPluginData(this, "designTokens", JSON.stringify(this._designTokens));
             }
         }
 
@@ -151,7 +154,7 @@ export class FigmaPluginNode extends PluginNode {
         this._appliedDesignTokensRawData = await PluginNode.pluginDataAccessor.getAppliedDesignTokensRawData(this);
         if (this._appliedDesignTokensRawData === null) {
             // Default case, do this silently.
-            this._appliedDesignTokens = new AppliedDesignTokens();
+            this._appliedDesignTokens = {};
         } else {
             // There is a historic data issue problem we're cleaning up here.
             if (!(await this.getRemote()) && this._node.name === "Focus indicator" && this._node.id !== "1548:20317") {
@@ -162,17 +165,17 @@ export class FigmaPluginNode extends PluginNode {
                     this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate applied design tokens");
                     if (this._refNode._appliedDesignTokensRawData === this._appliedDesignTokensRawData) {
                         this._logger.debug(indent(this._level) + "      ref node has the same applied design tokens raw data as this node, ignoring local data");
-                        this._appliedDesignTokens = new AppliedDesignTokens();
+                        this._appliedDesignTokens = {};
                     } else {
                         this._logger.debug(indent(this._level) + "      ref node has different applied design tokens raw data, using local data");
                         const deserializedAppliedDesignTokens = this.deserializeAppliedDesignTokens(this._appliedDesignTokensRawData);
                         // Deduplicate just in case
-                        this._refNode._appliedDesignTokens.forEach((value, target) => {
-                            if (deserializedAppliedDesignTokens.get(target)?.tokenID === value.tokenID) {
+                        for (const [target, value] of Object.entries(this._refNode._appliedDesignTokens)) {
+                            if (deserializedAppliedDesignTokens[target as StyleProperty]?.tokenID === value.tokenID) {
                                 this._logger.debug(indent(this._level) + "        removing applied design token", this.debugInfo, target, value.tokenID);
-                                deserializedAppliedDesignTokens.delete(target);
+                                delete deserializedAppliedDesignTokens[target as StyleProperty];
                             }
-                        });
+                        }
                         this._appliedDesignTokens = deserializedAppliedDesignTokens;
                     }
                 } else {
@@ -181,46 +184,46 @@ export class FigmaPluginNode extends PluginNode {
                 }
             }
 
-            if (this._appliedDesignTokens.size) {
-                this._logger.debug(indent(this._level) + "    applied design tokens", this.debugInfo, serializeMap(this._appliedDesignTokens));
+            if (Object.keys(this._appliedDesignTokens).length) {
+                this._logger.debug(indent(this._level) + "    applied design tokens", this.debugInfo, JSON.stringify(this._appliedDesignTokens));
             }
 
-            // Check to see if we should write back in the updated format
-            if (this._appliedDesignTokensRawData.indexOf("dataType") > -1) {
-                PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", serializeMap(this._appliedDesignTokens));
+            // Check to see if we should write back in the current format: an object, which versions before 1.0 stored as a `Map`.
+            if (this._appliedDesignTokensRawData.indexOf("dataType") > -1 || this._appliedDesignTokensRawData.indexOf("__dataType__") > -1) {
+                PluginNode.pluginDataAccessor.setPluginData(this, "appliedDesignTokens", JSON.stringify(this._appliedDesignTokens));
             }
         }
 
-        // Deserialize and deduplicate the applied style modules from the local data.
-        this._appliedStyleModulesRawData = await PluginNode.pluginDataAccessor.getAppliedStyleModulesRawData(this);
-        if (this._appliedStyleModulesRawData === null) {
+        // Deserialize and deduplicate the applied treatments from the local data.
+        this._appliedTreatmentsRawData = await PluginNode.pluginDataAccessor.getAppliedTreatmentsRawData(this);
+        if (this._appliedTreatmentsRawData === null) {
             // Default case, do this silently.
-            this._appliedStyleModules = new AppliedStyleModules();
+            this._appliedTreatments = [];
         } else {
             if (this._refNode !== null) {
-                this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate applied style modules");
-                if (this._refNode._appliedStyleModulesRawData === this._appliedStyleModulesRawData) {
-                    this._logger.debug(indent(this._level) + "      ref node has the same applied style modules raw data as this node, ignoring local data");
-                    this._appliedStyleModules = new AppliedStyleModules();
+                this._logger.debug(indent(this._level) + "    found ref node, checking for duplicate applied treatments");
+                if (this._refNode._appliedTreatmentsRawData === this._appliedTreatmentsRawData) {
+                    this._logger.debug(indent(this._level) + "      ref node has the same applied treatments raw data as this node, ignoring local data");
+                    this._appliedTreatments = [];
                 } else {
-                    this._logger.debug(indent(this._level) + "      ref node has different applied style modules raw data, using local data");
-                    const deserializedAppliedStyleModules = this.deserializeAppliedStyleModules(this._appliedStyleModulesRawData);
+                    this._logger.debug(indent(this._level) + "      ref node has different applied treatments raw data, using local data");
+                    const deserializedAppliedTreatments = this.deserializeAppliedTreatments(this._appliedTreatmentsRawData);
                     // Deduplicate just in case
-                    let filteredAppliedStyleModules = deserializedAppliedStyleModules
-                        .filter((parsedName) => this._refNode!.appliedStyleModules.indexOf(parsedName) === -1);
+                    let filteredAppliedTreatments = deserializedAppliedTreatments
+                        .filter((parsedName) => this._refNode!.appliedTreatments.indexOf(parsedName) === -1);
                     // Remove duplicates while preserving order (legacy data bug, should not happen)
-                    filteredAppliedStyleModules.reverse();
-                    filteredAppliedStyleModules = [...new Set(filteredAppliedStyleModules)];
-                    filteredAppliedStyleModules.reverse();
-                    this._appliedStyleModules = filteredAppliedStyleModules;
+                    filteredAppliedTreatments.reverse();
+                    filteredAppliedTreatments = [...new Set(filteredAppliedTreatments)];
+                    filteredAppliedTreatments.reverse();
+                    this._appliedTreatments = filteredAppliedTreatments;
                 }
             } else {
                 this._logger.debug(indent(this._level) + "    no ref node, using local data");
-                this._appliedStyleModules = this.deserializeAppliedStyleModules(this._appliedStyleModulesRawData);
+                this._appliedTreatments = this.deserializeAppliedTreatments(this._appliedTreatmentsRawData);
             }
 
-            if (this._appliedStyleModules.length) {
-                this._logger.debug(indent(this._level) + "    applied style modules", this.debugInfo, this._appliedStyleModules.join(","));
+            if (this._appliedTreatments.length) {
+                this._logger.debug(indent(this._level) + "    applied treatments", this.debugInfo, this._appliedTreatments.join(","));
             }
         }
 
@@ -536,12 +539,12 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     protected async handleFontFamily(node: FigmaPluginNode, values: AppliedStyleValues, inherited: boolean) {
-        const fontFamily = values.get(StyleProperty.fontFamily)?.value;
+        const fontFamily = values[StyleProperty.fontFamily]?.value;
         // We'll only set the font if the family is provided.
         if (fontFamily) {
             if (isTextNode(node._node)) {
-                const fontStyle = values?.get(StyleProperty.fontStyle)?.value; // For "italic"
-                const fontWeight: number = this.safeNumber(values?.get(StyleProperty.fontWeight)?.value, 400);
+                const fontStyle = values[StyleProperty.fontStyle]?.value; // For "italic"
+                const fontWeight: number = this.safeNumber(values[StyleProperty.fontWeight]?.value, 400);
                 const families = fontFamily.split(",");
                 let family = families[0].replace(/['"]/g, ""); // Fallback is intended for the browser, in Figma just do the first
                 if (family === STYLE_REMOVE) {
@@ -580,14 +583,14 @@ export class FigmaPluginNode extends PluginNode {
      * @param values - The entire list of values to be applied
      */
     private handleStroke(values: AppliedStyleValues) {
-        const applyingFill = values.has(StyleProperty.borderFillTop)
-            || values.has(StyleProperty.borderFillRight)
-            || values.has(StyleProperty.borderFillBottom)
-            || values.has(StyleProperty.borderFillLeft);
-        const applyingThickness = values.has(StyleProperty.borderThicknessTop)
-            || values.has(StyleProperty.borderThicknessRight)
-            || values.has(StyleProperty.borderThicknessBottom)
-            || values.has(StyleProperty.borderThicknessLeft);
+        const applyingFill = StyleProperty.borderFillTop in values
+            || StyleProperty.borderFillRight in values
+            || StyleProperty.borderFillBottom in values
+            || StyleProperty.borderFillLeft in values;
+        const applyingThickness = StyleProperty.borderThicknessTop in values
+            || StyleProperty.borderThicknessRight in values
+            || StyleProperty.borderThicknessBottom in values
+            || StyleProperty.borderThicknessLeft in values;
 
         if (applyingFill && applyingThickness) {
             // We only need to reset "individual" strokes here since we'll set a common stroke later anyway.
@@ -602,8 +605,8 @@ export class FigmaPluginNode extends PluginNode {
 
     private handleSize(values: AppliedStyleValues) {
         if (isLayoutNode(this._node)) {
-            const width = this.safeNumber(values.get(StyleProperty.width)?.value) || this._node.width;
-            const height = this.safeNumber(values.get(StyleProperty.height)?.value) || this._node.height;
+            const width = this.safeNumber(values[StyleProperty.width]?.value) || this._node.width;
+            const height = this.safeNumber(values[StyleProperty.height]?.value) || this._node.height;
             (this._node).resize(width, height);
         }
     }
@@ -621,7 +624,7 @@ export class FigmaPluginNode extends PluginNode {
         this.handleSize(values);
 
         // Paint all applied design tokens on the node
-        for (const [target, styleValue] of values) {
+        for (const [target, styleValue] of Object.entries(values) as [StyleProperty, AppliedStyleValue][]) {
             // console.log("applied design token eval", target, applied);
             await this.paintOne(target, styleValue.value, false);
         }
