@@ -10,11 +10,13 @@ You can also use `npm run start` to watch files and rebuild the plugin when file
 
 ## Usage
 
-This plugin enables using certain parts of Adaptive UI in Figma. Currently, it supports applying design tokens for styling and editing design token values.
+This plugin enables using certain parts of Adaptive UI in Figma. It supports applying treatments and tokens for styling, and overriding the given token values on a node.
 
-With the plugin open, selecting a node in Figma will cause the available options for that node type to be reflected in the UI. Applying an option from the Styling tab will update the appearance in Figma.
+With the plugin open, selecting a node in Figma will cause the available options for that node type to be reflected in the UI. Applying a treatment from the Styles tab will update the appearance in Figma.
 
-Applying a token to a node opts the node into the adaptive system, and assigning a background fill token higher in the Figma node tree will inform what the output color the downstream token is. Changing upstream nodes will cause all nodes downstream that have been assigned a token type to be re-evaluated, allowing you to keep an entire tree of nodes in sync with their background fill.
+Applying a treatment or token to a node opts the node into the adaptive system, and a background fill higher in the Figma node tree informs the context the downstream node is evaluated in. Changing upstream nodes will cause all nodes downstream to be re-evaluated, allowing you to keep an entire tree of nodes in sync with their background fill.
+
+See [MIGRATION.md](./MIGRATION.md) for what changed since 0.x.
 
 ## Next Steps
 

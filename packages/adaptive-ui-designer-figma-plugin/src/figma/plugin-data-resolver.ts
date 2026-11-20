@@ -1,4 +1,4 @@
-import { PluginNodeData, PluginNodeDataAccessor } from "@adaptive-web/adaptive-ui-designer-core";
+import { formerPluginDataKeys, PluginDataKey, PluginNodeData, PluginNodeDataAccessor } from "@adaptive-web/adaptive-ui-designer-core";
 import { FIGMA_SHARED_DATA_NAMESPACE } from "@adaptive-web/adaptive-ui-designer-figma";
 import { getLogger } from "@adaptive-web/adaptive-ui-designer-core";
 import { FigmaPluginNode } from "./node.js";
@@ -37,8 +37,8 @@ interface OverrideReadResult {
  * Utility functions for managing plugin data for Figma nodes.
  */
 export class PluginDataResolver implements PluginNodeDataAccessor {
-    public getPluginData<K extends keyof PluginNodeData>(node: FigmaPluginNode, key: K): string | null {
-        let value: string | null = node.getFigmaNode().getSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key as string);
+    public getPluginData<K extends PluginDataKey>(node: FigmaPluginNode, key: K): string | null {
+        let value: string | null = node.getFigmaNode().getSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key);
         if (value === "") {
             value = null;
         }
@@ -55,7 +55,7 @@ export class PluginDataResolver implements PluginNodeDataAccessor {
         node.getFigmaNode().setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, valueToSet);
     }
 
-    public deletePluginData<K extends keyof PluginNodeData>(node: FigmaPluginNode, key: K): void {
+    public deletePluginData<K extends PluginDataKey>(node: FigmaPluginNode, key: K): void {
         logger.debug("    deletePluginData", node.debugInfo, key);
         node.getFigmaNode().setSharedPluginData(FIGMA_SHARED_DATA_NAMESPACE, key, "");
     }
@@ -68,20 +68,26 @@ export class PluginDataResolver implements PluginNodeDataAccessor {
         return this.handleRawData(node, "appliedDesignTokens");
     }
 
-    public async getAppliedStyleModulesRawData(node: FigmaPluginNode): Promise<string | null> {
-        return this.handleRawData(node, "appliedStyleModules");
+    public async getAppliedTreatmentsRawData(node: FigmaPluginNode): Promise<string | null> {
+        // A node that the plugin hasn't saved since treatments were style modules has them under the former key.
+        return this.handleRawData(node, "appliedTreatments") ?? this.handleRawData(node, formerPluginDataKeys.appliedTreatments);
     }
 
-    private handleRawData<K extends keyof PluginNodeData>(node: FigmaPluginNode, key: K): string | null {
+    private handleRawData<K extends PluginDataKey>(node: FigmaPluginNode, key: K): string | null {
         const rawData = this.getPluginData(node, key);
 
         if (rawData !== null) {
             const result = this.getLayerOverride(rawData, node.id);
 
             if (result.type === "NEW_MODEL") {
+                if (key === formerPluginDataKeys.appliedTreatments) {
+                    // The data of a former key isn't written back: the node saves it under the current key, and deletes this one.
+                    return result.data;
+                }
+
                 // Write back the plain raw data.
                 logger.debug("      writing back plain raw data", node.debugInfo, result.data);
-                this.setPluginData(node, key, result.data);
+                this.setPluginData(node, key as keyof PluginNodeData, result.data);
 
                 // Read back the data from the node.
                 return this.getPluginData(node, key);

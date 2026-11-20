@@ -41,3 +41,5 @@ reason with the code.
 | [0018](0018-a-scope-writes-the-tokens-it-changes.md) | A scope writes the tokens it sets and the tokens that depend on them | Accepted |
 | [0021](0021-the-aui-cli-is-its-own-package.md) | The `aui` CLI is `@adaptive-web/adaptive-ui-cli`; the library has the compile API | Accepted |
 | [0022](0022-component-documentation-layers.md) | Component documentation is layered: structure, binding, rules, and usage | Accepted |
+| [0023](0023-a-token-is-offered-for-what-it-is-intended-for.md) | A token is offered for what it is intended for, or else for what its type can be | Accepted |
+| [0024](0024-the-designer-overrides-the-given-tokens.md) | The designer overrides the given tokens, as strings parsed by their type | Accepted |

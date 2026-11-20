@@ -1,6 +1,6 @@
 import { attr, css, customElement, FASTElement, html, observable, ref, when } from "@microsoft/fast-element";
-import { Styles } from "@adaptive-web/adaptive-ui";
-import { cornerRadiusControl, neutralFillStealth, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
+import { InteractiveState } from "@adaptive-web/adaptive-ui";
+import { properties, stateVar } from "../../tokens/library.js";
 import { TokenGlyph, TokenGlyphValueType } from "../token-glyph/index.js";
 
 // TODO, make a button
@@ -14,13 +14,13 @@ const template = html<StyleTokenItem>`
             ${(x) => x.title}
         </span>
         ${when(
-            (x) => x.glyphType || x.styles,
+            (x) => x.glyphType || x.swatchStyle,
             html`
                 <designer-token-glyph
                     ${ref("glyph")}
                     circular
                     :value=${(x) => x.value}
-                    :styles=${(x) => x.styles}
+                    :swatchStyle=${(x) => x.swatchStyle}
                     valueType=${(x) => x.glyphType}
                 >
                 </designer-token-glyph>
@@ -44,8 +44,8 @@ const styles = css`
         display: flex;
         justify-content: space-between;
         flex-grow: 1;
-        border-radius: ${cornerRadiusControl};
-        color: ${neutralStrokeStrong.rest};
+        border-radius: ${properties.shape.cornerRadius.default.var};
+        color: ${properties.color.neutral.stroke.strong.var};
         padding: 8px 4px;
     }
 
@@ -62,7 +62,7 @@ const styles = css`
     }
 
     .content[role="button"]:hover {
-        background: ${neutralFillStealth.hover};
+        background: ${stateVar(properties.color.neutral.fill.stealth, InteractiveState.hover)};
         cursor: pointer;
     }
 `;
@@ -87,9 +87,12 @@ export class StyleTokenItem extends FASTElement {
     @attr({ attribute: "content-button", mode: "boolean" })
     public contentButton: boolean = false;
 
+    /**
+     * The style of a swatch that shows a treatment, instead of the value of a token.
+     */
     @observable
-    public styles?: Styles;
-    protected stylesChanged() {
+    public swatchStyle?: string;
+    protected swatchStyleChanged() {
         this.setupGlyph();
     }
 
@@ -99,7 +102,7 @@ export class StyleTokenItem extends FASTElement {
     }
 
     private setupGlyph() {
-        if (this.glyph && this.styles) {
+        if (this.glyph && this.swatchStyle) {
             if (this.glyphType === TokenGlyphValueType.foreground) {
                 this.glyph.icon = true;
             }

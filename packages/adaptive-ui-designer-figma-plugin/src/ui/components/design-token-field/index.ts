@@ -1,7 +1,6 @@
-import { DesignToken } from "@microsoft/fast-foundation";
 import { css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { DesignTokenMetadata, DesignTokenType } from "@adaptive-web/adaptive-ui";
+import { twoWay } from "@microsoft/fast-element/two-way.js";
+import type { UIDesignToken } from "../../ui-controller-tokens.js";
 import { designTokenTitle } from "../../util.js";
 
 export type ChangeEventDetail = string;
@@ -40,7 +39,9 @@ const tokenTemplatesByType = {
 
 const template = html<DesignTokenField>`
     <label>
-        <span>${x => designTokenTitle(x.designToken)}</span>
+        <span title="${x => (x.designToken?.type ? "" : "No longer offered, but its value is still applied. Remove it, or set the token it followed.")}">
+            ${x => designTokenTitle(x.designToken)}${x => (x.designToken?.type ? "" : " (legacy)")}
+        </span>
         ${x => x.selectTemplate()}
     </label>
 `;
@@ -83,7 +84,7 @@ const styles = css`
 })
 export class DesignTokenField extends FASTElement {
     @observable
-    designToken?: DesignToken<any> & DesignTokenMetadata;
+    designToken?: UIDesignToken;
 
     @observable
     value: string = "";
@@ -93,7 +94,7 @@ export class DesignTokenField extends FASTElement {
 
     selectTemplate() {
         if (this.designToken) {
-            if (this.designToken.type === DesignTokenType.color) {
+            if (this.designToken.type === "color") {
                 return tokenTemplatesByType.color;
             } else if (this.designToken.name === "color.layer.fill.ramp.baseLuminance") {
                 return tokenTemplatesByType.luminance;
