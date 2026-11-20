@@ -1,6 +1,5 @@
 import { Controller, PluginUIState } from "@adaptive-web/adaptive-ui-designer-core";
-import { mapReplacer } from "@adaptive-web/adaptive-ui-designer-core";
-import type { PluginMessage} from "../core/messages.js";
+import type { PluginMessage } from "../core/messages.js";
 import { FigmaPluginNode } from "./node.js";
 
 export class FigmaController extends Controller {
@@ -49,8 +48,7 @@ export class FigmaController extends Controller {
             selectedNodes: state.selectedNodes,
         };
 
-        // Goes to ../ui/index.ts window.onmessage
-        const json = JSON.stringify(message, mapReplacer);
-        figma.ui.postMessage(json);
+        // Goes to ../ui/index.ts window.onmessage. A message is plain data, which Figma passes as it is.
+        figma.ui.postMessage(message);
     }
 }
