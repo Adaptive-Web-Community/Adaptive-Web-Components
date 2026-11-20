@@ -8,22 +8,25 @@ import {
     ref,
     repeat,
 } from "@microsoft/fast-element";
-import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
+import { staticallyCompose } from "@adaptive-web/components-fast";
 import CheckmarkIcon from "../../assets/checkmark.svg";
 import { DesignTokenField } from "../design-token-field/index.js";
-import { UIDesignTokenValue } from "../../ui-controller-tokens.js";
+import type { AvailableDesignToken, UIDesignToken } from "../../ui-controller-tokens.js";
 import { designTokenTitle } from "../../util.js";
 
 DesignTokenField;
 
-export type AddEventDetail = UIDesignTokenValue;
+export interface AddEventDetail {
+    token: UIDesignToken;
+    value: string;
+}
 
 const template = html<DesignTokenAdd>`
     <select @change="${(x, c) => x.selectHandler(c)}" ${ref("list")}>
         <option selected value="-">Add design token override...</option>
         ${repeat(
             x => x.designTokens,
-            html<DesignToken<any>, DesignTokenAdd>`
+            html<AvailableDesignToken, DesignTokenAdd>`
                 <option value="${x => x.name}">
                     ${x => designTokenTitle(x)}
                 </option>
@@ -70,10 +73,10 @@ const styles = css`
 })
 export class DesignTokenAdd extends FASTElement {
     @observable
-    designTokens: DesignToken<any>[] = [];
+    designTokens: AvailableDesignToken[] = [];
 
     @observable
-    selectedDesignToken?: DesignToken<any>;
+    selectedDesignToken?: AvailableDesignToken;
 
     list?: HTMLSelectElement;
 
@@ -91,7 +94,7 @@ export class DesignTokenAdd extends FASTElement {
             }
 
             if (this.field) {
-                this.field.value = "" + this.selectedDesignToken?.default;
+                this.field.value = this.selectedDesignToken?.defaultValue ?? "";
             }
         }
     }

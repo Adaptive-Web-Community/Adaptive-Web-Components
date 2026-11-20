@@ -1,10 +1,35 @@
-import { calc } from '@csstools/css-calc';
 import { observable } from "@microsoft/fast-element";
-import { DesignToken } from "@microsoft/fast-foundation";
-import { Color } from "@adaptive-web/adaptive-ui";
-import { DesignTokenValue, PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { resolveTokenName } from "@adaptive-web/adaptive-ui";
+import type { PluginUINodeData } from "@adaptive-web/adaptive-ui-designer-core";
+import { type CatalogToken, givenTokens } from "./tokens/catalog.js";
+import { library, names } from "./tokens/library.js";
+import { tokenValueAsString } from "./tokens/preview.js";
 import { UIController } from "./ui-controller.js";
-import { ElementsController } from "./ui-controller-elements.js";
+
+/**
+ * A token as the UI shows it: the one that a node has a value for, which may not be in the library any more.
+ */
+export interface UIDesignToken {
+    /**
+     * The name of the token.
+     */
+    readonly name: string;
+
+    /**
+     * The `$type` of the token, if it is one of the library.
+     */
+    readonly type?: string;
+}
+
+/**
+ * A token that a designer is offered to give a value to, with the value it has now.
+ */
+export interface AvailableDesignToken extends CatalogToken {
+    /**
+     * The value of the token in the library, as a string for the field that a value is written in.
+     */
+    readonly defaultValue: string;
+}
 
 /**
  * Simple display information for representing design tokens applied to one or more nodes.
@@ -13,7 +38,7 @@ export interface UIDesignTokenValue {
     /**
      * The design token.
      */
-    token: DesignToken<any>;
+    token: UIDesignToken;
 
     /**
      * Represents the design token value if all selected nodes have the same value.
@@ -26,10 +51,15 @@ export interface UIDesignTokenValue {
     multipleValues?: string;
 }
 
+// The current name of a name that a node stored, which may be a name the token had.
+const currentName = (name: string): string => resolveTokenName(names, name)?.name ?? name;
+
 /**
  * A sub-controller responsible for managing design tokens.
  */
 export class DesignTokenController {
+    private readonly given = givenTokens(library);
+
     /**
      * A display representation of design tokens applied to the selected nodes.
      */
@@ -40,11 +70,10 @@ export class DesignTokenController {
      * A list of all design tokens which are not already applied to the selected nodes.
      */
     @observable
-    public availableDesignTokens: DesignToken<any>[] | null = null;
+    public availableDesignTokens: AvailableDesignToken[] | null = null;
 
     constructor(
         private readonly controller: UIController,
-        private readonly elements: ElementsController,
     ) {
     }
 
@@ -52,9 +81,6 @@ export class DesignTokenController {
      * Allow this controller to do any necessary setup when the selected nodes change.
      */
     public selectedNodesChanged() {
-        // console.log("--------------------------------");
-        // console.log("DesignTokenController.selectedNodesChanged", nodes);
-
         this.setupDesignTokenObservables();
     }
 
@@ -65,9 +91,9 @@ export class DesignTokenController {
         this.designTokenValues = this.getDesignTokenValues();
 
         // Get all design tokens that can be added, which is the full list except any already applied.
-        this.availableDesignTokens = this.controller.designTokenRegistry.entries.filter((token) =>
-            this.designTokenValues?.find((appliedToken) => appliedToken.token.name === token.name) === undefined
-        );
+        this.availableDesignTokens = this.given
+            .filter((token) => this.designTokenValues?.find((applied) => applied.token.name === token.name) === undefined)
+            .map((token) => ({ ...token, defaultValue: this.getDefaultDesignTokenValueAsString(token) }));
     }
 
     /**
@@ -78,8 +104,8 @@ export class DesignTokenController {
     private getDesignTokenValues(): UIDesignTokenValue[] {
         const tokenValuesMap = this.controller.selectedNodes
             .flatMap(node =>
-                Array.from(node.designTokens.entries()).map(([designTokenId, designToken]) => ({
-                    designTokenId,
+                Object.entries(node.designTokens).map(([designTokenId, designToken]) => ({
+                    designTokenId: currentName(designTokenId),
                     value: designToken.value
                 }))
             )
@@ -91,33 +117,15 @@ export class DesignTokenController {
                 return acc;
             }, new Map<string, Set<string>>());
 
-        const allDesignTokens = this.controller.designTokenRegistry.entries;
-
-        // This must include all design tokens, not only the ones in the registry.
+        // This must include all design tokens, not only the ones that are offered.
         return Array.from(tokenValuesMap.entries()).map(([tokenName, valueSet]) => {
-            const token = allDesignTokens.find(t => t.name === tokenName);
+            const token = this.given.find(t => t.name === tokenName);
             return {
-                token: token || { name: tokenName } as DesignToken<any>,
-                value: valueSet.size === 1 ? valueSet.values().next().value : undefined,
+                token: token || { name: tokenName },
+                value: valueSet.size === 1 ? valueSet.values().next().value as string : "",
                 multipleValues: valueSet.size > 1 ? [...valueSet].join(", ") : undefined,
             };
         });
-    }
-
-    private valueToString(value: any): string {
-        // TODO figure out a better way to handle storage data types
-        // Reconcile with similar block in evaluateEffectiveAppliedDesignToken
-        if (value instanceof Color) {
-            return value.toString();
-        } else if (typeof value === "string") {
-            if (value.startsWith("calc")) {
-                return calc(value);
-            } else {
-                return value;
-            }
-        } else {
-            return "" + value;
-        }
     }
 
     /**
@@ -126,40 +134,30 @@ export class DesignTokenController {
      * @param token - The design token
      * @returns The default token value as a string for display
      */
-    public getDefaultDesignTokenValueAsString(token: DesignToken<any>): string {
-        const val = this.valueToString(token.getValueFor(this.elements.rootElement));
-        // console.log("getDefaultDesignTokenValueAsString", "token", token, "value", val);
-        return val;
+    public getDefaultDesignTokenValueAsString(token: UIDesignToken): string {
+        return tokenValueAsString(token.name) ?? "";
     }
 
-    private setDesignTokenForNode(node: PluginUINodeData, token: DesignToken<any>, value: any): void {
-        if (value) {
-            const designToken = new DesignTokenValue(value);
-            node.designTokens.set(token.name, designToken);
-        } else {
-            node.designTokens.delete(token.name);
+    private setDesignTokenForNode(node: PluginUINodeData, token: UIDesignToken, value: string | null): void {
+        // Remove the value under any name the token had, so a name that was renamed is written again by its current name.
+        for (const key of Object.keys(node.designTokens)) {
+            if (currentName(key) === token.name) {
+                delete node.designTokens[key];
+            }
         }
-        // console.log("  after set designTokens", node.id, node.type, node.designTokens);
-
-        const element = this.elements.getElementForNode(node);
-        this.elements.setDesignTokenForElement(element, token, value);
+        if (value) {
+            node.designTokens[token.name] = { value };
+        }
     }
 
     /**
      * Sets a design token value (override) for the selected nodes.
      *
-     * @param token - The design token definition
-     * @param value - The value for this design token for the selected nodes
+     * @param token - The design token
+     * @param value - The value for this design token for the selected nodes, as it was written
      */
-    public setDesignToken(token: DesignToken<any>, value: any): void {
-        const nodes = this.controller.selectedNodes;
-
-        // console.log("--------------------------------");
-        // console.log("DesignTokenController.setDesignToken", token, value, typeof value, nodes);
-
-        nodes.forEach(node =>
-            this.setDesignTokenForNode(node, token, value)
-        );
+    public setDesignToken(token: UIDesignToken, value: string): void {
+        this.controller.selectedNodes.forEach(node => this.setDesignTokenForNode(node, token, value));
 
         this.setupDesignTokenObservables();
 
@@ -169,17 +167,10 @@ export class DesignTokenController {
     /**
      * Removes a design token value (override) from the selected nodes.
      *
-     * @param token - The design token definition
+     * @param token - The design token
      */
-    public removeDesignToken(token: DesignToken<any>): void {
-        const nodes = this.controller.selectedNodes;
-
-        // console.log("--------------------------------");
-        // console.log("DesignTokenController.removeDesignToken", token.name, nodes);
-
-        nodes.forEach(node =>
-            this.setDesignTokenForNode(node, token, null)
-        );
+    public removeDesignToken(token: UIDesignToken): void {
+        this.controller.selectedNodes.forEach(node => this.setDesignTokenForNode(node, token, null));
 
         this.setupDesignTokenObservables();
 

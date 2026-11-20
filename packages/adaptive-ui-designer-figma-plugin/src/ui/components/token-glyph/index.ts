@@ -1,9 +1,8 @@
-import { attr, css, customElement, ElementStyles, FASTElement, html, observable } from "@microsoft/fast-element";
-import { cornerRadiusControl, neutralStrokeStrong } from "@adaptive-web/adaptive-ui/reference";
-import { ElementStylesRenderer, Interactivity, StyleModuleTarget, Styles } from "@adaptive-web/adaptive-ui";
-import { staticallyCompose } from "@microsoft/fast-foundation";
+import { attr, css, customElement, FASTElement, html, observable } from "@microsoft/fast-element";
+import { staticallyCompose } from "@adaptive-web/components-fast";
 import { formatHex8, parse } from "culori/fn";
 import BlobIcon from "../../assets/blob.svg";
+import { properties } from "../../tokens/library.js";
 
 const template = html<TokenGlyph>`
     <template
@@ -14,7 +13,7 @@ const template = html<TokenGlyph>`
         <div
             part="swatch"
             class="swatch"
-            style=${x => (x.value !== null ? `--swatch-value: ${x.valueColor}` : null)}
+            style=${x => [x.value !== null ? `--swatch-value: ${x.valueColor}` : "", x.shownStyle ?? ""].filter(Boolean).join("; ") || null}
         >
             <span class="text">Ag</span>
             <span class="icon">${staticallyCompose(BlobIcon)}</span>
@@ -39,7 +38,7 @@ const styles = css`
         box-sizing: border-box;
         width: 32px;
         height: 32px;
-        border-radius: calc(${cornerRadiusControl} * 2);
+        border-radius: calc(${properties.shape.cornerRadius.default.var} * 2);
         /* Resets for 'style' type, here for specificity */
         color: transparent;
         border: solid 6px transparent;
@@ -138,12 +137,6 @@ export enum TokenGlyphValueType {
     border = "border",
 }
 
-const params: StyleModuleTarget = {
-    ...Interactivity.always,
-    context: ":host(:not([foo]))", // More specificity than the `.swatch` selector above
-    part: ".swatch",
-};
-
 const PLACEHOLDER_COLOR = "#ff00ff";
 
 @customElement({
@@ -153,35 +146,34 @@ const PLACEHOLDER_COLOR = "#ff00ff";
 })
 export class TokenGlyph extends FASTElement {
     @attr
-    public valueType: TokenGlyphValueType = TokenGlyphValueType.background;
+    public valueType: TokenGlyphValueType | null = TokenGlyphValueType.background;
 
     @attr
     public value: string | null = null;
     protected valueChanged(prev: string | null, next: string | null) {
-        const color = parse(next);
-        this.valueColor = formatHex8(color) || PLACEHOLDER_COLOR;
+        const color = next === null ? undefined : parse(next);
+        this.valueColor = (color && formatHex8(color)) || PLACEHOLDER_COLOR;
     }
 
     @observable
     public valueColor: string = PLACEHOLDER_COLOR;
 
+    /**
+     * The style of the swatch, for a treatment, where the swatch shows the properties of the treatment instead of a value.
+     *
+     * @remarks
+     * The properties of a style that are only fonts have no foreground to show them with, which is set here.
+     */
     @observable
-    public styles?: Styles;
-    protected stylesChanged(prev?: Styles, next?: Styles) {
-        if (prev) {
-            this.$fastController.removeStyles(this._addedStyles);
-        }
-        if (next) {
-            // There are too many combinations of needs for the preview glyph.
-            // This is a workaround for the font-only styles so they display for now.
-            if (next.effectiveProperties.has("fontFamily") && !next.effectiveProperties.has("foregroundFill")) {
-                const props = next.properties;
-                props.set("foregroundFill", neutralStrokeStrong.rest);
-                next.properties = props;
-            }
-            this._addedStyles = new ElementStylesRenderer(next).render(params);
-            this.$fastController.addStyles(this._addedStyles);
-        }
+    public swatchStyle?: string;
+
+    /**
+     * The style that is shown, which is the style of the swatch with the foreground that the fonts need.
+     */
+    @observable
+    public shownStyle?: string;
+    protected swatchStyleChanged(prev?: string, next?: string) {
+        this.shownStyle = next && /font-/.test(next) && !/(^|; )color:/.test(next) ? `color: ${properties.color.neutral.stroke.strong.var}; ${next}` : next;
     }
 
     @attr({ mode: "boolean" })
@@ -193,6 +185,4 @@ export class TokenGlyph extends FASTElement {
     @attr({ mode: "boolean" })
     public interactive: boolean = false;
 
-    // Keep track of the styles we added so we can remove them without recreating.
-    private _addedStyles?: ElementStyles;
 }

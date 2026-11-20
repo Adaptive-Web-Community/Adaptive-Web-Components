@@ -1,9 +1,9 @@
 {
-    "_comments": "Placeholder file for eslint to work with project parsing options since these are shared and don't have their own tsconfig",
+    "_comments": "The files here are shared by the UI and the Figma sides, which check them with their own configuration. This one is for eslint to work with project parsing options.",
+    "extends": "../../../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "moduleResolution": "Node16",
-        "target": "ES2020",
-        "module": "ES2020",
+        "emitDecoratorMetadata": false,
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+        "noEmit": true
     }
 }

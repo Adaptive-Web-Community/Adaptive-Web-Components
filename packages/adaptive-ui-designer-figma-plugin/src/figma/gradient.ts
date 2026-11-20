@@ -1,7 +1,7 @@
 import { Gradient, GradientStop, GradientType, LinearGradient } from "@adaptive-web/adaptive-ui";
-import { Rgb } from "culori/fn";
 import { compose, rotate, scale, translate } from "transformation-matrix";
 import { colorToRgba } from "./utility.js";
+import { colorToRgbOf } from "./values.js";
 
 // Big thanks here to Michael Yagudaev, https://github.com/yagudaev/css-gradient-to-figma
 
@@ -25,7 +25,7 @@ export function gradientToGradientPaint(gradient: Gradient, width = 1, height = 
             previousPosition = position;
             return {
                 position,
-                color: colorToRgba(stop.color.color as Rgb),
+                color: colorToRgba(colorToRgbOf(stop.color)),
             };
         }),
         gradientTransform: [

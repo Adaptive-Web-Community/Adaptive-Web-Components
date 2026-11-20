@@ -7,15 +7,15 @@ import {
     repeat,
     when,
 } from "@microsoft/fast-element";
-import { DesignToken, staticallyCompose } from "@microsoft/fast-foundation";
+import { staticallyCompose } from "@adaptive-web/components-fast";
 import SubtractIcon from "../../assets/subtract.svg";
-import type { UIDesignTokenValue } from "../../ui-controller-tokens.js";
+import type { UIDesignToken, UIDesignTokenValue } from "../../ui-controller-tokens.js";
 import { ChangeEventDetail, DesignTokenField } from "../design-token-field/index.js";
 
 DesignTokenField;
 
 export type TokenChangeEventDetail = UIDesignTokenValue;
-export type DetachEventDetail = DesignToken<any>;
+export type DetachEventDetail = UIDesignToken;
 
 const template = html<DesignTokensForm>`
     <ul>
